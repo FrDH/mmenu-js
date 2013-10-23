@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html class="index">
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+		<meta name="author" content="www.frebsite.nl" />
+		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+
+		<title>jQuery.mmenu - jQuery Mobile</title>
+
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<link type="text/css" rel="stylesheet" href="../demo.css" />
+		<link type="text/css" rel="stylesheet" href="../../source/jquery.mmenu.css" />
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script type="text/javascript" src="../../source/jquery.mmenu.js"></script>
+		<script type="text/javascript">
+
+			$(function() {
+				$('#menu').mmenu({
+					onClick		: {
+						blockUI			: false,
+						preventDefault	: function() {
+							return this.rel != 'external';
+						}
+					}
+				}, {
+					pageSelector: 'div[data-role="page"]:first'
+				});
+
+				$('#menu a[rel!="external"]').on(
+					'click',
+					function()
+					{
+						var _t = this;
+						$('#menu').one(
+							'closed.mm',
+							function()
+							{
+								$.mobile.changePage( _t.href, {
+									transition: 'slide'
+								});
+							}
+						);
+					}
+				);
+			});
+
+			$(document).on(
+				'pageshow',
+				function( e, ui )
+				{
+					$('#menu').trigger( 'setPage', [ $(e.target) ] );
+					$('#menu a').each(
+						function()
+						{
+							if ( $.mobile.path.parseUrl( this.href ).href == window.location.href )
+							{
+								$(this).trigger( 'setSelected.mm' );
+							}
+						}
+					);
+				}
+			);
+
+			
+		</script>
+		<script type="text/javascript" src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+	</head>
+	<body>
+		<div data-role="page">
+			<div class="header">
+				<a href="#menu" data-ajax="false"></a>
+				jQuery Mobile demo
+			</div>
+			<div id="content" data-role="content">
+				<p>This is a testpage for integrating the jQuery.mmenu plugin in a jQuery Mobile project.<br />
+					It includes internal (#page2) and external linking (page3.html)</p>
+
+				<p><em>Note:</em> Since jQuery Mobile uses AJAX to load pages, this example will only work in a server environment.</p>
+
+				<p>Here are some links for testing purposes:</p>
+				<ul>
+					<li><a href="#menu">Open the menu.</a></li>
+					<li><a href="index.html#page2">Go to &quot;#page2&quot; (an internal page).</a></li>
+					<li><a href="page3.html">Go to &quot;page3.html&quot; (an external page).</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="page2" data-role="page">
+			<div class="header">
+				<a href="#menu" data-ajax="false"></a>
+				jQuery Mobile
+			</div>
+			<div class="content" data-role="content">
+				<p>This is the internal testpage (#page2).</p>
+				<ul>
+					<li><a href="#menu">Open the menu.</a></li>
+					<li><a href="index.html">Go to &quot;index.html&quot; (the original page).</a></li>
+					<li><a href="page3.html">Go to &quot;page3.html&quot; (an external page).</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<nav id="menu">
+			<ul>
+				<li class="Selected"><a href="index.html">Page 1</a></li>
+				<li><a href="index.html#page2">Page 2</a></li>
+				<li><a href="page3.html">Page 3</a></li>
+				<li class="Label">External</li>
+				<li><a href="../index.html" rel="external">Back to the documentation</a></li>
+			</ul>
+		</nav>
+	</body>
+</html>

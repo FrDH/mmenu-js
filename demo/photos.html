@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+		<meta name="author" content="www.frebsite.nl" />
+		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+
+		<title>jQuery.mmenu - Examples</title>
+
+		<link type="text/css" rel="stylesheet" href="demo.css" />
+		<link type="text/css" rel="stylesheet" href="../source/jquery.mmenu.all.css" />
+		<style type="text/css">
+			.Header,
+			.Prev,
+			.Next
+			{
+				display: none;
+			}
+
+			#page #photos
+			{
+				display: none;
+			}
+			h4
+			{
+				margin: 0 0 10px 0;
+			}
+			.thumb
+			{
+				display: block;
+				width: 85px;
+				height: 85px;
+				margin: 0 5px 5px 0;
+				float: left;
+			}
+			.thumb-xs
+			{
+				vertical-align: middle;
+				display: inline-block;
+				margin: -5px 10px -5px 0;
+			}
+			.clear
+			{
+				clear: both;
+				display: block;
+				padding: 5px 0;
+				margin-bottom: 20px;
+			}
+			.large
+			{
+				width: 100%;
+				height: auto;
+			}
+		</style>
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script type="text/javascript" src="../source/jquery.mmenu.min.all.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$('nav#menu').mmenu();
+
+				$('div#photos').mmenu({
+					classes		: 'mm-fullscreen mm-light',
+					position	: 'right',
+					zposition	: 'front',
+					header		: true
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="page">
+			<div id="header">
+				<a href="#menu"></a>
+				Examples
+			</div>
+			<div id="content">
+				<p>This is the <strong>photos in sliding panels</strong> demo page.<br />
+					It demonstrates how to use the jquery.mmenu plugin for content other than a typical menu.</p>
+				<p><a href="#photos">Click here</a> to go to the photos.</p>
+			</div>
+			<nav id="menu">
+				<ul>
+					<li><a href="index.html">Introduction</a></li>
+					<li><a href="horizontal-submenus.html">Horizontal submenus example</a></li>
+					<li><a href="vertical-submenus.html">Vertical submenus example</a></li>
+					<li class="Selected"><a href="photos.html">Photos in sliding panels</a></li>
+					<li><a href="positions.html">Positioning the menu</a></li>
+					<li><a href="colors.html">Coloring the menu</a></li>
+					<li><a href="advanced.html">Advanced example</a></li>
+					<li><a href="onepage.html">One page scrolling example</a></li>
+					<li><a href="jqmobile/index.html">jQuery Mobile example</a></li>
+				</ul>
+			</nav>
+
+			<div id="photos">
+
+				<!-- Overview panel -->
+				<div id="panel-overview">
+					<ul class="List">
+						<li>
+							<span>
+								<img class="thumb-xs" src="http://lorempixel.com/40/40/nature/2/" />
+								Nature photos
+							</span>
+							<em class="Counter">7</em>
+							<div id="panel-nature">
+								<a href="#panel-nature-1" class="thumb"><img src="http://lorempixel.com/85/85/nature/1/" /></a>
+								<a href="#panel-nature-2" class="thumb"><img src="http://lorempixel.com/85/85/nature/2/" /></a>
+								<a href="#panel-nature-3" class="thumb"><img src="http://lorempixel.com/85/85/nature/3/" /></a>
+								<a href="#panel-nature-4" class="thumb"><img src="http://lorempixel.com/85/85/nature/4/" /></a>
+								<a href="#panel-nature-1" class="thumb"><img src="http://lorempixel.com/85/85/nature/1/" /></a>
+								<a href="#panel-nature-2" class="thumb"><img src="http://lorempixel.com/85/85/nature/2/" /></a>
+								<a href="#panel-nature-3" class="thumb"><img src="http://lorempixel.com/85/85/nature/3/" /></a>
+								<span class="clear">Click a thumbnail to enlarge it.</span>
+								
+								<!-- header info -->
+								<h3 class="Header">Nature photos</h3>
+								<a href="#panel-overview" class="Prev"></a>
+							</div>
+						</li>
+
+						<li>
+							<span>
+								<img class="thumb-xs" src="http://lorempixel.com/40/40/animals/1/" />
+								Animals photos
+							</span>
+							<em class="Counter">8</em>
+							<div id="panel-animals">
+								<a href="#panel-animals-1" class="thumb"><img src="http://lorempixel.com/85/85/animals/1/" /></a>
+								<a href="#panel-animals-2" class="thumb"><img src="http://lorempixel.com/85/85/animals/2/" /></a>
+								<a href="#panel-animals-3" class="thumb"><img src="http://lorempixel.com/85/85/animals/3/" /></a>
+								<a href="#panel-animals-4" class="thumb"><img src="http://lorempixel.com/85/85/animals/4/" /></a>
+								<a href="#panel-animals-1" class="thumb"><img src="http://lorempixel.com/85/85/animals/1/" /></a>
+								<a href="#panel-animals-2" class="thumb"><img src="http://lorempixel.com/85/85/animals/2/" /></a>
+								<a href="#panel-animals-3" class="thumb"><img src="http://lorempixel.com/85/85/animals/3/" /></a>
+								<a href="#panel-animals-4" class="thumb"><img src="http://lorempixel.com/85/85/animals/4/" /></a>
+								<span class="clear">Click a thumbnail to enlarge it.</span>
+								
+								<!-- header info -->
+								<h3 class="Header">Animals photos</h3>
+								<a href="#panel-overview" class="Prev"></a>
+							</div>
+						</li>
+
+						<li>
+							<span>
+								<img class="thumb-xs" src="http://lorempixel.com/40/40/food/1/" />
+								Food photos
+							</span>
+							<em class="Counter">6</em>
+							<div id="panel-food">
+								<a href="#panel-food-1" class="thumb"><img src="http://lorempixel.com/85/85/food/1/" /></a>
+								<a href="#panel-food-2" class="thumb"><img src="http://lorempixel.com/85/85/food/2/" /></a>
+								<a href="#panel-food-3" class="thumb"><img src="http://lorempixel.com/85/85/food/3/" /></a>
+								<a href="#panel-food-4" class="thumb"><img src="http://lorempixel.com/85/85/food/4/" /></a>
+								<a href="#panel-food-1" class="thumb"><img src="http://lorempixel.com/85/85/food/1/" /></a>
+								<a href="#panel-food-2" class="thumb"><img src="http://lorempixel.com/85/85/food/2/" /></a>
+								<span class="clear">Click a thumbnail to enlarge it.</span>
+								
+								<!-- header info -->
+								<h3 class="Header">Food photos</h3>
+								<a href="#panel-overview" class="Prev"></a>
+							</div>
+						</li>
+					</ul>
+
+					<!-- header info -->
+					<h3 class="Header">Photos</h3>
+					<a href="#page" class="Prev"></a>
+				</div>
+
+				<!-- Nature photos panels -->
+				<div id="panel-nature-1">
+					<h3 class="Header">Nature photo 1</h3>
+					<a href="#panel-nature" class="Prev"></a>
+					<img class="large" src="http://lorempixel.com/400/400/nature/1/" />
+				</div>
+				
+				<div id="panel-nature-2">
+					<h3 class="Header">Nature photo 2</h3>
+					<a href="#panel-nature" class="Prev"></a>
+					<img class="large" src="http://lorempixel.com/400/400/nature/2/" />
+				</div>
+				
+				<div id="panel-nature-3">
+					<h3 class="Header">Nature photo 3</h3>
+					<a href="#panel-nature" class="Prev"></a>
+					<img class="large" src="http://lorempixel.com/400/400/nature/3/" />
+				</div>
+				
+				<div id="panel-nature-4">
+					<h3 class="Header">Nature photo 4</h3>
+					<a href="#panel-nature" class="Prev"></a>
+					<img class="large" src="http://lorempixel.com/400/400/nature/4/" />
+				</div>
+				
+				<!-- Animals photos panels -->
+				<div id="panel-animals-1">
+					<h3 class="Header">Animals photo 1</h3>
+					<a href="#panel-animals" class="Prev"></a>
+					<img class="large" src="http://lorempixel.com/400/400/animals/1/" />
+				</div>
+				
+				<div id="panel-animals-2">
+					<h3 class="Header">Animals photo 2</h3>
+					<a href="#panel-animals" class="Prev"></a>
+					<img class="large" src="http://lorempixel.com/400/400/animals/2/" />
+				</div>
+				
+				<div id="panel-animals-3">
+					<h3 class="Header">Animals photo 3</h3>
+					<a href="#panel-animals" class="Prev"></a>
+					<img class="large" src="http://lorempixel.com/400/400/animals/3/" />
+				</div>
+				
+				<div id="panel-animals-4">
+					<h3 class="Header">Animals photo 4</h3>
+					<a href="#panel-animals" class="Prev"></a>
+					<img class="large" src="http://lorempixel.com/400/400/animals/4/" />
+				</div>
+				
+				<!-- Food photos panels -->
+				<div id="panel-food-1">
+					<h3 class="Header">Food photo 1</h3>
+					<a href="#panel-food" class="Prev"></a>
+					<img class="large" src="http://lorempixel.com/400/400/food/1/" />
+				</div>
+				
+				<div id="panel-food-2">
+					<h3 class="Header">Food photo 2</h3>
+					<a href="#panel-food" class="Prev"></a>
+					<img class="large" src="http://lorempixel.com/400/400/food/2/" />
+				</div>
+				
+				<div id="panel-food-3">
+					<h3 class="Header">Food photo 3</h3>
+					<a href="#panel-food" class="Prev"></a>
+					<img class="large" src="http://lorempixel.com/400/400/food/3/" />
+				</div>
+				
+				<div id="panel-food-4">
+					<h3 class="Header">Food photo 4</h3>
+					<a href="#panel-food" class="Prev"></a>
+					<img class="large" src="http://lorempixel.com/400/400/food/4/" />
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,48 @@
+//	CSS for the counters
+
+@import "../inc/variables";
+
+em.mm-counter
+{
+	font-style: normal;
+	text-indent: 0;
+	line-height: $btnSize / 2;
+	display: block;
+	margin-top: -( $btnSize / 4 );
+	position: absolute;
+	right: 40px;
+	top: 50%;
+	
+	+ a.mm-subopen
+	{
+		padding-left: 40px;
+
+		+ a,
+		+ span
+		{
+			padding-right: 80px;
+		}
+	}
+	+ a.mm-fullsubopen
+	{
+		padding-left: 0;
+	}
+}
+
+// vertical submenu
+.mm-vertical li.mm-selected > em.mm-counter + a.mm-subopen
+{
+	+ a,
+	+ span
+	{
+		margin-right: 75px;
+	}
+}
+
+// Search
+.mm-nosubresults > em.mm-counter
+{
+	display: none;
+}
+
+@include colors_counters;

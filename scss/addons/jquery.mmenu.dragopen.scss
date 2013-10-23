@@ -1,0 +1,13 @@
+//	CSS for dragging the page / menu
+
+@import "../inc/variables";
+
+html.mm-opened.mm-dragging
+{
+	.mm-menu,
+	.mm-page,
+	#mm-blocker
+	{
+		@include vendor-prefix( "transition-duration", 0s );
+	}
+}

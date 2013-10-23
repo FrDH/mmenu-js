@@ -1,0 +1,42 @@
+/*
+	The CSS rules in this file should force all transitions for the menu into hardware acceleration.
+	Unfortunately, this is really buggy in different browsers.
+	Use with caution and test thoroughly!
+*/
+@import "../inc/variables";
+
+html.mm-accelerated
+{
+	&.mm-opened
+	{
+		.mm-page,
+		#mm-blocker,
+		.mm-menu.mm-front,
+		.mm-menu.mm-next
+		{
+			@include vendor-prefix( "transform", translate3d( 0, 0, 0px ) );
+		}
+		&.mm-opening
+		{
+			.mm-page,
+			#mm-blocker,
+			.mm-menu.mm-front,
+			.mm-menu.mm-next
+			{
+				@include vendor-prefix( "transform", translate3d( 0, 0, 1px ) );
+			}
+		}
+	}
+	.mm-menu.mm-horizontal .mm-panel
+	{
+		@include vendor-prefix( "transform", translate3d( 0, 0, 0px ) );
+		&.mm-opened
+		{
+			@include vendor-prefix( "transform", translate3d( 0, 0, 1px ) );
+			&.mm-subopened
+			{
+				@include vendor-prefix( "transform", translate3d( 0, 0, 2px ) );
+			}
+		}
+	}
+}

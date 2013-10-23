@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+		<meta name="author" content="www.frebsite.nl" />
+		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+
+		<title>jQuery.mmenu - Examples</title>
+
+		<link type="text/css" rel="stylesheet" href="demo.css" />
+		<link type="text/css" rel="stylesheet" href="../source/jquery.mmenu.css" />
+		
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script type="text/javascript" src="../source/jquery.mmenu.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$('nav#menu').mmenu({
+					slidingSubmenus: false
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="page">
+			<div id="header">
+				<a href="#menu"></a>
+				Examples
+			</div>
+			<div id="content">
+				<p>This is the <strong>vertical submenus example</strong> demo page.<br />
+					Click the menu-button in the header to open the menu.</p>
+
+				<p>One of the menu-items has a submenu and a sub-submenu. All submenus will expand below their parent item.</p>
+			</div>
+			<nav id="menu">
+				<ul>
+					<li><a href="index.html">Introduction</a></li>
+					<li><a href="horizontal-submenus.html">Horizontal submenus example</a></li>
+					<li class="Selected">
+						<a href="vertical-submenus.html">Vertical submenus example</a>
+						<ul>
+							<li><a href="#">First sub-item</a></li>
+							<li>
+								<a href="#">Second sub-item</a>
+								<ul>
+									<li><a href="#">First sub-sub-item</a></li>
+									<li><a href="#">Second sub-sub-item</a></li>
+									<li><a href="#">Third sub-sub-item</a></li>
+								</ul>
+							</li>
+							<li><a href="#">Third sub-item</a></li>
+						</ul>
+					</li>
+					<li><a href="photos.html">Photos in sliding panels</a></li>
+					<li><a href="positions.html">Positioning the menu</a></li>
+					<li><a href="colors.html">Coloring the menu</a></li>
+					<li><a href="advanced.html">Advanced example</a></li>
+					<li><a href="onepage.html">One page scrolling example</a></li>
+					<li><a href="jqmobile/index.html">jQuery Mobile example</a></li>
+				</ul>
+			</nav>
+		</div>
+	</body>
+</html>

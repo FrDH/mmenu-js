@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+		<meta name="author" content="www.frebsite.nl" />
+		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+
+		<title>jQuery.mmenu - Examples</title>
+
+		<link type="text/css" rel="stylesheet" href="demo.css" />
+		<link type="text/css" rel="stylesheet" href="../source/jquery.mmenu.css" />
+		<link type="text/css" rel="stylesheet" href="../source/extensions/jquery.mmenu.themes.css" />
+		<style type="text/css">
+			#themes a
+			{
+				border-top: 1px solid #ccc;
+				text-decoration: none;
+				display: block;
+				padding: 10px 20px 10px 55px;
+				margin: 0 -20px;
+				position: relative;
+			}
+			#themes a:first-child
+			{
+				border-top: none;
+			}
+			#themes a:before
+			{
+				content: '';
+				border: 1px solid #111;
+				vertical-align: middle;
+				display: inline-block;
+				width: 20px;
+				height: 20px;
+				position: absolute;
+				top: 10px;
+				left: 20px;
+			}
+			#themes a.dark:before
+			{
+				background: #333;
+			}
+			#themes a.light:before
+			{
+				background: #f3f3f3;
+			}
+			#themes a.army:before,
+			html.army .mm-menu
+			{
+				background: #332;
+			}
+			#themes a.navy:before,
+			html.navy .mm-menu
+			{
+				background: #323849;
+			}
+			#themes a.bordeau:before,
+			html.bordeau .mm-menu
+			{
+				background: #422;
+			}
+		</style>
+		
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script type="text/javascript" src="../source/jquery.mmenu.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var $menu = $('nav#menu'),
+					$html = $('html');
+
+				$('#themes a').click(function() {
+					$menu[ this.className == 'light' ? 'addClass' : 'removeClass' ]( 'mm-light' );
+					$html.removeAttr( 'class' );
+					$html.addClass( this.className == 'light' ? 'mm-light' : this.className );
+				});
+
+				$menu.mmenu();
+			});
+		</script>
+	</head>
+	<body>
+		<div id="page">
+			<div id="header">
+				<a href="#menu"></a>
+				Examples
+			</div>
+			<div id="content">
+				<p>This is the <strong>colors example</strong> demo page.<br />
+					Click the menu-button in the header to open the menu.</p>
+
+				<p>Changing the colors of a menu is a easy as changing its background-color, litterally.<br />
+					Check it out:</p>
+
+				<div id="themes">
+					<a href="#menu" class="dark">Dark theme <small>(default)</small></a>
+					<a href="#menu" class="light">Light theme</a>
+					<a href="#menu" class="army">Army <small>(dark theme with custom background)</small></a>
+					<a href="#menu" class="navy">Navy <small>(dark theme with custom background)</small></a>
+					<a href="#menu" class="bordeau">Bordeau <small>(dark theme with custom background)</small></a>
+				</div>
+			</div>
+			<nav id="menu">
+				<ul>
+					<li><a href="index.html">Introduction</a></li>
+					<li><a href="horizontal-submenus.html">Horizontal submenus example</a></li>
+					<li><a href="vertical-submenus.html">Vertical submenus example</a></li>
+					<li><a href="photos.html">Photos in sliding panels</a></li>
+					<li><a href="positions.html">Positioning the menu</a></li>
+					<li class="Selected"><a href="colors.html">Coloring the menu</a></li>
+					<li><a href="advanced.html">Advanced example</a></li>
+					<li><a href="onepage.html">One page scrolling example</a></li>
+					<li><a href="jqmobile/index.html">jQuery Mobile example</a></li>
+				</ul>
+			</nav>
+		</div>
+	</body>
+</html>
