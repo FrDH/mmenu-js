@@ -2,18 +2,12 @@ html.mm-opened .mm-page,
 html.mm-opened #mm-blocker,
 html.mm-opened .mm-fixed-top,
 html.mm-opened .mm-fixed-bottom,
-.mm-menu.mm-horizontal > .mm-panel {
+html.mm-opened .mm-menu.mm-horizontal > .mm-panel {
   -webkit-transition: none 0.4s ease;
   -moz-transition: none 0.4s ease;
   -ms-transition: none 0.4s ease;
   -o-transition: none 0.4s ease;
-  transition: none 0.4s ease; }
-
-html.mm-opened .mm-page,
-html.mm-opened #mm-blocker,
-html.mm-opened .mm-fixed-top,
-html.mm-opened .mm-fixed-bottom,
-html.mm-opened .mm-menu.mm-horizontal > .mm-panel {
+  transition: none 0.4s ease;
   -webkit-transition-property: top, right, bottom, left, border, -webkit-transform;
   -moz-transition-property: top, right, bottom, left, border, -moz-transform;
   -ms-transition-property: top, right, bottom, left, border, -ms-transform;
@@ -25,7 +19,6 @@ html.mm-opened #mm-blocker {
   top: 0;
   margin: 0;
   border: 0px solid rgba(0, 0, 0, 0); }
-
 html.mm-opened.mm-opening .mm-page,
 html.mm-opened.mm-opening #mm-blocker {
   border: 0px solid rgba(100, 100, 100, 0); }
@@ -55,9 +48,7 @@ html.mm-opened .mm-page,
 html.mm-opened,
 html.mm-opened body {
   width: 100%;
-  height: 100%; }
-
-html.mm-opened body {
+  height: 100%;
   overflow: hidden;
   position: relative; }
 
@@ -118,10 +109,10 @@ html.mm-blocking #mm-blocker {
       display: block;
       visibility: hidden; }
 
-.mm-menu > .mm-list {
-  padding: 20px 0 40px 0; }
 .mm-menu .mm-list {
   padding: 20px 0; }
+.mm-menu > .mm-list {
+  padding: 20px 0 40px 0; }
 
 .mm-panel > .mm-list {
   margin-left: -20px;
@@ -191,23 +182,20 @@ html.mm-blocking #mm-blocker {
     width: 100%; }
     .mm-list a.mm-subopen.mm-fullsubopen:before {
       border-left: none; }
-.mm-list a.mm-subclose {
-  text-indent: 20px;
-  padding-top: 30px;
-  margin-top: -20px; }
-.mm-list a.mm-subopen + a,
-.mm-list a.mm-subopen + span {
-  padding-right: 45px; }
-.mm-list > li.mm-selected > a.mm-subopen {
-  background: transparent; }
-  .mm-list > li.mm-selected > a.mm-subopen + a,
-  .mm-list > li.mm-selected > a.mm-subopen + span {
+  .mm-list a.mm-subopen + a,
+  .mm-list a.mm-subopen + span {
     padding-right: 5px;
     margin-right: 40px; }
+.mm-list > li.mm-selected > a.mm-subopen {
+  background: transparent; }
 .mm-list > li.mm-selected > a.mm-fullsubopen + a,
 .mm-list > li.mm-selected > a.mm-fullsubopen + span {
   padding-right: 45px;
   margin-right: 0; }
+.mm-list a.mm-subclose {
+  text-indent: 20px;
+  padding-top: 30px;
+  margin-top: -20px; }
 .mm-list > li.mm-label {
   font-size: 10px;
   text-transform: uppercase;
@@ -273,7 +261,7 @@ html.mm-opened .mm-page {
     border-color: rgba(255, 255, 255, 0.3); }
   .mm-menu .mm-list > li > a.mm-subopen:before {
     border-color: rgba(0, 0, 0, 0.15); }
-  .mm-menu .mm-list > li.mm-selected > a,
+  .mm-menu .mm-list > li.mm-selected > a:not(.mm-subopen),
   .mm-menu .mm-list > li.mm-selected > span {
     background: rgba(0, 0, 0, 0.1); }
   .mm-menu .mm-list li.mm-label {
@@ -981,7 +969,7 @@ html.mm-opened.mm-light .mm-page {
     border-color: rgba(0, 0, 0, 0.3); }
   .mm-menu.mm-light .mm-list > li > a.mm-subopen:before {
     border-color: rgba(0, 0, 0, 0.1); }
-  .mm-menu.mm-light .mm-list > li.mm-selected > a,
+  .mm-menu.mm-light .mm-list > li.mm-selected > a:not(.mm-subopen),
   .mm-menu.mm-light .mm-list > li.mm-selected > span {
     background: rgba(255, 255, 255, 0.6); }
   .mm-menu.mm-light .mm-list li.mm-label {
@@ -1022,7 +1010,7 @@ html.mm-opened.mm-white .mm-page {
     border-color: rgba(0, 0, 0, 0.3); }
   .mm-menu.mm-white .mm-list > li > a.mm-subopen:before {
     border-color: rgba(0, 0, 0, 0.1); }
-  .mm-menu.mm-white .mm-list > li.mm-selected > a,
+  .mm-menu.mm-white .mm-list > li.mm-selected > a:not(.mm-subopen),
   .mm-menu.mm-white .mm-list > li.mm-selected > span {
     background: rgba(0, 0, 0, 0.08); }
   .mm-menu.mm-white .mm-list li.mm-label {
@@ -1063,7 +1051,7 @@ html.mm-opened.mm-black .mm-page {
     border-color: rgba(255, 255, 255, 0.3); }
   .mm-menu.mm-black .mm-list > li > a.mm-subopen:before {
     border-color: rgba(255, 255, 255, 0.2); }
-  .mm-menu.mm-black .mm-list > li.mm-selected > a,
+  .mm-menu.mm-black .mm-list > li.mm-selected > a:not(.mm-subopen),
   .mm-menu.mm-black .mm-list > li.mm-selected > span {
     background: rgba(255, 255, 255, 0.25); }
   .mm-menu.mm-black .mm-list li.mm-label {

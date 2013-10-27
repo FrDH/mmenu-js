@@ -1,0 +1,20 @@
+{
+	"name": "mmenu",
+	"version": "4.0.3",
+	"title": "jQuery mmenu",
+	"homepage": "http://mmenu.frebsite.nl",
+	"author": {
+		"name": "Fred Heusschen",
+		"url": "http://www.frebsite.nl"
+	},
+	"licenses": [{
+		"type": "MIT",
+		"url": "http://opensource.org/licenses/MIT"
+	}, {
+		"type": "GPL-3.0",
+		"url": "http://opensource.org/licenses/GPL-3.0"
+	}],
+	"dependencies": {
+		"jquery": ">=1.7.0"
+	}
+}
