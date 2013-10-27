@@ -2,6 +2,7 @@
 	"name": "mmenu",
 	"version": "4.0.3",
 	"title": "jQuery mmenu",
+	"description": "Create slick app look-alike sliding menus for your mobile website",
 	"homepage": "http://mmenu.frebsite.nl",
 	"author": {
 		"name": "Fred Heusschen",
