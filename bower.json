@@ -1,0 +1,20 @@
+{
+  "name": "jQuery.mmenu",
+  "main": "source/jquery.mmenu.js",
+  "version": "4.0.3",
+  "homepage": "http://mmenu.frebsite.nl/",
+  "authors": [
+    "Fred Heusschen <info@frebsite.nl>"
+  ],
+  "description": "Create slick app look-alike sliding menus for your mobile website",
+  "keywords": [
+    "mmenu",
+    "menu",
+    "mobile",
+    "panels",
+    "app"
+  ],
+  "dependencies": {
+    "jquery": ">= 1.7.0"
+  }
+}
