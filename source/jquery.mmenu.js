@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.0.2
+ * jQuery mmenu v4.0.3
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -16,7 +16,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.0.2';
+		_VERSION_	= '4.0.3';
 
 
 	//	Plugin already excists
@@ -473,8 +473,8 @@
 			//	Add Panel class
 			this.$menu
 				.children()
-				.filter( this.conf.panelNodeType )
-				.add( this.$menu.find( 'ul.' + _c.list ).children().children().filter( this.conf.panelNodeType ) )
+				.filter( this.conf.panelNodetype )
+				.add( this.$menu.find( 'ul.' + _c.list ).children().children().filter( this.conf.panelNodetype ) )
 				.addClass( _c.panel );
 
 			var $panels = $('.' + _c.panel, this.$menu);
@@ -735,7 +735,7 @@
 		selectedClass		: 'Selected',
 		labelClass			: 'Label',
 		pageNodetype		: 'div',
-		panelNodeType		: 'ul, div',
+		panelNodetype		: 'ul, div',
 		transitionDuration	: 400
 	};
 
@@ -842,7 +842,7 @@
 			if ( typeof o.isMenu != 'boolean' )
 			{
 				var $c = $m.children();
-				o.isMenu = ( $c.length == 1 && $c.is( c.panelNodeType ) );
+				o.isMenu = ( $c.length == 1 && $c.is( c.panelNodetype ) );
 			}
 			return o;
 		}
@@ -853,6 +853,7 @@
 		{
 			o.onClick = {};
 		}
+
 
 		//	DEPRECATED
 		if ( typeof o.onClick.setLocationHref != 'undefined' )
@@ -900,6 +901,16 @@
 		{
 			c = {};
 		}
+
+
+		//	DEPRECATED
+		if ( typeof c.panelNodeType != 'undefined' )
+		{
+			$[ _PLUGIN_ ].deprecated( 'panelNodeType configuration option', 'panelNodetype' );
+			c.panelNodetype = c.panelNodeType;
+		}
+		//	/DEPRECATED
+
 
 		c = $.extend( true, {}, $[ _PLUGIN_ ].configuration, c )
 

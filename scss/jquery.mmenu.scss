@@ -2,15 +2,6 @@
 
 
 //	Animations
-html.mm-opened .mm-page,
-html.mm-opened #mm-blocker,
-html.mm-opened .mm-fixed-top,
-html.mm-opened .mm-fixed-bottom,
-.mm-menu.mm-horizontal > .mm-panel
-{
-	@include vendor-prefix( "transition", none $transitionDuration $transitionFunction );
-}
-
 html.mm-opened
 {
 	.mm-page,
@@ -19,6 +10,8 @@ html.mm-opened
 	.mm-fixed-bottom,
 	.mm-menu.mm-horizontal > .mm-panel
 	{
+		@include vendor-prefix( "transition", none $transitionDuration $transitionFunction );
+
 		// border is needed to force transitionend event even if no other value changed
 		// transform is needed to force hardware acceleration
 		-webkit-transition-property: top, right, bottom, left, border, -webkit-transform;
@@ -35,13 +28,14 @@ html.mm-opened
 		margin: 0;
 		border: 0px solid rgba( 0, 0, 0, 0 );
 	}
-}
-html.mm-opened.mm-opening
-{
-	.mm-page,
-	#mm-blocker
+	
+	&.mm-opening
 	{
-		border: 0px solid rgba( 100, 100, 100, 0 );
+		.mm-page,
+		#mm-blocker
+		{
+			border: 0px solid rgba( 100, 100, 100, 0 );
+		}
 	}
 }
 
@@ -81,9 +75,6 @@ html.mm-opened body
 {
 	width: 100%;
 	height: 100%;
-}
-html.mm-opened body
-{
 	overflow: hidden;
 	position: relative;
 }
@@ -172,13 +163,13 @@ html.mm-blocking #mm-blocker
 //	Lists
 .mm-menu
 {
-	> .mm-list
-	{
-		padding: ( $btnSize / 2 ) 0 $btnSize 0;
-	}
 	.mm-list
 	{
 		padding: ( $btnSize / 2 ) 0;
+	}
+	> .mm-list
+	{
+		padding: ( $btnSize / 2 ) 0 $btnSize 0;
 	}
 }
 .mm-panel > .mm-list
@@ -212,7 +203,6 @@ html.mm-blocking #mm-blocker
 		text-decoration: none;
 	}
 
-	// ul/li
 	> li
 	{
 		position: relative;
@@ -263,18 +253,13 @@ html.mm-blocking #mm-blocker
 				border-left: none;
 			}
 		}
-	}
-	a.mm-subclose
-	{
-		text-indent: $btnSize - ( $padding * 2 );
-		padding-top: ( $btnSize / 2 ) + $padding;
-		margin-top: -( $btnSize / 2 );
-	}
 
-	a.mm-subopen + a,
-	a.mm-subopen + span
-	{
-		padding-right: $btnSize + ( $padding / 2 );
+		+ a,
+		+ span
+		{
+			padding-right: ( $padding / 2 );
+			margin-right: $btnSize;
+		}
 	}
 
 	> li.mm-selected
@@ -282,13 +267,6 @@ html.mm-blocking #mm-blocker
 		> a.mm-subopen
 		{
 			background: transparent;
-	
-			+ a,
-			+ span
-			{
-				padding-right: ( $padding / 2 );
-				margin-right: $btnSize;
-			}
 		}
 		> a.mm-fullsubopen
 		{
@@ -299,6 +277,13 @@ html.mm-blocking #mm-blocker
 				margin-right: 0;
 			}
 		}
+	}
+	
+	a.mm-subclose
+	{
+		text-indent: $btnSize - ( $padding * 2 );
+		padding-top: ( $btnSize / 2 ) + $padding;
+		margin-top: -( $btnSize / 2 );
 	}
 
 	// Labels
@@ -330,9 +315,9 @@ html.mm-blocking #mm-blocker
 }
 
 // vertical submenu
-.mm-menu.mm-vertical
+.mm-menu.mm-vertical .mm-list
 {
-	.mm-list .mm-panel
+	.mm-panel
 	{
 		display: none;
 		padding: $padding 0 $padding $padding;
@@ -342,11 +327,11 @@ html.mm-blocking #mm-blocker
 			border-color: transparent;
 		}
 	}
-	.mm-list li.mm-opened > .mm-panel
+	li.mm-opened > .mm-panel
 	{
 		display: block;
 	}
-	.mm-list > li.mm-opened > a.mm-subopen
+	> li.mm-opened > a.mm-subopen
 	{
 		height: $btnSize;
 		&:after

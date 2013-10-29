@@ -45,7 +45,7 @@
 			}
 			> li.mm-selected
 			{
-				> a,
+				> a:not(.mm-subopen),
 				> span
 				{
 					background: $emphasizedBg;
