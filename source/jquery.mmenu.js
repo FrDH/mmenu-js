@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.0.3
+ * jQuery mmenu v4.0.4
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -16,7 +16,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.0.3';
+		_VERSION_	= '4.0.4';
 
 
 	//	Plugin already excists
@@ -193,7 +193,7 @@
 
 					glbl.$wndw
 						.off( _e.resize )
-						.off( _e.scroll );
+						.off( _e.keydown );
 
 					//	Restore style and position
 					glbl.$page.attr( 'style', glbl.$page.data( _d.style ) );
@@ -211,7 +211,6 @@
 
 			//	Closing
 			glbl.$html.removeClass( _c.opening );
-			glbl.$wndw.off( _e.keydown );
 			this.$menu.trigger( _e.closing );
 	
 			return 'close';
@@ -266,7 +265,7 @@
 							e.stopImmediatePropagation();
 							return false;
 						}
-						return that.open( $(this), that.opts, that.conf );
+						return that.open();
 					}
 				)
 				.on( _e.close,
@@ -277,7 +276,7 @@
 							e.stopImmediatePropagation();
 							return false;
 						}
-						return that.close( $(this), that.opts, that.conf );
+						return that.close();
 					}
 				)
 				.on( _e.setPage,
@@ -289,7 +288,7 @@
 				);
 
 			//	Panel-events
-			var $panels = this.$menu.find( this.opts.isMenu && this.direction != 'horizontal' ? 'ul' : '.' + _c.panel );
+			var $panels = this.$menu.find( this.opts.isMenu && this.direction != 'horizontal' ? 'ul, ol' : '.' + _c.panel );
 			$panels
 				.off( _e.toggle + ' ' + _e.open + ' ' + _e.close )
 				.on( _e.toggle + ' ' + _e.open + ' ' + _e.close,
@@ -429,17 +428,17 @@
 
 
 			//	Refactor List class
-			this.__refactorClass( $('ul.' + this.conf.listClass, this.$menu), 'list' );
+			this.__refactorClass( $('.' + this.conf.listClass, this.$menu), 'list' );
 
 			//	Add List class
 			if ( this.opts.isMenu )
 			{
-				$('ul', this.$menu)
+				$('ul, ol', this.$menu)
 					.not( '.mm-nolist' )
 					.addClass( _c.list );
 			}
 
-			var $lis = $('ul.' + _c.list + ' > li', this.$menu);
+			var $lis = $('.' + _c.list + ' > li', this.$menu);
 
 			//	Refactor Selected class
 			this.__refactorClass( $lis.filter( '.' + this.conf.selectedClass ), 'selected' );
@@ -474,7 +473,7 @@
 			this.$menu
 				.children()
 				.filter( this.conf.panelNodetype )
-				.add( this.$menu.find( 'ul.' + _c.list ).children().children().filter( this.conf.panelNodetype ) )
+				.add( this.$menu.find( '.' + _c.list ).children().children().filter( this.conf.panelNodetype ) )
 				.addClass( _c.panel );
 
 			var $panels = $('.' + _c.panel, this.$menu);
@@ -498,14 +497,14 @@
 					function( i )
 					{
 						var $t = $(this),
-							$u = $t.is( 'ul' ) ? $t : $t.find( 'ul' ).first(),
+							$u = $t.is( 'ul, ol' ) ? $t : $t.find( 'ul ,ol' ).first(),
 							$l = $t.parent(),
 							$a = $l.find( '> a, > span' ),
 							$p = $l.closest( '.' + _c.panel );
 
 						$t.data( _d.parent, $l );
 
-						if ( $l.parent().is( 'ul.' + _c.list ) )
+						if ( $l.parent().is( '.' + _c.list ) )
 						{
 							var $btn = $( '<a class="' + _c.subopen + '" href="#' + $t.attr( 'id' ) + '" />' ).insertBefore( $a );
 							if ( !$a.is( 'a' ) )
@@ -541,7 +540,7 @@
 			if ( this.direction == 'horizontal' )
 			{
 				//	Add opened-classes
-				var $selected = $('ul.' + _c.list + ' > li.' + _c.selected, this.$menu);
+				var $selected = $('.' + _c.list + ' > li.' + _c.selected, this.$menu);
 				$selected
 					.add( $selected.parents( 'li' ) )
 					.parents( 'li' ).removeClass( _c.selected )
@@ -590,7 +589,7 @@
 		{
 			var that = this;
 	
-			var $a = $('ul.' + _c.list + ' > li > a', this.$menu)
+			var $a = $('.' + _c.list + ' > li > a', this.$menu)
 				.not( '.' + _c.subopen )
 				.not( '.' + _c.subclose )
 //				.not( '[href^="#"]' )
@@ -735,7 +734,7 @@
 		selectedClass		: 'Selected',
 		labelClass			: 'Label',
 		pageNodetype		: 'div',
-		panelNodetype		: 'ul, div',
+		panelNodetype		: 'ul, ol, div',
 		transitionDuration	: 400
 	};
 
