@@ -8,7 +8,7 @@
 		<title>jQuery.mmenu - Examples</title>
 
 		<link type="text/css" rel="stylesheet" href="demo.css" />
-		<link type="text/css" rel="stylesheet" href="../source/jquery.mmenu.all.css" />
+		<link type="text/css" rel="stylesheet" href="../src/css/jquery.mmenu.all.css" />
 		<style type="text/css">
 			.mm-menu li.img a
 			{
@@ -26,7 +26,12 @@
 		</style>
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-		<script type="text/javascript" src="../source/jquery.mmenu.min.all.js"></script>
+<!-- 		<script type="text/javascript" src="../source/jquery.mmenu.min.all.js"></script> -->
+		<script type="text/javascript" src="../src/js/jquery.mmenu.js"></script>
+		<script type="text/javascript" src="../src/js/addons/jquery.mmenu.searchfield.js"></script>
+		<script type="text/javascript" src="../src/js/addons/jquery.mmenu.header.js"></script>
+		<script type="text/javascript" src="../src/js/addons/jquery.mmenu.labels.js"></script>
+		<script type="text/javascript" src="../src/js/addons/jquery.mmenu.counters.js"></script>
 		<script type="text/javascript">
 
 			//	The menu on the left
@@ -45,10 +50,13 @@
 					classes		: 'mm-light',
 					counters	: true,
 					searchfield	: true,
+					labels		: {
+						fixed		: true
+					},
 					header		: {
 						add			: true,
 						update		: true,
-						title		: 'Contacts' 
+						title		: 'Contacts'
 					}
 				});
 
@@ -108,7 +116,7 @@
 									<small>Johnson</small>
 								</a>
 							</li>
-							<li class="img">
+							<li class="img Collapsed">
 								<a href="#">
 									<img src="http://lorempixel.com/50/50/people/2/" />
 									Alexander<br />
@@ -117,7 +125,7 @@
 							</li>
 
 							<li class="Label">F</li>
-							<li class="img">
+							<li class="img Collapsed">
 								<a href="#">
 									<img src="http://lorempixel.com/50/50/people/3/" />
 									Fred<br />
@@ -126,7 +134,7 @@
 							</li>
 
 							<li class="Label">J</li>
-							<li class="img">
+							<li class="img Collapsed">
 								<a href="#">
 									<img src="http://lorempixel.com/50/50/people/4/" />
 									James<br />

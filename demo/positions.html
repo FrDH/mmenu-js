@@ -8,12 +8,11 @@
 		<title>jQuery.mmenu - Examples</title>
 
 		<link type="text/css" rel="stylesheet" href="demo.css" />
-		<link type="text/css" rel="stylesheet" href="../source/jquery.mmenu.css" />
-		<link type="text/css" rel="stylesheet" href="../source/extensions/jquery.mmenu.positioning.css" />
+		<link type="text/css" rel="stylesheet" href="../src/css/jquery.mmenu.css" />
+		<link type="text/css" rel="stylesheet" href="../src/css/extensions/jquery.mmenu.positioning.css" />
 		
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-		<script type="text/javascript" src="../source/jquery.mmenu.js"></script>
-		<script type="text/javascript" src="../source/addons/jquery.mmenu.dragOpen.js"></script>
+		<script type="text/javascript" src="../src/js/jquery.mmenu.js"></script>
 		<script type="text/javascript">
 			$(function() {
 
@@ -25,6 +24,8 @@
 					$both	= $html.add( $menu );
 
 				$menu.mmenu();
+
+				//	Add the position-classnames onChange
 				$('input[name="pos"]').change(function() {
 					$both.removeClass( pos ).addClass( 'mm-' + this.value );
 				});
