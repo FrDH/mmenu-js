@@ -42,8 +42,7 @@
 		if ( typeof opts == 'boolean' )
 		{
 			opts = {
-				fixed	: opts,
-				expand	: opts
+				collapse: opts
 			};
 		}
 		if ( typeof opts != 'object' )
