@@ -16,7 +16,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.0.4';
+		_VERSION_	= '4.1.0';
 
 
 	//	Plugin already excists
