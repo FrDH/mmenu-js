@@ -1,6 +1,6 @@
 {
   "name": "jQuery.mmenu",
-  "main": "source/jquery.mmenu.js",
+  "main": "src/js/jquery.mmenu.js",
   "version": "4.1.0",
   "homepage": "http://mmenu.frebsite.nl/",
   "authors": [

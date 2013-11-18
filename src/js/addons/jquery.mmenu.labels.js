@@ -30,7 +30,7 @@
 
 		_c.add( 'collapsed' );
 
-		_c.add( 'fixed fixedlabels original clone' );
+		_c.add( 'fixedlabels original clone' );
 		_e.add( 'updatelabels position scroll' );
 		if ( $[ _PLUGIN_ ].support.touch )
 		{
