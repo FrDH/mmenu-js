@@ -10,17 +10,17 @@ em.mm-counter
 	display: block;
 	margin-top: -( $btnSize / 4 );
 	position: absolute;
-	right: 40px;
+	right: $btnSize;
 	top: 50%;
 
 	+ a.mm-subopen
 	{
-		padding-left: 40px;
+		padding-left: $btnSize;
 
 		+ a,
 		+ span
 		{
-			padding-right: 80px;
+			margin-right: $btnSize * 2;
 		}
 	}
 	+ a.mm-fullsubopen
@@ -36,14 +36,6 @@ em.mm-counter
 	{
 		top: ( $btnSize / 4 ) + 2;
 		margin-top: 0;
-	}
-	li.mm-selected > em.mm-counter + a.mm-subopen
-	{
-		+ a,
-		+ span
-		{
-			margin-right: 75px;
-		}
 	}
 }
 

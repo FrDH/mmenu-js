@@ -11,16 +11,13 @@ em.mm-counter {
     padding-left: 40px; }
     em.mm-counter + a.mm-subopen + a,
     em.mm-counter + a.mm-subopen + span {
-      padding-right: 80px; }
+      margin-right: 80px; }
   em.mm-counter + a.mm-fullsubopen {
     padding-left: 0; }
 
 .mm-vertical em.mm-counter {
   top: 12px;
   margin-top: 0; }
-.mm-vertical li.mm-selected > em.mm-counter + a.mm-subopen + a,
-.mm-vertical li.mm-selected > em.mm-counter + a.mm-subopen + span {
-  margin-right: 75px; }
 
 .mm-nosubresults > em.mm-counter {
   display: none; }
