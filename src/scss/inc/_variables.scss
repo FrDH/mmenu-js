@@ -1,13 +1,13 @@
 //	The size of the buttons
-$btnSize: 40px;
-$padding: 10px;
-$fontSize: 14px;
+$btnSize: 40px !default;
+$padding: 10px !default;
+$fontSize: 14px !default;
 
 //	Animations
-$transitionDuration: 0.4s;
-$transitionFunction: ease;
+$transitionDuration: 0.4s !default;
+$transitionFunction: ease !default;
 
-$subOffset: 40%;
+$subOffset: 40% !default;
 
 
 @import "sizing";
@@ -65,7 +65,7 @@ $subOffset: 40%;
 	#{$prop}: $val;
 }
 @mixin ellipsis
-{	
+{
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
