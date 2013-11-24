@@ -1,11 +1,11 @@
 //	Variables
-$defaultWidth		: 0.8;
-$defaultMinWidth	: 140px;
-$defaultMaxWidth	: 440px;
+$defaultWidth		: 0.8 !default;
+$defaultMinWidth	: 140px !default;
+$defaultMaxWidth	: 440px !default;
 
-$defaultHeight		: 0.8;
-$defaultMinHeight	: 140px;
-$defaultMaxHeight	: 880px;
+$defaultHeight		: 0.8 !default;
+$defaultMinHeight	: 140px !default;
+$defaultMaxHeight	: 880px !default;
 
 //	Sizing left
 @mixin sizing( $cls: "",
@@ -121,7 +121,7 @@ $defaultMaxHeight	: 880px;
 			}
 		}
 	}
-	
+
 	// right
 	.mm-menu.mm-right#{$cls}
 	{
@@ -169,7 +169,7 @@ $defaultMaxHeight	: 880px;
 			}
 		}
 	}
-	
+
 	// bottom
 	.mm-menu.mm-bottom#{$cls}
 	{
@@ -262,7 +262,7 @@ $defaultMaxHeight	: 880px;
 			}
 		}
 	}
-	
+
 	// top
 	.mm-menu.mm-top#{$cls}
 	{
@@ -292,7 +292,7 @@ $defaultMaxHeight	: 880px;
 			}
 		}
 	}
-	
+
 	// right
 	.mm-menu.mm-right#{$cls}
 	{
@@ -322,7 +322,7 @@ $defaultMaxHeight	: 880px;
 			}
 		}
 	}
-	
+
 	// bottom
 	.mm-menu.mm-bottom#{$cls}
 	{
