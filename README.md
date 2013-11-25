@@ -25,3 +25,8 @@ Demo's and documentation: http://mmenu.frebsite.nl
 + [Configuration options](http://mmenu.frebsite.nl/options.php)
 + [Custom events](http://mmenu.frebsite.nl/events.php)
 + [Custumize the menu](http://mmenu.frebsite.nl/customize.php)
+
+### Licence
+The jQuery.mmenu plugin is dual licensed under the MIT and GPL licenses:
++ http://en.wikipedia.org/wiki/MIT_License
++ http://en.wikipedia.org/wiki/GNU_General_Public_License
