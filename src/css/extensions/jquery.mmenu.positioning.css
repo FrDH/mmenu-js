@@ -1,3 +1,6 @@
+/*
+	jQuery.mmenu position extension CSS
+*/
 .mm-menu.mm-top {
   width: 100%; }
 
@@ -132,6 +135,9 @@ html.mm-bottom.mm-opened.mm-opening .mm-fixed-top {
     bottom: 880px; }
   html.mm-bottom.mm-opened.mm-opening .mm-fixed-top {
     top: -880px; } }
+/*
+	jQuery.mmenu z-position extension CSS
+*/
 html.mm-front.mm-opened .mm-page {
   top: 0 !important;
   right: 0 !important;

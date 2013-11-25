@@ -1,3 +1,6 @@
+/*
+	jQuery.mmenu CSS
+*/
 html.mm-opened .mm-page,
 html.mm-opened #mm-blocker,
 html.mm-opened .mm-fixed-top,
@@ -331,6 +334,9 @@ html.mm-nooverflowscrolling.mm-opened {
     html.mm-nooverflowscrolling.mm-opened > .mm-panel.mm-current {
       display: block; }
 
+/*
+	jQuery.mmenu counters addon CSS
+*/
 em.mm-counter {
   font-style: normal;
   text-indent: 0;
@@ -358,6 +364,9 @@ em.mm-counter {
 .mm-menu em.mm-counter {
   color: rgba(255, 255, 255, 0.3); }
 
+/*
+	jQuery.mmenu dragOpen addon CSS
+*/
 html.mm-opened.mm-dragging .mm-menu,
 html.mm-opened.mm-dragging .mm-page,
 html.mm-opened.mm-dragging #mm-blocker {
@@ -367,6 +376,9 @@ html.mm-opened.mm-dragging #mm-blocker {
   -o-transition-duration: 0s;
   transition-duration: 0s; }
 
+/*
+	jQuery.mmenu header addon CSS
+*/
 .mm-header {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -463,6 +475,9 @@ html.mm-opened.mm-dragging #mm-blocker {
   .mm-menu .mm-header a:before {
     border-color: rgba(255, 255, 255, 0.3); }
 
+/*
+	jQuery.mmenu labels addon CSS
+*/
 .mm-list > li.mm-label * {
   font: inherit; }
 
@@ -505,6 +520,9 @@ html.mm-opened.mm-dragging #mm-blocker {
 .mm-menu .mm-list li.mm-label > div > div {
   background: rgba(255, 255, 255, 0.05); }
 
+/*
+	jQuery.mmenu searchfield addon CSS
+*/
 .mm-search,
 .mm-search input {
   -webkit-box-sizing: border-box;
@@ -559,6 +577,9 @@ html.mm-opened.mm-dragging #mm-blocker {
 .mm-menu li.mm-noresults {
   color: rgba(255, 255, 255, 0.3); }
 
+/*
+	jQuery.mmenu effects extension CSS
+*/
 html.mm-slide .mm-menu {
   -webkit-transition: -webkit-transform 0.4s ease;
   -moz-transition: -moz-transform 0.4s ease;
@@ -747,6 +768,9 @@ html.mm-zoom-panels .mm-panel {
       -o-transform: scale(0.7, 0.7);
       transform: scale(0.7, 0.7); }
 
+/*
+	jQuery.mmenu fullscreen extension CSS
+*/
 html.mm-opened.mm-opening.mm-fullscreen .mm-page,
 html.mm-opened.mm-opening.mm-fullscreen #mm-blocker,
 html.mm-opened.mm-opening.mm-fullscreen .mm-fixed-top,
@@ -914,6 +938,9 @@ html.mm-opened.mm-fullscreen .mm-page {
   box-shadow: none !important; }
 
 /*
+	jQuery.mmenu hardware acceleration extension CSS
+*/
+/*
 	The CSS rules in this file should force all transitions for the menu into hardware acceleration.
 	Unfortunately, this is really buggy in different browsers.
 	Use with caution and test thoroughly!
@@ -955,6 +982,9 @@ html.mm-accelerated .mm-menu.mm-horizontal .mm-panel {
       -o-transform: translate3d(0, 0, 2px);
       transform: translate3d(0, 0, 2px); }
 
+/*
+	jQuery.mmenu position extension CSS
+*/
 .mm-menu.mm-top {
   width: 100%; }
 
@@ -1089,6 +1119,9 @@ html.mm-bottom.mm-opened.mm-opening .mm-fixed-top {
     bottom: 880px; }
   html.mm-bottom.mm-opened.mm-opening .mm-fixed-top {
     top: -880px; } }
+/*
+	jQuery.mmenu z-position extension CSS
+*/
 html.mm-front.mm-opened .mm-page {
   top: 0 !important;
   right: 0 !important;
@@ -1193,6 +1226,9 @@ html.mm-opened.mm-front .mm-fixed-bottom,
 html.mm-opened.mm-opening.mm-front .mm-fixed-bottom {
   bottom: 0; }
 
+/*
+	jQuery.mmenu themes extension CSS
+*/
 html.mm-opened.mm-light .mm-page {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); }
 

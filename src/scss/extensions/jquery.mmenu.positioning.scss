@@ -1,4 +1,6 @@
-//	CSS for positions (top, right, bottom)
+/*
+	jQuery.mmenu position extension CSS
+*/
 
 @import "../inc/variables";
 
@@ -86,7 +88,9 @@ html.mm-bottom.mm-opened.mm-opening
 
 
 
-//	CSS for z-positions (front, next)
+/*
+	jQuery.mmenu z-position extension CSS
+*/
 
 // reset defaults
 html.mm-front.mm-opened .mm-page

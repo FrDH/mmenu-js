@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.1.1
+ * jQuery mmenu v4.1.2
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -16,7 +16,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.1.1';
+		_VERSION_	= '4.1.2';
 
 
 	//	Plugin already excists
@@ -83,11 +83,12 @@
 
 			//	Resize page to window width
 			var _w = 0;
-			glbl.$wndw.off( _e.resize )
+			glbl.$wndw
+				.off( _e.resize )
 				.on( _e.resize,
 					function( e, force )
 					{
-						if ( glbl.$html.hasClass( _c.opened ) || force )
+						if ( force || glbl.$html.hasClass( _c.opened ) )
 						{
 							var nw = glbl.$wndw.width();
 							if ( nw != _w )
@@ -103,7 +104,8 @@
 			//	Prevent tabbing out of the menu
 			if ( this.conf.preventTabbing )
 			{
-				glbl.$wndw.off( _e.keydown )
+				glbl.$wndw
+					.off( _e.keydown )
 					.on( _e.keydown,
 						function( e )
 						{
@@ -344,15 +346,26 @@
 				glbl.$blck = $( '<div id="' + _c.blocker + '" />' ).appendTo( glbl.$body );
 			}
 
-			click( glbl.$blck,
-				function()
-				{
-					if ( !glbl.$html.hasClass( _c.modal ) )
+			glbl.$blck
+				.off( _e.touchstart )
+				.on( _e.touchstart,
+					function( e )
 					{
-						that.$menu.trigger( _e.close );
+						e.preventDefault();
+						e.stopPropagation();
+						glbl.$blck.trigger( _e.mousedown );
 					}
-				}, true, true
-			);
+				)
+				.on( _e.mousedown,
+					function( e )
+					{
+						e.preventDefault();
+						if ( !glbl.$html.hasClass( _c.modal ) )
+						{
+							that.$menu.trigger( _e.close );
+						}
+					}
+				);
 		},
 		_initPage: function( $p )
 		{
@@ -531,12 +544,15 @@
 						var $opening = $(this),
 							id = $opening.attr( 'id' );
 
-						click( $('a[href="#' + id + '"]', that.$menu),
-							function( e )
-							{
-								$opening.trigger( evt );
-							}
-						);
+						$('a[href="#' + id + '"]', that.$menu)
+							.off( _e.click )
+							.on( _e.click,
+								function( e )
+								{
+									e.preventDefault();
+									$opening.trigger( evt );
+								}
+							);
 					}
 			);
 
@@ -592,19 +608,17 @@
 		{
 			var that = this;
 	
-			var $a = $('.' + _c.list + ' > li > a', this.$menu)
+			$('.' + _c.list + ' > li > a', this.$menu)
 				.not( '.' + _c.subopen )
 				.not( '.' + _c.subclose )
 				.not( '[rel="external"]' )
-				.not( '[target="_blank"]' );
-
-			$a.off( _e.click )
+				.not( '[target="_blank"]' )
+				.off( _e.click )
 				.on( _e.click,
 					function( e )
 					{
 						var $t = $(this),
 							href = $t.attr( 'href' );
-	
 
 						//	Set selected item
 						if ( that.__valueOrFn( that.opts.onClick.setSelected, $t ) )
@@ -617,7 +631,6 @@
 						if ( preventDefault )
 						{
 							e.preventDefault();
-							e.stopPropagation();
 						}
 
 						//	Block UI. Default: false if preventDefault, true otherwise
@@ -638,7 +651,7 @@
 		{
 			var that = this;
 
-			//	Toggle menu
+			//	Open menu
 			var id = this.$menu.attr( 'id' );
 			if ( id && id.length )
 			{
@@ -647,24 +660,30 @@
 					id = _c.umm( id );
 				}
 
-				click( $('a[href="#' + id + '"]'),
-					function()
-					{
-						that.$menu.trigger( _e.open );
-					}
-				);
+				$('a[href="#' + id + '"]')
+					.off( _e.click )
+					.on( _e.click,
+						function( e )
+						{
+							e.preventDefault();
+							that.$menu.trigger( _e.open );
+						}
+					);
 			}
 
 			//	Close menu
 			var id = glbl.$page.attr( 'id' );
 			if ( id && id.length )
 			{
-				click( $('a[href="#' + id + '"]'),
-					function()
-					{
-						that.$menu.trigger( _e.close );
-					}, false, true
-				);
+				$('a[href="#' + id + '"]')
+					.off( _e.click )
+					.on( _e.click,
+						function( e )
+						{
+							e.preventDefault();
+							that.$menu.trigger( _e.close );
+						}
+					);
 			}
 		},
 		
@@ -967,12 +986,8 @@
 
 		//	Eventnames
 		_e.mm = function( e ) { return e + '.mm'; };
-		_e.add( 'toggle open opening opened close closing closed update setPage setSelected transitionend touchstart touchend click keydown keyup resize' );
-		if ( !$[ _PLUGIN_ ].support.touch )
-		{
-			_e.touchstart	= _e.mm( 'mousedown' );
-			_e.touchend 	= _e.mm( 'mouseup' );
-		}
+		_e.add( 'toggle open opening opened close closing closed update setPage setSelected transitionend touchstart touchend mousedown mouseup click keydown keyup resize' );
+
 
 		$[ _PLUGIN_ ]._c = _c;
 		$[ _PLUGIN_ ]._d = _d;
@@ -1056,31 +1071,6 @@
 		{
 			setTimeout( fn, duration );
 		}
-	}
-	function click( $b, fn, onTouchStart, add )
-	{
-		if ( typeof $b == 'string' )
-		{
-			$b = $( $b );
-		}
-
-		var event = ( onTouchStart )
-			? _e.touchstart
-			: _e.click;
-
-		if ( !add )
-		{
-			$b.off( event );
-		}
-		$b.on( event,
-			function( e )
-			{
-				e.preventDefault();
-				e.stopPropagation();
-
-				fn.call( this, e );
-			}
-		);
 	}
 
 })( jQuery );
