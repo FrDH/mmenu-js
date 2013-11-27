@@ -1,6 +1,6 @@
 {
 	"name": "mmenu",
-	"version": "4.1.2",
+	"version": "4.1.3",
 	"title": "jQuery mmenu",
 	"description": "A jQuery plugin that creates slick app look-alike sliding menus for your (mobile) website with horizontal or vertical submenus. It's easy to customize and has options for headers, labels, counters, a searchfield and more.",
 	"homepage": "http://mmenu.frebsite.nl",
