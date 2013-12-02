@@ -6,6 +6,8 @@
 
 em.mm-counter
 {
+	font: inherit;
+	font-size: $fontSize;
 	font-style: normal;
 	text-indent: 0;
 	line-height: $btnSize / 2;

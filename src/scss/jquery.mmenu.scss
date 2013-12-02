@@ -196,10 +196,9 @@ html.mm-blocking #mm-blocker
 }
 .mm-list
 {
-	*
-	{
-		@include font;
-	}
+	font: inherit;
+	font-size: $fontSize;
+
 	a,
 	a:hover
 	{

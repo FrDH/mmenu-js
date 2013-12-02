@@ -11,7 +11,6 @@ $paddingTop: $height / 2;
 .mm-header
 {
 	@include vendor-prefix( "box-sizing", border-box );
-	@include font;
 
 	background: inherit;
 	border-bottom: 1px solid transparent;

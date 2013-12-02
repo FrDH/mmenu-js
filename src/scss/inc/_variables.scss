@@ -14,14 +14,6 @@ $subOffset: 40% !default;
 @import "colors";
 @import "arrows";
 
-//	Font
-@mixin font
-{
-	-webkit-text-size-adjust: none;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: $fontSize;
-	text-shadow: none;
-}
 
 //	Borders
 @mixin border( $border, $pseudo, $size, $pos1, $pos2 )

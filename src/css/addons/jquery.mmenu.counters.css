@@ -2,6 +2,8 @@
 	jQuery.mmenu counters addon CSS
 */
 em.mm-counter {
+  font: inherit;
+  font-size: 14px;
   font-style: normal;
   text-indent: 0;
   line-height: 20px;

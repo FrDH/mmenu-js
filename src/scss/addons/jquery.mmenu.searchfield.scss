@@ -21,11 +21,11 @@
 	z-index: 2;
 
 	input
-	{
-		@include font;
-		
+	{		
 		border: none;
 		border-radius: ( $btnSize - $padding ) / 2;
+		font: inherit;
+		font-size: $fontSize;
 		line-height: $btnSize - $padding;
 		outline: none;
 		display: block;
@@ -50,7 +50,7 @@
 	li.mm-noresults
 	{
 		text-align: center;
-		font-size: 20px;
+		font-size: round( $fontSize * 1.5 );
 		display: none;
 		padding-top: $btnSize * 2;
 		

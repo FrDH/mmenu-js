@@ -130,112 +130,110 @@ html.mm-blocking #mm-blocker {
   padding: 0;
   margin: 0; }
 
-.mm-list * {
-  -webkit-text-size-adjust: none;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  text-shadow: none; }
-.mm-list a,
-.mm-list a:hover {
-  text-decoration: none; }
-.mm-list > li {
-  position: relative; }
-  .mm-list > li > a,
-  .mm-list > li > span {
+.mm-list {
+  font: inherit;
+  font-size: 14px; }
+  .mm-list a,
+  .mm-list a:hover {
+    text-decoration: none; }
+  .mm-list > li {
+    position: relative; }
+    .mm-list > li > a,
+    .mm-list > li > span {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      color: inherit;
+      line-height: 20px;
+      display: block;
+      padding: 10px 10px 10px 20px;
+      margin: 0; }
+  .mm-list > li:not(.mm-subtitle):not(.mm-label):not(.mm-noresults)::after {
+    content: '';
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    display: block;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0; }
+  .mm-list > li:not(.mm-subtitle):not(.mm-label):not(.mm-noresults):after {
+    width: auto;
+    margin-left: 20px;
+    position: relative;
+    left: auto; }
+  .mm-list a.mm-subopen {
+    width: 40px;
+    height: 100%;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 2; }
+    .mm-list a.mm-subopen::before {
+      content: '';
+      border-left-width: 1px;
+      border-left-style: solid;
+      display: block;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0; }
+    .mm-list a.mm-subopen.mm-fullsubopen {
+      width: 100%; }
+      .mm-list a.mm-subopen.mm-fullsubopen:before {
+        border-left: none; }
+    .mm-list a.mm-subopen + a,
+    .mm-list a.mm-subopen + span {
+      padding-right: 5px;
+      margin-right: 40px; }
+  .mm-list > li.mm-selected > a.mm-subopen {
+    background: transparent; }
+  .mm-list > li.mm-selected > a.mm-fullsubopen + a,
+  .mm-list > li.mm-selected > a.mm-fullsubopen + span {
+    padding-right: 45px;
+    margin-right: 0; }
+  .mm-list a.mm-subclose {
+    text-indent: 20px;
+    padding-top: 30px;
+    margin-top: -20px; }
+  .mm-list > li.mm-label {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    color: inherit;
-    line-height: 20px;
-    display: block;
-    padding: 10px 10px 10px 20px;
-    margin: 0; }
-.mm-list > li:not(.mm-subtitle):not(.mm-label):not(.mm-noresults)::after {
-  content: '';
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  display: block;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0; }
-.mm-list > li:not(.mm-subtitle):not(.mm-label):not(.mm-noresults):after {
-  width: auto;
-  margin-left: 20px;
-  position: relative;
-  left: auto; }
-.mm-list a.mm-subopen {
-  width: 40px;
-  height: 100%;
-  padding: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 2; }
-  .mm-list a.mm-subopen::before {
+    font-size: 10px;
+    text-transform: uppercase;
+    text-indent: 20px;
+    line-height: 25px;
+    padding-right: 5px; }
+  .mm-list > li.mm-spacer {
+    padding-top: 40px; }
+    .mm-list > li.mm-spacer.mm-label {
+      padding-top: 25px; }
+  .mm-list a.mm-subopen:after,
+  .mm-list a.mm-subclose:before {
     content: '';
-    border-left-width: 1px;
-    border-left-style: solid;
+    border: 2px solid transparent;
     display: block;
-    height: 100%;
+    width: 7px;
+    height: 7px;
+    margin-bottom: -5px;
     position: absolute;
-    left: 0;
-    top: 0; }
-  .mm-list a.mm-subopen.mm-fullsubopen {
-    width: 100%; }
-    .mm-list a.mm-subopen.mm-fullsubopen:before {
-      border-left: none; }
-  .mm-list a.mm-subopen + a,
-  .mm-list a.mm-subopen + span {
-    padding-right: 5px;
-    margin-right: 40px; }
-.mm-list > li.mm-selected > a.mm-subopen {
-  background: transparent; }
-.mm-list > li.mm-selected > a.mm-fullsubopen + a,
-.mm-list > li.mm-selected > a.mm-fullsubopen + span {
-  padding-right: 45px;
-  margin-right: 0; }
-.mm-list a.mm-subclose {
-  text-indent: 20px;
-  padding-top: 30px;
-  margin-top: -20px; }
-.mm-list > li.mm-label {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  font-size: 10px;
-  text-transform: uppercase;
-  text-indent: 20px;
-  line-height: 25px;
-  padding-right: 5px; }
-.mm-list > li.mm-spacer {
-  padding-top: 40px; }
-  .mm-list > li.mm-spacer.mm-label {
-    padding-top: 25px; }
-.mm-list a.mm-subopen:after,
-.mm-list a.mm-subclose:before {
-  content: '';
-  border: 2px solid transparent;
-  display: block;
-  width: 7px;
-  height: 7px;
-  margin-bottom: -5px;
-  position: absolute;
-  bottom: 50%;
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  transform: rotate(-45deg); }
-.mm-list a.mm-subopen:after {
-  border-top: none;
-  border-left: none;
-  right: 18px; }
-.mm-list a.mm-subclose:before {
-  border-right: none;
-  border-bottom: none;
-  margin-bottom: -15px;
-  left: 22px; }
+    bottom: 50%;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg); }
+  .mm-list a.mm-subopen:after {
+    border-top: none;
+    border-left: none;
+    right: 18px; }
+  .mm-list a.mm-subclose:before {
+    border-right: none;
+    border-bottom: none;
+    margin-bottom: -15px;
+    left: 22px; }
 
 .mm-menu.mm-vertical .mm-list .mm-panel {
   display: none;
@@ -338,6 +336,8 @@ html.mm-nooverflowscrolling.mm-opened {
 	jQuery.mmenu counters addon CSS
 */
 em.mm-counter {
+  font: inherit;
+  font-size: 14px;
   font-style: normal;
   text-indent: 0;
   line-height: 20px;
@@ -385,10 +385,6 @@ html.mm-opened.mm-dragging #mm-blocker {
   -ms-box-sizing: border-box;
   -o-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-text-size-adjust: none;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  text-shadow: none;
   background: inherit;
   border-bottom: 1px solid transparent;
   text-align: center;
@@ -478,9 +474,6 @@ html.mm-opened.mm-dragging #mm-blocker {
 /*
 	jQuery.mmenu labels addon CSS
 */
-.mm-list > li.mm-label * {
-  font: inherit; }
-
 .mm-menu.mm-fixedlabels .mm-list {
   background: inherit; }
   .mm-menu.mm-fixedlabels .mm-list > li.mm-label {
@@ -540,12 +533,10 @@ html.mm-opened.mm-dragging #mm-blocker {
   top: 0;
   z-index: 2; }
   .mm-search input {
-    -webkit-text-size-adjust: none;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    text-shadow: none;
     border: none;
     border-radius: 15px;
+    font: inherit;
+    font-size: 14px;
     line-height: 30px;
     outline: none;
     display: block;
@@ -561,7 +552,7 @@ html.mm-opened.mm-dragging #mm-blocker {
     padding-right: 10px; }
 .mm-menu li.mm-noresults {
   text-align: center;
-  font-size: 20px;
+  font-size: 21px;
   display: none;
   padding-top: 80px; }
   .mm-menu li.mm-noresults:after {

@@ -1,9 +1,6 @@
 /*
 	jQuery.mmenu labels addon CSS
 */
-.mm-list > li.mm-label * {
-  font: inherit; }
-
 .mm-menu.mm-fixedlabels .mm-list {
   background: inherit; }
   .mm-menu.mm-fixedlabels .mm-list > li.mm-label {
