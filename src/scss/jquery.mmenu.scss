@@ -16,12 +16,7 @@ html.mm-opened
 		@include vendor-prefix( "transition", none $transitionDuration $transitionFunction );
 
 		// border is needed to force transitionend event even if no other value changed
-		// transform is needed to force hardware acceleration
-		-webkit-transition-property: top, right, bottom, left, border, -webkit-transform;
-		-moz-transition-property: top, right, bottom, left, border, -moz-transform;
-		-ms-transition-property: top, right, bottom, left, border, -ms-transform;
-		-o-transition-property: top, right, bottom, left, border, -o-transform;
-		transition-property: top, right, bottom, left, border, transform;
+		@include vendor-prefix( "transition-property", ( top, right, bottom, left, border ) );
 	}
 	.mm-page,
 	#mm-blocker

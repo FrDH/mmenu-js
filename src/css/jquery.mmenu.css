@@ -11,11 +11,11 @@ html.mm-opened .mm-menu.mm-horizontal > .mm-panel {
   -ms-transition: none 0.4s ease;
   -o-transition: none 0.4s ease;
   transition: none 0.4s ease;
-  -webkit-transition-property: top, right, bottom, left, border, -webkit-transform;
-  -moz-transition-property: top, right, bottom, left, border, -moz-transform;
-  -ms-transition-property: top, right, bottom, left, border, -ms-transform;
-  -o-transition-property: top, right, bottom, left, border, -o-transform;
-  transition-property: top, right, bottom, left, border, transform; }
+  -webkit-transition-property: top, right, bottom, left, border;
+  -moz-transition-property: top, right, bottom, left, border;
+  -ms-transition-property: top, right, bottom, left, border;
+  -o-transition-property: top, right, bottom, left, border;
+  transition-property: top, right, bottom, left, border; }
 html.mm-opened .mm-page,
 html.mm-opened #mm-blocker {
   left: 0%;
