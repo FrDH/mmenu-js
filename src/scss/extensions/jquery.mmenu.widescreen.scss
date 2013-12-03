@@ -10,7 +10,8 @@
 // positioning and sizing
 html, body
 {
-	height: 100%;
+	height: 100% !important;
+	overflow: auto !important;
 }
 body
 {
@@ -25,11 +26,12 @@ body
 	box-shadow: none !important;
 	background: inherit;
 	width: 70% !important;
-	min-height: 100%;
+	min-height: 100% !important;
+	height: auto !important;
 	margin: 0 !important;
 	left: 30% !important;
 	top: 0 !important;
-	position: relative;
+	position: relative !important;
 	z-index: 1;
 
 	@include vendor-prefix( "box-sizing", border-box );
