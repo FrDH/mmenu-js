@@ -770,17 +770,17 @@
 	(function() {
 
 		var wd = window.document,
-			ua = window.navigator.userAgent;
+			ua = window.navigator.userAgent,
+			ds = document.createElement( 'div' ).style;
 
 		var _touch 				= 'ontouchstart' in wd,
 			_overflowscrolling	= 'WebkitOverflowScrolling' in wd.documentElement.style,
 			_transition			= (function() {
-				var s = document.createElement( 'div' ).style;
-			    if ( 'webkitTransition' in s )
+			    if ( 'webkitTransition' in ds )
 			    {
 			        return 'webkitTransition';  
 			    }
-			    return 'transition' in s;
+			    return 'transition' in ds;
 			})(),
 			_oldAndroidBrowser	= (function() {
 				if ( ua.indexOf( 'Android' ) >= 0 )
