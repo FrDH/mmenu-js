@@ -11,17 +11,22 @@ html.mm-opened .mm-menu.mm-horizontal > .mm-panel {
   -ms-transition: none 0.4s ease;
   -o-transition: none 0.4s ease;
   transition: none 0.4s ease;
-  -webkit-transition-property: top, right, bottom, left, border;
-  -moz-transition-property: top, right, bottom, left, border;
-  -ms-transition-property: top, right, bottom, left, border;
-  -o-transition-property: top, right, bottom, left, border;
-  transition-property: top, right, bottom, left, border; }
+  -webkit-transition-property: border, -webkit-transform;
+  -moz-transition-property: border, -moz-transform;
+  -ms-transition-property: border, -ms-transform;
+  -o-transition-property: border, -o-transform;
+  transition-property: border, transform; }
 html.mm-opened .mm-page,
 html.mm-opened #mm-blocker {
-  left: 0%;
+  left: 0;
   top: 0;
   margin: 0;
-  border: 0px solid rgba(0, 0, 0, 0); }
+  border: 0px solid rgba(0, 0, 0, 0);
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  -ms-transform: translateX(0);
+  -o-transform: translateX(0);
+  transform: translateX(0); }
 html.mm-opened.mm-opening .mm-page,
 html.mm-opened.mm-opening #mm-blocker {
   border: 0px solid rgba(100, 100, 100, 0); }
@@ -280,10 +285,12 @@ html.mm-opened .mm-page {
     background: rgba(255, 255, 255, 0.05); }
 
 html.mm-opened.mm-opening .mm-page,
-html.mm-opened.mm-opening #mm-blocker,
-html.mm-opened.mm-opening .mm-fixed-top,
-html.mm-opened.mm-opening .mm-fixed-bottom {
-  left: 80%; }
+html.mm-opened.mm-opening #mm-blocker {
+  -webkit-transform: translateX(80%);
+  -moz-transform: translateX(80%);
+  -ms-transform: translateX(80%);
+  -o-transform: translateX(80%);
+  transform: translateX(80%); }
 
 .mm-menu {
   width: 80%; }
@@ -293,19 +300,23 @@ html.mm-opened.mm-opening .mm-fixed-bottom {
     width: 140px; }
 
   html.mm-opened.mm-opening .mm-page,
-  html.mm-opened.mm-opening #mm-blocker,
-  html.mm-opened.mm-opening .mm-fixed-top,
-  html.mm-opened.mm-opening .mm-fixed-bottom {
-    left: 140px; } }
+  html.mm-opened.mm-opening #mm-blocker {
+    -webkit-transform: translateX(140px);
+    -moz-transform: translateX(140px);
+    -ms-transform: translateX(140px);
+    -o-transform: translateX(140px);
+    transform: translateX(140px); } }
 @media all and (min-width: 550px) {
   .mm-menu {
     width: 440px; }
 
   html.mm-opened.mm-opening .mm-page,
-  html.mm-opened.mm-opening #mm-blocker,
-  html.mm-opened.mm-opening .mm-fixed-top,
-  html.mm-opened.mm-opening .mm-fixed-bottom {
-    left: 440px; } }
+  html.mm-opened.mm-opening #mm-blocker {
+    -webkit-transform: translateX(440px);
+    -moz-transform: translateX(440px);
+    -ms-transform: translateX(440px);
+    -o-transform: translateX(440px);
+    transform: translateX(440px); } }
 html.mm-nooverflowscrolling.mm-opened {
   height: auto;
   overflow: auto;
