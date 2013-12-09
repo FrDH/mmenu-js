@@ -38,7 +38,6 @@
 
 		var glbl = $[ _PLUGIN_ ].glbl;
 
-
 		//	Extend options
 		if ( typeof opts == 'boolean' )
 		{
@@ -134,20 +133,30 @@
 			//	Bind events
 			$dragNode
 				.hammer()
-				.on( _e.touchstart,
+				.on( _e.touchstart + ' ' + _e.mousedown,
 					function( e )
 					{
+						if ( e.type == 'touchstart' )
+						{
+							var tch = e.originalEvent.touches[ 0 ] || e.originalEvent.changedTouches[ 0 ],
+								pos = tch[ drag.page ];
+						
+						}
+						else if ( e.type == 'mousedown' )
+						{
+							var pos = e[ drag.page ];
+						}
 						switch( that.opts.position )
 						{
 							case 'right':
 							case 'bottom':
-								if ( e[ drag.page ] >= glbl.$wndw[ _dimension ]() - opts.maxStartPos )
+								if ( pos >= glbl.$wndw[ _dimension ]() - opts.maxStartPos )
 								{
 									_stage = 1;
 								}
 								break;
 							default:
-								if ( e[ drag.page ] <= opts.maxStartPos )
+								if ( pos <= opts.maxStartPos )
 								{
 									_stage = 1;
 								}
