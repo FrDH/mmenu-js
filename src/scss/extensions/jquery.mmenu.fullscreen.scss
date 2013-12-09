@@ -13,7 +13,8 @@ $height		: 1;
 $maxHeight	: 10000px;
 
 @include sizing( $class,
-	$width, $minWidth, $maxWidth );
+	$width, $minWidth, $maxWidth,
+	$height, $minHeight, $maxHeight );
 
 @include sizing_position( $class,
 	$width, $minWidth, $maxWidth,

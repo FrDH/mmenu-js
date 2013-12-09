@@ -99,8 +99,6 @@ html.mm-front.mm-opened .mm-page
 	right: 0 !important;
 	bottom: 0 !important;
 	left: 0 !important;
-	
-	@include vendor-prefix( "transform", translateX( 0 ) !important );
 }
 
 // animations
@@ -109,11 +107,11 @@ html.mm-front.mm-opened .mm-page
 {
 	@include vendor-prefix( "transition", none $transitionDuration $transitionFunction );
 
-	-webkit-transition-property: -webkit-transform;
-    -moz-transition-property: -moz-transform;
-    -ms-transition-property: -ms-transform;
-    -o-transition-property: -o-transform;
-    transition-property: transform;
+	-webkit-transition-property: top, right, bottom, left, -webkit-transform;
+	-moz-transition-property: top, right, bottom, left, -moz-transform;
+	-ms-transition-property: top, right, bottom, left, -o-transform;
+	-o-transition-property: top, right, bottom, left, -o-transform;
+	transition-property: top, right, bottom, left, transform;
 }
 
 // styling
@@ -141,13 +139,11 @@ html.mm-opening .mm-menu
 	&.mm-front,
 	&.mm-next
 	{
-//		left: 0%;	
-		@include vendor-prefix( "transform", translateX( 0 ) );
+		left: 0%;
 	}
 }
 
 // top
-/*
 .mm-menu.mm-top
 {
 	&.mm-front,
@@ -156,20 +152,17 @@ html.mm-opening .mm-menu
 		left: 0;
 	}
 }
-*/
 html.mm-opening .mm-menu.mm-top
 {
 	&.mm-front,
 	&.mm-next
 	{
-//		left: 0;
-//		top: 0%;
-		@include vendor-prefix( "transform", translateY( 0 ) );
+		left: 0;
+		top: 0%;
 	}
 }
 
 // right
-/*
 .mm-menu.mm-right
 {
 	&.mm-front,
@@ -178,20 +171,17 @@ html.mm-opening .mm-menu.mm-top
 		left: auto;
 	}
 }
-*/
 html.mm-opening .mm-menu.mm-right
 {
 	&.mm-front,
 	&.mm-next
 	{
-//		left: auto;
-//		right: 0%;
-		@include vendor-prefix( "transform", translateX( 0 ) );
+		left: auto;
+		right: 0%;
 	}
 }
 
 // bottom
-/*
 .mm-menu.mm-bottom
 {
 	&.mm-front,
@@ -201,15 +191,13 @@ html.mm-opening .mm-menu.mm-right
 		left: 0;
 	}
 }
-*/
 html.mm-opening .mm-menu.mm-bottom
 {
 	&.mm-front,
 	&.mm-next
 	{
-//		left: 0;
-//		bottom: 0%;
-		@include vendor-prefix( "transform", translateY( 0 ) );
+		left: 0;
+		bottom: 0%;
 	}
 }
 

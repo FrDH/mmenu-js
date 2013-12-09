@@ -16,21 +16,15 @@ html.mm-opened
 		@include vendor-prefix( "transition", none $transitionDuration $transitionFunction );
 
 		// border is needed to force transitionend event even if no other value changed
-//		@include vendor-prefix( "transition-property", ( top, right, bottom, left, border ) );
-		-webkit-transition-property: border, -webkit-transform;
-        -moz-transition-property: border, -moz-transform;
-        -ms-transition-property: border, -ms-transform;
-        -o-transition-property: border, -o-transform;
-        transition-property: border, transform;
+		@include vendor-prefix( "transition-property", ( top, right, bottom, left, border ) );
 	}
 	.mm-page,
 	#mm-blocker
 	{
-		left: 0;
+		left: 0%;
 		top: 0;
 		margin: 0;
 		border: 0px solid rgba( 0, 0, 0, 0 );
-		@include vendor-prefix( "transform", translateX( 0 ) );
 	}
 	
 	&.mm-opening
