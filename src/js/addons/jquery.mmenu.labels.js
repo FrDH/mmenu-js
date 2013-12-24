@@ -117,6 +117,8 @@
 					}
 				);
 
+			var offset = getPanelsOffset();
+
 			$panels.each(
 				function()
 				{
@@ -125,17 +127,7 @@
 
 					if ( $labels.length )
 					{
-
-						var scrollTop	= $panel.scrollTop(),
-							hassearch	= _c.hassearch && that.$menu.hasClass( _c.hassearch ),
-							hasheader	= _c.hasheader && that.$menu.hasClass( _c.hasheader ),
-							offset		= hassearch
-								? hasheader
-									? 100
-									: 50
-								: hasheader
-									? 60
-									: 0;
+						var scrollTop = $panel.scrollTop();
 
 						$labels.each(
 							function()
@@ -197,6 +189,7 @@
 								function( e )
 								{
 									scrollTop = $panel.scrollTop();
+									offset = getPanelsOffset();
 									$labels.trigger( _e.position );
 								}
 							)
@@ -228,6 +221,20 @@
 					}
 				);
 		}
+		
+		function getPanelsOffset()
+		{
+			var hassearch	= _c.hassearch && that.$menu.hasClass( _c.hassearch ),
+				hasheader	= _c.hasheader && that.$menu.hasClass( _c.hasheader );
+
+			return hassearch
+				? hasheader
+					? 100
+					: 50
+				: hasheader
+					? 60
+					: 0;
+		}
 	};
 
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
@@ -240,5 +247,6 @@
 	//	Add to plugin
 	$[ _PLUGIN_ ].addons = $[ _PLUGIN_ ].addons || [];
 	$[ _PLUGIN_ ].addons.push( _ADDON_ );
+
 
 })( jQuery );
