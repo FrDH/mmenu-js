@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.1.6
+ * jQuery mmenu v4.1.7
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
