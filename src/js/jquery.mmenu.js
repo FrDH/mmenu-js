@@ -1060,11 +1060,23 @@
 
 	function transitionend( $e, fn, duration )
 	{
-		var s = $[ _PLUGIN_ ].support.transition;
-	    if ( s == 'webkitTransition' )
-	    {
-	        $e.one( 'webkitTransitionEnd', fn );
-	    }
+		var s = $[ _PLUGIN_ ].support.transition, b = false;
+		if ( s == 'webkitTransition' )
+		{
+			$e.one( 'webkitTransitionEnd', function() {
+				if (!b) {
+					b = true;
+					fn.call($e);
+				}
+			});
+			//Fall back in case of webkitTransitionEnd not being fired up
+			setTimeout(function() {
+				if (!b) {
+					b = true;
+					fn.call($e);
+				}
+			}, duration*1.1);
+		}
 		else if ( s )
 		{
 			$e.one( _e.transitionend, fn );
