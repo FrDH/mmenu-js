@@ -218,7 +218,7 @@
 									$drag = $drag.add( that.$menu );
 									break;
 							}
-							$drag.css( that.opts.position, minMax( _distance, 10, _maxDistance ) );
+							$drag.css( that.opts.position, minMax( _distance, 10, _maxDistance ) - ('front' == that.opts.zposition ? _maxDistance : 0) );
 						}
 					}
 				)
