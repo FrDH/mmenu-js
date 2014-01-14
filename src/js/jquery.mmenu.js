@@ -771,16 +771,28 @@
 
 		var wd = window.document,
 			ua = window.navigator.userAgent,
-			ds = document.createElement( 'div' ).style;
+			ds = document.createElement( 'div' ).style,
+			tr = {
+					'transition': 'transitionend',				// IE10, Opera, Chrome, FF 15+, Saf 7+
+					'OTransition': 'oTransitionEnd',			// Opera Presto < 2.10
+					'MozTransition': 'transitionend',			// only for FF < 15
+					'WebkitTransition': 'webkitTransitionEnd'	// Saf 6, Android Browser
+			};
 
 		var _touch 				= 'ontouchstart' in wd,
 			_overflowscrolling	= 'WebkitOverflowScrolling' in wd.documentElement.style,
 			_transition			= (function() {
-			    if ( 'webkitTransition' in ds )
-			    {
-			        return 'webkitTransition';  
-			    }
-			    return 'transition' in ds;
+				var t;
+				for ( t in tr ) {
+					if ( ds[t] !== undefined ) {
+						return t;
+					}
+				}
+				return false;
+			})(),
+			_transitionEnd		= (function() {
+				var k;
+				return (k = _transition) && tr[k] ? tr[k] : false;
 			})(),
 			_oldAndroidBrowser	= (function() {
 				if ( ua.indexOf( 'Android' ) >= 0 )
@@ -794,6 +806,7 @@
 
 			touch: _touch,
 			transition: _transition,
+			transitionEnd: _transitionEnd,
 			oldAndroidBrowser: _oldAndroidBrowser,
 
 			overflowscrolling: (function() {
@@ -1060,19 +1073,22 @@
 
 	function transitionend( $e, fn, duration )
 	{
-		var s = $[ _PLUGIN_ ].support.transition;
-	    if ( s == 'webkitTransition' )
-	    {
-	        $e.one( 'webkitTransitionEnd', fn );
-	    }
-		else if ( s )
-		{
-			$e.one( _e.transitionend, fn );
+		var s = $[ _PLUGIN_ ].support.transitionEnd, b = false;
+		if (s) {
+			$e.one( s, function() {
+				if (!b) {
+					b = true;
+					fn.call($e);
+				}
+			});
 		}
-		else
-		{
-			setTimeout( fn, duration );
-		}
+		//Fall back in case of TransitionEnd event not being triggered or delyed
+		setTimeout(function() {
+			if (!b) {
+				b = true;
+				fn.call($e);
+			}
+		}, duration*1.1);
 	}
 
 })( jQuery );
