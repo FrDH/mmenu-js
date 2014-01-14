@@ -792,7 +792,7 @@
 			})(),
 			_transitionEnd		= (function() {
 				var k;
-				return !(k = _transition) || tr[k];
+				return (k = _transition) && tr[k] ? tr[k] : false;
 			})(),
 			_oldAndroidBrowser	= (function() {
 				if ( ua.indexOf( 'Android' ) >= 0 )
