@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.1.7
+ * jQuery mmenu v4.1.8
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -16,7 +16,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.1.7';
+		_VERSION_	= '4.1.8';
 
 
 	//	Plugin already excists
@@ -775,13 +775,6 @@
 
 		var _touch 				= 'ontouchstart' in wd,
 			_overflowscrolling	= 'WebkitOverflowScrolling' in wd.documentElement.style,
-			_transition			= (function() {
-			    if ( 'webkitTransition' in ds )
-			    {
-			        return 'webkitTransition';  
-			    }
-			    return 'transition' in ds;
-			})(),
 			_oldAndroidBrowser	= (function() {
 				if ( ua.indexOf( 'Android' ) >= 0 )
 				{
@@ -793,9 +786,7 @@
 		$[ _PLUGIN_ ].support = {
 
 			touch: _touch,
-			transition: _transition,
 			oldAndroidBrowser: _oldAndroidBrowser,
-
 			overflowscrolling: (function() {
 				if ( !_touch )
 				{
@@ -988,7 +979,7 @@
 
 		//	Eventnames
 		_e.mm = function( e ) { return e + '.mm'; };
-		_e.add( 'toggle open opening opened close closing closed update setPage setSelected transitionend touchstart touchend mousedown mouseup click keydown keyup resize' );
+		_e.add( 'toggle open opening opened close closing closed update setPage setSelected transitionend webkitTransitionEnd touchstart touchend mousedown mouseup click keydown keyup resize' );
 
 
 		$[ _PLUGIN_ ]._c = _c;
@@ -1060,19 +1051,19 @@
 
 	function transitionend( $e, fn, duration )
 	{
-		var s = $[ _PLUGIN_ ].support.transition;
-	    if ( s == 'webkitTransition' )
-	    {
-	        $e.one( 'webkitTransitionEnd', fn );
-	    }
-		else if ( s )
-		{
-			$e.one( _e.transitionend, fn );
-		}
-		else
-		{
-			setTimeout( fn, duration );
-		}
+		var _ended = false,
+			_fn = function()
+			{
+				if ( !_ended )
+				{
+					fn.call( $e[ 0 ] );
+				}
+				_ended = true;
+			};
+
+		$e.one( _e.transitionend, _fn );
+		$e.one( _e.webkitTransitionEnd, _fn );
+		setTimeout( _fn, duration * 1.1 );
 	}
 
 })( jQuery );
