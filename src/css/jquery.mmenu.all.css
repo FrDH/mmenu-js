@@ -70,7 +70,7 @@ html.mm-background .mm-page {
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 9999; }
+  z-index: 999999; }
 
 html.mm-opened #mm-blocker,
 html.mm-blocking #mm-blocker {
@@ -369,6 +369,8 @@ em.mm-counter {
 */
 html.mm-opened.mm-dragging .mm-menu,
 html.mm-opened.mm-dragging .mm-page,
+html.mm-opened.mm-dragging .mm-fixed-top,
+html.mm-opened.mm-dragging .mm-fixed-bottom,
 html.mm-opened.mm-dragging #mm-blocker {
   -webkit-transition-duration: 0s;
   -moz-transition-duration: 0s;

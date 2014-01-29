@@ -53,7 +53,7 @@
 		{
 			opts.maxStartPos = this.opts.position == 'left' || this.opts.position == 'right'
 				? 150
-				: 50;
+				: 75;
 		}
 		opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
@@ -124,11 +124,29 @@
 					break;
 			}
 
-			$dragNode = this.__valueOrFn( opts.pageNode, this.$menu, glbl.$page );
+			var $dragNode = this.__valueOrFn( opts.pageNode, this.$menu, glbl.$page );
 			if ( typeof $dragNode == 'string' )
 			{
 				$dragNode = $($dragNode);
 			}
+
+			var $fixed = glbl.$page.find( '.' + _c.mm( 'fixed-top' ) + ', .' + _c.mm( 'fixed-bottom' ) ),
+				$dragg = glbl.$page;
+
+			switch ( that.opts.zposition )
+			{
+				case 'back':
+					$dragg = $dragg.add( $fixed );
+					break;
+
+				case 'front':
+					$dragg = that.$menu;
+					break;
+
+				case 'next':
+					$dragg = $dragg.add( that.$menu ).add( $fixed );
+					break;
+			};
 
 			//	Bind events
 			$dragNode
@@ -140,12 +158,12 @@
 						{
 							var tch = e.originalEvent.touches[ 0 ] || e.originalEvent.changedTouches[ 0 ],
 								pos = tch[ drag.page ];
-						
 						}
 						else if ( e.type == 'mousedown' )
 						{
 							var pos = e[ drag.page ];
 						}
+
 						switch( that.opts.position )
 						{
 							case 'right':
@@ -155,6 +173,7 @@
 									_stage = 1;
 								}
 								break;
+
 							default:
 								if ( pos <= opts.maxStartPos )
 								{
@@ -208,17 +227,7 @@
 						}
 						if ( _stage == 2 )
 						{
-							var $drag = glbl.$page;
-							switch ( that.opts.zposition )
-							{
-								case 'front':
-									$drag = that.$menu;
-									break;
-								case 'next':
-									$drag = $drag.add( that.$menu );
-									break;
-							}
-							$drag.css( that.opts.position, minMax( _distance, 10, _maxDistance ) - ('front' == that.opts.zposition ? _maxDistance : 0) );
+							$dragg.css( that.opts.position, minMax( _distance, 10, _maxDistance ) - ( that.opts.zposition == 'front' ? _maxDistance : 0 ) );
 						}
 					}
 				)
@@ -226,19 +235,9 @@
 					function( e )
 					{
 						if ( _stage == 2 )
-						{	
-				        	var $drag = glbl.$page;
-				        	switch ( that.opts.zposition )
-							{
-								case 'front':
-									$drag = that.$menu;
-									break;
-								case 'next':
-									$drag = $drag.add( that.$menu );
-									break;
-							}
+						{
 							glbl.$html.removeClass( _c.dragging );
-							$drag.css( that.opts.position, '' );
+							$dragg.css( that.opts.position, '' );
 
 							if ( _direction == drag.open_dir )
 							{
