@@ -12,11 +12,10 @@
 	.mm-ismenu#{$cls}
 	{
 		background: $baseBg;
+		color: $text;
 	}
 	.mm-menu#{$cls}
 	{
-		color: $text;
-
 		.mm-list
 		{
 			> li:after
