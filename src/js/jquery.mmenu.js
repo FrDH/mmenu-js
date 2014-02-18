@@ -281,6 +281,17 @@
 						return that.close();
 					}
 				)
+				.on( _e.toggle,
+					function( e )
+					{
+						if ( !$(this).hasClass( _c.current ) )
+						{
+							return that.open();
+						} else {
+							return that.close();
+						}
+					}
+				)
 				.on( _e.setPage,
 					function( e, $p )
 					{
