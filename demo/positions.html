@@ -57,7 +57,7 @@
 					$both.removeClass( zpos ).addClass( 'mm-' + this.value );
 				});
 				
-				$inp.first().change();
+				$inp.filter( ':checked' ).change();
 			});
 		</script>
 	</head>
