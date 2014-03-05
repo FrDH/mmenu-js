@@ -10,6 +10,12 @@
 		<link type="text/css" rel="stylesheet" href="demo.css" />
 		<link type="text/css" rel="stylesheet" href="../src/css/jquery.mmenu.css" />
 		<link type="text/css" rel="stylesheet" href="../src/css/extensions/jquery.mmenu.positioning.css" />
+		<style type="text/css" media="all">
+			input[type="radio"]:disabled + label
+			{
+				opacity: 0.5;
+			}
+		</style>
 		
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<script type="text/javascript" src="../src/js/jquery.mmenu.js"></script>
@@ -22,16 +28,36 @@
 				var $html 	= $('html'),
 					$menu	= $('nav#menu'),
 					$both	= $html.add( $menu );
+					
+				var $inp	= $('input[name="pos"]'),
+					$inz	= $('input[name="zpos"]'),
+					$inb	= $inz.filter( '[value="back"], [value="next"]' ),
+					$inf	= $inz.filter( '[value="front"]' );
 
 				$menu.mmenu();
 
+				$inp.change(function() {
+					var v = $(this).val();
+					if ( v == 'top' || v == 'bottom' )
+					{
+						$inb.prop( 'disabled', true );
+						$inf.prop( 'checked', true );
+					}
+					else
+					{
+						$inb.prop( 'disabled', false );
+					}
+				});
+
 				//	Add the position-classnames onChange
-				$('input[name="pos"]').change(function() {
+				$inp.change(function() {
 					$both.removeClass( pos ).addClass( 'mm-' + this.value );
 				});
-				$('input[name="zpos"]').change(function() {
+				$inz.change(function() {
 					$both.removeClass( zpos ).addClass( 'mm-' + this.value );
 				});
+				
+				$inp.first().change();
 			});
 		</script>
 	</head>

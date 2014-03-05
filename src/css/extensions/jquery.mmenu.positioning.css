@@ -51,89 +51,89 @@ html.mm-bottom.mm-opened.mm-opening .mm-fixed-bottom {
 .mm-menu.mm-top {
   height: 80%; }
 
-html.mm-top.mm-opened.mm-opening .mm-page,
-html.mm-top.mm-opened.mm-opening #mm-blocker,
-html.mm-top.mm-opened.mm-opening .mm-fixed-top {
+html.mm-top.mm-opening .mm-page,
+html.mm-top.mm-opening #mm-blocker,
+html.mm-top.mm-opening .mm-fixed-top {
   top: 80%; }
-html.mm-top.mm-opened.mm-opening .mm-fixed-bottom {
+html.mm-top.mm-opening .mm-fixed-bottom {
   bottom: -80%; }
 
 @media all and (max-height: 175px) {
   .mm-menu.mm-top {
     height: 140px; }
 
-  html.mm-top.mm-opened.mm-opening .mm-page,
-  html.mm-top.mm-opened.mm-opening #mm-blocker,
-  html.mm-top.mm-opened.mm-opening .mm-fixed-top {
+  html.mm-top.mm-opening .mm-page,
+  html.mm-top.mm-opening #mm-blocker,
+  html.mm-top.mm-opening .mm-fixed-top {
     top: 140px; }
-  html.mm-top.mm-opened.mm-opening .mm-fixed-bottom {
+  html.mm-top.mm-opening .mm-fixed-bottom {
     bottom: -140px; } }
 @media all and (min-height: 1100px) {
   .mm-menu.mm-top {
     height: 880px; }
 
-  html.mm-top.mm-opened.mm-opening .mm-page,
-  html.mm-top.mm-opened.mm-opening #mm-blocker,
-  html.mm-top.mm-opened.mm-opening .mm-fixed-top {
+  html.mm-top.mm-opening .mm-page,
+  html.mm-top.mm-opening #mm-blocker,
+  html.mm-top.mm-opening .mm-fixed-top {
     top: 880px; }
-  html.mm-top.mm-opened.mm-opening .mm-fixed-bottom {
+  html.mm-top.mm-opening .mm-fixed-bottom {
     bottom: -880px; } }
 .mm-menu.mm-right {
   width: 80%; }
 
-html.mm-right.mm-opened.mm-opening .mm-page,
-html.mm-right.mm-opened.mm-opening #mm-blocker,
-html.mm-right.mm-opened.mm-opening .mm-fixed-top,
-html.mm-right.mm-opened.mm-opening .mm-fixed-bottom {
+html.mm-right.mm-opening .mm-page,
+html.mm-right.mm-opening #mm-blocker,
+html.mm-right.mm-opening .mm-fixed-top,
+html.mm-right.mm-opening .mm-fixed-bottom {
   right: 80%; }
 
 @media all and (max-width: 175px) {
   .mm-menu.mm-right {
     width: 140px; }
 
-  html.mm-right.mm-opened.mm-opening .mm-page,
-  html.mm-right.mm-opened.mm-opening #mm-blocker,
-  html.mm-right.mm-opened.mm-opening .mm-fixed-top,
-  html.mm-right.mm-opened.mm-opening .mm-fixed-bottom {
+  html.mm-right.mm-opening .mm-page,
+  html.mm-right.mm-opening #mm-blocker,
+  html.mm-right.mm-opening .mm-fixed-top,
+  html.mm-right.mm-opening .mm-fixed-bottom {
     right: 140px; } }
 @media all and (min-width: 550px) {
   .mm-menu.mm-right {
     width: 440px; }
 
-  html.mm-right.mm-opened.mm-opening .mm-page,
-  html.mm-right.mm-opened.mm-opening #mm-blocker,
-  html.mm-right.mm-opened.mm-opening .mm-fixed-top,
-  html.mm-right.mm-opened.mm-opening .mm-fixed-bottom {
+  html.mm-right.mm-opening .mm-page,
+  html.mm-right.mm-opening #mm-blocker,
+  html.mm-right.mm-opening .mm-fixed-top,
+  html.mm-right.mm-opening .mm-fixed-bottom {
     right: 440px; } }
 .mm-menu.mm-bottom {
   height: 80%; }
 
-html.mm-bottom.mm-opened.mm-opening .mm-page,
-html.mm-bottom.mm-opened.mm-opening #mm-blocker,
-html.mm-bottom.mm-opened.mm-opening .mm-fixed-bottom {
+html.mm-bottom.mm-opening .mm-page,
+html.mm-bottom.mm-opening #mm-blocker,
+html.mm-bottom.mm-opening .mm-fixed-bottom {
   bottom: 80%; }
-html.mm-bottom.mm-opened.mm-opening .mm-fixed-top {
+html.mm-bottom.mm-opening .mm-fixed-top {
   top: -80%; }
 
 @media all and (max-height: 175px) {
   .mm-menu.mm-bottom {
     height: 140px; }
 
-  html.mm-bottom.mm-opened.mm-opening .mm-page,
-  html.mm-bottom.mm-opened.mm-opening #mm-blocker,
-  html.mm-bottom.mm-opened.mm-opening .mm-fixed-bottom {
+  html.mm-bottom.mm-opening .mm-page,
+  html.mm-bottom.mm-opening #mm-blocker,
+  html.mm-bottom.mm-opening .mm-fixed-bottom {
     bottom: 140px; }
-  html.mm-bottom.mm-opened.mm-opening .mm-fixed-top {
+  html.mm-bottom.mm-opening .mm-fixed-top {
     top: -140px; } }
 @media all and (min-height: 1100px) {
   .mm-menu.mm-bottom {
     height: 880px; }
 
-  html.mm-bottom.mm-opened.mm-opening .mm-page,
-  html.mm-bottom.mm-opened.mm-opening #mm-blocker,
-  html.mm-bottom.mm-opened.mm-opening .mm-fixed-bottom {
+  html.mm-bottom.mm-opening .mm-page,
+  html.mm-bottom.mm-opening #mm-blocker,
+  html.mm-bottom.mm-opening .mm-fixed-bottom {
     bottom: 880px; }
-  html.mm-bottom.mm-opened.mm-opening .mm-fixed-top {
+  html.mm-bottom.mm-opening .mm-fixed-top {
     top: -880px; } }
 /*
 	jQuery.mmenu z-position extension CSS
@@ -229,15 +229,15 @@ html.mm-opening .mm-menu.mm-bottom.mm-front, html.mm-opening .mm-menu.mm-bottom.
 @media all and (min-height: 1100px) {
   .mm-menu.mm-bottom.mm-front, .mm-menu.mm-bottom.mm-next {
     bottom: -880px; } }
-html.mm-opened.mm-front .mm-fixed-top,
-html.mm-opened.mm-front .mm-fixed-bottom,
-html.mm-opened.mm-opening.mm-front .mm-fixed-top,
-html.mm-opened.mm-opening.mm-front .mm-fixed-bottom {
+html.mm-front .mm-fixed-top,
+html.mm-front .mm-fixed-bottom,
+html.mm-opening.mm-front .mm-fixed-top,
+html.mm-opening.mm-front .mm-fixed-bottom {
   left: 0;
   right: auto; }
-html.mm-opened.mm-front .mm-fixed-top,
-html.mm-opened.mm-opening.mm-front .mm-fixed-top {
+html.mm-front .mm-fixed-top,
+html.mm-opening.mm-front .mm-fixed-top {
   top: 0; }
-html.mm-opened.mm-front .mm-fixed-bottom,
-html.mm-opened.mm-opening.mm-front .mm-fixed-bottom {
+html.mm-front .mm-fixed-bottom,
+html.mm-opening.mm-front .mm-fixed-bottom {
   bottom: 0; }

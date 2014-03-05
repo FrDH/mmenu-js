@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.1.9
+ * jQuery mmenu v4.2.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -16,7 +16,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.1.9';
+		_VERSION_	= '4.2.0';
 
 
 	//	Plugin already excists
@@ -33,12 +33,12 @@
 		$page: null,
 		$blck: null,
 
-		$allMenus: null,
-		$scrollTopNode: null
+		$allMenus: null
 	};
 
-	var _c = {}, _e = {}, _d = {},
-		_serialnr = 0;
+	var _c = {}, _d = {}, _e = {},
+		_serialnr 	= 0,
+		_strollTop	= 0;
 
 
 	$[ _PLUGIN_ ] = function( $menu, opts, conf )
@@ -60,14 +60,24 @@
 
 		open: function()
 		{
+			var that = this;
+
 			this._openSetup();
-			this._openFinish();
+
+			//	For some reason, some browsers need a (pretty long) delay before the .mm-opened class sets the needed styles
+			//	Without it, the page isn't animated
+			setTimeout(
+				function()
+				{
+					that._openFinish();
+				}, 50
+			);
+
 			return 'open';
 		},
 		_openSetup: function()
 		{
-			//	Find scrolltop
-			var _scrollTop = findScrollTop();
+			_strollTop = glbl.$wndw.scrollTop();
 
 			//	Set opened
 			this.$menu.addClass( _c.current );
@@ -76,47 +86,10 @@
 			glbl.$allMenus.not( this.$menu ).trigger( _e.close );
 
 			//	Store style and position
-			glbl.$page
-				.data( _d.style, glbl.$page.attr( 'style' ) || '' )
-				.data( _d.scrollTop, _scrollTop )
-				.data( _d.offetLeft, glbl.$page.offset().left );
+			glbl.$page.data( _d.style, glbl.$page.attr( 'style' ) || '' );
 
-			//	Resize page to window width
-			var _w = 0;
-			glbl.$wndw
-				.off( _e.resize )
-				.on( _e.resize,
-					function( e, force )
-					{
-						if ( force || glbl.$html.hasClass( _c.opened ) )
-						{
-							var nw = glbl.$wndw.width();
-							if ( nw != _w )
-							{
-								_w = nw;
-								glbl.$page.width( nw - glbl.$page.data( _d.offetLeft ) );
-							}
-						}
-					}
-				)
-				.trigger( _e.resize, [ true ] );
-
-			//	Prevent tabbing out of the menu
-			if ( this.conf.preventTabbing )
-			{
-				glbl.$wndw
-					.off( _e.keydown )
-					.on( _e.keydown,
-						function( e )
-						{
-							if ( e.keyCode == 9 )
-							{
-								e.preventDefault();
-								return false;
-							}
-						}
-					);
-			}
+			//	Trigger window-resize to measure width
+			glbl.$wndw.trigger( _e.resize, [ true ] );
 
 			//	Add options
 			if ( this.opts.modal )
@@ -143,12 +116,6 @@
 			//	Open
 			glbl.$html.addClass( _c.opened );
 			this.$menu.addClass( _c.opened );
-
-			//	Scroll page to scrolltop
-			glbl.$page.scrollTop( _scrollTop );
-
-			//	Scroll menu to top
-			this.$menu.scrollTop( 0 );
 		},
 		_openFinish: function()
 		{
@@ -165,9 +132,6 @@
 			//	Opening
 			glbl.$html.addClass( _c.opening );
 			this.$menu.trigger( _e.opening );
-
-			//	Scroll window to top
-			window.scrollTo( 0, 1 );
 		},
 		close: function()
 		{
@@ -199,11 +163,6 @@
 
 					//	Restore style and position
 					glbl.$page.attr( 'style', glbl.$page.data( _d.style ) );
-
-					if ( glbl.$scrollTopNode )
-					{
-						glbl.$scrollTopNode.scrollTop( glbl.$page.data( _d.scrollTop ) );
-					}
 
 					//	Closed
 					that.$menu.trigger( _e.closed );
@@ -344,7 +303,6 @@
 			if ( !glbl.$blck )
 			{
 				glbl.$blck = $( '<div id="' + _c.blocker + '" />' )
-					.css( 'opacity', 0 )
 					.appendTo( glbl.$body );
 			}
 
@@ -807,27 +765,6 @@
 
 
 	/*
-		BROWSER SPECIFIC FIXES
-	*/
-	$[ _PLUGIN_ ].useOverflowScrollingFallback = function( use )
-	{
-		if ( glbl.$html )
-		{
-			if ( typeof use == 'boolean' )
-			{
-				glbl.$html[ use ? 'addClass' : 'removeClass' ]( _c.nooverflowscrolling );
-			}
-			return glbl.$html.hasClass( _c.nooverflowscrolling );
-		}
-		else
-		{
-			_useOverflowScrollingFallback = use;
-			return use;
-		}
-	};
-
-
-	/*
 		DEBUG
 	*/
 	$[ _PLUGIN_ ].debug = function( msg ) {};
@@ -840,19 +777,15 @@
 	};
 
 
-	//	Global vars
-	var _useOverflowScrollingFallback = !$[ _PLUGIN_ ].support.overflowscrolling;
-
-
 	function extendOptions( o, c, $m )
 	{
-		if ( typeof o != 'object' )
-		{
-			o = {};
-		}
 
 		if ( $m )
 		{
+			if ( typeof o != 'object' )
+			{
+				o = {};
+			}
 			if ( typeof o.isMenu != 'boolean' )
 			{
 				var $c = $m.children();
@@ -860,72 +793,26 @@
 			}
 			return o;
 		}
-
-
-		//	Extend onClick
-		if ( typeof o.onClick != 'object' )
-		{
-			o.onClick = {};
-		}
-
-
-		//	DEPRECATED
-		if ( typeof o.onClick.setLocationHref != 'undefined' )
-		{
-			$[ _PLUGIN_ ].deprecated( 'onClick.setLocationHref option', '!onClick.preventDefault' );
-			if ( typeof o.onClick.setLocationHref == 'boolean' )
-			{
-				o.onClick.preventDefault = !o.onClick.setLocationHref;
-			}
-		}
-		//	/DEPRECATED
-
-
+		
 		//	Extend from defaults
 		o = $.extend( true, {}, $[ _PLUGIN_ ].defaults, o );
 
 
-		//	Degration
-		if ( $[ _PLUGIN_ ].useOverflowScrollingFallback() )
+		//	DEPRECATED
+		if ( o.position == 'top' || o.position == 'bottom' )
 		{
-			switch( o.position )
+			if ( o.zposition == 'back' || o.zposition == 'next' )
 			{
-				case 'top':
-				case 'right':
-				case 'bottom':
-					$[ _PLUGIN_ ].debug( 'position: "' + o.position + '" not supported when using the overflowScrolling-fallback.' );
-					o.position = 'left';
-					break;
-			}
-			switch( o.zposition )
-			{
-				case 'front':
-				case 'next':
-					$[ _PLUGIN_ ].debug( 'z-position: "' + o.zposition + '" not supported when using the overflowScrolling-fallback.' );
-					o.zposition = 'back';
-					break;
+				$[ _PLUGIN_ ].deprecated( 'Using position "' + o.position + '" in combination with zposition "' + o.zposition + '"', 'zposition "front"' );
+				o.zposition = 'front';
 			}
 		}
+		//	/DEPRECATED
 
 		return o;
 	}
 	function extendConfiguration( c )
 	{
-		if ( typeof c != 'object' )
-		{
-			c = {};
-		}
-
-
-		//	DEPRECATED
-		if ( typeof c.panelNodeType != 'undefined' )
-		{
-			$[ _PLUGIN_ ].deprecated( 'panelNodeType configuration option', 'panelNodetype' );
-			c.panelNodetype = c.panelNodeType;
-		}
-		//	/DEPRECATED
-
-
 		c = $.extend( true, {}, $[ _PLUGIN_ ].configuration, c )
 
 		//	Set pageSelector
@@ -963,7 +850,7 @@
 
 		//	Classnames
 		_c.mm = function( c ) { return 'mm-' + c; };
-		_c.add( 'menu ismenu panel list subtitle selected label spacer current highest hidden page blocker modal background opened opening subopened subopen fullsubopen subclose nooverflowscrolling' );
+		_c.add( 'menu ismenu panel list subtitle selected label spacer current highest hidden page blocker modal background opened opening subopened subopen fullsubopen subclose' );
 		_c.umm = function( c )
 		{
 			if ( c.slice( 0, 3 ) == 'mm-' )
@@ -975,11 +862,46 @@
 
 		//	Datanames
 		_d.mm = function( d ) { return 'mm-' + d; };
-		_d.add( 'parent style scrollTop offetLeft' );
+		_d.add( 'parent style' );
 
 		//	Eventnames
 		_e.mm = function( e ) { return e + '.mm'; };
-		_e.add( 'toggle open opening opened close closing closed update setPage setSelected transitionend webkitTransitionEnd touchstart touchend mousedown mouseup click keydown keyup resize' );
+		_e.add( 'toggle open opening opened close closing closed update setPage setSelected transitionend webkitTransitionEnd mousedown touchstart mouseup touchend scroll touchmove click keydown keyup resize' );
+
+
+		//	Prevent tabbing
+		glbl.$wndw
+			.on( _e.keydown,
+				function( e )
+				{
+					if ( glbl.$html.hasClass( _c.opened ) )
+					{
+						if ( e.keyCode == 9 )
+						{
+							e.preventDefault();
+							return false;
+						}
+					}
+				}
+			);
+
+		//	Set page min-height to window height
+		var _h = 0;
+		glbl.$wndw
+			.on( _e.resize,
+				function( e, force )
+				{
+					if ( force || glbl.$html.hasClass( _c.opened ) )
+					{
+						var nh = glbl.$wndw.height();
+						if ( nh != _h )
+						{
+							_h = nh;
+							glbl.$page.css( 'min-height', nh );
+						}
+					}
+				}
+			);
 
 
 		$[ _PLUGIN_ ]._c = _c;
@@ -987,8 +909,6 @@
 		$[ _PLUGIN_ ]._e = _e;
 
 		$[ _PLUGIN_ ].glbl = glbl;
-
-		$[ _PLUGIN_ ].useOverflowScrollingFallback( _useOverflowScrollingFallback );
 	}
 
 	function openSubmenuHorizontal( $opening, $m )
@@ -1031,22 +951,6 @@
 			.addClass( _c.opened );
 
 		return 'open';
-	}
-
-	function findScrollTop()
-	{
-		if ( !glbl.$scrollTopNode )
-		{
-			if ( glbl.$html.scrollTop() != 0 )
-			{
-				glbl.$scrollTopNode = glbl.$html;
-			}
-			else if ( glbl.$body.scrollTop() != 0 )
-			{
-				glbl.$scrollTopNode = glbl.$body;
-			}
-		}
-		return ( glbl.$scrollTopNode ) ? glbl.$scrollTopNode.scrollTop() : 0;
 	}
 
 	function transitionend( $e, fn, duration )

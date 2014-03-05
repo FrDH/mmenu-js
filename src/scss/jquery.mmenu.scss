@@ -5,37 +5,37 @@
 
 
 //	Animations
+.mm-page,
+.mm-fixed-top,
+.mm-fixed-bottom,
+.mm-menu.mm-horizontal > .mm-panel
+{
+	@include vendor-prefix( "transition", none $transitionDuration $transitionFunction );
+
+	// border is needed to force transitionend event even if no other value changed
+	@include vendor-prefix( "transition-property", ( top, right, bottom, left, border ) );
+}
 html.mm-opened
 {
 	.mm-page,
-	#mm-blocker,
-	.mm-fixed-top,
-	.mm-fixed-bottom,
-	.mm-menu.mm-horizontal > .mm-panel
-	{
-		@include vendor-prefix( "transition", none $transitionDuration $transitionFunction );
-
-		// border is needed to force transitionend event even if no other value changed
-		@include vendor-prefix( "transition-property", ( top, right, bottom, left, border ) );
-	}
-	.mm-page,
 	#mm-blocker
 	{
-		left: 0%;
+		left: 0;
 		top: 0;
 		margin: 0;
 		border: 0px solid rgba( 0, 0, 0, 0 );
 	}
-	
-	&.mm-opening
+}
+
+html.mm-opening
+{
+	.mm-page,
+	#mm-blocker
 	{
-		.mm-page,
-		#mm-blocker
-		{
-			border: 0px solid rgba( 100, 100, 100, 0 );
-		}
+		border: 0px solid rgba( 100, 100, 100, 0 );
 	}
 }
+
 
 //	Generic classes
 .mm-menu .mm-hidden
@@ -71,18 +71,14 @@ html.mm-opened .mm-page,
 html.mm-opened,
 html.mm-opened body
 {
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
+	overflow-x: hidden;
 	position: relative;
 }
 
 // page + blocker
 html.mm-opened .mm-page
 {
-	height: 100%;
-	overflow: hidden;
-	position: absolute;
+	position: relative;
 }
 html.mm-background .mm-page
 {
@@ -90,18 +86,20 @@ html.mm-background .mm-page
 }
 #mm-blocker
 {
-	background: #fff;
-	opacity: 0;
+	background: url( data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw== ) transparent;
 	display: none;
 	width: 100%;
 	height: 100%;
-	position: absolute;
+	position: fixed;
 	z-index: 999999;
 }
-html.mm-opened #mm-blocker,
-html.mm-blocking #mm-blocker
+html.mm-opened,
+html.mm-blocking
 {
-	display: block;
+	#mm-blocker
+	{
+		display: block;
+	}
 }
 
 // menu
@@ -116,7 +114,7 @@ html.mm-blocking #mm-blocker
 	overflow: hidden;
 	height: 100%;
 	padding: 0;
-	position: absolute;
+	position: fixed;
 	left: 0;
 	top: 0;
 	z-index: 0;
@@ -356,48 +354,3 @@ html.mm-blocking #mm-blocker
 
 @include colors;
 @include sizing;
-
-
-
-//	Bugfix for browsers without support for overflowscrolling
-//		- Android < 3
-
-html.mm-nooverflowscrolling.mm-opened
-{
-	height: auto;
-	overflow: auto;
-	overflow-x: hidden;
-	overflow-y: scroll;
-
-	body
-	{
-		overflow: auto;
-	}
-	.mm-page
-	{
-		min-height: 1000px;
-		position: fixed;
-	}
-	.mm-menu
-	{
-		height: auto;
-		min-height: 1000px;
-		overflow: auto;
-		overflow-x: hidden;
-		position: relative;
-		left: auto;
-		top: auto;
-	}
-	> .mm-panel
-	{
-		position: relative;
-		height: auto;
-		display: none;
-		left: 0;
-		
-		&.mm-current
-		{
-			display: block;
-		}
-	}
-}

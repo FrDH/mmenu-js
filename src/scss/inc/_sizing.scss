@@ -12,7 +12,7 @@ $defaultMaxHeight	: 880px !default;
 	$width: $defaultWidth, $minWidth: $defaultMinWidth, $maxWidth: $defaultMaxWidth,
 	$height: $defaultHeight, $minHeight: $defaultMinHeight, $maxHeight: $defaultMaxHeight
 ) {
-	html.mm-opened.mm-opening#{$cls}
+	html.mm-opening#{$cls}
 	{
 		.mm-page,
 		#mm-blocker,
@@ -31,7 +31,7 @@ $defaultMaxHeight	: 880px !default;
 		{
 			width: $minWidth;
 		}
-		html.mm-opened.mm-opening#{$cls}
+		html.mm-opening#{$cls}
 		{
 			.mm-page,
 			#mm-blocker,
@@ -47,7 +47,7 @@ $defaultMaxHeight	: 880px !default;
 		{
 			width: $maxWidth;
 		}
-		html.mm-opened.mm-opening#{$cls}
+		html.mm-opening#{$cls}
 		{
 			.mm-page,
 			#mm-blocker,
@@ -70,7 +70,7 @@ $defaultMaxHeight	: 880px !default;
 	{
 		height: percentage( $height );
 	}
-	html.mm-top.mm-opened.mm-opening#{$cls}
+	html.mm-top.mm-opening#{$cls}
 	{
 		.mm-page,
 		#mm-blocker,
@@ -88,7 +88,7 @@ $defaultMaxHeight	: 880px !default;
 		{
 			height: $minHeight;
 		}
-		html.mm-top.mm-opened.mm-opening#{$cls}
+		html.mm-top.mm-opening#{$cls}
 		{
 			.mm-page,
 			#mm-blocker,
@@ -107,7 +107,7 @@ $defaultMaxHeight	: 880px !default;
 		{
 			height: $maxHeight;
 		}
-		html.mm-top.mm-opened.mm-opening#{$cls}
+		html.mm-top.mm-opening#{$cls}
 		{
 			.mm-page,
 			#mm-blocker,
@@ -127,7 +127,7 @@ $defaultMaxHeight	: 880px !default;
 	{
 		width: percentage( $width );
 	}
-	html.mm-right.mm-opened.mm-opening#{$cls}
+	html.mm-right.mm-opening#{$cls}
 	{
 		.mm-page,
 		#mm-blocker,
@@ -142,7 +142,7 @@ $defaultMaxHeight	: 880px !default;
 		{
 			width: $minWidth;
 		}
-		html.mm-right.mm-opened.mm-opening#{$cls}
+		html.mm-right.mm-opening#{$cls}
 		{
 			.mm-page,
 			#mm-blocker,
@@ -158,7 +158,7 @@ $defaultMaxHeight	: 880px !default;
 		{
 			width: $maxWidth;
 		}
-		html.mm-right.mm-opened.mm-opening#{$cls}
+		html.mm-right.mm-opening#{$cls}
 		{
 			.mm-page,
 			#mm-blocker,
@@ -175,7 +175,7 @@ $defaultMaxHeight	: 880px !default;
 	{
 		height: percentage( $height );
 	}
-	html.mm-bottom.mm-opened.mm-opening#{$cls}
+	html.mm-bottom.mm-opening#{$cls}
 	{
 		.mm-page,
 		#mm-blocker,
@@ -193,7 +193,7 @@ $defaultMaxHeight	: 880px !default;
 		{
 			height: $minHeight;
 		}
-		html.mm-bottom.mm-opened.mm-opening#{$cls}
+		html.mm-bottom.mm-opening#{$cls}
 		{
 			.mm-page,
 			#mm-blocker,
@@ -212,7 +212,7 @@ $defaultMaxHeight	: 880px !default;
 		{
 			height: $maxHeight;
 		}
-		html.mm-bottom.mm-opened.mm-opening#{$cls}
+		html.mm-bottom.mm-opening#{$cls}
 		{
 			.mm-page,
 			#mm-blocker,
@@ -355,8 +355,8 @@ $defaultMaxHeight	: 880px !default;
 
 
 	//	Fixed elements
-	html.mm-opened.mm-front,
-	html.mm-opened.mm-opening.mm-front
+	html.mm-front,
+	html.mm-opening.mm-front
 	{
 		.mm-fixed-top,
 		.mm-fixed-bottom
