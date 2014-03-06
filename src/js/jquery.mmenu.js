@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.2.0
+ * jQuery mmenu v4.2.1
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -16,7 +16,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.2.0';
+		_VERSION_	= '4.2.1';
 
 
 	//	Plugin already excists
@@ -88,7 +88,7 @@
 			//	Store style and position
 			glbl.$page.data( _d.style, glbl.$page.attr( 'style' ) || '' );
 
-			//	Trigger window-resize to measure width
+			//	Trigger window-resize to measure height
 			glbl.$wndw.trigger( _e.resize, [ true ] );
 
 			//	Add options
@@ -156,10 +156,6 @@
 					{
 						glbl.$html.removeClass( that.opts.classes );
 					}
-
-					glbl.$wndw
-						.off( _e.resize )
-						.off( _e.keydown );
 
 					//	Restore style and position
 					glbl.$page.attr( 'style', glbl.$page.data( _d.style ) );
@@ -894,10 +890,10 @@
 					if ( force || glbl.$html.hasClass( _c.opened ) )
 					{
 						var nh = glbl.$wndw.height();
-						if ( nh != _h )
+						if ( force || nh != _h )
 						{
 							_h = nh;
-							glbl.$page.css( 'min-height', nh );
+							glbl.$page.css( 'minHeight', nh );
 						}
 					}
 				}
