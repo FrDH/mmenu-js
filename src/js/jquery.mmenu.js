@@ -176,7 +176,9 @@
 		_init: function()
 		{
 			this.opts = extendOptions( this.opts, this.conf, this.$menu );
-			this.direction = ( this.opts.slidingSubmenus ) ? 'horizontal' : 'vertical';
+			this.direction = (this.opts.slidingSubmenus) ? 'horizontal' : 'vertical';
+
+			glbl.$body = $(this.opts.pageContainer);
 	
 			//	INIT PAGE & MENU
 			this._initPage( glbl.$page );
@@ -367,7 +369,7 @@
 
 			//	Prepend to body
 			this.$menu
-				.prependTo( 'body' )
+				.prependTo(glbl.$body)
 				.addClass( _c.menu );
 
 			//	Add direction class
@@ -693,6 +695,7 @@
 	$[ _PLUGIN_ ].defaults = {
 		position		: 'left',
 		zposition		: 'back',
+	    pageContainer   : 'body',
 		moveBackground	: true,
 		slidingSubmenus	: true,
 		modal			: false,
