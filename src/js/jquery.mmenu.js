@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.2.2
+ * jQuery mmenu v4.2.3
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -16,7 +16,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.2.2';
+		_VERSION_	= '4.2.3';
 
 
 	//	Plugin already excists
@@ -365,9 +365,8 @@
 				}
 			);
 
-			//	Prepend to body
-			this.$menu
-				.prependTo( 'body' )
+			//	Inject to body
+			this.$menu[ this.conf.menuInjectMethod + 'To' ]( this.conf.menuWrapperSelector )
 				.addClass( _c.menu );
 
 			//	Add direction class
@@ -705,7 +704,6 @@
 		}
 	};
 	$[ _PLUGIN_ ].configuration = {
-		preventTabbing		: true,
 		panelClass			: 'Panel',
 		listClass			: 'List',
 		selectedClass		: 'Selected',
@@ -713,6 +711,9 @@
 		spacerClass			: 'Spacer',
 		pageNodetype		: 'div',
 		panelNodetype		: 'ul, ol, div',
+		pageSelector		: null,
+		menuWrapperSelector	: 'body',
+		menuInjectMethod	: 'prepend',
 		transitionDuration	: 400
 	};
 
@@ -815,6 +816,12 @@
 		if ( typeof c.pageSelector != 'string' )
 		{
 			c.pageSelector = '> ' + c.pageNodetype;
+		}
+
+		//	Restrict injectMethod
+		if ( c.menuInjectMethod != 'append' )
+		{
+			c.menuInjectMethod = 'prepend';
 		}
 
 		return c;
