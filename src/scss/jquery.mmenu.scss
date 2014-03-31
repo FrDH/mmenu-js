@@ -10,7 +10,7 @@
 .mm-fixed-bottom,
 .mm-menu.mm-horizontal > .mm-panel
 {
-	@include vendor-prefix( "transition", none $transitionDuration $transitionFunction );
+	@include vendor-prefix( "transition", none $mm_transitionDuration $mm_transitionFunction );
 
 	// border is needed to force transitionend event even if no other value changed
 	@include vendor-prefix( "transition-property", ( top, right, bottom, left, border ) );
@@ -130,7 +130,7 @@ html.mm-blocking
 	
 		width: 100%;
 		height: 100%;
-		padding: $padding * 2;
+		padding: $mm_padding * 2;
 		position: absolute;
 		top: 0;
 		left: 100%;
@@ -142,7 +142,7 @@ html.mm-blocking
 		}
 		&.mm-subopened
 		{
-			left: -$subOffset;
+			left: -$mm_subpanelOffset;
 		}
 		&.mm-highest
 		{
@@ -161,17 +161,17 @@ html.mm-blocking
 {
 	.mm-list
 	{
-		padding: ( $btnSize / 2 ) 0;
+		padding: ( $mm_btnSize / 2 ) 0;
 	}
 	> .mm-list
 	{
-		padding: ( $btnSize / 2 ) 0 $btnSize 0;
+		padding: ( $mm_btnSize / 2 ) 0 $mm_btnSize 0;
 	}
 }
 .mm-panel > .mm-list
 {
-	margin-left: -( $padding * 2 );
-	margin-right: -( $padding * 2 );
+	margin-left: -( $mm_padding * 2 );
+	margin-right: -( $mm_padding * 2 );
 	
 	&:first-child
 	{
@@ -190,7 +190,7 @@ html.mm-blocking
 .mm-list
 {
 	font: inherit;
-	font-size: $fontSize;
+	font-size: $mm_fontSize;
 
 	a,
 	a:hover
@@ -207,9 +207,9 @@ html.mm-blocking
 		{
 			@include ellipsis;
 			color: inherit;
-			line-height: $btnSize - ( $padding * 2 );
+			line-height: $mm_btnSize - ( $mm_padding * 2 );
 			display: block;
-			padding: $padding $padding $padding ( $padding * 2 );
+			padding: $mm_padding $mm_padding $mm_padding ( $mm_padding * 2 );
 			margin: 0;
 		}
 	}
@@ -220,7 +220,7 @@ html.mm-blocking
 		&:after
 		{
 			width: auto;
-			margin-left: ( $padding * 2 );
+			margin-left: ( $mm_padding * 2 );
 			position: relative;
 			left: auto;
 		}
@@ -231,7 +231,7 @@ html.mm-blocking
 	{
 		@include border-left;
 
-		width: $btnSize;
+		width: $mm_btnSize;
 		height: 100%;
 		padding: 0;
 		position: absolute;
@@ -252,8 +252,8 @@ html.mm-blocking
 		+ a,
 		+ span
 		{
-			padding-right: ( $padding / 2 );
-			margin-right: $btnSize;
+			padding-right: ( $mm_padding / 2 );
+			margin-right: $mm_btnSize;
 		}
 	}
 
@@ -268,7 +268,7 @@ html.mm-blocking
 			+ a,
 			+ span
 			{
-				padding-right: $btnSize + ( $padding / 2 );
+				padding-right: $mm_btnSize + ( $mm_padding / 2 );
 				margin-right: 0;
 			}
 		}
@@ -276,27 +276,27 @@ html.mm-blocking
 	
 	a.mm-subclose
 	{
-		text-indent: $btnSize - ( $padding * 2 );
-		padding-top: ( $btnSize / 2 ) + $padding;
-		margin-top: -( $btnSize / 2 );
+		text-indent: $mm_btnSize - ( $mm_padding * 2 );
+		padding-top: ( $mm_btnSize / 2 ) + $mm_padding;
+		margin-top: -( $mm_btnSize / 2 );
 	}
 
 	// Labels
-	$labelSize: ( $btnSize / 2 ) + ( $padding / 2 );
+	$labelSize: ( $mm_btnSize / 2 ) + ( $mm_padding / 2 );
 	> li.mm-label
 	{
 		@include ellipsis;
 		font-size: 10px;
 		text-transform: uppercase;
-		text-indent: $padding * 2;
+		text-indent: $mm_padding * 2;
 		line-height: $labelSize;
-		padding-right: $padding / 2;
+		padding-right: $mm_padding / 2;
 	}
 
 	// Spacers
 	> li.mm-spacer
 	{
-		padding-top: $btnSize;
+		padding-top: $mm_btnSize;
 		
 		&.mm-label
 		{
@@ -318,7 +318,7 @@ html.mm-blocking
 	a.mm-subclose:before
 	{
 		@include arrow-prev;
-		margin-bottom: -( $padding * 2 ) + 5;
+		margin-bottom: -( $mm_padding * 2 ) + 5;
 		left: 22px;
 	}
 }
@@ -329,7 +329,7 @@ html.mm-blocking
 	.mm-panel
 	{
 		display: none;
-		padding: $padding 0 $padding $padding;
+		padding: $mm_padding 0 $mm_padding $mm_padding;
 		
 		li:last-child:after
 		{
@@ -342,7 +342,7 @@ html.mm-blocking
 	}
 	> li.mm-opened > a.mm-subopen
 	{
-		height: $btnSize;
+		height: $mm_btnSize;
 		&:after
 		{
 			@include vendor-prefix( "transform", rotate( 45deg ) );

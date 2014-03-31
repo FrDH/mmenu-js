@@ -5,7 +5,6 @@
 @import "../inc/variables";
 
 $height: 60px;
-$padding: 10px;
 $paddingTop: $height / 2;
 
 .mm-header
@@ -15,10 +14,10 @@ $paddingTop: $height / 2;
 	background: inherit;
 	border-bottom: 1px solid transparent;
 	text-align: center;
-	line-height: $padding * 2;
+	line-height: $mm_padding * 2;
 	width: 100%;
 	height: $height;
-	padding: $paddingTop $btnSize 0 $btnSize;
+	padding: $paddingTop $mm_btnSize 0 $mm_btnSize;
 	position: absolute;
 	z-index: 2;
 	top: 0;
@@ -41,7 +40,7 @@ $paddingTop: $height / 2;
 
 		text-decoration: none;
 		display: block;
-		width: $btnSize;
+		width: $mm_btnSize;
 		height: 100%;
 		position: absolute;
 		bottom: 0;
@@ -49,7 +48,7 @@ $paddingTop: $height / 2;
 		&:before
 		{
 			@include arrow;
-			margin-bottom: -( $padding + 5 );
+			margin-bottom: -( $mm_padding + 5 );
 		}
 	}
 	.mm-prev
@@ -76,19 +75,19 @@ $paddingTop: $height / 2;
 
 .mm-menu.mm-hassearch .mm-header
 {
-	height: $height - $padding;
-	padding-top: $paddingTop - $padding;
-	top: $btnSize + $padding;
+	height: $height - $mm_padding;
+	padding-top: $paddingTop - $mm_padding;
+	top: $mm_btnSize + $mm_padding;
 
 	.mm-prev:before,
 	.mm-mext:before
 	{
-		margin-bottom: -( ( $padding / 2 ) + 5 );
+		margin-bottom: -( ( $mm_padding / 2 ) + 5 );
 	}
 }
 
 $hTop: $height;
-$sTop: $height + $btnSize;
+$sTop: $height + $mm_btnSize;
 .mm-menu.mm-hasheader
 {
 	li.mm-subtitle
@@ -97,11 +96,11 @@ $sTop: $height + $btnSize;
 	}
 	.mm-panel
 	{
-		padding-top: $hTop + ( $padding * 2 );
+		padding-top: $hTop + ( $mm_padding * 2 );
 	}
 	&.mm-hassearch > .mm-panel
 	{
-		padding-top: $sTop + ( $padding * 2 );
+		padding-top: $sTop + ( $mm_padding * 2 );
 	}
 	&.mm-ismenu
 	{

@@ -14,8 +14,8 @@
 
 	background: inherit;
 	width: 100%;
-	height: $btnSize + $padding;
-	padding: $padding;
+	height: $mm_btnSize + $mm_padding;
+	padding: $mm_padding;
 	position: relative;
 	top: 0;
 	z-index: 2;
@@ -23,16 +23,16 @@
 	input
 	{		
 		border: none;
-		border-radius: ( $btnSize - $padding ) / 2;
+		border-radius: ( $mm_btnSize - $mm_padding ) / 2;
 		font: inherit;
-		font-size: $fontSize;
-		line-height: $btnSize - $padding;
+		font-size: $mm_fontSize;
+		line-height: $mm_btnSize - $mm_padding;
 		outline: none;
 		display: block;
 		width: 100%;
-		height: $btnSize - $padding;
+		height: $mm_btnSize - $mm_padding;
 		margin: 0;
-		padding: 0 $padding;
+		padding: 0 $mm_padding;
 	}
 }
 .mm-menu
@@ -50,9 +50,9 @@
 	li.mm-noresults
 	{
 		text-align: center;
-		font-size: round( $fontSize * 1.5 );
+		font-size: round( $mm_fontSize * 1.5 );
 		display: none;
-		padding-top: $btnSize * 2;
+		padding-top: $mm_btnSize * 2;
 		
 		&:after
 		{
@@ -66,7 +66,7 @@
 
 	&.mm-hassearch > .mm-panel
 	{
-		padding-top: $btnSize + ( $padding * 2 )
+		padding-top: $mm_btnSize + ( $mm_padding * 2 )
 	}
 }
 

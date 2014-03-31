@@ -10,16 +10,16 @@ html.mm-slide
 {
 	.mm-menu
 	{
-		-webkit-transition: -webkit-transform $transitionDuration $transitionFunction;
-		-moz-transition: -moz-transform $transitionDuration $transitionFunction;
-		-o-transition: -o-transform $transitionDuration $transitionFunction;
-		transition: transform $transitionDuration $transitionFunction;
+		-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
+		-moz-transition: -moz-transform $mm_transitionDuration $mm_transitionFunction;
+		-o-transition: -o-transform $mm_transitionDuration $mm_transitionFunction;
+		transition: transform $mm_transitionDuration $mm_transitionFunction;
 	}
 
 	//	Left
 	&.mm-opened .mm-menu
 	{
-		@include vendor-prefix( 'transform', translateX( -$subOffset ) );
+		@include vendor-prefix( 'transform', translateX( -$mm_subpanelOffset ) );
 	}
 	&.mm-opening .mm-menu
 	{
@@ -31,7 +31,7 @@ html.mm-slide
 	{
 		&.mm-opened .mm-menu
 		{
-			@include vendor-prefix( 'transform', translateX( $subOffset ) );
+			@include vendor-prefix( 'transform', translateX( $mm_subpanelOffset ) );
 		}
 		&.mm-opening .mm-menu
 		{
@@ -44,7 +44,7 @@ html.mm-slide
 	{
 		&.mm-opened .mm-menu
 		{
-			@include vendor-prefix( 'transform', translateY( -$subOffset ) );
+			@include vendor-prefix( 'transform', translateY( -$mm_subpanelOffset ) );
 		}
 		&.mm-opening .mm-menu
 		{
@@ -57,7 +57,7 @@ html.mm-slide
 	{
 		&.mm-opened .mm-menu
 		{
-			@include vendor-prefix( 'transform', translateY( $subOffset ) );
+			@include vendor-prefix( 'transform', translateY( $mm_subpanelOffset ) );
 		}
 		&.mm-opening .mm-menu
 		{
@@ -74,16 +74,16 @@ html.mm-zoom-menu
 {
 	.mm-menu
 	{
-		-webkit-transition: -webkit-transform $transitionDuration $transitionFunction;
-		-moz-transition: -moz-transform $transitionDuration $transitionFunction;
-		-o-transition: -o-transform $transitionDuration $transitionFunction;
-		transition: transform $transitionDuration $transitionFunction;
+		-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
+		-moz-transition: -moz-transform $mm_transitionDuration $mm_transitionFunction;
+		-o-transition: -o-transform $mm_transitionDuration $mm_transitionFunction;
+		transition: transform $mm_transitionDuration $mm_transitionFunction;
 	}
 
 	//	Left
 	&.mm-opened .mm-menu
 	{
-		@include vendor-prefix( 'transform', scale( $scaleDown, $scaleDown ) translateX( -$subOffset ) );
+		@include vendor-prefix( 'transform', scale( $scaleDown, $scaleDown ) translateX( -$mm_subpanelOffset ) );
 		@include vendor-prefix( 'transform-origin', left center );
 	}
 	&.mm-opening .mm-menu
@@ -96,7 +96,7 @@ html.mm-zoom-menu
 	{
 		&.mm-opened .mm-menu
 		{
-			@include vendor-prefix( 'transform', scale( $scaleDown, $scaleDown) translateX( $subOffset ) );
+			@include vendor-prefix( 'transform', scale( $scaleDown, $scaleDown) translateX( $mm_subpanelOffset ) );
 			@include vendor-prefix( 'transform-origin', right center );
 		}
 		&.mm-opening .mm-menu
@@ -110,7 +110,7 @@ html.mm-zoom-menu
 	{
 		&.mm-opened .mm-menu
 		{
-			@include vendor-prefix( 'transform', scale( $scaleDown, $scaleDown ) translateY( -$subOffset ) );
+			@include vendor-prefix( 'transform', scale( $scaleDown, $scaleDown ) translateY( -$mm_subpanelOffset ) );
 			@include vendor-prefix( 'transform-origin', center top );
 		}
 		&.mm-opening .mm-menu
@@ -124,7 +124,7 @@ html.mm-zoom-menu
 	{
 		&.mm-opened .mm-menu
 		{
-			@include vendor-prefix( 'transform', scale( $scaleDown, $scaleDown ) translateY( $subOffset ) );
+			@include vendor-prefix( 'transform', scale( $scaleDown, $scaleDown ) translateY( $mm_subpanelOffset ) );
 			@include vendor-prefix( 'transform-origin', center bottom );
 		}
 		&.mm-opening .mm-menu

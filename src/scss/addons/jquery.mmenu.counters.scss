@@ -7,24 +7,24 @@
 em.mm-counter
 {
 	font: inherit;
-	font-size: $fontSize;
+	font-size: $mm_fontSize;
 	font-style: normal;
 	text-indent: 0;
-	line-height: $btnSize / 2;
+	line-height: $mm_btnSize / 2;
 	display: block;
-	margin-top: -( $btnSize / 4 );
+	margin-top: -( $mm_btnSize / 4 );
 	position: absolute;
-	right: $btnSize;
+	right: $mm_btnSize;
 	top: 50%;
 
 	+ a.mm-subopen
 	{
-		padding-left: $btnSize;
+		padding-left: $mm_btnSize;
 
 		+ a,
 		+ span
 		{
-			margin-right: $btnSize * 2;
+			margin-right: $mm_btnSize * 2;
 		}
 	}
 	+ a.mm-fullsubopen
@@ -38,7 +38,7 @@ em.mm-counter
 {
 	em.mm-counter
 	{
-		top: ( $btnSize / 4 ) + 2;
+		top: ( $mm_btnSize / 4 ) + 2;
 		margin-top: 0;
 	}
 }

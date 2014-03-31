@@ -1,16 +1,7 @@
-//	Variables
-$defaultWidth		: 0.8 !default;
-$defaultMinWidth	: 140px !default;
-$defaultMaxWidth	: 440px !default;
-
-$defaultHeight		: 0.8 !default;
-$defaultMinHeight	: 140px !default;
-$defaultMaxHeight	: 880px !default;
-
 //	Sizing left
 @mixin sizing( $cls: "",
-	$width: $defaultWidth, $minWidth: $defaultMinWidth, $maxWidth: $defaultMaxWidth,
-	$height: $defaultHeight, $minHeight: $defaultMinHeight, $maxHeight: $defaultMaxHeight
+	$width: $mm_width, $minWidth: $mm_minWidth, $maxWidth: $mm_maxWidth,
+	$height: $mm_height, $minHeight: $mm_minHeight, $maxHeight: $mm_maxHeight
 ) {
 	html.mm-opening#{$cls}
 	{
@@ -62,8 +53,8 @@ $defaultMaxHeight	: 880px !default;
 
 //	Sizing top/right/bottom
 @mixin sizing_position( $cls: "",
-	$width: $defaultWidth, $minWidth: $defaultMinWidth, $maxWidth: $defaultMaxWidth,
-	$height: $defaultHeight, $minHeight: $defaultMinHeight, $maxHeight: $defaultMaxHeight
+	$width: $mm_width, $minWidth: $mm_minWidth, $maxWidth: $mm_maxWidth,
+	$height: $mm_height, $minHeight: $mm_minHeight, $maxHeight: $mm_maxHeight
 ) {
 	// top
 	.mm-menu.mm-top#{$cls}
@@ -230,8 +221,8 @@ $defaultMaxHeight	: 880px !default;
 
 //	Sizing z-position
 @mixin sizing_zposition( $cls: "",
-	$width: $defaultWidth, $minWidth: $defaultMinWidth, $maxWidth: $defaultMaxWidth,
-	$height: $defaultHeight, $minHeight: $defaultMinHeight, $maxHeight: $defaultMaxHeight
+	$width: $mm_width, $minWidth: $mm_minWidth, $maxWidth: $mm_maxWidth,
+	$height: $mm_height, $minHeight: $mm_minHeight, $maxHeight: $mm_maxHeight
 ) {
 	// left
 	.mm-menu#{$cls}

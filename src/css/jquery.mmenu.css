@@ -144,7 +144,7 @@ html.mm-blocking #mm-blocker {
       display: block;
       padding: 10px 10px 10px 20px;
       margin: 0; }
-  .mm-list > li:not(.mm-subtitle):not(.mm-label):not(.mm-noresults)::after {
+  .mm-list > li:not(.mm-subtitle):not(.mm-label):not(.mm-noresults):after {
     content: '';
     border-bottom-width: 1px;
     border-bottom-style: solid;
@@ -166,7 +166,7 @@ html.mm-blocking #mm-blocker {
     right: 0;
     top: 0;
     z-index: 2; }
-    .mm-list a.mm-subopen::before {
+    .mm-list a.mm-subopen:before {
       content: '';
       border-left-width: 1px;
       border-left-style: solid;

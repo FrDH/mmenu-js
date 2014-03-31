@@ -1,13 +1,31 @@
-//	The size of the buttons
-$btnSize: 40px !default;
-$padding: 10px !default;
-$fontSize: 14px !default;
-
 //	Animations
-$transitionDuration: 0.4s !default;
-$transitionFunction: ease !default;
+$mm_transitionDuration: 0.4s !default;
+$mm_transitionFunction: ease !default;
 
-$subOffset: 40% !default;
+//	Sizing and positioning
+$mm_width: 0.8 !default;
+$mm_minWidth: 140px !default;
+$mm_maxWidth: 440px !default;
+
+$mm_height: 0.8 !default;
+$mm_minHeight: 140px !default;
+$mm_maxHeight: 880px !default;
+
+$mm_btnSize: 40px !default;
+$mm_padding: 10px !default;
+$mm_fontSize: 14px !default;
+
+$mm_subpanelOffset: 40% !default;
+
+//	Colors
+$mm_baseBg: #333 !default;
+$mm_pageShadow: 0 0 20px rgba( 0, 0, 0, 0.5 ) !default;
+$mm_color: rgba( 255, 255, 255, 0.6 ) !default;
+$mm_dimmedColor: rgba( 255, 255, 255, 0.3 ) !default;
+$mm_emphasizedBg: rgba( 0, 0, 0, 0.1 ) !default;
+$mm_highlightedBg: rgba( 255, 255, 255, 0.05 ) !default;
+$mm_borderColor: rgba( 0, 0, 0, 0.15 ) !default;
+
 
 
 @import "sizing";
@@ -32,19 +50,19 @@ $subOffset: 40% !default;
 }
 @mixin border-top
 {
-	@include border( "top", ":before", "width", "top", "left" );
+	@include border( "top", "before", "width", "top", "left" );
 }
 @mixin border-right
 {
-	@include border( "right", ":after", "height", "right", "top" );
+	@include border( "right", "after", "height", "right", "top" );
 }
 @mixin border-bottom
 {
-	@include border( "bottom", ":after", "width", "bottom", "left" );
+	@include border( "bottom", "after", "width", "bottom", "left" );
 }
 @mixin border-left
 {
-	@include border( "left", ":before", "height", "left", "top" );
+	@include border( "left", "before", "height", "left", "top" );
 }
 
 //	Misc mixins
