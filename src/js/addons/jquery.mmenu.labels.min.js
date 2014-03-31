@@ -1,7 +1,5 @@
 /*	
  * jQuery mmenu labels addon
- * @requires mmenu 4.1.0 or later
- *
  * mmenu.frebsite.nl
  *	
  * Copyright (c) Fred Heusschen

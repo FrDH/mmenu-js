@@ -1,7 +1,5 @@
 /*	
  * jQuery mmenu dragOpen addon
- * @requires mmenu 4.0.0 or later
- *
  * mmenu.frebsite.nl
  *	
  * Copyright (c) Fred Heusschen
