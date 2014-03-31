@@ -49,8 +49,7 @@ html.mm-opened .mm-page,
   -o-box-sizing: border-box;
   box-sizing: border-box; }
 
-html.mm-opened,
-html.mm-opened body {
+html.mm-opened {
   overflow-x: hidden;
   position: relative; }
 
