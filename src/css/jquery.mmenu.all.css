@@ -1198,7 +1198,7 @@ html.mm-opened.mm-white .mm-page {
 .mm-menu.mm-white .mm-list > li:after {
   border-color: rgba(0, 0, 0, 0.1); }
 .mm-menu.mm-white .mm-list > li > a.mm-subclose {
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.06);
   color: rgba(0, 0, 0, 0.3); }
 .mm-menu.mm-white .mm-list > li > a.mm-subopen:after, .mm-menu.mm-white .mm-list > li > a.mm-subclose:before {
   border-color: rgba(0, 0, 0, 0.3); }
@@ -1206,7 +1206,7 @@ html.mm-opened.mm-white .mm-page {
   border-color: rgba(0, 0, 0, 0.1); }
 .mm-menu.mm-white .mm-list > li.mm-selected > a:not(.mm-subopen),
 .mm-menu.mm-white .mm-list > li.mm-selected > span {
-  background: rgba(0, 0, 0, 0.08); }
+  background: rgba(0, 0, 0, 0.06); }
 .mm-menu.mm-white .mm-list > li.mm-label {
   background: rgba(0, 0, 0, 0.03); }
 .mm-menu.mm-white.mm-vertical .mm-list li.mm-opened > a.mm-subopen,
