@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.2.4
+ * jQuery mmenu v4.2.5
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -16,7 +16,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.2.4';
+		_VERSION_	= '4.2.5';
 
 
 	//	Plugin already excists
@@ -516,9 +516,11 @@
 				//	Add opened-classes
 				var $selected = $('.' + _c.list + ' > li.' + _c.selected, this.$menu);
 				$selected
+					.parents( 'li' )
+					.removeClass( _c.selected )
+					.end()
 					.add( $selected.parents( 'li' ) )
-					.parents( 'li' ).removeClass( _c.selected )
-					.end().each(
+					.each(
 						function()
 						{
 							var $t = $(this),
@@ -531,15 +533,21 @@
 							}
 						}
 					)
-					.closest( '.' + _c.panel ).addClass( _c.opened )
-					.parents( '.' + _c.panel ).addClass( _c.subopened );
+					.closest( '.' + _c.panel )
+					.addClass( _c.opened )
+					.parents( '.' + _c.panel )
+					.addClass( _c.subopened );
 			}
 			else
 			{
 				//	Replace Selected-class with opened-class in parents from .Selected
-				$('li.' + _c.selected, this.$menu)
-					.addClass( _c.opened )
-					.parents( '.' + _c.selected ).removeClass( _c.selected );
+				var $selected = $('li.' + _c.selected, this.$menu);
+				$selected
+					.parents( 'li' )
+					.removeClass( _c.selected )
+					.end()
+					.add( $selected.parents( 'li' ) )
+					.addClass( _c.opened );
 			}
 
 			//	Set current opened
@@ -631,7 +639,6 @@
 			if ( id && id.length )
 			{
 				$('a[href="#' + id + '"]')
-					.off( _e.click )
 					.on( _e.click,
 						function( e )
 						{
