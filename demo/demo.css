@@ -10,6 +10,7 @@ body {
 	font-size: 14px;
 	line-height: 22px;
 	color: #333;
+	position: relative;
 	-webkit-text-size-adjust: none;
 }
 body *
@@ -93,4 +94,16 @@ pre
 .content
 {
 	padding: 20px;
+}
+#content
+{
+	padding-bottom: 70px;
+}
+.adsbygoogle
+{
+	background: #eee;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
 }
