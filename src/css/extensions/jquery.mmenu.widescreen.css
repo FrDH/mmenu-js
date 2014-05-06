@@ -2,8 +2,8 @@
 	jQuery.mmenu widescreen extension CSS
 */
 html, body {
-  height: 100% !important;
-  overflow: auto !important; }
+  min-height: 100%;
+  overflow: auto; }
 
 body {
   position: relative; }
@@ -15,7 +15,7 @@ body {
   box-shadow: none !important;
   background: inherit;
   width: 70% !important;
-  min-height: 100% !important;
+  min-height: 100%;
   height: auto !important;
   margin: 0 !important;
   left: 30% !important;
@@ -29,10 +29,8 @@ body {
   box-sizing: border-box; }
 
 .mm-menu {
-  position: fixed;
   z-index: 0;
-  width: 30% !important;
-  padding: 0; }
+  width: 30% !important; }
   .mm-menu.mm-top, .mm-menu.mm-right, .mm-menu.mm-bottom {
     top: 0 !important;
     right: auto !important;
