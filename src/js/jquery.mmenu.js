@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.2.6
+ * jQuery mmenu v4.2.7
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -16,7 +16,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.2.6';
+		_VERSION_	= '4.2.7';
 
 
 	//	Plugin already excists
@@ -49,7 +49,8 @@
 		this.opts  = opts
 		this.conf  = conf;
 
-		this.serialnr = _serialnr++;
+		this.opened		= false;
+		this.serialnr	= _serialnr++;
 
 		this._init();
 
@@ -60,6 +61,10 @@
 
 		open: function()
 		{
+			if ( this.opened )
+			{
+				return false;
+			}
 			var that = this;
 
 			this._openSetup();
@@ -77,7 +82,7 @@
 		},
 		_openSetup: function()
 		{
-			_strollTop = glbl.$wndw.scrollTop();
+			_strollTop = glbl.$wndw.scrollTop() || 0;
 
 			//	Set opened
 			this.$menu.addClass( _c.current );
@@ -125,6 +130,7 @@
 			transitionend( glbl.$page,
 				function()
 				{
+					that.opened = true;
 					that.$menu.trigger( _e.opened );
 				}, this.conf.transitionDuration
 			);
@@ -136,6 +142,11 @@
 		close: function()
 		{
 			var that = this;
+
+			if ( !this.opened )
+			{
+				return false;
+			}
 
 			//	Callback
 			transitionend( glbl.$page,
@@ -160,7 +171,7 @@
 					//	Restore style and position
 					glbl.$page.attr( 'style', glbl.$page.data( _d.style ) );
 
-					//	Closed
+					that.opened = false;
 					that.$menu.trigger( _e.closed );
 	
 				}, this.conf.transitionDuration
