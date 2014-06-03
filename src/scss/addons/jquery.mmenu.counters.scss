@@ -4,6 +4,7 @@
 
 @import "../inc/variables";
 
+
 em.mm-counter
 {
 	font: inherit;
@@ -14,17 +15,17 @@ em.mm-counter
 	display: block;
 	margin-top: -( $mm_btnSize / 4 );
 	position: absolute;
-	right: $mm_btnSize;
+	right: $mm_subopenWidth;
 	top: 50%;
 
 	+ a.mm-subopen
 	{
-		padding-left: $mm_btnSize;
+		padding-left: $mm_counterWidth;
 
 		+ a,
 		+ span
 		{
-			margin-right: $mm_btnSize * 2;
+			margin-right: $mm_counterWidth + $mm_subopenWidth;
 		}
 	}
 	+ a.mm-fullsubopen
@@ -49,4 +50,4 @@ em.mm-counter
 	display: none;
 }
 
-@include colors_counters;
+@include mm_colors_counters;

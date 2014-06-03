@@ -29,7 +29,7 @@
 
 				> div
 				{
-					@include ellipsis;
+					@include mm_ellipsis;
 				}
 			}
 			
@@ -47,13 +47,13 @@
 	{
 		> span
 		{
-			@include ellipsis;
+			@include mm_ellipsis;
 			padding: 0;
 		}
 
 		&.mm-opened a.mm-subopen:after
 		{
-			@include vendor-prefix( "transform", rotate( 45deg ) );
+			@include mm_vendor-prefix( "transform", rotate( 45deg ) );
 			right: 17px;
 		}
 	}
@@ -63,4 +63,4 @@
 	}
 }
 
-@include colors_labels;
+@include mm_colors_labels;

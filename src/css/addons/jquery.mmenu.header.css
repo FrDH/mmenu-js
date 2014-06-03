@@ -78,7 +78,7 @@
 
 .mm-menu.mm-hasheader li.mm-subtitle {
   display: none; }
-.mm-menu.mm-hasheader .mm-panel {
+.mm-menu.mm-hasheader > .mm-panel {
   padding-top: 80px; }
 .mm-menu.mm-hasheader.mm-hassearch > .mm-panel {
   padding-top: 120px; }

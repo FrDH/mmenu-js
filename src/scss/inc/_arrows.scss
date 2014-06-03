@@ -1,5 +1,4 @@
-//	Arrows
-@mixin arrow
+@mixin mm_arrow
 {
 	content: '';
 	border: 2px solid transparent;
@@ -10,14 +9,14 @@
 	position: absolute;
 	bottom: 50%;
 	
-	@include vendor-prefix( "transform", rotate( -45deg ) );
+	@include mm_vendor-prefix( "transform", rotate( -45deg ) );
 }
-@mixin arrow-prev
+@mixin mm_arrow-prev
 {
 	border-right: none;
 	border-bottom: none;
 }
-@mixin arrow-next
+@mixin mm_arrow-next
 {
 	border-top: none;
 	border-left: none;

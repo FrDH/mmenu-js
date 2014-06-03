@@ -1,39 +1,13 @@
 /*
-	jQuery.mmenu CSS
+	jQuery.mmenu panels CSS
 */
 @import "inc/variables";
 
 
 //	Animations
-.mm-page,
-.mm-fixed-top,
-.mm-fixed-bottom,
 .mm-menu.mm-horizontal > .mm-panel
 {
-	@include vendor-prefix( "transition", none $mm_transitionDuration $mm_transitionFunction );
-
-	// border is needed to force transitionend event even if no other value changed
-	@include vendor-prefix( "transition-property", ( top, right, bottom, left, border ) );
-}
-html.mm-opened
-{
-	.mm-page,
-	#mm-blocker
-	{
-		left: 0;
-		top: 0;
-		margin: 0;
-		border: 0px solid rgba( 0, 0, 0, 0 );
-	}
-}
-
-html.mm-opening
-{
-	.mm-page,
-	#mm-blocker
-	{
-		border: 0px solid rgba( 100, 100, 100, 0 );
-	}
+	@include mm_vendor-prefix( "transition", left $mm_transitionDuration $mm_transitionFunction );
 }
 
 
@@ -43,83 +17,32 @@ html.mm-opening
 	display: none;
 }
 
-//	Fixed elements
-.mm-fixed-top,
-.mm-fixed-bottom
-{
-	position: fixed;
-	left: 0;
-}
-.mm-fixed-top
-{
-	top: 0;
-}
-.mm-fixed-bottom
-{
-	bottom: 0;
-}
 
-
-//	Menu, submenus, items
-html.mm-opened .mm-page,
-.mm-menu > .mm-panel
-{
-	@include vendor-prefix( "box-sizing", border-box );
-}
-
-// html/body
-html.mm-opened
+//	Container
+.mm-wrapper
 {
 	overflow-x: hidden;
 	position: relative;
 }
 
-// page + blocker
-html.mm-opened .mm-page
-{
-	position: relative;
-}
-html.mm-background .mm-page
-{
-	background: inherit;
-}
-#mm-blocker
-{
-	background: url( data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw== ) transparent;
-	display: none;
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	z-index: 999999;
-}
-html.mm-opened,
-html.mm-blocking
-{
-	#mm-blocker
-	{
-		display: block;
-	}
-}
-
-// menu
-.mm-menu.mm-current
-{
-	display: block;
-}
+//	Menu
 .mm-menu
 {
 	background: inherit;
-	display: none;
+	display: block;
 	overflow: hidden;
+	width: 100%;
 	height: 100%;
 	padding: 0;
-	position: fixed;
+	position: absolute;
 	left: 0;
 	top: 0;
 	z-index: 0;
-	
+
 	> .mm-panel
 	{
+		@include mm_vendor-prefix( "box-sizing", border-box );
+
 		background: inherit;
 	
 		-webkit-overflow-scrolling: touch;
@@ -147,17 +70,9 @@ html.mm-blocking
 		{
 			z-index: 1;
 		}
-		&.mm-hidden
-		{
-			display: block;
-			visibility: hidden;
-		}
 	}
-}
 
-//	Lists
-.mm-menu
-{
+	//	Lists
 	.mm-list
 	{
 		padding: ( $mm_btnSize / 2 ) 0;
@@ -204,7 +119,7 @@ html.mm-blocking
 		> a,
 		> span
 		{
-			@include ellipsis;
+			@include mm_ellipsis;
 			color: inherit;
 			line-height: $mm_btnSize - ( $mm_padding * 2 );
 			display: block;
@@ -212,10 +127,10 @@ html.mm-blocking
 			margin: 0;
 		}
 	}
-	
-	> li:not(.mm-subtitle):not(.mm-label):not(.mm-noresults)
+
+	> li:not(.mm-subtitle):not(.mm-label):not(.mm-search):not(.mm-noresults)
 	{
-		@include border-bottom;
+		@include mm_border-bottom;
 		&:after
 		{
 			width: auto;
@@ -228,9 +143,9 @@ html.mm-blocking
 	// subopen/close
 	a.mm-subopen
 	{
-		@include border-left;
+		@include mm_border-left;
 
-		width: $mm_btnSize;
+		width: $mm_subopenWidth;
 		height: 100%;
 		padding: 0;
 		position: absolute;
@@ -252,7 +167,7 @@ html.mm-blocking
 		+ span
 		{
 			padding-right: ( $mm_padding / 2 );
-			margin-right: $mm_btnSize;
+			margin-right: $mm_subopenWidth;
 		}
 	}
 
@@ -284,7 +199,7 @@ html.mm-blocking
 	$labelSize: ( $mm_btnSize / 2 ) + ( $mm_padding / 2 );
 	> li.mm-label
 	{
-		@include ellipsis;
+		@include mm_ellipsis;
 		font-size: 10px;
 		text-transform: uppercase;
 		text-indent: $mm_padding * 2;
@@ -307,16 +222,16 @@ html.mm-blocking
 	a.mm-subopen:after,
 	a.mm-subclose:before
 	{
-		@include arrow;
+		@include mm_arrow;
 	}
 	a.mm-subopen:after
 	{
-		@include arrow-next;
+		@include mm_arrow-next;
 		right: 18px;
 	}
 	a.mm-subclose:before
 	{
-		@include arrow-prev;
+		@include mm_arrow-prev;
 		margin-bottom: -( $mm_padding * 2 ) + 5;
 		left: 22px;
 	}
@@ -344,12 +259,11 @@ html.mm-blocking
 		height: $mm_btnSize;
 		&:after
 		{
-			@include vendor-prefix( "transform", rotate( 45deg ) );
+			@include mm_vendor-prefix( "transform", rotate( 45deg ) );
 			top: 16px;
 			right: 16px;
 		}
 	}
 }
 
-@include colors;
-@include sizing;
+@include mm_colors;

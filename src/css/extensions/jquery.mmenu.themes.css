@@ -29,7 +29,7 @@ html.mm-opened.mm-light .mm-page {
 .mm-menu.mm-light .mm-search input {
   background: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.6); }
-.mm-menu.mm-light li.mm-noresults {
+.mm-menu.mm-light .mm-noresults {
   color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-light em.mm-counter {
@@ -43,6 +43,13 @@ html.mm-opened.mm-light .mm-page {
   color: rgba(0, 0, 0, 0.3); }
   .mm-menu.mm-light .mm-header a:before {
     border-color: rgba(0, 0, 0, 0.3); }
+
+.mm-menu.mm-light label.mm-toggle {
+  background: rgba(0, 0, 0, 0.1); }
+  .mm-menu.mm-light label.mm-toggle div {
+    background: #f3f3f3; }
+.mm-menu.mm-light input.mm-toggle:checked ~ label.mm-toggle {
+  background: #4bd963; }
 
 html.mm-opened.mm-white .mm-page {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); }
@@ -72,7 +79,7 @@ html.mm-opened.mm-white .mm-page {
 .mm-menu.mm-white .mm-search input {
   background: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.6); }
-.mm-menu.mm-white li.mm-noresults {
+.mm-menu.mm-white .mm-noresults {
   color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-white em.mm-counter {
@@ -86,6 +93,13 @@ html.mm-opened.mm-white .mm-page {
   color: rgba(0, 0, 0, 0.3); }
   .mm-menu.mm-white .mm-header a:before {
     border-color: rgba(0, 0, 0, 0.3); }
+
+.mm-menu.mm-white label.mm-toggle {
+  background: rgba(0, 0, 0, 0.1); }
+  .mm-menu.mm-white label.mm-toggle div {
+    background: white; }
+.mm-menu.mm-white input.mm-toggle:checked ~ label.mm-toggle {
+  background: #4bd963; }
 
 html.mm-opened.mm-black .mm-page {
   box-shadow: none; }
@@ -115,7 +129,7 @@ html.mm-opened.mm-black .mm-page {
 .mm-menu.mm-black .mm-search input {
   background: rgba(255, 255, 255, 0.3);
   color: rgba(255, 255, 255, 0.6); }
-.mm-menu.mm-black li.mm-noresults {
+.mm-menu.mm-black .mm-noresults {
   color: rgba(255, 255, 255, 0.3); }
 
 .mm-menu.mm-black em.mm-counter {
@@ -129,3 +143,10 @@ html.mm-opened.mm-black .mm-page {
   color: rgba(255, 255, 255, 0.3); }
   .mm-menu.mm-black .mm-header a:before {
     border-color: rgba(255, 255, 255, 0.3); }
+
+.mm-menu.mm-black label.mm-toggle {
+  background: rgba(255, 255, 255, 0.2); }
+  .mm-menu.mm-black label.mm-toggle div {
+    background: black; }
+.mm-menu.mm-black input.mm-toggle:checked ~ label.mm-toggle {
+  background: #4bd963; }

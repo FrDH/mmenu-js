@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.2.7
+ * jQuery mmenu v4.3.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -16,7 +16,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.2.7';
+		_VERSION_	= '4.3.0';
 
 
 	//	Plugin already excists
@@ -25,177 +25,41 @@
 		return;
 	}
 
+
 	//	Global variables
+	var _c = {}, _d = {}, _e = {},
+		plugin_initiated = false;
+
 	var glbl = {
 		$wndw: null,
 		$html: null,
-		$body: null,
-		$page: null,
-		$blck: null,
-
-		$allMenus: null
+		$body: null
 	};
-
-	var _c = {}, _d = {}, _e = {},
-		_serialnr 	= 0,
-		_strollTop	= 0;
 
 
 	$[ _PLUGIN_ ] = function( $menu, opts, conf )
 	{
-		glbl.$allMenus = glbl.$allMenus.add( $menu );
-
-		this.$menu = $menu;
-		this.opts  = opts
-		this.conf  = conf;
-
-		this.opened		= false;
-		this.serialnr	= _serialnr++;
+		this.$menu	= $menu;
+		this.opts	= opts
+		this.conf	= conf;
+		this.vars	= {};
 
 		this._init();
 
 		return this;
 	};
 
+	$[ _PLUGIN_ ].uniqueId = 0;
+
 	$[ _PLUGIN_ ].prototype = {
 
-		open: function()
-		{
-			if ( this.opened )
-			{
-				return false;
-			}
-			var that = this;
-
-			this._openSetup();
-
-			//	For some reason, some browsers need a (pretty long) delay before the .mm-opened class sets the needed styles
-			//	Without it, the page isn't animated
-			setTimeout(
-				function()
-				{
-					that._openFinish();
-				}, 50
-			);
-
-			return 'open';
-		},
-		_openSetup: function()
-		{
-			_strollTop = glbl.$wndw.scrollTop() || 0;
-
-			//	Set opened
-			this.$menu.addClass( _c.current );
-
-			//	Close others
-			glbl.$allMenus.not( this.$menu ).trigger( _e.close );
-
-			//	Store style and position
-			glbl.$page.data( _d.style, glbl.$page.attr( 'style' ) || '' );
-
-			//	Trigger window-resize to measure height
-			glbl.$wndw.trigger( _e.resize, [ true ] );
-
-			//	Add options
-			if ( this.opts.modal )
-			{
-				glbl.$html.addClass( _c.modal );
-			}
-			if ( this.opts.moveBackground )
-			{
-				glbl.$html.addClass( _c.background );
-			}
-			if ( this.opts.position != 'left' )
-			{
-				glbl.$html.addClass( _c.mm( this.opts.position ) );
-			}
-			if ( this.opts.zposition != 'back' )
-			{
-				glbl.$html.addClass( _c.mm( this.opts.zposition ) );
-			}
-			if ( this.opts.classes )
-			{
-				glbl.$html.addClass( this.opts.classes );
-			}
-
-			//	Open
-			glbl.$html.addClass( _c.opened );
-			this.$menu.addClass( _c.opened );
-		},
-		_openFinish: function()
-		{
-			var that = this;
-
-			//	Callback
-			transitionend( glbl.$page,
-				function()
-				{
-					that.opened = true;
-					that.$menu.trigger( _e.opened );
-				}, this.conf.transitionDuration
-			);
-
-			//	Opening
-			glbl.$html.addClass( _c.opening );
-			this.$menu.trigger( _e.opening );
-		},
-		close: function()
-		{
-			var that = this;
-
-			if ( !this.opened )
-			{
-				return false;
-			}
-
-			//	Callback
-			transitionend( glbl.$page,
-				function()
-				{
-					that.$menu
-						.removeClass( _c.current )
-						.removeClass( _c.opened );
-
-					glbl.$html
-						.removeClass( _c.opened )
-						.removeClass( _c.modal )
-						.removeClass( _c.background )
-						.removeClass( _c.mm( that.opts.position ) )
-						.removeClass( _c.mm( that.opts.zposition ) );
-
-					if ( that.opts.classes )
-					{
-						glbl.$html.removeClass( that.opts.classes );
-					}
-
-					//	Restore style and position
-					glbl.$page.attr( 'style', glbl.$page.data( _d.style ) );
-
-					that.opened = false;
-					that.$menu.trigger( _e.closed );
-	
-				}, this.conf.transitionDuration
-			);
-
-			//	Closing
-			glbl.$html.removeClass( _c.opening );
-			this.$menu.trigger( _e.closing );
-	
-			return 'close';
-		},
-	
 		_init: function()
 		{
 			this.opts = extendOptions( this.opts, this.conf, this.$menu );
-			this.direction = ( this.opts.slidingSubmenus ) ? 'horizontal' : 'vertical';
 	
-			//	INIT PAGE & MENU
-			this._initPage( glbl.$page );
 			this._initMenu();
-			this._initBlocker();
-			this._initPanles();
+			this._initPanels();
 			this._initLinks();
-			this._initOpenClose();
 			this._bindCustomEvents();
 
 			if ( $[ _PLUGIN_ ].addons )
@@ -214,49 +78,8 @@
 		{
 			var that = this;
 
-			this.$menu
-				.off( _e.open + ' ' + _e.close + ' ' + _e.setPage+ ' ' + _e.update )
-				.on( _e.open + ' ' + _e.close + ' ' + _e.setPage+ ' ' + _e.update,
-					function( e )
-					{
-						e.stopPropagation();
-					}
-				);
-
-			//	Menu-events
-			this.$menu
-				.on( _e.open,
-					function( e )
-					{
-						if ( $(this).hasClass( _c.current ) )
-						{
-							e.stopImmediatePropagation();
-							return false;
-						}
-						return that.open();
-					}
-				)
-				.on( _e.close,
-					function( e )
-					{
-						if ( !$(this).hasClass( _c.current ) )
-						{
-							e.stopImmediatePropagation();
-							return false;
-						}
-						return that.close();
-					}
-				)
-				.on( _e.setPage,
-					function( e, $p )
-					{
-						that._initPage( $p );
-						that._initOpenClose();
-					}
-				);
-
 			//	Panel-events
-			var $panels = this.$menu.find( this.opts.isMenu && this.direction != 'horizontal' ? 'ul, ol' : '.' + _c.panel );
+			var $panels = this.$menu.find( this.opts.isMenu && !this.opts.slidingSubmenus ? 'ul, ol' : '.' + _c.panel );
 			$panels
 				.off( _e.toggle + ' ' + _e.open + ' ' + _e.close )
 				.on( _e.toggle + ' ' + _e.open + ' ' + _e.close,
@@ -266,7 +89,7 @@
 					}
 				);
 
-			if ( this.direction == 'horizontal' )
+			if ( this.opts.slidingSubmenus )
 			{
 				$panels
 					.on( _e.open,
@@ -302,59 +125,13 @@
 					);
 			}
 		},
-		
-		_initBlocker: function()
-		{
-			var that = this;
 
-			if ( !glbl.$blck )
-			{
-				glbl.$blck = $( '<div id="' + _c.blocker + '" />' )
-					.appendTo( glbl.$body );
-			}
-
-			glbl.$blck
-				.off( _e.touchstart )
-				.on( _e.touchstart,
-					function( e )
-					{
-						e.preventDefault();
-						e.stopPropagation();
-						glbl.$blck.trigger( _e.mousedown );
-					}
-				)
-				.on( _e.mousedown,
-					function( e )
-					{
-						e.preventDefault();
-						if ( !glbl.$html.hasClass( _c.modal ) )
-						{
-							that.$menu.trigger( _e.close );
-						}
-					}
-				);
-		},
-		_initPage: function( $p )
-		{
-			if ( !$p )
-			{
-				$p = $(this.conf.pageSelector, glbl.$body);
-				if ( $p.length > 1 )
-				{
-					$[ _PLUGIN_ ].debug( 'Multiple nodes found for the page-node, all nodes are wrapped in one <' + this.conf.pageNodetype + '>.' );
-					$p = $p.wrapAll( '<' + this.conf.pageNodetype + ' />' ).parent();
-				}
-			}
-	
-			$p.addClass( _c.page );
-			glbl.$page = $p;
-		},
 		_initMenu: function()
 		{
 			var that = this;
 
 			//	Clone if needed
-			if ( this.conf.clone )
+			if ( this.opts.offCanvas && this.conf.clone )
 			{
 				this.$menu = this.$menu.clone( true );
 				this.$menu.add( this.$menu.find( '*' ) ).filter( '[id]' ).each(
@@ -376,38 +153,34 @@
 				}
 			);
 
-			//	Inject to body
-			this.$menu[ this.conf.menuInjectMethod + 'To' ]( this.conf.menuWrapperSelector )
-				.addClass( _c.menu );
+			this.$menu
+				.parent()
+				.addClass( _c.wrapper );
+
+			var clsn = [ _c.menu ];
 
 			//	Add direction class
-			this.$menu.addClass( _c.mm( this.direction ) );
+			clsn.push( _c.mm( this.opts.slidingSubmenus ? 'horizontal' : 'vertical' ) );
 
 			//	Add options classes
 			if ( this.opts.classes )
 			{
-				this.$menu.addClass( this.opts.classes );
+				clsn.push( this.opts.classes );
 			}
 			if ( this.opts.isMenu )
 			{
-				this.$menu.addClass( _c.ismenu );
+				clsn.push( _c.ismenu );
 			}
-			if ( this.opts.position != 'left' )
-			{
-				this.$menu.addClass( _c.mm( this.opts.position ) );
-			}
-			if ( this.opts.zposition != 'back' )
-			{
-				this.$menu.addClass( _c.mm( this.opts.zposition ) );
-			}
+
+			this.$menu.addClass( clsn.join( ' ' ) );
 		},
-		_initPanles: function()
+		_initPanels: function()
 		{
 			var that = this;
 
 
 			//	Refactor List class
-			this.__refactorClass( $('.' + this.conf.listClass, this.$menu), 'list' );
+			this.__refactorClass( $('.' + this.conf.classNames.list, this.$menu), 'list' );
 
 			//	Add List class
 			if ( this.opts.isMenu )
@@ -420,13 +193,13 @@
 			var $lis = $('.' + _c.list + ' > li', this.$menu);
 
 			//	Refactor Selected class
-			this.__refactorClass( $lis.filter( '.' + this.conf.selectedClass ), 'selected' );
+			this.__refactorClass( $lis.filter( '.' + this.conf.classNames.selected ), 'selected' );
 
 			//	Refactor Label class
-			this.__refactorClass( $lis.filter( '.' + this.conf.labelClass ), 'label' );
+			this.__refactorClass( $lis.filter( '.' + this.conf.classNames.label ), 'label' );
 
 			//	Refactor Spacer class
-			this.__refactorClass( $lis.filter( '.' + this.conf.spacerClass ), 'spacer' );
+			this.__refactorClass( $lis.filter( '.' + this.conf.classNames.spacer ), 'spacer' );
 
 			//	setSelected-event
 			$lis
@@ -449,7 +222,7 @@
 				);
 
 			//	Refactor Panel class
-			this.__refactorClass( $('.' + this.conf.panelClass, this.$menu), 'panel' );
+			this.__refactorClass( $('.' + this.conf.classNames.panel, this.$menu), 'panel' );
 
 			//	Add Panel class
 			this.$menu
@@ -466,7 +239,7 @@
 					function( i )
 					{
 						var $t = $(this),
-							id = $t.attr( 'id' ) || _c.mm( 'm' + that.serialnr + '-p' + i );
+							id = $t.attr( 'id' ) || that.__getUniqueId();
 
 						$t.attr( 'id', id );
 					}
@@ -493,7 +266,7 @@
 							{
 								$btn.addClass( _c.fullsubopen );
 							}
-							if ( that.direction == 'horizontal' )
+							if ( that.opts.slidingSubmenus )
 							{
 								$u.prepend( '<li class="' + _c.subtitle + '"><a class="' + _c.subclose + '" href="#' + $p.attr( 'id' ) + '">' + $a.text() + '</a></li>' );
 							}
@@ -502,7 +275,7 @@
 				);
 
 			//	Link anchors to panels
-			var evt = this.direction == 'horizontal' ? _e.open : _e.toggle;
+			var evt = this.opts.slidingSubmenus ? _e.open : _e.toggle;
 			$panels
 				.each(
 					function( i )
@@ -522,7 +295,7 @@
 					}
 			);
 
-			if ( this.direction == 'horizontal' )
+			if ( this.opts.slidingSubmenus )
 			{
 				//	Add opened-classes
 				var $selected = $('.' + _c.list + ' > li.' + _c.selected, this.$menu);
@@ -573,9 +346,14 @@
 				.addClass( _c.current );
 
 			//	Rearrange markup
-			if ( this.direction == 'horizontal' )
+			if ( this.opts.slidingSubmenus )
 			{
-				$panels.find( '.' + _c.panel ).appendTo( this.$menu );
+				$panels
+					.not( $current.last() )
+					.addClass( _c.hidden )
+					.end()
+					.find( '.' + _c.panel )
+					.appendTo( this.$menu );
 			}
 		},
 		_initLinks: function()
@@ -621,45 +399,26 @@
 					}
 				);
 		},
-		_initOpenClose: function()
+
+		_update: function( fn )
 		{
-			var that = this;
-
-			//	Open menu
-			var id = this.$menu.attr( 'id' );
-			if ( id && id.length )
+			if ( !this.updates )
 			{
-				if ( this.conf.clone )
-				{
-					id = _c.umm( id );
-				}
-
-				$('a[href="#' + id + '"]')
-					.off( _e.click )
-					.on( _e.click,
-						function( e )
-						{
-							e.preventDefault();
-							that.$menu.trigger( _e.open );
-						}
-					);
+				this.updates = [];
 			}
-
-			//	Close menu
-			var id = glbl.$page.attr( 'id' );
-			if ( id && id.length )
+			if ( typeof fn == 'function' )
 			{
-				$('a[href="#' + id + '"]')
-					.on( _e.click,
-						function( e )
-						{
-							e.preventDefault();
-							that.$menu.trigger( _e.close );
-						}
-					);
+				this.updates.push( fn );
+			}
+			else
+			{
+				for ( var u = 0, l = this.updates.length; u < l; u++ )
+				{
+					this.updates[ u ].call( this, fn );
+				}
 			}
 		},
-		
+
 		__valueOrFn: function( o, $e, d )
 		{
 			if ( typeof o == 'function' )
@@ -676,6 +435,28 @@
 		__refactorClass: function( $e, c )
 		{
 			$e.removeClass( this.conf[ c + 'Class' ] ).addClass( _c[ c ] );
+		},
+		
+		__transitionend: function( $e, fn, duration )
+		{
+			var _ended = false,
+				_fn = function()
+				{
+					if ( !_ended )
+					{
+						fn.call( $e[ 0 ] );
+					}
+					_ended = true;
+				};
+	
+			$e.one( _e.transitionend, _fn );
+			$e.one( _e.webkitTransitionEnd, _fn );
+			setTimeout( _fn, duration * 1.1 );
+		},
+		
+		__getUniqueId: function()
+		{
+			return _c.mm( $[ _PLUGIN_ ].uniqueId++ );
 		}
 	};
 
@@ -683,7 +464,7 @@
 	$.fn[ _PLUGIN_ ] = function( opts, conf )
 	{
 		//	First time plugin is fired
-		if ( !glbl.$wndw )
+		if ( !plugin_initiated )
 		{
 			_initPlugin();
 		}
@@ -708,12 +489,8 @@
 	$[ _PLUGIN_ ].version = _VERSION_;
 	
 	$[ _PLUGIN_ ].defaults = {
-		position		: 'left',
-		zposition		: 'back',
-		moveBackground	: true,
-		slidingSubmenus	: true,
-		modal			: false,
 		classes			: '',
+		slidingSubmenus	: true,
 		onClick			: {
 //			close				: true,
 //			blockUI				: null,
@@ -722,17 +499,15 @@
 		}
 	};
 	$[ _PLUGIN_ ].configuration = {
-		panelClass			: 'Panel',
-		listClass			: 'List',
-		selectedClass		: 'Selected',
-		labelClass			: 'Label',
-		spacerClass			: 'Spacer',
-		pageNodetype		: 'div',
 		panelNodetype		: 'ul, ol, div',
-		pageSelector		: null,
-		menuWrapperSelector	: 'body',
-		menuInjectMethod	: 'prepend',
-		transitionDuration	: 400
+		transitionDuration	: 400,
+		classNames	: {
+			panel		: 'Panle',
+			list		: 'List',
+			selected	: 'Selected',
+			label		: 'Label',
+			spacer		: 'Spacer'
+		}
 	};
 
 
@@ -743,8 +518,7 @@
 	(function() {
 
 		var wd = window.document,
-			ua = window.navigator.userAgent,
-			ds = document.createElement( 'div' ).style;
+			ua = window.navigator.userAgent;
 
 		var _touch 				= 'ontouchstart' in wd,
 			_overflowscrolling	= 'WebkitOverflowScrolling' in wd.documentElement.style,
@@ -822,7 +596,17 @@
 				o.zposition = 'front';
 			}
 		}
+		for ( var a = [ 'position', 'zposition', 'modal', 'moveBackground' ], b = 0, l = a.length; b < l; b++ )
+		{
+			if ( typeof o[ a[ b ] ] != 'undefined' )
+			{
+				$[ _PLUGIN_ ].deprecated( 'The option "' + a[ b ] + '"', 'offCanvas.' + a[ b ] );
+				o.offCanvas = o.offCanvas || {};
+				o.offCanvas[ a[ b ] ] = o[ a[ b ] ];
+			}
+		}
 		//	/DEPRECATED
+
 
 		return o;
 	}
@@ -830,29 +614,62 @@
 	{
 		c = $.extend( true, {}, $[ _PLUGIN_ ].configuration, c )
 
-		//	Set pageSelector
-		if ( typeof c.pageSelector != 'string' )
-		{
-			c.pageSelector = '> ' + c.pageNodetype;
-		}
 
-		//	Restrict injectMethod
-		if ( c.menuInjectMethod != 'append' )
+		//	DEPRECATED
+		for ( var a = [ 'panel', 'list', 'selected', 'label', 'spacer' ], b = 0, l = a.length; b < l; b++ )
 		{
-			c.menuInjectMethod = 'prepend';
+			if ( typeof c[ a[ b ] + 'Class' ] != 'undefined' )
+			{
+				$[ _PLUGIN_ ].deprecated( 'The configuration option "' + a[ b ] + 'Class"', 'classNames.' + a[ b ] );
+				c.classNames[ a[ b ] ] = c[ a[ b ] + 'Class' ];
+			}
 		}
+		if ( typeof c.counterClass != 'undefined' )
+		{
+			$[ _PLUGIN_ ].deprecated( 'The configuration option "counterClass"', 'classNames.counters.counter' );
+			c.classNames.counters = c.classNames.counters || {};
+			c.classNames.counters.counter = c.counterClass;
+		}
+		if ( typeof c.collapsedClass != 'undefined' )
+		{
+			$[ _PLUGIN_ ].deprecated( 'The configuration option "collapsedClass"', 'classNames.labels.collapsed' );
+			c.classNames.labels = c.classNames.labels || {};
+			c.classNames.labels.collapsed = c.collapsedClass;
+		}
+		if ( typeof c.header != 'undefined' )
+		{
+			for ( var a = [ 'panelHeader', 'panelNext', 'panelPrev' ], b = 0, l = a.length; b < l; b++ )
+			{
+				if ( typeof c.header[ a[ b ] + 'Class' ] != 'undefined' )
+				{
+					$[ _PLUGIN_ ].deprecated( 'The configuration option "header.' + a[ b ] + 'Class"', 'classNames.header.' + a[ b ] );
+					c.classNames.header = c.classNames.header || {};
+					c.classNames.header[ a[ b ] ] = c.header[ a[ b ] + 'Class' ];
+				}
+			}
+		}
+		for ( var a = [ 'pageNodetype', 'pageSelector', 'menuWrapperSelector', 'menuInjectMethod' ], b = 0, l = a.length; b < l; b++ )
+		{
+			if ( typeof c[ a[ b ] ] != 'undefined' )
+			{
+				$[ _PLUGIN_ ].deprecated( 'The configuration option "' + a[ b ] + '"', 'offCanvas.' + a[ b ] );
+				c.offCanvas = c.offCanvas || {};
+				c.offCanvas[ a[ b ] ] = c[ a[ b ] ];
+			}
+		}
+		//	/DEPRECATED
+
 
 		return c;
 	}
 
 	function _initPlugin()
 	{
+		plugin_initiated = true;
+	
 		glbl.$wndw = $(window);
 		glbl.$html = $('html');
 		glbl.$body = $('body');
-		
-		glbl.$allMenus = $();
-
 
 		//	Classnames, Datanames, Eventnames
 		$.each( [ _c, _d, _e ],
@@ -871,7 +688,7 @@
 
 		//	Classnames
 		_c.mm = function( c ) { return 'mm-' + c; };
-		_c.add( 'menu ismenu panel list subtitle selected label spacer current highest hidden page blocker modal background opened opening subopened subopen fullsubopen subclose' );
+		_c.add( 'wrapper menu ismenu inline panel list subtitle selected label spacer current highest hidden opened subopened subopen fullsubopen subclose' );
 		_c.umm = function( c )
 		{
 			if ( c.slice( 0, 3 ) == 'mm-' )
@@ -883,47 +700,11 @@
 
 		//	Datanames
 		_d.mm = function( d ) { return 'mm-' + d; };
-		_d.add( 'parent style' );
+		_d.add( 'parent' );
 
 		//	Eventnames
 		_e.mm = function( e ) { return e + '.mm'; };
-		_e.add( 'toggle open opening opened close closing closed update setPage setSelected transitionend webkitTransitionEnd mousedown touchstart mouseup touchend scroll touchmove click keydown keyup resize' );
-
-
-		//	Prevent tabbing
-		glbl.$wndw
-			.on( _e.keydown,
-				function( e )
-				{
-					if ( glbl.$html.hasClass( _c.opened ) )
-					{
-						if ( e.keyCode == 9 )
-						{
-							e.preventDefault();
-							return false;
-						}
-					}
-				}
-			);
-
-		//	Set page min-height to window height
-		var _h = 0;
-		glbl.$wndw
-			.on( _e.resize,
-				function( e, force )
-				{
-					if ( force || glbl.$html.hasClass( _c.opened ) )
-					{
-						var nh = glbl.$wndw.height();
-						if ( force || nh != _h )
-						{
-							_h = nh;
-							glbl.$page.css( 'minHeight', nh );
-						}
-					}
-				}
-			);
-
+		_e.add( 'toggle open close setSelected transitionend webkitTransitionEnd mousedown mouseup touchstart touchmove touchend scroll resize click keydown keyup' );
 
 		$[ _PLUGIN_ ]._c = _c;
 		$[ _PLUGIN_ ]._d = _d;
@@ -937,11 +718,11 @@
 		if ( $opening.hasClass( _c.current ) )
 		{
 			return false;
-		} 
+		}
 
 		var $panels = $('.' + _c.panel, $m),
 			$current = $panels.filter( '.' + _c.current );
-		
+
 		$panels
 			.removeClass( _c.highest )
 			.removeClass( _c.current )
@@ -967,28 +748,19 @@
 
 		$opening
 			.removeClass( _c.hidden )
-			.removeClass( _c.subopened )
-			.addClass( _c.current )
-			.addClass( _c.opened );
+			.addClass( _c.current );
+
+		//	Without the timeout, the animation won't work because the element had display: none;
+		setTimeout(
+			function()
+			{
+				$opening
+					.removeClass( _c.subopened )
+					.addClass( _c.opened );
+			}, 25
+		);
 
 		return 'open';
-	}
-
-	function transitionend( $e, fn, duration )
-	{
-		var _ended = false,
-			_fn = function()
-			{
-				if ( !_ended )
-				{
-					fn.call( $e[ 0 ] );
-				}
-				_ended = true;
-			};
-
-		$e.one( _e.transitionend, _fn );
-		$e.one( _e.webkitTransitionEnd, _fn );
-		setTimeout( _fn, duration * 1.1 );
 	}
 
 })( jQuery );

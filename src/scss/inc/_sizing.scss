@@ -1,5 +1,5 @@
 //	Sizing left
-@mixin sizing( $cls: "",
+@mixin mm_sizing( $cls: "",
 	$width: $mm_width, $minWidth: $mm_minWidth, $maxWidth: $mm_maxWidth,
 	$height: $mm_height, $minHeight: $mm_minHeight, $maxHeight: $mm_maxHeight
 ) {
@@ -52,7 +52,7 @@
 }
 
 //	Sizing top/right/bottom
-@mixin sizing_position( $cls: "",
+@mixin mm_sizing_position( $cls: "",
 	$width: $mm_width, $minWidth: $mm_minWidth, $maxWidth: $mm_maxWidth,
 	$height: $mm_height, $minHeight: $mm_minHeight, $maxHeight: $mm_maxHeight
 ) {
@@ -220,7 +220,7 @@
 }
 
 //	Sizing z-position
-@mixin sizing_zposition( $cls: "",
+@mixin mm_sizing_zposition( $cls: "",
 	$width: $mm_width, $minWidth: $mm_minWidth, $maxWidth: $mm_maxWidth,
 	$height: $mm_height, $minHeight: $mm_minHeight, $maxHeight: $mm_maxHeight
 ) {

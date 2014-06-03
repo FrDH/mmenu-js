@@ -1,0 +1,68 @@
+/*
+	jQuery.mmenu toggles addon CSS
+*/
+
+@import "../inc/variables";
+
+
+label.mm-toggle
+{
+	border-radius: $mm_toggleHeight;
+	width: $mm_toggleWidth;
+	height: $mm_toggleHeight;
+	margin: -( $mm_toggleHeight / 2 ) 0 0 0;
+	position: absolute;
+	top: 50%;
+	z-index: 1;
+
+	div
+	{
+		border-radius: $mm_toggleHeight;
+		width: $mm_toggleHeight - 2;
+		height: $mm_toggleHeight - 2;
+		margin: 1px;
+	}
+}
+input.mm-toggle
+{
+	position: absolute;
+	left: -10000px;
+	
+	&:checked ~ label.mm-toggle div
+	{
+		float: right;
+	}
+}
+
+label.mm-toggle
+{
+	right: $mm_padding * 2;
+
+	+ a,
+	+ span
+	{
+		margin-right: $mm_toggleWidth + ( $mm_padding * 2 );
+	}
+}
+a.mm-subopen + label.mm-toggle
+{
+	right: $mm_subopenWidth + $mm_padding;
+
+	+ a,
+	+ span
+	{
+		margin-right: $mm_subopenWidth + $mm_toggleWidth + $mm_padding;
+	}
+}
+em.mm-counter + a.mm-subopen + label.mm-toggle
+{
+	right: $mm_counterWidth + $mm_subopenWidth + $mm_padding;
+
+	+ a,
+	+ span
+	{
+		margin-right: $mm_counterWidth + $mm_subopenWidth + $mm_toggleWidth + $mm_padding;
+	}
+}
+
+@include mm_colors_toggles;

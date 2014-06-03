@@ -12,6 +12,6 @@ html.mm-opened.mm-dragging
 	.mm-fixed-bottom,
 	#mm-blocker
 	{
-		@include vendor-prefix( "transition-duration", 0s );
+		@include mm_vendor-prefix( "transition-duration", 0s );
 	}
 }

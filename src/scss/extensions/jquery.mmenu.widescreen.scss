@@ -6,8 +6,10 @@
 
 @import "../inc/variables";
 
+$mm_widescreenMenuWidth: 0.3 !default;
 
-// positioning and sizing
+
+// Positioning and sizing
 html, body
 {
 	min-height: 100%;
@@ -34,7 +36,7 @@ body
 	position: relative !important;
 	z-index: 1;
 
-	@include vendor-prefix( "box-sizing", border-box );
+	@include mm_vendor-prefix( "box-sizing", border-box );
 }
 .mm-menu
 {

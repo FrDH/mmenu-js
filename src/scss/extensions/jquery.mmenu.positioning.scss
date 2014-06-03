@@ -84,7 +84,7 @@ html.mm-bottom.mm-opened.mm-opening
 	}
 }
 
-@include sizing_position;
+@include mm_sizing_position;
 
 
 
@@ -105,7 +105,7 @@ html.mm-front.mm-opened .mm-page
 .mm-menu.mm-front,
 .mm-menu.mm-next
 {
-	@include vendor-prefix( "transition", none $mm_transitionDuration $mm_transitionFunction );
+	@include mm_vendor-prefix( "transition", none $mm_transitionDuration $mm_transitionFunction );
 
 	-webkit-transition-property: top, right, bottom, left, -webkit-transform;
 	-moz-transition-property: top, right, bottom, left, -moz-transform;
@@ -201,4 +201,4 @@ html.mm-opening .mm-menu.mm-bottom
 	}
 }
 
-@include sizing_zposition;
+@include mm_sizing_zposition;

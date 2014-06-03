@@ -12,15 +12,15 @@ $mm_fs_height		: 1;
 $mm_fs_minHeight	: 140px;
 $mm_fs_maxHeight	: 10000px;
 
-@include sizing( $mm_fs_class,
+@include mm_sizing( $mm_fs_class,
 	$mm_fs_width, $mm_fs_minWidth, $mm_fs_maxWidth,
 	$mm_fs_height, $mm_fs_minHeight, $mm_fs_maxHeight );
 
-@include sizing_position( $mm_fs_class,
+@include mm_sizing_position( $mm_fs_class,
 	$mm_fs_width, $mm_fs_minWidth, $mm_fs_maxWidth,
 	$mm_fs_height, $mm_fs_minHeight, $mm_fs_maxHeight );
 
-@include sizing_zposition( $mm_fs_class,
+@include mm_sizing_zposition( $mm_fs_class,
 	$mm_fs_width, $mm_fs_minWidth, $mm_fs_maxWidth,
 	$mm_fs_height, $mm_fs_minHeight, $mm_fs_maxHeight );
 	

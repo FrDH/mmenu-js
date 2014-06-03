@@ -1,5 +1,4 @@
-//	Colors
-@mixin colors( $cls: "",
+@mixin mm_colors( $cls: "",
 	$baseBg: $mm_baseBg, $pageShadow: $mm_pageShadow,
 	$color: $mm_color, $dimmedColor: $mm_dimmedColor,
 	$emphasizedBg: $mm_emphasizedBg, $highlightedBg: $mm_highlightedBg,
@@ -69,7 +68,7 @@
 		}
 	}
 }
-@mixin colors_labels( $cls: "",
+@mixin mm_colors_labels( $cls: "",
 	$highlightedBg: $mm_highlightedBg
 ) {
 	.mm-menu#{$cls}
@@ -80,7 +79,7 @@
 		}
 	}
 }
-@mixin colors_search( $cls: "",
+@mixin mm_colors_search( $cls: "",
 	$inputBg: $mm_dimmedColor, $color: $mm_color,
 	$dimmedColor: $mm_dimmedColor
 ) {
@@ -91,13 +90,13 @@
 			background: $inputBg;
 			color: $color;
 		}
-		li.mm-noresults
+		.mm-noresults
 		{
 			color: $dimmedColor;
 		}
 	}
 }
-@mixin colors_counters( $cls: "",
+@mixin mm_colors_counters( $cls: "",
 	$dimmedColor: $mm_dimmedColor
 ) {
 	.mm-menu#{$cls} em.mm-counter
@@ -105,7 +104,7 @@
 		color: $dimmedColor;
 	}
 }
-@mixin colors_header( $cls: "",
+@mixin mm_colors_header( $cls: "",
 	$dimmedColor: $mm_dimmedColor,
 	$borderColor: $mm_borderColor
 ) {
@@ -120,6 +119,27 @@
 			{
 				border-color: $dimmedColor;
 			}
+		}
+	}
+}
+@mixin mm_colors_toggles( $cls: "",
+	$buttonBg: $mm_baseBg,
+	$offBg: $mm_borderColor, $onBg: $mm_toggleCheckedColor
+) {
+	.mm-menu#{$cls}
+	{
+		label.mm-toggle
+		{
+			background: $offBg;
+		
+			div
+			{
+				background: $buttonBg;
+			}
+		}
+		input.mm-toggle:checked ~ label.mm-toggle
+		{
+			background: $onBg;
 		}
 	}
 }

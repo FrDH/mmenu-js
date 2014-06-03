@@ -4,20 +4,18 @@
 
 @import "../inc/variables";
 
-$height: 60px;
-$paddingTop: $height / 2;
 
 .mm-header
 {
-	@include vendor-prefix( "box-sizing", border-box );
+	@include mm_vendor-prefix( "box-sizing", border-box );
 
 	background: inherit;
 	border-bottom: 1px solid transparent;
 	text-align: center;
-	line-height: $mm_padding * 2;
+	line-height: $mm_btnSize / 2;
 	width: 100%;
-	height: $height;
-	padding: $paddingTop $mm_btnSize 0 $mm_btnSize;
+	height: $mm_headerHeight;
+	padding: $mm_headerPaddingTop $mm_btnSize 0 $mm_btnSize;
 	position: absolute;
 	z-index: 2;
 	top: 0;
@@ -25,7 +23,7 @@ $paddingTop: $height / 2;
 
 	.mm-title
 	{
-		@include ellipsis;
+		@include mm_ellipsis;
 
 		display: inline-block;
 		width: 100%;
@@ -36,7 +34,7 @@ $paddingTop: $height / 2;
 	.mm-prev,
 	.mm-next
 	{
-		@include vendor-prefix( 'box-sizing', border-box );
+		@include mm_vendor-prefix( 'box-sizing', border-box );
 
 		text-decoration: none;
 		display: block;
@@ -47,7 +45,7 @@ $paddingTop: $height / 2;
 
 		&:before
 		{
-			@include arrow;
+			@include mm_arrow;
 			margin-bottom: -( $mm_padding + 5 );
 		}
 	}
@@ -57,7 +55,7 @@ $paddingTop: $height / 2;
 
 		&:before
 		{
-			@include arrow-prev;
+			@include mm_arrow-prev;
 			left: 22px;
 		}
 	}
@@ -67,7 +65,7 @@ $paddingTop: $height / 2;
 
 		&:before
 		{
-			@include arrow-next;
+			@include mm_arrow-next;
 			right: 18px;
 		}
 	}
@@ -75,9 +73,9 @@ $paddingTop: $height / 2;
 
 .mm-menu.mm-hassearch .mm-header
 {
-	height: $height - $mm_padding;
-	padding-top: $paddingTop - $mm_padding;
-	top: $mm_btnSize + $mm_padding;
+	height: $mm_headerHeight - $mm_padding;
+	padding-top: $mm_headerPaddingTop - $mm_padding;
+	top: $mm_searchHeight;
 
 	.mm-prev:before,
 	.mm-mext:before
@@ -86,35 +84,33 @@ $paddingTop: $height / 2;
 	}
 }
 
-$hTop: $height;
-$sTop: $height + $mm_btnSize;
 .mm-menu.mm-hasheader
 {
 	li.mm-subtitle
 	{
 		display: none;
 	}
-	.mm-panel
+	> .mm-panel
 	{
-		padding-top: $hTop + ( $mm_padding * 2 );
+		padding-top: $mm_headerHeight + ( $mm_padding * 2 );
 	}
 	&.mm-hassearch > .mm-panel
 	{
-		padding-top: $sTop + ( $mm_padding * 2 );
+		padding-top: $mm_headerHeight + $mm_searchHeight + $mm_padding;
 	}
 	&.mm-ismenu
 	{
 		> .mm-panel
 		{
-			padding-top: $hTop;
+			padding-top: $mm_headerHeight;
 		}
 		&.mm-hassearch > .mm-panel
 		{
-			padding-top: $sTop;
+			padding-top: $mm_headerHeight + $mm_searchHeight - $mm_padding;
 		}
 	}
 }
 
 
 
-@include colors_header;
+@include mm_colors_header;

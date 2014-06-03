@@ -1,0 +1,30 @@
+@mixin mm_border( $border, $pseudo, $size, $pos1, $pos2 )
+{
+	&:#{$pseudo}
+	{
+		content: '';
+		border-#{$border}-width: 1px;
+		border-#{$border}-style: solid;
+		display: block;
+		#{$size}: 100%;
+		position: absolute;
+		#{$pos1}: 0;
+		#{$pos2}: 0;
+	}
+}
+@mixin mm_border-top
+{
+	@include mm_border( "top", "before", "width", "top", "left" );
+}
+@mixin mm_border-right
+{
+	@include mm_border( "right", "after", "height", "right", "top" );
+}
+@mixin mm_border-bottom
+{
+	@include mm_border( "bottom", "after", "width", "bottom", "left" );
+}
+@mixin mm_border-left
+{
+	@include mm_border( "left", "before", "height", "left", "top" );
+}

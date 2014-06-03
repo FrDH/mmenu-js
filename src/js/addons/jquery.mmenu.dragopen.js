@@ -4,10 +4,6 @@
  *	
  * Copyright (c) Fred Heusschen
  * www.frebsite.nl
- *
- * Dual licensed under the MIT and GPL licenses.
- * http://en.wikipedia.org/wiki/MIT_License
- * http://en.wikipedia.org/wiki/GNU_General_Public_License
  */
 
 
@@ -16,44 +12,28 @@
 	var _PLUGIN_ = 'mmenu',
 		_ADDON_  = 'dragOpen';
 
+	var _c, _d, _e, glbl,
+		addon_initiated = false;
+
 
 	$[ _PLUGIN_ ].prototype[ '_addon_' + _ADDON_ ] = function()
 	{
-		var that = this,
-			opts = this.opts[ _ADDON_ ];
-
 		if ( !$.fn.hammer )
 		{
 			return;
 		}
-
-		var _c = $[ _PLUGIN_ ]._c,
-			_d = $[ _PLUGIN_ ]._d,
-			_e = $[ _PLUGIN_ ]._e;
-
-		_c.add( 'dragging' );
-		_e.add( 'dragleft dragright dragup dragdown dragend' );
-
-		var glbl = $[ _PLUGIN_ ].glbl;
-
-		//	Extend options
-		if ( typeof opts == 'boolean' )
+		if ( !addon_initiated )
 		{
-			opts = {
-				open: opts
-			};
+			_initAddon();
 		}
-		if ( typeof opts != 'object' )
-		{
-			opts = {};
-		}
-		if ( typeof opts.maxStartPos != 'number' )
-		{
-			opts.maxStartPos = this.opts.position == 'left' || this.opts.position == 'right'
-				? 150
-				: 75;
-		}
-		opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+
+		this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
+		this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
+
+		var that = this,
+			opts = this.opts[ _ADDON_ ],
+			conf = this.conf[ _ADDON_ ];
+
 
 		if ( opts.open )
 		{
@@ -63,7 +43,7 @@
 				_maxDistance 	= 0,
 				_dimension		= 'width';
 
-			switch( this.opts.position )
+			switch( this.opts.offCanvas.position )
 			{
 				case 'left':
 				case 'right':
@@ -75,7 +55,7 @@
 			}
 
 			//	Set up variables
-			switch( this.opts.position )
+			switch( this.opts.offCanvas.position )
 			{
 				case 'left':
 					var drag = {
@@ -131,18 +111,18 @@
 			var $fixed = glbl.$page.find( '.' + _c.mm( 'fixed-top' ) + ', .' + _c.mm( 'fixed-bottom' ) ),
 				$dragg = glbl.$page;
 
-			switch ( that.opts.zposition )
+			switch ( this.opts.offCanvas.zposition )
 			{
 				case 'back':
 					$dragg = $dragg.add( $fixed );
 					break;
 
 				case 'front':
-					$dragg = that.$menu;
+					$dragg = this.$menu;
 					break;
 
 				case 'next':
-					$dragg = $dragg.add( that.$menu ).add( $fixed );
+					$dragg = $dragg.add( this.$menu ).add( $fixed );
 					break;
 			};
 
@@ -162,7 +142,7 @@
 							var pos = e[ drag.page ];
 						}
 
-						switch( that.opts.position )
+						switch( that.opts.offCanvas.position )
 						{
 							case 'right':
 							case 'bottom':
@@ -214,18 +194,19 @@
 								}
 								_stage = 2;
 								that._openSetup();
+								that.vars.opened = true;
 								glbl.$html.addClass( _c.dragging );
 
 								_maxDistance = minMax( 
-									glbl.$wndw[ _dimension ]() * that.conf[ _ADDON_ ][ _dimension ].perc, 
-									that.conf[ _ADDON_ ][ _dimension ].min, 
-									that.conf[ _ADDON_ ][ _dimension ].max
+									glbl.$wndw[ _dimension ]() * conf[ _dimension ].perc, 
+									conf[ _dimension ].min, 
+									conf[ _dimension ].max
 								);
 							}
 						}
 						if ( _stage == 2 )
 						{
-							$dragg.css( that.opts.position, minMax( _distance, 10, _maxDistance ) - ( that.opts.zposition == 'front' ? _maxDistance : 0 ) );
+							$dragg.css( that.opts.offCanvas.position, minMax( _distance, 10, _maxDistance ) - ( that.opts.offCanvas.zposition == 'front' ? _maxDistance : 0 ) );
 						}
 					}
 				)
@@ -235,7 +216,7 @@
 						if ( _stage == 2 )
 						{
 							glbl.$html.removeClass( _c.dragging );
-							$dragg.css( that.opts.position, '' );
+							$dragg.css( that.opts.offCanvas.position, '' );
 
 							if ( _direction == drag.open_dir )
 							{
@@ -252,6 +233,13 @@
 		}
 	};
 
+
+	//	Add to plugin
+	$[ _PLUGIN_ ].addons = $[ _PLUGIN_ ].addons || [];
+	$[ _PLUGIN_ ].addons.push( _ADDON_ );
+
+
+	//	Defaults
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		open		: false,
 //		pageNode	: null,
@@ -272,12 +260,46 @@
 	};
 
 
-	//	Add to plugin
-	$[ _PLUGIN_ ].addons = $[ _PLUGIN_ ].addons || [];
-	$[ _PLUGIN_ ].addons.push( _ADDON_ );
+	function extendOptions( o )
+	{
+		if ( typeof o == 'boolean' )
+		{
+			o = {
+				open: o
+			};
+		}
+		if ( typeof o != 'object' )
+		{
+			o = {};
+		}
+		if ( typeof o.maxStartPos != 'number' )
+		{
+			o.maxStartPos = 100;
+		}
+		o = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], o );
 
+		return o;
+	}
 
-	//	Functions
+	function extendConfiguration( c )
+	{
+		return c;
+	}
+	
+	function _initAddon()
+	{
+		addon_initiated = true;
+
+		_c = $[ _PLUGIN_ ]._c;
+		_d = $[ _PLUGIN_ ]._d;
+		_e = $[ _PLUGIN_ ]._e;
+
+		_c.add( 'dragging' );
+		_e.add( 'dragleft dragright dragup dragdown dragend' );
+
+		glbl = $[ _PLUGIN_ ].glbl;
+	}
+
 	function minMax( val, min, max )
 	{
 		if ( val < min )
