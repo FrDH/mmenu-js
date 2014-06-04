@@ -129,6 +129,12 @@ html.mm-zoom-menu.mm-bottom.mm-opening .mm-menu {
   -o-transform: scale(1, 1) translateY(0%);
   transform: scale(1, 1) translateY(0%); }
 
+html.mm-zoom-page .mm-page {
+  -webkit-transition-property: -webkit-transform, top, right, bottom, left, border;
+  -moz-transition-property: -moz-transform, top, right, bottom, left, border;
+  -ms-transition-property: -ms-transform, top, right, bottom, left, border;
+  -o-transition-property: -o-transform, top, right, bottom, left, border;
+  transition-property: transform, top, right, bottom, left, border; }
 html.mm-zoom-page.mm-opened .mm-page {
   -webkit-transform: scale(1, 1);
   -moz-transform: scale(1, 1);
@@ -165,7 +171,7 @@ html.mm-zoom-page.mm-bottom.mm-opened .mm-page {
   -o-transform-origin: center bottom;
   transform-origin: center bottom; }
 
-html.mm-zoom-panels .mm-panel {
+html.mm-zoom-panels .mm-menu.mm-horizontal > .mm-panel {
   -webkit-transform: scale(1.5, 1.5);
   -moz-transform: scale(1.5, 1.5);
   -ms-transform: scale(1.5, 1.5);
@@ -175,14 +181,19 @@ html.mm-zoom-panels .mm-panel {
   -moz-transform-origin: left center;
   -ms-transform-origin: left center;
   -o-transform-origin: left center;
-  transform-origin: left center; }
-  html.mm-zoom-panels .mm-panel.mm-opened {
+  transform-origin: left center;
+  -webkit-transition-property: -webkit-transform, left;
+  -moz-transition-property: -moz-transform, left;
+  -ms-transition-property: -ms-transform, left;
+  -o-transition-property: -o-transform, left;
+  transition-property: transform, left; }
+  html.mm-zoom-panels .mm-menu.mm-horizontal > .mm-panel.mm-opened {
     -webkit-transform: scale(1, 1);
     -moz-transform: scale(1, 1);
     -ms-transform: scale(1, 1);
     -o-transform: scale(1, 1);
     transform: scale(1, 1); }
-    html.mm-zoom-panels .mm-panel.mm-opened.mm-subopened {
+    html.mm-zoom-panels .mm-menu.mm-horizontal > .mm-panel.mm-opened.mm-subopened {
       -webkit-transform: scale(0.7, 0.7);
       -moz-transform: scale(0.7, 0.7);
       -ms-transform: scale(0.7, 0.7);

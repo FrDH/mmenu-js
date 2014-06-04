@@ -139,6 +139,15 @@ html.mm-zoom-menu
 html.mm-zoom-page
 {
 
+	.mm-page
+	{
+		-webkit-transition-property: -webkit-transform, top, right, bottom, left, border;
+		-moz-transition-property: -moz-transform, top, right, bottom, left, border;
+		-ms-transition-property: -ms-transform, top, right, bottom, left, border;
+		-o-transition-property: -o-transform, top, right, bottom, left, border;
+		transition-property: transform, top, right, bottom, left, border;
+	}
+
 	//	Left
 	&.mm-opened .mm-page
 	{
@@ -171,10 +180,16 @@ html.mm-zoom-page
 
 
 //	Zoom panels
-html.mm-zoom-panels .mm-panel
+html.mm-zoom-panels .mm-menu.mm-horizontal > .mm-panel
 {
 	@include mm_vendor-prefix( 'transform', scale( $scaleUp, $scaleUp ) );
 	@include mm_vendor-prefix( 'transform-origin', left center );
+
+	-webkit-transition-property: -webkit-transform, left;
+	-moz-transition-property: -moz-transform, left;
+	-ms-transition-property: -ms-transform, left;
+	-o-transition-property: -o-transform, left;
+	transition-property: transform, left;
 	
 	&.mm-opened
 	{
