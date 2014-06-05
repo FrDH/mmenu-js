@@ -36,7 +36,7 @@
 		{
 
 			//	Refactor collapsed class
-			this.__refactorClass( $('li.' + this.conf.classNames[ _ADDON_ ].collapsed, this.$menu), 'collapsed' );
+			this.__refactorClass( $('li', this.$menu), this.conf.classNames[ _ADDON_ ].collapsed, 'collapsed' );
 
 			$('.' + _c.label, this.$menu)
 				.each(

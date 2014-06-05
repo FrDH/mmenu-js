@@ -1,28 +1,31 @@
 {
-  "name": "jQuery.mmenu",
-  "main": "src/js/jquery.mmenu.min.js",
-  "version": "4.3.0",
-  "homepage": "http://mmenu.frebsite.nl/",
-  "authors": [
-    "Fred Heusschen <info@frebsite.nl>"
-  ],
-  "description": "A jQuery plugin that creates slick app look-alike sliding menus for your (mobile) website with horizontal or vertical submenus. It's easy to customize and has options for headers, labels, counters, a searchfield and more.",
-  "keywords": [
-    "mmenu",
-    "menu",
-    "navigation",
-    "mobile",
-    "panels",
-    "app"
-  ],
-  "ignore": [
-    ".jshintrc",
-    "Guardfile",
-    "index.html",
-    "*.json",
-    "README.md"
-  ],
-  "dependencies": {
-    "jquery": ">= 1.7.0"
-  }
+	"name": "jQuery.mmenu",
+	"main": "src/js/jquery.mmenu.min.js",
+	"version": "4.3.1",
+	"homepage": "http://mmenu.frebsite.nl/",
+	"authors": [
+		"Fred Heusschen <info@frebsite.nl>"
+	],
+	"description": "The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
+	"keywords": [
+		"mmenu",
+		"menu",
+		"submenu",
+		"navigation",
+		"on-canvas",
+		"off-canvas",
+		"mobile",
+		"panels",
+		"app"
+	],
+	"ignore": [
+		".jshintrc",
+		"Guardfile",
+		"index.html",
+		"*.json",
+		"README.md"
+	],
+	"dependencies": {
+		"jquery": ">= 1.7.0"
+	}
 }

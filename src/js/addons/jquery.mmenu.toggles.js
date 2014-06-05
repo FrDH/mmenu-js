@@ -32,7 +32,7 @@
 
 
 		//	Refactor toggle class
-		this.__refactorClass( $('input.' + this.conf.classNames[ _ADDON_ ].toggle, this.$menu), 'toggle' );
+		this.__refactorClass( $('input', this.$menu), this.conf.classNames[ _ADDON_ ].toggle, 'toggle' );
 
 		//	Add markup
 		$('.' + _c.toggle, this.$menu)

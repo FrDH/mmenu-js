@@ -243,7 +243,7 @@
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		open		: false,
 //		pageNode	: null,
-//		maxStartPos	: null,
+		maxStartPos	: 100,
 		threshold	: 50
 	};
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
@@ -271,10 +271,6 @@
 		if ( typeof o != 'object' )
 		{
 			o = {};
-		}
-		if ( typeof o.maxStartPos != 'number' )
-		{
-			o.maxStartPos = 100;
 		}
 		o = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], o );
 

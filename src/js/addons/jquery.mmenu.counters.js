@@ -32,7 +32,7 @@
 
 
 		//	Refactor counter class
-		this.__refactorClass( $('em.' + this.conf.classNames[ _ADDON_ ].counter, this.$menu), 'counter' );
+		this.__refactorClass( $('em', this.$menu), this.conf.classNames[ _ADDON_ ].counter, 'counter' );
 
 
 		//	Add the counters
@@ -134,7 +134,7 @@
 		//	DEPRECATED
 		if ( o.count )
 		{
-			$[ _PLUGIN_ ].deprecated( 'the option "count" for counters, the option "update"' );
+			$[ _PLUGIN_ ].deprecated( 'the option "count" for counters', 'the option "update"' );
 			o.update = o.count;
 		}
 		//	/DEPRECATED

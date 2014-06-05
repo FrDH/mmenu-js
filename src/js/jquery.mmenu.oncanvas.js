@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.3.0
+ * jQuery mmenu v4.3.1
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -16,7 +16,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.3.0';
+		_VERSION_	= '4.3.1';
 
 
 	//	Plugin already excists
@@ -180,7 +180,7 @@
 
 
 			//	Refactor List class
-			this.__refactorClass( $('.' + this.conf.classNames.list, this.$menu), 'list' );
+			this.__refactorClass( $('.' + this.conf.classNames.list, this.$menu), this.conf.classNames.list, 'list' );
 
 			//	Add List class
 			if ( this.opts.isMenu )
@@ -193,13 +193,13 @@
 			var $lis = $('.' + _c.list + ' > li', this.$menu);
 
 			//	Refactor Selected class
-			this.__refactorClass( $lis.filter( '.' + this.conf.classNames.selected ), 'selected' );
+			this.__refactorClass( $lis, this.conf.classNames.selected, 'selected' );
 
 			//	Refactor Label class
-			this.__refactorClass( $lis.filter( '.' + this.conf.classNames.label ), 'label' );
+			this.__refactorClass( $lis, this.conf.classNames.label, 'label' );
 
 			//	Refactor Spacer class
-			this.__refactorClass( $lis.filter( '.' + this.conf.classNames.spacer ), 'spacer' );
+			this.__refactorClass( $lis, this.conf.classNames.spacer, 'spacer' );
 
 			//	setSelected-event
 			$lis
@@ -222,7 +222,7 @@
 				);
 
 			//	Refactor Panel class
-			this.__refactorClass( $('.' + this.conf.classNames.panel, this.$menu), 'panel' );
+			this.__refactorClass( $('.' + this.conf.classNames.panel, this.$menu), this.conf.classNames.panel, 'panel' );
 
 			//	Add Panel class
 			this.$menu
@@ -432,9 +432,11 @@
 			return o;
 		},
 		
-		__refactorClass: function( $e, c )
+		__refactorClass: function( $e, o, c )
 		{
-			$e.removeClass( this.conf[ c + 'Class' ] ).addClass( _c[ c ] );
+			$e.filter( '.' + o )
+				.removeClass( o )
+				.addClass( _c[ c ] );
 		},
 		
 		__transitionend: function( $e, fn, duration )
