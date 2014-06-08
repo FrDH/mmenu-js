@@ -29,7 +29,7 @@ html.mm-opened.mm-light .mm-page {
 .mm-menu.mm-light .mm-search input {
   background: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.6); }
-.mm-menu.mm-light .mm-noresults {
+.mm-menu.mm-light .mm-noresultsmsg {
   color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-light em.mm-counter {
@@ -79,7 +79,7 @@ html.mm-opened.mm-white .mm-page {
 .mm-menu.mm-white .mm-search input {
   background: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.6); }
-.mm-menu.mm-white .mm-noresults {
+.mm-menu.mm-white .mm-noresultsmsg {
   color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-white em.mm-counter {
@@ -129,7 +129,7 @@ html.mm-opened.mm-black .mm-page {
 .mm-menu.mm-black .mm-search input {
   background: rgba(255, 255, 255, 0.3);
   color: rgba(255, 255, 255, 0.6); }
-.mm-menu.mm-black .mm-noresults {
+.mm-menu.mm-black .mm-noresultsmsg {
   color: rgba(255, 255, 255, 0.3); }
 
 .mm-menu.mm-black em.mm-counter {

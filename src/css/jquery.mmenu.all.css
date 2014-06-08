@@ -545,20 +545,22 @@ div.mm-panel > div.mm-search {
     margin: 0;
     padding: 0 10px; }
 
+.mm-menu .mm-noresultsmsg {
+  text-align: center;
+  font-size: 21px;
+  display: none;
+  padding: 60px 0; }
+  .mm-menu .mm-noresultsmsg:after {
+    border: none !important; }
+
+.mm-noresults .mm-noresultsmsg {
+  display: block; }
+
 .mm-menu li.mm-nosubresults > a.mm-subopen {
   display: none; }
   .mm-menu li.mm-nosubresults > a.mm-subopen + a,
   .mm-menu li.mm-nosubresults > a.mm-subopen + span {
     padding-right: 10px; }
-.mm-menu .mm-noresults {
-  text-align: center;
-  font-size: 21px;
-  display: none;
-  padding: 60px 0; }
-  .mm-menu .mm-noresults:after {
-    border: none; }
-.mm-menu.mm-noresults .mm-noresults {
-  display: block; }
 .mm-menu.mm-hassearch > .mm-panel {
   padding-top: 80px; }
 .mm-menu.mm-hassearch.mm-ismenu > .mm-panel {
@@ -567,8 +569,56 @@ div.mm-panel > div.mm-search {
 .mm-menu .mm-search input {
   background: rgba(255, 255, 255, 0.3);
   color: rgba(255, 255, 255, 0.6); }
-.mm-menu .mm-noresults {
+.mm-menu .mm-noresultsmsg {
   color: rgba(255, 255, 255, 0.3); }
+
+/*
+	jQuery.mmenu toggles addon CSS
+*/
+label.mm-toggle {
+  border-radius: 30px;
+  width: 50px;
+  height: 30px;
+  margin: -15px 0 0 0;
+  position: absolute;
+  top: 50%;
+  z-index: 1; }
+  label.mm-toggle div {
+    border-radius: 30px;
+    width: 28px;
+    height: 28px;
+    margin: 1px; }
+
+input.mm-toggle {
+  position: absolute;
+  left: -10000px; }
+  input.mm-toggle:checked ~ label.mm-toggle div {
+    float: right; }
+
+label.mm-toggle {
+  right: 20px; }
+  label.mm-toggle + a,
+  label.mm-toggle + span {
+    margin-right: 70px; }
+
+a.mm-subopen + label.mm-toggle {
+  right: 50px; }
+  a.mm-subopen + label.mm-toggle + a,
+  a.mm-subopen + label.mm-toggle + span {
+    margin-right: 100px; }
+
+em.mm-counter + a.mm-subopen + label.mm-toggle {
+  right: 90px; }
+  em.mm-counter + a.mm-subopen + label.mm-toggle + a,
+  em.mm-counter + a.mm-subopen + label.mm-toggle + span {
+    margin-right: 140px; }
+
+.mm-menu label.mm-toggle {
+  background: rgba(0, 0, 0, 0.15); }
+  .mm-menu label.mm-toggle div {
+    background: #333333; }
+.mm-menu input.mm-toggle:checked ~ label.mm-toggle {
+  background: #4bd963; }
 
 /*
 	jQuery.mmenu effects extension CSS
@@ -1216,7 +1266,7 @@ html.mm-opened.mm-light .mm-page {
 .mm-menu.mm-light .mm-search input {
   background: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.6); }
-.mm-menu.mm-light .mm-noresults {
+.mm-menu.mm-light .mm-noresultsmsg {
   color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-light em.mm-counter {
@@ -1266,7 +1316,7 @@ html.mm-opened.mm-white .mm-page {
 .mm-menu.mm-white .mm-search input {
   background: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.6); }
-.mm-menu.mm-white .mm-noresults {
+.mm-menu.mm-white .mm-noresultsmsg {
   color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-white em.mm-counter {
@@ -1316,7 +1366,7 @@ html.mm-opened.mm-black .mm-page {
 .mm-menu.mm-black .mm-search input {
   background: rgba(255, 255, 255, 0.3);
   color: rgba(255, 255, 255, 0.6); }
-.mm-menu.mm-black .mm-noresults {
+.mm-menu.mm-black .mm-noresultsmsg {
   color: rgba(255, 255, 255, 0.3); }
 
 .mm-menu.mm-black em.mm-counter {

@@ -86,7 +86,7 @@
 									.not( '.' + _c.subtitle )
 									.not( '.' + _c.hidden )
 									.not( '.' + _c.search )
-									.not( '.' + _c.noresults );
+									.not( '.' + _c.noresultsmsg );
 
 								$counter.html( $lis.length );
 							};
@@ -156,7 +156,7 @@
 		_d = $[ _PLUGIN_ ]._d;
 		_e = $[ _PLUGIN_ ]._e;
 
-		_c.add( 'counter noresults' );
+		_c.add( 'counter search noresultsmsg' );
 
 		glbl = $[ _PLUGIN_ ].glbl;
 	}
