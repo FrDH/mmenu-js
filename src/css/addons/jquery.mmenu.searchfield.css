@@ -41,20 +41,22 @@ div.mm-panel > div.mm-search {
     margin: 0;
     padding: 0 10px; }
 
+.mm-menu .mm-noresultsmsg {
+  text-align: center;
+  font-size: 21px;
+  display: none;
+  padding: 60px 0; }
+  .mm-menu .mm-noresultsmsg:after {
+    border: none !important; }
+
+.mm-noresults .mm-noresultsmsg {
+  display: block; }
+
 .mm-menu li.mm-nosubresults > a.mm-subopen {
   display: none; }
   .mm-menu li.mm-nosubresults > a.mm-subopen + a,
   .mm-menu li.mm-nosubresults > a.mm-subopen + span {
     padding-right: 10px; }
-.mm-menu .mm-noresults {
-  text-align: center;
-  font-size: 21px;
-  display: none;
-  padding: 60px 0; }
-  .mm-menu .mm-noresults:after {
-    border: none; }
-.mm-menu.mm-noresults .mm-noresults {
-  display: block; }
 .mm-menu.mm-hassearch > .mm-panel {
   padding-top: 80px; }
 .mm-menu.mm-hassearch.mm-ismenu > .mm-panel {
@@ -63,5 +65,5 @@ div.mm-panel > div.mm-search {
 .mm-menu .mm-search input {
   background: rgba(255, 255, 255, 0.3);
   color: rgba(255, 255, 255, 0.6); }
-.mm-menu .mm-noresults {
+.mm-menu .mm-noresultsmsg {
   color: rgba(255, 255, 255, 0.3); }

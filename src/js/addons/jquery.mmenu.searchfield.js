@@ -53,23 +53,39 @@
 				$wrapper.each(
 					function()
 					{
+						//	Add the searchfield
 						var $panel	= $(this),
 							_node	= $panel.is( '.' + _c.list ) ? 'li' : 'div',
-							$node	= $panel.children().first();
+							$node	= $( '<' + _node + ' class="' + _c.search + '" />' );
 
-						var insert = ( $node.is( '.' + _c.subtitle ) )
-							? 'After'
-							: 'Before';
+						$node.append( '<input placeholder="' + opts.placeholder + '" type="text" autocomplete="off" />' );
 
-						var $node = $( '<' + _node + ' class="' + _c.search + '" />' )
-							.append( '<input placeholder="' + opts.placeholder + '" type="text" autocomplete="off" />' )
-							[ 'insert' + insert ]( $node );
+						if ( $panel.is( '.' + _c.menu ) )
+						{
+							$node.prependTo( that.$menu );
+						}
+						else
+						{
+							var $child = $panel.children().first(),
+								insert = ( $child.is( '.' + _c.subtitle ) )
+									? 'After'
+									: 'Before';
+
+							$node[ 'insert' + insert ]( $child );
+						}
+
 
 						if ( opts.noResults )
 						{
-							$( '<' + _node + ' class="' + _c.noresults + '" />' )
+							if ( $panel.is( '.' + _c.menu ) )
+							{
+								$panel = $panel.find( '.' + _c.panel ).first();
+							}
+							_node = $panel.is( '.' + _c.list ) ? 'li' : 'div';
+
+							$( '<' + _node + ' class="' + _c.noresultsmsg + '" />' )
 								.html( opts.noResults )
-								.insertAfter( $node );
+								.appendTo( $panel );
 						}
 					}
 				);
@@ -94,11 +110,13 @@
 
 						if ( opts.addTo == 'menu' )
 						{
-							var $panels = $('.' + _c.panel, that.$menu);
+							var $panels = $('.' + _c.panel, that.$menu),
+								$panel  = that.$menu;
 						}
 						else
 						{
-							var $panels = $t.closest( '.' + _c.panel );
+							var $panels = $t.closest( '.' + _c.panel ),
+								$panel  = $panels;
 						}
 						var $lists	= $panels.add( $panels.children( '.' + _c.list ) ),
 							$input	= $t.find( 'input' ),
@@ -108,7 +126,7 @@
 								.not( '.' + _c.subtitle )
 								.not( '.' + _c.label )
 								.not( '.' + _c.search )
-								.not( '.' + _c.noresults );
+								.not( '.' + _c.noresultsmsg );
 
 						var _searchText = '> a';
 						if ( !opts.showLinksOnly )
@@ -192,7 +210,7 @@
 												var $i = $t.add( $t.find( '> .' + _c.list ) ).find( '> li' )
 													.not( '.' + _c.subtitle )
 													.not( '.' + _c.search )
-													.not( '.' + _c.noresults )
+													.not( '.' + _c.noresultsmsg )
 													.not( '.' + _c.label )
 													.not( '.' + _c.hidden );
 		
@@ -215,7 +233,7 @@
 									);
 
 									//	Show/hide no results message
-									that.$menu[ $items.not( '.' + _c.hidden ).length ? 'removeClass' : 'addClass' ]( _c.noresults );
+									$panel[ $items.not( '.' + _c.hidden ).length ? 'removeClass' : 'addClass' ]( _c.noresults );
 		
 									//	Update for other addons
 									that._update();
@@ -279,7 +297,7 @@
 		_d = $[ _PLUGIN_ ]._d;
 		_e = $[ _PLUGIN_ ]._e;
 
-		_c.add( 'search hassearch noresults nosubresults counter' );
+		_c.add( 'search hassearch noresultsmsg noresults nosubresults counter' );
 		_e.add( 'search reset change' );
 
 		glbl = $[ _PLUGIN_ ].glbl;

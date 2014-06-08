@@ -54,6 +54,24 @@ div.mm-panel > div.mm-search
 		padding: 0 $mm_padding;
 	}
 }
+
+.mm-menu .mm-noresultsmsg
+{
+	text-align: center;
+	font-size: round( $mm_fontSize * 1.5 );
+	display: none;
+	padding: ( $mm_btnSize * 1.5 ) 0;
+	
+	&:after
+	{
+		border: none !important;
+	}
+}
+.mm-noresults .mm-noresultsmsg
+{
+	display: block;
+}
+
 .mm-menu
 {
 	li.mm-nosubresults > a.mm-subopen
@@ -66,23 +84,6 @@ div.mm-panel > div.mm-search
 			padding-right: 10px;
 		}
 	}
-	.mm-noresults
-	{
-		text-align: center;
-		font-size: round( $mm_fontSize * 1.5 );
-		display: none;
-		padding: ( $mm_btnSize * 1.5 ) 0;
-		
-		&:after
-		{
-			border: none;
-		}
-	}
-	&.mm-noresults .mm-noresults
-	{
-		display: block;
-	}
-
 	&.mm-hassearch 
 	{
 		> .mm-panel
