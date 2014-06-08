@@ -50,7 +50,7 @@ end
 guard :concat, type: "js", files: %w(jquery.mmenu.oncanvas.min addons/jquery.mmenu.offcanvas.min), input_dir: "src/js", output: "src/js/jquery.mmenu.min"
 
 # Concatenate core functionality + off canvas + addons
-guard :concat, type: "js", files: %w(jquery.mmenu.min addons/jquery.mmenu.counters.min addons/jquery.mmenu.dragopen.min addons/jquery.mmenu.header.min addons/jquery.mmenu.labels.min addons/jquery.mmenu.searchfield.min), input_dir: "src/js", output: "src/js/jquery.mmenu.min.all"
+guard :concat, type: "js", files: %w(jquery.mmenu.min addons/jquery.mmenu.counters.min addons/jquery.mmenu.dragopen.min addons/jquery.mmenu.header.min addons/jquery.mmenu.labels.min addons/jquery.mmenu.searchfield.min addons/jquery.mmenu.toggles.min), input_dir: "src/js", output: "src/js/jquery.mmenu.min.all"
 
 # Umd all minified files
 guard :concat, type: "js", files: %w(umd/inc/umd_prefix jquery.mmenu.oncanvas.min umd/inc/umd_affix), input_dir: "src/js", output: "src/js/umd/jquery.mmenu.oncanvas.umd"
