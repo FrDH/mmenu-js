@@ -84,6 +84,7 @@
 	}
 }
 
+$mm_paddingBeneathHeader: $mm_padding * 2;
 .mm-menu.mm-hasheader
 {
 	li.mm-subtitle
@@ -92,19 +93,21 @@
 	}
 	> .mm-panel
 	{
-		padding-top: $mm_headerHeight + ( $mm_padding * 2 );
+		padding-top: $mm_headerHeight + $mm_paddingBeneathHeader;
+		&.mm-list
+		{
+			padding-top: $mm_headerHeight;
+		}
+		> .mm-list:first-child
+		{
+			margin-top: -$mm_paddingBeneathHeader;
+		}
 	}
 	&.mm-hassearch > .mm-panel
 	{
 		padding-top: $mm_headerHeight + $mm_searchHeight + $mm_padding;
-	}
-	&.mm-ismenu
-	{
-		> .mm-panel
-		{
-			padding-top: $mm_headerHeight;
-		}
-		&.mm-hassearch > .mm-panel
+		
+		&.mm-list
 		{
 			padding-top: $mm_headerHeight + $mm_searchHeight - $mm_padding;
 		}

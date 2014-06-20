@@ -58,9 +58,13 @@ div.mm-panel > div.mm-search {
   .mm-menu li.mm-nosubresults > a.mm-subopen + span {
     padding-right: 10px; }
 .mm-menu.mm-hassearch > .mm-panel {
-  padding-top: 80px; }
-.mm-menu.mm-hassearch.mm-ismenu > .mm-panel {
-  padding-top: 60px; }
+  padding-top: 70px; }
+  .mm-menu.mm-hassearch > .mm-panel > .mm-list:first-child {
+    margin-top: -20px; }
+.mm-menu.mm-hasheader > .mm-panel > div.mm-search:first-child {
+  margin-top: -10px; }
+  .mm-menu.mm-hasheader > .mm-panel > div.mm-search:first-child + .mm-list {
+    padding-top: 0; }
 
 .mm-menu .mm-search input {
   background: rgba(255, 255, 255, 0.3);

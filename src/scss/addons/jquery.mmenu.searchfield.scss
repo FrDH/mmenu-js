@@ -72,6 +72,7 @@ div.mm-panel > div.mm-search
 	display: block;
 }
 
+$mm_paddingBeneathHeader: $mm_padding * 2;
 .mm-menu
 {
 	li.mm-nosubresults > a.mm-subopen
@@ -88,13 +89,26 @@ div.mm-panel > div.mm-search
 	{
 		> .mm-panel
 		{
-			padding-top: $mm_searchHeight + ( $mm_padding * 3 );
-		}
-		&.mm-ismenu
-		{
-			> .mm-panel
+			padding-top: $mm_searchHeight + $mm_paddingBeneathHeader;
+			
+			> .mm-list:first-child
 			{
-				padding-top: $mm_searchHeight + $mm_padding;
+				margin-top: -$mm_paddingBeneathHeader;
+			}
+		}
+	}
+	&.mm-hasheader
+	{
+		> .mm-panel
+		{
+			> div.mm-search:first-child
+			{
+				margin-top: -$mm_padding;
+				
+				+ .mm-list
+				{
+					padding-top: 0;
+				}
 			}
 		}
 	}

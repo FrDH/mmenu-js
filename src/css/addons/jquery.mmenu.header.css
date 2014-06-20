@@ -80,12 +80,14 @@
   display: none; }
 .mm-menu.mm-hasheader > .mm-panel {
   padding-top: 80px; }
+  .mm-menu.mm-hasheader > .mm-panel.mm-list {
+    padding-top: 60px; }
+  .mm-menu.mm-hasheader > .mm-panel > .mm-list:first-child {
+    margin-top: -20px; }
 .mm-menu.mm-hasheader.mm-hassearch > .mm-panel {
   padding-top: 120px; }
-.mm-menu.mm-hasheader.mm-ismenu > .mm-panel {
-  padding-top: 60px; }
-.mm-menu.mm-hasheader.mm-ismenu.mm-hassearch > .mm-panel {
-  padding-top: 100px; }
+  .mm-menu.mm-hasheader.mm-hassearch > .mm-panel.mm-list {
+    padding-top: 100px; }
 
 .mm-menu .mm-header {
   border-color: rgba(0, 0, 0, 0.15);
