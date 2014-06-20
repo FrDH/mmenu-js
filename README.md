@@ -7,22 +7,22 @@ Demos, a tutorial, documentation and support: http://mmenu.frebsite.nl
 
 <img src="http://mmenu.frebsite.nl/img/preview.png" alt="jQuery mmenu" width="100%" />
 
-**Position and z-position**
+**Position and z-position**<br />
 The menu can be positioned at the top, right, bottom or left, at the back, front or next to the page.
 
-**Submenus**
+**Submenus**<br />
 Use sliding horizontal or expanding vertical submenus.
 
-**Touch-ready**
+**Touch-ready**<br />
 Optionally reveal the menu by dragging the page out of the viewport.
 
-**Add-ons**
+**Add-ons**<br />
 Add a search field, headers, labels, counters, toggles and more.
 
-**Extensions**
+**Extensions**<br />
 Easily add opening and closing effects, change the color scheme or change the size and position.
 
-**Support**
+**Support**<br />
 Plays nicely with jQuery Mobile and works well on all major desktop and mobile browsers.
 
 ### Learn more
