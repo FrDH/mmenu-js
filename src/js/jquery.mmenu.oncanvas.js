@@ -7,9 +7,8 @@
  * Copyright (c) Fred Heusschen
  * www.frebsite.nl
  *
- * Dual licensed under the MIT and GPL licenses.
+ * Dual licensed under the MIT license:
  * http://en.wikipedia.org/wiki/MIT_License
- * http://en.wikipedia.org/wiki/GNU_General_Public_License
  */
 
 
