@@ -5,7 +5,7 @@
 		<meta name="author" content="www.frebsite.nl" />
 		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
 
-		<title>jQuery.mmenu - jQuery Mobile</title>
+		<title>jQuery.mmenu demo</title>
 
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
 		<link type="text/css" rel="stylesheet" href="../demo.css" />
@@ -17,19 +17,16 @@
 
 			$(function() {
 				$('#menu').mmenu({
-					onClick		: {
-						blockUI			: false,
-						preventDefault	: function() {
-							return this.rel != 'external';
-						}
+					onClick: {
+						preventDefault: true
 					}
 				}, {
-					offCanvas	: {
-						pageSelector	: 'div[data-role="page"]:first'
+					offCanvas: {
+						pageSelector: 'div[data-role="page"]:first'
 					}
 				});
 
-				$('#menu a[rel!="external"]').on(
+				$('#menu a').on(
 					'click',
 					function()
 					{
@@ -72,54 +69,32 @@
 		<div data-role="page">
 			<div class="header">
 				<a href="#menu" data-ajax="false"></a>
-				jQuery Mobile demo
+				Demo
 			</div>
-			<div id="content" data-role="content">
-				<p>This is a testpage for integrating the jQuery.mmenu plugin in a jQuery Mobile project.<br />
-					It includes internal (#page2) and external linking (page3.html)</p>
-
-				<p>Here are some links for testing purposes:</p>
-				<ul>
-					<li><a href="#menu">Open the menu.</a></li>
-					<li><a href="index.html#page2">Go to &quot;#page2&quot; (an internal page).</a></li>
-					<li><a href="page3.html">Go to &quot;page3.html&quot; (an external page).</a></li>
-				</ul>
+			<div class="content" data-role="content">
+				<p><strong>This is a demo.</strong><br />
+					Click the menu icon to open the menu.</p>
+				
+				<p>This page integrates the jQuery.mmenu plugin in a jQuery Mobile project.</p>
 			</div>
 		</div>
 
 		<div id="page2" data-role="page">
 			<div class="header">
 				<a href="#menu" data-ajax="false"></a>
-				jQuery Mobile
+				Demo
 			</div>
 			<div class="content" data-role="content">
-				<p>This is the internal testpage (#page2).</p>
-				<ul>
-					<li><a href="#menu">Open the menu.</a></li>
-					<li><a href="index.html">Go to &quot;index.html&quot; (the original page).</a></li>
-					<li><a href="page3.html">Go to &quot;page3.html&quot; (an external page).</a></li>
-				</ul>
+				<p><strong>This is a demo.</strong><br />
+					Click the menu icon to open the menu.</p>
 			</div>
 		</div>
 
 		<nav id="menu">
 			<ul>
-				<li><a rel="external" href="../index.html">Introduction</a></li>
-				<li><a rel="external" href="../horizontal-submenus.html">Horizontal submenus example</a></li>
-				<li><a rel="external" href="../vertical-submenus.html">Vertical submenus example</a></li>
-				<li><a rel="external" href="../positions.html">Positioning the menu</a></li>
-				<li><a rel="external" href="../colors.html">Coloring the menu</a></li>
-				<li><a rel="external" href="../advanced.html">Advanced example</a></li>
-				<li><a rel="external" href="../onepage.html">One page scrolling example</a></li>
-				<li><a rel="external" href="../photos.html">Photo's app</a></li>
-				<li>
-					<a href="jqmobile/index.html">jQuery Mobile example</a>
-					<ul>
-						<li class="Selected"><a href="index.html">Page 1</a></li>
-						<li><a href="index.html#page2">Page 2</a></li>
-						<li><a href="page3.html">Page 3</a></li>
-					</ul>
-				</li>
+				<li class="Selected"><a href="index.html">Page 1</a></li>
+				<li><a href="index.html#page2">Page 2</a></li>
+				<li><a href="page3.html">Page 3</a></li>
 			</ul>
 		</nav>
 	</body>
