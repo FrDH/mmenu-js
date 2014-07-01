@@ -55,8 +55,13 @@ html.mm-opening
 //	Container
 html.mm-opened
 {
-	overflow-x: hidden;
+	overflow: hidden;
 	position: relative;
+	
+	body
+	{
+		overflow: hidden;
+	}
 }
 
 //	Page + blocker
