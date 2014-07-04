@@ -1,12 +1,13 @@
 /*
 	jQuery.mmenu widescreen extension CSS
+	
+	To use on widescreens only, include it using a mediaquery:
+	<link type="text/css" href="mmenu-widescreen.css" media="all and (min-width: 900px)"/>
 */
-//	To use on widescreens only, include it using a mediaquery:
-//	<link type="text/css" href="mmenu-widescreen.css" media="all and (min-width: 900px)"/>
 
 @import "../inc/variables";
 
-$mm_widescreenMenuWidth: 0.3 !default;
+$mm_ws_menuWidth: 0.3 !default;
 
 
 // Positioning and sizing
@@ -27,11 +28,11 @@ body
 {
 	box-shadow: none !important;
 	background: inherit;
-	width: percentage( 1 - $mm_widescreenMenuWidth ) !important;
+	width: percentage( 1 - $mm_ws_menuWidth ) !important;
 	min-height: 100%;
 	height: auto !important;
 	margin: 0 !important;
-	left: percentage( $mm_widescreenMenuWidth ) !important;
+	left: percentage( $mm_ws_menuWidth ) !important;
 	top: 0 !important;
 	position: relative !important;
 	z-index: 1;
@@ -41,7 +42,7 @@ body
 .mm-menu
 {
 	z-index: 0;
-	width: percentage( $mm_widescreenMenuWidth ) !important;
+	width: percentage( $mm_ws_menuWidth ) !important;
 	
 	&.mm-top,
 	&.mm-right,

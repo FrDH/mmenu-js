@@ -29,7 +29,11 @@
 
 		this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
 		this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
-		this.vars.opened = false;
+		
+		if ( typeof this.vars.opened != 'boolean' )
+		{
+			this.vars.opened = false;
+		}
 
 		var opts = this.opts[ _ADDON_ ],
 			conf = this.conf[ _ADDON_ ],

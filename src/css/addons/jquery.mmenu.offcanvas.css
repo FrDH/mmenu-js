@@ -15,17 +15,19 @@
   -o-transition-property: top, right, bottom, left, border;
   transition-property: top, right, bottom, left, border; }
 
-html.mm-opened .mm-page,
-html.mm-opened #mm-blocker {
+.mm-page,
+#mm-blocker {
   margin: 0;
   top: 0;
   right: 0;
   bottom: 0;
-  left: 0;
+  left: 0; }
+
+.mm-page {
   border: 0px solid rgba(0, 0, 0, 0); }
 
 html.mm-opening .mm-page {
-  border: 0px solid #010101; }
+  border: 0px solid rgba(1, 1, 1, 0); }
 
 .mm-fixed-top,
 .mm-fixed-bottom {

@@ -1,0 +1,32 @@
+/*
+	jQuery.mmenu iconbar extension CSS
+*/
+
+@import "../inc/variables";
+
+
+$mm_ib_pageOffset: $mm_btnSize + ( $mm_padding * 2 ) !default;
+
+
+.mm-page
+{
+	background: inherit;
+	min-height: 100vh;
+	position: relative;
+}
+.mm-page,
+.mm-fixed-top,
+.mm-fixed-bottom
+{
+	left: $mm_ib_pageOffset;
+	margin-right: $mm_ib_pageOffset;
+}
+
+.mm-menu
+{
+	&:first-child,
+	&.mm-current
+	{
+		display: block;
+	}
+}

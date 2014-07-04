@@ -42,7 +42,7 @@ p
 }
 a, a:link, a:active, a:visited, a:hover
 {
-	color: #333;
+	color: inherit;
 	text-decoration: underline;
 }
 a.button,
