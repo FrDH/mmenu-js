@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.3.4
+ * jQuery mmenu v4.3.5
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.3.4';
+		_VERSION_	= '4.3.5';
 
 
 	//	Plugin already excists
@@ -369,7 +369,7 @@
 					function( e )
 					{
 						var $t = $(this),
-							href = $t.attr( 'href' );
+							href = $t.attr( 'href' ) || '';
 
 						//	Set selected item
 						if ( that.__valueOrFn( that.opts.onClick.setSelected, $t ) )
