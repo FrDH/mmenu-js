@@ -144,7 +144,6 @@ nav:not(.mm-menu)
 }
 .content
 {
-	background: url( menu-arrow.png ) 25px 15px no-repeat transparent;
 	padding: 150px 50px 50px 50px;
 }
 .header.mm-fixed-top + .content

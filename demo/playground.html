@@ -5,17 +5,64 @@
 		<meta name="author" content="www.frebsite.nl" />
 		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
 
-		<title>jQuery.mmenu demo</title>
+		<title>jQuery.mmenu playground demo</title>
 
 		<link type="text/css" rel="stylesheet" href="css/demo.css" />
-		<link type="text/css" rel="stylesheet" href="../src/css/jquery.mmenu.css" />
+		<link type="text/css" rel="stylesheet" href="../src/css/jquery.mmenu.all.css" />
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-		<script type="text/javascript" src="../src/js/jquery.mmenu.min.js"></script>
+		<script type="text/javascript" src="../src/js/jquery.mmenu.min.all.js"></script>
 		<script type="text/javascript">
-			$(function() {
-				$('nav#menu').mmenu();
-			});
+			if ( window.self === window.top )
+			{
+				window.location.href = '../playground.html';
+			}
+			else
+			{
+				var $orgMenu, $menu, $html;
+
+				$(function() {
+					$html = $('html');
+					$orgMenu = $('nav#menu').detach();
+					updateMenu({});
+				});
+
+				function updateMenu( opts )
+				{
+					var opened = false;
+					var createMenu = function()
+					{
+						if ( $menu )
+						{
+							$menu.remove();
+						}
+						$menu = $orgMenu.clone().prependTo( 'body' ).mmenu( opts );
+						if ( opened )
+						{
+							$menu.trigger( 'open.mm' );
+						}
+					}
+					
+					if ( $menu )
+					{
+						if ( $html.hasClass( 'mm-opened' ) )
+						{
+							opened = true;
+							$menu
+								.on( 'closed.mm', createMenu )
+								.trigger( 'close.mm' );
+						}
+						else
+						{
+							createMenu();
+						}
+					}
+					else
+					{
+						createMenu();
+					}
+				}
+			}
 		</script>
 	</head>
 	<body>
@@ -27,7 +74,6 @@
 			<div class="content">
 				<p><strong>This is a demo.</strong><br />
 					Click the menu icon to open the menu.</p>
-				<p>For more demos, a tutorial, documentation and support, please visit <a href="http://mmenu.frebsite.nl" target="_blank">mmenu.frebsite.nl</a></p>
 			</div>
 			<nav id="menu">
 				<ul>

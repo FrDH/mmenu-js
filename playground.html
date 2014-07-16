@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="author" content="www.frebsite.nl" />
+		<meta content="width=600px user-scalable=yes" name="viewport" />
+		<meta name="robots" content="noindex, nofollow" />
+
+		<title>jQuery.mmenu playground demo.</title>
+
+		<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Pacifico" />
+		<link type="text/css" rel="stylesheet" href="demo/css/site.css" />
+		<link type="text/css" rel="stylesheet" href="src/css/jquery.mmenu.all.css" />
+		
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="src/js/jquery.mmenu.min.all.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$menu = $("#options").mmenu({
+					classes: 'mm-black',
+					slidingSubmenus: false,
+					offCanvas: false
+				});
+				
+				var _iframe = $('.phone iframe')[ 0 ].contentWindow,
+					$code	= $('#code pre');
+
+				var $slidingSubmenus 		= $('input[name="slidingSubmenus"]'),
+
+					$ext_effects			= $('#ext_effects'),
+					$effects				= $('input[name="effect"]'),
+
+					$ext_position			= $('#ext_position'),
+					$position				= $('input[name="position"]'),
+
+					$ext_zposition			= $('#ext_zposition'),
+					$zposition				= $('input[name="zposition"]'),
+
+					$ext_themes				= $('#ext_themes'),
+					$themes					= $('input[name="themes"]'),
+					
+					$counters		 		= $('input[name="counters"]'),
+					
+					$add_header				= $('#add_header'),
+					$header_title			= $('input[name="header_title"]'),
+					
+					$add_searchfield		= $('#add_searchfield'),
+					$searchfield_addto		= $('input[name="searchfield_addto"]'),
+					$searchfield_placeholder= $('input[name="searchfield_placeholder"]'),
+					$searchfield_noresults	= $('input[name="searchfield_noresults"]');
+
+
+				$('#options')
+					.find( 'input' )
+					.change( rerender );
+
+				$('.mm-subopen')
+					.click( rerender );
+
+				function rerender()
+				{
+					var opts = {};
+					var extr = {};
+
+					//	slidingSubmenus options
+					if ( !$slidingSubmenus.is( ':checked' ) )
+					{
+						opts.slidingSubmenus = false;
+					}
+
+					//	Effects extension
+					if ( $ext_effects.hasClass( 'mm-opened' ) )
+					{
+						$effects.each(
+							function()
+							{
+								if ( $(this).is( ':checked' ) )
+								{
+									opts.classes = push( opts.classes, $(this).val() );
+								}
+							}
+						);
+					}
+
+					//	Positioning extension
+					if ( $ext_position.hasClass( 'mm-opened' ) )
+					{
+						$position.each(
+							function()
+							{
+								if ( $(this).is( ':checked' ) )
+								{
+									var val = $(this).val();
+									if ( val != 'left' )
+									{
+										opts.offCanvas = value( opts.offCanvas, 'position', val );
+									}
+								}
+							}
+						);
+					}
+					if ( $ext_zposition.hasClass( 'mm-opened' ) )
+					{
+						$zposition.each(
+							function()
+							{
+								if ( $(this).is( ':checked' ) )
+								{
+									var val = $(this).val();
+									if ( val != 'back' )
+									{
+										opts.offCanvas = value( opts.offCanvas, 'zposition', val );
+									}
+								}
+							}
+						);
+					}
+					
+					//	Theme extension
+					if ( $ext_themes.hasClass( 'mm-opened' ) )
+					{
+						$themes.each(
+							function()
+							{
+								if ( $(this).is( ':checked' ) )
+								{
+									var val = $(this).val();
+									if ( val != 'mm-dark' )
+									{
+										opts.classes = push( opts.classes, $(this).val() );
+									}
+								}
+							}
+						);
+					}
+
+					//	counters add-on
+					if ( $counters.is( ':checked' ) )
+					{
+						opts.counters = true;
+					}
+
+					//	header add-on
+					if ( $add_header.hasClass( 'mm-opened' ) )
+					{
+						opts.header = true;
+						var add_opts = false;
+
+						var val = $header_title.val();
+						if ( val != '' )
+						{
+							add_opts = value( add_opts, 'title', val );
+						}
+						
+						if ( add_opts )
+						{
+							opts.header = add_opts;
+							opts.header.add 	= true;
+							opts.header.update	= true;
+						}
+					}
+
+					//	searchfield add-on
+					if ( $add_searchfield.hasClass( 'mm-opened' ) )
+					{
+						opts.searchfield = true;
+						var add_opts = false;
+
+						if ( $searchfield_addto.is( ':checked' ) )
+						{
+							add_opts = value( add_opts, 'addTo', 'panels' );
+						}
+						
+						var val = $searchfield_placeholder.val();
+						if ( val != '' )
+						{
+							add_opts = value( add_opts, 'placeholder', val );
+						}
+						
+						var val = $searchfield_noresults.val();
+						if ( val != '' )
+						{
+							add_opts = value( add_opts, 'noResults', val );
+						}
+
+						if ( add_opts )
+						{
+							opts.searchfield = add_opts;
+							opts.searchfield.add 		= true;
+							opts.searchfield.search 	= true;
+						}
+
+					}
+
+
+
+
+					if ( opts.classes )
+					{
+						opts.classes = opts.classes.join( ' ' );
+					}
+
+					_iframe.updateMenu( opts );
+					$code.html( '// Your JS: \n$("#menu").mmenu(' + JSON.stringify( opts, null, 4 ) + ');' );
+				}
+
+				function value( o, k, v )
+				{
+					if ( !o )
+					{
+						o = {};
+					}
+					o[ k ] = v;
+					return o;
+				}
+				function push( o, v )
+				{
+					if ( !o )
+					{
+						o = [];
+					}
+					o.push( v );
+					return o;
+				}
+				
+				var intrv = setInterval(
+					function()
+					{
+						if ( typeof _iframe.updateMenu == 'function' )
+						{
+							rerender();
+							clearInterval( intrv );
+						}
+					}, 500
+				);
+			});
+		</script>
+	</head>
+	<body>
+		<div id="wrapper" class="playground">
+			<div class="phone">
+				<iframe name="phone" src="demo/playground.html" frameborder="0" width="320" height="480"></iframe>
+			</div>
+			<div id="page">
+
+					<div id="options">
+						<div>
+							<br />
+							<br />
+							<br />
+	
+							<h2>playground</h2>
+							<p>Change the options, extensions and add-ons below and see the example update in realtime.</p>
+							<p>Please note that not all options play well together, for example: You cant have the "zoom panels" effect without having "sliding submenus".</p>
+							<br />
+							<h4>Options</h4>
+							<ul>
+								<li>
+									<span>Use sliding submenus.</span>
+									<input name="slidingSubmenus" checked="checked" type="checkbox" class="Toggle" />
+								</li>
+							</ul>
+	
+							<br />
+							<h4>Extensions</h4>
+							<ul>
+								<li id="ext_effects">
+									<span>Use special effects.</span>
+									<ul>
+										<li>
+											<span>Use the "slide menu" effect.</span>
+											<input name="effect" value="mm-slide" type="checkbox" class="Toggle" />
+										</li>
+										<li>
+											<span>Use the "zoom menu" effect.</span>
+											<input name="effect" value="mm-zoom-menu" type="checkbox" class="Toggle" />
+										</li>
+										<li>
+											<span>Use the "zoom page" effect.</span>
+											<input name="effect" value="mm-zoom-page" type="checkbox" class="Toggle" />
+										</li>
+										<li>
+											<span>Use the "zoom panels" effect.</span>
+											<input name="effect" value="mm-zoom-panels" type="checkbox" class="Toggle" />
+										</li>
+									</ul>
+								</li>
+								
+	<!-- TODO: fullscreen -->
+	<!-- TODO: iconbar -->
+	
+								<li id="ext_position">
+									<span>Change the position of the menu?.</span>
+									<ul>
+										<li>
+											<span>Open the menu from the left (default).</span>
+											<input name="position" value="left" checked="checked" type="radio" class="Toggle" />
+										</li>
+										<li>
+											<span>Open the menu from the top.</span>
+											<input name="position" value="top" type="radio" class="Toggle" />
+										</li>
+										<li>
+											<span>Open the menu from the right.</span>
+											<input name="position" value="right" type="radio" class="Toggle" />
+										</li>
+										<li>
+											<span>Open the menu from the bottom.</span>
+											<input name="position" value="bottom" type="radio" class="Toggle" />
+										</li>
+									</ul>
+								</li>
+	
+								<li id="ext_zposition">
+									<span>Change the z-position of the menu.</span>
+									<ul>
+										<li>
+											<span>Open the menu behind the page (default).</span>
+											<input name="zposition" value="back" checked="checked" type="radio" class="Toggle" />
+										</li>
+										<li>
+											<span>Open the menu next to the page.</span>
+											<input name="zposition" value="next" type="radio" class="Toggle" />
+										</li>
+										<li>
+											<span>Open the menu in front of the page.</span>
+											<input name="zposition" value="front" type="radio" class="Toggle" />
+										</li>
+									</ul>
+								</li>
+	
+								<li id="ext_themes">
+									<span>Apply a theme to the menu.</span>
+									<ul>
+										<li>
+											<span>Apply the "dark" theme (default).</span>
+											<input name="themes" value="mm-dark" checked="checked" type="radio" class="Toggle" />
+										</li>
+										<li>
+											<span>Apply the "light" theme.</span>
+											<input name="themes" value="mm-light" type="radio" class="Toggle" />
+										</li>
+										<li>
+											<span>Apply the "black" theme.</span>
+											<input name="themes" value="mm-black" type="radio" class="Toggle" />
+										</li>
+										<li>
+											<span>Apply the "white" theme.</span>
+											<input name="themes" value="mm-white" type="radio" class="Toggle" />
+										</li>
+									</ul>
+								</li>
+							</ul>
+	
+							<br />
+							<h4>Add-ons</h4>
+							<ul>
+								<li>
+									<span>Append a counter to the menu items.</span>
+									<input name="counters" type="checkbox" class="Toggle" />
+								</li>
+	
+								<li id="add_header">
+									<span>Prepend a fixed header to the menu.</span>
+									<ul>
+										<li>
+											<span>Title above the main menu:
+											<input name="header_title" placeholder="Menu" type="text" /></span>
+										</li>
+									</ul>
+								</li>
+	
+	<!-- TODO: labels -->
+	
+								<li id="add_searchfield">
+									<span>Prepend a searchfield to the menu.</span>
+									<ul>
+										<li>
+											<span>Add a searchfield to all panels.</span>
+											<input name="searchfield_addto" type="checkbox" class="Toggle" />
+										</li>
+										<li>
+											<span>Placeholder text for the searchfield:
+											<input name="searchfield_placeholder" placeholder="Search" type="text" /></span>
+										</li>
+										<li>
+											<span>Text for no results:
+											<input name="searchfield_noresults" placeholder="No results found." type="text" /></span>
+										</li>
+									</ul>
+								</li>
+	
+	<!-- TODO: toggles -->
+	
+							</ul>
+							<br />
+							<p>Congratulations, you're done! Scroll down to see the generated Javascript.</p>
+
+							<br />
+							<br />
+
+						</div>
+					</div>
+
+			</div>
+		</div>	
+		
+		<div id="code">
+			<pre></pre>
+		</div>
+
+	</body>
+</html>
