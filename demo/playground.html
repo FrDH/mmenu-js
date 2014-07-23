@@ -7,8 +7,10 @@
 
 		<title>jQuery.mmenu playground demo</title>
 
+		<link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" />
 		<link type="text/css" rel="stylesheet" href="css/demo.css" />
 		<link type="text/css" rel="stylesheet" href="../src/css/jquery.mmenu.all.css" />
+		<link type="text/css" rel="stylesheet" data-href="../src/css/extensions/jquery.mmenu.iconbar.css" />
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<script type="text/javascript" src="../src/js/jquery.mmenu.min.all.js"></script>
@@ -19,19 +21,33 @@
 			}
 			else
 			{
-				var $orgMenu, $menu, $html;
+				var $orgMenu, $menu, $html, $body, $link;
 
 				$(function() {
 					$html = $('html');
+					$body = $('body');
+					$link = $('link[data-href*=".iconbar.css"]');
+
 					$orgMenu = $('nav#menu').detach();
-					updateMenu({});
 				});
 
-				function updateMenu( opts )
+				function updateMenu( opts, extr )
 				{
+
 					var opened = false;
 					var createMenu = function()
 					{
+						if ( extr.iconbar )
+						{
+							$link.attr( 'href', $link.data( 'href' ) );
+							$body.removeClass( 'no-icons' );
+						}
+						else
+						{
+							$link.attr( 'href', '' );
+							$body.addClass( 'no-icons' );
+						}
+
 						if ( $menu )
 						{
 							$menu.remove();
@@ -65,7 +81,7 @@
 			}
 		</script>
 	</head>
-	<body>
+	<body class="no-icons">
 		<div id="page">
 			<div class="header">
 				<a href="#menu"></a>
@@ -77,8 +93,12 @@
 			</div>
 			<nav id="menu">
 				<ul>
-					<li><a href="#">Home</a></li>
-					<li><a href="#about">About us</a>
+					<li><a href="#">
+						<i class="fa fa-home"></i>
+						Home</a></li>
+					<li><a href="#about">
+						<i class="fa fa-user"></i>
+						About us</a>
 						<ul>
 							<li><a href="#about/history">History</a></li>
 							<li><a href="#about/team">The team</a>
@@ -91,7 +111,9 @@
 							<li><a href="#about/address">Our address</a></li>
 						</ul>
 					</li>
-					<li><a href="#contact">Contact</a></li>
+					<li><a href="#contact">
+						<i class="fa fa-envelope"></i>
+						Contact</a></li>
 				</ul>
 			</nav>
 		</div>

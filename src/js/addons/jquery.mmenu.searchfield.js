@@ -200,11 +200,11 @@
 
 									//	Update parent for submenus
 									$( $panels.get().reverse() ).each(
-										function()
+										function( i )
 										{
 											var $t = $(this),
 												$p = $t.data( _d.parent );
-				
+
 											if ( $p )
 											{
 												var $i = $t.add( $t.find( '> .' + _c.list ) ).find( '> li' )
@@ -222,9 +222,15 @@
 												}
 												else if ( opts.addTo == 'menu' )
 												{
-													if ( $t.hasClass( _c.current ) )
+													if ( $t.hasClass( _c.opened ) )
 													{
-														$p.trigger( _e.open );
+														//	Compensate the timeout for the opening animation
+														setTimeout(
+															function()
+															{
+																$p.trigger( _e.open );
+															}, ( i + 1 ) * ( that.conf.openingInterval * 1.5 )
+														);
 													}
 													$p.addClass( _c.nosubresults );
 												}
@@ -234,7 +240,7 @@
 
 									//	Show/hide no results message
 									$panel[ $items.not( '.' + _c.hidden ).length ? 'removeClass' : 'addClass' ]( _c.noresults );
-		
+
 									//	Update for other addons
 									that._update();
 								}

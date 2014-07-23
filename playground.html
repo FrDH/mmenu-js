@@ -29,6 +29,8 @@
 
 					$ext_effects			= $('#ext_effects'),
 					$effects				= $('input[name="effect"]'),
+					
+					$iconbar				= $('input[name="iconbar"]'),
 
 					$ext_position			= $('#ext_position'),
 					$position				= $('input[name="position"]'),
@@ -80,6 +82,11 @@
 								}
 							}
 						);
+					}
+					//	Iconbar extension
+					if ( $iconbar.is( ':checked' ) )
+					{
+						extr.iconbar = true;
 					}
 
 					//	Positioning extension
@@ -134,13 +141,13 @@
 						);
 					}
 
-					//	counters add-on
+					//	Counters add-on
 					if ( $counters.is( ':checked' ) )
 					{
 						opts.counters = true;
 					}
 
-					//	header add-on
+					//	Header add-on
 					if ( $add_header.hasClass( 'mm-opened' ) )
 					{
 						opts.header = true;
@@ -160,7 +167,7 @@
 						}
 					}
 
-					//	searchfield add-on
+					//	Searchfield add-on
 					if ( $add_searchfield.hasClass( 'mm-opened' ) )
 					{
 						opts.searchfield = true;
@@ -185,7 +192,7 @@
 
 						if ( add_opts )
 						{
-							opts.searchfield = add_opts;
+							opts.searchfield 			= add_opts;
 							opts.searchfield.add 		= true;
 							opts.searchfield.search 	= true;
 						}
@@ -194,13 +201,12 @@
 
 
 
-
 					if ( opts.classes )
 					{
 						opts.classes = opts.classes.join( ' ' );
 					}
 
-					_iframe.updateMenu( opts );
+					_iframe.updateMenu( opts, extr );
 					$code.html( '// Your JS: \n$("#menu").mmenu(' + JSON.stringify( opts, null, 4 ) + ');' );
 				}
 
@@ -289,6 +295,10 @@
 	<!-- TODO: fullscreen -->
 	<!-- TODO: iconbar -->
 	
+								<li>
+									<span>Always show an icon-bar</span>
+									<input name="iconbar" type="checkbox" class="Toggle" />
+								</li>
 								<li id="ext_position">
 									<span>Change the position of the menu?.</span>
 									<ul>

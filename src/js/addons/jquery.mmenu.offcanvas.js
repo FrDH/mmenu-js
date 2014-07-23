@@ -99,7 +99,7 @@
 			function()
 			{
 				that._openFinish();
-			}, 25
+			}, this.conf.openingInterval
 		);
 
 		return 'open';
