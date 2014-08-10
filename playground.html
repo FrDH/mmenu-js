@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="author" content="www.frebsite.nl" />
-		<meta content="width=600px user-scalable=yes" name="viewport" />
+		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
 		<meta name="robots" content="noindex, nofollow" />
 
 		<title>jQuery.mmenu playground demo.</title>
@@ -22,8 +22,10 @@
 					offCanvas: false
 				});
 				
-				var _iframe = $('.phone iframe')[ 0 ].contentWindow,
-					$code	= $('#code pre');
+				var _iframe 	= $('.phone iframe')[ 0 ].contentWindow,
+					$codejs		= $('#code-js > span'),
+					$linkicon	= $('#link-iconbar');
+
 
 				var $slidingSubmenus 		= $('input[name="slidingSubmenus"]'),
 
@@ -207,7 +209,8 @@
 					}
 
 					_iframe.updateMenu( opts, extr );
-					$code.html( '// Your JS: \n$("#menu").mmenu(' + JSON.stringify( opts, null, 4 ) + ');' );
+					$codejs.html( '$("#menu").mmenu(' + JSON.stringify( opts, null, 4 ) + ');' );
+					$linkicon[ extr.iconbar ? 'show' : 'hide' ]();
 				}
 
 				function value( o, k, v )
@@ -251,10 +254,6 @@
 
 					<div id="options">
 						<div>
-							<br />
-							<br />
-							<br />
-	
 							<h2>playground</h2>
 							<p>Change the options, extensions and add-ons below and see the example update in realtime.</p>
 							<p>Please note that not all options play well together, for example: You cant have the "zoom panels" effect without having "sliding submenus".</p>
@@ -300,7 +299,7 @@
 									<input name="iconbar" type="checkbox" class="Toggle" />
 								</li>
 								<li id="ext_position">
-									<span>Change the position of the menu?.</span>
+									<span>Change the position of the menu?</span>
 									<ul>
 										<li>
 											<span>Open the menu from the left (default).</span>
@@ -406,9 +405,6 @@
 							<br />
 							<p>Congratulations, you're done! Scroll down to see the generated Javascript.</p>
 
-							<br />
-							<br />
-
 						</div>
 					</div>
 
@@ -416,7 +412,26 @@
 		</div>	
 		
 		<div id="code">
-			<pre></pre>
+			<div>
+
+<pre id="code-html">
+&lt;!-- Include these files: --&gt;
+
+&lt;link type="text/css" href="css/jquery.mmenu.all.css" rel="stylesheet" /&gt;
+<span id="link-iconbar">&lt;link type="text/css"href="css/extensions/jquery.mmenu.iconbar.css" rel="stylesheet" /&gt;</span>
+&lt;script type="text/javascript" src="jquery.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="js/jquery.mmenu.min.all.js"&gt;&lt;/script&gt;
+</pre>
+
+<pre id="code-js">
+/* Use this javascript */
+
+jQuery(document).ready( function( $ ) {
+<span></span>
+});
+</pre>
+
+			</div>
 		</div>
 
 	</body>
