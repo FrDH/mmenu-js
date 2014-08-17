@@ -33,24 +33,6 @@ a:hover
 	text-decoration: underline;
 }
 
-select,
-input[type="text"]
-{
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-
-	border: none;
-	border-radius: 20px;
-	text-transform: none;
-	vertical-align: middle;
-	line-height: 20px;
-	display: block;
-	height: 30px;
-	width: 95%;
-	padding: 5px 10px;
-}
-
 .phone
 {
     background: center center no-repeat transparent;
@@ -80,89 +62,4 @@ input[type="text"]
 	margin-left: 0;
 	top: 50%;
 	left: 50%;
-}
-
-/* playground */
-.playground #page
-{
-	height: auto;
-	padding: 100px 0;
-	margin-top: 0;
-	position: relative;
-}
-#options
-{
-	background: none;
-	width: 100%;
-	color: #fff;
-	
-	height: auto;
-	position: relative;
-}
-#options .mm-panel
-{
-	position: relative;
-}
-
-#options input.mm-toggle ~ label.mm-toggle
-{
-    background: rgba( 255, 255, 255, 0.4 );
-}
-#options input.mm-toggle:checked ~ label.mm-toggle
-{
-    background: #fff;
-}
-#options label.mm-toggle div
-{
-	background: #5bc5ff;
-}
-#options .mm-list > li:after
-{
-    border-color: rgba( 255, 255, 255, 0.5 );
-}
-#options .mm-list .mm-panel li:last-child:after
-{
-	border-color: transparent;
-}
-#options h4 + .mm-list
-{
-	margin-top: -30px;
-}
-#options .mm-list input[type="text"]
-{
-	margin-top: 5px;
-}
-
-
-#code
-{
-	background: #111;
-	position: relative;
-}
-#code:after
-{
-	content: '';
-	display: block;
-	clear: both;
-}
-#code-html,
-#code-js
-{
-	box-sizing: border-box;
-	color: #999;
-	width: 50%;
-	padding: 50px;
-	margin: 20px 0;
-	float: left;
-	
-	overflow-x: auto;
-}
-#code-html
-{
-	border-right: 1px solid #333;
-}
-#code-js
-{
-	border-left: 1px solid #333;
-	margin-left: -1px;
 }

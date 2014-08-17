@@ -46,54 +46,7 @@ a, a:link, a:active, a:visited, a:hover
 	color: inherit;
 	text-decoration: underline;
 }
-a.button,
-span.button,
-select,
-input[type="text"]
-{
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
 
-	border-radius: 5px;
-	text-transform: none;
-	text-indent: 0;
-	font-weight: bold;
-	vertical-align: middle;
-	line-height: 20px;
-	display: block;
-	height: 40px;
-	width: 100%;
-	padding: 10px;
-}
-a.button,
-span.button
-{
-	background: #4BD963;
-	color: #fff !important;
-	font-size: 18px;
-	text-align: center;
-	text-decoration: none;
-}
-select,
-input[type="text"]
-{
-	background: #fff;
-	border: 1px solid #ccc;
-}
-.mm-label.button
-{
-	text-indent: 0 !important;
-	padding: 20px 20px 40px 20px !important;
-}
-
-pre
-{
-	font-size: 12px;
-	width: 100%;
-	overflow: auto;
-	-webkit-overflow-scrolling: touch;
-}
 nav:not(.mm-menu)
 {
 	display: none;
@@ -137,36 +90,4 @@ nav:not(.mm-menu)
 .content
 {
 	padding: 150px 50px 50px 50px;
-}
-
-.fa
-{
-	font-size: 17px;
-	margin: 0 20px 0 4px;
-}
-body.no-icons .fa
-{
-	display: none;
-}
-
-
-html.mm-opened.mm-zoom-menu body
-{
-	 background: #333;
-}
-html.mm-opened.mm-zoom-menu.mm-light body
-{
-	background: #f3f3f3;
-}
-html.mm-opened.mm-zoom-menu.mm-black body
-{
-	background: #000;
-}
-html.mm-opened.mm-zoom-menu.mm-white body
-{
-	background: #fff;
-}
-html.mm-opened.mm-zoom-menu .mm-page
-{
-	background-color: #fff;
 }
