@@ -41,7 +41,8 @@ html.mm-opened.mm-light .mm-page {
 .mm-menu.mm-light .mm-header {
   border-color: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.3); }
-  .mm-menu.mm-light .mm-header a:before {
+  .mm-menu.mm-light .mm-header .mm-prev:before,
+  .mm-menu.mm-light .mm-header .mm-next:after {
     border-color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-light label.mm-toggle {
@@ -91,7 +92,8 @@ html.mm-opened.mm-white .mm-page {
 .mm-menu.mm-white .mm-header {
   border-color: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.3); }
-  .mm-menu.mm-white .mm-header a:before {
+  .mm-menu.mm-white .mm-header .mm-prev:before,
+  .mm-menu.mm-white .mm-header .mm-next:after {
     border-color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-white label.mm-toggle {
@@ -141,7 +143,8 @@ html.mm-opened.mm-black .mm-page {
 .mm-menu.mm-black .mm-header {
   border-color: rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.3); }
-  .mm-menu.mm-black .mm-header a:before {
+  .mm-menu.mm-black .mm-header .mm-prev:before,
+  .mm-menu.mm-black .mm-header .mm-next:after {
     border-color: rgba(255, 255, 255, 0.3); }
 
 .mm-menu.mm-black label.mm-toggle {
