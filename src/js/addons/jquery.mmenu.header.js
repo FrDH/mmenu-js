@@ -1,9 +1,8 @@
 /*	
  * jQuery mmenu header addon
  * mmenu.frebsite.nl
- *	
+ *
  * Copyright (c) Fred Heusschen
- * www.frebsite.nl
  */
 
 
@@ -16,22 +15,27 @@
 		addon_initiated = false;
 
 
-	$[ _PLUGIN_ ].prototype[ '_addon_' + _ADDON_ ] = function()
+	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
 	{
 		if ( !addon_initiated )
 		{
 			_initAddon();
 		}
 
-		this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
-		this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
+		var addon_added = this.vars[ _ADDON_ + '_added' ];
+		this.vars[ _ADDON_ + '_added' ] = true;
+
+		if ( !addon_added )
+		{
+			this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
+			this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
+		}
 
 		var that = this,
 			opts = this.opts[ _ADDON_ ],
 			conf = this.conf[ _ADDON_ ];
 
-
-		if ( opts.add )
+		if ( !addon_added && opts.add )
 		{
 			var content = opts.content
 				? opts.content
@@ -42,17 +46,12 @@
 				.append( content );
 		}
 
-
 		var $header = $('div.' + _c.header, this.$menu);
 		if ( $header.length )
 		{
 			this.$menu.addClass( _c.hasheader );
-		}
 
-
-		if ( opts.update )
-		{
-			if ( $header.length )
+			if ( opts.update )
 			{
 				var $titl = $header.find( '.' + _c.title ),
 					$prev = $header.find( '.' + _c.prev ),
@@ -64,69 +63,82 @@
 					_page = '#' + glbl.$page.attr( 'id' );
 				}
 
-				$prev
-					.add( $next )
-					.on( _e.click,
-						function( e )
-						{
-							e.preventDefault();
-							e.stopPropagation();
-	
-							var href = $(this).attr( 'href' );
-							if ( href !== '#' )
+				if ( !addon_added )
+				{
+					$prev
+						.add( $next )
+						.off( _e.click )
+						.on( _e.click,
+							function( e )
 							{
-								if ( _page && href == _page )
+								e.preventDefault();
+								e.stopPropagation();
+		
+								var href = $(this).attr( 'href' );
+								if ( href !== '#' )
 								{
-									that.$menu.trigger( _e.close );
-								}
-								else
-								{
-									$(href, that.$menu).trigger( _e.open );
+									if ( _page && href == _page )
+									{
+										that.$menu.trigger( _e.close );
+									}
+									else
+									{
+										$(href, that.$menu).trigger( _e.open );
+									}
 								}
 							}
-						}
-					);
+						);
+				}
 
-				$('.' + _c.panel, this.$menu)
+				$panels
 					.each(
 						function()
 						{
-							var $t = $(this);
+							var $panl = $(this);
 
 							//	Find title, prev and next
-							var titl = $('.' + that.conf.classNames[ _ADDON_ ].panelHeader, $t).text(),
-								prev = $('.' + that.conf.classNames[ _ADDON_ ].panelPrev, $t).attr( 'href' ),
-								next = $('.' + that.conf.classNames[ _ADDON_ ].panelNext, $t).attr( 'href' );
+							var $ttl = $('.' + that.conf.classNames[ _ADDON_ ].panelHeader, $panl),
+								$prv = $('.' + that.conf.classNames[ _ADDON_ ].panelPrev, $panl),
+								$nxt = $('.' + that.conf.classNames[ _ADDON_ ].panelNext, $panl),
 
-							if ( !titl )
+								_ttl = $ttl.text(),
+								_prv = $prv.attr( 'href' ),
+								_nxt = $nxt.attr( 'href' );
+
+							if ( !_ttl )
 							{
-								titl = $('.' + _c.subclose, $t).text();
+								_ttl = $('.' + _c.subclose, $panl).text();
 							}
-							if ( !titl )
+							if ( !_ttl )
 							{
-								titl = opts.title;
+								_ttl = opts.title;
 							}
-							if ( !prev )
+							if ( !_prv )
 							{
-								prev = $('.' + _c.subclose, $t).attr( 'href' );
+								_prv = $('.' + _c.subclose, $panl).attr( 'href' );
 							}
+							
+							var _prv_txt = $prv.text(),
+								_nxt_txt = $nxt.text();
 
 							//	Update header info
 							var updateHeader = function()
 							{
-								$titl[ titl ? 'show' : 'hide' ]().text( titl );
-								$prev[ prev ? 'show' : 'hide' ]().attr( 'href', prev );
-								$next[ next ? 'show' : 'hide' ]().attr( 'href', next );
+								$titl[ _ttl ? 'show' : 'hide' ]();
+								$titl.text( _ttl );
+
+								$prev[ _prv ? 'attr' : 'removeAttr' ]( 'href', _prv );
+								$prev[ _prv || _prv_txt ? 'show' : 'hide' ]();
+								$prev.text( _prv_txt );
+
+								$next[ _nxt ? 'attr' : 'removeAttr' ]( 'href', _nxt );
+								$next[ _nxt || _nxt_txt ? 'show' : 'hide' ]();
+								$next.text( _nxt_txt );
 							};
 
-							$t.on( _e.open,
-								function( e )
-								{
-									updateHeader();
-								}
-							);
+							$panl.on( _e.open, updateHeader );
 
-							if ( $t.hasClass( _c.current ) )
+							if ( $panl.hasClass( _c.current ) )
 							{
 								updateHeader();
 							}
@@ -138,7 +150,6 @@
 
 
 	//	Add to plugin
-	$[ _PLUGIN_ ].addons = $[ _PLUGIN_ ].addons || [];
 	$[ _PLUGIN_ ].addons.push( _ADDON_ );
 
 
@@ -187,7 +198,7 @@
 		_d = $[ _PLUGIN_ ]._d;
 		_e = $[ _PLUGIN_ ]._e;
 
-		_c.add( 'header hasheader prev next title titletext' );
+		_c.add( 'header hasheader prev next title arrow' );
 
 		glbl = $[ _PLUGIN_ ].glbl;
 	}

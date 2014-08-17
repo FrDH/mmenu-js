@@ -1,9 +1,8 @@
 /*	
  * jQuery mmenu counters addon
  * mmenu.frebsite.nl
- *	
+ *
  * Copyright (c) Fred Heusschen
- * www.frebsite.nl
  */
 
 
@@ -16,15 +15,21 @@
 		addon_initiated = false;
 
 
-	$[ _PLUGIN_ ].prototype[ '_addon_' + _ADDON_ ] = function()
+	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
 	{
 		if ( !addon_initiated )
 		{
 			_initAddon();
 		}
+		
+		var addon_added = this.vars[ _ADDON_ + '_added' ];
+		this.vars[ _ADDON_ + '_added' ] = true;
 
-		this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
-		this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
+		if ( !addon_added )
+		{
+			this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
+			this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
+		}
 
 		var that = this,
 			opts = this.opts[ _ADDON_ ],
@@ -32,27 +37,22 @@
 
 
 		//	Refactor counter class
-		this.__refactorClass( $('em', this.$menu), this.conf.classNames[ _ADDON_ ].counter, 'counter' );
+		this.__refactorClass( $('em', $panels), this.conf.classNames[ _ADDON_ ].counter, 'counter' );
 
 
 		//	Add the counters
 		if ( opts.add )
 		{
-			$('.' + _c.panel, this.$menu)
+			$panels
 				.each(
 					function()
 					{
-						var $t = $(this),
-							$p = $t.data( _d.parent );
-		
-						if ( $p )
+						var $prnt = $(this).data( _d.parent );
+						if ( $prnt )
 						{
-							var $c = $( '<em class="' + _c.counter + '" />' ),
-								$a = $p.find( '> a.' + _c.subopen );
-	
-							if ( !$a.parent().find( 'em.' + _c.counter ).length )
+							if ( !$prnt.find( '> em.' + _c.counter ).length )
 							{
-								$a.before( $c );
+								$prnt.prepend( $( '<em class="' + _c.counter + '" />' ) );
 							}
 						}
 					}
@@ -60,48 +60,52 @@
 		}
 
 
-		//	Bind custom events
+		//	Update the counter
 		if ( opts.update )
 		{
-			var $counters = $('em.' + _c.counter, this.$menu);
-
-			$counters
+			$panels
 				.each(
 					function()
 					{
-						var $counter = $(this),
-							$sublist = $($counter.next().attr( 'href' ), that.$menu);
-	
-						if ( !$sublist.is( '.' + _c.list ) )
+						var $panl = $(this),
+							$prnt = $panl.data( _d.parent );
+
+						if ( $prnt )
 						{
-							$sublist = $sublist.find( '> .' + _c.list );
-						}
-	
-						if ( $sublist.length )
-						{
-							var updateCounter = function()
+							var $cntr = $prnt.find( '> em.' + _c.counter );
+							if ( $cntr.length )
 							{
-								var $lis = $sublist.children()
-									.not( '.' + _c.label )
-									.not( '.' + _c.subtitle )
-									.not( '.' + _c.hidden )
-									.not( '.' + _c.search )
-									.not( '.' + _c.noresultsmsg );
-
-								$counter.html( $lis.length );
-							};
-							updateCounter();
-
-							that._update( updateCounter );
+								if ( !$panl.is( '.' + _c.list ) )
+								{
+									$panl = $panl.find( '> .' + _c.list );
+								}
+								if ( $panl.length && !$panl.data( _d.updatecounter ) )
+								{
+									$panl.data( _d.updatecounter, true );
+									that._update(
+										function()
+										{
+											var $lis = $panl.children()
+												.not( '.' + _c.label )
+												.not( '.' + _c.subtitle )
+												.not( '.' + _c.hidden )
+												.not( '.' + _c.search )
+												.not( '.' + _c.noresultsmsg );
+		
+											$cntr.html( $lis.length );
+										}
+									);
+								}
+							}
 						}
 					}
 				);
+
 		}
 	};
 
 
 	//	Add to plugin
-	$[ _PLUGIN_ ].addons = $[ _PLUGIN_ ].addons || [];
 	$[ _PLUGIN_ ].addons.push( _ADDON_ );
 
 
@@ -129,17 +133,6 @@
 			o = {};
 		}
 		o = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], o );
-
-
-		//	DEPRECATED
-		if ( o.count )
-		{
-			$[ _PLUGIN_ ].deprecated( 'the option "count" for counters', 'the option "update"' );
-			o.update = o.count;
-		}
-		//	/DEPRECATED
-
-
 		return o;
 	}
 
@@ -157,6 +150,7 @@
 		_e = $[ _PLUGIN_ ]._e;
 
 		_c.add( 'counter search noresultsmsg' );
+		_d.add( 'updatecounter' );
 
 		glbl = $[ _PLUGIN_ ].glbl;
 	}

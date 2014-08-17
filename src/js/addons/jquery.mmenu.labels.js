@@ -1,9 +1,8 @@
 /*	
  * jQuery mmenu labels addon
  * mmenu.frebsite.nl
- *	
+ *
  * Copyright (c) Fred Heusschen
- * www.frebsite.nl
  */
 
 
@@ -16,15 +15,21 @@
 		addon_initiated = false;
 
 
-	$[ _PLUGIN_ ].prototype[ '_addon_' + _ADDON_ ] = function()
+	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
 	{
 		if ( !addon_initiated )
 		{
 			_initAddon();
 		}
-
-		this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
-		this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
+		
+		var addon_added = this.vars[ _ADDON_ + '_added' ];
+		this.vars[ _ADDON_ + '_added' ] = true;
+		
+		if ( !addon_added )
+		{
+			this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
+			this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
+		}
 
 		var that = this,
 			opts = this.opts[ _ADDON_ ],
@@ -38,33 +43,38 @@
 			//	Refactor collapsed class
 			this.__refactorClass( $('li', this.$menu), this.conf.classNames[ _ADDON_ ].collapsed, 'collapsed' );
 
-			$('.' + _c.label, this.$menu)
+			$('.' + _c.label, $panels )
 				.each(
 					function()
 					{
-						var $label = $(this),
-							$expan = $label.nextUntil( '.' + _c.label, ( opts.collapse == 'all' ) ? null : '.' + _c.collapsed );
+						var $labl = $(this),
+							$expn = $labl.nextUntil( '.' + _c.label, ( opts.collapse == 'all' ) ? null : '.' + _c.collapsed );
 
 						if ( opts.collapse == 'all' )
 						{
-							$label.addClass( _c.opened );
-							$expan.removeClass( _c.collapsed );
+							$labl.addClass( _c.opened );
+							$expn.removeClass( _c.collapsed );
 						}
 
-						if ( $expan.length )
+						if ( $expn.length )
 						{
-							$label.wrapInner( '<span />' );
+							if ( !$labl.data( _d.updatelabel ) )
+							{
+								$labl.data( _d.updatelabel, true );
+								$labl.wrapInner( '<span />' );
+								$labl.prepend( '<a href="#" class="' + _c.subopen + ' ' + _c.fullsubopen + '" />' );
+							}
 
-							$('<a href="#" class="' + _c.subopen + ' ' + _c.fullsubopen + '" />')
-								.prependTo( $label )
-								.on(
-									_e.click,
+							$labl
+								.find( 'a.' + _c.subopen )
+								.off( _e.click )
+								.on( _e.click,
 									function( e )
 									{
 										e.preventDefault();
-		
-										$label.toggleClass( _c.opened );
-										$expan[ $label.hasClass( _c.opened ) ? 'removeClass' : 'addClass' ]( _c.collapsed );
+
+										$labl.toggleClass( _c.opened );
+										$expn[ $labl.hasClass( _c.opened ) ? 'removeClass' : 'addClass' ]( _c.collapsed );
 									}
 								);
 						}
@@ -76,7 +86,6 @@
 
 
 	//	Add to plugin
-	$[ _PLUGIN_ ].addons = $[ _PLUGIN_ ].addons || [];
 	$[ _PLUGIN_ ].addons.push( _ADDON_ );
 
 
@@ -120,6 +129,7 @@
 		_e = $[ _PLUGIN_ ]._e;
 
 		_c.add( 'collapsed' );
+		_d.add( 'updatelabel' );
 
 		glbl = $[ _PLUGIN_ ].glbl;
 	}

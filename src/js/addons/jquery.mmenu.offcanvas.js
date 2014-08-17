@@ -1,9 +1,8 @@
 /*	
  * jQuery mmenu offCanvas addon
  * mmenu.frebsite.nl
- *	
+ *
  * Copyright (c) Fred Heusschen
- * www.frebsite.nl
  */
 
 
@@ -16,12 +15,18 @@
 		addon_initiated = false;
 
 
-	$[ _PLUGIN_ ].prototype[ '_addon_' + _ADDON_ ] = function()
+	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
 	{
 		if ( !this.opts[ _ADDON_ ] )
 		{
-			return this;
+			return;
 		}
+		if ( this.vars[ _ADDON_ + '_added' ] )
+		{
+			return;
+		}
+		this.vars[ _ADDON_ + '_added' ] = true;
+
 		if ( !addon_initiated )
 		{
 			_initAddon();
@@ -29,15 +34,15 @@
 
 		this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
 		this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
-		
-		if ( typeof this.vars.opened != 'boolean' )
-		{
-			this.vars.opened = false;
-		}
 
 		var opts = this.opts[ _ADDON_ ],
 			conf = this.conf[ _ADDON_ ],
 			clsn = [ _c.offcanvas ];
+
+		if ( typeof this.vars.opened != 'boolean' )
+		{
+			this.vars.opened = false;
+		}
 
 		if ( opts.position != 'left' )
 		{
@@ -63,7 +68,6 @@
 
 
 	//	Add to plugin
-	$[ _PLUGIN_ ].addons = $[ _PLUGIN_ ].addons || [];
 	$[ _PLUGIN_ ].addons.push( _ADDON_ );
 
 
@@ -107,7 +111,7 @@
 
 	$[ _PLUGIN_ ].prototype._openSetup = function()
 	{
-		//	Close others
+		//	Close other menus
 		glbl.$allMenus.not( this.$menu ).trigger( _e.close );
 
 		//	Store style and position
@@ -142,6 +146,7 @@
 		glbl.$html.addClass( clsn.join( ' ' ) );
 
 		//	Open
+		this.vars.opened = true;
 		this.$menu.addClass( _c.current + ' ' + _c.opened );
 	};
 
@@ -158,7 +163,6 @@
 		);
 
 		//	Opening
-		this.vars.opened = true;
 		glbl.$html.addClass( _c.opening );
 		this.$menu.trigger( _e.opening );
 	};
@@ -240,20 +244,20 @@
 			);
 	};
 	
-	$[ _PLUGIN_ ].prototype[ _ADDON_ + '_initPage' ] = function( $p )
+	$[ _PLUGIN_ ].prototype[ _ADDON_ + '_initPage' ] = function( $page )
 	{
-		if ( !$p )
+		if ( !$page )
 		{
-			$p = $(this.conf[ _ADDON_ ].pageSelector, glbl.$body);
-			if ( $p.length > 1 )
+			$page = $(this.conf[ _ADDON_ ].pageSelector, glbl.$body);
+			if ( $page.length > 1 )
 			{
 				$[ _PLUGIN_ ].debug( 'Multiple nodes found for the page-node, all nodes are wrapped in one <' + this.conf[ _ADDON_ ].pageNodetype + '>.' );
-				$p = $p.wrapAll( '<' + this.conf[ _ADDON_ ].pageNodetype + ' />' ).parent();
+				$page = $page.wrapAll( '<' + this.conf[ _ADDON_ ].pageNodetype + ' />' ).parent();
 			}
 		}
 
-		$p.addClass( _c.page );
-		glbl.$page = $p;			
+		$page.addClass( _c.page );
+		glbl.$page = $page;			
 	};
 
 	$[ _PLUGIN_ ].prototype[ _ADDON_ + '_initOpenClose' ] = function()
@@ -324,9 +328,9 @@
 				}
 			)
 			.on( _e.setPage,
-				function( e, $p )
+				function( e, $page )
 				{
-					that[ _ADDON_ + '_initPage' ]( $p );
+					that[ _ADDON_ + '_initPage' ]( $page );
 					that[ _ADDON_ + '_initOpenClose' ]();
 				}
 			);
@@ -335,6 +339,18 @@
 
 	function extendOptions( o )
 	{
+		//	DEPRECATED
+		if ( o.position == 'top' || o.position == 'bottom' )
+		{
+			if ( o.zposition == 'back' || o.zposition == 'next' )
+			{
+				$[ _PLUGIN_ ].deprecated( 'Using position "' + o.position + '" in combination with zposition "' + o.zposition + '"', 'zposition "front"' );
+				o.zposition = 'front';
+			}
+		}
+		//	/DEPRECATED
+
+
 		return o;
 	}
 

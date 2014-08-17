@@ -1,9 +1,8 @@
 /*	
  * jQuery mmenu dragOpen addon
  * mmenu.frebsite.nl
- *	
+ *
  * Copyright (c) Fred Heusschen
- * www.frebsite.nl
  */
 
 
@@ -16,12 +15,22 @@
 		addon_initiated = false;
 
 
-	$[ _PLUGIN_ ].prototype[ '_addon_' + _ADDON_ ] = function()
+	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
 	{
-		if ( !$.fn.hammer )
+		if ( typeof Hammer != 'function' )
 		{
 			return;
 		}
+		if ( !this.opts.offCanvas )
+		{
+			return;
+		}
+		if ( this.vars[ _ADDON_ + '_added' ] )
+		{
+			return;
+		}
+		this.vars[ _ADDON_ + '_added' ] = true;
+
 		if ( !addon_initiated )
 		{
 			_initAddon();
@@ -34,71 +43,76 @@
 			opts = this.opts[ _ADDON_ ],
 			conf = this.conf[ _ADDON_ ];
 
-
 		if ( opts.open )
 		{
-			var _stage 			= 0,
-				_direction 		= false,
-				_distance 		= 0,
-				_maxDistance 	= 0,
-				_dimension		= 'width';
-
-			switch( this.opts.offCanvas.position )
+			if ( Hammer.VERSION < 2 )
 			{
-				case 'left':
-				case 'right':
-					_dimension = 'width';
-					break;
-				default:
-					_dimension = 'height';
-					break;
+				$[ _PLUGIN_ ].deprecated( 'Older version of the Hammer library', 'version 2 or newer' );
+				return false;
 			}
 
 			//	Set up variables
+			var drag			= {},
+				_stage 			= 0,
+				_direction 		= false,
+				_dimension		= false,
+				_distance 		= 0,
+				_maxDistance 	= 0;
+
 			switch( this.opts.offCanvas.position )
 			{
 				case 'left':
-					var drag = {
-						events 		: _e.dragleft + ' ' + _e.dragright,
-						open_dir 	: 'right',
-						close_dir 	: 'left',
-						delta		: 'deltaX',
-						page		: 'pageX',
-						negative 	: false
-					};
-					break;
-
 				case 'right':
-					var drag = {
-						events 		: _e.dragleft + ' ' + _e.dragright,
-						open_dir 	: 'left',
-						close_dir 	: 'right',
-						delta		: 'deltaX',
-						page		: 'pageX',
-						negative 	: true
-					};
+					drag.events		= 'panleft panright';
+					drag.typeLower	= 'x';
+					drag.typeUpper	= 'X';
+					
+					_dimension		= 'width';
 					break;
 
 				case 'top':
-					var drag = {
-						events		: _e.dragup + ' ' + _e.dragdown,
-						open_dir 	: 'down',
-						close_dir 	: 'up',
-						delta		: 'deltaY',
-						page		: 'pageY',
-						negative 	: false
-					};
+				case 'bottom':
+					drag.events		= 'panup pandown';
+					drag.typeLower	= 'y';
+					drag.typeUpper	= 'Y';
+
+					_dimension = 'height';
+					break;
+			}
+			
+			switch( this.opts.offCanvas.position )
+			{
+				case 'left':
+				case 'top':
+					drag.negative 	= false;
+					break;
+				
+				case 'right':
+				case 'bottom':
+					drag.negative 	= true;
+					break;
+			}
+
+			switch( this.opts.offCanvas.position )
+			{
+				case 'left':
+					drag.open_dir 	= 'right';
+					drag.close_dir 	= 'left';
+					break;
+
+				case 'right':
+					drag.open_dir 	= 'left';
+					drag.close_dir 	= 'right';
+					break;
+
+				case 'top':
+					drag.open_dir 	= 'down';
+					drag.close_dir 	= 'up';
 					break;
 
 				case 'bottom':
-					var drag = {
-						events 		: _e.dragup + ' ' + _e.dragdown,
-						open_dir 	: 'up',
-						close_dir 	: 'down',
-						delta		: 'deltaY',
-						page		: 'pageY',
-						negative 	: true
-					};
+					drag.open_dir 	= 'up';
+					drag.close_dir 	= 'down';
 					break;
 			}
 
@@ -126,22 +140,15 @@
 					break;
 			};
 
+
 			//	Bind events
-			$dragNode
-				.hammer()
-				.on( _e.touchstart + ' ' + _e.mousedown,
+			var _hammer = new Hammer( $dragNode[ 0 ] );
+
+			_hammer
+				.on( 'panstart',
 					function( e )
 					{
-						if ( e.type == 'touchstart' )
-						{
-							var tch = e.originalEvent.touches[ 0 ] || e.originalEvent.changedTouches[ 0 ],
-								pos = tch[ drag.page ];
-						}
-						else if ( e.type == 'mousedown' )
-						{
-							var pos = e[ drag.page ];
-						}
-
+						var pos = e.center[ drag.typeLower ];
 						switch( that.opts.offCanvas.position )
 						{
 							case 'right':
@@ -161,13 +168,12 @@
 						}
 					}
 				)
-				.on( drag.events + ' ' + _e.dragend,
+				.on( drag.events + ' panend',
 					function( e )
 					{
 						if ( _stage > 0 )
 						{
-							e.gesture.preventDefault();
-					        e.stopPropagation();
+							e.preventDefault();
 						}
 					}
 				)
@@ -175,10 +181,10 @@
 					function( e )
 					{
 						var new_distance = drag.negative
-							? -e.gesture[ drag.delta ]
-							: e.gesture[ drag.delta ];
+							? -e[ 'delta' + drag.typeUpper ]
+							:  e[ 'delta' + drag.typeUpper ];
 
-						_direction = ( new_distance > _distance )
+						_direction = ( new_distance >= _distance )
 							? drag.open_dir
 							: drag.close_dir;
 
@@ -187,14 +193,13 @@
 						if ( _distance > opts.threshold )
 						{
 							if ( _stage == 1 )
-							{								
+							{
 								if ( glbl.$html.hasClass( _c.opened ) )
 								{
 									return;
 								}
 								_stage = 2;
 								that._openSetup();
-								that.vars.opened = true;
 								glbl.$html.addClass( _c.dragging );
 
 								_maxDistance = minMax( 
@@ -210,22 +215,14 @@
 						}
 					}
 				)
-				.on( _e.dragend,
+				.on( 'panend',
 					function( e )
 					{
 						if ( _stage == 2 )
 						{
 							glbl.$html.removeClass( _c.dragging );
 							$dragg.css( that.opts.offCanvas.position, '' );
-
-							if ( _direction == drag.open_dir )
-							{
-						        that._openFinish();
-							}
-							else
-							{
-								that.close();
-							}
+							that[ _direction == drag.open_dir ? '_openFinish' : 'close' ]();
 						}
 			        	_stage = 0;
 				    }
@@ -235,7 +232,6 @@
 
 
 	//	Add to plugin
-	$[ _PLUGIN_ ].addons = $[ _PLUGIN_ ].addons || [];
 	$[ _PLUGIN_ ].addons.push( _ADDON_ );
 
 
@@ -291,7 +287,6 @@
 		_e = $[ _PLUGIN_ ]._e;
 
 		_c.add( 'dragging' );
-		_e.add( 'dragleft dragright dragup dragdown dragend' );
 
 		glbl = $[ _PLUGIN_ ].glbl;
 	}

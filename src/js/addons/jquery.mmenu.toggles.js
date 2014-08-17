@@ -1,9 +1,8 @@
 /*	
  * jQuery mmenu toggles addon
  * mmenu.frebsite.nl
- *	
+ *
  * Copyright (c) Fred Heusschen
- * www.frebsite.nl
  */
 
 
@@ -16,15 +15,21 @@
 		addon_initiated = false;
 
 
-	$[ _PLUGIN_ ].prototype[ '_addon_' + _ADDON_ ] = function()
+	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
 	{
 		if ( !addon_initiated )
 		{
 			_initAddon();
 		}
+		
+		var addon_added = this.vars[ _ADDON_ + '_added' ];
+		this.vars[ _ADDON_ + '_added' ] = true;
 
-		this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
-		this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
+		if ( !addon_added )
+		{
+			this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
+			this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
+		}
 
 		var that = this,
 			opts = this.opts[ _ADDON_ ],
@@ -32,29 +37,31 @@
 
 
 		//	Refactor toggle class
-		this.__refactorClass( $('input', this.$menu), this.conf.classNames[ _ADDON_ ].toggle, 'toggle' );
+		this.__refactorClass( $('input', $panels), this.conf.classNames[ _ADDON_ ].toggle, 'toggle' );
 
 		//	Add markup
-		$('.' + _c.toggle, this.$menu)
+		$('input.' + _c.toggle, $panels)
 			.each(
 				function()
 				{
-					var $t = $(this),
-						$p = $t.parent(),
-						id = $t.attr( 'id' ) || that.__getUniqueId();
-
-					$t.attr( 'id', id );
-					$p.prepend( $t );
+					var $togl = $(this),
+						$prnt = $togl.closest( 'li' ),
+						id = $togl.attr( 'id' ) || that.__getUniqueId();
 					
-					$('<label for="' + id + '" class="' + _c.toggle + '"><div></div></label>')
-						.insertBefore( $p.children().last() );
+					if ( !$prnt.children( 'label[for="' + id + '"]' ).length )
+					{
+						$togl.attr( 'id', id );
+						$prnt.prepend( $togl );
+
+						$('<label for="' + id + '" class="' + _c.toggle + '"><div></div></label>')
+							.insertBefore( $prnt.children().last() );
+					}
 				}
 			);
 	};
 
 
 	//	Add to plugin
-	$[ _PLUGIN_ ].addons = $[ _PLUGIN_ ].addons || [];
 	$[ _PLUGIN_ ].addons.push( _ADDON_ );
 
 
@@ -74,7 +81,7 @@
 	{
 		return c;
 	}
-	
+
 	function _initAddon()
 	{
 		addon_initiated = true;

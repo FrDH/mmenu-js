@@ -1,9 +1,8 @@
 /*	
  * jQuery mmenu searchfield addon
  * mmenu.frebsite.nl
- *	
+ *
  * Copyright (c) Fred Heusschen
- * www.frebsite.nl
  */
 
 
@@ -16,22 +15,28 @@
 		addon_initiated = false;
 
 
-	$[ _PLUGIN_ ].prototype[ '_addon_' + _ADDON_ ] = function()
+	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
 	{
 		if ( !addon_initiated )
 		{
 			_initAddon();
 		}
+		
+		var addon_added = this.vars[ _ADDON_ + '_added' ];
+		this.vars[ _ADDON_ + '_added' ] = true;
 
-		this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
-		this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
+		if ( !addon_added )
+		{
+			this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
+			this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
+		}
 
 		var that = this,
 			opts = this.opts[ _ADDON_ ],
 			conf = this.conf[ _ADDON_ ];
 
 
-		//	Add the field
+		//	Add the searchfield(s)
 		if ( opts.add )
 		{
 			switch( opts.addTo )
@@ -41,7 +46,7 @@
 					break;
 
 				case 'panels':
-					var $wrapper = $('.' + _c.panel, this.$menu);
+					var $wrapper = $panels;
 					break;
 
 				default:
@@ -54,38 +59,44 @@
 					function()
 					{
 						//	Add the searchfield
-						var $panel	= $(this),
-							_node	= $panel.is( '.' + _c.list ) ? 'li' : 'div',
-							$node	= $( '<' + _node + ' class="' + _c.search + '" />' );
+						var $panl = $(this),
+							_node = $panl.is( '.' + _c.list ) ? 'li' : 'div';
 
-						$node.append( '<input placeholder="' + opts.placeholder + '" type="text" autocomplete="off" />' );
-
-						if ( $panel.is( '.' + _c.menu ) )
+						if ( !$panl.children( _node + '.' + _c.search ).length )
 						{
-							$node.prependTo( that.$menu );
+							if ( $panl.is( '.' + _c.menu ) )
+							{
+								var $wrpr = that.$menu,
+									insrt = 'prependTo';
+							}
+							else
+							{
+								var $wrpr = $panl.children().first(),
+									insrt = 'insert' + ( $wrpr.is( '.' + _c.subtitle ) )
+										? 'After'
+										: 'Before';
+							}
+
+							$( '<' + _node + ' class="' + _c.search + '" />' )
+								.append( '<input placeholder="' + opts.placeholder + '" type="text" autocomplete="off" />' )
+								[ insrt ]( $wrpr );
 						}
-						else
-						{
-							var $child = $panel.children().first(),
-								insert = ( $child.is( '.' + _c.subtitle ) )
-									? 'After'
-									: 'Before';
 
-							$node[ 'insert' + insert ]( $child );
-						}
-
-
+						//	TODO alleen als nog niet is
 						if ( opts.noResults )
 						{
-							if ( $panel.is( '.' + _c.menu ) )
+							if ( $panl.is( '.' + _c.menu ) )
 							{
-								$panel = $panel.find( '.' + _c.panel ).first();
+								$panl = $panl.children( '.' + _c.panel ).first();
 							}
-							_node = $panel.is( '.' + _c.list ) ? 'li' : 'div';
+							_node = $panl.is( '.' + _c.list ) ? 'li' : 'div';
 
-							$( '<' + _node + ' class="' + _c.noresultsmsg + '" />' )
-								.html( opts.noResults )
-								.appendTo( $panel );
+							if ( !$panl.children( _node + '.' + _c.noresultsmsg ).length )
+							{
+								$( '<' + _node + ' class="' + _c.noresultsmsg + '" />' )
+									.html( opts.noResults )
+									.appendTo( $panl );
+							}
 						}
 					}
 				);
@@ -97,163 +108,161 @@
 			this.$menu.addClass( _c.hassearch );
 		}
 
-		//	Bind custom events
+		//	Search through list items
 		if ( opts.search )
 		{
 			var $search = $('.' + _c.search, this.$menu);
 			if ( $search.length )
 			{
-				$search.each(
-					function()
-					{
-						var $t = $(this);
-
-						if ( opts.addTo == 'menu' )
+				$search
+					.each(
+						function()
 						{
-							var $panels = $('.' + _c.panel, that.$menu),
-								$panel  = that.$menu;
-						}
-						else
-						{
-							var $panels = $t.closest( '.' + _c.panel ),
-								$panel  = $panels;
-						}
-						var $lists	= $panels.add( $panels.children( '.' + _c.list ) ),
-							$input	= $t.find( 'input' ),
-							$alllis	= $('> li', $lists),
-							$labels = $alllis.filter( '.' + _c.label ),
-							$items 	= $alllis
-								.not( '.' + _c.subtitle )
-								.not( '.' + _c.label )
-								.not( '.' + _c.search )
-								.not( '.' + _c.noresultsmsg );
+							var $srch = $(this);
+	
+							if ( opts.addTo == 'menu' )
+							{
+								var $pnls = $('.' + _c.panel, that.$menu),
+									$panl = that.$menu;
+							}
+							else
+							{
+								var $pnls = $srch.closest( '.' + _c.panel ),
+									$panl = $pnls;
+							}
+							var $inpt = $srch.find( 'input' ),
+								$itms = that.__findAddBack( $pnls, '.' + _c.list ).children( 'li' ),
+								$lbls = $itms.filter( '.' + _c.label ),
+								$rslt = $itms
+									.not( '.' + _c.subtitle )
+									.not( '.' + _c.label )
+									.not( '.' + _c.search )
+									.not( '.' + _c.noresultsmsg );
 
-						var _searchText = '> a';
-						if ( !opts.showLinksOnly )
-						{
-							_searchText += ', > span';
-						}
+							var _searchText = '> a';
+							if ( !opts.showLinksOnly )
+							{
+								_searchText += ', > span';
+							}
 
-						$input
-							.off( _e.keyup + ' ' + _e.change )
-							.on( _e.keyup,
-								function( e )
-								{
-									if ( !preventKeypressSearch( e.keyCode ) )
+							$inpt
+								.off( _e.keyup + ' ' + _e.change )
+								.on( _e.keyup,
+									function( e )
 									{
-										$t.trigger( _e.search );
+										if ( !preventKeypressSearch( e.keyCode ) )
+										{
+											$srch.trigger( _e.search );
+										}
 									}
-								}
-							)
-							.on( _e.change,
-								function( e )
-								{
-									$t.trigger( _e.search );
-								}
-							);
-		
-						$t.off( _e.reset + ' ' + _e.search )
-							.on( _e.reset + ' ' + _e.search,
-								function( e )
-								{
-									e.stopPropagation();
-								}
-							)
-							.on( _e.reset,
-								function( e )
-								{
-									$t.trigger( _e.search, [ '' ] );
-								}
-							)
-							.on( _e.search,
-								function( e, query )
-								{
-									if ( typeof query == 'string' )
+								)
+								.on( _e.change,
+									function( e )
 									{
-										$input.val( query );
+										$srch.trigger( _e.search );
 									}
-									else
+								);
+			
+							$srch
+								.off( _e.reset + ' ' + _e.search )
+								.on( _e.reset + ' ' + _e.search,
+									function( e )
 									{
-										query = $input.val();
+										e.stopPropagation();
 									}
-									query = query.toLowerCase();
+								)
+								.on( _e.reset,
+									function( e )
+									{
+										$srch.trigger( _e.search, [ '' ] );
+									}
+								)
+								.on( _e.search,
+									function( e, query )
+									{
+										if ( typeof query == 'string' )
+										{
+											$inpt.val( query );
+										}
+										else
+										{
+											query = $inpt.val();
+										}
+										query = query.toLowerCase();
 
-									//	Scroll to top
-									$panels.scrollTop( 0 );
-		
-									//	Search through items
-									$items
-										.add( $labels )
-										.addClass( _c.hidden );
+										//	Scroll to top
+										$pnls.scrollTop( 0 );
+			
+										//	Search through items
+										$rslt
+											.add( $lbls )
+											.addClass( _c.hidden );
 
-									$items
-										.each(
-											function()
-											{
-												var $t = $(this);
-												if ( $(_searchText, $t).text().toLowerCase().indexOf( query ) > -1 )
+										$rslt
+											.each(
+												function()
 												{
-													$t.add( $t.prevAll( '.' + _c.label ).first() ).removeClass( _c.hidden );
+													var $item = $(this);
+													if ( $(_searchText, $item).text().toLowerCase().indexOf( query ) > -1 )
+													{
+														$item.add( $item.prevAll( '.' + _c.label ).first() ).removeClass( _c.hidden );
+													}
+												}
+											);
+	
+										//	Update parent for submenus
+										$( $pnls.get().reverse() ).each(
+											function( i )
+											{
+												var $panl = $(this),
+													$prnt = $panl.data( _d.parent );
+	
+												if ( $prnt )
+												{
+													var $i = $panl.add( $panl.find( '> .' + _c.list ) ).find( '> li' )
+														.not( '.' + _c.subtitle )
+														.not( '.' + _c.search )
+														.not( '.' + _c.noresultsmsg )
+														.not( '.' + _c.label )
+														.not( '.' + _c.hidden );
+			
+													if ( $i.length )
+													{
+														$prnt
+															.removeClass( _c.hidden )
+															.removeClass( _c.nosubresults )
+															.prevAll( '.' + _c.label ).first().removeClass( _c.hidden );
+													}
+													else if ( opts.addTo == 'menu' )
+													{
+														if ( $panl.hasClass( _c.opened ) )
+														{
+															//	Compensate the timeout for the opening animation
+															setTimeout(
+																function()
+																{
+																	$prnt.trigger( _e.open );
+																}, ( i + 1 ) * ( that.conf.openingInterval * 1.5 )
+															);
+														}
+														$prnt.addClass( _c.nosubresults );
+													}
 												}
 											}
 										);
-
-									//	Update parent for submenus
-									$( $panels.get().reverse() ).each(
-										function( i )
-										{
-											var $t = $(this),
-												$p = $t.data( _d.parent );
-
-											if ( $p )
-											{
-												var $i = $t.add( $t.find( '> .' + _c.list ) ).find( '> li' )
-													.not( '.' + _c.subtitle )
-													.not( '.' + _c.search )
-													.not( '.' + _c.noresultsmsg )
-													.not( '.' + _c.label )
-													.not( '.' + _c.hidden );
-		
-												if ( $i.length )
-												{
-													$p.removeClass( _c.hidden )
-														.removeClass( _c.nosubresults )
-														.prevAll( '.' + _c.label ).first().removeClass( _c.hidden );
-												}
-												else if ( opts.addTo == 'menu' )
-												{
-													if ( $t.hasClass( _c.opened ) )
-													{
-														//	Compensate the timeout for the opening animation
-														setTimeout(
-															function()
-															{
-																$p.trigger( _e.open );
-															}, ( i + 1 ) * ( that.conf.openingInterval * 1.5 )
-														);
-													}
-													$p.addClass( _c.nosubresults );
-												}
-											}
-										}
-									);
-
-									//	Show/hide no results message
-									$panel[ $items.not( '.' + _c.hidden ).length ? 'removeClass' : 'addClass' ]( _c.noresults );
-
-									//	Update for other addons
-									that._update();
-								}
-							);
-					}
-				);
+	
+										//	Show/hide no results message
+										$panl[ $rslt.not( '.' + _c.hidden ).length ? 'removeClass' : 'addClass' ]( _c.noresults );
+									}
+								);
+						}
+					);
 			}
 		}
 	};
 
 
 	//	Add to plugin
-	$[ _PLUGIN_ ].addons = $[ _PLUGIN_ ].addons || [];
 	$[ _PLUGIN_ ].addons.push( _ADDON_ );
 
 
@@ -303,7 +312,7 @@
 		_d = $[ _PLUGIN_ ]._d;
 		_e = $[ _PLUGIN_ ]._e;
 
-		_c.add( 'search hassearch noresultsmsg noresults nosubresults counter' );
+		_c.add( 'search hassearch noresultsmsg noresults nosubresults' );
 		_e.add( 'search reset change' );
 
 		glbl = $[ _PLUGIN_ ].glbl;
