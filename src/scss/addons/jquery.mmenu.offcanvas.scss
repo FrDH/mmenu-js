@@ -10,10 +10,10 @@
 .mm-fixed-top,
 .mm-fixed-bottom
 {
-	@include mm_vendor-prefix( "transition", none $mm_transitionDuration $mm_transitionFunction );
+	@include mm_webkit-prefix( "transition", none $mm_transitionDuration $mm_transitionFunction );
 
 	// border is needed to force transitionend event even if no other value changed
-	@include mm_vendor-prefix( "transition-property", ( top, right, bottom, left, border ) );
+	@include mm_webkit-prefix( "transition-property", ( top, right, bottom, left, border ) );
 }
 
 .mm-page,
@@ -68,7 +68,7 @@ html.mm-opened
 //	Page + blocker
 html.mm-opened .mm-page
 {
-	@include mm_vendor-prefix( "box-sizing", border-box );
+	box-sizing: border-box;
 	position: relative;
 }
 html.mm-background .mm-page

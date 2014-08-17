@@ -17,23 +17,19 @@ body {
 .mm-page {
   box-shadow: none !important;
   background: inherit;
+  box-sizing: border-box;
   width: 70% !important;
   min-height: 100%;
   height: auto !important;
   margin: 0 !important;
+  position: relative !important;
   left: 30% !important;
   top: 0 !important;
-  position: relative !important;
-  z-index: 1;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  box-sizing: border-box; }
+  z-index: 1; }
 
 .mm-menu {
-  z-index: 0;
-  width: 30% !important; }
+  width: 30% !important;
+  z-index: 0; }
   .mm-menu.mm-top, .mm-menu.mm-right, .mm-menu.mm-bottom {
     top: 0 !important;
     right: auto !important;

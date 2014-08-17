@@ -7,7 +7,4 @@ html.mm-opened.mm-dragging .mm-fixed-top,
 html.mm-opened.mm-dragging .mm-fixed-bottom,
 html.mm-opened.mm-dragging #mm-blocker {
   -webkit-transition-duration: 0s;
-  -moz-transition-duration: 0s;
-  -ms-transition-duration: 0s;
-  -o-transition-duration: 0s;
   transition-duration: 0s; }

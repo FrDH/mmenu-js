@@ -7,7 +7,7 @@
 //	Animations
 .mm-menu.mm-horizontal > .mm-panel
 {
-	@include mm_vendor-prefix( "transition", left $mm_transitionDuration $mm_transitionFunction );
+	@include mm_webkit-prefix( "transition", left $mm_transitionDuration $mm_transitionFunction );
 }
 
 
@@ -41,15 +41,14 @@
 
 	> .mm-panel
 	{
-		@include mm_vendor-prefix( "box-sizing", border-box );
-
 		background: inherit;
-	
+
 		-webkit-overflow-scrolling: touch;
 		overflow: scroll;
 		overflow-x: hidden;
 		overflow-y: auto;
-	
+
+		box-sizing: border-box;	
 		width: 100%;
 		height: 100%;
 		padding: $mm_padding * 2;
@@ -79,7 +78,7 @@
 	}
 	> .mm-list
 	{
-		padding: ( $mm_btnSize / 2 ) 0 $mm_btnSize 0;
+		padding-bottom: $mm_btnSize;
 	}
 }
 .mm-panel > .mm-list
@@ -223,6 +222,9 @@
 	a.mm-subclose:before
 	{
 		@include mm_arrow;
+		margin-bottom: -5px;
+		position: absolute;
+		bottom: 50%;
 	}
 	a.mm-subopen:after
 	{
@@ -254,14 +256,21 @@
 	{
 		display: block;
 	}
-	> li.mm-opened > a.mm-subopen
+	> li.mm-opened
 	{
-		height: $mm_btnSize;
-		&:after
+		> a.mm-subopen
 		{
-			@include mm_vendor-prefix( "transform", rotate( 45deg ) );
-			top: 16px;
-			right: 16px;
+			height: $mm_btnSize;
+			&:after
+			{
+				@include mm_webkit-prefix( "transform", rotate( 45deg ) );
+				top: 16px;
+				right: 16px;
+			}
+		}
+		&.mm-label > a.mm-subopen
+		{
+			height: $mm_labelHeight;
 		}
 	}
 }

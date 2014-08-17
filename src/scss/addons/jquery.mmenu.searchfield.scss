@@ -7,7 +7,7 @@
 .mm-search,
 .mm-search input
 {
-	@include mm_vendor-prefix( "box-sizing", border-box );
+	box-sizing: border-box;
 }
 .mm-list 
 {
@@ -35,8 +35,9 @@ div.mm-panel > div.mm-search
 	background: inherit;
 	width: 100%;
 	padding: $mm_padding;
-	position: relative;
+	position: absolute;
 	top: 0;
+	left: 0;
 	z-index: 2;
 
 	input
@@ -72,7 +73,7 @@ div.mm-panel > div.mm-search
 	display: block;
 }
 
-$mm_paddingBeneathHeader: $mm_padding * 2;
+$mm_paddingBeneathHeader: $mm_padding * 2 !default;
 .mm-menu
 {
 	li.mm-nosubresults > a.mm-subopen

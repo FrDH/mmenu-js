@@ -147,9 +147,6 @@ html.mm-front.mm-opened .mm-page {
 .mm-menu.mm-front,
 .mm-menu.mm-next {
   -webkit-transition: none 0.4s ease;
-  -moz-transition: none 0.4s ease;
-  -ms-transition: none 0.4s ease;
-  -o-transition: none 0.4s ease;
   transition: none 0.4s ease;
   -webkit-transition-property: top, right, bottom, left, -webkit-transform;
   -moz-transition-property: top, right, bottom, left, -moz-transform;

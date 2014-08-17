@@ -4,43 +4,6 @@
 
 @import "../inc/variables";
 
-
-.mm-menu.mm-fixedlabels
-{
-	.mm-list
-	{
-		background: inherit;
-
-		> li.mm-label
-		{
-			background: inherit !important;
-			opacity: 0.97;
-			height: 25px;
-			overflow: visible;
-			position: relative;
-			z-index: 1;
-
-			> div
-			{
-				background: inherit;
-				width: 100%;
-				position: absolute;
-				left: 0;
-
-				> div
-				{
-					@include mm_ellipsis;
-				}
-			}
-			
-			&.mm-spacer > div > div
-			{
-				padding-top: ( $mm_btnSize / 2 ) + ( $mm_padding / 2 );
-			}
-		}
-	}
-}
-
 .mm-list
 {
 	> li.mm-label
@@ -49,11 +12,12 @@
 		{
 			@include mm_ellipsis;
 			padding: 0;
+			line-height: $mm_labelHeight;
 		}
 
 		&.mm-opened a.mm-subopen:after
 		{
-			@include mm_vendor-prefix( "transform", rotate( 45deg ) );
+			@include mm_webkit-prefix( "transform", rotate( 45deg ) );
 			right: 17px;
 		}
 	}

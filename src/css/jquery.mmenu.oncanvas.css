@@ -3,9 +3,6 @@
 */
 .mm-menu.mm-horizontal > .mm-panel {
   -webkit-transition: left 0.4s ease;
-  -moz-transition: left 0.4s ease;
-  -ms-transition: left 0.4s ease;
-  -o-transition: left 0.4s ease;
   transition: left 0.4s ease; }
 
 .mm-menu .mm-hidden {
@@ -27,16 +24,12 @@
   top: 0;
   z-index: 0; }
   .mm-menu > .mm-panel {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -o-box-sizing: border-box;
-    box-sizing: border-box;
     background: inherit;
     -webkit-overflow-scrolling: touch;
     overflow: scroll;
     overflow-x: hidden;
     overflow-y: auto;
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
     padding: 20px;
@@ -47,13 +40,13 @@
     .mm-menu > .mm-panel.mm-opened {
       left: 0%; }
     .mm-menu > .mm-panel.mm-subopened {
-      left: -40%; }
+      left: -30%; }
     .mm-menu > .mm-panel.mm-highest {
       z-index: 1; }
   .mm-menu .mm-list {
     padding: 20px 0; }
   .mm-menu > .mm-list {
-    padding: 20px 0 40px 0; }
+    padding-bottom: 40px; }
 
 .mm-panel > .mm-list {
   margin-left: -20px;
@@ -152,17 +145,14 @@
   .mm-list a.mm-subclose:before {
     content: '';
     border: 2px solid transparent;
-    display: block;
+    display: inline-block;
     width: 7px;
     height: 7px;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
     margin-bottom: -5px;
     position: absolute;
-    bottom: 50%;
-    -webkit-transform: rotate(-45deg);
-    -moz-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -o-transform: rotate(-45deg);
-    transform: rotate(-45deg); }
+    bottom: 50%; }
   .mm-list a.mm-subopen:after {
     border-top: none;
     border-left: none;
@@ -184,12 +174,11 @@
   height: 40px; }
   .mm-menu.mm-vertical .mm-list > li.mm-opened > a.mm-subopen:after {
     -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
     transform: rotate(45deg);
     top: 16px;
     right: 16px; }
+.mm-menu.mm-vertical .mm-list > li.mm-opened.mm-label > a.mm-subopen {
+  height: 25px; }
 
 html.mm-opened .mm-page {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); }

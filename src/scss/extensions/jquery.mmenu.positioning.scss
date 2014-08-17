@@ -105,7 +105,7 @@ html.mm-front.mm-opened .mm-page
 .mm-menu.mm-front,
 .mm-menu.mm-next
 {
-	@include mm_vendor-prefix( "transition", none $mm_transitionDuration $mm_transitionFunction );
+	@include mm_webkit-prefix( "transition", none $mm_transitionDuration $mm_transitionFunction );
 
 	-webkit-transition-property: top, right, bottom, left, -webkit-transform;
 	-moz-transition-property: top, right, bottom, left, -moz-transform;

@@ -3,10 +3,6 @@
 */
 .mm-search,
 .mm-search input {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -o-box-sizing: border-box;
   box-sizing: border-box; }
 
 .mm-list > li.mm-search {
@@ -25,8 +21,9 @@ div.mm-panel > div.mm-search {
   background: inherit;
   width: 100%;
   padding: 10px;
-  position: relative;
+  position: absolute;
   top: 0;
+  left: 0;
   z-index: 2; }
   .mm-search input {
     border: none;

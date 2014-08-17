@@ -16,7 +16,7 @@ $mm_padding: 10px !default;
 $mm_fontSize: 14px !default;
 
 //	Addon sizes
-$mm_subpanelOffset: 40% !default;
+$mm_subpanelOffset: 30% !default;
 $mm_subopenWidth: $mm_btnSize !default;
 $mm_counterWidth: $mm_btnSize !default;
 $mm_toggleHeight: $mm_btnSize - $mm_padding !default;
@@ -25,6 +25,7 @@ $mm_headerHeight: $mm_btnSize * 1.5 !default;
 $mm_headerPaddingTop: $mm_headerHeight / 2 !default;
 $mm_searchHeight: $mm_btnSize + $mm_padding !default;
 $mm_searchfieldHeight: $mm_searchHeight - ( $mm_padding * 2 ) !default;
+$mm_labelHeight: ( $mm_btnSize / 2 ) + ( $mm_padding / 2 ) !default;
 
 //	Colors
 $mm_baseBg: #333 !default;
@@ -55,7 +56,12 @@ $mm_toggleCheckedColor: #4bd963 !default;
 	-o-#{$prop}: $val;
 	#{$prop}: $val;
 }
-@mixin mm_ellipsis
+@mixin mm_webkit-prefix( $prop, $val )
+{
+	-webkit-#{$prop}: $val;
+	#{$prop}: $val;
+}
+@mixin mm_ellipsis()
 {
 	text-overflow: ellipsis;
 	white-space: nowrap;

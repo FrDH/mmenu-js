@@ -7,20 +7,26 @@
 
 .mm-header
 {
-	@include mm_vendor-prefix( "box-sizing", border-box );
-
 	background: inherit;
 	border-bottom: 1px solid transparent;
 	text-align: center;
 	line-height: $mm_btnSize / 2;
+
+	box-sizing: border-box;
 	width: 100%;
 	height: $mm_headerHeight;
-	padding: $mm_headerPaddingTop $mm_btnSize 0 $mm_btnSize;
+	padding: 0 ( $mm_btnSize + $mm_padding );
 	position: absolute;
 	z-index: 2;
 	top: 0;
 	left: 0;
 
+	.mm-title,
+	.mm-prev,
+	.mm-next
+	{
+		padding-top: $mm_headerPaddingTop;
+	}
 	.mm-title
 	{
 		@include mm_ellipsis;
@@ -28,45 +34,50 @@
 		display: inline-block;
 		width: 100%;
 		position: relative;
-		z-index: 1;
 	}
 
 	.mm-prev,
 	.mm-next
 	{
-		@include mm_vendor-prefix( 'box-sizing', border-box );
-
 		text-decoration: none;
 		display: block;
-		width: $mm_btnSize;
+		box-sizing: border-box;
+		min-width: $mm_padding;
 		height: 100%;
 		position: absolute;
-		bottom: 0;
-
-		&:before
-		{
-			@include mm_arrow;
-			margin-bottom: -( $mm_padding + 5 );
-		}
+		top: 0;
+		z-index: 1;
 	}
 	.mm-prev
 	{
+		padding-left: ( $mm_padding * 2 );
+		padding-right: $mm_padding;
 		left: 0;
-
-		&:before
-		{
-			@include mm_arrow-prev;
-			left: 22px;
-		}
 	}
 	.mm-next
 	{
+		padding-left: $mm_padding;
+		padding-right: ( $mm_padding * 2 );
 		right: 0;
-
-		&:before
+	}
+	[href]
+	{
+		&.mm-prev:before,
+		&.mm-next:after
+		{
+			@include mm_arrow;
+		}
+		&.mm-prev:before
+		{
+			@include mm_arrow-prev;
+			margin-left: 2px;
+			margin-right: $mm_padding / 2;
+		}
+		&.mm-next:after
 		{
 			@include mm_arrow-next;
-			right: 18px;
+			margin-left: $mm_padding / 2;
+			margin-right: -2px;
 		}
 	}
 }
@@ -74,17 +85,17 @@
 .mm-menu.mm-hassearch .mm-header
 {
 	height: $mm_headerHeight - $mm_padding;
-	padding-top: $mm_headerPaddingTop - $mm_padding;
 	top: $mm_searchHeight;
 
-	.mm-prev:before,
-	.mm-mext:before
+	.mm-title,
+	.mm-prev,
+	.mm-next
 	{
-		margin-bottom: -( ( $mm_padding / 2 ) + 5 );
+		padding-top: $mm_headerPaddingTop - $mm_padding;
 	}
 }
 
-$mm_paddingBeneathHeader: $mm_padding * 2;
+$mm_paddingBeneathHeader: $mm_padding * 2 !default;
 .mm-menu.mm-hasheader
 {
 	li.mm-subtitle

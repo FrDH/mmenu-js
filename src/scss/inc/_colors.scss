@@ -115,7 +115,8 @@
 			border-color: $borderColor;
 			color: $dimmedColor;
 
-			a:before
+			.mm-prev:before,
+			.mm-next:after
 			{
 				border-color: $dimmedColor;
 			}

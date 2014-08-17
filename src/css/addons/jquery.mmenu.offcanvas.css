@@ -5,14 +5,8 @@
 .mm-fixed-top,
 .mm-fixed-bottom {
   -webkit-transition: none 0.4s ease;
-  -moz-transition: none 0.4s ease;
-  -ms-transition: none 0.4s ease;
-  -o-transition: none 0.4s ease;
   transition: none 0.4s ease;
   -webkit-transition-property: top, right, bottom, left, border;
-  -moz-transition-property: top, right, bottom, left, border;
-  -ms-transition-property: top, right, bottom, left, border;
-  -o-transition-property: top, right, bottom, left, border;
   transition-property: top, right, bottom, left, border; }
 
 .mm-page,
@@ -47,10 +41,6 @@ html.mm-opened {
     overflow: hidden; }
 
 html.mm-opened .mm-page {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -o-box-sizing: border-box;
   box-sizing: border-box;
   position: relative; }
 

@@ -2,14 +2,11 @@
 {
 	content: '';
 	border: 2px solid transparent;
-	display: block;
+	display: inline-block;
 	width: 7px;
 	height: 7px;
-	margin-bottom: -5px;
-	position: absolute;
-	bottom: 50%;
 	
-	@include mm_vendor-prefix( "transform", rotate( -45deg ) );
+	@include mm_webkit-prefix( "transform", rotate( -45deg ) );
 }
 @mixin mm_arrow-prev
 {
