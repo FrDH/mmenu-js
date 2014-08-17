@@ -53,6 +53,7 @@
 					var $wrapper = $(opts.addTo, this.$menu).filter( '.' + _c.panel );
 					break;
 			}
+
 			if ( $wrapper.length )
 			{
 				$wrapper.each(
@@ -72,9 +73,9 @@
 							else
 							{
 								var $wrpr = $panl.children().first(),
-									insrt = 'insert' + ( $wrpr.is( '.' + _c.subtitle ) )
-										? 'After'
-										: 'Before';
+									insrt = ( $wrpr.is( '.' + _c.subtitle ) )
+										? 'insertAfter'
+										: 'insertBefore';
 							}
 
 							$( '<' + _node + ' class="' + _c.search + '" />' )
@@ -82,7 +83,6 @@
 								[ insrt ]( $wrpr );
 						}
 
-						//	TODO alleen als nog niet is
 						if ( opts.noResults )
 						{
 							if ( $panl.is( '.' + _c.menu ) )
@@ -119,7 +119,7 @@
 						function()
 						{
 							var $srch = $(this);
-	
+
 							if ( opts.addTo == 'menu' )
 							{
 								var $pnls = $('.' + _c.panel, that.$menu),
@@ -130,7 +130,7 @@
 								var $pnls = $srch.closest( '.' + _c.panel ),
 									$panl = $pnls;
 							}
-							var $inpt = $srch.find( 'input' ),
+							var $inpt = $srch.children( 'input' ),
 								$itms = that.__findAddBack( $pnls, '.' + _c.list ).children( 'li' ),
 								$lbls = $itms.filter( '.' + _c.label ),
 								$rslt = $itms

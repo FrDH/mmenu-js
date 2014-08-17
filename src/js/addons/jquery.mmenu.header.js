@@ -57,7 +57,7 @@
 					$prev = $header.find( '.' + _c.prev ),
 					$next = $header.find( '.' + _c.next ),
 					_page = false;
-				
+
 				if ( glbl.$page )
 				{
 					_page = '#' + glbl.$page.attr( 'id' );
@@ -73,7 +73,7 @@
 							{
 								e.preventDefault();
 								e.stopPropagation();
-		
+
 								var href = $(this).attr( 'href' );
 								if ( href !== '#' )
 								{

@@ -230,7 +230,7 @@
 						var $opening = $(this),
 							id = $opening.attr( 'id' );
 
-						$('a[href="#' + id + '"]', that.$menu)
+						$('a[href="#' + id + '"]', $allpanels)
 							.off( _e.click )
 							.on( _e.click,
 								function( e )
