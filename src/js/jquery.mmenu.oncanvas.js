@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.4.1
+ * jQuery mmenu v4.4.2
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.4.1';
+		_VERSION_	= '4.4.2';
 
 
 	//	Plugin already excists
