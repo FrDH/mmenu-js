@@ -2,8 +2,8 @@
 	jQuery.mmenu panels CSS
 */
 .mm-menu.mm-horizontal > .mm-panel {
-  -webkit-transition: left 0.4s ease;
-  transition: left 0.4s ease; }
+  -webkit-transition: -webkit-transform 0.4s ease;
+  transition: transform 0.4s ease; }
 
 .mm-menu .mm-hidden {
   display: none; }
@@ -12,17 +12,20 @@
   overflow-x: hidden;
   position: relative; }
 
-.mm-menu {
-  background: inherit;
-  display: block;
-  overflow: hidden;
+.mm-menu,
+.mm-menu > .mm-panel {
   width: 100%;
   height: 100%;
-  padding: 0;
   position: absolute;
   left: 0;
   top: 0;
   z-index: 0; }
+
+.mm-menu {
+  background: inherit;
+  display: block;
+  overflow: hidden;
+  padding: 0; }
   .mm-menu > .mm-panel {
     background: inherit;
     -webkit-overflow-scrolling: touch;
@@ -30,17 +33,15 @@
     overflow-x: hidden;
     overflow-y: auto;
     box-sizing: border-box;
-    width: 100%;
-    height: 100%;
     padding: 20px;
-    position: absolute;
-    top: 0;
-    left: 100%;
-    z-index: 0; }
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%); }
     .mm-menu > .mm-panel.mm-opened {
-      left: 0%; }
+      -webkit-transform: translateX(0%);
+      transform: translateX(0%); }
     .mm-menu > .mm-panel.mm-subopened {
-      left: -30%; }
+      -webkit-transform: translateX(-30%);
+      transform: translateX(-30%); }
     .mm-menu > .mm-panel.mm-highest {
       z-index: 1; }
   .mm-menu .mm-list {
@@ -183,24 +184,23 @@
 html.mm-opened .mm-page {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); }
 
-.mm-ismenu {
+.mm-menu {
   background: #333333;
   color: rgba(255, 255, 255, 0.6); }
-
-.mm-menu .mm-list > li:after {
-  border-color: rgba(0, 0, 0, 0.15); }
-.mm-menu .mm-list > li > a.mm-subclose {
-  background: rgba(0, 0, 0, 0.1);
-  color: rgba(255, 255, 255, 0.3); }
-.mm-menu .mm-list > li > a.mm-subopen:after, .mm-menu .mm-list > li > a.mm-subclose:before {
-  border-color: rgba(255, 255, 255, 0.3); }
-.mm-menu .mm-list > li > a.mm-subopen:before {
-  border-color: rgba(0, 0, 0, 0.15); }
-.mm-menu .mm-list > li.mm-selected > a:not(.mm-subopen),
-.mm-menu .mm-list > li.mm-selected > span {
-  background: rgba(0, 0, 0, 0.1); }
-.mm-menu .mm-list > li.mm-label {
-  background: rgba(255, 255, 255, 0.05); }
-.mm-menu.mm-vertical .mm-list li.mm-opened > a.mm-subopen,
-.mm-menu.mm-vertical .mm-list li.mm-opened > ul {
-  background: rgba(255, 255, 255, 0.05); }
+  .mm-menu .mm-list > li:after {
+    border-color: rgba(0, 0, 0, 0.15); }
+  .mm-menu .mm-list > li > a.mm-subclose {
+    background: rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.3); }
+  .mm-menu .mm-list > li > a.mm-subopen:after, .mm-menu .mm-list > li > a.mm-subclose:before {
+    border-color: rgba(255, 255, 255, 0.3); }
+  .mm-menu .mm-list > li > a.mm-subopen:before {
+    border-color: rgba(0, 0, 0, 0.15); }
+  .mm-menu .mm-list > li.mm-selected > a:not(.mm-subopen),
+  .mm-menu .mm-list > li.mm-selected > span {
+    background: rgba(0, 0, 0, 0.1); }
+  .mm-menu .mm-list > li.mm-label {
+    background: rgba(255, 255, 255, 0.05); }
+  .mm-menu.mm-vertical .mm-list li.mm-opened > a.mm-subopen,
+  .mm-menu.mm-vertical .mm-list li.mm-opened > ul {
+    background: rgba(255, 255, 255, 0.05); }

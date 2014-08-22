@@ -11,9 +11,6 @@
 	var _PLUGIN_ = 'mmenu',
 		_ADDON_  = 'counters';
 
-	var _c, _d, _e, glbl,
-		addon_initiated = false;
-
 
 	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
 	{
@@ -154,5 +151,8 @@
 
 		glbl = $[ _PLUGIN_ ].glbl;
 	}
+
+	var _c, _d, _e, glbl,
+		addon_initiated = false;
 
 })( jQuery );

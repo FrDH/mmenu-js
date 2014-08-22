@@ -11,9 +11,6 @@
 	var _PLUGIN_ = 'mmenu',
 		_ADDON_  = 'header';
 
-	var _c, _d, _e, glbl,
-		addon_initiated = false;
-
 
 	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
 	{
@@ -101,13 +98,13 @@
 								$prv = $('.' + that.conf.classNames[ _ADDON_ ].panelPrev, $panl),
 								$nxt = $('.' + that.conf.classNames[ _ADDON_ ].panelNext, $panl),
 
-								_ttl = $ttl.text(),
+								_ttl = $ttl.html(),
 								_prv = $prv.attr( 'href' ),
 								_nxt = $nxt.attr( 'href' );
 
 							if ( !_ttl )
 							{
-								_ttl = $('.' + _c.subclose, $panl).text();
+								_ttl = $('.' + _c.subclose, $panl).html();
 							}
 							if ( !_ttl )
 							{
@@ -118,22 +115,22 @@
 								_prv = $('.' + _c.subclose, $panl).attr( 'href' );
 							}
 							
-							var _prv_txt = $prv.text(),
-								_nxt_txt = $nxt.text();
+							var _prv_txt = $prv.html(),
+								_nxt_txt = $nxt.html();
 
 							//	Update header info
 							var updateHeader = function()
 							{
 								$titl[ _ttl ? 'show' : 'hide' ]();
-								$titl.text( _ttl );
+								$titl.html( _ttl );
 
 								$prev[ _prv ? 'attr' : 'removeAttr' ]( 'href', _prv );
 								$prev[ _prv || _prv_txt ? 'show' : 'hide' ]();
-								$prev.text( _prv_txt );
+								$prev.html( _prv_txt );
 
 								$next[ _nxt ? 'attr' : 'removeAttr' ]( 'href', _nxt );
 								$next[ _nxt || _nxt_txt ? 'show' : 'hide' ]();
-								$next.text( _nxt_txt );
+								$next.html( _nxt_txt );
 							};
 
 							$panl.on( _e.open, updateHeader );
@@ -158,7 +155,7 @@
 		add		: false,
 		content	: false,
 		update	: false,
-		title	: 'Menu',
+		title	: 'Menu'
 	};
 	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
 		panelHeader	: 'Header',
@@ -202,5 +199,8 @@
 
 		glbl = $[ _PLUGIN_ ].glbl;
 	}
+
+	var _c, _d, _e, glbl,
+		addon_initiated = false;
 
 })( jQuery );

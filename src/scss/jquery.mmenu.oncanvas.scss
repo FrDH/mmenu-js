@@ -7,7 +7,9 @@
 //	Animations
 .mm-menu.mm-horizontal > .mm-panel
 {
-	@include mm_webkit-prefix( "transition", left $mm_transitionDuration $mm_transitionFunction );
+	-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
+	transition: transform $mm_transitionDuration $mm_transitionFunction;
+//	@include mm_webkit-prefix( "transition", left $mm_transitionDuration $mm_transitionFunction );
 }
 
 
@@ -26,18 +28,22 @@
 }
 
 //	Menu
+.mm-menu,
+.mm-menu > .mm-panel
+{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 0;
+}
 .mm-menu
 {
 	background: inherit;
 	display: block;
 	overflow: hidden;
-	width: 100%;
-	height: 100%;
 	padding: 0;
-	position: absolute;
-	left: 0;
-	top: 0;
-	z-index: 0;
 
 	> .mm-panel
 	{
@@ -49,21 +55,17 @@
 		overflow-y: auto;
 
 		box-sizing: border-box;	
-		width: 100%;
-		height: 100%;
 		padding: $mm_padding * 2;
-		position: absolute;
-		top: 0;
-		left: 100%;
-		z-index: 0;
+
+		@include mm_webkit-prefix( 'transform', translateX( 100% ) );
 		
 		&.mm-opened
 		{
-			left: 0%;
+			@include mm_webkit-prefix( 'transform', translateX( 0% ) );
 		}
 		&.mm-subopened
 		{
-			left: -$mm_subpanelOffset;
+			@include mm_webkit-prefix( 'transform', translateX( -$mm_subpanelOffset ) );
 		}
 		&.mm-highest
 		{

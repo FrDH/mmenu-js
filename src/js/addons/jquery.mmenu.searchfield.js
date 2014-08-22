@@ -11,9 +11,6 @@
 	var _PLUGIN_ = 'mmenu',
 		_ADDON_  = 'searchfield';
 
-	var _c, _d, _e, glbl,
-		addon_initiated = false;
-
 
 	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
 	{
@@ -275,6 +272,24 @@
 		placeholder		: 'Search',
 		noResults		: 'No results found.'
 	};
+	
+
+	function preventKeypressSearch( c )
+	{
+		switch( c )
+		{
+			case 9:		//	tab
+			case 16:	//	shift
+			case 17:	//	control
+			case 18:	//	alt
+			case 37:	//	left
+			case 38:	//	top
+			case 39:	//	right
+			case 40:	//	bottom
+				return true;
+		}
+		return false;
+	}
 
 
 	function extendOptions( o )
@@ -318,21 +333,7 @@
 		glbl = $[ _PLUGIN_ ].glbl;
 	}
 
-	function preventKeypressSearch( c )
-	{
-		switch( c )
-		{
-			case 9:		//	tab
-			case 16:	//	shift
-			case 17:	//	control
-			case 18:	//	alt
-			case 37:	//	left
-			case 38:	//	top
-			case 39:	//	right
-			case 40:	//	bottom
-				return true;
-		}
-		return false;
-	}
+	var _c, _d, _e, glbl,
+		addon_initiated = false;
 
 })( jQuery );

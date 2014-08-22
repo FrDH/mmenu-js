@@ -11,10 +11,6 @@
 	var _PLUGIN_ = 'mmenu',
 		_ADDON_  = 'dragOpen';
 
-	var _c, _d, _e, glbl,
-		addon_initiated = false;
-
-
 	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
 	{
 		if ( typeof Hammer != 'function' )
@@ -256,6 +252,20 @@
 	};
 
 
+	function minMax( val, min, max )
+	{
+		if ( val < min )
+		{
+			val = min;
+		}
+		if ( val > max )
+		{
+			val = max;
+		}
+		return val;
+	}
+
+
 	function extendOptions( o )
 	{
 		if ( typeof o == 'boolean' )
@@ -291,17 +301,7 @@
 		glbl = $[ _PLUGIN_ ].glbl;
 	}
 
-	function minMax( val, min, max )
-	{
-		if ( val < min )
-		{
-			val = min;
-		}
-		if ( val > max )
-		{
-			val = max;
-		}
-		return val;
-	}
+	var _c, _d, _e, glbl,
+		addon_initiated = false;
 
 })( jQuery );

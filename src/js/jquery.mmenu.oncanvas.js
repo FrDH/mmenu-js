@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.4.0
+ * jQuery mmenu v4.4.1
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.4.0';
+		_VERSION_	= '4.4.1';
 
 
 	//	Plugin already excists
@@ -36,6 +36,9 @@
 	};
 
 
+	/*
+		Class
+	*/
 	$[ _PLUGIN_ ] = function( $menu, opts, conf )
 	{
 		this.$menu	= $menu;
@@ -51,10 +54,34 @@
 		return this;
 	};
 
+	$[ _PLUGIN_ ].version = _VERSION_;
+
 	$[ _PLUGIN_ ].addons = [];
 
 	$[ _PLUGIN_ ].uniqueId = 0;
+	
+	$[ _PLUGIN_ ].defaults = {
+		classes			: '',
+		slidingSubmenus	: true,
+		onClick			: {
+//			close				: true,
+//			blockUI				: null,
+//			preventDefault		: null,
+			setSelected			: true
+		}
+	};
 
+	$[ _PLUGIN_ ].configuration = {
+		panelNodetype		: 'ul, ol, div',
+		transitionDuration	: 400,
+		openingInterval		: 25,
+		classNames	: {
+			panel		: 'Panel',
+			selected	: 'Selected',
+			label		: 'Label',
+			spacer		: 'Spacer'
+		}
+	};
 	$[ _PLUGIN_ ].prototype = {
 
 		_init: function( $panels )
@@ -114,10 +141,6 @@
 			{
 				clsn.push( this.opts.classes );
 			}
-			if ( this.opts.isMenu )
-			{
-				clsn.push( _c.ismenu );
-			}
 
 			this.$menu.addClass( clsn.join( ' ' ) );
 		},
@@ -126,19 +149,12 @@
 		{
 			var that = this;
 
-			//	Refactor List class
-			this.__refactorClass( this.__findAddBack( $panels, '.' + this.conf.classNames.list ), this.conf.classNames.list, 'list' );
-
 			//	Add List class
-			if ( this.opts.isMenu )
-			{
-				this.__findAddBack( $panels, 'ul, ol' )
-					.not( '.mm-nolist' )
-					.addClass( _c.list );
-			}
+			this.__findAddBack( $panels, 'ul, ol' )
+				.not( '.' + _c.nolist )
+				.addClass( _c.list );
 
-			var $lis = this.__findAddBack( $panels, '.' + _c.list )
-				.find( '> li' );
+			var $lis = this.__findAddBack( $panels, '.' + _c.list ).find( '> li' );
 
 			//	Refactor Selected class
 			this.__refactorClass( $lis, this.conf.classNames.selected, 'selected' );
@@ -522,6 +538,9 @@
 	};
 
 
+	/*
+		jQuery plugin
+	*/
 	$.fn[ _PLUGIN_ ] = function( opts, conf )
 	{
 		//	First time plugin is fired
@@ -546,32 +565,6 @@
 			}
 		);
 	};
-
-	$[ _PLUGIN_ ].version = _VERSION_;
-	
-	$[ _PLUGIN_ ].defaults = {
-		classes			: '',
-		slidingSubmenus	: true,
-		onClick			: {
-//			close				: true,
-//			blockUI				: null,
-//			preventDefault		: null,
-			setSelected			: true
-		}
-	};
-	$[ _PLUGIN_ ].configuration = {
-		panelNodetype		: 'ul, ol, div',
-		transitionDuration	: 400,
-		openingInterval		: 25,
-		classNames	: {
-			panel		: 'Panle',
-			list		: 'List',
-			selected	: 'Selected',
-			label		: 'Label',
-			spacer		: 'Spacer'
-		}
-	};
-
 
 
 	/*
@@ -630,17 +623,11 @@
 
 	function extendOptions( o, c, $m )
 	{
-
 		if ( $m )
 		{
 			if ( typeof o != 'object' )
 			{
 				o = {};
-			}
-			if ( typeof o.isMenu != 'boolean' )
-			{
-				var $c = $m.children();
-				o.isMenu = ( $c.length == 1 && $c.is( c.panelNodetype ) );
 			}
 			return o;
 		}
@@ -742,7 +729,7 @@
 
 		//	Classnames
 		_c.mm = function( c ) { return 'mm-' + c; };
-		_c.add( 'wrapper menu ismenu inline panel list subtitle selected label spacer current highest hidden opened subopened subopen fullsubopen subclose' );
+		_c.add( 'wrapper menu inline panel list nolist subtitle selected label spacer current highest hidden opened subopened subopen fullsubopen subclose' );
 		_c.umm = function( c )
 		{
 			if ( c.slice( 0, 3 ) == 'mm-' )

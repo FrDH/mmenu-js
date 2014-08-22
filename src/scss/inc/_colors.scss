@@ -8,13 +8,11 @@
 	{
 		box-shadow: $pageShadow;
 	}
-	.mm-ismenu#{$cls}
+	.mm-menu#{$cls}
 	{
 		background: $baseBg;
 		color: $color;
-	}
-	.mm-menu#{$cls}
-	{
+
 		.mm-list
 		{
 			> li:after

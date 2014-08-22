@@ -11,9 +11,6 @@
 	var _PLUGIN_ = 'mmenu',
 		_ADDON_  = 'offCanvas';
 
-	var _c, _d, _e, glbl,
-		addon_initiated = false;
-
 
 	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
 	{
@@ -413,5 +410,8 @@
 				}
 			);
 	}
+
+	var _c, _d, _e, glbl,
+		addon_initiated = false;
 
 })( jQuery );
