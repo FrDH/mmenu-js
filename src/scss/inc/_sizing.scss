@@ -11,6 +11,7 @@
 		.mm-fixed-bottom
 		{
 			left: percentage( $width );
+//@include mm-webkit-prefix( 'transform', translate( percentage( $width ), 0% ) );
 		}
 	}
 	.mm-menu#{$cls}
@@ -30,6 +31,7 @@
 			.mm-fixed-bottom
 			{
 				left: $minWidth;
+//@include mm-webkit-prefix( 'transform', translate( $minWidth, 0% ) );
 			}
 		}
 	}
@@ -46,6 +48,7 @@
 			.mm-fixed-bottom
 			{
 				left: $maxWidth;
+//@include mm-webkit-prefix( 'transform', translate( $maxWidth, 0% ) );
 			}
 		}
 	}
@@ -68,6 +71,7 @@
 		.mm-fixed-top
 		{
 			top: percentage( $height );
+//@include mm-webkit-prefix( 'transform', translate( 0%, percentage( $height ) ) );
 		}
 		.mm-fixed-bottom
 		{
@@ -86,6 +90,7 @@
 			.mm-fixed-top
 			{
 				top: $minHeight;
+//@include mm-webkit-prefix( 'transform', translate( 0%, $minHeight ) );
 			}
 			.mm-fixed-bottom
 			{
@@ -105,6 +110,7 @@
 			.mm-fixed-top
 			{
 				top: $maxHeight;
+//@include mm-webkit-prefix( 'transform', translate( 0%, $maxHeight ) );
 			}
 			.mm-fixed-bottom
 			{
@@ -126,6 +132,7 @@
 		.mm-fixed-bottom
 		{
 			right: percentage( $width );
+//@include mm-webkit-prefix( 'transform', translate( -( percentage( $width ) ), 0% ) );
 		}
 	}
 	@media all and ( max-width: $minWidth / $width ) {
@@ -141,6 +148,7 @@
 			.mm-fixed-bottom
 			{
 				right: $minWidth;
+//@include mm-webkit-prefix( 'transform', translate( -$minWidth, 0% ) );
 			}
 		}
 	}
@@ -157,6 +165,7 @@
 			.mm-fixed-bottom
 			{
 				right: $maxWidth;
+//@include mm-webkit-prefix( 'transform', translate( -$maxWidth, 0% ) );
 			}
 		}
 	}
