@@ -250,6 +250,9 @@
 	
 										//	Show/hide no results message
 										$panl[ $rslt.not( '.' + _c.hidden ).length ? 'removeClass' : 'addClass' ]( _c.noresults );
+
+										// Update for other addons
+										that._update();
 									}
 								);
 						}

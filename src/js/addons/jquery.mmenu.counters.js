@@ -88,7 +88,7 @@
 												.not( '.' + _c.hidden )
 												.not( '.' + _c.search )
 												.not( '.' + _c.noresultsmsg );
-		
+	
 											$cntr.html( $lis.length );
 										}
 									);
