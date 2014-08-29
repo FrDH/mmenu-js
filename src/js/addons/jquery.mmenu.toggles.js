@@ -33,24 +33,27 @@
 			conf = this.conf[ _ADDON_ ];
 
 
-		//	Refactor toggle class
+		//	Refactor toggle classes
 		this.__refactorClass( $('input', $panels), this.conf.classNames[ _ADDON_ ].toggle, 'toggle' );
+		this.__refactorClass( $('input', $panels), this.conf.classNames[ _ADDON_ ].check, 'check' );
 
 		//	Add markup
 		$('input.' + _c.toggle, $panels)
+			.add( 'input.' + _c.check, $panels )
 			.each(
 				function()
 				{
-					var $togl = $(this),
-						$prnt = $togl.closest( 'li' ),
-						id = $togl.attr( 'id' ) || that.__getUniqueId();
+					var $inpt = $(this),
+						$prnt = $inpt.closest( 'li' ),
+						cl = $inpt.hasClass( _c.toggle ) ? 'toggle' : 'check',
+						id = $inpt.attr( 'id' ) || that.__getUniqueId();
 					
 					if ( !$prnt.children( 'label[for="' + id + '"]' ).length )
 					{
-						$togl.attr( 'id', id );
-						$prnt.prepend( $togl );
+						$inpt.attr( 'id', id );
+						$prnt.prepend( $inpt );
 
-						$('<label for="' + id + '" class="' + _c.toggle + '"><div></div></label>')
+						$('<label for="' + id + '" class="' + _c[ cl ] + '"></label>')
 							.insertBefore( $prnt.children().last() );
 					}
 				}
@@ -65,7 +68,8 @@
 	//	Defaults
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {};
 	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
-		toggle	: 'Toggle'
+		toggle	: 'Toggle',
+		check	: 'Check'
 	};
 
 
@@ -87,7 +91,7 @@
 		_d = $[ _PLUGIN_ ]._d;
 		_e = $[ _PLUGIN_ ]._e;
 
-		_c.add( 'toggle' );
+		_c.add( 'toggle check' );
 
 		glbl = $[ _PLUGIN_ ].glbl;
 	}
