@@ -1,7 +1,7 @@
 @mixin mm_colors( $cls: "",
-	$baseBg: $mm_baseBg, $pageShadow: $mm_pageShadow,
-	$color: $mm_color, $dimmedColor: $mm_dimmedColor,
-	$emphasizedBg: $mm_emphasizedBg, $highlightedBg: $mm_highlightedBg,
+	$baseBg: $mm_backgroundColor, $pageShadow: $mm_pageShadow,
+	$color: $mm_textColor, $dimmedColor: $mm_dimmedTextColor,
+	$emphasizedBg: $mm_emphasizedBackgroundColor, $highlightedBg: $mm_highlightedBackgroundColor,
 	$borderColor: $mm_borderColor
 ) {
 	html.mm-opened#{$cls} .mm-page
@@ -66,44 +66,73 @@
 		}
 	}
 }
-@mixin mm_colors_labels( $cls: "",
-	$highlightedBg: $mm_highlightedBg
+
+@mixin mm_colors_buttonbars( $cls: "",
+	$baseBg: $mm_backgroundColor,
+	$color: $mm_textColor
 ) {
 	.mm-menu#{$cls}
 	{
-		.mm-list li.mm-label > div > div
+		.mm-buttonbar
 		{
-			background: $highlightedBg;
+			border-color: $color;
+			background: $baseBg;
+			
+			> *
+			{
+				border-color: $color;
+			}
+			
+			> input:checked + label
+			{
+				background: $color;
+				color: $baseBg;
+			}
 		}
 	}
 }
-@mixin mm_colors_search( $cls: "",
-	$inputBg: $mm_dimmedColor, $color: $mm_color,
-	$dimmedColor: $mm_dimmedColor
+
+@mixin mm_colors_checks( $cls: "",
+	$offColor: $mm_dimmedTextColor, $onColor: $mm_textColor
 ) {
 	.mm-menu#{$cls}
 	{
-		.mm-search input
+		label.mm-check:before
 		{
-			background: $inputBg;
-			color: $color;
+			border-color: $offColor;
 		}
-		.mm-noresultsmsg
+		input.mm-check:checked ~ label.mm-check:before
 		{
-			color: $dimmedColor;
+			border-color: $onColor;
 		}
 	}
 }
+
 @mixin mm_colors_counters( $cls: "",
-	$dimmedColor: $mm_dimmedColor
+	$dimmedColor: $mm_dimmedTextColor
 ) {
 	.mm-menu#{$cls} em.mm-counter
 	{
 		color: $dimmedColor;
 	}
 }
+
+@mixin mm_colors_footer( $cls: "",
+	$dimmedColor: $mm_dimmedTextColor,
+	$borderColor: $mm_borderColor
+) {
+	.mm-menu#{$cls}
+	{
+		.mm-footer
+		{
+			border-color: $borderColor;
+			color: $dimmedColor;
+		}
+	}
+}
+
 @mixin mm_colors_header( $cls: "",
-	$dimmedColor: $mm_dimmedColor,
+	$dimmedColor: $mm_dimmedTextColor,
 	$borderColor: $mm_borderColor
 ) {
 	.mm-menu#{$cls}
@@ -121,8 +150,39 @@
 		}
 	}
 }
+
+@mixin mm_colors_labels( $cls: "",
+	$highlightedBg: $mm_highlightedBackgroundColor
+) {
+	.mm-menu#{$cls}
+	{
+		.mm-list li.mm-label > div > div
+		{
+			background: $highlightedBg;
+		}
+	}
+}
+
+@mixin mm_colors_search( $cls: "",
+	$inputBg: $mm_dimmedTextColor, $color: $mm_textColor,
+	$dimmedColor: $mm_dimmedTextColor
+) {
+	.mm-menu#{$cls}
+	{
+		.mm-search input
+		{
+			background: $inputBg;
+			color: $color;
+		}
+		.mm-noresultsmsg
+		{
+			color: $dimmedColor;
+		}
+	}
+}
+
 @mixin mm_colors_toggles( $cls: "",
-	$buttonBg: $mm_baseBg,
+	$buttonBg: $mm_backgroundColor,
 	$offBg: $mm_borderColor, $onBg: $mm_toggleCheckedColor
 ) {
 	.mm-menu#{$cls}
@@ -131,7 +191,7 @@
 		{
 			background: $offBg;
 		
-			div
+			&:before
 			{
 				background: $buttonBg;
 			}

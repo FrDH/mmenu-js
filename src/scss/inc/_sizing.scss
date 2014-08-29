@@ -1,228 +1,72 @@
-//	Sizing left
+//	Sizing left (default)
 @mixin mm_sizing( $cls: "",
-	$width: $mm_width, $minWidth: $mm_minWidth, $maxWidth: $mm_maxWidth,
-	$height: $mm_height, $minHeight: $mm_minHeight, $maxHeight: $mm_maxHeight
+	$width: $mm_width, $minWidth: $mm_minWidth, $maxWidth: $mm_maxWidth
 ) {
-	html.mm-opening#{$cls}
-	{
-		.mm-page,
-		#mm-blocker,
-		.mm-fixed-top,
-		.mm-fixed-bottom
-		{
-			left: percentage( $width );
-//@include mm-webkit-prefix( 'transform', translate( percentage( $width ), 0% ) );
-		}
-	}
 	.mm-menu#{$cls}
 	{
 		width: percentage( $width );
+		min-width: $minWidth;
+		max-width: $maxWidth;
+	}
+	html.mm-opening#{$cls}
+	{
+		.mm-page,
+		#mm-blocker
+		{
+			@include mm-webkit-prefix( 'transform', translate( percentage( $width ), 0 ) );
+		}
 	}
 	@media all and (max-width: $minWidth / $width ) {
-		.mm-menu#{$cls}
-		{
-			width: $minWidth;
-		}
 		html.mm-opening#{$cls}
 		{
 			.mm-page,
-			#mm-blocker,
-			.mm-fixed-top,
-			.mm-fixed-bottom
+			#mm-blocker
 			{
-				left: $minWidth;
-//@include mm-webkit-prefix( 'transform', translate( $minWidth, 0% ) );
+				@include mm-webkit-prefix( 'transform', translate( $minWidth, 0 ) );
 			}
 		}
 	}
 	@media all and (min-width: $maxWidth / $width ) {
-		.mm-menu#{$cls}
-		{
-			width: $maxWidth;
-		}
 		html.mm-opening#{$cls}
 		{
 			.mm-page,
-			#mm-blocker,
-			.mm-fixed-top,
-			.mm-fixed-bottom
+			#mm-blocker
 			{
-				left: $maxWidth;
-//@include mm-webkit-prefix( 'transform', translate( $maxWidth, 0% ) );
+				@include mm-webkit-prefix( 'transform', translate( $maxWidth, 0 ) );
 			}
 		}
 	}
 }
 
-//	Sizing top/right/bottom
-@mixin mm_sizing_position( $cls: "",
-	$width: $mm_width, $minWidth: $mm_minWidth, $maxWidth: $mm_maxWidth,
-	$height: $mm_height, $minHeight: $mm_minHeight, $maxHeight: $mm_maxHeight
+//	Sizing right
+@mixin mm_sizing_right( $cls: "",
+	$width: $mm_width, $minWidth: $mm_minWidth, $maxWidth: $mm_maxWidth
 ) {
-	// top
-	.mm-menu.mm-top#{$cls}
-	{
-		height: percentage( $height );
-	}
-	html.mm-top.mm-opening#{$cls}
-	{
-		.mm-page,
-		#mm-blocker,
-		.mm-fixed-top
-		{
-			top: percentage( $height );
-//@include mm-webkit-prefix( 'transform', translate( 0%, percentage( $height ) ) );
-		}
-		.mm-fixed-bottom
-		{
-			bottom: -( percentage( $height ) );
-		}
-	}
-	@media all and ( max-height: $minHeight / $height ) {
-		.mm-menu.mm-top#{$cls}
-		{
-			height: $minHeight;
-		}
-		html.mm-top.mm-opening#{$cls}
-		{
-			.mm-page,
-			#mm-blocker,
-			.mm-fixed-top
-			{
-				top: $minHeight;
-//@include mm-webkit-prefix( 'transform', translate( 0%, $minHeight ) );
-			}
-			.mm-fixed-bottom
-			{
-				bottom: -$minHeight;
-			}
-		}
-	}
-	@media all and ( min-height: $maxHeight / $height ) {
-		.mm-menu.mm-top#{$cls}
-		{
-			height: $maxHeight;
-		}
-		html.mm-top.mm-opening#{$cls}
-		{
-			.mm-page,
-			#mm-blocker,
-			.mm-fixed-top
-			{
-				top: $maxHeight;
-//@include mm-webkit-prefix( 'transform', translate( 0%, $maxHeight ) );
-			}
-			.mm-fixed-bottom
-			{
-				bottom: -$maxHeight;
-			}
-		}
-	}
-
-	// right
-	.mm-menu.mm-right#{$cls}
-	{
-		width: percentage( $width );
-	}
 	html.mm-right.mm-opening#{$cls}
 	{
 		.mm-page,
-		#mm-blocker,
-		.mm-fixed-top,
-		.mm-fixed-bottom
+		#mm-blocker
 		{
-			right: percentage( $width );
-//@include mm-webkit-prefix( 'transform', translate( -( percentage( $width ) ), 0% ) );
+			@include mm-webkit-prefix( 'transform', translate( -( percentage( $width ) ), 0 ) );
 		}
 	}
 	@media all and ( max-width: $minWidth / $width ) {
-		.mm-menu.mm-right#{$cls}
-		{
-			width: $minWidth;
-		}
 		html.mm-right.mm-opening#{$cls}
 		{
 			.mm-page,
-			#mm-blocker,
-			.mm-fixed-top,
-			.mm-fixed-bottom
+			#mm-blocker
 			{
-				right: $minWidth;
-//@include mm-webkit-prefix( 'transform', translate( -$minWidth, 0% ) );
+				@include mm-webkit-prefix( 'transform', translate( -$minWidth, 0 ) );
 			}
 		}
 	}
 	@media all and ( min-width: $maxWidth / $width ) {
-		.mm-menu.mm-right#{$cls}
-		{
-			width: $maxWidth;
-		}
 		html.mm-right.mm-opening#{$cls}
 		{
 			.mm-page,
-			#mm-blocker,
-			.mm-fixed-top,
-			.mm-fixed-bottom
+			#mm-blocker
 			{
-				right: $maxWidth;
-//@include mm-webkit-prefix( 'transform', translate( -$maxWidth, 0% ) );
-			}
-		}
-	}
-
-	// bottom
-	.mm-menu.mm-bottom#{$cls}
-	{
-		height: percentage( $height );
-	}
-	html.mm-bottom.mm-opening#{$cls}
-	{
-		.mm-page,
-		#mm-blocker,
-		.mm-fixed-bottom
-		{
-			bottom: percentage( $height );
-		}
-		.mm-fixed-top
-		{
-			top: -( percentage( $height ) );
-		}
-	}
-	@media all and ( max-height: $minHeight / $height ) {
-		.mm-menu.mm-bottom#{$cls}
-		{
-			height: $minHeight;
-		}
-		html.mm-bottom.mm-opening#{$cls}
-		{
-			.mm-page,
-			#mm-blocker,
-			.mm-fixed-bottom
-			{
-				bottom: $minHeight;
-			}
-			.mm-fixed-top
-			{
-				top: -$minHeight;
-			}
-		}
-	}
-	@media all and ( min-height: $maxHeight / $height ) {
-		.mm-menu.mm-bottom#{$cls}
-		{
-			height: $maxHeight;
-		}
-		html.mm-bottom.mm-opening#{$cls}
-		{
-			.mm-page,
-			#mm-blocker,
-			.mm-fixed-bottom
-			{
-				bottom: $maxHeight;
-			}
-			.mm-fixed-top
-			{
-				top: -$maxHeight;
+				@include mm-webkit-prefix( 'transform', translate( -$maxWidth, 0 ) );
 			}
 		}
 	}
@@ -230,147 +74,19 @@
 
 //	Sizing z-position
 @mixin mm_sizing_zposition( $cls: "",
-	$width: $mm_width, $minWidth: $mm_minWidth, $maxWidth: $mm_maxWidth,
 	$height: $mm_height, $minHeight: $mm_minHeight, $maxHeight: $mm_maxHeight
 ) {
-	// left
-	.mm-menu#{$cls}
-	{
-		&.mm-front,
-		&.mm-next
-		{
-			left: -( percentage( $width ) );
-		}
-	}
-	@media all and ( max-width: $minWidth / $width ) {
-		.mm-menu#{$cls}
-		{
-			&.mm-front,
-			&.mm-next
-			{
-				left: -$minWidth;
-			}
-		}
-	}
-	@media all and ( min-width: $maxWidth / $width ) {
-		.mm-menu#{$cls}
-		{
-			&.mm-front,
-			&.mm-next
-			{
-				left: -$maxWidth;
-			}
-		}
-	}
 
 	// top
-	.mm-menu.mm-top#{$cls}
-	{
-		&.mm-front,
-		&.mm-next
-		{
-			top: -( percentage( $height ) );
-		}
-	}
-	@media all and ( max-height: $minHeight / $height ) {
-		.mm-menu.mm-top#{$cls}
-		{
-			&.mm-front,
-			&.mm-next
-			{
-				top: -$minHeight;
-			}
-		}
-	}
-	@media all and ( min-height: $maxHeight / $height ) {
-		.mm-menu.mm-top#{$cls}
-		{
-			&.mm-front,
-			&.mm-next
-			{
-				top: -$maxHeight;
-			}
-		}
-	}
-
-	// right
-	.mm-menu.mm-right#{$cls}
-	{
-		&.mm-front,
-		&.mm-next
-		{
-			right: -( percentage( $width ) );
-		}
-	}
-	@media all and ( max-width: $minWidth / $width ) {
-		.mm-menu.mm-right#{$cls}
-		{
-			&.mm-front,
-			&.mm-next
-			{
-				right: -$minWidth;
-			}
-		}
-	}
-	@media all and ( min-width: $maxWidth / $width ) {
-		.mm-menu.mm-right#{$cls}
-		{
-			&.mm-front,
-			&.mm-next
-			{
-				right: -$maxWidth;
-			}
-		}
-	}
-
 	// bottom
-	.mm-menu.mm-bottom#{$cls}
+	.mm-menu.mm-front#{$cls}
 	{
-		&.mm-front,
-		&.mm-next
+		&.mm-top,
+		&.mm-bottom
 		{
-			bottom: -( percentage( $height ) );
-		}
-	}
-	@media all and ( max-height: $minHeight / $height ) {
-		.mm-menu.mm-bottom#{$cls}
-		{
-			&.mm-front,
-			&.mm-next
-			{
-				bottom: -$minHeight;
-			}
-		}
-	}
-	@media all and ( min-height: $maxHeight / $height ) {
-		.mm-menu.mm-bottom#{$cls}
-		{
-			&.mm-front,
-			&.mm-next
-			{
-				bottom: -$maxHeight;
-			}
-		}
-	}
-
-
-	//	Fixed elements
-	html.mm-front,
-	html.mm-opening.mm-front
-	{
-		.mm-fixed-top,
-		.mm-fixed-bottom
-		{
-			left: 0;
-			right: auto;
-		}
-		.mm-fixed-top
-		{
-			top: 0;
-		}
-		.mm-fixed-bottom
-		{
-			bottom: 0;
+			height: percentage( $height );
+			min-height: $minHeight;
+			max-height: $maxHeight;
 		}
 	}
 }
