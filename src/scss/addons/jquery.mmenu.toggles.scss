@@ -5,17 +5,37 @@
 @import "../inc/variables";
 
 
+input.mm-toggle,
+input.mm-check
+{
+	position: absolute;
+	left: -10000px;
+}
+
+label.mm-toggle,
+label.mm-check
+{
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	z-index: 1;
+	
+	&:before
+	{
+		content: '';
+		display: block;
+	}
+}
+
+// styling
 label.mm-toggle
 {
 	border-radius: $mm_toggleHeight;
 	width: $mm_toggleWidth;
 	height: $mm_toggleHeight;
-	margin: -( $mm_toggleHeight / 2 ) 0 0 0;
-	position: absolute;
-	top: 50%;
-	z-index: 1;
+	margin-top: -( $mm_toggleHeight / 2 );
 
-	div
+	&:before
 	{
 		border-radius: $mm_toggleHeight;
 		width: $mm_toggleHeight - 2;
@@ -23,46 +43,106 @@ label.mm-toggle
 		margin: 1px;
 	}
 }
-input.mm-toggle
+input.mm-toggle:checked ~ label.mm-toggle:before
 {
-	position: absolute;
-	left: -10000px;
-	
-	&:checked ~ label.mm-toggle div
+	float: right;
+}
+
+label.mm-check
+{
+	width: $mm_checkWidth;
+	height: $mm_checkHeight;
+	margin-top: -( $mm_checkHeight / 2 );
+
+	&:before
 	{
-		float: right;
+		border-left: 3px solid;
+		border-bottom: 3px solid;
+		width: 40%;
+		height: 20%;
+		margin: 25% 0 0 20%;
+
+		@include mm-webkit-prefix( 'transform', rotate( -45deg ) );
 	}
 }
 
+// positioning
+label
+{
+	&.mm-toggle,
+	&.mm-check
+	{
+		right: $mm_padding * 2;
+	}
+}
 label.mm-toggle
 {
-	right: $mm_padding * 2;
-
 	+ a,
 	+ span
 	{
 		margin-right: $mm_toggleWidth + ( $mm_padding * 2 );
 	}
 }
+label.mm-check
+{
+	+ a,
+	+ span
+	{
+		margin-right: $mm_checkWidth + ( $mm_padding * 2 );
+	}
+}
+
+// positioning with subopen
+a.mm-subopen + label
+{
+	&.mm-toggle,
+	&.mm-check
+	{
+		right: $mm_subopenWidth + $mm_padding;
+	}
+}
 a.mm-subopen + label.mm-toggle
 {
-	right: $mm_subopenWidth + $mm_padding;
-
 	+ a,
 	+ span
 	{
 		margin-right: $mm_subopenWidth + $mm_toggleWidth + $mm_padding;
 	}
 }
+a.mm-subopen + label.mm-check
+{
+	+ a,
+	+ span
+	{
+		margin-right: $mm_subopenWidth + $mm_checkWidth + $mm_padding;
+	}
+}
+
+// positioning with counter
+em.mm-counter + a.mm-subopen + label
+{
+	&.mm-toggle,
+	&.mm-check
+	{
+		right: $mm_counterWidth + $mm_subopenWidth + $mm_padding;
+	}
+}
 em.mm-counter + a.mm-subopen + label.mm-toggle
 {
-	right: $mm_counterWidth + $mm_subopenWidth + $mm_padding;
-
 	+ a,
 	+ span
 	{
 		margin-right: $mm_counterWidth + $mm_subopenWidth + $mm_toggleWidth + $mm_padding;
 	}
 }
+em.mm-counter + a.mm-subopen + label.mm-check
+{
+	+ a,
+	+ span
+	{
+		margin-right: $mm_counterWidth + $mm_subopenWidth + $mm_checkWidth + $mm_padding;
+	}
+}
 
 @include mm_colors_toggles;
+@include mm_colors_checks;
