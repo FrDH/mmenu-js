@@ -46,10 +46,15 @@ html.mm-opened.mm-light .mm-page {
 
 .mm-menu.mm-light label.mm-toggle {
   background: rgba(0, 0, 0, 0.1); }
-  .mm-menu.mm-light label.mm-toggle div {
+  .mm-menu.mm-light label.mm-toggle:before {
     background: #f3f3f3; }
 .mm-menu.mm-light input.mm-toggle:checked ~ label.mm-toggle {
   background: #4bd963; }
+
+.mm-menu.mm-light label.mm-check:before {
+  border-color: rgba(0, 0, 0, 0.3); }
+.mm-menu.mm-light input.mm-check:checked ~ label.mm-check:before {
+  border-color: rgba(0, 0, 0, 0.6); }
 
 html.mm-opened.mm-white .mm-page {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); }
@@ -96,7 +101,7 @@ html.mm-opened.mm-white .mm-page {
 
 .mm-menu.mm-white label.mm-toggle {
   background: rgba(0, 0, 0, 0.1); }
-  .mm-menu.mm-white label.mm-toggle div {
+  .mm-menu.mm-white label.mm-toggle:before {
     background: white; }
 .mm-menu.mm-white input.mm-toggle:checked ~ label.mm-toggle {
   background: #4bd963; }
@@ -146,7 +151,7 @@ html.mm-opened.mm-black .mm-page {
 
 .mm-menu.mm-black label.mm-toggle {
   background: rgba(255, 255, 255, 0.2); }
-  .mm-menu.mm-black label.mm-toggle div {
+  .mm-menu.mm-black label.mm-toggle:before {
     background: black; }
 .mm-menu.mm-black input.mm-toggle:checked ~ label.mm-toggle {
   background: #4bd963; }
