@@ -55,6 +55,8 @@
 				_distance 		= 0,
 				_maxDistance 	= 0;
 
+			var new_distance, drag_distance, css_value, pointer_pos;
+
 			switch( this.opts.offCanvas.position )
 			{
 				case 'left':
@@ -118,21 +120,16 @@
 				$dragNode = $($dragNode);
 			}
 
-			var $fixed = glbl.$page.find( '.' + _c.mm( 'fixed-top' ) + ', .' + _c.mm( 'fixed-bottom' ) ),
-				$dragg = glbl.$page;
+			var $dragg = glbl.$page;
 
 			switch ( this.opts.offCanvas.zposition )
 			{
-				case 'back':
-					$dragg = $dragg.add( $fixed );
-					break;
-
 				case 'front':
 					$dragg = this.$menu;
 					break;
 
 				case 'next':
-					$dragg = $dragg.add( this.$menu ).add( $fixed );
+					$dragg = $dragg.add( this.$menu );
 					break;
 			};
 
@@ -144,24 +141,26 @@
 				.on( 'panstart',
 					function( e )
 					{
-						var pos = e.center[ drag.typeLower ];
+						pointer_pos = e.center[ drag.typeLower ];
+//						pointer_pos = e[ 'client' + drag.typeUpper ];
 						switch( that.opts.offCanvas.position )
 						{
 							case 'right':
 							case 'bottom':
-								if ( pos >= glbl.$wndw[ _dimension ]() - opts.maxStartPos )
+								if ( pointer_pos >= glbl.$wndw[ _dimension ]() - opts.maxStartPos )
 								{
 									_stage = 1;
 								}
 								break;
 
 							default:
-								if ( pos <= opts.maxStartPos )
+								if ( pointer_pos <= opts.maxStartPos )
 								{
 									_stage = 1;
 								}
 								break;
 						}
+						_direction = drag.open_dir;
 					}
 				)
 				.on( drag.events + ' panend',
@@ -176,13 +175,19 @@
 				.on( drag.events,
 					function( e )
 					{
-						var new_distance = drag.negative
-							? -e[ 'delta' + drag.typeUpper ]
-							:  e[ 'delta' + drag.typeUpper ];
 
-						_direction = ( new_distance >= _distance )
-							? drag.open_dir
-							: drag.close_dir;
+						new_distance = e[ 'delta' + drag.typeUpper ];
+						if ( drag.negative )
+						{
+							new_distance = -new_distance;
+						}
+
+						if ( new_distance != _distance )
+						{
+							_direction = ( new_distance >= _distance )
+								? drag.open_dir
+								: drag.close_dir;
+						}
 
 						_distance = new_distance;
 
@@ -195,7 +200,9 @@
 									return;
 								}
 								_stage = 2;
+
 								that._openSetup();
+								that.$menu.trigger( _e.opening );
 								glbl.$html.addClass( _c.dragging );
 
 								_maxDistance = minMax( 
@@ -207,7 +214,17 @@
 						}
 						if ( _stage == 2 )
 						{
-							$dragg.css( that.opts.offCanvas.position, minMax( _distance, 10, _maxDistance ) - ( that.opts.offCanvas.zposition == 'front' ? _maxDistance : 0 ) );
+							drag_distance = minMax( _distance, 10, _maxDistance ) - ( that.opts.offCanvas.zposition == 'front' ? _maxDistance : 0 );
+							if ( drag.negative )
+							{
+								drag_distance = -drag_distance;
+							}
+							css_value = 'translate' + drag.typeUpper + '(' + drag_distance + 'px )';
+
+							$dragg.css({
+								'-webkit-transform': '-webkit-' + css_value,	
+								'transform': css_value
+							});
 						}
 					}
 				)
@@ -217,7 +234,7 @@
 						if ( _stage == 2 )
 						{
 							glbl.$html.removeClass( _c.dragging );
-							$dragg.css( that.opts.offCanvas.position, '' );
+							$dragg.css( 'transform', '' );
 							that[ _direction == drag.open_dir ? '_openFinish' : 'close' ]();
 						}
 			        	_stage = 0;
