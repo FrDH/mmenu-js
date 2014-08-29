@@ -4,25 +4,19 @@
 
 @import "../inc/variables";
 
-$mm_fs_class		: ".mm-fullscreen";
-$mm_fs_width		: 1;
-$mm_fs_minWidth		: 140px;
-$mm_fs_maxWidth		: 10000px;
-$mm_fs_height		: 1;
-$mm_fs_minHeight	: 140px;
-$mm_fs_maxHeight	: 10000px;
+$mm_fs_class	: ".mm-fullscreen";
+$mm_fs_full		: 1 !default;
+$mm_fs_min		: 140px !default;
+$mm_fs_max		: 10000px !default;
 
 @include mm_sizing( $mm_fs_class,
-	$mm_fs_width, $mm_fs_minWidth, $mm_fs_maxWidth,
-	$mm_fs_height, $mm_fs_minHeight, $mm_fs_maxHeight );
+	$mm_fs_full, $mm_fs_min, $mm_fs_max );
 
-@include mm_sizing_position( $mm_fs_class,
-	$mm_fs_width, $mm_fs_minWidth, $mm_fs_maxWidth,
-	$mm_fs_height, $mm_fs_minHeight, $mm_fs_maxHeight );
+@include mm_sizing_right( $mm_fs_class,
+	$mm_fs_full, $mm_fs_min, $mm_fs_max);
 
 @include mm_sizing_zposition( $mm_fs_class,
-	$mm_fs_width, $mm_fs_minWidth, $mm_fs_maxWidth,
-	$mm_fs_height, $mm_fs_minHeight, $mm_fs_maxHeight );
+	$mm_fs_full, $mm_fs_min, $mm_fs_max );
 	
 html.mm-opened#{$mm_fs_class} .mm-page
 {
