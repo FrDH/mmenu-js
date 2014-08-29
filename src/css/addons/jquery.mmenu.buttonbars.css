@@ -31,6 +31,8 @@
     position: absolute;
     left: -1000px;
     top: -1000px; }
+  .mm-buttonbar > input:checked + label {
+    border-color: transparent  !important; }
   .mm-buttonbar > *:first-child,
   .mm-buttonbar > input:first-child + * {
     border-left: none; }
