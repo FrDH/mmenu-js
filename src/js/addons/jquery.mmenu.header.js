@@ -48,6 +48,7 @@
 		{
 			this.$menu.addClass( _c.hasheader );
 
+			//	Auto-update the title, prev- and next button
 			if ( opts.update )
 			{
 				var $titl = $header.find( '.' + _c.title ),
@@ -142,6 +143,12 @@
 						}
 					);
 			}
+
+			//	Init other add-ons
+			if ( typeof this._init_buttonbars == 'function' )
+			{
+				this._init_buttonbars( $header );
+			}
 		}
 	};
 
@@ -154,8 +161,8 @@
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		add		: false,
 		content	: false,
-		update	: false,
-		title	: 'Menu'
+		title	: 'Menu',
+		update	: false
 	};
 	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
 		panelHeader	: 'Header',
@@ -195,7 +202,7 @@
 		_d = $[ _PLUGIN_ ]._d;
 		_e = $[ _PLUGIN_ ]._e;
 
-		_c.add( 'header hasheader prev next title arrow' );
+		_c.add( 'header hasheader prev next title' );
 
 		glbl = $[ _PLUGIN_ ].glbl;
 	}
