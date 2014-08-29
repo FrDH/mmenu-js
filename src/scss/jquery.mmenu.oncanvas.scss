@@ -9,7 +9,6 @@
 {
 	-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
 	transition: transform $mm_transitionDuration $mm_transitionFunction;
-//	@include mm_webkit-prefix( "transition", left $mm_transitionDuration $mm_transitionFunction );
 }
 
 
@@ -121,6 +120,7 @@
 		> span
 		{
 			@include mm_ellipsis;
+
 			color: inherit;
 			line-height: $mm_btnSize - ( $mm_padding * 2 );
 			display: block;
@@ -132,6 +132,7 @@
 	> li:not(.mm-subtitle):not(.mm-label):not(.mm-search):not(.mm-noresults)
 	{
 		@include mm_border-bottom;
+
 		&:after
 		{
 			width: auto;
@@ -146,6 +147,7 @@
 	{
 		@include mm_border-left;
 
+		background: rgba( 3, 2, 1, 0 );
 		width: $mm_subopenWidth;
 		height: 100%;
 		padding: 0;
@@ -153,7 +155,7 @@
 		right: 0;
 		top: 0;
 		z-index: 2;
-		
+
 		&.mm-fullsubopen
 		{
 			width: 100%;
@@ -197,14 +199,14 @@
 	}
 
 	// Labels
-	$labelSize: ( $mm_btnSize / 2 ) + ( $mm_padding / 2 );
 	> li.mm-label
 	{
 		@include mm_ellipsis;
+
 		font-size: 10px;
 		text-transform: uppercase;
 		text-indent: $mm_padding * 2;
-		line-height: $labelSize;
+		line-height: $mm_labelHeight;
 		padding-right: $mm_padding / 2;
 	}
 
@@ -215,7 +217,7 @@
 		
 		&.mm-label
 		{
-			padding-top: $labelSize;
+			padding-top: $mm_labelHeight;
 		}
 	}
 
@@ -224,6 +226,7 @@
 	a.mm-subclose:before
 	{
 		@include mm_arrow;
+
 		margin-bottom: -5px;
 		position: absolute;
 		bottom: 50%;
@@ -231,11 +234,13 @@
 	a.mm-subopen:after
 	{
 		@include mm_arrow-next;
+
 		right: 18px;
 	}
 	a.mm-subclose:before
 	{
 		@include mm_arrow-prev;
+
 		margin-bottom: -( $mm_padding * 2 ) + 5;
 		left: 22px;
 	}
@@ -266,6 +271,7 @@
 			&:after
 			{
 				@include mm_webkit-prefix( "transform", rotate( 45deg ) );
+
 				top: 16px;
 				right: 16px;
 			}

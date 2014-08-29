@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.4.2
+ * jQuery mmenu v4.5.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.4.2';
+		_VERSION_	= '4.5.0';
 
 
 	//	Plugin already excists
@@ -86,6 +86,7 @@
 
 		_init: function( $panels )
 		{
+			$panels = $panels.not( '.' + _c.nopanel );
 			$panels = this._initPanels( $panels );
 			$panels = this._initLinks( $panels );
 			$panels = this._bindCustomEvents( $panels );
@@ -190,7 +191,7 @@
 
 			//	Add Panel class			
 			$panels
-				.add( this.__findAddBack( $panels, '.' + _c.list ).children().children().filter( this.conf.panelNodetype ) )
+				.add( this.__findAddBack( $panels, '.' + _c.list ).children().children().filter( this.conf.panelNodetype ).not( '.' + _c.nopanel ) )
 				.addClass( _c.panel );
 
 			var $curpanels = this.__findAddBack( $panels, '.' + _c.panel ),
@@ -729,7 +730,7 @@
 
 		//	Classnames
 		_c.mm = function( c ) { return 'mm-' + c; };
-		_c.add( 'wrapper menu inline panel list nolist subtitle selected label spacer current highest hidden opened subopened subopen fullsubopen subclose' );
+		_c.add( 'wrapper menu inline panel nopanel list nolist subtitle selected label spacer current highest hidden opened subopened subopen fullsubopen subclose' );
 		_c.umm = function( c )
 		{
 			if ( c.slice( 0, 3 ) == 'mm-' )
