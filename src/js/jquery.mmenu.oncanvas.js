@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.5.0
+ * jQuery mmenu v4.5.1
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.5.0';
+		_VERSION_	= '4.5.1';
 
 
 	//	Plugin already excists
@@ -571,42 +571,9 @@
 	/*
 		SUPPORT
 	*/
-	(function() {
-
-		var wd = window.document,
-			ua = window.navigator.userAgent;
-
-		var _touch 				= 'ontouchstart' in wd,
-			_overflowscrolling	= 'WebkitOverflowScrolling' in wd.documentElement.style,
-			_oldAndroidBrowser	= (function() {
-				if ( ua.indexOf( 'Android' ) >= 0 )
-				{
-					return 2.4 > parseFloat( ua.slice( ua.indexOf( 'Android' ) +8 ) );
-				}
-				return false;
-			})();
-
-		$[ _PLUGIN_ ].support = {
-
-			touch: _touch,
-			oldAndroidBrowser: _oldAndroidBrowser,
-			overflowscrolling: (function() {
-				if ( !_touch )
-				{
-					return true;
-				}
-				if ( _overflowscrolling )
-				{
-					return true;
-				}
-				if ( _oldAndroidBrowser )
-				{
-					return false;
-				}
-				return true;
-			})()
-		};
-	})();
+	$[ _PLUGIN_ ].support = {
+		touch: 'ontouchstart' in window.document
+	};
 
 
 	/*

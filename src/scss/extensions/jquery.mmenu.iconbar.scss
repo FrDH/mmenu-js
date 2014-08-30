@@ -14,11 +14,9 @@ $mm_ib_pageOffset: $mm_btnSize + ( $mm_padding * 2 ) !default;
 	min-height: 100vh;
 	position: relative;
 }
-.mm-page,
-.mm-fixed-top,
-.mm-fixed-bottom
+.mm-page
 {
-	left: $mm_ib_pageOffset;
+	@include mm-webkit-prefix( 'transform', translate( $mm_ib_pageOffset ) );
 	margin-right: $mm_ib_pageOffset;
 }
 

@@ -3,8 +3,6 @@
 */
 html.mm-slide .mm-menu {
   -webkit-transition: -webkit-transform 0.4s ease;
-  -moz-transition: -moz-transform 0.4s ease;
-  -o-transition: -o-transform 0.4s ease;
   transition: transform 0.4s ease; }
 html.mm-slide.mm-opened .mm-menu {
   -webkit-transform: translateX(-30%);
@@ -33,8 +31,6 @@ html.mm-slide.mm-bottom.mm-opening .mm-menu {
 
 html.mm-zoom-menu .mm-menu {
   -webkit-transition: -webkit-transform 0.4s ease;
-  -moz-transition: -moz-transform 0.4s ease;
-  -o-transition: -o-transform 0.4s ease;
   transition: transform 0.4s ease; }
 html.mm-zoom-menu.mm-opened .mm-menu {
   -webkit-transform: scale(0.7, 0.7) translateX(-30%);
@@ -69,40 +65,16 @@ html.mm-zoom-menu.mm-bottom.mm-opening .mm-menu {
   -webkit-transform: scale(1, 1) translateY(0%);
   transform: scale(1, 1) translateY(0%); }
 
-html.mm-zoom-page .mm-page {
-  -webkit-transition-property: -webkit-transform, top, right, bottom, left, border;
-  -moz-transition-property: -moz-transform, top, right, bottom, left, border;
-  -ms-transition-property: -ms-transform, top, right, bottom, left, border;
-  -o-transition-property: -o-transform, top, right, bottom, left, border;
-  transition-property: transform, top, right, bottom, left, border; }
-html.mm-zoom-page.mm-opened .mm-page {
-  -webkit-transform: scale(1, 1);
-  transform: scale(1, 1);
-  -webkit-transform-origin: left center;
-  transform-origin: left center; }
-html.mm-zoom-page.mm-opening .mm-page {
-  -webkit-transform: scale(1.5, 1.5);
-  transform: scale(1.5, 1.5); }
-html.mm-zoom-page.mm-right.mm-opened .mm-page {
-  -webkit-transform-origin: right center;
-  transform-origin: right center; }
-html.mm-zoom-page.mm-top.mm-opened .mm-page {
-  -webkit-transform-origin: center top;
-  transform-origin: center top; }
-html.mm-zoom-page.mm-bottom.mm-opened .mm-page {
-  -webkit-transform-origin: center bottom;
-  transform-origin: center bottom; }
-
 html.mm-zoom-panels .mm-menu.mm-horizontal > .mm-panel {
-  -webkit-transform: scale(1.5, 1.5);
-  transform: scale(1.5, 1.5);
+  -webkit-transform: scale(1.5, 1.5) translateX(100%);
+  transform: scale(1.5, 1.5) translateX(100%);
   -webkit-transform-origin: left center;
   transform-origin: left center;
   -webkit-transition-property: -webkit-transform, left;
   transition-property: transform, left; }
   html.mm-zoom-panels .mm-menu.mm-horizontal > .mm-panel.mm-opened {
-    -webkit-transform: scale(1, 1);
-    transform: scale(1, 1); }
+    -webkit-transform: scale(1, 1) translateX(0%);
+    transform: scale(1, 1) translateX(0%); }
     html.mm-zoom-panels .mm-menu.mm-horizontal > .mm-panel.mm-opened.mm-subopened {
-      -webkit-transform: scale(0.7, 0.7);
-      transform: scale(0.7, 0.7); }
+      -webkit-transform: scale(0.7, 0.7) translateX(-30%);
+      transform: scale(0.7, 0.7) translateX(-30%); }

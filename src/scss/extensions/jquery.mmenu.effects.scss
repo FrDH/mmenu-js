@@ -11,8 +11,6 @@ html.mm-slide
 	.mm-menu
 	{
 		-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
-		-moz-transition: -moz-transform $mm_transitionDuration $mm_transitionFunction;
-		-o-transition: -o-transform $mm_transitionDuration $mm_transitionFunction;
 		transition: transform $mm_transitionDuration $mm_transitionFunction;
 	}
 
@@ -68,22 +66,20 @@ html.mm-slide
 
 
 //	Zoom menu
-$scaleDown: 0.7;
-$scaleUp: 1.5;
+$mm_scaleDown: 0.7;
+$mm_scaleUp: 1.5;
 html.mm-zoom-menu
 {
 	.mm-menu
 	{
 		-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
-		-moz-transition: -moz-transform $mm_transitionDuration $mm_transitionFunction;
-		-o-transition: -o-transform $mm_transitionDuration $mm_transitionFunction;
 		transition: transform $mm_transitionDuration $mm_transitionFunction;
 	}
 
 	//	Left
 	&.mm-opened .mm-menu
 	{
-		@include mm_webkit-prefix( 'transform', scale( $scaleDown, $scaleDown ) translateX( -$mm_subpanelOffset ) );
+		@include mm_webkit-prefix( 'transform', scale( $mm_scaleDown, $mm_scaleDown ) translateX( -$mm_subpanelOffset ) );
 		@include mm_webkit-prefix( 'transform-origin', left center );
 	}
 	&.mm-opening .mm-menu
@@ -96,7 +92,7 @@ html.mm-zoom-menu
 	{
 		&.mm-opened .mm-menu
 		{
-			@include mm_webkit-prefix( 'transform', scale( $scaleDown, $scaleDown) translateX( $mm_subpanelOffset ) );
+			@include mm_webkit-prefix( 'transform', scale( $mm_scaleDown, $mm_scaleDown) translateX( $mm_subpanelOffset ) );
 			@include mm_webkit-prefix( 'transform-origin', right center );
 		}
 		&.mm-opening .mm-menu
@@ -110,7 +106,7 @@ html.mm-zoom-menu
 	{
 		&.mm-opened .mm-menu
 		{
-			@include mm_webkit-prefix( 'transform', scale( $scaleDown, $scaleDown ) translateY( -$mm_subpanelOffset ) );
+			@include mm_webkit-prefix( 'transform', scale( $mm_scaleDown, $mm_scaleDown ) translateY( -$mm_subpanelOffset ) );
 			@include mm_webkit-prefix( 'transform-origin', center top );
 		}
 		&.mm-opening .mm-menu
@@ -124,7 +120,7 @@ html.mm-zoom-menu
 	{
 		&.mm-opened .mm-menu
 		{
-			@include mm_webkit-prefix( 'transform', scale( $scaleDown, $scaleDown ) translateY( $mm_subpanelOffset ) );
+			@include mm_webkit-prefix( 'transform', scale( $mm_scaleDown, $mm_scaleDown ) translateY( $mm_subpanelOffset ) );
 			@include mm_webkit-prefix( 'transform-origin', center bottom );
 		}
 		&.mm-opening .mm-menu
@@ -135,54 +131,10 @@ html.mm-zoom-menu
 }
 
 
-//	Zoom page
-html.mm-zoom-page
-{
-
-	.mm-page
-	{
-		-webkit-transition-property: -webkit-transform, top, right, bottom, left, border;
-		-moz-transition-property: -moz-transform, top, right, bottom, left, border;
-		-ms-transition-property: -ms-transform, top, right, bottom, left, border;
-		-o-transition-property: -o-transform, top, right, bottom, left, border;
-		transition-property: transform, top, right, bottom, left, border;
-	}
-
-	//	Left
-	&.mm-opened .mm-page
-	{
-		@include mm_webkit-prefix( 'transform', scale( 1, 1 ) );
-		@include mm_webkit-prefix( 'transform-origin', left center );
-	}
-	&.mm-opening .mm-page
-	{
-		@include mm_webkit-prefix( 'transform', scale( $scaleUp, $scaleUp ) );
-	}
-
-	//	Right
-	&.mm-right.mm-opened .mm-page
-	{
-		@include mm_webkit-prefix( 'transform-origin', right center );
-	}
-
-	//	Top
-	&.mm-top.mm-opened .mm-page
-	{
-		@include mm_webkit-prefix( 'transform-origin', center top );
-	}
-
-	//	Bottom
-	&.mm-bottom.mm-opened .mm-page
-	{
-		@include mm_webkit-prefix( 'transform-origin', center bottom );
-	}
-}
-
-
 //	Zoom panels
 html.mm-zoom-panels .mm-menu.mm-horizontal > .mm-panel
 {
-	@include mm_webkit-prefix( 'transform', scale( $scaleUp, $scaleUp ) );
+	@include mm_webkit-prefix( 'transform', scale( $mm_scaleUp, $mm_scaleUp ) translateX( 100% ) );
 	@include mm_webkit-prefix( 'transform-origin', left center );
 
 	-webkit-transition-property: -webkit-transform, left;
@@ -190,11 +142,11 @@ html.mm-zoom-panels .mm-menu.mm-horizontal > .mm-panel
 	
 	&.mm-opened
 	{
-		@include mm_webkit-prefix( 'transform', scale( 1, 1 ) );
+		@include mm_webkit-prefix( 'transform', scale( 1, 1 ) translateX( 0% ) );
 		
 		&.mm-subopened
 		{
-			@include mm_webkit-prefix( 'transform', scale( $scaleDown, $scaleDown ) );
+			@include mm_webkit-prefix( 'transform', scale( $mm_scaleDown, $mm_scaleDown ) translateX( -$mm_subpanelOffset ) );
 		}
 	}
 }
