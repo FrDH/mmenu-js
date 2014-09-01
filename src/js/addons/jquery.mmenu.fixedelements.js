@@ -39,8 +39,8 @@
 
 
 		//	Refactor fixed classes
-		this.__refactorClass( $('div', glbl.$page), this.conf.classNames[ _ADDON_ ].fixedTop, 'fixed-top' );
-		this.__refactorClass( $('div', glbl.$page), this.conf.classNames[ _ADDON_ ].fixedBottom, 'fixed-bottom' );
+		this.__refactorClass( $('div, span, a', glbl.$page), this.conf.classNames[ _ADDON_ ].fixedTop, 'fixed-top' );
+		this.__refactorClass( $('div, span, a', glbl.$page), this.conf.classNames[ _ADDON_ ].fixedBottom, 'fixed-bottom' );
 
 
 		if ( addon_added )
