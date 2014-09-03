@@ -223,8 +223,7 @@ html.mm-opened {
     overflow: hidden; }
   html.mm-opened .mm-page {
     box-sizing: border-box;
-    position: relative;
-    margin: 0; }
+    position: relative; }
 
 html.mm-background .mm-page {
   background: inherit; }

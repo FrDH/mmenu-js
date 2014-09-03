@@ -25,6 +25,15 @@ html.mm-opened.mm-light .mm-page {
   .mm-menu.mm-light.mm-vertical .mm-list li.mm-opened > ul {
     background: rgba(0, 0, 0, 0.03); }
 
+.mm-menu.mm-light .mm-buttonbar {
+  border-color: rgba(0, 0, 0, 0.6);
+  background: #f3f3f3; }
+  .mm-menu.mm-light .mm-buttonbar > * {
+    border-color: rgba(0, 0, 0, 0.6); }
+  .mm-menu.mm-light .mm-buttonbar > input:checked + label {
+    background: rgba(0, 0, 0, 0.6);
+    color: #f3f3f3; }
+
 .mm-menu.mm-light label.mm-check:before {
   border-color: rgba(0, 0, 0, 0.3); }
 .mm-menu.mm-light input.mm-check:checked ~ label.mm-check:before {
@@ -32,6 +41,10 @@ html.mm-opened.mm-light .mm-page {
 
 .mm-menu.mm-light em.mm-counter {
   color: rgba(0, 0, 0, 0.3); }
+
+.mm-menu.mm-light .mm-footer {
+  border-color: rgba(0, 0, 0, 0.15);
+  color: rgba(255, 255, 255, 0.3); }
 
 .mm-menu.mm-light .mm-header {
   border-color: rgba(0, 0, 0, 0.1);
@@ -80,6 +93,15 @@ html.mm-opened.mm-white .mm-page {
   .mm-menu.mm-white.mm-vertical .mm-list li.mm-opened > ul {
     background: rgba(0, 0, 0, 0.03); }
 
+.mm-menu.mm-white .mm-buttonbar {
+  border-color: rgba(0, 0, 0, 0.6);
+  background: white; }
+  .mm-menu.mm-white .mm-buttonbar > * {
+    border-color: rgba(0, 0, 0, 0.6); }
+  .mm-menu.mm-white .mm-buttonbar > input:checked + label {
+    background: rgba(0, 0, 0, 0.6);
+    color: white; }
+
 .mm-menu.mm-white label.mm-check:before {
   border-color: rgba(0, 0, 0, 0.3); }
 .mm-menu.mm-white input.mm-check:checked ~ label.mm-check:before {
@@ -87,6 +109,10 @@ html.mm-opened.mm-white .mm-page {
 
 .mm-menu.mm-white em.mm-counter {
   color: rgba(0, 0, 0, 0.3); }
+
+.mm-menu.mm-white .mm-footer {
+  border-color: rgba(0, 0, 0, 0.15);
+  color: rgba(255, 255, 255, 0.3); }
 
 .mm-menu.mm-white .mm-header {
   border-color: rgba(0, 0, 0, 0.1);
@@ -135,12 +161,25 @@ html.mm-opened.mm-black .mm-page {
   .mm-menu.mm-black.mm-vertical .mm-list li.mm-opened > ul {
     background: rgba(255, 255, 255, 0.15); }
 
+.mm-menu.mm-black .mm-buttonbar {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: black; }
+  .mm-menu.mm-black .mm-buttonbar > * {
+    border-color: rgba(255, 255, 255, 0.6); }
+  .mm-menu.mm-black .mm-buttonbar > input:checked + label {
+    background: rgba(255, 255, 255, 0.6);
+    color: black; }
+
 .mm-menu.mm-black label.mm-check:before {
   border-color: rgba(255, 255, 255, 0.3); }
 .mm-menu.mm-black input.mm-check:checked ~ label.mm-check:before {
   border-color: rgba(255, 255, 255, 0.6); }
 
 .mm-menu.mm-black em.mm-counter {
+  color: rgba(255, 255, 255, 0.3); }
+
+.mm-menu.mm-black .mm-footer {
+  border-color: rgba(0, 0, 0, 0.15);
   color: rgba(255, 255, 255, 0.3); }
 
 .mm-menu.mm-black .mm-header {

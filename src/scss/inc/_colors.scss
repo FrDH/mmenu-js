@@ -163,7 +163,7 @@
 	}
 }
 
-@mixin mm_colors_search( $cls: "",
+@mixin mm_colors_searchfield( $cls: "",
 	$inputBg: $mm_dimmedTextColor, $color: $mm_textColor,
 	$dimmedColor: $mm_dimmedTextColor
 ) {
