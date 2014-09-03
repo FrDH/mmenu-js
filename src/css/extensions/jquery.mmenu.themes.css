@@ -43,8 +43,8 @@ html.mm-opened.mm-light .mm-page {
   color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-light .mm-footer {
-  border-color: rgba(0, 0, 0, 0.15);
-  color: rgba(255, 255, 255, 0.3); }
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-light .mm-header {
   border-color: rgba(0, 0, 0, 0.1);
@@ -111,8 +111,8 @@ html.mm-opened.mm-white .mm-page {
   color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-white .mm-footer {
-  border-color: rgba(0, 0, 0, 0.15);
-  color: rgba(255, 255, 255, 0.3); }
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-white .mm-header {
   border-color: rgba(0, 0, 0, 0.1);
@@ -179,7 +179,7 @@ html.mm-opened.mm-black .mm-page {
   color: rgba(255, 255, 255, 0.3); }
 
 .mm-menu.mm-black .mm-footer {
-  border-color: rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.3); }
 
 .mm-menu.mm-black .mm-header {

@@ -23,8 +23,8 @@
 		$mm_t_dimmedTextColor );
 
 	@include mm_colors_footer( $mm_t_cls,
-		$mm_dimmedTextColor,
-		$mm_borderColor );
+		$mm_t_dimmedTextColor,
+		$mm_t_borderColor );
 
 	@include mm_colors_header( $mm_t_cls,
 		$mm_t_dimmedTextColor,
