@@ -15,8 +15,8 @@
   bottom: 0;
   left: 0; }
 
-.mm-menu.mm-hasfooter > .mm-panel {
-  padding-bottom: 80px; }
+.mm-menu.mm-hasfooter > .mm-panel:after {
+  height: 80px; }
 
 .mm-menu .mm-footer {
   border-color: rgba(0, 0, 0, 0.15);

@@ -47,7 +47,11 @@
   .mm-menu .mm-list {
     padding: 20px 0; }
   .mm-menu > .mm-list {
-    padding-bottom: 40px; }
+    padding-bottom: 0; }
+    .mm-menu > .mm-list:after {
+      content: '';
+      display: block;
+      height: 40px; }
 
 .mm-panel > .mm-list {
   margin-left: -20px;

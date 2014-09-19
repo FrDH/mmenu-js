@@ -79,7 +79,13 @@
 	}
 	> .mm-list
 	{
-		padding-bottom: $mm_btnSize;
+		padding-bottom: 0;
+		&:after
+		{
+			content: '';
+			display: block;
+			height: $mm_btnSize;
+		}
 	}
 }
 .mm-panel > .mm-list

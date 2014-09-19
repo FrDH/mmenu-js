@@ -24,9 +24,9 @@
 
 .mm-menu.mm-hasfooter
 {
-	> .mm-panel
+	> .mm-panel:after
 	{
-		padding-bottom: $mm_footerHeight + $mm_btnSize;
+		height: $mm_footerHeight + $mm_btnSize;
 	}
 }
 
