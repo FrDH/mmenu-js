@@ -17,14 +17,16 @@ div.mm-panel > div.mm-search {
 .mm-menu.mm-hasheader .mm-list > li.mm-search {
   margin-top: 0; }
 
-.mm-search {
+.mm-menu > .mm-search {
   background: inherit;
   width: 100%;
-  padding: 10px;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 2; }
+
+.mm-search {
+  padding: 10px; }
   .mm-search input {
     border: none;
     border-radius: 30px;
@@ -37,6 +39,8 @@ div.mm-panel > div.mm-search {
     height: 30px;
     margin: 0;
     padding: 0 10px; }
+  .mm-search input::-ms-clear {
+    display: none; }
 
 .mm-menu .mm-noresultsmsg {
   text-align: center;

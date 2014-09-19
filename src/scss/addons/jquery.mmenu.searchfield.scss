@@ -29,16 +29,18 @@ div.mm-panel > div.mm-search
 {
 	margin-top: 0;
 }
-.mm-search
+.mm-menu > .mm-search
 {
-
 	background: inherit;
 	width: 100%;
-	padding: $mm_padding;
 	position: absolute;
 	top: 0;
 	left: 0;
 	z-index: 2;
+}
+.mm-search
+{
+	padding: $mm_padding;
 
 	input
 	{		
@@ -53,6 +55,10 @@ div.mm-panel > div.mm-search
 		height: $mm_searchfieldHeight;
 		margin: 0;
 		padding: 0 $mm_padding;
+	}
+	input::-ms-clear
+	{
+		display: none;
 	}
 }
 
