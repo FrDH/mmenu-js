@@ -50,7 +50,11 @@
   .mm-menu .mm-list {
     padding: 20px 0; }
   .mm-menu > .mm-list {
-    padding-bottom: 40px; }
+    padding-bottom: 0; }
+    .mm-menu > .mm-list:after {
+      content: '';
+      display: block;
+      height: 40px; }
 
 .mm-panel > .mm-list {
   margin-left: -20px;
@@ -400,8 +404,8 @@ html.mm-opened.mm-dragging #mm-blocker {
   bottom: 0;
   left: 0; }
 
-.mm-menu.mm-hasfooter > .mm-panel {
-  padding-bottom: 80px; }
+.mm-menu.mm-hasfooter > .mm-panel:after {
+  height: 80px; }
 
 .mm-menu .mm-footer {
   border-color: rgba(0, 0, 0, 0.15);
@@ -537,14 +541,16 @@ div.mm-panel > div.mm-search {
 .mm-menu.mm-hasheader .mm-list > li.mm-search {
   margin-top: 0; }
 
-.mm-search {
+.mm-menu > .mm-search {
   background: inherit;
   width: 100%;
-  padding: 10px;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 2; }
+
+.mm-search {
+  padding: 10px; }
   .mm-search input {
     border: none;
     border-radius: 30px;
@@ -557,6 +563,8 @@ div.mm-panel > div.mm-search {
     height: 30px;
     margin: 0;
     padding: 0 10px; }
+  .mm-search input::-ms-clear {
+    display: none; }
 
 .mm-menu .mm-noresultsmsg {
   text-align: center;
@@ -632,8 +640,12 @@ label.mm-check {
     width: 40%;
     height: 20%;
     margin: 25% 0 0 20%;
+    opacity: 0.1;
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg); }
+
+input.mm-check:checked ~ label.mm-check:before {
+  opacity: 1; }
 
 label.mm-toggle, label.mm-check {
   right: 20px; }
@@ -676,8 +688,6 @@ em.mm-counter + a.mm-subopen + label.mm-check + span {
   background: #4bd963; }
 
 .mm-menu label.mm-check:before {
-  border-color: rgba(255, 255, 255, 0.3); }
-.mm-menu input.mm-check:checked ~ label.mm-check:before {
   border-color: rgba(255, 255, 255, 0.6); }
 
 /*
@@ -916,8 +926,6 @@ html.mm-opened.mm-light .mm-page {
     color: #f3f3f3; }
 
 .mm-menu.mm-light label.mm-check:before {
-  border-color: rgba(0, 0, 0, 0.3); }
-.mm-menu.mm-light input.mm-check:checked ~ label.mm-check:before {
   border-color: rgba(0, 0, 0, 0.6); }
 
 .mm-menu.mm-light em.mm-counter {
@@ -984,8 +992,6 @@ html.mm-opened.mm-white .mm-page {
     color: white; }
 
 .mm-menu.mm-white label.mm-check:before {
-  border-color: rgba(0, 0, 0, 0.3); }
-.mm-menu.mm-white input.mm-check:checked ~ label.mm-check:before {
   border-color: rgba(0, 0, 0, 0.6); }
 
 .mm-menu.mm-white em.mm-counter {
@@ -1052,8 +1058,6 @@ html.mm-opened.mm-black .mm-page {
     color: black; }
 
 .mm-menu.mm-black label.mm-check:before {
-  border-color: rgba(255, 255, 255, 0.3); }
-.mm-menu.mm-black input.mm-check:checked ~ label.mm-check:before {
   border-color: rgba(255, 255, 255, 0.6); }
 
 .mm-menu.mm-black em.mm-counter {
