@@ -93,18 +93,11 @@
 }
 
 @mixin mm_colors_checks( $cls: "",
-	$offColor: $mm_dimmedTextColor, $onColor: $mm_textColor
+	$color: $mm_textColor
 ) {
-	.mm-menu#{$cls}
+	.mm-menu#{$cls} label.mm-check:before
 	{
-		label.mm-check:before
-		{
-			border-color: $offColor;
-		}
-		input.mm-check:checked ~ label.mm-check:before
-		{
-			border-color: $onColor;
-		}
+		border-color: $color;
 	}
 }
 

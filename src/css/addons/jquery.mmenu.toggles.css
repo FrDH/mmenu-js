@@ -41,8 +41,12 @@ label.mm-check {
     width: 40%;
     height: 20%;
     margin: 25% 0 0 20%;
+    opacity: 0.1;
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg); }
+
+input.mm-check:checked ~ label.mm-check:before {
+  opacity: 1; }
 
 label.mm-toggle, label.mm-check {
   right: 20px; }
@@ -85,6 +89,4 @@ em.mm-counter + a.mm-subopen + label.mm-check + span {
   background: #4bd963; }
 
 .mm-menu label.mm-check:before {
-  border-color: rgba(255, 255, 255, 0.3); }
-.mm-menu input.mm-check:checked ~ label.mm-check:before {
   border-color: rgba(255, 255, 255, 0.6); }

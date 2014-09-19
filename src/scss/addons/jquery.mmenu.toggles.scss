@@ -61,9 +61,14 @@ label.mm-check
 		width: 40%;
 		height: 20%;
 		margin: 25% 0 0 20%;
+		opacity: 0.1;
 
 		@include mm-webkit-prefix( 'transform', rotate( -45deg ) );
 	}
+}
+input.mm-check:checked ~ label.mm-check:before
+{
+	opacity: 1;
 }
 
 // positioning

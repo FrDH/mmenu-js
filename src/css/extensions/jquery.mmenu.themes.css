@@ -35,8 +35,6 @@ html.mm-opened.mm-light .mm-page {
     color: #f3f3f3; }
 
 .mm-menu.mm-light label.mm-check:before {
-  border-color: rgba(0, 0, 0, 0.3); }
-.mm-menu.mm-light input.mm-check:checked ~ label.mm-check:before {
   border-color: rgba(0, 0, 0, 0.6); }
 
 .mm-menu.mm-light em.mm-counter {
@@ -103,8 +101,6 @@ html.mm-opened.mm-white .mm-page {
     color: white; }
 
 .mm-menu.mm-white label.mm-check:before {
-  border-color: rgba(0, 0, 0, 0.3); }
-.mm-menu.mm-white input.mm-check:checked ~ label.mm-check:before {
   border-color: rgba(0, 0, 0, 0.6); }
 
 .mm-menu.mm-white em.mm-counter {
@@ -171,8 +167,6 @@ html.mm-opened.mm-black .mm-page {
     color: black; }
 
 .mm-menu.mm-black label.mm-check:before {
-  border-color: rgba(255, 255, 255, 0.3); }
-.mm-menu.mm-black input.mm-check:checked ~ label.mm-check:before {
   border-color: rgba(255, 255, 255, 0.6); }
 
 .mm-menu.mm-black em.mm-counter {
