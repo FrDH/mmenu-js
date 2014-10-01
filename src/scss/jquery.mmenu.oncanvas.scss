@@ -269,17 +269,23 @@
 	{
 		display: block;
 	}
-	> li.mm-opened
+	> li
 	{
 		> a.mm-subopen
 		{
 			height: $mm_btnSize;
 			&:after
 			{
-				@include mm_webkit-prefix( "transform", rotate( 45deg ) );
-
 				top: 16px;
 				right: 16px;
+				bottom: auto;
+			}
+		}
+		&.mm-opened
+		{
+			> a.mm-subopen:after
+			{
+				@include mm_webkit-prefix( "transform", rotate( 45deg ) );
 			}
 		}
 		&.mm-label > a.mm-subopen

@@ -44,7 +44,7 @@
 			if ( Hammer.VERSION < 2 )
 			{
 				$[ _PLUGIN_ ].deprecated( 'Older version of the Hammer library', 'version 2 or newer' );
-				return false;
+				return;
 			}
 
 			//	Set up variables
@@ -142,7 +142,6 @@
 					function( e )
 					{
 						pointer_pos = e.center[ drag.typeLower ];
-//						pointer_pos = e[ 'client' + drag.typeUpper ];
 						switch( that.opts.offCanvas.position )
 						{
 							case 'right':

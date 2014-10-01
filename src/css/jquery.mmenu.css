@@ -179,14 +179,16 @@
     border-color: transparent; }
 .mm-menu.mm-vertical .mm-list li.mm-opened > .mm-panel {
   display: block; }
-.mm-menu.mm-vertical .mm-list > li.mm-opened > a.mm-subopen {
+.mm-menu.mm-vertical .mm-list > li > a.mm-subopen {
   height: 40px; }
-  .mm-menu.mm-vertical .mm-list > li.mm-opened > a.mm-subopen:after {
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
+  .mm-menu.mm-vertical .mm-list > li > a.mm-subopen:after {
     top: 16px;
-    right: 16px; }
-.mm-menu.mm-vertical .mm-list > li.mm-opened.mm-label > a.mm-subopen {
+    right: 16px;
+    bottom: auto; }
+.mm-menu.mm-vertical .mm-list > li.mm-opened > a.mm-subopen:after {
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg); }
+.mm-menu.mm-vertical .mm-list > li.mm-label > a.mm-subopen {
   height: 25px; }
 
 html.mm-opened .mm-page {

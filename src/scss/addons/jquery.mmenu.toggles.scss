@@ -17,7 +17,7 @@ label.mm-check
 {
 	margin: 0;
 	position: absolute;
-	top: 50%;
+	bottom: 50%;
 	z-index: 1;
 	
 	&:before
@@ -33,7 +33,7 @@ label.mm-toggle
 	border-radius: $mm_toggleHeight;
 	width: $mm_toggleWidth;
 	height: $mm_toggleHeight;
-	margin-top: -( $mm_toggleHeight / 2 );
+	margin-bottom: -( $mm_toggleHeight / 2 );
 
 	&:before
 	{
@@ -52,7 +52,7 @@ label.mm-check
 {
 	width: $mm_checkWidth;
 	height: $mm_checkHeight;
-	margin-top: -( $mm_checkHeight / 2 );
+	margin-bottom: -( $mm_checkHeight / 2 );
 
 	&:before
 	{
@@ -70,6 +70,31 @@ input.mm-check:checked ~ label.mm-check:before
 {
 	opacity: 1;
 }
+
+
+// vertical submenu
+.mm-menu.mm-vertical .mm-list
+{
+	> li label
+	{
+		&.mm-toggle,
+		&.mm-check
+		{
+			bottom: auto;
+			margin-bottom: 0;
+		}
+		&.mm-toggle
+		{
+			top: ( $mm_btnSize - $mm_toggleHeight ) / 2;
+
+		}
+		&.mm-check
+		{
+			top: ( $mm_btnSize - $mm_checkHeight ) / 2;
+		}
+	}
+}
+
 
 // positioning
 label
