@@ -54,7 +54,7 @@
 						$prnt.prepend( $inpt );
 
 						$('<label for="' + id + '" class="' + _c[ cl ] + '"></label>')
-							.insertBefore( $prnt.children( 'a' ).last() );
+							.insertBefore( $prnt.children( 'a, span' ).last() );
 					}
 				}
 			);
