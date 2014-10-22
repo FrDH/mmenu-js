@@ -53,18 +53,18 @@
 		overflow-x: hidden;
 		overflow-y: auto;
 
-		box-sizing: border-box;	
+		box-sizing: border-box;
 		padding: $mm_padding * 2;
 
-		@include mm_webkit-prefix( 'transform', translateX( 100% ) );
-		
+		@include mm_vendor-prefix( 'transform', translateX( 100% ) );
+
 		&.mm-opened
 		{
-			@include mm_webkit-prefix( 'transform', translateX( 0% ) );
+			@include mm_vendor-prefix( 'transform', translateX( 0% ) );
 		}
 		&.mm-subopened
 		{
-			@include mm_webkit-prefix( 'transform', translateX( -$mm_subpanelOffset ) );
+			@include mm_vendor-prefix( 'transform', translateX( -$mm_subpanelOffset ) );
 		}
 		&.mm-highest
 		{
@@ -92,7 +92,7 @@
 {
 	margin-left: -( $mm_padding * 2 );
 	margin-right: -( $mm_padding * 2 );
-	
+
 	&:first-child
 	{
 		padding-top: 0;
@@ -165,7 +165,7 @@
 		&.mm-fullsubopen
 		{
 			width: 100%;
-			
+
 			&:before
 			{
 				border-left: none;
@@ -196,7 +196,7 @@
 			}
 		}
 	}
-	
+
 	a.mm-subclose
 	{
 		text-indent: $mm_btnSize - ( $mm_padding * 2 );
@@ -220,7 +220,7 @@
 	> li.mm-spacer
 	{
 		padding-top: $mm_btnSize;
-		
+
 		&.mm-label
 		{
 			padding-top: $mm_labelHeight;
@@ -259,7 +259,7 @@
 	{
 		display: none;
 		padding: $mm_padding 0 $mm_padding $mm_padding;
-		
+
 		li:last-child:after
 		{
 			border-color: transparent;
@@ -285,7 +285,7 @@
 		{
 			> a.mm-subopen:after
 			{
-				@include mm_webkit-prefix( "transform", rotate( 45deg ) );
+				@include mm_vendor-prefix( "transform", rotate( 45deg ) );
 			}
 		}
 		&.mm-label > a.mm-subopen
