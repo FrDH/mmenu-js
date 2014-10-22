@@ -6,8 +6,8 @@
 	display: inline-block;
 	width: 7px;
 	height: 7px;
-	
-	@include mm_webkit-prefix( "transform", rotate( -45deg ) );
+
+	@include mm_vendor-prefix( "transform", rotate( -45deg ) );
 }
 @mixin mm_arrow-prev
 {

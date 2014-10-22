@@ -17,7 +17,7 @@
 
 		&.mm-opened a.mm-subopen:after
 		{
-			@include mm_webkit-prefix( "transform", rotate( 45deg ) );
+			@include mm_vendor-prefix( "transform", rotate( 45deg ) );
 			right: 17px;
 		}
 	}

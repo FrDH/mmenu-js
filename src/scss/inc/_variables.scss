@@ -67,11 +67,6 @@ $mm_toggleCheckedColor	: #4bd963 !default;
 	-o-#{$prop}: $val;
 	#{$prop}: $val;
 }
-@mixin mm_webkit-prefix( $prop, $val )
-{
-	-webkit-#{$prop}: $val;
-	#{$prop}: $val;
-}
 @mixin mm_ellipsis()
 {
 	text-overflow: ellipsis;
