@@ -276,8 +276,7 @@
 			height: $mm_btnSize;
 			&:after
 			{
-				top: 16px;
-				right: 16px;
+				top: ( $mm_btnSize / 2 ) - 4;
 				bottom: auto;
 			}
 		}

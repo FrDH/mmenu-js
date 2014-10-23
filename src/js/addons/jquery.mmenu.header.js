@@ -34,9 +34,33 @@
 
 		if ( !addon_added && opts.add )
 		{
-			var content = opts.content
-				? opts.content
-				:  '<a class="' + _c.prev + '" href="#"></a><span class="' + _c.title + '"></span><a class="' + _c.next + '" href="#"></a>';
+			if ( opts.content )
+			{
+				var content = opts.content;
+			}
+			else
+			{
+				var content = '';
+				for ( var a = 0, l = opts.add.length; a < l; a++ )
+				{
+					switch ( opts.add[ a ] )
+					{
+						case 'prev':
+						case 'next':
+						case 'close':
+							content += '<a class="' + _c[ opts.add[ a ] ] + '" href="#"></a>';
+							break;
+						
+						case 'title':
+							content += '<span class="' + _c.title + '"></span>';
+							break;
+						
+						default:
+							content += opts.add[ a ];
+							break;
+					}
+				}
+			}
 
 			$( '<div class="' + _c.header + '" />' )
 				.prependTo( this.$menu )
@@ -54,17 +78,20 @@
 				var $titl = $header.find( '.' + _c.title ),
 					$prev = $header.find( '.' + _c.prev ),
 					$next = $header.find( '.' + _c.next ),
+					$clse = $header.find( '.' + _c.close ),
 					_page = false;
 
 				if ( glbl.$page )
 				{
 					_page = '#' + glbl.$page.attr( 'id' );
+					$clse.attr( 'href', _page );
 				}
 
 				if ( !addon_added )
 				{
 					$prev
 						.add( $next )
+						.add( $clse )
 						.off( _e.click )
 						.on( _e.click,
 							function( e )
@@ -184,6 +211,10 @@
 		{
 			o = {};
 		}
+		if ( !( o.add instanceof Array ) )
+		{
+			o.add = [ 'prev', 'title', 'next' ];
+		}
 		o = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], o );
 
 		return o;
@@ -202,7 +233,7 @@
 		_d = $[ _PLUGIN_ ]._d;
 		_e = $[ _PLUGIN_ ]._e;
 
-		_c.add( 'header hasheader prev next title' );
+		_c.add( 'header hasheader prev next close title' );
 
 		glbl = $[ _PLUGIN_ ].glbl;
 	}

@@ -38,12 +38,21 @@
     box-sizing: border-box;
     padding: 20px;
     -webkit-transform: translateX(100%);
+    -moz-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    -o-transform: translateX(100%);
     transform: translateX(100%); }
     .mm-menu > .mm-panel.mm-opened {
       -webkit-transform: translateX(0%);
+      -moz-transform: translateX(0%);
+      -ms-transform: translateX(0%);
+      -o-transform: translateX(0%);
       transform: translateX(0%); }
     .mm-menu > .mm-panel.mm-subopened {
       -webkit-transform: translateX(-30%);
+      -moz-transform: translateX(-30%);
+      -ms-transform: translateX(-30%);
+      -o-transform: translateX(-30%);
       transform: translateX(-30%); }
     .mm-menu > .mm-panel.mm-highest {
       z-index: 1; }
@@ -158,6 +167,9 @@
     width: 7px;
     height: 7px;
     -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
     transform: rotate(-45deg);
     margin-bottom: -5px;
     position: absolute;
@@ -183,10 +195,12 @@
   height: 40px; }
   .mm-menu.mm-vertical .mm-list > li > a.mm-subopen:after {
     top: 16px;
-    right: 16px;
     bottom: auto; }
 .mm-menu.mm-vertical .mm-list > li.mm-opened > a.mm-subopen:after {
   -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
   transform: rotate(45deg); }
 .mm-menu.mm-vertical .mm-list > li.mm-label > a.mm-subopen {
   height: 25px; }
@@ -219,7 +233,10 @@ html.mm-opened .mm-page {
 	jQuery.mmenu offcanvas addon CSS
 */
 .mm-page {
+  box-sizing: border-box;
+  position: relative;
   -webkit-transition: -webkit-transform 0.4s ease;
+  -ms-transition: -ms-transform 0.4s ease;
   transition: transform 0.4s ease; }
 
 html.mm-opened {
@@ -227,9 +244,6 @@ html.mm-opened {
   position: relative; }
   html.mm-opened body {
     overflow: hidden; }
-  html.mm-opened .mm-page {
-    box-sizing: border-box;
-    position: relative; }
 
 html.mm-background .mm-page {
   background: inherit; }
@@ -262,15 +276,24 @@ html.mm-blocking #mm-blocker {
 html.mm-opening .mm-page,
 html.mm-opening #mm-blocker {
   -webkit-transform: translate(80%, 0);
+  -moz-transform: translate(80%, 0);
+  -ms-transform: translate(80%, 0);
+  -o-transform: translate(80%, 0);
   transform: translate(80%, 0); }
 
 @media all and (max-width: 175px) {
   html.mm-opening .mm-page,
   html.mm-opening #mm-blocker {
     -webkit-transform: translate(140px, 0);
+    -moz-transform: translate(140px, 0);
+    -ms-transform: translate(140px, 0);
+    -o-transform: translate(140px, 0);
     transform: translate(140px, 0); } }
 @media all and (min-width: 550px) {
   html.mm-opening .mm-page,
   html.mm-opening #mm-blocker {
     -webkit-transform: translate(440px, 0);
+    -moz-transform: translate(440px, 0);
+    -ms-transform: translate(440px, 0);
+    -o-transform: translate(440px, 0);
     transform: translate(440px, 0); } }

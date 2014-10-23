@@ -13,11 +13,11 @@ $mm_ws_menuWidth: 0.3 !default;
 // Positioning and sizing
 html, body
 {
-	min-height: 100%;
 	overflow: auto;
 }
 body
 {
+	padding-left: percentage( $mm_ws_menuWidth ) !important;
 	position: relative;
 }
 #mm-blocker
@@ -30,12 +30,10 @@ body
 	background: inherit;
 	
 	box-sizing: border-box;
-	width: percentage( 1 - $mm_ws_menuWidth ) !important;
-	min-height: 100%;
+	min-height: 100vh;
 	height: auto !important;
 	margin: 0 !important;
 	position: relative !important;
-	left: percentage( $mm_ws_menuWidth ) !important;
 	top: 0 !important;
 	z-index: 1;
 }

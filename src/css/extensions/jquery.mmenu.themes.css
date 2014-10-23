@@ -48,7 +48,8 @@ html.mm-opened.mm-light .mm-page {
   border-color: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.3); }
   .mm-menu.mm-light .mm-header .mm-prev:before,
-  .mm-menu.mm-light .mm-header .mm-next:after {
+  .mm-menu.mm-light .mm-header .mm-next:after,
+  .mm-menu.mm-light .mm-header .mm-close:after {
     border-color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-light .mm-list li.mm-label > div > div {
@@ -114,7 +115,8 @@ html.mm-opened.mm-white .mm-page {
   border-color: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.3); }
   .mm-menu.mm-white .mm-header .mm-prev:before,
-  .mm-menu.mm-white .mm-header .mm-next:after {
+  .mm-menu.mm-white .mm-header .mm-next:after,
+  .mm-menu.mm-white .mm-header .mm-close:after {
     border-color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-white .mm-list li.mm-label > div > div {
@@ -180,7 +182,8 @@ html.mm-opened.mm-black .mm-page {
   border-color: rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.3); }
   .mm-menu.mm-black .mm-header .mm-prev:before,
-  .mm-menu.mm-black .mm-header .mm-next:after {
+  .mm-menu.mm-black .mm-header .mm-next:after,
+  .mm-menu.mm-black .mm-header .mm-close:after {
     border-color: rgba(255, 255, 255, 0.3); }
 
 .mm-menu.mm-black .mm-list li.mm-label > div > div {

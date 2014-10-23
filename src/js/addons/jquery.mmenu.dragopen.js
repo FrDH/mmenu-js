@@ -43,7 +43,6 @@
 		{
 			if ( Hammer.VERSION < 2 )
 			{
-				$[ _PLUGIN_ ].deprecated( 'Older version of the Hammer library', 'version 2 or newer' );
 				return;
 			}
 
@@ -135,7 +134,7 @@
 
 
 			//	Bind events
-			var _hammer = new Hammer( $dragNode[ 0 ] );
+			var _hammer = new Hammer( $dragNode[ 0 ], opts.vendors.hammer );
 
 			_hammer
 				.on( 'panstart',
@@ -252,7 +251,10 @@
 		open		: false,
 //		pageNode	: null,
 		maxStartPos	: 100,
-		threshold	: 50
+		threshold	: 50,
+		vendors		: {
+			hammer		: {}
+		}
 	};
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
 		width	: {

@@ -16,7 +16,8 @@
   left: 0; }
   .mm-header .mm-title,
   .mm-header .mm-prev,
-  .mm-header .mm-next {
+  .mm-header .mm-next,
+  .mm-header .mm-close {
     padding-top: 30px; }
   .mm-header .mm-title {
     text-overflow: ellipsis;
@@ -26,7 +27,8 @@
     width: 100%;
     position: relative; }
   .mm-header .mm-prev,
-  .mm-header .mm-next {
+  .mm-header .mm-next,
+  .mm-header .mm-close {
     text-decoration: none;
     display: block;
     box-sizing: border-box;
@@ -39,7 +41,8 @@
     padding-left: 20px;
     padding-right: 10px;
     left: 0; }
-  .mm-header .mm-next {
+  .mm-header .mm-next,
+  .mm-header .mm-close {
     padding-left: 10px;
     padding-right: 20px;
     right: 0; }
@@ -50,24 +53,31 @@
     width: 7px;
     height: 7px;
     -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
     transform: rotate(-45deg); }
   .mm-header [href].mm-prev:before {
     border-right: none;
     border-bottom: none;
     margin-left: 2px;
     margin-right: 5px; }
-  .mm-header [href].mm-next:after {
-    border-top: none;
-    border-left: none;
+  .mm-header [href].mm-next:after, .mm-header [href].mm-close:after {
     margin-left: 5px;
     margin-right: -2px; }
+  .mm-header [href].mm-next:after {
+    border-top: none;
+    border-left: none; }
+  .mm-header [href].mm-close:after {
+    content: 'x'; }
 
 .mm-menu.mm-hassearch .mm-header {
   height: 50px;
   top: 50px; }
   .mm-menu.mm-hassearch .mm-header .mm-title,
   .mm-menu.mm-hassearch .mm-header .mm-prev,
-  .mm-menu.mm-hassearch .mm-header .mm-next {
+  .mm-menu.mm-hassearch .mm-header .mm-next,
+  .mm-menu.mm-hassearch .mm-header .mm-close {
     padding-top: 20px; }
 
 .mm-menu.mm-hasheader li.mm-subtitle {
@@ -87,5 +97,6 @@
   border-color: rgba(0, 0, 0, 0.15);
   color: rgba(255, 255, 255, 0.3); }
   .mm-menu .mm-header .mm-prev:before,
-  .mm-menu .mm-header .mm-next:after {
+  .mm-menu .mm-header .mm-next:after,
+  .mm-menu .mm-header .mm-close:after {
     border-color: rgba(255, 255, 255, 0.3); }

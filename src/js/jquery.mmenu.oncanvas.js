@@ -42,14 +42,22 @@
 	$[ _PLUGIN_ ] = function( $menu, opts, conf )
 	{
 		this.$menu	= $menu;
-		this.opts	= opts
+		this.opts	= opts;
 		this.conf	= conf;
 		this.vars	= {};
 
-		this.opts = extendOptions( this.opts, this.conf, this.$menu );
+		if ( typeof this.___deprecated == 'function' )
+		{
+			this.___deprecated();
+		}
 
 		this._initMenu();
 		this._init( this.$menu.children( this.conf.panelNodetype ) );
+
+		if ( typeof this.___debug == 'function' )
+		{
+			this.___debug();
+		}
 
 		return this;
 	};
@@ -551,8 +559,8 @@
 		}
 
 		//	Extend options
-		opts = extendOptions( opts, conf );
-		conf = extendConfiguration( conf );
+		opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults, opts );
+		conf = $.extend( true, {}, $[ _PLUGIN_ ].configuration, conf );
 
 		return this.each(
 			function()
@@ -576,101 +584,6 @@
 	};
 
 
-	/*
-		DEBUG
-	*/
-	$[ _PLUGIN_ ].debug = function( msg ) {};
-	$[ _PLUGIN_ ].deprecated = function( depr, repl )
-	{
-		if ( typeof console != 'undefined' && typeof console.warn != 'undefined' )
-		{
-			console.warn( 'MMENU: ' + depr + ' is deprecated, use ' + repl + ' instead.' );
-		}
-	};
-
-
-	function extendOptions( o, c, $m )
-	{
-		if ( $m )
-		{
-			if ( typeof o != 'object' )
-			{
-				o = {};
-			}
-			return o;
-		}
-		
-		//	Extend from defaults
-		o = $.extend( true, {}, $[ _PLUGIN_ ].defaults, o );
-
-
-		//	DEPRECATED
-		for ( var a = [ 'position', 'zposition', 'modal', 'moveBackground' ], b = 0, l = a.length; b < l; b++ )
-		{
-			if ( typeof o[ a[ b ] ] != 'undefined' )
-			{
-				$[ _PLUGIN_ ].deprecated( 'The option "' + a[ b ] + '"', 'offCanvas.' + a[ b ] );
-				o.offCanvas = o.offCanvas || {};
-				o.offCanvas[ a[ b ] ] = o[ a[ b ] ];
-			}
-		}
-		//	/DEPRECATED
-
-
-		return o;
-	}
-	function extendConfiguration( c )
-	{
-		c = $.extend( true, {}, $[ _PLUGIN_ ].configuration, c )
-
-
-		//	DEPRECATED
-		for ( var a = [ 'panel', 'list', 'selected', 'label', 'spacer' ], b = 0, l = a.length; b < l; b++ )
-		{
-			if ( typeof c[ a[ b ] + 'Class' ] != 'undefined' )
-			{
-				$[ _PLUGIN_ ].deprecated( 'The configuration option "' + a[ b ] + 'Class"', 'classNames.' + a[ b ] );
-				c.classNames[ a[ b ] ] = c[ a[ b ] + 'Class' ];
-			}
-		}
-		if ( typeof c.counterClass != 'undefined' )
-		{
-			$[ _PLUGIN_ ].deprecated( 'The configuration option "counterClass"', 'classNames.counters.counter' );
-			c.classNames.counters = c.classNames.counters || {};
-			c.classNames.counters.counter = c.counterClass;
-		}
-		if ( typeof c.collapsedClass != 'undefined' )
-		{
-			$[ _PLUGIN_ ].deprecated( 'The configuration option "collapsedClass"', 'classNames.labels.collapsed' );
-			c.classNames.labels = c.classNames.labels || {};
-			c.classNames.labels.collapsed = c.collapsedClass;
-		}
-		if ( typeof c.header != 'undefined' )
-		{
-			for ( var a = [ 'panelHeader', 'panelNext', 'panelPrev' ], b = 0, l = a.length; b < l; b++ )
-			{
-				if ( typeof c.header[ a[ b ] + 'Class' ] != 'undefined' )
-				{
-					$[ _PLUGIN_ ].deprecated( 'The configuration option "header.' + a[ b ] + 'Class"', 'classNames.header.' + a[ b ] );
-					c.classNames.header = c.classNames.header || {};
-					c.classNames.header[ a[ b ] ] = c.header[ a[ b ] + 'Class' ];
-				}
-			}
-		}
-		for ( var a = [ 'pageNodetype', 'pageSelector', 'menuWrapperSelector', 'menuInjectMethod' ], b = 0, l = a.length; b < l; b++ )
-		{
-			if ( typeof c[ a[ b ] ] != 'undefined' )
-			{
-				$[ _PLUGIN_ ].deprecated( 'The configuration option "' + a[ b ] + '"', 'offCanvas.' + a[ b ] );
-				c.offCanvas = c.offCanvas || {};
-				c.offCanvas[ a[ b ] ] = c[ a[ b ] ];
-			}
-		}
-		//	/DEPRECATED
-
-
-		return c;
-	}
 
 	function _initPlugin()
 	{

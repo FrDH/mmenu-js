@@ -136,7 +136,8 @@
 			color: $dimmedColor;
 
 			.mm-prev:before,
-			.mm-next:after
+			.mm-next:after,
+			.mm-close:after
 			{
 				border-color: $dimmedColor;
 			}

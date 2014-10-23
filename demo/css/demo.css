@@ -3,11 +3,6 @@ html, body
 	padding: 0;
 	margin: 0;
 }
-html
-{
-	height: 100%;
-}
-
 body
 {
 	background-color: #fff;
@@ -15,7 +10,6 @@ body
 	font-size: 14px;
 	line-height: 22px;
 	color: #666;
-	min-height: 100%;
 	position: relative;
 	-webkit-text-size-adjust: none;
 }
@@ -67,6 +61,8 @@ nav:not(.mm-menu)
 	color: #fff;
 	line-height: 40px;
 
+
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;	
 	width: 100%;
 	height: 40px;

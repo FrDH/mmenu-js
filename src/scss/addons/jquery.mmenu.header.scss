@@ -23,7 +23,8 @@
 
 	.mm-title,
 	.mm-prev,
-	.mm-next
+	.mm-next,
+	.mm-close
 	{
 		padding-top: $mm_headerPaddingTop;
 	}
@@ -37,7 +38,8 @@
 	}
 
 	.mm-prev,
-	.mm-next
+	.mm-next,
+	.mm-close
 	{
 		text-decoration: none;
 		display: block;
@@ -54,7 +56,8 @@
 		padding-right: $mm_padding;
 		left: 0;
 	}
-	.mm-next
+	.mm-next,
+	.mm-close
 	{
 		padding-left: $mm_padding;
 		padding-right: ( $mm_padding * 2 );
@@ -73,11 +76,19 @@
 			margin-left: 2px;
 			margin-right: $mm_padding / 2;
 		}
-		&.mm-next:after
+		&.mm-next:after,
+		&.mm-close:after
 		{
-			@include mm_arrow-next;
 			margin-left: $mm_padding / 2;
 			margin-right: -2px;
+		}
+		&.mm-next:after
+		{
+			@include mm_arrow-next;	
+		}
+		&.mm-close:after
+		{
+			content: 'x';
 		}
 	}
 }
@@ -89,7 +100,8 @@
 
 	.mm-title,
 	.mm-prev,
-	.mm-next
+	.mm-next,
+	.mm-close
 	{
 		padding-top: $mm_headerPaddingTop - $mm_padding;
 	}

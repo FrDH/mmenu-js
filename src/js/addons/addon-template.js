@@ -55,14 +55,12 @@
 	function extendOptions( o )
 	{
 		//	...Extend shortcut options
-		//	...Throw deprecated warnings
 		return o;
 	}
 
 	function extendConfiguration( c )
 	{
 		//	...Extend shortcut configuration
-		//	...Throw deprecated warnings
 		return c;
 	}
 	

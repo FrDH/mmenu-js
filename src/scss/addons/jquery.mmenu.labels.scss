@@ -18,12 +18,22 @@
 		&.mm-opened a.mm-subopen:after
 		{
 			@include mm_webkit-prefix( "transform", rotate( 45deg ) );
-			right: 17px;
 		}
 	}
 	> li.mm-collapsed
 	{
 		display: none;
+	}
+}
+
+.mm-menu.mm-vertical .mm-list
+{
+	> li.mm-label
+	{
+		> a.mm-subopen:after
+		{
+			top: ( $mm_labelHeight / 2 ) - 4;
+		}
 	}
 }
 

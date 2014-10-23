@@ -248,7 +248,6 @@
 			$page = $(this.conf[ _ADDON_ ].pageSelector, glbl.$body);
 			if ( $page.length > 1 )
 			{
-				$[ _PLUGIN_ ].debug( 'Multiple nodes found for the page-node, all nodes are wrapped in one <' + this.conf[ _ADDON_ ].pageNodetype + '>.' );
 				$page = $page.wrapAll( '<' + this.conf[ _ADDON_ ].pageNodetype + ' />' ).parent();
 			}
 		}
@@ -336,18 +335,6 @@
 
 	function extendOptions( o )
 	{
-		//	DEPRECATED
-		if ( o.position == 'top' || o.position == 'bottom' )
-		{
-			if ( o.zposition == 'back' || o.zposition == 'next' )
-			{
-				$[ _PLUGIN_ ].deprecated( 'Using position "' + o.position + '" in combination with zposition "' + o.zposition + '"', 'zposition "front"' );
-				o.zposition = 'front';
-			}
-		}
-		//	/DEPRECATED
-
-
 		return o;
 	}
 

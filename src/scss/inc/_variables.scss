@@ -53,37 +53,6 @@ $mm_toggleCheckedColor	: #4bd963 !default;
 
 
 
+@import "mixins";
 @import "sizing";
 @import "colors";
-@import "mixins";
-
-
-//	Misc mixins
-@mixin mm_vendor-prefix( $prop, $val )
-{
-	-webkit-#{$prop}: $val;
-	-moz-#{$prop}: $val;
-	-ms-#{$prop}: $val;
-	-o-#{$prop}: $val;
-	#{$prop}: $val;
-}
-@mixin mm_webkit-prefix( $prop, $val )
-{
-	-webkit-#{$prop}: $val;
-	#{$prop}: $val;
-}
-@mixin mm_ellipsis()
-{
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-}
-@mixin mm_clearfix()
-{
-	&:after
-	{
-		content: '';
-		display: block;
-		clear: both;
-	}
-}
