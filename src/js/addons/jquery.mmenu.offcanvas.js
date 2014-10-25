@@ -57,9 +57,8 @@
 
 		this[ _ADDON_ + '_initPage' ]( glbl.$page );
 		this[ _ADDON_ + '_initBlocker' ]();
-		this[ _ADDON_ + '_initOpenClose' ]();
-		this[ _ADDON_ + '_bindCustomEvents' ]();
-
+		this[ _ADDON_ + '_initAnchors' ]();
+		this[ _ADDON_ + '_initEvents' ]();
 		this.$menu[ conf.menuInjectMethod + 'To' ]( conf.menuWrapperSelector );
 	};
 
@@ -108,6 +107,8 @@
 
 	$[ _PLUGIN_ ].prototype._openSetup = function()
 	{
+		var that = this;
+
 		//	Close other menus
 		glbl.$allMenus.not( this.$menu ).trigger( _e.close );
 
@@ -143,7 +144,10 @@
 		glbl.$html.addClass( clsn.join( ' ' ) );
 
 		//	Open
-		this.vars.opened = true;
+		setTimeout(function(){
+            that.vars.opened = true;
+        },this.conf.openingInterval);
+
 		this.$menu.addClass( _c.current + ' ' + _c.opened );
 	};
 
@@ -256,52 +260,53 @@
 		glbl.$page = $page;			
 	};
 
-	$[ _PLUGIN_ ].prototype[ _ADDON_ + '_initOpenClose' ] = function()
+	$[ _PLUGIN_ ].prototype[ _ADDON_ + '_initAnchors' ] = function()
 	{
 		var that = this;
 
-		//	Open menu
-		var id = this.$menu.attr( 'id' );
-		if ( id && id.length )
-		{
-			if ( this.conf.clone )
-			{
-				id = _c.umm( id );
-			}
+		glbl.$body
+			.on( _e.click,
+				'a',
+				function( e )
+				{
+					var $t = $(this);
 
-			$('a[href="#' + id + '"]')
-				.off( _e.click )
-				.on( _e.click,
-					function( e )
+					//	Open menu
+					var id = that.$menu.attr( 'id' );
+					if ( id && id.length )
 					{
-						e.preventDefault();
-						that.open();
+						if ( that.conf.clone )
+						{
+							id = _c.umm( id );
+						}
+						if ( $t.is( '[href="#' + id + '"]' ) )
+						{
+							e.preventDefault();
+							that.open();
+						}
 					}
-				);
-		}
+					
+					//	Close menu
+					var id = glbl.$page.attr( 'id' );
+					if ( id && id.length )
+					{
+						if ( $t.is( '[href="#' + id + '"]' ) )
+						{
+							e.preventDefault();
+							that.close();
+						}
+					}
+				}
+			);
 
-		//	Close menu
-		var id = glbl.$page.attr( 'id' );
-		if ( id && id.length )
-		{
-			$('a[href="#' + id + '"]')
-				.on( _e.click,
-					function( e )
-					{
-						e.preventDefault();
-						that.close();
-					}
-				);
-		}
 	};
 
-	$[ _PLUGIN_ ].prototype[ _ADDON_ + '_bindCustomEvents' ] = function()
+	$[ _PLUGIN_ ].prototype[ _ADDON_ + '_initEvents' ] = function()
 	{
 		var that = this,
 			evnt = _e.open + ' ' + _e.opening + ' ' + _e.opened + ' ' + _e.close + ' ' + _e.closing + ' ' + _e.closed + ' ' + _e.setPage;
 
 		this.$menu
-			.off( evnt )
 			.on( evnt,
 				function( e )
 				{

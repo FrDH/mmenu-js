@@ -87,34 +87,6 @@
 					$clse.attr( 'href', _page );
 				}
 
-				if ( !addon_added )
-				{
-					$prev
-						.add( $next )
-						.add( $clse )
-						.off( _e.click )
-						.on( _e.click,
-							function( e )
-							{
-								e.preventDefault();
-								e.stopPropagation();
-
-								var href = $(this).attr( 'href' );
-								if ( href !== '#' )
-								{
-									if ( _page && href == _page )
-									{
-										that.$menu.trigger( _e.close );
-									}
-									else
-									{
-										$(href, that.$menu).trigger( _e.open );
-									}
-								}
-							}
-						);
-				}
-
 				$panels
 					.each(
 						function()
@@ -122,17 +94,20 @@
 							var $panl = $(this);
 
 							//	Find title, prev and next
-							var $ttl = $('.' + that.conf.classNames[ _ADDON_ ].panelHeader, $panl),
-								$prv = $('.' + that.conf.classNames[ _ADDON_ ].panelPrev, $panl),
-								$nxt = $('.' + that.conf.classNames[ _ADDON_ ].panelNext, $panl),
+							var $ttl = $panl.find('.' + that.conf.classNames[ _ADDON_ ].panelHeader),
+								$prv = $panl.find('.' + that.conf.classNames[ _ADDON_ ].panelPrev),
+								$nxt = $panl.find('.' + that.conf.classNames[ _ADDON_ ].panelNext);
 
-								_ttl = $ttl.html(),
+							var _ttl = $ttl.html(),
 								_prv = $prv.attr( 'href' ),
 								_nxt = $nxt.attr( 'href' );
+								
+							var _prv_txt = $prv.html(),
+								_nxt_txt = $nxt.html();
 
 							if ( !_ttl )
 							{
-								_ttl = $('.' + _c.subclose, $panl).html();
+								_ttl = $panl.find('.' + _c.subclose).html();
 							}
 							if ( !_ttl )
 							{
@@ -140,11 +115,8 @@
 							}
 							if ( !_prv )
 							{
-								_prv = $('.' + _c.subclose, $panl).attr( 'href' );
+								_prv = $panl.find('.' + _c.subclose).attr( 'href' );
 							}
-							
-							var _prv_txt = $prv.html(),
-								_nxt_txt = $nxt.html();
 
 							//	Update header info
 							var updateHeader = function()
@@ -211,7 +183,7 @@
 		{
 			o = {};
 		}
-		if ( !( o.add instanceof Array ) )
+		if ( o.add && !( o.add instanceof Array ) )
 		{
 			o.add = [ 'prev', 'title', 'next' ];
 		}
