@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.6.1
+ * jQuery mmenu v4.6.2
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.6.1';
+		_VERSION_	= '4.6.2';
 
 
 	//	Plugin already excists
@@ -396,7 +396,7 @@
 						function( e )
 						{
 							var $t = $(this);
-							return $t.triggerHandler( $t.parent().hasClass( _c.opened ) ? _e.close : _e.open );
+							$t.trigger( $t.parent().hasClass( _c.opened ) ? _e.close : _e.open );
 						}
 					)
 					.on( _e.open,
@@ -404,7 +404,6 @@
 						function( e )
 						{
 							$(this).parent().addClass( _c.opened );
-							return 'open';
 						}
 					)
 					.on( _e.close,
@@ -412,7 +411,6 @@
 						function( e )
 						{
 							$(this).parent().removeClass( _c.opened );
-							return 'close';
 						}
 					);
 			}
