@@ -68,6 +68,18 @@ nav:not(.mm-menu)
 	height: 40px;
 	padding: 0 50px;
 }
+.header.fixed
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+.footer.fixed
+{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+}
 .header a
 {
 	background: center center no-repeat transparent;

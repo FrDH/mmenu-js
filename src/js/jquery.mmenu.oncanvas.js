@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.6.2
+ * jQuery mmenu v4.6.3
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.6.2';
+		_VERSION_	= '4.6.3';
 
 
 	//	Plugin already excists
@@ -225,10 +225,10 @@
 						var $t = $(this),
 							$u = $t.is( 'ul, ol' ) ? $t : $t.find( 'ul ,ol' ).first(),
 							$l = $t.parent(),
-							$a = $l.find( '> a, > span' ),
+							$a = $l.children( 'a, span' ),
 							$p = $l.closest( '.' + _c.panel );
 
-						if ( $l.parent().is( '.' + _c.list ) )
+						if ( $l.parent().is( '.' + _c.list ) && !$t.data( _d.parent) )
 						{
 							$t.data( _d.parent, $l );
 

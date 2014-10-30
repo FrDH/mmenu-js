@@ -65,7 +65,6 @@
 						'-webkit-transform': 'translateY( ' + _top + 'px )',
 						'transform': 'translateY( ' + _top + 'px )'
 					});
-					
 					$bots.css({
 						'-webkit-transform': 'translateY( -' + _bot + 'px )',
 						'transform': 'translateY( -' + _bot + 'px )'

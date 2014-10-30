@@ -59,6 +59,7 @@
 		this[ _ADDON_ + '_initBlocker' ]();
 		this[ _ADDON_ + '_initAnchors' ]();
 		this[ _ADDON_ + '_initEvents' ]();
+
 		this.$menu[ conf.menuInjectMethod + 'To' ]( conf.menuWrapperSelector );
 	};
 
@@ -332,7 +333,6 @@
 				function( e, $page )
 				{
 					that[ _ADDON_ + '_initPage' ]( $page );
-					that[ _ADDON_ + '_initOpenClose' ]();
 				}
 			);
 	};
@@ -349,7 +349,7 @@
 		{
 			c.pageSelector = '> ' + c.pageNodetype;
 		}
-		
+
 		return c;
 	}
 

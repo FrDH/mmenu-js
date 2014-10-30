@@ -6,7 +6,7 @@
 
 .mm-list
 {
-	> li.mm-label
+	li.mm-label
 	{
 		> span
 		{
@@ -20,7 +20,7 @@
 			@include mm_webkit-prefix( "transform", rotate( 45deg ) );
 		}
 	}
-	> li.mm-collapsed
+	li.mm-collapsed:not( .mm-uncollapsed )
 	{
 		display: none;
 	}

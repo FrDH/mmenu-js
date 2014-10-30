@@ -18,7 +18,7 @@
 		{
 			_initAddon();
 		}
-		
+
 		var addon_added = this.vars[ _ADDON_ + '_added' ];
 		this.vars[ _ADDON_ + '_added' ] = true;
 		
@@ -44,39 +44,38 @@
 				.each(
 					function()
 					{
-						var $labl = $(this),
-							$expn = $labl.nextUntil( '.' + _c.label, ( opts.collapse == 'all' ) ? null : '.' + _c.collapsed );
+						var $l = $(this),
+							$e = $l.nextUntil( '.' + _c.label, '.' + _c.collapsed );
 
-						if ( opts.collapse == 'all' )
+						if ( $e.length )
 						{
-							$labl.addClass( _c.opened );
-							$expn.removeClass( _c.collapsed );
-						}
-
-						if ( $expn.length )
-						{
-							if ( !$labl.data( _d.updatelabel ) )
+							if ( !$l.children( '.' + _c.subopen ).length )
 							{
-								$labl.data( _d.updatelabel, true );
-								$labl.wrapInner( '<span />' );
-								$labl.prepend( '<a href="#" class="' + _c.subopen + ' ' + _c.fullsubopen + '" />' );
+								$l.wrapInner( '<span />' );
+								$l.prepend( '<a href="#" class="' + _c.subopen + ' ' + _c.fullsubopen + '" />' );
 							}
-
-							$labl
-								.find( 'a.' + _c.subopen )
-								.off( _e.click )
-								.on( _e.click,
-									function( e )
-									{
-										e.preventDefault();
-
-										$labl.toggleClass( _c.opened );
-										$expn[ $labl.hasClass( _c.opened ) ? 'removeClass' : 'addClass' ]( _c.collapsed );
-									}
-								);
 						}
 					}
 				);
+
+			if ( !addon_added )
+			{
+				glbl.$body
+					.on( _e.click,
+						'.' + _c.label + ' .' + _c.subopen,
+						function( e )
+						{
+							e.stopPropagation();
+							e.preventDefault();
+
+							var $l = $(this).parent(),
+								$e = $l.nextUntil( '.' + _c.label, '.' + _c.collapsed );
+	
+							$l.toggleClass( _c.opened );
+							$e[ $l.hasClass( _c.opened ) ? 'addClass' : 'removeClass' ]( _c.uncollapsed );
+						}
+					);
+			}
 		}
 
 	};
@@ -125,8 +124,7 @@
 		_d = $[ _PLUGIN_ ]._d;
 		_e = $[ _PLUGIN_ ]._e;
 
-		_c.add( 'collapsed' );
-		_d.add( 'updatelabel' );
+		_c.add( 'collapsed uncollapsed' );
 
 		glbl = $[ _PLUGIN_ ].glbl;
 	}
