@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.6.3
+ * jQuery mmenu v4.6.4
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.6.3';
+		_VERSION_	= '4.6.4';
 
 
 	//	Plugin already excists
@@ -318,22 +318,25 @@
 					function( e )
 					{
 						var $t = $(this),
-							_h = $t.attr( 'href' ) || '',
-							$h = $( _h );
+							_h = $t.attr( 'href' ) || '';
 
 
 						//	Open/Close panel
-						if ( $h.is( '.' + _c.panel ) )
+						if ( _h.slice( 0, 1 ) == '#' )
 						{
-							e.preventDefault();
-							$h.trigger( that.opts.slidingSubmenus ? _e.open : _e.toggle );
+							var $h = $( _h );
+							if ( $h.is( '.' + _c.panel ) )
+							{
+								e.preventDefault();
+								$h.trigger( that.opts.slidingSubmenus ? _e.open : _e.toggle );
+							}
 						}
 
-
+						
 						//	Anchors in lists
-						else if ( $t.is( '.' + _c.list + ' > li > a' ) &&
-							!$t.is( '[rel="external"]' ) &&
-							!$t.is( '[target="_blank"]' ) )
+						else if ( $t.is( '.' + _c.list + ' > li > a' )
+							&& !$t.is( '[rel="external"]' ) 
+							&& !$t.is( '[target="_blank"]' ) )
 						{
 							//	Set selected item
 							if ( that.__valueOrFn( that.opts.onClick.setSelected, $t ) )
