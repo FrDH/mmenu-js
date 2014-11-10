@@ -15,8 +15,7 @@
   top: auto;
   bottom: 0; }
 
-html.mm-right.mm-opening .mm-page,
-html.mm-right.mm-opening #mm-blocker {
+html.mm-right.mm-opening .mm-slideout {
   -webkit-transform: translate(-80%, 0);
   -moz-transform: translate(-80%, 0);
   -ms-transform: translate(-80%, 0);
@@ -24,16 +23,14 @@ html.mm-right.mm-opening #mm-blocker {
   transform: translate(-80%, 0); }
 
 @media all and (max-width: 175px) {
-  html.mm-right.mm-opening .mm-page,
-  html.mm-right.mm-opening #mm-blocker {
+  html.mm-right.mm-opening .mm-slideout {
     -webkit-transform: translate(-140px, 0);
     -moz-transform: translate(-140px, 0);
     -ms-transform: translate(-140px, 0);
     -o-transform: translate(-140px, 0);
     transform: translate(-140px, 0); } }
 @media all and (min-width: 550px) {
-  html.mm-right.mm-opening .mm-page,
-  html.mm-right.mm-opening #mm-blocker {
+  html.mm-right.mm-opening .mm-slideout {
     -webkit-transform: translate(-440px, 0);
     -moz-transform: translate(-440px, 0);
     -ms-transform: translate(-440px, 0);
@@ -42,14 +39,13 @@ html.mm-right.mm-opening #mm-blocker {
 /*
 	jQuery.mmenu z-position extension CSS
 */
-html.mm-front .mm-page,
-html.mm-front #mm-blocker {
-  -webkit-transform: translate(0, 0) !important;
-  -moz-transform: translate(0, 0) !important;
-  -ms-transform: translate(0, 0) !important;
-  -o-transform: translate(0, 0) !important;
-  transform: translate(0, 0) !important;
-  z-index: 0; }
+html.mm-front .mm-slideout {
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -o-transform: none !important;
+  transform: none !important;
+  z-index: 0 !important; }
 
 .mm-menu.mm-front {
   z-index: 1;
@@ -60,6 +56,7 @@ html.mm-opened.mm-next .mm-page {
 
 .mm-menu.mm-front, .mm-menu.mm-next {
   -webkit-transition: -webkit-transform 0.4s ease;
+  -ms-transition: -ms-transform 0.4s ease;
   transition: transform 0.4s ease;
   -webkit-transform: translate(-100%, 0);
   -moz-transform: translate(-100%, 0);

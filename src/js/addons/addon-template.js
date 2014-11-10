@@ -12,38 +12,52 @@
 		_ADDON_  = '{ADDON}';
 
 
-	$[ _PLUGIN_ ].prototype[ '_init_' + _ADDON_ ] = function( $panels )
-	{
-		if ( !addon_initiated )
+	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
+	
+		//	_init: fired when (re)initiating the plugin
+		_init: function( $panels )
+		{			
+//			var that = this,
+//				opts = this.opts[ _ADDON_ ],
+//				conf = this.conf[ _ADDON_ ];
+	
+			//	...
+
+		},
+
+		//	_setup: fired once per menu
+		_setup: function()
 		{
-			_initAddon();
-		}
+			//	Extend shortcut options
+			//	Extend shortcut configuration
+			//	...
+		},
+
+		//	_add: fired once per page load
+		_add: function()
+		{
+			_c = $[ _PLUGIN_ ]._c;
+			_d = $[ _PLUGIN_ ]._d;
+			_e = $[ _PLUGIN_ ]._e;
+	
+			//	...Add classnames, data and events
+	
+			glbl = $[ _PLUGIN_ ].glbl;
+		},
 		
-		var addon_added = this.vars[ _ADDON_ + '_added' ];
-		this.vars[ _ADDON_ + '_added' ] = true;
-
-		if ( !addon_added )
+		//	_clickAnchor: prevents default behavior when clicking an anchor
+		_clickAnchor: function( $a )
 		{
-			this.opts[ _ADDON_ ] = extendOptions( this.opts[ _ADDON_ ] );
-			this.conf[ _ADDON_ ] = extendConfiguration( this.conf[ _ADDON_ ] );
+//			if ( $a.is( '.CLASSNAME' ) )
+//			{
+//				return true;
+//			}
+//			return false;
 		}
-
-		var that = this,
-			opts = this.opts[ _ADDON_ ],
-			conf = this.conf[ _ADDON_ ];
-
-
-		//	...
-
-
 	};
 
 
-	//	Add to plugin
-	$[ _PLUGIN_ ].addons.push( _ADDON_ );
-
-
-	//	Defaults
+	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		//	...
 	};
@@ -52,32 +66,6 @@
 	};
 
 
-	function extendOptions( o )
-	{
-		//	...Extend shortcut options
-		return o;
-	}
-
-	function extendConfiguration( c )
-	{
-		//	...Extend shortcut configuration
-		return c;
-	}
-	
-	function _initAddon()
-	{
-		addon_initiated = true;
-
-		_c = $[ _PLUGIN_ ]._c;
-		_d = $[ _PLUGIN_ ]._d;
-		_e = $[ _PLUGIN_ ]._e;
-
-		//	...Add classnames, data and events
-
-		glbl = $[ _PLUGIN_ ].glbl;
-	}
-
-	var _c, _d, _e, glbl,
-		addon_initiated = false;
+	var _c, _d, _e, glbl;
 
 })( jQuery );

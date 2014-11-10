@@ -37,23 +37,23 @@
     overflow-y: auto;
     box-sizing: border-box;
     padding: 20px;
-    -webkit-transform: translateX(100%);
-    -moz-transform: translateX(100%);
-    -ms-transform: translateX(100%);
-    -o-transform: translateX(100%);
-    transform: translateX(100%); }
+    -webkit-transform: translate(100%, 0);
+    -moz-transform: translate(100%, 0);
+    -ms-transform: translate(100%, 0);
+    -o-transform: translate(100%, 0);
+    transform: translate(100%, 0); }
     .mm-menu > .mm-panel.mm-opened {
-      -webkit-transform: translateX(0%);
-      -moz-transform: translateX(0%);
-      -ms-transform: translateX(0%);
-      -o-transform: translateX(0%);
-      transform: translateX(0%); }
+      -webkit-transform: translate(0%, 0);
+      -moz-transform: translate(0%, 0);
+      -ms-transform: translate(0%, 0);
+      -o-transform: translate(0%, 0);
+      transform: translate(0%, 0); }
     .mm-menu > .mm-panel.mm-subopened {
-      -webkit-transform: translateX(-30%);
-      -moz-transform: translateX(-30%);
-      -ms-transform: translateX(-30%);
-      -o-transform: translateX(-30%);
-      transform: translateX(-30%); }
+      -webkit-transform: translate(-30%, 0);
+      -moz-transform: translate(-30%, 0);
+      -ms-transform: translate(-30%, 0);
+      -o-transform: translate(-30%, 0);
+      transform: translate(-30%, 0); }
     .mm-menu > .mm-panel.mm-highest {
       z-index: 1; }
   .mm-menu .mm-list {
@@ -234,7 +234,9 @@ html.mm-opened .mm-page {
 */
 .mm-page {
   box-sizing: border-box;
-  position: relative;
+  position: relative; }
+
+.mm-slideout {
   -webkit-transition: -webkit-transform 0.4s ease;
   -ms-transition: -ms-transform 0.4s ease;
   transition: transform 0.4s ease; }
@@ -273,8 +275,7 @@ html.mm-blocking #mm-blocker {
   min-width: 140px;
   max-width: 440px; }
 
-html.mm-opening .mm-page,
-html.mm-opening #mm-blocker {
+html.mm-opening .mm-slideout {
   -webkit-transform: translate(80%, 0);
   -moz-transform: translate(80%, 0);
   -ms-transform: translate(80%, 0);
@@ -282,16 +283,14 @@ html.mm-opening #mm-blocker {
   transform: translate(80%, 0); }
 
 @media all and (max-width: 175px) {
-  html.mm-opening .mm-page,
-  html.mm-opening #mm-blocker {
+  html.mm-opening .mm-slideout {
     -webkit-transform: translate(140px, 0);
     -moz-transform: translate(140px, 0);
     -ms-transform: translate(140px, 0);
     -o-transform: translate(140px, 0);
     transform: translate(140px, 0); } }
 @media all and (min-width: 550px) {
-  html.mm-opening .mm-page,
-  html.mm-opening #mm-blocker {
+  html.mm-opening .mm-slideout {
     -webkit-transform: translate(440px, 0);
     -moz-transform: translate(440px, 0);
     -ms-transform: translate(440px, 0);

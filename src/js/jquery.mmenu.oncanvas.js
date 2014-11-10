@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.6.4
+ * jQuery mmenu v4.7.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.6.4';
+		_VERSION_	= '4.7.0';
 
 
 	//	Plugin already excists
@@ -54,7 +54,20 @@
 		this._initMenu();
 		this._initAnchors();
 		this._initEvents();
-		this._init( this.$menu.children( this.conf.panelNodetype ) );
+
+		var $panels = this.$menu.children( this.conf.panelNodetype );
+
+		for ( var a in $[ _PLUGIN_ ].addons )
+		{
+			//	Add add-ons to plugin
+			$[ _PLUGIN_ ].addons[ a ]._add.call( this );
+			$[ _PLUGIN_ ].addons[ a ]._add = function() {};
+
+			//	Setup adds-on for menu
+			$[ _PLUGIN_ ].addons[ a ]._setup.call( this );
+		}
+
+		this._init( $panels );
 
 		if ( typeof this.___debug == 'function' )
 		{
@@ -66,7 +79,7 @@
 
 	$[ _PLUGIN_ ].version = _VERSION_;
 
-	$[ _PLUGIN_ ].addons = [];
+	$[ _PLUGIN_ ].addons = {};
 
 	$[ _PLUGIN_ ].uniqueId = 0;
 	
@@ -99,12 +112,9 @@
 			$panels = $panels.not( '.' + _c.nopanel );
 			$panels = this._initPanels( $panels );
 
-			for ( var a = 0; a < $[ _PLUGIN_ ].addons.length; a++ )
+			for ( var a in $[ _PLUGIN_ ].addons )
 			{
-				if ( typeof this[ '_init_' + $[ _PLUGIN_ ].addons[ a ] ] == 'function' )
-				{
-					this[ '_init_' + $[ _PLUGIN_ ].addons[ a ] ]( $panels );
-				}
+				$[ _PLUGIN_ ].addons[ a ]._init.call( this, $panels );
 			}
 			this._update();
 		},
@@ -314,53 +324,78 @@
 
 			glbl.$body
 				.on( _e.click,
-					'.' + _c.menu + ' a',
+					'a',
 					function( e )
 					{
 						var $t = $(this),
-							_h = $t.attr( 'href' ) || '';
+							fired = false;
 
 
-						//	Open/Close panel
-						if ( _h.slice( 0, 1 ) == '#' )
+						//	Find behavior for addons
+						for ( var a in $[ _PLUGIN_ ].addons )
 						{
-							var $h = $( _h );
-							if ( $h.is( '.' + _c.panel ) )
-							{
-								e.preventDefault();
-								$h.trigger( that.opts.slidingSubmenus ? _e.open : _e.toggle );
+							if ( $[ _PLUGIN_ ].addons[ a ]._clickAnchor &&
+								( fired = $[ _PLUGIN_ ].addons[ a ]._clickAnchor.call( that, $t ) )
+							) {
+								break;
 							}
 						}
 
-						
-						//	Anchors in lists
-						else if ( $t.is( '.' + _c.list + ' > li > a' )
-							&& !$t.is( '[rel="external"]' ) 
-							&& !$t.is( '[target="_blank"]' ) )
+						//	Open/Close panel
+						if ( !fired )
 						{
-							//	Set selected item
-							if ( that.__valueOrFn( that.opts.onClick.setSelected, $t ) )
+							var _h = $t.attr( 'href' ) || '';
+							if ( _h.slice( 0, 1 ) == '#' )
 							{
-								$t.parent().trigger( _e.setSelected );
+								try
+								{
+									if ( $(_h, that.$menu).is( '.' + _c.panel ) )
+									{
+										fired = true;
+										$(_h).trigger( that.opts.slidingSubmenus ? _e.open : _e.toggle );
+									}
+							    }
+								catch( error ) {}
 							}
-	
-							//	Prevent default / don't follow link. Default: false
-							var preventDefault = that.__valueOrFn( that.opts.onClick.preventDefault, $t, _h.slice( 0, 1 ) == '#' );
-							if ( preventDefault )
+						}
+
+						if ( fired )
+						{
+							e.preventDefault();
+						}
+
+
+						//	All other anchors in lists
+						if ( !fired )
+						{
+							if ( $t.is( '.' + _c.list + ' > li > a' )
+								&& !$t.is( '[rel="external"]' ) 
+								&& !$t.is( '[target="_blank"]' ) )
 							{
-								e.preventDefault();
-							}
+								//	Set selected item
+								if ( that.__valueOrFn( that.opts.onClick.setSelected, $t ) )
+								{
+									$t.parent().trigger( _e.setSelected );
+								}
 	
-							//	Block UI. Default: false if preventDefault, true otherwise
-							if ( that.__valueOrFn( that.opts.onClick.blockUI, $t, !preventDefault ) )
-							{
-								glbl.$html.addClass( _c.blocking );
-							}
-	
-							//	Close menu. Default: true if preventDefault, false otherwise
-							if ( that.__valueOrFn( that.opts.onClick.close, $t, preventDefault ) )
-							{
-								that.$menu.trigger( _e.close );
+								//	Prevent default / don't follow link. Default: false
+								var preventDefault = that.__valueOrFn( that.opts.onClick.preventDefault, $t, _h.slice( 0, 1 ) == '#' );
+								if ( preventDefault )
+								{
+									e.preventDefault();
+								}
+		
+								//	Block UI. Default: false if preventDefault, true otherwise
+								if ( that.__valueOrFn( that.opts.onClick.blockUI, $t, !preventDefault ) )
+								{
+									glbl.$html.addClass( _c.blocking );
+								}
+		
+								//	Close menu. Default: true if preventDefault, false otherwise
+								if ( that.__valueOrFn( that.opts.onClick.close, $t, preventDefault ) )
+								{
+									that.$menu.trigger( _e.close );
+								}
 							}
 						}
 					}
@@ -503,9 +538,7 @@
 		
 		__refactorClass: function( $e, o, c )
 		{
-			$e.filter( '.' + o )
-				.removeClass( o )
-				.addClass( _c[ c ] );
+			return $e.filter( '.' + o ).removeClass( o ).addClass( _c[ c ] );
 		},
 
 		__findAddBack: function( $e, s )

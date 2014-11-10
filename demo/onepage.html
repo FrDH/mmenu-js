@@ -38,10 +38,13 @@
 			.header,
 			.footer
 			{
-				position: fixed;
-				width: 100%;
-
 				box-sizing: border-box;
+				width: 100%;
+				position: fixed;
+			}
+			.header
+			{
+				top: 0;
 			}
 			.footer
 			{
@@ -64,8 +67,9 @@
 					dragOpen: true
 				});
 
-				$menu.find( 'li > a' ).on( 'click',
-					function()
+				$menu.find( 'li > a' ).on(
+					'click',
+					function( e )
 					{
 						var href = $(this).attr( 'href' );
 
@@ -85,7 +89,7 @@
 										}, 10
 									);	
 								}
-							);						
+							);
 						}
 					}
 				);

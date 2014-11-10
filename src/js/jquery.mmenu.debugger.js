@@ -1,5 +1,5 @@
 /*	
- * Debugger for jQuery mmenu v4.5.7
+ * Debugger for jQuery mmenu
  * Include this file after including the jquery.mmenu plugin to debug your menu.
  */
 
@@ -20,11 +20,11 @@
 		_e = $[ _PLUGIN_ ]._e;
 
 
-	$[ _PLUGIN_ ].debug = function( msg )
+	function debug( msg )
 	{
 		console.log( 'MMENU: ' + msg );
 	};
-	$[ _PLUGIN_ ].deprecated = function( depr, repl, vers )
+	function deprecated( depr, repl, vers )
 	{
 		var msg = 'MMENU: ' + depr + 'is deprecated';
 
@@ -50,7 +50,7 @@
 		//	Options 4.1
 		if ( this.opts.onClick && typeof this.opts.onClick.setLocationHref != 'undefined' )
 		{
-			$[ _PLUGIN_ ].deprecated( 'onClick.setLocationHref option', '!onClick.preventDefault', '4.1' );
+			deprecated( 'onClick.setLocationHref option', '!onClick.preventDefault', '4.1' );
 			if ( typeof this.opts.onClick.setLocationHref == 'boolean' )
 			{
 				this.opts.onClick.preventDefault = !this.opts.onClick.setLocationHref;
@@ -62,7 +62,7 @@
 		{
 			if ( typeof this.opts[ a[ b ] ] != 'undefined' )
 			{
-				$[ _PLUGIN_ ].deprecated( 'The option "' + a[ b ] + '"', 'offCanvas.' + a[ b ], '4.3' );
+				deprecated( 'The option "' + a[ b ] + '"', 'offCanvas.' + a[ b ], '4.3' );
 				this.opts.offCanvas = this.opts.offCanvas || {};
 				this.opts.offCanvas[ a[ b ] ] = this.opts[ a[ b ] ];
 			}
@@ -75,17 +75,29 @@
 			{
 				if ( this.opts.offCanvas.zposition == 'back' || this.opts.offCanvas.zposition == 'next' )
 				{
-					$[ _PLUGIN_ ].deprecated( 'Using offCanvas.position "' + this.opts.offCanvas.position + '" in combination with offCanvas.zposition "' + this.opts.offCanvas.zposition + '"', 'offCanvas.zposition "front"', '4.2' );
+					deprecated( 'Using offCanvas.position "' + this.opts.offCanvas.position + '" in combination with offCanvas.zposition "' + this.opts.offCanvas.zposition + '"', 'offCanvas.zposition "front"', '4.2' );
 					this.opts.offCanvas.zposition = 'front';
 				}
 			}
 		}
+		
+		//	Options 4.6
+		if ( this.opts.header )
+		{
+			if ( this.opts.header.add instanceof Array )
+			{
+				deprecated( 'An array for the header.add option', 'header.content', '4.6' );
+				this.opts.header.content = this.opts.header.add;
+				this.opts.header.add = true;
+			}
+		}
+
 
 
 		//	Configuration 4.1
 		if ( typeof this.conf.panelNodeType != 'undefined' )
 		{
-			$[ _PLUGIN_ ].deprecated( 'panelNodeType configuration option', 'panelNodetype' );
+			deprecated( 'panelNodeType configuration option', 'panelNodetype' );
 			this.conf.panelNodetype = this.conf.panelNodeType;
 		}
 
@@ -94,19 +106,19 @@
 		{
 			if ( typeof this.conf[ a[ b ] + 'Class' ] != 'undefined' )
 			{
-				$[ _PLUGIN_ ].deprecated( 'The configuration option "' + a[ b ] + 'Class"', 'classNames.' + a[ b ], '4.3' );
+				deprecated( 'The configuration option "' + a[ b ] + 'Class"', 'classNames.' + a[ b ], '4.3' );
 				this.conf.classNames[ a[ b ] ] = this.conf[ a[ b ] + 'Class' ];
 			}
 		}
 		if ( typeof this.conf.counterClass != 'undefined' )
 		{
-			$[ _PLUGIN_ ].deprecated( 'The configuration option "counterClass"', 'classNames.counters.counter', '4.3' );
+			deprecated( 'The configuration option "counterClass"', 'classNames.counters.counter', '4.3' );
 			this.conf.classNames.counters = this.conf.classNames.counters || {};
 			this.conf.classNames.counters.counter = this.conf.counterClass;
 		}
 		if ( typeof this.conf.collapsedClass != 'undefined' )
 		{
-			$[ _PLUGIN_ ].deprecated( 'The configuration option "collapsedClass"', 'classNames.labels.collapsed', '4,3' );
+			deprecated( 'The configuration option "collapsedClass"', 'classNames.labels.collapsed', '4,3' );
 			this.conf.classNames.labels = this.conf.classNames.labels || {};
 			this.conf.classNames.labels.collapsed = this.conf.collapsedClass;
 		}
@@ -116,7 +128,7 @@
 			{
 				if ( typeof this.conf.header[ a[ b ] + 'Class' ] != 'undefined' )
 				{
-					$[ _PLUGIN_ ].deprecated( 'The configuration option "header.' + a[ b ] + 'Class"', 'classNames.header.' + a[ b ], '4.3' );
+					deprecated( 'The configuration option "header.' + a[ b ] + 'Class"', 'classNames.header.' + a[ b ], '4.3' );
 					this.conf.classNames.header = this.conf.classNames.header || {};
 					this.conf.classNames.header[ a[ b ] ] = this.conf.header[ a[ b ] + 'Class' ];
 				}
@@ -126,7 +138,7 @@
 		{
 			if ( typeof this.conf[ a[ b ] ] != 'undefined' )
 			{
-				$[ _PLUGIN_ ].deprecated( 'The configuration option "' + a[ b ] + '"', 'offCanvas.' + a[ b ], '4.3' );
+				deprecated( 'The configuration option "' + a[ b ] + '"', 'offCanvas.' + a[ b ], '4.3' );
 				this.conf.offCanvas = this.conf.offCanvas || {};
 				this.conf.offCanvas[ a[ b ] ] = this.conf[ a[ b ] ];
 			}
@@ -135,7 +147,7 @@
 		//	Vendors 4.4
 		if ( Hammer.VERSION < 2 )
 		{
-			$[ _PLUGIN_ ].deprecated( 'Older version of the Hammer library', 'version 2 or newer', '4.4' );
+			deprecated( 'Older version of the Hammer library', 'version 2 or newer', '4.4' );
 			return;
 		}
 	};
@@ -150,7 +162,7 @@
 			var bg = $('body').css( 'background-color' );
 			if ( typeof bg == 'undefined' || bg  == '' || bg == 'transparent' )
 			{
-				$[ _PLUGIN_ ].debug( 'Set a background-color for the <BODY />.' );
+				debug( 'Set a background-color for the <BODY />.' );
 			}
 		}
 
@@ -166,7 +178,7 @@
 			//	iconbar + effects
 			if ( fxSlide || fxZoom )
 			{
-				$[ _PLUGIN_ ].debug( 'Don\'t use the "iconbar" extension in combination with the "' + ( fxSlide ? 'mm-slide' : 'mm-zoom-menu' ) + '" effect.' );
+				debug( 'Don\'t use the "iconbar" extension in combination with the "' + ( fxSlide ? 'mm-slide' : 'mm-zoom-menu' ) + '" effect.' );
 			}
 			
 			//	iconbar + (z)position
@@ -174,11 +186,11 @@
 			{
 				if ( position != 'left' )
 				{
-					$[ _PLUGIN_ ].debug( 'Don\'t use the "iconbar" extension in combination with the "offCanvas.position" option set to "' + position + '".' );
+					debug( 'Don\'t use the "iconbar" extension in combination with the "offCanvas.position" option set to "' + position + '".' );
 				}
 				if ( zposition != 'back' )
 				{
-					$[ _PLUGIN_ ].debug( 'Don\'t use the "iconbar" extension in combination with the "offCanvas.zposition" option set to "' + zposition + '".' );
+					debug( 'Don\'t use the "iconbar" extension in combination with the "offCanvas.zposition" option set to "' + zposition + '".' );
 				}
 			}
 		}
@@ -188,11 +200,11 @@
 		{
 			if ( position == 'top' || position == 'bottom' )
 			{
-				$[ _PLUGIN_ ].debug( 'Don\'t use the "' + ( fxSlide ? 'mm-slide' : 'mm-zoom-menu' ) + '" effect in combination with the "offCanvas.position" option set to "' + position + '".' );
+				debug( 'Don\'t use the "' + ( fxSlide ? 'mm-slide' : 'mm-zoom-menu' ) + '" effect in combination with the "offCanvas.position" option set to "' + position + '".' );
 			}
 			if ( zposition != 'back' )
 			{
-				$[ _PLUGIN_ ].debug( 'Don\'t use the "' + ( fxSlide ? 'mm-slide' : 'mm-zoom-menu' ) + '" effect in combination with the "offCanvas.zposition" option set to "' + zposition + '".' );
+				debug( 'Don\'t use the "' + ( fxSlide ? 'mm-slide' : 'mm-zoom-menu' ) + '" effect in combination with the "offCanvas.zposition" option set to "' + zposition + '".' );
 			}
 		}
 	};

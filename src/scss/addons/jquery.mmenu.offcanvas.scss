@@ -10,7 +10,9 @@
 {
 	box-sizing: border-box;
 	position: relative;
-
+}
+.mm-slideout
+{
 	-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
 	-ms-transition: -ms-transform $mm_transitionDuration $mm_transitionFunction;
 	transition: transform $mm_transitionDuration $mm_transitionFunction;

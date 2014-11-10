@@ -4,7 +4,10 @@
 	To use on widescreens only, include it using a mediaquery:
 	<link type="text/css" href="mmenu-widescreen.css" media="all and (min-width: 900px)"/>
 */
-html, body {
+html,
+body,
+html.mm-opened,
+html.mm-opened body {
   overflow: auto; }
 
 body {
@@ -25,13 +28,19 @@ body {
   top: 0 !important;
   z-index: 1; }
 
+.mm-slideout {
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -o-transform: none !important;
+  transform: none !important; }
+
 .mm-menu {
   width: 30% !important;
-  z-index: 0; }
-  .mm-menu.mm-top, .mm-menu.mm-right, .mm-menu.mm-bottom {
-    top: 0 !important;
-    right: auto !important;
-    bottom: auto !important;
-    left: 0 !important; }
+  z-index: 0;
+  top: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: 0 !important; }
   .mm-menu:first-child, .mm-menu.mm-current {
     display: block; }

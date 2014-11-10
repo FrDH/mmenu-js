@@ -56,15 +56,15 @@
 		box-sizing: border-box;	
 		padding: $mm_padding * 2;
 
-		@include mm_webkit-prefix( 'transform', translateX( 100% ) );
+		@include mm_webkit-prefix( 'transform', translate( 100%, 0 ) );
 		
 		&.mm-opened
 		{
-			@include mm_webkit-prefix( 'transform', translateX( 0% ) );
+			@include mm_webkit-prefix( 'transform', translate( 0%, 0 ) );
 		}
 		&.mm-subopened
 		{
-			@include mm_webkit-prefix( 'transform', translateX( -$mm_subpanelOffset ) );
+			@include mm_webkit-prefix( 'transform', translate( -$mm_subpanelOffset, 0 ) );
 		}
 		&.mm-highest
 		{

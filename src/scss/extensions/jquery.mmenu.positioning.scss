@@ -39,11 +39,10 @@
 // reset defaults
 html.mm-front
 {
-	.mm-page,
-	#mm-blocker
+	.mm-slideout
 	{
-		@include mm-webkit-prefix( 'transform', translate( 0, 0 ) !important );
-		z-index: 0;
+		@include mm-webkit-prefix( 'transform', none !important );
+		z-index: 0 !important;
 	}
 }
 
@@ -65,6 +64,7 @@ html.mm-opened.mm-next .mm-page
 	&.mm-next
 	{
 		-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
+		-ms-transition: -ms-transform $mm_transitionDuration $mm_transitionFunction;
 		transition: transform $mm_transitionDuration $mm_transitionFunction;
 
 		@include mm-webkit-prefix( 'transform', translate( -100%, 0 ) );
