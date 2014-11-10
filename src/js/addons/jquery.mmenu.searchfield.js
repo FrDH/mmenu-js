@@ -281,11 +281,14 @@
 				opts = {};
 			}
 			opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
-	
+
 			if ( typeof opts.showLinksOnly != 'boolean' )
 			{
 				opts.showLinksOnly = ( opts.addTo == 'menu' );
 			}
+
+
+			this.opts[ _ADDON_ ] = opts;
 		},
 
 		//	_add: fired once per page load
@@ -312,6 +315,10 @@
 		placeholder		: 'Search',
 		noResults		: 'No results found.'
 	};
+	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
+		form			: false
+	};
+	
 
 
 	var _c, _d, _e, glbl;

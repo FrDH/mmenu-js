@@ -105,6 +105,10 @@
 		//	_clickAnchor: prevents default behavior when clicking an anchor
 		_clickAnchor: function( $a )
 		{
+			if ( !this.opts[ _ADDON_ ] )
+			{
+				return;
+			}
 
 			//	Open menu
 			var id = this.$menu.attr( 'id' );
@@ -122,6 +126,10 @@
 			}
 			
 			//	Close menu
+			if ( !glbl.$page )
+			{
+				return;
+			}
 			var id = glbl.$page.attr( 'id' );
 			if ( id && id.length )
 			{
