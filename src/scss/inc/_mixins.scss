@@ -66,7 +66,7 @@
 @mixin mm_webkit-prefix( $prop, $val )
 {
 //	we're not yet ready to drop vendor prefixes due to IE9 and older versions of FF
-	@include mm_vendor_prefix( $prop, $val );
+	@include mm_vendor-prefix( $prop, $val );
 //	-webkit-#{$prop}: $val;
 //	#{$prop}: $val;
 }
