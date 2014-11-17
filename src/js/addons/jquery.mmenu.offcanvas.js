@@ -37,6 +37,9 @@
 			}
 
 
+			glbl.$allMenus = ( glbl.$allMenus || $() ).add( this.$menu );
+
+
 			//	Setup the menu
 			this.vars.opened = false;
 			
@@ -99,7 +102,6 @@
 			_e.add( 'opening opened closing closed setPage' );
 	
 			glbl = $[ _PLUGIN_ ].glbl;
-			glbl.$allMenus = ( glbl.$allMenus || $() ).add( this.$menu );
 		},
 
 		//	_clickAnchor: prevents default behavior when clicking an anchor
@@ -350,12 +352,10 @@
 	$[ _PLUGIN_ ].prototype[ _ADDON_ + '_initBlocker' ] = function()
 	{
 		var that = this;
-
-		glbl.$blck = $( '<div id="' + _c.blocker + '" class="' + _c.slideout + '" />' )
+		var $blck = $( '<div id="' + _c.blocker + '" class="' + _c.slideout + '" />' )
 			.appendTo( glbl.$body );
-
-		glbl.$blck
-			.off( _e.touchstart )
+			
+		$blck
 			.on( _e.touchstart,
 				function( e )
 				{
@@ -370,7 +370,7 @@
 					e.preventDefault();
 					if ( !glbl.$html.hasClass( _c.modal ) )
 					{
-						that.close();
+						glbl.$allMenus.trigger( _e.close );
 					}
 				}
 			);
