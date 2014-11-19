@@ -361,7 +361,7 @@
 				{
 					e.preventDefault();
 					e.stopPropagation();
-					glbl.$blck.trigger( _e.mousedown );
+					$blck.trigger( _e.mousedown );
 				}
 			)
 			.on( _e.mousedown,
