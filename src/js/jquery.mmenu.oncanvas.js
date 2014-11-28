@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.7.3
+ * jQuery mmenu v4.7.4
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.7.3';
+		_VERSION_	= '4.7.4';
 
 
 	//	Plugin already excists
@@ -191,7 +191,7 @@
 					function( e, selected )
 					{
 						e.stopPropagation();
-	
+
 						$lis.removeClass( _c.selected );
 						if ( typeof selected != 'boolean' )
 						{
@@ -328,21 +328,22 @@
 					function( e )
 					{
 						var $t = $(this),
-							fired = false;
+							fired 	= false,
+							inMenu 	= that.$menu.find( $t ).length;
 
 
 						//	Find behavior for addons
 						for ( var a in $[ _PLUGIN_ ].addons )
 						{
 							if ( $[ _PLUGIN_ ].addons[ a ]._clickAnchor &&
-								( fired = $[ _PLUGIN_ ].addons[ a ]._clickAnchor.call( that, $t ) )
+								( fired = $[ _PLUGIN_ ].addons[ a ]._clickAnchor.call( that, $t, inMenu ) )
 							) {
 								break;
 							}
 						}
 
 						//	Open/Close panel
-						if ( !fired )
+						if ( !fired && inMenu )
 						{
 							var _h = $t.attr( 'href' ) || '';
 							if ( _h.slice( 0, 1 ) == '#' )
@@ -366,12 +367,13 @@
 
 
 						//	All other anchors in lists
-						if ( !fired )
+						if ( !fired && inMenu )
 						{
 							if ( $t.is( '.' + _c.list + ' > li > a' )
 								&& !$t.is( '[rel="external"]' ) 
 								&& !$t.is( '[target="_blank"]' ) )
 							{
+
 								//	Set selected item
 								if ( that.__valueOrFn( that.opts.onClick.setSelected, $t ) )
 								{

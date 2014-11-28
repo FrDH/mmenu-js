@@ -83,19 +83,22 @@
 	
 			glbl = $[ _PLUGIN_ ].glbl;
 		},
-		
+
 		//	_clickAnchor: prevents default behavior when clicking an anchor
-		_clickAnchor: function( $a )
+		_clickAnchor: function( $a, inMenu )
 		{
-			var $l = $a.parent();
-			if ( $l.is( '.' + _c.label ) )
+			if ( inMenu )
 			{
-				var $e = $l.nextUntil( '.' + _c.label, '.' + _c.collapsed );
-		
-				$l.toggleClass( _c.opened );
-				$e[ $l.hasClass( _c.opened ) ? 'addClass' : 'removeClass' ]( _c.uncollapsed );
-				
-				return true;
+				var $l = $a.parent();
+				if ( $l.is( '.' + _c.label ) )
+				{
+					var $e = $l.nextUntil( '.' + _c.label, '.' + _c.collapsed );
+			
+					$l.toggleClass( _c.opened );
+					$e[ $l.hasClass( _c.opened ) ? 'addClass' : 'removeClass' ]( _c.uncollapsed );
+					
+					return true;
+				}
 			}
 			return false;
 		}

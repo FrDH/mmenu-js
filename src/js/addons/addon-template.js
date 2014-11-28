@@ -46,7 +46,7 @@
 		},
 		
 		//	_clickAnchor: prevents default behavior when clicking an anchor
-		_clickAnchor: function( $a )
+		_clickAnchor: function( $a, inMenu )
 		{
 //			if ( $a.is( '.CLASSNAME' ) )
 //			{
