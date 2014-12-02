@@ -37,6 +37,8 @@ body {
 
 .mm-menu {
   width: 30% !important;
+  min-width: none !important;
+  max-width: none !important;
   z-index: 0;
   top: 0 !important;
   right: auto !important;
