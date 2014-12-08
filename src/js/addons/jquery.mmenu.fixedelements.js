@@ -24,9 +24,10 @@
 
 
 			//	Refactor fixed classes
-			var $elms = $('div, span, a', glbl.$page),
-				$tops = this.__refactorClass( $elms, this.conf.classNames[ _ADDON_ ].fixedTop, 'fixed-top' ),
-				$bots = this.__refactorClass( $elms, this.conf.classNames[ _ADDON_ ].fixedBottom, 'fixed-bottom' );
+			var _tops = this.conf.classNames[ _ADDON_ ].fixedTop,
+				_bots = this.conf.classNames[ _ADDON_ ].fixedBottom,
+				$tops = this.__refactorClass( glbl.$page.find( '.' + _tops ), _tops, 'fixed-top' ),
+				$bots = this.__refactorClass( glbl.$page.find( '.' + _bots ), _bots, 'fixed-bottom' );
 
 			$tops.add( $bots )
 				.appendTo( glbl.$body )

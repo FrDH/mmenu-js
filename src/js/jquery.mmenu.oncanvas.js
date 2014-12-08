@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.7.4
+ * jQuery mmenu v4.7.5
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.7.4';
+		_VERSION_	= '4.7.5';
 
 
 	//	Plugin already excists
@@ -605,7 +605,7 @@
 		SUPPORT
 	*/
 	$[ _PLUGIN_ ].support = {
-		touch: 'ontouchstart' in window.document
+		touch: 'ontouchstart' in window || navigator.msMaxTouchPoints
 	};
 
 
