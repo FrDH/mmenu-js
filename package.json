@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rhalukongor/jQuery.mmenu.git"
+    "url": "https://github.com/BeSite/jQuery.mmenu.git"
   },
   "keywords": [
     "mmenu",
@@ -24,7 +24,7 @@
   "author": "Fred Heusschen <info@frebsite.nl>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rhalukongor/jQuery.mmenu/issues"
+    "url": "https://github.com/BeSite/jQuery.mmenu/issues"
   },
-  "homepage": "https://github.com/rhalukongor/jQuery.mmenu"
+  "homepage": "http://mmenu.frebsite.nl/"
 }
