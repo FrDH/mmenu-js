@@ -1,9 +1,9 @@
-/*	
+/*
  * jQuery mmenu v4.7.5
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
- *	
+ *
  * Copyright (c) Fred Heusschen
  * www.frebsite.nl
  *
@@ -46,7 +46,7 @@
 		this.conf	= conf;
 		this.vars	= {};
 
-		if ( typeof this.___deprecated == 'function' )
+		if ( typeof this.___deprecated === 'function' )
 		{
 			this.___deprecated();
 		}
@@ -69,7 +69,7 @@
 
 		this._init( $panels );
 
-		if ( typeof this.___debug == 'function' )
+		if ( typeof this.___debug === 'function' )
 		{
 			this.___debug();
 		}
@@ -82,7 +82,7 @@
 	$[ _PLUGIN_ ].addons = {};
 
 	$[ _PLUGIN_ ].uniqueId = 0;
-	
+
 	$[ _PLUGIN_ ].defaults = {
 		classes			: '',
 		slidingSubmenus	: true,
@@ -139,7 +139,7 @@
 			this.$menu.contents().each(
 				function()
 				{
-					if ( $(this)[ 0 ].nodeType == 3 )
+					if ( $(this)[ 0 ].nodeType === 3 )
 					{
 						$(this).remove();
 					}
@@ -193,7 +193,7 @@
 						e.stopPropagation();
 
 						$lis.removeClass( _c.selected );
-						if ( typeof selected != 'boolean' )
+						if ( typeof selected !== 'boolean' )
 						{
 							selected = true;
 						}
@@ -207,7 +207,7 @@
 			//	Refactor Panel class
 			this.__refactorClass( this.__findAddBack( $panels, '.' + this.conf.classNames.panel ), this.conf.classNames.panel, 'panel' );
 
-			//	Add Panel class			
+			//	Add Panel class
 			$panels
 				.add( this.__findAddBack( $panels, '.' + _c.list ).children().children().filter( this.conf.panelNodetype ).not( '.' + _c.nopanel ) )
 				.addClass( _c.panel );
@@ -314,7 +314,7 @@
 					.end()
 					.appendTo( this.$menu );
 			}
-			
+
 			return $curpanels;
 		},
 
@@ -346,7 +346,7 @@
 						if ( !fired && inMenu )
 						{
 							var _h = $t.attr( 'href' ) || '';
-							if ( _h.slice( 0, 1 ) == '#' )
+							if ( _h.slice( 0, 1 ) === '#' )
 							{
 								try
 								{
@@ -370,7 +370,7 @@
 						if ( !fired && inMenu )
 						{
 							if ( $t.is( '.' + _c.list + ' > li > a' )
-								&& !$t.is( '[rel="external"]' ) 
+								&& !$t.is( '[rel="external"]' )
 								&& !$t.is( '[target="_blank"]' ) )
 							{
 
@@ -379,20 +379,20 @@
 								{
 									$t.parent().trigger( _e.setSelected );
 								}
-	
+
 								//	Prevent default / don't follow link. Default: false
-								var preventDefault = that.__valueOrFn( that.opts.onClick.preventDefault, $t, _h.slice( 0, 1 ) == '#' );
+								var preventDefault = that.__valueOrFn( that.opts.onClick.preventDefault, $t, _h.slice( 0, 1 ) === '#' );
 								if ( preventDefault )
 								{
 									e.preventDefault();
 								}
-		
+
 								//	Block UI. Default: false if preventDefault, true otherwise
 								if ( that.__valueOrFn( that.opts.onClick.blockUI, $t, !preventDefault ) )
 								{
 									glbl.$html.addClass( _c.blocking );
 								}
-		
+
 								//	Close menu. Default: true if preventDefault, false otherwise
 								if ( that.__valueOrFn( that.opts.onClick.close, $t, preventDefault ) )
 								{
@@ -465,14 +465,14 @@
 
 			var $panels = $('.' + _c.panel, this.$menu),
 				$current = $panels.filter( '.' + _c.current );
-	
+
 			$panels
 				.removeClass( _c.highest )
 				.removeClass( _c.current )
 				.not( $opening )
 				.not( $current )
 				.addClass( _c.hidden );
-	
+
 			if ( $opening.hasClass( _c.opened ) )
 			{
 				$current
@@ -488,11 +488,11 @@
 				$current
 					.addClass( _c.subopened );
 			}
-	
+
 			$opening
 				.removeClass( _c.hidden )
 				.addClass( _c.current );
-	
+
 			//	Without the timeout, the animation won't work because the element had display: none;
 			setTimeout(
 				function()
@@ -512,7 +512,7 @@
 			{
 				this.updates = [];
 			}
-			if ( typeof fn == 'function' )
+			if ( typeof fn === 'function' )
 			{
 				this.updates.push( fn );
 			}
@@ -527,17 +527,17 @@
 
 		__valueOrFn: function( o, $e, d )
 		{
-			if ( typeof o == 'function' )
+			if ( typeof o === 'function' )
 			{
 				return o.call( $e[ 0 ] );
 			}
-			if ( typeof o == 'undefined' && typeof d != 'undefined' )
+			if ( typeof o === 'undefined' && typeof d !== 'undefined' )
 			{
 				return d;
 			}
 			return o;
 		},
-		
+
 		__refactorClass: function( $e, o, c )
 		{
 			return $e.filter( '.' + o ).removeClass( o ).addClass( _c[ c ] );
@@ -547,7 +547,7 @@
 		{
 			return $e.find( s ).add( $e.filter( s ) );
 		},
-		
+
 		__transitionend: function( $e, fn, duration )
 		{
 			var _ended = false,
@@ -559,12 +559,12 @@
 					}
 					_ended = true;
 				};
-	
+
 			$e.one( _e.transitionend, _fn );
 			$e.one( _e.webkitTransitionEnd, _fn );
 			setTimeout( _fn, duration * 1.1 );
 		},
-		
+
 		__getUniqueId: function()
 		{
 			return _c.mm( $[ _PLUGIN_ ].uniqueId++ );
@@ -613,7 +613,7 @@
 	function _initPlugin()
 	{
 		plugin_initiated = true;
-	
+
 		glbl.$wndw = $(window);
 		glbl.$html = $('html');
 		glbl.$body = $('body');
@@ -638,7 +638,7 @@
 		_c.add( 'wrapper menu inline panel nopanel list nolist subtitle selected label spacer current highest hidden opened subopened subopen fullsubopen subclose' );
 		_c.umm = function( c )
 		{
-			if ( c.slice( 0, 3 ) == 'mm-' )
+			if ( c.slice( 0, 3 ) === 'mm-' )
 			{
 				c = c.slice( 3 );
 			}
