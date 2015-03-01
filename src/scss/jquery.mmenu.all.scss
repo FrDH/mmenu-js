@@ -1,15 +1,17 @@
-@import "jquery.mmenu";
+@import "jQuery.mmenu/src/scss/inc/variables";
+@import "jQuery.mmenu/src/scss/addons/jquery.mmenu.oncanvas";
+@import "jQuery.mmenu/src/scss/addons/jquery.mmenu.offcanvas";
 
-@import "addons/jquery.mmenu.buttonbars";
-@import "addons/jquery.mmenu.counters";
-@import "addons/jquery.mmenu.dragopen";
-@import "addons/jquery.mmenu.footer";
-@import "addons/jquery.mmenu.header";
-@import "addons/jquery.mmenu.labels";
-@import "addons/jquery.mmenu.searchfield";
-@import "addons/jquery.mmenu.toggles";
+@import "jQuery.mmenu/src/scss/addons/jquery.mmenu.buttonbars";
+@import "jQuery.mmenu/src/scss/addons/jquery.mmenu.counters";
+@import "jQuery.mmenu/src/scss/addons/jquery.mmenu.dragopen";
+@import "jQuery.mmenu/src/scss/addons/jquery.mmenu.footer";
+@import "jQuery.mmenu/src/scss/addons/jquery.mmenu.header";
+@import "jQuery.mmenu/src/scss/addons/jquery.mmenu.labels";
+@import "jQuery.mmenu/src/scss/addons/jquery.mmenu.searchfield";
+@import "jQuery.mmenu/src/scss/addons/jquery.mmenu.toggles";
 
-@import "extensions/jquery.mmenu.effects";
-@import "extensions/jquery.mmenu.fullscreen";
-@import "extensions/jquery.mmenu.positioning";
-@import "extensions/jquery.mmenu.themes";
+@import "jQuery.mmenu/src/scss/extensions/jquery.mmenu.effects";
+@import "jQuery.mmenu/src/scss/extensions/jquery.mmenu.fullscreen";
+@import "jQuery.mmenu/src/scss/extensions/jquery.mmenu.positioning";
+@import "jQuery.mmenu/src/scss/extensions/jquery.mmenu.themes";
