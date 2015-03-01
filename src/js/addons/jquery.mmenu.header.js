@@ -53,6 +53,7 @@
 									$nxt = $panl.find('.' + that.conf.classNames[ _ADDON_ ].panelNext);
 	
 								var _ttl = $ttl.html(),
+									_link = '',
 									_prv = $prv.attr( 'href' ),
 									_nxt = $nxt.attr( 'href' );
 									
@@ -62,6 +63,7 @@
 								if ( !_ttl )
 								{
 									_ttl = $panl.find('.' + _c.subclose).html();
+									_link = $('#menu .mm-subopen[href="#' + $panl[0].id + '"]').next('a').attr('href') || '/';
 								}
 								if ( !_ttl )
 								{
@@ -76,7 +78,11 @@
 								var updateHeader = function()
 								{
 									$titl[ _ttl ? 'show' : 'hide' ]();
-									$titl.html( _ttl );
+									if (_link) {
+										$titl.html('<a href="' + _link + '">' + _ttl + '</a>');
+									} else {
+										$titl.html( _ttl );
+									}
 	
 									$prev[ _prv ? 'attr' : 'removeAttr' ]( 'href', _prv );
 									$prev[ _prv || _prv_txt ? 'show' : 'hide' ]();
