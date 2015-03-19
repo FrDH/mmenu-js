@@ -1,6 +1,10 @@
 {
 	"name": "jQuery.mmenu",
-	"main": "src/js/jquery.mmenu.min.js",
+	"main": [ 
+		"src/js/jquery.mmenu.min.js",
+		"src/css/jquery.mmenu.all.css",
+		"src/scss/jquery.mmenu.all.scss"
+	],
 	"version": "4.7.5",
 	"homepage": "http://mmenu.frebsite.nl/",
 	"authors": [
