@@ -371,7 +371,7 @@
 				{
 					e.preventDefault();
 					e.stopPropagation();
-					$blck.trigger( _e.mousedown + '-offcanvas' );
+					glbl.$blck.trigger( _e.mousedown + '-offcanvas' );
 				}
 			)
 			.off( _e.mousedown + '-offcanvas' )
