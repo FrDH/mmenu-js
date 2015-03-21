@@ -2,45 +2,35 @@
 	jQuery.mmenu searchfield addon CSS
 */
 
-@import "../inc/variables";
+@import "../_inc/variables";
+
+$mm_searchfieldHeight: $mm_searchHeight - ( $mm_padding * 1.5 ) !default;
 
 .mm-search,
 .mm-search input
 {
 	box-sizing: border-box;
 }
-.mm-list 
+
+.mm-search
 {
-	> li.mm-search
-	{
-		padding: $mm_padding;
-		margin-top: -( $mm_padding * 2 );
-	}
-	> li.mm-subtitle + li.mm-search
-	{
-		margin-top: 0;
-	}
-}
-div.mm-panel > div.mm-search
-{
-	padding: 0 0 $mm_padding 0;
-}
-.mm-menu.mm-hasheader .mm-list > li.mm-search
-{
-	margin-top: 0;
 }
 .mm-menu > .mm-search
 {
 	background: inherit;
-	width: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 2;
+	z-index: 3;
+	
+	//	Bugfix
+	@include mm_webkit_prefix( 'transform', translate3d( 0, 0, 0 ) );
 }
 .mm-search
 {
-	padding: $mm_padding;
+	height: $mm_searchHeight;
+	width: 100%;
+	padding: $mm_padding $mm_padding 0 $mm_padding;
+	position: absolute;
+	top: 0;
+	left: 0;
 
 	input
 	{		
@@ -62,61 +52,61 @@ div.mm-panel > div.mm-search
 	}
 }
 
-.mm-menu .mm-noresultsmsg
+.mm-panel
+{
+	&.mm-hassearch
+	{
+		padding-top: $mm_searchHeight;
+	
+		&.mm-hasheader
+		{
+			padding-top: $mm_searchHeight + $mm_headerHeight;
+			
+			.mm-search
+			{
+				top: $mm_headerHeight;
+			}
+		}
+	}
+}
+
+.mm-noresultsmsg
 {
 	text-align: center;
 	font-size: round( $mm_fontSize * 1.5 );
 	display: none;
-	padding: ( $mm_btnSize * 1.5 ) 0;
-	
-	&:after
+	padding: $mm_btnSize 0;
+}
+.mm-noresults
+{
+	.mm-noresultsmsg
 	{
-		border: none !important;
+		display: block;
+	}
+	.mm-indexer
+	{
+		display: none !important;
 	}
 }
-.mm-noresults .mm-noresultsmsg
-{
-	display: block;
-}
 
-$mm_paddingBeneathHeader: $mm_padding * 2 !default;
 .mm-menu
 {
-	li.mm-nosubresults > a.mm-subopen
+	li.mm-nosubresults > a.mm-next
 	{
 		display: none;
-	
+
 		+ a, 
 		+ span
 		{
-			padding-right: 10px;
+			padding-right: $mm_padding;
 		}
 	}
 	&.mm-hassearch 
 	{
-		> .mm-panel
+		.mm-panel,
+		.mm-fixeddivider
 		{
-			padding-top: $mm_searchHeight + $mm_paddingBeneathHeader;
-			
-			> .mm-list:first-child
-			{
-				margin-top: -$mm_paddingBeneathHeader;
-			}
-		}
-	}
-	&.mm-hasheader
-	{
-		> .mm-panel
-		{
-			> div.mm-search:first-child
-			{
-				margin-top: -$mm_padding;
-				
-				+ .mm-list
-				{
-					padding-top: 0;
-				}
-			}
+			top: $mm_searchHeight;
 		}
 	}
 }

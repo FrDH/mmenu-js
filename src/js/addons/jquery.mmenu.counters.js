@@ -13,86 +13,15 @@
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-	
-		//	_init: fired when (re)initiating the plugin
-		_init: function( $panels )
-		{			
+
+		//	setup: fired once per menu
+		setup: function()
+		{
 			var that = this,
 				opts = this.opts[ _ADDON_ ],
 				conf = this.conf[ _ADDON_ ];
 
-
-			//	Refactor counter class
-			this.__refactorClass( $('em', $panels), this.conf.classNames[ _ADDON_ ].counter, 'counter' );
-
-
-			//	Add the counters
-			if ( opts.add )
-			{
-				$panels
-					.each(
-						function()
-						{
-							var $prnt = $(this).data( _d.parent );
-							if ( $prnt )
-							{
-								if ( !$prnt.find( '> em.' + _c.counter ).length )
-								{
-									$prnt.prepend( $( '<em class="' + _c.counter + '" />' ) );
-								}
-							}
-						}
-				);
-			}
-
-
-			//	Update the counter
-			if ( opts.update )
-			{
-				$panels
-					.each(
-						function()
-						{
-							var $panl = $(this),
-								$prnt = $panl.data( _d.parent );
-	
-							if ( $prnt )
-							{
-								var $cntr = $prnt.find( '> em.' + _c.counter );
-								if ( $cntr.length )
-								{
-									if ( !$panl.is( '.' + _c.list ) )
-									{
-										$panl = $panl.find( '> .' + _c.list );
-									}
-									if ( $panl.length && !$panl.data( _d.updatecounter ) )
-									{
-										$panl.data( _d.updatecounter, true );
-										that._update(
-											function()
-											{
-												var $lis = $panl.children()
-													.not( '.' + _c.label )
-													.not( '.' + _c.subtitle )
-													.not( '.' + _c.hidden )
-													.not( '.' + _c.search )
-													.not( '.' + _c.noresultsmsg );
-		
-												$cntr.html( $lis.length );
-											}
-										);
-									}
-								}
-							}
-						}
-					);
-			}
-		},
-
-		//	_setup: fired once per menu
-		_setup: function()
-		{
-			var opts = this.opts[ _ADDON_ ];
+			glbl = $[ _PLUGIN_ ].glbl;
 
 
 			//	Extend shortcut options
@@ -107,24 +36,92 @@
 			{
 				opts = {};
 			}
-			opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
 
-			this.opts[ _ADDON_ ] = opts;
+			//	Refactor counter class
+			this.bind( 'init',
+				function( $panels )
+				{
+					this.__refactorClass( $('em', $panels), this.conf.classNames[ _ADDON_ ].counter, 'counter' );
+				}
+			);
+
+
+			//	Add the counters
+			if ( opts.add )
+			{
+				this.bind( 'init',
+					function( $panels )
+					{
+						$panels
+							.each(
+								function()
+								{
+									var $prnt = $(this).data( _d.parent );
+									if ( $prnt )
+									{
+										if ( !$prnt.children( 'em.' + _c.counter ).length )
+										{
+											$prnt.prepend( $( '<em class="' + _c.counter + '" />' ) );
+										}
+									}
+								}
+							);
+					}
+				);
+			}
+
+			if ( opts.update )
+			{
+				this.bind( 'update',
+					function()
+					{
+						this.$menu
+							.find( '.' + _c.panel )
+							.each(
+								function()
+								{
+									var $panl = $(this),
+										$prnt = $panl.data( _d.parent );
+
+									if ( !$prnt )
+									{
+										return;
+									}
+
+									var $cntr = $prnt.children( 'em.' + _c.counter );
+									if ( !$cntr.length )
+									{
+										return;
+									}
+
+									$panl = $panl.children( '.' + _c.listview );
+									if ( !$panl.length )
+									{
+										return;
+									}
+
+									$cntr.html( that.__filterListItems( $panl.children() ).length );
+								}
+							);
+					}
+				);
+			}
 		},
 
-		//	_add: fired once per page load
-		_add: function()
+		//	add: fired once per page load
+		add: function()
 		{
 			_c = $[ _PLUGIN_ ]._c;
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 	
 			_c.add( 'counter search noresultsmsg' );
-			_d.add( 'updatecounter' );
-	
-			glbl = $[ _PLUGIN_ ].glbl;
-		}
+		},
+
+		//	clickAnchor: prevents default behavior when clicking an anchor
+		clickAnchor: function( $a, inMenu ) {}
 	};
 
 

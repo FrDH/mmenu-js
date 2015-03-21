@@ -2,7 +2,7 @@
 	jQuery.mmenu counters addon CSS
 */
 
-@import "../inc/variables";
+@import "../_inc/variables";
 
 
 em.mm-counter
@@ -18,7 +18,7 @@ em.mm-counter
 	right: $mm_subopenWidth;
 	top: 50%;
 
-	+ a.mm-subopen
+	+ a.mm-next
 	{
 		padding-left: $mm_counterWidth;
 
@@ -34,18 +34,22 @@ em.mm-counter
 	}
 }
 
-// vertical submenu
+//	Removed support for counters in vertical submenus
 .mm-vertical
 {
-	em.mm-counter
+	> .mm-counter
 	{
 		top: ( $mm_btnSize / 4 ) + 2;
 		margin-top: 0;
 	}
+	&.mm-spacer > .mm-counter
+	{
+		margin-top: $mm_btnSize;
+	}
 }
 
 // Search
-.mm-nosubresults > em.mm-counter
+.mm-nosubresults > .mm-counter
 {
 	display: none;
 }

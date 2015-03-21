@@ -2,7 +2,7 @@
 	jQuery.mmenu dragOpen addon CSS
 */
 
-@import "../inc/variables";
+@import "../_inc/variables";
 
 html.mm-opened.mm-dragging
 {
@@ -12,6 +12,6 @@ html.mm-opened.mm-dragging
 	.mm-fixed-bottom,
 	#mm-blocker
 	{
-		@include mm_webkit-prefix( "transition-duration", 0s );
+		@include mm_webkit_prefix( "transition-duration", 0s );
 	}
 }

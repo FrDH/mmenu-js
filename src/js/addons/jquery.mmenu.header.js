@@ -13,104 +13,15 @@
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-	
-		//	_init: fired when (re)initiating the plugin
-		_init: function( $panels )
+
+		//	setup: fired once per menu
+		setup: function()
 		{
 			var that = this,
 				opts = this.opts[ _ADDON_ ],
 				conf = this.conf[ _ADDON_ ];
 
-
-			//	Update content
-			var $header = $('.' + _c.header, this.$menu);
-			if ( $header.length )
-			{
-				//	Auto-update the title, prev- and next button
-				if ( opts.update )
-				{
-					var $titl = $header.find( '.' + _c.title ),
-						$prev = $header.find( '.' + _c.prev ),
-						$next = $header.find( '.' + _c.next ),
-						$clse = $header.find( '.' + _c.close ),
-						_page = false;
-
-					if ( glbl.$page )
-					{
-						_page = '#' + glbl.$page.attr( 'id' );
-						$clse.attr( 'href', _page );
-					}
-
-					$panels
-						.each(
-							function()
-							{
-								var $panl = $(this);
-	
-								//	Find title, prev and next
-								var $ttl = $panl.find('.' + that.conf.classNames[ _ADDON_ ].panelHeader),
-									$prv = $panl.find('.' + that.conf.classNames[ _ADDON_ ].panelPrev),
-									$nxt = $panl.find('.' + that.conf.classNames[ _ADDON_ ].panelNext);
-	
-								var _ttl = $ttl.html(),
-									_prv = $prv.attr( 'href' ),
-									_nxt = $nxt.attr( 'href' );
-									
-								var _prv_txt = $prv.html(),
-									_nxt_txt = $nxt.html();
-
-								if ( !_ttl )
-								{
-									_ttl = $panl.find('.' + _c.subclose).html();
-								}
-								if ( !_ttl )
-								{
-									_ttl = opts.title;
-								}
-								if ( !_prv )
-								{
-									_prv = $panl.find('.' + _c.subclose).attr( 'href' );
-								}
-	
-								//	Update header info
-								var updateHeader = function()
-								{
-									$titl[ _ttl ? 'show' : 'hide' ]();
-									$titl.html( _ttl );
-	
-									$prev[ _prv ? 'attr' : 'removeAttr' ]( 'href', _prv );
-									$prev[ _prv || _prv_txt ? 'show' : 'hide' ]();
-									$prev.html( _prv_txt );
-	
-									$next[ _nxt ? 'attr' : 'removeAttr' ]( 'href', _nxt );
-									$next[ _nxt || _nxt_txt ? 'show' : 'hide' ]();
-									$next.html( _nxt_txt );
-								};
-	
-								$panl.on( _e.open, updateHeader );
-	
-								if ( $panl.hasClass( _c.current ) )
-								{
-									updateHeader();
-								}
-							}
-						);
-				}
-
-				//	Init other add-ons
-				if ( $[ _PLUGIN_ ].addons.buttonbars )
-				{
-					$[ _PLUGIN_ ].addons.buttonbars._init.call( this, $header );
-				}
-			}
-		},
-
-		//	_setup: fired once per menu
-		_setup: function()
-		{
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
+			glbl = $[ _PLUGIN_ ].glbl;
 
 
 			//	Extend shortcut options
@@ -129,10 +40,7 @@
 			{
 				opts.content = [ 'prev', 'title', 'next' ];
 			}
-			opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
-
-
-			this.opts[ _ADDON_ ] = opts;
+			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
 
 			//	Add markup
@@ -148,11 +56,11 @@
 							case 'prev':
 							case 'next':
 							case 'close':
-								$content.append( '<a class="' + _c[ opts.content[ c ] ] + '" href="#"></a>' );
+								$content.append( '<a class="' + _c[ opts.content[ c ] ] + ' ' + _c.btn + '" href="#"></a>' );
 								break;
 							
 							case 'title':
-								$content.append( '<span class="' + _c.title + '"></span>' );
+								$content.append( '<a class="' + _c.title + '"></a>' );
 								break;
 							
 							default:
@@ -170,31 +78,126 @@
 				$( '<div class="' + _c.header + '" />' )
 					.prependTo( this.$menu )
 					.append( $content );
-				
-				this.$menu.addClass( _c.hasheader );
+
+				this.$menu
+					.addClass( _c.hasheader );
+
+				this.bind( 'init',
+					function( $panel )
+					{
+						$panel.removeClass( _c.hasheader );
+					}
+				);
+			}
+			this.$header = this.$menu.children( '.' + _c.header );
+
+
+			//	Update content
+			if ( opts.update && this.$header && this.$header.length )
+			{
+				var $titl = this.$header.find( '.' + _c.title ),
+					$prev = this.$header.find( '.' + _c.prev ),
+					$next = this.$header.find( '.' + _c.next ),
+					$clse = this.$header.find( '.' + _c.close );
+
+				var update = function( $panl )
+				{
+					$panl = $panl || this.$menu.children( '.' + _c.current );
+
+					//	Find title, prev and next
+					var $ttl = $panl.find( '.' + this.conf.classNames[ _ADDON_ ].panelHeader ),
+						$prv = $panl.find( '.' + this.conf.classNames[ _ADDON_ ].panelPrev ),
+						$nxt = $panl.find( '.' + this.conf.classNames[ _ADDON_ ].panelNext ),
+						$prt = $panl.data( _d.parent );
+
+					var _ttl = $ttl.html(),
+						_prv = $prv.attr( 'href' ),
+						_nxt = $nxt.attr( 'href' ),
+						_prt = false;
+
+					var _prv_txt = $prv.html(),
+						_nxt_txt = $nxt.html();
+
+					if ( !_ttl )
+					{
+						_ttl = $panl.children( '.' + _c.header ).children( '.' + _c.title ).html();
+					}
+
+					if ( !_ttl )
+					{
+						_ttl = opts.title;
+					}
+					if ( !_prv )
+					{
+						_prv = $panl.children( '.' + _c.header ).children( '.' + _c.prev ).attr( 'href' );
+					}
+
+					switch ( opts.titleLink )
+					{
+						case 'anchor':
+							var _prt = ( $prt ) ? $prt.children( 'a' ).not( '.' + _c.next ).attr( 'href' ) : false;
+							break;
+						
+						case 'panel':
+							var _prt = _prv;
+							break;
+					}
+
+					$titl[ _prt ? 'attr' : 'removeAttr' ]( 'href', _prt );
+					$titl[ _ttl ? 'removeClass' : 'addClass' ]( _c.hidden );
+					$titl.html( _ttl );
+
+					$prev[ _prv ? 'attr' : 'removeAttr' ]( 'href', _prv );
+					$prev[ _prv || _prv_txt ? 'removeClass' : 'addClass' ]( _c.hidden );
+					$prev.html( _prv_txt );
+
+					$next[ _nxt ? 'attr' : 'removeAttr' ]( 'href', _nxt );
+					$next[ _nxt || _nxt_txt ? 'removeClass' : 'addClass' ]( _c.hidden );
+					$next.html( _nxt_txt );
+				};
+
+				this.bind( 'openPanel', update );
+				this.bind( 'init',
+					function()
+					{
+						update.call( this, this.$menu.children( '.' + _c.current ) );
+					}
+				);
+
+				if ( this.opts.offCanvas )
+				{
+					var setPage = function( $page )
+					{
+						$clse.attr( 'href', '#' + $page.attr( 'id' ) );
+					};
+					setPage.call( this, glbl.$page );
+					this.bind( 'setPage', setPage );
+				}
 			}
 		},
 
-		//	_add: fired once per page load
-		_add: function()
+		//	add: fired once per page load
+		add: function()
 		{
 			_c = $[ _PLUGIN_ ]._c;
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 	
-			_c.add( 'header hasheader prev next close title' );
-	
-			glbl = $[ _PLUGIN_ ].glbl;
-		}
+			_c.add( 'hasheader close' );
+		},
+
+		//	clickAnchor: prevents default behavior when clicking an anchor
+		clickAnchor: function( $a, inMenu ) {}
 	};
 
 
 	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		add		: false,
-//		content	: [ 'prev', 'title', 'next' ],
-		title	: 'Menu',
-		update	: false
+		add			: false,
+//		content		: [ 'prev', 'title', 'next' ],
+		title		: 'Menu',
+		titleLink	: 'panel',
+		update		: false
 	};
 	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
 		panelHeader	: 'Header',

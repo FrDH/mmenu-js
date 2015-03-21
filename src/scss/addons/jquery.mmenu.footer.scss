@@ -2,7 +2,7 @@
 	jQuery.mmenu footer addon CSS
 */
 
-@import "../inc/variables";
+@import "../_inc/variables";
 
 
 .mm-footer
@@ -15,18 +15,21 @@
 	box-sizing: border-box;
 	width: 100%;
 	height: $mm_footerHeight;
-	padding: $mm_padding $mm_padding 0 ( $mm_padding * 2 );
+	padding: $mm_padding $mm_panelPadding;
 	position: absolute;
-	z-index: 2;
+	z-index: 3;
 	bottom: 0;
 	left: 0;
+	
+	//	Bugfix
+	@include mm_webkit_prefix( 'transform', translate3d( 0, 0, 0 ) );
 }
 
 .mm-menu.mm-hasfooter
 {
-	> .mm-panel:after
+	> .mm-panel
 	{
-		height: $mm_footerHeight + $mm_btnSize;
+		bottom: $mm_footerHeight;
 	}
 }
 

@@ -2,7 +2,7 @@
 	jQuery.mmenu toggles addon CSS
 */
 
-@import "../inc/variables";
+@import "../_inc/variables";
 
 
 input.mm-toggle,
@@ -72,28 +72,27 @@ input.mm-check:checked ~ label.mm-check:before
 }
 
 
-// vertical submenu
-.mm-menu.mm-vertical .mm-list
-{
-	> li label
-	{
-		&.mm-toggle,
-		&.mm-check
-		{
-			bottom: auto;
-			margin-bottom: 0;
-		}
-		&.mm-toggle
-		{
-			top: ( $mm_btnSize - $mm_toggleHeight ) / 2;
-
-		}
-		&.mm-check
-		{
-			top: ( $mm_btnSize - $mm_checkHeight ) / 2;
-		}
-	}
-}
+//	Removed support for toggles and checks in vertical submenus
+//.mm-menu.mm-vertical .mm-listview
+//{
+//	> li label
+//	{
+//		&.mm-toggle,
+//		&.mm-check
+//		{
+//			bottom: auto;
+//			margin-bottom: 0;
+//		}
+//		&.mm-toggle
+//		{
+//			top: ( $mm_btnSize - $mm_toggleHeight ) / 2;
+//		}
+//		&.mm-check
+//		{
+//			top: ( $mm_btnSize - $mm_checkHeight ) / 2;
+//		}
+//	}
+//}
 
 
 // positioning
@@ -104,73 +103,71 @@ label
 	{
 		right: $mm_padding * 2;
 	}
-}
-label.mm-toggle
-{
-	+ a,
-	+ span
+	
+	&.mm-toggle
 	{
-		margin-right: $mm_toggleWidth + ( $mm_padding * 2 );
+		+ a,
+		+ span
+		{
+			padding-right: $mm_toggleWidth + ( $mm_padding * 3 );
+		}
 	}
-}
-label.mm-check
-{
-	+ a,
-	+ span
+	
+	&.mm-check
 	{
-		margin-right: $mm_checkWidth + ( $mm_padding * 2 );
+		+ a,
+		+ span
+		{
+			padding-right: $mm_checkWidth + ( $mm_padding * 3 );
+		}
 	}
 }
 
 // positioning with subopen
-a.mm-subopen + label
+a.mm-next + label
 {
 	&.mm-toggle,
 	&.mm-check
 	{
 		right: $mm_subopenWidth + $mm_padding;
+		
+		+ a,
+		+ span
+		{
+			margin-right: $mm_subopenWidth;
+		}
 	}
-}
-a.mm-subopen + label.mm-toggle
-{
-	+ a,
-	+ span
+	&.mm-toggle
 	{
-		margin-right: $mm_subopenWidth + $mm_toggleWidth + $mm_padding;
+		+ a,
+		+ span
+		{
+			padding-right: $mm_toggleWidth + ( $mm_padding * 2 );
+		}
 	}
-}
-a.mm-subopen + label.mm-check
-{
-	+ a,
-	+ span
+	&.mm-check
 	{
-		margin-right: $mm_subopenWidth + $mm_checkWidth + $mm_padding;
+		+ a,
+		+ span
+		{
+			padding-right: $mm_checkWidth + ( $mm_padding * 2 );
+		}
 	}
 }
 
 // positioning with counter
-em.mm-counter + a.mm-subopen + label
+em.mm-counter + a.mm-next + label
 {
 	&.mm-toggle,
 	&.mm-check
 	{
 		right: $mm_counterWidth + $mm_subopenWidth + $mm_padding;
-	}
-}
-em.mm-counter + a.mm-subopen + label.mm-toggle
-{
-	+ a,
-	+ span
-	{
-		margin-right: $mm_counterWidth + $mm_subopenWidth + $mm_toggleWidth + $mm_padding;
-	}
-}
-em.mm-counter + a.mm-subopen + label.mm-check
-{
-	+ a,
-	+ span
-	{
-		margin-right: $mm_counterWidth + $mm_subopenWidth + $mm_checkWidth + $mm_padding;
+
+		+ a,
+		+ span
+		{
+			margin-right: $mm_counterWidth + $mm_subopenWidth;
+		}
 	}
 }
 

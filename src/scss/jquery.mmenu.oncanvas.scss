@@ -1,21 +1,13 @@
 /*
-	jQuery.mmenu panels CSS
+	jQuery.mmenu oncanvas CSS
 */
-@import "inc/variables";
-
-
-//	Animations
-.mm-menu.mm-horizontal > .mm-panel
-{
-	-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
-	transition: transform $mm_transitionDuration $mm_transitionFunction;
-}
+@import "_inc/variables";
 
 
 //	Generic classes
-.mm-menu .mm-hidden
+.mm-hidden
 {
-	display: none;
+	display: none !important;
 }
 
 
@@ -26,15 +18,17 @@
 	position: relative;
 }
 
+
 //	Menu
 .mm-menu,
 .mm-menu > .mm-panel
 {
-	width: 100%;
-	height: 100%;
+	margin: 0;
 	position: absolute;
 	left: 0;
+	right: 0;
 	top: 0;
+	bottom: 0;
 	z-index: 0;
 }
 .mm-menu
@@ -43,72 +37,165 @@
 	display: block;
 	overflow: hidden;
 	padding: 0;
+}
 
-	> .mm-panel
+
+//	Panels
+.mm-panel
+{
+	-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
+	-moz-transition: -moz-transform $mm_transitionDuration $mm_transitionFunction;
+	-ms-transition: -ms-transform $mm_transitionDuration $mm_transitionFunction;
+	-o-transition: -o-transform $mm_transitionDuration $mm_transitionFunction;
+	transition: transform $mm_transitionDuration $mm_transitionFunction;
+
+	@include mm_webkit_prefix( 'transform', translate3d( 100%, 0, 0 ) );
+	
+	&.mm-opened
 	{
-		background: inherit;
+		@include mm_webkit_prefix( 'transform', translate3d( 0%, 0, 0 ) );
+	}
+	&.mm-subopened
+	{
+		@include mm_webkit_prefix( 'transform', translate3d( -$mm_subpanelOffset, 0, 0 ) );
+	}
+	&.mm-highest
+	{
+		z-index: 1;
+	}
+}
 
-		-webkit-overflow-scrolling: touch;
-		overflow: scroll;
-		overflow-x: hidden;
-		overflow-y: auto;
+.mm-menu > .mm-panel
+{
+	background: inherit;
 
-		box-sizing: border-box;	
-		padding: $mm_padding * 2;
+	-webkit-overflow-scrolling: touch;
+	overflow: scroll;
+	overflow-x: hidden;
+	overflow-y: auto;
 
-		@include mm_webkit-prefix( 'transform', translate( 100%, 0 ) );
-		
-		&.mm-opened
-		{
-			@include mm_webkit-prefix( 'transform', translate( 0%, 0 ) );
-		}
-		&.mm-subopened
-		{
-			@include mm_webkit-prefix( 'transform', translate( -$mm_subpanelOffset, 0 ) );
-		}
-		&.mm-highest
-		{
-			z-index: 1;
-		}
+	box-sizing: border-box;	
+	padding: 0 $mm_panelPadding;
+
+	&.mm-hasheader
+	{
+		padding-top: $mm_headerHeight;
 	}
 
-	//	Lists
-	.mm-list
+	//	Because padding-bottom in some browsers is ignored when a DIV is scrollable
+	&:before,
+	&:after
 	{
-		padding: ( $mm_btnSize / 2 ) 0;
+		content: '';
+		display: block;
+		height: $mm_panelPadding;
 	}
-	> .mm-list
+}
+
+
+//	Vertical
+.mm-vertical .mm-panel
+{
+	@include mm_webkit_prefix( 'transform', none !important );
+}
+
+.mm-vertical .mm-listview .mm-panel,
+.mm-listview .mm-vertical .mm-panel
+{
+	display: none;
+	padding: $mm_padding 0 $mm_padding $mm_padding;
+
+	.mm-listview > li:last-child:after
 	{
-		padding-bottom: 0;
+		border-color: transparent;
+	}
+}
+.mm-vertical li.mm-opened > .mm-panel,
+li.mm-vertical.mm-opened > .mm-panel
+{
+	display: block;
+}
+.mm-vertical .mm-listview > li,
+.mm-listview > li.mm-vertical
+{
+	> .mm-next
+	{
+		height: $mm_btnSize;
+		bottom: auto;
 
 		&:after
 		{
-			content: '';
-			display: block;
-			height: $mm_btnSize;
+			top: ( $mm_btnSize / 2 ) - 4;
+			bottom: auto;
+		}
+	}
+	&.mm-opened
+	{
+		> .mm-next:after
+		{
+			@include mm_webkit_prefix( "transform", rotate( 45deg ) );
 		}
 	}
 }
-.mm-panel > .mm-list
+
+.mm-header
 {
-	margin-left: -( $mm_padding * 2 );
-	margin-right: -( $mm_padding * 2 );
-	
-	&:first-child
+	border-bottom: 1px solid transparent;
+	text-align: center;
+	line-height: $mm_btnSize / 2;
+
+	height: $mm_headerHeight;
+	padding: 0 $mm_btnSize;
+
+	margin: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+
+	> a
 	{
-		padding-top: 0;
+		text-decoration: none;
+		display: block;
+		padding: ( $mm_btnSize / 4 ) 0;
+	}
+	.mm-title
+	{
+		@include mm_ellipsis;
+	}
+	.mm-btn
+	{
+		box-sizing: border-box;
+		width: $mm_btnSize;
+		height: $mm_btnSize;
+		position: absolute;
+		top: 0;
+		z-index: 1;
+
+		&:first-child
+		{
+			padding-left: $mm_panelPadding;
+			left: 0;
+		}
+		&:last-child
+		{
+			padding-right: $mm_panelPadding;
+			right: 0;
+		}
 	}
 }
 
-.mm-list,
-.mm-list > li
+
+//	Listviews
+.mm-listview,
+.mm-listview > li
 {
 	list-style: none;
 	display: block;
 	padding: 0;
 	margin: 0;
 }
-.mm-list
+.mm-listview
 {
 	font: inherit;
 	font-size: $mm_fontSize;
@@ -131,37 +218,40 @@
 			color: inherit;
 			line-height: $mm_btnSize - ( $mm_padding * 2 );
 			display: block;
-			padding: $mm_padding $mm_padding $mm_padding ( $mm_padding * 2 );
+			padding: $mm_listitemPadding $mm_listitemPadding $mm_listitemPadding $mm_listitemIndent;
 			margin: 0;
 		}
-	}
-
-	> li:not(.mm-subtitle):not(.mm-label):not(.mm-search):not(.mm-noresults)
-	{
-		@include mm_border-bottom;
-
-		&:after
+		
+		&:not(.mm-divider)
 		{
-			width: auto;
-			margin-left: ( $mm_padding * 2 );
-			position: relative;
-			left: auto;
+			@include mm_border_bottom;
+
+			&:after
+			{
+				left: $mm_listitemIndent;
+			}
 		}
 	}
 
-	// subopen/close
-	a.mm-subopen
+	// subopen
+	.mm-next
 	{
-		@include mm_border-left;
+		@include mm_border_left;
 
 		background: rgba( 3, 2, 1, 0 );
 		width: $mm_subopenWidth;
-		height: 100%;
 		padding: 0;
 		position: absolute;
 		right: 0;
 		top: 0;
+		bottom: 0;
 		z-index: 2;
+
+		+ a,
+		+ span
+		{
+			margin-right: $mm_subopenWidth;
+		}
 
 		&.mm-fullsubopen
 		{
@@ -171,128 +261,82 @@
 			{
 				border-left: none;
 			}
-		}
-
-		+ a,
-		+ span
-		{
-			padding-right: ( $mm_padding / 2 );
-			margin-right: $mm_subopenWidth;
-		}
-	}
-
-	> li.mm-selected
-	{
-		> a.mm-subopen
-		{
-			background: transparent;
-		}
-		> a.mm-fullsubopen
-		{
+			
 			+ a,
 			+ span
 			{
-				padding-right: $mm_btnSize + ( $mm_padding / 2 );
+				padding-right: $mm_subopenWidth;
 				margin-right: 0;
 			}
 		}
 	}
-	
-	a.mm-subclose
+
+	&.mm-first
 	{
-		text-indent: $mm_btnSize - ( $mm_padding * 2 );
-		padding-top: ( $mm_btnSize / 2 ) + $mm_padding;
-		margin-top: -( $mm_btnSize / 2 );
+		margin-top: -$mm_panelPadding;
 	}
-
-	// Labels
-	> li.mm-label
+}
+.mm-menu > .mm-panel
+{
+	> .mm-listview
 	{
-		@include mm_ellipsis;
+		margin-left: -$mm_panelPadding;
+		margin-right: -$mm_panelPadding;
 
-		font-size: 10px;
-		text-transform: uppercase;
-		text-indent: $mm_padding * 2;
-		line-height: $mm_labelHeight;
-		padding-right: $mm_padding / 2;
+		&.mm-last
+		{
+			padding-bottom: $mm_panelPadding;
+		}
 	}
+}
 
-	// Spacers
-	> li.mm-spacer
+
+// Arrows
+.mm-prev:before,
+.mm-next:after
+{
+	@include mm_arrow;
+}
+.mm-prev:before
+{
+	@include mm_arrow_prev;
+}
+.mm-next:after
+{
+	@include mm_arrow_next;	
+}
+
+
+// Dividers
+.mm-divider
+{
+	@include mm_ellipsis;
+
+	font-size: $mm_dividerFontSize;
+	text-transform: uppercase;
+	text-indent: $mm_listitemIndent;
+	line-height: $mm_dividerHeight;
+}
+
+
+// Spacers
+.mm-listview > li
+{
+	&.mm-spacer
 	{
 		padding-top: $mm_btnSize;
 		
-		&.mm-label
+		> .mm-next
 		{
-			padding-top: $mm_labelHeight;
+			top: $mm_btnSize;
 		}
-	}
-
-	// Arrows
-	a.mm-subopen:after,
-	a.mm-subclose:before
-	{
-		@include mm_arrow;
-
-		margin-bottom: -5px;
-		position: absolute;
-		bottom: 50%;
-	}
-	a.mm-subopen:after
-	{
-		@include mm_arrow-next;
-
-		right: 18px;
-	}
-	a.mm-subclose:before
-	{
-		@include mm_arrow-prev;
-
-		margin-bottom: -( $mm_padding * 2 ) + 5;
-		left: 22px;
-	}
-}
-
-// vertical submenu
-.mm-menu.mm-vertical .mm-list
-{
-	.mm-panel
-	{
-		display: none;
-		padding: $mm_padding 0 $mm_padding $mm_padding;
 		
-		li:last-child:after
+		&.mm-divider
 		{
-			border-color: transparent;
-		}
-	}
-	li.mm-opened > .mm-panel
-	{
-		display: block;
-	}
-	> li
-	{
-		> a.mm-subopen
-		{
-			height: $mm_btnSize;
-			&:after
-			{
-				top: ( $mm_btnSize / 2 ) - 4;
-				bottom: auto;
-			}
-		}
-		&.mm-opened
-		{
-			> a.mm-subopen:after
-			{
-				@include mm_webkit-prefix( "transform", rotate( 45deg ) );
-			}
-		}
-		&.mm-label > a.mm-subopen
-		{
-			height: $mm_labelHeight;
+			padding-top: $mm_dividerHeight;
 		}
 	}
 }
+
 
 @include mm_colors;

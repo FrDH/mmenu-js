@@ -14,11 +14,8 @@
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
 
-		//	_init: fired when (re)initiating the plugin
-		_init: function( $panels ) {},
-
-		//	_setup: fired once per menu
-		_setup: function()
+		//	setup: fired once per menu
+		setup: function()
 		{
 			if ( !this.opts[ _ADDON_ ] )
 			{
@@ -29,8 +26,21 @@
 				opts = this.opts[ _ADDON_ ],
 				conf = this.conf[ _ADDON_ ];
 
+			glbl = $[ _PLUGIN_ ].glbl;
 
-			//	Extend shortcut configuration
+
+			//	Add methods to api
+			this._api = $.merge( this._api, [ 'open', 'close', 'setPage' ] );
+
+
+			//	Debug positioning
+			if ( opts.position == 'top' || opts.position == 'bottom' )
+			{
+				opts.zposition = 'front';
+			}
+
+
+			//	Extend configuration
 			if ( typeof conf.pageSelector != 'string' )
 			{
 				conf.pageSelector = '> ' + conf.pageNodetype;
@@ -44,7 +54,7 @@
 			this.vars.opened = false;
 			
 			var clsn = [ _c.offcanvas ];
-	
+
 			if ( opts.position != 'left' )
 			{
 				clsn.push( _c.mm( opts.position ) );
@@ -59,39 +69,22 @@
 				.parent()
 				.removeClass( _c.wrapper );
 
-			
+
 			//	Setup the page
 			this.setPage( glbl.$page );
 
 
 			//	Setup the UI blocker and the window
-			this[ _ADDON_ + '_initBlocker' ]();
-			this[ _ADDON_ + '_initWindow' ]();
-
-
-			//	Add events
-			this.$menu
-				.on( _e.open + ' ' + _e.opening + ' ' + _e.opened + ' ' + 
-					_e.close + ' ' + _e.closing + ' ' + _e.closed + ' ' + _e.setPage,
-					function( e )
-					{
-						e.stopPropagation();
-					}
-				)
-				.on( _e.open + ' ' + _e.close + ' ' + _e.setPage,
-					function( e )
-					{
-						that[ e.type ]();
-					}
-				);
+			this._initBlocker();
+			this[ '_initWindow_' + _ADDON_ ]();
 
 
 			//	Append to the body
 			this.$menu[ conf.menuInjectMethod + 'To' ]( conf.menuWrapperSelector );
 		},
 
-		//	_add: fired once per page load
-		_add: function()
+		//	add: fired once per page load
+		add: function()
 		{
 			_c = $[ _PLUGIN_ ]._c;
 			_d = $[ _PLUGIN_ ]._d;
@@ -99,13 +92,11 @@
 
 			_c.add( 'offcanvas slideout modal background opening blocker page' );
 			_d.add( 'style' );
-			_e.add( 'opening opened closing closed setPage' );
-	
-			glbl = $[ _PLUGIN_ ].glbl;
+			_e.add( 'resize' );
 		},
 
-		//	_clickAnchor: prevents default behavior when clicking an anchor
-		_clickAnchor: function( $a, inMenu )
+		//	clickAnchor: prevents default behavior when clicking an anchor
+		clickAnchor: function( $a, inMenu )
 		{
 			if ( !this.opts[ _ADDON_ ] )
 			{
@@ -167,7 +158,7 @@
 	{
 		if ( this.vars.opened )
 		{
-			return false;
+			return;
 		}
 
 		var that = this;
@@ -181,8 +172,7 @@
 				that._openFinish();
 			}, this.conf.openingInterval
 		);
-
-		return 'open';
+		this.trigger( 'open' );
 	};
 
 	$[ _PLUGIN_ ].prototype._openSetup = function()
@@ -190,13 +180,13 @@
 		var that = this;
 
 		//	Close other menus
-		glbl.$allMenus.not( this.$menu ).trigger( _e.close );
+		this.closeAllOthers();
 
 		//	Store style and position
 		glbl.$page.data( _d.style, glbl.$page.attr( 'style' ) || '' );
 
 		//	Trigger window-resize to measure height
-		glbl.$wndw.trigger( _e.resize, [ true ] );
+		glbl.$wndw.trigger( _e.resize + '-offcanvas', [ true ] );
 
 		var clsn = [ _c.opened ];
 
@@ -217,9 +207,9 @@
 		{
 			clsn.push( _c.mm( this.opts[ _ADDON_ ].zposition ) );
 		}
-		if ( this.opts.classes )
+		if ( this.opts.extensions )
 		{
-			clsn.push( this.opts.classes );
+			clsn.push( this.opts.extensions );
 		}
 		glbl.$html.addClass( clsn.join( ' ' ) );
 
@@ -239,20 +229,20 @@
 		this.__transitionend( glbl.$page,
 			function()
 			{
-				that.$menu.trigger( _e.opened );
+				that.trigger( 'opened' );
 			}, this.conf.transitionDuration
 		);
 
 		//	Opening
 		glbl.$html.addClass( _c.opening );
-		this.$menu.trigger( _e.opening );
+		this.trigger( 'opening' );
 	};
 
 	$[ _PLUGIN_ ].prototype.close = function()
 	{
 		if ( !this.vars.opened )
 		{
-			return false;
+			return;
 		}
 
 		var that = this;
@@ -272,30 +262,45 @@
 					.removeClass( _c.mm( that.opts[ _ADDON_ ].position ) )
 					.removeClass( _c.mm( that.opts[ _ADDON_ ].zposition ) );
 
-				if ( that.opts.classes )
+				if ( that.opts.extensions )
 				{
-					glbl.$html.removeClass( that.opts.classes );
+					glbl.$html.removeClass( that.opts.extensions );
 				}
 
 				//	Restore style and position
 				glbl.$page.attr( 'style', glbl.$page.data( _d.style ) );
 
 				that.vars.opened = false;
-				that.$menu.trigger( _e.closed );
+				that.trigger( 'closed' );
 
 			}, this.conf.transitionDuration
 		);
 
 		//	Closing
 		glbl.$html.removeClass( _c.opening );
-		this.$menu.trigger( _e.closing );
-
-		return 'close';
+		this.trigger( 'close' );
+		this.trigger( 'closing' );
 	};
-	
+
+	$[ _PLUGIN_ ].prototype.closeAllOthers = function()
+	{
+		glbl.$allMenus
+			.not( this.$menu )
+			.each(
+				function()
+				{
+					var api = $(this).data( _PLUGIN_ );
+					if ( api && api.close )
+					{
+						api.close();
+					}
+				}
+			);
+	}
+
 	$[ _PLUGIN_ ].prototype.setPage = function( $page )
 	{
-		if ( !$page )
+		if ( !$page || !$page.length )
 		{
 			$page = $(this.conf[ _ADDON_ ].pageSelector, glbl.$body);
 			if ( $page.length > 1 )
@@ -304,15 +309,19 @@
 			}
 		}
 
+		$page.attr( 'id', $page.attr( 'id' ) || this.__getUniqueId() );
 		$page.addClass( _c.page + ' ' + _c.slideout );
-		glbl.$page = $page;			
+		glbl.$page = $page;
+
+		this.trigger( 'setPage', $page );
 	};
 
-	$[ _PLUGIN_ ].prototype[ _ADDON_ + '_initWindow' ] = function()
+	$[ _PLUGIN_ ].prototype[ '_initWindow_' + _ADDON_ ] = function()
 	{
 		//	Prevent tabbing
 		glbl.$wndw
-			.on( _e.keydown,
+			.off( _e.keydown + '-offcanvas' )
+			.on( _e.keydown + '-offcanvas',
 				function( e )
 				{
 					if ( glbl.$html.hasClass( _c.opened ) )
@@ -329,7 +338,8 @@
 		//	Set page min-height to window height
 		var _h = 0;
 		glbl.$wndw
-			.on( _e.resize,
+			.off( _e.resize + '-offcanvas' )
+			.on( _e.resize + '-offcanvas',
 				function( e, force )
 				{
 					if ( force || glbl.$html.hasClass( _c.opened ) )
@@ -343,20 +353,20 @@
 					}
 				}
 			);
-
-
-		//	Once fired, it can be removed
-		$[ _PLUGIN_ ].prototype[ _ADDON_ + '_initWindow' ] = function() {};
 	};
 
-	$[ _PLUGIN_ ].prototype[ _ADDON_ + '_initBlocker' ] = function()
+	$[ _PLUGIN_ ].prototype._initBlocker = function()
 	{
-		var that = this;
-		var $blck = $( '<div id="' + _c.blocker + '" class="' + _c.slideout + '" />' )
-			.appendTo( glbl.$body );
-			
-		$blck
-			.on( _e.touchstart,
+		if ( !glbl.$blck )
+		{
+			var that = this;
+			glbl.$blck = $( '<div id="' + _c.blocker + '" class="' + _c.slideout + '" />' );
+		}
+
+		glbl.$blck
+			.appendTo( glbl.$body )
+			.off( _e.touchstart + '-offcanvas ' + _e.touchmove + '-offcanvas' )
+			.on( _e.touchstart + '-offcanvas ' + _e.touchmove + '-offcanvas',
 				function( e )
 				{
 					e.preventDefault();
@@ -364,20 +374,18 @@
 					$blck.trigger( _e.mousedown );
 				}
 			)
-			.on( _e.mousedown,
+			.off( _e.mousedown + '-offcanvas' )
+			.on( _e.mousedown + '-offcanvas',
 				function( e )
 				{
 					e.preventDefault();
 					if ( !glbl.$html.hasClass( _c.modal ) )
 					{
-						glbl.$allMenus.trigger( _e.close );
+						that.closeAllOthers();
+						that.close();
 					}
 				}
 			);
-
-
-		//	Once fired, it can be removed
-		$[ _PLUGIN_ ].prototype[ _ADDON_ + '_initBlocker' ] = function() {};
 	};
 
 

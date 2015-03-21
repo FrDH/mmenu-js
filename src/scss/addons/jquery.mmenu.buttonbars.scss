@@ -2,7 +2,7 @@
 	jQuery.mmenu buttonbars addon CSS
 */
 
-@import "../inc/variables";
+@import "../_inc/variables";
 
 
 .mm-buttonbar
@@ -90,7 +90,7 @@
 	}
 }
 
-.mm-list > li > .mm-buttonbar
+.mm-listview > li > .mm-buttonbar
 {
 	margin: $mm_padding ( $mm_padding * 2 );
 }

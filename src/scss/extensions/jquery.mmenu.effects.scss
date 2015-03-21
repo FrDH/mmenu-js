@@ -2,151 +2,101 @@
 	jQuery.mmenu effects extension CSS
 */
 
-@import "../inc/variables";
+@import "../_inc/variables";
 
 
 //	Slide
-html.mm-slide
+html.mm-effect-slide
 {
-	.mm-menu
+	.mm-menu.mm-offcanvas
 	{
 		-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
 		transition: transform $mm_transitionDuration $mm_transitionFunction;
 	}
 
 	//	Left
-	&.mm-opened .mm-menu
+	&.mm-opened .mm-menu.mm-offcanvas
 	{
-		@include mm_webkit-prefix( 'transform', translateX( -$mm_subpanelOffset ) );
+		@include mm_webkit_prefix( 'transform', translate3d( -$mm_subpanelOffset, 0, 0 ) );
 	}
-	&.mm-opening .mm-menu
+	&.mm-opening .mm-menu.mm-offcanvas
 	{
-		@include mm_webkit-prefix( 'transform', translateX( 0% ) );
+		@include mm_webkit_prefix( 'transform', translate3d( 0%, 0, 0 ) );
 	}
 
 	//	Right
 	&.mm-right
 	{
-		&.mm-opened .mm-menu
+		&.mm-opened .mm-menu.mm-offcanvas
 		{
-			@include mm_webkit-prefix( 'transform', translateX( $mm_subpanelOffset ) );
+			@include mm_webkit_prefix( 'transform', translate3d( $mm_subpanelOffset, 0, 0 ) );
 		}
-		&.mm-opening .mm-menu
+		&.mm-opening .mm-menu.mm-offcanvas
 		{
-			@include mm_webkit-prefix( 'transform', translateX( 0% ) );
-		}
-	}
-
-	//	Top
-	&.mm-top
-	{
-		&.mm-opened .mm-menu
-		{
-			@include mm_webkit-prefix( 'transform', translateY( -$mm_subpanelOffset ) );
-		}
-		&.mm-opening .mm-menu
-		{
-			@include mm_webkit-prefix( 'transform', translateY( 0% ) );
-		}
-	}
-
-	//	Bottom
-	&.mm-bottom
-	{
-		&.mm-opened .mm-menu
-		{
-			@include mm_webkit-prefix( 'transform', translateY( $mm_subpanelOffset ) );
-		}
-		&.mm-opening .mm-menu
-		{
-			@include mm_webkit-prefix( 'transform', translateY( 0% ) );
+			@include mm_webkit_prefix( 'transform', translate3d( 0%, 0, 0 ) );
 		}
 	}
 }
 
 
 //	Zoom menu
-$mm_scaleDown: 0.7;
-$mm_scaleUp: 1.5;
-html.mm-zoom-menu
+html.mm-effect-zoom-menu
 {
-	.mm-menu
+	.mm-menu.mm-offcanvas
 	{
 		-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
+		-moz-transition: -moz-transform $mm_transitionDuration $mm_transitionFunction;
+		-ms-transition: -ms-transform $mm_transitionDuration $mm_transitionFunction;
+		-o-transition: -o-transform $mm_transitionDuration $mm_transitionFunction;
 		transition: transform $mm_transitionDuration $mm_transitionFunction;
 	}
 
 	//	Left
-	&.mm-opened .mm-menu
+	&.mm-opened .mm-menu.mm-offcanvas
 	{
-		@include mm_webkit-prefix( 'transform', scale( $mm_scaleDown, $mm_scaleDown ) translateX( -$mm_subpanelOffset ) );
-		@include mm_webkit-prefix( 'transform-origin', left center );
+		@include mm_webkit_prefix( 'transform', scale( $mm_zoomScaleDown, $mm_zoomScaleDown ) translate3d( -$mm_subpanelOffset, 0, 0 ) );
+		@include mm_webkit_prefix( 'transform-origin', left center );
 	}
-	&.mm-opening .mm-menu
+	&.mm-opening .mm-menu.mm-offcanvas
 	{
-		@include mm_webkit-prefix( 'transform', scale( 1, 1 ) translateX( 0% ) );
+		@include mm_webkit_prefix( 'transform', scale( 1, 1 ) translate3d( 0%, 0, 0 ) );
 	}
 
 	//	Right
 	&.mm-right
 	{
-		&.mm-opened .mm-menu
+		&.mm-opened .mm-menu.mm-offcanvas
 		{
-			@include mm_webkit-prefix( 'transform', scale( $mm_scaleDown, $mm_scaleDown) translateX( $mm_subpanelOffset ) );
-			@include mm_webkit-prefix( 'transform-origin', right center );
+			@include mm_webkit_prefix( 'transform', scale( $mm_zoomScaleDown, $mm_zoomScaleDown) translate3d( $mm_subpanelOffset, 0, 0 ) );
+			@include mm_webkit_prefix( 'transform-origin', right center );
 		}
-		&.mm-opening .mm-menu
+		&.mm-opening .mm-menu.mm-offcanvas
 		{
-			@include mm_webkit-prefix( 'transform', scale( 1, 1 ) translateX( 0% ) );
-		}
-	}
-
-	//	Top
-	&.mm-top
-	{
-		&.mm-opened .mm-menu
-		{
-			@include mm_webkit-prefix( 'transform', scale( $mm_scaleDown, $mm_scaleDown ) translateY( -$mm_subpanelOffset ) );
-			@include mm_webkit-prefix( 'transform-origin', center top );
-		}
-		&.mm-opening .mm-menu
-		{
-			@include mm_webkit-prefix( 'transform', scale( 1, 1 ) translateY( 0% ) );
-		}
-	}
-
-	//	Bottom
-	&.mm-bottom
-	{
-		&.mm-opened .mm-menu
-		{
-			@include mm_webkit-prefix( 'transform', scale( $mm_scaleDown, $mm_scaleDown ) translateY( $mm_subpanelOffset ) );
-			@include mm_webkit-prefix( 'transform-origin', center bottom );
-		}
-		&.mm-opening .mm-menu
-		{
-			@include mm_webkit-prefix( 'transform', scale( 1, 1 ) translateY( 0% ) );
+			@include mm_webkit_prefix( 'transform', scale( 1, 1 ) translate3d( 0%, 0, 0 ) );
 		}
 	}
 }
 
 
 //	Zoom panels
-html.mm-zoom-panels .mm-menu.mm-horizontal > .mm-panel
+html.mm-effect-zoom-panels .mm-menu .mm-panel
 {
-	@include mm_webkit-prefix( 'transform', scale( $mm_scaleUp, $mm_scaleUp ) translateX( 100% ) );
-	@include mm_webkit-prefix( 'transform-origin', left center );
+	@include mm_webkit_prefix( 'transform', scale( $mm_zoomScaleUp, $mm_zoomScaleUp ) translate3d( 100%, 0, 0 ) );
+	@include mm_webkit_prefix( 'transform-origin', left center );
 
 	-webkit-transition-property: -webkit-transform, left;
+	-moz-transition-property: -moz-transform, left;
+	-ms-transition-property: -ms-transform, left;
+	-o-transition-property: -o-transform, left;
 	transition-property: transform, left;
 	
 	&.mm-opened
 	{
-		@include mm_webkit-prefix( 'transform', scale( 1, 1 ) translateX( 0% ) );
+		@include mm_webkit_prefix( 'transform', scale( 1, 1 ) translate3d( 0%, 0, 0 ) );
 		
 		&.mm-subopened
 		{
-			@include mm_webkit-prefix( 'transform', scale( $mm_scaleDown, $mm_scaleDown ) translateX( -$mm_subpanelOffset ) );
+			@include mm_webkit_prefix( 'transform', scale( $mm_zoomScaleDown, $mm_zoomScaleDown ) translate3d( -$mm_subpanelOffset, 0, 0 ) );
 		}
 	}
 }

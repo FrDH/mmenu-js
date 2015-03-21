@@ -2,30 +2,25 @@
 	jQuery.mmenu iconbar extension CSS
 */
 
-@import "../inc/variables";
+@import "../_inc/variables";
 
-
-$mm_ib_pageOffset: $mm_btnSize + ( $mm_padding * 2 ) !default;
 
 body
 {
 	overflow-x: hidden;
 }
-
+.mm-menu.mm-iconbar
+{
+	display: block;
+}
 .mm-page
 {
 	background: inherit;
 	min-height: 100vh;
-
-	padding-right: $mm_ib_pageOffset;
-	@include mm-webkit-prefix( 'transform', translateX( $mm_ib_pageOffset ) );
 }
-
-.mm-menu
+.mm-slideout
 {
-	&:first-child,
-	&.mm-current
-	{
-		display: block;
-	}
+	box-sizing: border-box;	
+	padding-right: $mm_iconbarWidth;
+	@include mm-webkit-prefix( 'transform', translate3d( $mm_iconbarWidth, 0, 0 ) );
 }

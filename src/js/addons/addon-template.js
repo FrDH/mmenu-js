@@ -13,40 +13,42 @@
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-	
-		//	_init: fired when (re)initiating the plugin
-		_init: function( $panels )
-		{			
-//			var that = this,
-//				opts = this.opts[ _ADDON_ ],
-//				conf = this.conf[ _ADDON_ ];
-	
-			//	...
 
-		},
-
-		//	_setup: fired once per menu
-		_setup: function()
+		//	setup: fired once per menu
+		setup: function()
 		{
+			var that = this,
+				opts = this.opts[ _ADDON_ ],
+				conf = this.conf[ _ADDON_ ];
+
+			glbl = $[ _PLUGIN_ ].glbl;
+
 			//	Extend shortcut options
 			//	Extend shortcut configuration
 			//	...
+
+			//	Add methods to api
+//			this._api = $.merge( this._api, [ 'fn1', 'fn2' ] );
+
+			//	Bind functions to update
+//			this.bind( 'update', function() {} );
+//			this.bind( 'init', function() {} );
+//			this.bind( 'initPage', function() {} );
+
 		},
 
-		//	_add: fired once per page load
-		_add: function()
+		//	add: fired once per page load
+		add: function()
 		{
 			_c = $[ _PLUGIN_ ]._c;
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 	
 			//	...Add classnames, data and events
-	
-			glbl = $[ _PLUGIN_ ].glbl;
 		},
-		
-		//	_clickAnchor: prevents default behavior when clicking an anchor
-		_clickAnchor: function( $a, inMenu )
+
+		//	clickAnchor: prevents default behavior when clicking an anchor
+		clickAnchor: function( $a, inMenu )
 		{
 //			if ( $a.is( '.CLASSNAME' ) )
 //			{

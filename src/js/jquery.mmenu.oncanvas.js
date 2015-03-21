@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v4.7.5
+ * jQuery mmenu v5.0.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '4.7.5';
+		_VERSION_	= '5.0.0';
 
 
 	//	Plugin already excists
@@ -25,26 +25,18 @@
 	}
 
 
-	//	Global variables
-	var _c = {}, _d = {}, _e = {},
-		plugin_initiated = false;
-
-	var glbl = {
-		$wndw: null,
-		$html: null,
-		$body: null
-	};
-
-
 	/*
 		Class
 	*/
 	$[ _PLUGIN_ ] = function( $menu, opts, conf )
 	{
 		this.$menu	= $menu;
+		this._api	= [ 'bind', 'init', 'update', 'setSelected', 'getInstance', 'openPanel', 'closePanel', 'closeAllPanels' ];
 		this.opts	= opts;
 		this.conf	= conf;
 		this.vars	= {};
+		this.cbck	= {};
+
 
 		if ( typeof this.___deprecated == 'function' )
 		{
@@ -53,21 +45,12 @@
 
 		this._initMenu();
 		this._initAnchors();
-		this._initEvents();
 
 		var $panels = this.$menu.children( this.conf.panelNodetype );
+		
+		this._initAddons();
+		this.init( $panels );
 
-		for ( var a in $[ _PLUGIN_ ].addons )
-		{
-			//	Add add-ons to plugin
-			$[ _PLUGIN_ ].addons[ a ]._add.call( this );
-			$[ _PLUGIN_ ].addons[ a ]._add = function() {};
-
-			//	Setup adds-on for menu
-			$[ _PLUGIN_ ].addons[ a ]._setup.call( this );
-		}
-
-		this._init( $panels );
 
 		if ( typeof this.___debug == 'function' )
 		{
@@ -77,46 +60,194 @@
 		return this;
 	};
 
-	$[ _PLUGIN_ ].version = _VERSION_;
+	$[ _PLUGIN_ ].version 	= _VERSION_;
+	$[ _PLUGIN_ ].addons 	= {};
+	$[ _PLUGIN_ ].uniqueId 	= 0;
 
-	$[ _PLUGIN_ ].addons = {};
 
-	$[ _PLUGIN_ ].uniqueId = 0;
-	
-	$[ _PLUGIN_ ].defaults = {
-		classes			: '',
-		slidingSubmenus	: true,
+	$[ _PLUGIN_ ].defaults 	= {
+		extensions		: [],
 		onClick			: {
-//			close				: true,
-//			blockUI				: null,
-//			preventDefault		: null,
-			setSelected			: true
-		}
+//			close			: true,
+//			blockUI			: null,
+//			preventDefault	: null,
+			setSelected		: true
+		},
+		slidingSubmenus	: true
 	};
 
 	$[ _PLUGIN_ ].configuration = {
-		panelNodetype		: 'ul, ol, div',
-		transitionDuration	: 400,
-		openingInterval		: 25,
-		classNames	: {
+		classNames			: {
 			panel		: 'Panel',
+			vertical	: 'Vertical',
 			selected	: 'Selected',
-			label		: 'Label',
+			divider		: 'Divider',
 			spacer		: 'Spacer'
-		}
+		},
+		clone				: false,
+		openingInterval		: 25,
+		panelNodetype		: 'ul, ol, div',
+		transitionDuration	: 400
 	};
+
 	$[ _PLUGIN_ ].prototype = {
 
-		_init: function( $panels )
+		init: function( $panels )
 		{
 			$panels = $panels.not( '.' + _c.nopanel );
 			$panels = this._initPanels( $panels );
 
-			for ( var a in $[ _PLUGIN_ ].addons )
+			this.trigger( 'init', $panels );
+			this.trigger( 'update' );
+		},
+
+		update: function()
+		{
+			this.trigger( 'update' );
+		},
+
+		setSelected: function( $i )
+		{
+			this.$menu.find( '.' + _c.listview ).children().removeClass( _c.selected );
+			$i.addClass( _c.selected );
+			this.trigger( 'setSelected', $i );
+		},
+		
+		openPanel: function( $panel )
+		{
+			var $l = $panel.parent();
+
+			//	Vertical
+			if ( $l.hasClass( _c.vertical ) )
 			{
-				$[ _PLUGIN_ ].addons[ a ]._init.call( this, $panels );
+				var $sub = $l.parents( '.' + _c.subopened );
+				if ( $sub.length )
+				{
+					return this.openPanel( $sub.first() );
+				}
+				$l.addClass( _c.opened );
 			}
-			this._update();
+
+			//	Horizontal
+			else
+			{
+				if ( $panel.hasClass( _c.current ) )
+				{
+					return;
+				}
+
+				var $panels = $(this.$menu).children( '.' + _c.panel ),
+					$current = $panels.filter( '.' + _c.current );
+
+				$panels
+					.removeClass( _c.highest )
+					.removeClass( _c.current )
+					.not( $panel )
+					.not( $current )
+					.not( '.' + _c.vertical )
+					.addClass( _c.hidden );
+
+				if ( $panel.hasClass( _c.opened ) )
+				{
+					$current
+						.addClass( _c.highest )
+						.removeClass( _c.opened )
+						.removeClass( _c.subopened );
+				}
+				else
+				{
+					$panel.addClass( _c.highest );
+					$current.addClass( _c.subopened );
+				}
+
+				$panel
+					.removeClass( _c.hidden )
+					.addClass( _c.current );
+
+				//	Without the timeout, the animation won't work because the element had display: none;
+				setTimeout(
+					function()
+					{
+						$panel
+							.removeClass( _c.subopened )
+							.addClass( _c.opened );
+					}, this.conf.openingInterval
+				);
+			}
+			this.trigger( 'openPanel', $panel );
+		},
+
+		closePanel: function( $panel )
+		{
+			var $l = $panel.parent();
+
+			//	Vertical only
+			if ( $l.hasClass( _c.vertical ) )
+			{
+				$l.removeClass( _c.opened );
+				this.trigger( 'closePanel', $panel );
+			}
+		},
+
+		closeAllPanels: function()
+		{
+			//	Vertical
+			this.$menu.find( '.' + _c.listview )
+				.children()
+				.removeClass( _c.selected )
+				.filter( '.' + _c.vertical )
+				.removeClass( _c.opened );
+
+			//	Horizontal
+			var $pnls = this.$menu.children( '.' + _c.panel ),
+				$frst = $pnls.first();
+
+			this.$menu.children( '.' + _c.panel )
+				.not( $frst )
+				.removeClass( _c.subopened )
+				.removeClass( _c.opened )
+				.removeClass( _c.current )
+				.removeClass( _c.highest )
+				.addClass( _c.hidden );
+
+			this.openPanel( $frst );
+		},
+		
+		togglePanel: function( $panel )
+		{
+			var $l = $panel.parent();
+
+			//	Vertical only
+			if ( $l.hasClass( _c.vertical ) )
+			{
+				this[ $l.hasClass( _c.opened ) ? 'closePanel' : 'openPanel' ]( $panel );
+			}
+		},
+
+		getInstance: function()
+		{
+			return this;
+		},
+
+		bind: function( event, fn )
+		{
+			this.cbck[ event ] = this.cbck[ event ] || [];
+			this.cbck[ event ].push( fn );
+		},
+
+		trigger: function()
+		{
+			var that = this,
+				args = Array.prototype.slice.call( arguments ),
+				evnt = args.shift();
+
+			if ( this.cbck[ evnt ] )
+			{
+				for ( e in this.cbck[ evnt ] )
+				{
+					this.cbck[ evnt ][ e ].apply( that, args );
+				}
+			}
 		},
 
 		_initMenu: function()
@@ -127,12 +258,14 @@
 			if ( this.opts.offCanvas && this.conf.clone )
 			{
 				this.$menu = this.$menu.clone( true );
-				this.$menu.add( this.$menu.find( '*' ) ).filter( '[id]' ).each(
-					function()
-					{
-						$(this).attr( 'id', _c.mm( $(this).attr( 'id' ) ) );
-					}
-				);
+				this.$menu.add( this.$menu.find( '*' ) )
+					.filter( '[id]' )
+					.each(
+						function()
+						{
+							$(this).attr( 'id', _c.mm( $(this).attr( 'id' ) ) );
+						}
+					);
 			}
 
 			//	Strip whitespace
@@ -153,12 +286,19 @@
 			var clsn = [ _c.menu ];
 
 			//	Add direction class
-			clsn.push( _c.mm( this.opts.slidingSubmenus ? 'horizontal' : 'vertical' ) );
-
-			//	Add options classes
-			if ( this.opts.classes )
+			if ( !this.opts.slidingSubmenus )
 			{
-				clsn.push( this.opts.classes );
+				clsn.push( _c.vertical );
+			}
+
+			//	Add extensions
+			this.opts.extensions = ( this.opts.extensions.length )
+				? 'mm-' + this.opts.extensions.join( ' mm-' )
+				: '';
+
+			if ( this.opts.extensions )
+			{
+				clsn.push( this.opts.extensions );
 			}
 
 			this.$menu.addClass( clsn.join( ' ' ) );
@@ -170,62 +310,80 @@
 
 			//	Add List class
 			this.__findAddBack( $panels, 'ul, ol' )
-				.not( '.' + _c.nolist )
-				.addClass( _c.list );
+				.not( '.' + _c.nolistview )
+				.addClass( _c.listview );
 
-			var $lis = this.__findAddBack( $panels, '.' + _c.list ).find( '> li' );
+			var $lis = this.__findAddBack( $panels, '.' + _c.listview ).children();
 
 			//	Refactor Selected class
 			this.__refactorClass( $lis, this.conf.classNames.selected, 'selected' );
 
-			//	Refactor Label class
-			this.__refactorClass( $lis, this.conf.classNames.label, 'label' );
+			//	Refactor divider class
+			this.__refactorClass( $lis, this.conf.classNames.divider, 'divider' );
 
 			//	Refactor Spacer class
 			this.__refactorClass( $lis, this.conf.classNames.spacer, 'spacer' );
 
-			//	setSelected-event
-			$lis
-				.off( _e.setSelected )
-				.on( _e.setSelected,
-					function( e, selected )
-					{
-						e.stopPropagation();
-
-						$lis.removeClass( _c.selected );
-						if ( typeof selected != 'boolean' )
-						{
-							selected = true;
-						}
-						if ( selected )
-						{
-							$(this).addClass( _c.selected );
-						}
-					}
-				);
-
 			//	Refactor Panel class
 			this.__refactorClass( this.__findAddBack( $panels, '.' + this.conf.classNames.panel ), this.conf.classNames.panel, 'panel' );
 
-			//	Add Panel class			
-			$panels
-				.add( this.__findAddBack( $panels, '.' + _c.list ).children().children().filter( this.conf.panelNodetype ).not( '.' + _c.nopanel ) )
-				.addClass( _c.panel );
+			//	Create panels
+			var $curpanels = $(),
+				$oldpanels = $panels
+					.add( this.__findAddBack( $panels, '.' + _c.listview ).children().children( this.conf.panelNodetype ) )
+					.not( '.' + _c.nopanel );
 
-			var $curpanels = this.__findAddBack( $panels, '.' + _c.panel ),
-				$allpanels = $('.' + _c.panel, this.$menu);
+			this.__refactorClass( $oldpanels, this.conf.classNames.vertical, 'vertical' );
+			
+			if ( !this.opts.slidingSubmenus )
+			{
+				$oldpanels.addClass( _c.vertical );
+			}
 
-			//	Add an ID to all panels
-			$curpanels
+			$oldpanels
 				.each(
-					function( i )
+					function()
 					{
 						var $t = $(this),
-							id = $t.attr( 'id' ) || that.__getUniqueId();
+							$p = $t;
 
-						$t.attr( 'id', id );
-					}
-			);
+						if ( $t.is( 'ul, ol' ) )
+						{
+							$t.wrap( '<div class="' + _c.panel + '" />' );
+							$p = $t.parent();
+						}
+						else
+						{
+							$p.addClass( _c.panel );
+						}
+
+						var id = $t.attr( 'id' );
+						$t.removeAttr( 'id' );
+						$p.attr( 'id', id || that.__getUniqueId() );
+
+						if ( $t.hasClass( _c.vertical ) )
+						{
+							$t.removeClass( that.conf.classNames.vertical );
+							$p.add( $p.parent() ).addClass( _c.vertical );
+						}
+
+						var $f = $p.children().first(),
+							$l = $p.children().last();
+
+						if ( $f.is( '.' + _c.listview ) )
+						{
+							$f.addClass( _c.first );
+						}
+						if ( $l.is( '.' + _c.listview ) )
+						{
+							$l.addClass( _c.last );
+						}
+
+						$curpanels = $curpanels.add( $p );
+					} 
+				);
+
+			var $allpanels = $('.' + _c.panel, this.$menu);
 
 			//	Add open and close links to menu items
 			$curpanels
@@ -233,66 +391,80 @@
 					function( i )
 					{
 						var $t = $(this),
-							$u = $t.is( 'ul, ol' ) ? $t : $t.find( 'ul ,ol' ).first(),
 							$l = $t.parent(),
-							$a = $l.children( 'a, span' ),
-							$p = $l.closest( '.' + _c.panel );
+							$a = $l.children( 'a, span' );
 
-						if ( $l.parent().is( '.' + _c.list ) && !$t.data( _d.parent) )
+						if ( !$l.is( '.' + _c.menu ) && !$t.data( _d.parent ) )
 						{
+							$l.data( _d.sub, $t );
 							$t.data( _d.parent, $l );
 
-							var $btn = $( '<a class="' + _c.subopen + '" href="#' + $t.attr( 'id' ) + '" />' ).insertBefore( $a );
-							if ( !$a.is( 'a' ) )
+							if ( $l.parent().is( '.' + _c.listview ) )
 							{
-								$btn.addClass( _c.fullsubopen );
+								//	Open link
+								var id = $t.attr( 'id' ),
+									$b = $( '<a class="' + _c.next + '" href="#' + id + '" data-target="#' + id + '" />' ).insertBefore( $a );
+	
+								if ( !$a.is( 'a' ) )
+								{
+									$b.addClass( _c.fullsubopen );
+								}
 							}
-							if ( that.opts.slidingSubmenus )
+
+							//	Close link
+							if ( !$l.hasClass( _c.vertical ) )
 							{
-								$u.prepend( '<li class="' + _c.subtitle + '"><a class="' + _c.subclose + '" href="#' + $p.attr( 'id' ) + '">' + $a.text() + '</a></li>' );
+								var $p = $l.closest( '.' + _c.panel );
+								if ( $p.length )
+								{
+									var id = $p.attr( 'id' );
+									$t.prepend( '<div class="' + _c.header + '"><a class="' + _c.btn + ' ' + _c.prev + '" href="#' + id + '" data-target="#' + id + '"></a><a class="' + _c.title + '">' + $a.text() + '</a></div>' );
+									$t.addClass( _c.hasheader );
+								}
 							}
 						}
 					}
 				);
 
-			if ( this.opts.slidingSubmenus )
-			{
-				//	Add opened-classes
-				var $selected = this.__findAddBack( $panels, '.' + _c.list ).find( '> li.' + _c.selected );
-				$selected
-					.parents( 'li' )
-					.removeClass( _c.selected )
-					.end()
-					.add( $selected.parents( 'li' ) )
-					.each(
-						function()
-						{
-							var $t = $(this),
-								$u = $t.find( '> .' + _c.panel );
 
-							if ( $u.length )
-							{
-								$t.parents( '.' + _c.panel ).addClass( _c.subopened );
-								$u.addClass( _c.opened );
-							}
-						}
-					)
-					.closest( '.' + _c.panel )
-					.addClass( _c.opened )
-					.parents( '.' + _c.panel )
-					.addClass( _c.subopened );
-			}
-			else
-			{
-				//	Replace Selected-class with opened-class in parents from .Selected
-				var $selected = $('li.' + _c.selected, $allpanels);
-				$selected
-					.parents( 'li' )
-					.removeClass( _c.selected )
-					.end()
-					.add( $selected.parents( 'li' ) )
-					.addClass( _c.opened );
-			}
+			//	Add opened-classes to parents
+			var $s = this.__findAddBack( $panels, '.' + _c.listview )
+				.children( '.' + _c.selected )
+				.removeClass( _c.selected )
+				.last()
+				.addClass( _c.selected );
+
+			$s.add( $s.parentsUntil( '.' + _c.menu, 'li' ) )
+				.filter( '.' + _c.vertical )
+				.addClass( _c.opened )
+				.end()
+				.not( '.' + _c.vertical )
+				.each(
+					function()
+					{
+						$(this).parentsUntil( '.' + _c.menu, '.' + _c.panel )
+							.not( '.' + _c.vertical )
+							.first()
+							.addClass( _c.opened )
+							.parentsUntil( '.' + _c.menu, '.' + _c.panel )
+							.not( '.' + _c.vertical )
+							.first()
+							.addClass( _c.opened )
+							.addClass( _c.subopened );
+					}
+				);
+
+
+			//	Add opened-classes to child
+			$s.children( '.' + _c.panel )
+				.not( '.' + _c.vertical )
+				.addClass( _c.opened )
+				.parentsUntil( '.' + _c.menu, '.' + _c.panel )
+				.not( '.' + _c.vertical )
+				.first()
+				.addClass( _c.opened )
+				.addClass( _c.subopened );
+
 
 			//	Set current opened
 			var $current = $allpanels.filter( '.' + _c.opened );
@@ -305,15 +477,14 @@
 				.last()
 				.addClass( _c.current );
 
+
 			//	Rearrange markup
-			if ( this.opts.slidingSubmenus )
-			{
-				$curpanels
-					.not( $current.last() )
-					.addClass( _c.hidden )
-					.end()
-					.appendTo( this.$menu );
-			}
+			$curpanels
+				.not( '.' + _c.vertical )
+				.not( $current.last() )
+				.addClass( _c.hidden )
+				.end()
+				.appendTo( this.$menu );
 			
 			return $curpanels;
 		},
@@ -323,21 +494,19 @@
 			var that = this;
 
 			glbl.$body
-				.on( _e.click,
-					'a',
+				.on( _e.click + '-oncanvas',
+					'a[href]',
 					function( e )
 					{
 						var $t = $(this),
 							fired 	= false,
 							inMenu 	= that.$menu.find( $t ).length;
 
-
 						//	Find behavior for addons
 						for ( var a in $[ _PLUGIN_ ].addons )
 						{
-							if ( $[ _PLUGIN_ ].addons[ a ]._clickAnchor &&
-								( fired = $[ _PLUGIN_ ].addons[ a ]._clickAnchor.call( that, $t, inMenu ) )
-							) {
+							if ( fired = $[ _PLUGIN_ ].addons[ a ].clickAnchor.call( that, $t, inMenu ) )
+							{
 								break;
 							}
 						}
@@ -345,18 +514,16 @@
 						//	Open/Close panel
 						if ( !fired && inMenu )
 						{
-							var _h = $t.attr( 'href' ) || '';
-							if ( _h.slice( 0, 1 ) == '#' )
+							var _h = $t.attr( 'href' );
+
+							if ( _h.length > 1 && _h.slice( 0, 1 ) == '#' )
 							{
-								try
+								var $h = $(_h, that.$menu);
+								if ( $h.is( '.' + _c.panel ) )
 								{
-									if ( $(_h, that.$menu).is( '.' + _c.panel ) )
-									{
-										fired = true;
-										$(_h).trigger( that.opts.slidingSubmenus ? _e.open : _e.toggle );
-									}
-							    }
-								catch( error ) {}
+									fired = true;
+									that[ $t.parent().hasClass( _c.vertical ) ? 'togglePanel' : 'openPanel' ]( $h );
+								}
 							}
 						}
 
@@ -369,7 +536,7 @@
 						//	All other anchors in lists
 						if ( !fired && inMenu )
 						{
-							if ( $t.is( '.' + _c.list + ' > li > a' )
+							if ( $t.is( '.' + _c.listview + ' > li > a' )
 								&& !$t.is( '[rel="external"]' ) 
 								&& !$t.is( '[target="_blank"]' ) )
 							{
@@ -377,7 +544,7 @@
 								//	Set selected item
 								if ( that.__valueOrFn( that.opts.onClick.setSelected, $t ) )
 								{
-									$t.parent().trigger( _e.setSelected );
+									that.setSelected( $(e.target).parent() );
 								}
 	
 								//	Prevent default / don't follow link. Default: false
@@ -392,11 +559,11 @@
 								{
 									glbl.$html.addClass( _c.blocking );
 								}
-		
+
 								//	Close menu. Default: true if preventDefault, false otherwise
 								if ( that.__valueOrFn( that.opts.onClick.close, $t, preventDefault ) )
 								{
-									that.$menu.trigger( _e.close );
+									that.close();
 								}
 							}
 						}
@@ -404,125 +571,39 @@
 				);
 		},
 
-		_initEvents: function()
+		_initAddons: function()
 		{
-			var that = this;
+			//	Add add-ons to plugin
+			for ( var a in $[ _PLUGIN_ ].addons )
+			{
+				$[ _PLUGIN_ ].addons[ a ].add.call( this );
+				$[ _PLUGIN_ ].addons[ a ].add = function() {};
+			}
 
-			this.$menu
-				.on( _e.toggle + ' ' + _e.open + ' ' + _e.close,
-					'.' + _c.panel,
-					function( e )
+			//	Setup adds-on for menu
+			for ( var a in $[ _PLUGIN_ ].addons )
+			{
+				$[ _PLUGIN_ ].addons[ a ].setup.call( this );
+			}
+		},
+
+		__api: function()
+		{
+			var that = this,
+				api = {};
+
+			$.each( this._api, 
+				function( i )
+				{
+					var fn = this;
+					api[ fn ] = function()
 					{
-						e.stopPropagation();
+						var re = that[ fn ].apply( that, arguments );
+						return ( typeof re == 'undefined' ) ? api : re;
 					}
-				);
-
-			if ( this.opts.slidingSubmenus )
-			{
-				this.$menu
-					.on( _e.open,
-						'.' + _c.panel,
-						function( e )
-						{
-							return that._openSubmenuHorizontal( $(this) );
-						}
-					);
-			}
-			else
-			{
-				this.$menu
-					.on( _e.toggle,
-						'.' + _c.panel,
-						function( e )
-						{
-							var $t = $(this);
-							$t.trigger( $t.parent().hasClass( _c.opened ) ? _e.close : _e.open );
-						}
-					)
-					.on( _e.open,
-						'.' + _c.panel,
-						function( e )
-						{
-							$(this).parent().addClass( _c.opened );
-						}
-					)
-					.on( _e.close,
-						'.' + _c.panel,
-						function( e )
-						{
-							$(this).parent().removeClass( _c.opened );
-						}
-					);
-			}
-		},
-
-		_openSubmenuHorizontal: function( $opening )
-		{
-			if ( $opening.hasClass( _c.current ) )
-			{
-				return false;
-			}
-
-			var $panels = $('.' + _c.panel, this.$menu),
-				$current = $panels.filter( '.' + _c.current );
-	
-			$panels
-				.removeClass( _c.highest )
-				.removeClass( _c.current )
-				.not( $opening )
-				.not( $current )
-				.addClass( _c.hidden );
-	
-			if ( $opening.hasClass( _c.opened ) )
-			{
-				$current
-					.addClass( _c.highest )
-					.removeClass( _c.opened )
-					.removeClass( _c.subopened );
-			}
-			else
-			{
-				$opening
-					.addClass( _c.highest );
-
-				$current
-					.addClass( _c.subopened );
-			}
-	
-			$opening
-				.removeClass( _c.hidden )
-				.addClass( _c.current );
-	
-			//	Without the timeout, the animation won't work because the element had display: none;
-			setTimeout(
-				function()
-				{
-					$opening
-						.removeClass( _c.subopened )
-						.addClass( _c.opened );
-				}, this.conf.openingInterval
-			);
-
-			return 'open';
-		},
-
-		_update: function( fn )
-		{
-			if ( !this.updates )
-			{
-				this.updates = [];
-			}
-			if ( typeof fn == 'function' )
-			{
-				this.updates.push( fn );
-			}
-			else
-			{
-				for ( var u = 0, l = this.updates.length; u < l; u++ )
-				{
-					this.updates[ u ].call( this, fn );
 				}
-			}
+			);
+			return api;
 		},
 
 		__valueOrFn: function( o, $e, d )
@@ -546,6 +627,13 @@
 		__findAddBack: function( $e, s )
 		{
 			return $e.find( s ).add( $e.filter( s ) );
+		},
+		
+		__filterListItems: function( $i )
+		{
+			return $i
+				.not( '.' + _c.divider )
+				.not( '.' + _c.hidden );
 		},
 		
 		__transitionend: function( $e, fn, duration )
@@ -578,10 +666,7 @@
 	$.fn[ _PLUGIN_ ] = function( opts, conf )
 	{
 		//	First time plugin is fired
-		if ( !plugin_initiated )
-		{
-			_initPlugin();
-		}
+		initPlugin();
 
 		//	Extend options
 		opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults, opts );
@@ -595,7 +680,8 @@
 				{
 					return;
 				}
-				$menu.data( _PLUGIN_, new $[ _PLUGIN_ ]( $menu, opts, conf ) );
+				var _menu = new $[ _PLUGIN_ ]( $menu, opts, conf );
+				$menu.data( _PLUGIN_, _menu.__api() );
 			}
 		);
 	};
@@ -609,16 +695,27 @@
 	};
 
 
+	//	Global variables
+	var _c, _d, _e, glbl;
 
-	function _initPlugin()
+	function initPlugin()
 	{
-		plugin_initiated = true;
-	
-		glbl.$wndw = $(window);
-		glbl.$html = $('html');
-		glbl.$body = $('body');
+		if ( $[ _PLUGIN_ ].glbl )
+		{
+			return;
+		}
+
+		glbl = {
+			$wndw : $(window),
+			$html : $('html'),
+			$body : $('body')
+		};
+
 
 		//	Classnames, Datanames, Eventnames
+		_c = {};
+		_d = {};
+		_e = {};
 		$.each( [ _c, _d, _e ],
 			function( i, o )
 			{
@@ -635,7 +732,7 @@
 
 		//	Classnames
 		_c.mm = function( c ) { return 'mm-' + c; };
-		_c.add( 'wrapper menu inline panel nopanel list nolist subtitle selected label spacer current highest hidden opened subopened subopen fullsubopen subclose' );
+		_c.add( 'wrapper menu vertical panel nopanel current highest opened subopened header title btn prev next first last listview nolistview selected divider spacer hidden fullsubopen' );
 		_c.umm = function( c )
 		{
 			if ( c.slice( 0, 3 ) == 'mm-' )
@@ -647,11 +744,11 @@
 
 		//	Datanames
 		_d.mm = function( d ) { return 'mm-' + d; };
-		_d.add( 'parent' );
+		_d.add( 'parent sub' );
 
 		//	Eventnames
 		_e.mm = function( e ) { return e + '.mm'; };
-		_e.add( 'toggle open close setSelected transitionend webkitTransitionEnd mousedown mouseup touchstart touchmove touchend scroll resize click keydown keyup' );
+		_e.add( 'transitionend webkitTransitionEnd mousedown mouseup touchstart touchmove touchend click keydown' );
 
 		$[ _PLUGIN_ ]._c = _c;
 		$[ _PLUGIN_ ]._d = _d;

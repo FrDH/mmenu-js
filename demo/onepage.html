@@ -8,8 +8,8 @@
 		<title>jQuery.mmenu demo</title>
 
 		<link type="text/css" rel="stylesheet" href="css/demo.css" />
-		<link type="text/css" rel="stylesheet" href="../src/css/jquery.mmenu.css" />
-		<link type="text/css" rel="stylesheet" href="../src/css/addons/jquery.mmenu.dragopen.css" />
+		<link type="text/css" rel="stylesheet" href="../dist/css/jquery.mmenu.css" />
+		<link type="text/css" rel="stylesheet" href="../dist/css/addons/jquery.mmenu.dragopen.css" />
 		
 		<!-- for the one page layout -->
 		<style type="text/css">
@@ -55,9 +55,9 @@
 		<script type="text/javascript" src="http://hammerjs.github.io/dist/hammer.min.js"></script>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
-		<script type="text/javascript" src="../src/js/jquery.mmenu.min.js"></script>
-		<script type="text/javascript" src="../src/js/addons/jquery.mmenu.dragopen.min.js"></script>
-		<script type="text/javascript" src="../src/js/addons/jquery.mmenu.fixedelements.min.js"></script>
+		<script type="text/javascript" src="../dist/js/jquery.mmenu.min.js"></script>
+		<script type="text/javascript" src="../dist/js/addons/jquery.mmenu.dragopen.min.js"></script>
+		<script type="text/javascript" src="../dist/js/addons/jquery.mmenu.fixedelements.min.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				var $menu = $('nav#menu'),
@@ -67,29 +67,31 @@
 					dragOpen: true
 				});
 
+				var $anchor = false;
 				$menu.find( 'li > a' ).on(
 					'click',
 					function( e )
 					{
-						var href = $(this).attr( 'href' );
+						$anchor = $(this);
+					}
+				);
 
-						//	if the clicked link is linked to an anchor, scroll the page to that anchor 
-						if ( href.slice( 0, 1 ) == '#' )
+				var api = $menu.data( 'mmenu' );
+				api.bind( 'closed',
+					function()
+					{
+						if ( $anchor )
 						{
-							$menu.one(
-								'closed.mm',
-								function()
-								{
-									setTimeout(
-										function()
-										{
-											$html.animate({
-												scrollTop: $( href ).offset().top
-											});	
-										}, 10
-									);	
-								}
-							);
+							var href = $anchor.attr( 'href' );
+							$anchor = false;
+
+							//	if the clicked link is linked to an anchor, scroll the page to that anchor 
+							if ( href.slice( 0, 1 ) == '#' )
+							{
+								$html.animate({
+									scrollTop: $( href ).offset().top
+								});	
+							}
 						}
 					}
 				);
@@ -98,7 +100,7 @@
 	</head>
 	<body>
 		<div id="page">
-			<div class="header FixedTop">
+			<div class="header Fixed">
 				<a href="#menu"></a>
 				Demo
 			</div>
@@ -125,7 +127,7 @@
 						<a href="#menu">Open the menu.</a></p>
 				</div>
 			</div>
-			<div class="footer FixedBottom">
+			<div class="footer Fixed">
 				Fixed footer :-)
 			</div>
 			<nav id="menu">

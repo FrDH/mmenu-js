@@ -13,65 +13,15 @@
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-	
-		//	_init: fired when (re)initiating the plugin
-		_init: function( $panels )
+
+		//	setup: fired once per menu
+		setup: function()
 		{
 			var that = this,
-				opts = this.opts[ _ADDON_ ];
+				opts = this.opts[ _ADDON_ ],
+				conf = this.conf[ _ADDON_ ];
 
-
-			//	Update content
-			var $footer = $('div.' + _c.footer, this.$menu);
-			if ( $footer.length )
-			{
-				//	Auto-update the footer content
-				if ( opts.update )
-				{
-					$panels
-						.each(
-							function()
-							{
-								var $panl = $(this);
-	
-								//	Find content
-								var $cnt = $('.' + that.conf.classNames[ _ADDON_ ].panelFooter, $panl),
-									_cnt = $cnt.html();
-	
-								if ( !_cnt )
-								{
-									_cnt = opts.title;
-								}
-	
-								//	Update footer info
-								var updateFooter = function()
-								{
-									$footer[ _cnt ? 'show' : 'hide' ]();
-									$footer.html( _cnt );
-								};
-	
-								$panl.on( _e.open, updateFooter );
-	
-								if ( $panl.hasClass( _c.current ) )
-								{
-									updateFooter();
-								}
-							}
-						);
-				}
-
-				//	Init other add-ons
-				if ( $[ _PLUGIN_ ].addons.buttonbars )
-				{
-					$[ _PLUGIN_ ].addons.buttonbars._init.call( this, $footer );
-				}
-			}
-		},
-
-		//	_setup: fired once per menu
-		_setup: function()
-		{
-			var opts = this.opts[ _ADDON_ ];
+			glbl = $[ _PLUGIN_ ].glbl;
 
 
 			//	Extend shortcut options
@@ -86,11 +36,8 @@
 			{
 				opts = {};
 			}
-			opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
-
-			this.opts[ _ADDON_ ] = opts;
-			
 
 			//	Add markup
 			if ( opts.add )
@@ -105,19 +52,43 @@
 
 				this.$menu.addClass( _c.hasfooter );
 			}
+			this.$footer = this.$menu.children( '.' + _c.footer );
+
+
+			//	Update content
+			if ( opts.update && this.$footer && this.$footer.length )
+			{
+				var update = function( $panl )
+				{
+					$panl = $panl || this.$menu.children( '.' + _c.current );
+					var _cnt = $('.' + this.conf.classNames[ _ADDON_ ].panelFooter, $panl).html() || opts.title;
+
+					this.$footer[ _cnt ? 'removeClass' : 'addClass' ]( _c.hidden );
+					this.$footer.html( _cnt );
+				};
+
+				this.bind( 'openPanel', update );
+				this.bind( 'init',
+					function()
+					{
+						update.call( this, this.$menu.children( '.' + _c.current ) );
+					}
+				);
+			}
 		},
 
-		//	_add: fired once per page load
-		_add: function()
+		//	add: fired once per page load
+		add: function()
 		{
 			_c = $[ _PLUGIN_ ]._c;
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 	
 			_c.add( 'footer hasfooter' );
-	
-			glbl = $[ _PLUGIN_ ].glbl;
-		}
+		},
+
+		//	clickAnchor: prevents default behavior when clicking an anchor
+		clickAnchor: function( $a, inMenu ) {}
 	};
 
 

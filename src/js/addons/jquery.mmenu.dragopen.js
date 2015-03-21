@@ -13,12 +13,9 @@
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-	
-		//	_init: fired when (re)initiating the plugin
-		_init: function( $panels ) {},
 
-		//	_setup: fired once per menu
-		_setup: function()
+		//	setup: fired once per menu
+		setup: function()
 		{
 			if ( !this.opts.offCanvas )
 			{
@@ -28,6 +25,8 @@
 			var that = this,
 				opts = this.opts[ _ADDON_ ],
 				conf = this.conf[ _ADDON_ ];
+
+			glbl = $[ _PLUGIN_ ].glbl;
 
 
 			//	Extend shortcut options
@@ -41,16 +40,12 @@
 			{
 				opts = {};
 			}
-			opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
-			
+			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+
 
 			//	Drag open			
 			if ( opts.open )
 			{
-				if ( Hammer.VERSION < 2 )
-				{
-					return;
-				}
 
 				//	Set up variables
 				var drag			= {},
@@ -59,9 +54,10 @@
 					_dimension		= false,
 					_distance 		= 0,
 					_maxDistance 	= 0;
-	
-				var new_distance, drag_distance, css_value, pointer_pos;
-	
+
+				var new_distance, drag_distance, css_value,
+					doPanstart, getSlideNodes;
+
 				switch( this.opts.offCanvas.position )
 				{
 					case 'left':
@@ -82,17 +78,30 @@
 						_dimension = 'height';
 						break;
 				}
-				
+
 				switch( this.opts.offCanvas.position )
-				{
-					case 'left':
-					case 'top':
-						drag.negative 	= false;
-						break;
-					
+				{	
 					case 'right':
 					case 'bottom':
 						drag.negative 	= true;
+						doPanstart		= function( pos )
+						{
+							if ( pos >= glbl.$wndw[ _dimension ]() - opts.maxStartPos )
+							{
+								_stage = 1;
+							}
+						};
+						break;
+					
+					default:
+						drag.negative 	= false;
+						doPanstart		= function( pos )
+						{
+							if ( pos <= opts.maxStartPos )
+							{
+								_stage = 1;
+							}
+						}
 						break;
 				}
 
@@ -118,7 +127,24 @@
 						drag.close_dir 	= 'down';
 						break;
 				}
-	
+
+				switch ( this.opts.offCanvas.zposition )
+				{
+					case 'front':
+						getSlideNodes = function()
+						{
+							return this.$menu;
+						};
+						break;
+		
+					default:
+						getSlideNodes = function()
+						{
+							return $('.' + _c.slideout);
+						};
+						break;
+				};
+
 				var $dragNode = this.__valueOrFn( opts.pageNode, this.$menu, glbl.$page );
 
 				if ( typeof $dragNode == 'string' )
@@ -126,20 +152,7 @@
 					$dragNode = $($dragNode);
 				}
 
-				var $dragg = glbl.$page;
 
-				switch ( this.opts.offCanvas.zposition )
-				{
-					case 'front':
-						$dragg = this.$menu;
-						break;
-	
-					case 'next':
-						$dragg = $dragg.add( this.$menu );
-						break;
-				};
-	
-	
 				//	Bind events
 				var _hammer = new Hammer( $dragNode[ 0 ], opts.vendors.hammer );
 
@@ -147,24 +160,8 @@
 					.on( 'panstart',
 						function( e )
 						{
-							pointer_pos = e.center[ drag.typeLower ];
-							switch( that.opts.offCanvas.position )
-							{
-								case 'right':
-								case 'bottom':
-									if ( pointer_pos >= glbl.$wndw[ _dimension ]() - opts.maxStartPos )
-									{
-										_stage = 1;
-									}
-									break;
-	
-								default:
-									if ( pointer_pos <= opts.maxStartPos )
-									{
-										_stage = 1;
-									}
-									break;
-							}
+							doPanstart( e.center[ drag.typeLower ] );
+							glbl.$slideOutNodes = getSlideNodes();
 							_direction = drag.open_dir;
 						}
 					)
@@ -186,14 +183,14 @@
 							{
 								new_distance = -new_distance;
 							}
-	
+
 							if ( new_distance != _distance )
 							{
 								_direction = ( new_distance >= _distance )
 									? drag.open_dir
 									: drag.close_dir;
 							}
-	
+
 							_distance = new_distance;
 	
 							if ( _distance > opts.threshold )
@@ -207,7 +204,7 @@
 									_stage = 2;
 	
 									that._openSetup();
-									that.$menu.trigger( _e.opening );
+									that.trigger( 'opening' );
 									glbl.$html.addClass( _c.dragging );
 	
 									_maxDistance = minMax( 
@@ -226,7 +223,7 @@
 								}
 								css_value = 'translate' + drag.typeUpper + '(' + drag_distance + 'px )';
 	
-								$dragg.css({
+								glbl.$slideOutNodes.css({
 									'-webkit-transform': '-webkit-' + css_value,	
 									'transform': css_value
 								});
@@ -239,7 +236,7 @@
 							if ( _stage == 2 )
 							{
 								glbl.$html.removeClass( _c.dragging );
-								$dragg.css( 'transform', '' );
+								glbl.$slideOutNodes.css( 'transform', '' );
 								that[ _direction == drag.open_dir ? '_openFinish' : 'close' ]();
 							}
 				        	_stage = 0;
@@ -248,25 +245,24 @@
 			}
 		},
 
-		//	_add: fired once per page load
-		_add: function()
+		//	add: fired once per page load
+		add: function()
 		{
-			if ( typeof Hammer != 'function' )
+			if ( typeof Hammer != 'function' || Hammer.VERSION < 2 )
 			{
-				$[ _PLUGIN_ ].addons[ _ADDON_ ]._init = function() {};
-				$[ _PLUGIN_ ].addons[ _ADDON_ ]._setup = function() {};
-
+				$[ _PLUGIN_ ].addons[ _ADDON_ ].setup = function() {};
 				return;
 			}
 
 			_c = $[ _PLUGIN_ ]._c;
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
-	
+
 			_c.add( 'dragging' );
-	
-			glbl = $[ _PLUGIN_ ].glbl;
-		}
+		},
+
+		//	clickAnchor: prevents default behavior when clicking an anchor
+		clickAnchor: function( $a, inMenu ) {}
 	};
 
 
