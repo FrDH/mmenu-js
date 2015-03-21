@@ -58,12 +58,12 @@
   overflow-y: auto;
   box-sizing: border-box;
   padding: 0 20px; }
+  .mm-menu > .mm-panel.mm-hasheader {
+    padding-top: 40px; }
   .mm-menu > .mm-panel:before, .mm-menu > .mm-panel:after {
     content: '';
     display: block;
     height: 20px; }
-  .mm-menu > .mm-panel.mm-hasheader {
-    padding-top: 40px; }
 
 .mm-vertical .mm-panel {
   -webkit-transform: none !important;
