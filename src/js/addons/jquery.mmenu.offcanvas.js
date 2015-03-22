@@ -357,9 +357,10 @@
 
 	$[ _PLUGIN_ ].prototype._initBlocker = function()
 	{
+		var that = this;
+
 		if ( !glbl.$blck )
 		{
-			var that = this;
 			glbl.$blck = $( '<div id="' + _c.blocker + '" class="' + _c.slideout + '" />' );
 		}
 
