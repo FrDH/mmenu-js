@@ -270,11 +270,6 @@ li.mm-vertical.mm-opened > .mm-panel
 			}
 		}
 	}
-
-	&.mm-first
-	{
-		margin-top: -$mm_panelPadding;
-	}
 }
 .mm-menu > .mm-panel
 {
@@ -283,6 +278,10 @@ li.mm-vertical.mm-opened > .mm-panel
 		margin-left: -$mm_panelPadding;
 		margin-right: -$mm_panelPadding;
 
+		&.mm-first
+		{
+			margin-top: -$mm_panelPadding;
+		}
 		&.mm-last
 		{
 			padding-bottom: $mm_panelPadding;

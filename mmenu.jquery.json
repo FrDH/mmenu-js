@@ -1,6 +1,11 @@
 {
 	"name": "mmenu",
-	"version": "5.0.2",
+	"version": "5.0.3",
+	"homepage": "http://mmenu.frebsite.nl",
+	"author": {
+		"name": "Fred Heusschen",
+		"url": "http://www.frebsite.nl"
+	},
 	"title": "jQuery mmenu",
 	"description": "The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
 	"keywords": [
@@ -14,16 +19,11 @@
 		"panels",
 		"app"
 	],
-	"homepage": "http://mmenu.frebsite.nl",
-	"author": {
-		"name": "Fred Heusschen",
-		"url": "http://www.frebsite.nl"
+	"dependencies": {
+		"jquery": ">=1.7.0"
 	},
 	"licenses": [{
 		"type": "MIT",
 		"url": "http://opensource.org/licenses/MIT"
-	}],
-	"dependencies": {
-		"jquery": ">=1.7.0"
-	}
+	}]
 }

@@ -1,7 +1,7 @@
 {
 	"name": "jQuery.mmenu",
+	"version": "5.0.3",
 	"main": "src/js/jquery.mmenu.min.js",
-	"version": "5.0.2",
 	"homepage": "http://mmenu.frebsite.nl/",
 	"authors": "Fred Heusschen <info@frebsite.nl>",
 	"description": "The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
@@ -17,6 +17,7 @@
 		"app"
 	],
 	"ignore": [
+		".sass-cache",
 		".jshintrc",
 		"Guardfile",
 		"index.html",

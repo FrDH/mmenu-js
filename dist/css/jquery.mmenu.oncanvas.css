@@ -198,12 +198,12 @@ li.mm-vertical.mm-opened > .mm-panel {
       .mm-listview .mm-next.mm-fullsubopen + span {
         padding-right: 50px;
         margin-right: 0; }
-  .mm-listview.mm-first {
-    margin-top: -20px; }
 
 .mm-menu > .mm-panel > .mm-listview {
   margin-left: -20px;
   margin-right: -20px; }
+  .mm-menu > .mm-panel > .mm-listview.mm-first {
+    margin-top: -20px; }
   .mm-menu > .mm-panel > .mm-listview.mm-last {
     padding-bottom: 20px; }
 

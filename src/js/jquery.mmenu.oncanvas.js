@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v5.0.2
+ * jQuery mmenu v5.0.3
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.0.2';
+		_VERSION_	= '5.0.3';
 
 
 	//	Plugin already excists
@@ -367,6 +367,8 @@
 							$p.add( $p.parent() ).addClass( _c.vertical );
 						}
 
+						$curpanels = $curpanels.add( $p );
+
 						var $f = $p.children().first(),
 							$l = $p.children().last();
 
@@ -378,8 +380,6 @@
 						{
 							$l.addClass( _c.last );
 						}
-
-						$curpanels = $curpanels.add( $p );
 					} 
 				);
 
