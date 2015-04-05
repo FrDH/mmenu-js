@@ -183,7 +183,7 @@
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 	
-			_c.add( 'hasheader close' );
+			_c.add( 'close' );
 		},
 
 		//	clickAnchor: prevents default behavior when clicking an anchor

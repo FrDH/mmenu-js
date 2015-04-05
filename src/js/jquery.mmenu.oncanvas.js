@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v5.0.3
+ * jQuery mmenu v5.0.4
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.0.3';
+		_VERSION_	= '5.0.4';
 
 
 	//	Plugin already excists
@@ -732,7 +732,7 @@
 
 		//	Classnames
 		_c.mm = function( c ) { return 'mm-' + c; };
-		_c.add( 'wrapper menu vertical panel nopanel current highest opened subopened header title btn prev next first last listview nolistview selected divider spacer hidden fullsubopen' );
+		_c.add( 'wrapper menu vertical panel nopanel current highest opened subopened header hasheader title btn prev next first last listview nolistview selected divider spacer hidden fullsubopen' );
 		_c.umm = function( c )
 		{
 			if ( c.slice( 0, 3 ) == 'mm-' )
