@@ -12,19 +12,11 @@
 		$mm_t_emphasizedBackgroundColor, $mm_t_highlightedBackgroundColor,
 		$mm_t_borderColor );
 
-	@include mm_colors_buttonbars( $mm_t_cls,
-		$mm_t_backgroundColor,
-		$mm_t_textColor );
-
 	@include mm_colors_checks( $mm_t_cls,
 		$mm_t_textColor );
 		
 	@include mm_colors_counters( $mm_t_cls,
 		$mm_t_dimmedTextColor );
-
-	@include mm_colors_footer( $mm_t_cls,
-		$mm_t_dimmedTextColor,
-		$mm_t_borderColor );
 	
 	@include mm_colors_dividers( $mm_t_cls,
 		$mm_t_highlightedBackgroundColor );

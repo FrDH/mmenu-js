@@ -4,20 +4,21 @@
 .mm-menu.mm-theme-dark {
   background: #333333;
   color: rgba(255, 255, 255, 0.8); }
-  .mm-menu.mm-theme-dark .mm-header {
+  .mm-menu.mm-theme-dark .mm-navbar {
     border-color: rgba(0, 0, 0, 0.15); }
-    .mm-menu.mm-theme-dark .mm-header > a {
+    .mm-menu.mm-theme-dark .mm-navbar > a {
       color: rgba(255, 255, 255, 0.4); }
-    .mm-menu.mm-theme-dark .mm-header .mm-btn:before,
-    .mm-menu.mm-theme-dark .mm-header .mm-btn:after {
+    .mm-menu.mm-theme-dark .mm-navbar .mm-btn:before,
+    .mm-menu.mm-theme-dark .mm-navbar .mm-btn:after {
       border-color: rgba(255, 255, 255, 0.4); }
   .mm-menu.mm-theme-dark .mm-listview > li:after {
     border-color: rgba(0, 0, 0, 0.15); }
-  .mm-menu.mm-theme-dark .mm-listview > li > a.mm-prev, .mm-menu.mm-theme-dark .mm-listview > li > a.mm-next {
-    color: rgba(255, 255, 255, 0.4); }
-  .mm-menu.mm-theme-dark .mm-listview > li > a.mm-prev:before, .mm-menu.mm-theme-dark .mm-listview > li > a.mm-next:after {
+  .mm-menu.mm-theme-dark .mm-listview > li .mm-prev:before,
+  .mm-menu.mm-theme-dark .mm-listview > li .mm-next:after,
+  .mm-menu.mm-theme-dark .mm-listview > li .mm-arrow:after {
     border-color: rgba(255, 255, 255, 0.4); }
-  .mm-menu.mm-theme-dark .mm-listview > li > a.mm-prev:after, .mm-menu.mm-theme-dark .mm-listview > li > a.mm-next:before {
+  .mm-menu.mm-theme-dark .mm-listview > li .mm-prev:after,
+  .mm-menu.mm-theme-dark .mm-listview > li .mm-next:before {
     border-color: rgba(0, 0, 0, 0.15); }
   .mm-menu.mm-theme-dark .mm-listview > li.mm-selected > a:not(.mm-next),
   .mm-menu.mm-theme-dark .mm-listview > li.mm-selected > span {
@@ -30,23 +31,10 @@
   .mm-menu.mm-theme-dark .mm-divider {
     background: rgba(255, 255, 255, 0.05); }
 
-.mm-menu.mm-theme-dark .mm-buttonbar {
-  border-color: rgba(255, 255, 255, 0.8);
-  background: #333333; }
-  .mm-menu.mm-theme-dark .mm-buttonbar > * {
-    border-color: rgba(255, 255, 255, 0.8); }
-  .mm-menu.mm-theme-dark .mm-buttonbar > input:checked + label {
-    background: rgba(255, 255, 255, 0.8);
-    color: #333333; }
-
 .mm-menu.mm-theme-dark label.mm-check:before {
   border-color: rgba(255, 255, 255, 0.8); }
 
 .mm-menu.mm-theme-dark em.mm-counter {
-  color: rgba(255, 255, 255, 0.4); }
-
-.mm-menu.mm-theme-dark .mm-footer {
-  border-color: rgba(0, 0, 0, 0.15);
   color: rgba(255, 255, 255, 0.4); }
 
 .mm-menu.mm-theme-dark .mm-fixeddivider span {
@@ -74,20 +62,21 @@
 .mm-menu.mm-theme-white {
   background: white;
   color: rgba(0, 0, 0, 0.6); }
-  .mm-menu.mm-theme-white .mm-header {
+  .mm-menu.mm-theme-white .mm-navbar {
     border-color: rgba(0, 0, 0, 0.1); }
-    .mm-menu.mm-theme-white .mm-header > a {
+    .mm-menu.mm-theme-white .mm-navbar > a {
       color: rgba(0, 0, 0, 0.3); }
-    .mm-menu.mm-theme-white .mm-header .mm-btn:before,
-    .mm-menu.mm-theme-white .mm-header .mm-btn:after {
+    .mm-menu.mm-theme-white .mm-navbar .mm-btn:before,
+    .mm-menu.mm-theme-white .mm-navbar .mm-btn:after {
       border-color: rgba(0, 0, 0, 0.3); }
   .mm-menu.mm-theme-white .mm-listview > li:after {
     border-color: rgba(0, 0, 0, 0.1); }
-  .mm-menu.mm-theme-white .mm-listview > li > a.mm-prev, .mm-menu.mm-theme-white .mm-listview > li > a.mm-next {
-    color: rgba(0, 0, 0, 0.3); }
-  .mm-menu.mm-theme-white .mm-listview > li > a.mm-prev:before, .mm-menu.mm-theme-white .mm-listview > li > a.mm-next:after {
+  .mm-menu.mm-theme-white .mm-listview > li .mm-prev:before,
+  .mm-menu.mm-theme-white .mm-listview > li .mm-next:after,
+  .mm-menu.mm-theme-white .mm-listview > li .mm-arrow:after {
     border-color: rgba(0, 0, 0, 0.3); }
-  .mm-menu.mm-theme-white .mm-listview > li > a.mm-prev:after, .mm-menu.mm-theme-white .mm-listview > li > a.mm-next:before {
+  .mm-menu.mm-theme-white .mm-listview > li .mm-prev:after,
+  .mm-menu.mm-theme-white .mm-listview > li .mm-next:before {
     border-color: rgba(0, 0, 0, 0.1); }
   .mm-menu.mm-theme-white .mm-listview > li.mm-selected > a:not(.mm-next),
   .mm-menu.mm-theme-white .mm-listview > li.mm-selected > span {
@@ -100,23 +89,10 @@
   .mm-menu.mm-theme-white .mm-divider {
     background: rgba(0, 0, 0, 0.03); }
 
-.mm-menu.mm-theme-white .mm-buttonbar {
-  border-color: rgba(0, 0, 0, 0.6);
-  background: white; }
-  .mm-menu.mm-theme-white .mm-buttonbar > * {
-    border-color: rgba(0, 0, 0, 0.6); }
-  .mm-menu.mm-theme-white .mm-buttonbar > input:checked + label {
-    background: rgba(0, 0, 0, 0.6);
-    color: white; }
-
 .mm-menu.mm-theme-white label.mm-check:before {
   border-color: rgba(0, 0, 0, 0.6); }
 
 .mm-menu.mm-theme-white em.mm-counter {
-  color: rgba(0, 0, 0, 0.3); }
-
-.mm-menu.mm-theme-white .mm-footer {
-  border-color: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.3); }
 
 .mm-menu.mm-theme-white .mm-fixeddivider span {
@@ -144,20 +120,21 @@
 .mm-menu.mm-theme-black {
   background: black;
   color: rgba(255, 255, 255, 0.6); }
-  .mm-menu.mm-theme-black .mm-header {
+  .mm-menu.mm-theme-black .mm-navbar {
     border-color: rgba(255, 255, 255, 0.2); }
-    .mm-menu.mm-theme-black .mm-header > a {
+    .mm-menu.mm-theme-black .mm-navbar > a {
       color: rgba(255, 255, 255, 0.4); }
-    .mm-menu.mm-theme-black .mm-header .mm-btn:before,
-    .mm-menu.mm-theme-black .mm-header .mm-btn:after {
+    .mm-menu.mm-theme-black .mm-navbar .mm-btn:before,
+    .mm-menu.mm-theme-black .mm-navbar .mm-btn:after {
       border-color: rgba(255, 255, 255, 0.4); }
   .mm-menu.mm-theme-black .mm-listview > li:after {
     border-color: rgba(255, 255, 255, 0.2); }
-  .mm-menu.mm-theme-black .mm-listview > li > a.mm-prev, .mm-menu.mm-theme-black .mm-listview > li > a.mm-next {
-    color: rgba(255, 255, 255, 0.4); }
-  .mm-menu.mm-theme-black .mm-listview > li > a.mm-prev:before, .mm-menu.mm-theme-black .mm-listview > li > a.mm-next:after {
+  .mm-menu.mm-theme-black .mm-listview > li .mm-prev:before,
+  .mm-menu.mm-theme-black .mm-listview > li .mm-next:after,
+  .mm-menu.mm-theme-black .mm-listview > li .mm-arrow:after {
     border-color: rgba(255, 255, 255, 0.4); }
-  .mm-menu.mm-theme-black .mm-listview > li > a.mm-prev:after, .mm-menu.mm-theme-black .mm-listview > li > a.mm-next:before {
+  .mm-menu.mm-theme-black .mm-listview > li .mm-prev:after,
+  .mm-menu.mm-theme-black .mm-listview > li .mm-next:before {
     border-color: rgba(255, 255, 255, 0.2); }
   .mm-menu.mm-theme-black .mm-listview > li.mm-selected > a:not(.mm-next),
   .mm-menu.mm-theme-black .mm-listview > li.mm-selected > span {
@@ -170,23 +147,10 @@
   .mm-menu.mm-theme-black .mm-divider {
     background: rgba(255, 255, 255, 0.2); }
 
-.mm-menu.mm-theme-black .mm-buttonbar {
-  border-color: rgba(255, 255, 255, 0.6);
-  background: black; }
-  .mm-menu.mm-theme-black .mm-buttonbar > * {
-    border-color: rgba(255, 255, 255, 0.6); }
-  .mm-menu.mm-theme-black .mm-buttonbar > input:checked + label {
-    background: rgba(255, 255, 255, 0.6);
-    color: black; }
-
 .mm-menu.mm-theme-black label.mm-check:before {
   border-color: rgba(255, 255, 255, 0.6); }
 
 .mm-menu.mm-theme-black em.mm-counter {
-  color: rgba(255, 255, 255, 0.4); }
-
-.mm-menu.mm-theme-black .mm-footer {
-  border-color: rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.4); }
 
 .mm-menu.mm-theme-black .mm-fixeddivider span {

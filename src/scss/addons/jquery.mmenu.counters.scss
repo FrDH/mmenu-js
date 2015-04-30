@@ -15,7 +15,7 @@ em.mm-counter
 	display: block;
 	margin-top: -( $mm_btnSize / 4 );
 	position: absolute;
-	right: $mm_subopenWidth;
+	right: $mm_subopenWidth - 5px;
 	top: 50%;
 
 	+ a.mm-next

@@ -15,14 +15,17 @@
 		<script type="text/javascript">
 			$(function() {
 				$('nav#menu').mmenu({
-					extensions	: [ 'effect-slide', 'pageshadow' ],
-					header		: true,
+					extensions	: [ 'effect-slide-menu', 'pageshadow' ],
 					searchfield	: true,
 					counters	: true,
-					footer		: {
-						add			: true,
-						content		: '<a href="mmenu.frebsite.nl">Visit website &rsaquo;</a>'
-					}
+					navbars		: [
+						{
+							position	: 'top'
+						}, {
+							position	: 'bottom',
+							content		: [ '<a href="http://mmenu.frebsite.nl">Visit website</a>' ]
+						}
+					]
 				});
 			});
 		</script>

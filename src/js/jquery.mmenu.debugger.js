@@ -28,7 +28,7 @@
 	};
 	function deprecated( depr, repl, vers )
 	{
-		var msg = 'MMENU: ' + depr + 'is deprecated';
+		var msg = 'MMENU: ' + depr + ' is deprecated';
 
 		if ( vers )
 		{
@@ -36,12 +36,10 @@
 		}
 		if ( repl )
 		{
-			msg += ', use ' + repl + ' instead.';
+			msg += ', use ' + repl + ' instead';
 		}
-		else
-		{
-			msg += '.';
-		}
+		msg += '.';
+
 		_warn( msg );
 	};
 
@@ -49,10 +47,46 @@
 	$[ _PLUGIN_ ].prototype.___deprecated = function()
 	{
 
+		//	Options 5.1
+		if ( typeof this.opts.header != 'undefined' )
+		{
+			deprecated( 'The "header" add-on', 'the "navbars" add-on', '5.1' );
+		}
+		if ( typeof this.opts.footer != 'undefined' )
+		{
+			deprecated( 'The "footer" add-on', 'the "navbars" add-on', '5.1' );
+		}
+		if ( this.opts.extensions.indexOf( 'mm-effect-slide' ) > -1 &&
+			 this.opts.extensions.indexOf( 'mm-effect-slide-menu' ) == -1
+		) {
+			deprecated( 'The "effect-slide" extension', '"effect-slide-menu"', '5.1' );	
+		}
+
+		//	Configuration 5.1
+		if ( typeof this.conf.classNames.header != 'undefined' )
+		{
+			deprecated( 'The "header" add-on', 'the "navbars" add-on', '5.1' );
+		}
+		if ( typeof this.conf.classNames.footer != 'undefined' )
+		{
+			deprecated( 'The "footer" add-on', 'the "navbars" add-on', '5.1' );
+		}
+		if ( typeof this.conf.classNames.buttonbars != 'undefined' )
+		{
+			deprecated( 'The "buttonbars" add-on', false, '5.1' );
+		}
+
+		//	HTML 5.1
+		if ( this.$menu.find( '.Buttonbar' ).length )
+		{
+			deprecated( 'The buttonbars add-on', false, '5.1' );
+		}
+
+
 		//	Options 5.0
 		if ( typeof this.opts.labels != 'undefined' )
 		{
-			deprecated( 'The option "labels"', '"dividers"', '5.0' );
+			deprecated( 'The "labels" add-on', '"dividers"', '5.0' );
 		}
 		if ( typeof this.opts.classes != 'undefined' )
 		{
@@ -94,16 +128,6 @@
 				deprecated( 'The custom event "' + e.type + '"', 'the API', '5.0' );
 			}
 		)
-
-
-		//	Options 4.6
-		if ( this.opts.header )
-		{
-			if ( this.opts.header.add instanceof Array )
-			{
-				deprecated( 'An array for the "header.add" option', 'header.content', '4.6' );
-			}
-		}
 
 
 		//	Vendors 4.4
@@ -180,7 +204,7 @@
 		//	Configuration 4.1
 		if ( typeof this.conf.panelNodeType != 'undefined' )
 		{
-			deprecated( 'panelNodeType configuration option', 'panelNodetype' );
+			deprecated( 'The configuration option "panelNodeType"', 'panelNodetype', '4.1' );
 		}
 	};
 
@@ -190,7 +214,7 @@
 	{
 
 		//	non-available add-ons
-		var addons = [ 'autoHeight', 'backButton', 'buttonbars', 'counters', 'dividers', 'dragOpen', 'footer', 'header', 'offCanvas', 'searchfield', 'sectionIndexer', 'toggles' ];
+		var addons = [ 'autoHeight', 'backButton', 'counters', 'dividers', 'dragOpen', 'navbars', 'offCanvas', 'searchfield', 'sectionIndexer', 'toggles' ];
 		for ( var a in addons )
 		{
 			if ( typeof this.opts[ addons[ a ] ] != 'undefined' )
@@ -230,8 +254,8 @@
 		}
 
 		//	incompattible with iconbar
-		var fxSlide 	= ( this.opts.extensions.indexOf( 'mm-effect-slide' ) > -1 ),
-			fxZoom		= ( this.opts.extensions.indexOf( 'mm-effect-zoom-menu' ) > -1 ),
+		var fxSlide 	= ( this.opts.extensions.indexOf( 'mm-effect-slide-menu' ) 	> -1 ),
+			fxZoom		= ( this.opts.extensions.indexOf( 'mm-effect-zoom-menu' ) 	> -1 ),
 			fxZoomPnls	= ( this.opts.extensions.indexOf( 'mm-effect-zoom-panels' ) > -1 ),
 			iconbar		= ( $[ _PLUGIN_ ].glbl.$page && parseInt( $[ _PLUGIN_ ].glbl.$page.css( 'padding-right' ) ) > 0 );
 
@@ -240,7 +264,7 @@
 			//	iconbar + effects
 			if ( fxSlide || fxZoom )
 			{
-				debug( 'Don\'t use the "iconbar" extension in combination with the "' + ( fxSlide ? 'slide' : 'zoom-menu' ) + '" effect.' );
+				debug( 'Don\'t use the "iconbar" extension in combination with the "' + ( fxSlide ? 'slide-menu' : 'zoom-menu' ) + '" effect.' );
 			}
 			
 			//	iconbar + (z)position
@@ -270,16 +294,16 @@
 			{
 				if ( position == 'top' || position == 'bottom' )
 				{
-					debug( 'Don\'t use the "' + ( fxSlide ? 'slide' : 'zoom-menu' ) + '" effect in combination with the "offCanvas.position" option set to "' + position + '".' );
+					debug( 'Don\'t use the "' + ( fxSlide ? 'slide-menu' : 'zoom-menu' ) + '" effect in combination with the "offCanvas.position" option set to "' + position + '".' );
 				}
 				if ( zposition != 'back' )
 				{
-					debug( 'Don\'t use the "' + ( fxSlide ? 'slide' : 'zoom-menu' ) + '" effect in combination with the "offCanvas.zposition" option set to "' + zposition + '".' );
+					debug( 'Don\'t use the "' + ( fxSlide ? 'slide-menu' : 'zoom-menu' ) + '" effect in combination with the "offCanvas.zposition" option set to "' + zposition + '".' );
 				}
 			}
 			else
 			{
-				debug( 'Don\'t use the "' + ( fxSlide ? 'slide' : 'zoom-menu' ) + '" effect in combination with the "offCanvas" option set to "false".' );
+				debug( 'Don\'t use the "' + ( fxSlide ? 'slide-menu' : 'zoom-menu' ) + '" effect in combination with the "offCanvas" option set to "false".' );
 			}
 		}
 	};

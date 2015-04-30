@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v5.0.4
+ * jQuery mmenu v5.1.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.0.4';
+		_VERSION_	= '5.1.0';
 
 
 	//	Plugin already excists
@@ -258,7 +258,7 @@
 			if ( this.opts.offCanvas && this.conf.clone )
 			{
 				this.$menu = this.$menu.clone( true );
-				this.$menu.add( this.$menu.find( '*' ) )
+				this.$menu.add( this.$menu.find( '[id]' ) )
 					.filter( '[id]' )
 					.each(
 						function()
@@ -330,6 +330,7 @@
 			//	Create panels
 			var $curpanels = $(),
 				$oldpanels = $panels
+					.add( $panels.find( '.' + _c.panel ) )
 					.add( this.__findAddBack( $panels, '.' + _c.listview ).children().children( this.conf.panelNodetype ) )
 					.not( '.' + _c.nopanel );
 
@@ -391,35 +392,53 @@
 					function( i )
 					{
 						var $t = $(this),
-							$l = $t.parent(),
-							$a = $l.children( 'a, span' );
+							$p = $t.parent(),
+							$a = $p.children( 'a, span' ).first();
 
-						if ( !$l.is( '.' + _c.menu ) && !$t.data( _d.parent ) )
+			// TODO: klopt dit?
+						if ( !$p.is( '.' + _c.menu ) )
 						{
-							$l.data( _d.sub, $t );
-							$t.data( _d.parent, $l );
+							$p.data( _d.sub, $t );
+							$t.data( _d.parent, $p );
+						}
 
-							if ( $l.parent().is( '.' + _c.listview ) )
+						//	Open link
+						if ( !$p.children( '.' + _c.next ).length )
+						{
+							if ( $p.parent().is( '.' + _c.listview ) )
 							{
-								//	Open link
 								var id = $t.attr( 'id' ),
 									$b = $( '<a class="' + _c.next + '" href="#' + id + '" data-target="#' + id + '" />' ).insertBefore( $a );
-	
-								if ( !$a.is( 'a' ) )
+
+								if ( $a.is( 'span' ) )
 								{
 									$b.addClass( _c.fullsubopen );
 								}
 							}
+						}
 
-							//	Close link
-							if ( !$l.hasClass( _c.vertical ) )
+						//	Navbar
+						if ( !$t.children( '.' + _c.navbar ).length )
+						{
+							if ( !$p.hasClass( _c.vertical ) )
 							{
-								var $p = $l.closest( '.' + _c.panel );
+								if ( $p.parent().is( '.' + _c.listview ) )
+								{
+									//	Listview, the panel wrapping this panel
+									var $p = $p.closest( '.' + _c.panel );
+								}
+								else
+								{
+									//	Non-listview, the first panel that has an anchor that links to this panel
+									var $a = $p.closest( '.' + _c.panel ).find( 'a[href="#' + $t.attr( 'id' ) + '"]' ).first(),
+										$p = $a.closest( '.' + _c.panel );
+								}
+
 								if ( $p.length )
 								{
 									var id = $p.attr( 'id' );
-									$t.prepend( '<div class="' + _c.header + '"><a class="' + _c.btn + ' ' + _c.prev + '" href="#' + id + '" data-target="#' + id + '"></a><a class="' + _c.title + '">' + $a.text() + '</a></div>' );
-									$t.addClass( _c.hasheader );
+									$t.prepend( '<div class="' + _c.navbar + '"><a class="' + _c.btn + ' ' + _c.prev + '" href="#' + id + '" data-target="#' + id + '"></a><a class="' + _c.title + '">' + $a.text() + '</a></div>' );
+									$t.addClass( _c.hasnavbar );
 								}
 							}
 						}
@@ -732,7 +751,7 @@
 
 		//	Classnames
 		_c.mm = function( c ) { return 'mm-' + c; };
-		_c.add( 'wrapper menu vertical panel nopanel current highest opened subopened header hasheader title btn prev next first last listview nolistview selected divider spacer hidden fullsubopen' );
+		_c.add( 'wrapper menu vertical panel nopanel current highest opened subopened navbar hasnavbar title btn prev next first last listview nolistview selected divider spacer hidden fullsubopen' );
 		_c.umm = function( c )
 		{
 			if ( c.slice( 0, 3 ) == 'mm-' )

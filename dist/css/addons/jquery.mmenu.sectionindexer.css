@@ -34,16 +34,16 @@
 .mm-hasindexer .mm-fixeddivider {
   right: 20px; }
 
-.mm-hasheader .mm-indexer {
+.mm-hasnavbar-top .mm-indexer {
   top: 50px; }
 
-.mm-hasfooter .mm-indexer {
+.mm-hasnavbar-bottom .mm-indexer {
   bottom: 50px; }
 
 .mm-hassearch .mm-indexer {
   top: 50px; }
 
-.mm-hassearch.mm-hasheader .mm-indexer {
+.mm-hassearch.mm-hasnavbar-top .mm-indexer {
   top: 90px; }
 
 .mm-menu .mm-indexer a {

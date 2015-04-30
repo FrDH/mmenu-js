@@ -48,21 +48,21 @@
 	}
 }
 
-.mm-hasheader .mm-indexer
+.mm-hasnavbar-top .mm-indexer
 {
-	top: $mm_headerHeight + $mm_padding;
+	top: $mm_navbarHeight + $mm_padding;
 }
-.mm-hasfooter .mm-indexer
+.mm-hasnavbar-bottom .mm-indexer
 {
-	bottom: $mm_footerHeight + $mm_padding;
+	bottom: $mm_navbarHeight + $mm_padding;
 }
 .mm-hassearch .mm-indexer
 {
 	top: $mm_searchHeight + $mm_padding;
 }
-.mm-hassearch.mm-hasheader .mm-indexer
+.mm-hassearch.mm-hasnavbar-top .mm-indexer
 {
-	top: $mm_searchHeight + $mm_headerHeight + $mm_padding;
+	top: $mm_searchHeight + $mm_navbarHeight + $mm_padding;
 }
 
 

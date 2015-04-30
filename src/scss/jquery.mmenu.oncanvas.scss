@@ -77,9 +77,9 @@
 	box-sizing: border-box;	
 	padding: 0 $mm_panelPadding;
 
-	&.mm-hasheader
+	&.mm-hasnavbar
 	{
-		padding-top: $mm_headerHeight;
+		padding-top: $mm_navbarHeight;
 	}
 
 	//	Because padding-bottom in some browsers is ignored when a DIV is scrollable
@@ -138,13 +138,13 @@ li.mm-vertical.mm-opened > .mm-panel
 	}
 }
 
-.mm-header
+.mm-navbar
 {
 	border-bottom: 1px solid transparent;
 	text-align: center;
 	line-height: $mm_btnSize / 2;
 
-	height: $mm_headerHeight;
+	height: $mm_navbarHeight;
 	padding: 0 $mm_btnSize;
 
 	margin: 0;
@@ -158,6 +158,11 @@ li.mm-vertical.mm-opened > .mm-panel
 		text-decoration: none;
 		display: block;
 		padding: ( $mm_btnSize / 4 ) 0;
+
+		&:hover
+		{
+			text-decoration: none;
+		}
 	}
 	.mm-title
 	{
@@ -220,6 +225,11 @@ li.mm-vertical.mm-opened > .mm-panel
 			display: block;
 			padding: $mm_listitemPadding $mm_listitemPadding $mm_listitemPadding $mm_listitemIndent;
 			margin: 0;
+
+			&.mm-arrow
+			{
+				padding-right: $mm_subopenWidth;
+			}
 		}
 		
 		&:not(.mm-divider)
@@ -292,7 +302,8 @@ li.mm-vertical.mm-opened > .mm-panel
 
 // Arrows
 .mm-prev:before,
-.mm-next:after
+.mm-next:after,
+.mm-arrow:after
 {
 	@include mm_arrow;
 }
@@ -300,9 +311,10 @@ li.mm-vertical.mm-opened > .mm-panel
 {
 	@include mm_arrow_prev;
 }
-.mm-next:after
+.mm-next:after,
+.mm-arrow:after
 {
-	@include mm_arrow_next;	
+	@include mm_arrow_next;
 }
 
 

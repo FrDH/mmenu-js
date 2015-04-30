@@ -58,13 +58,13 @@ $mm_searchfieldHeight: $mm_searchHeight - ( $mm_padding * 1.5 ) !default;
 	{
 		padding-top: $mm_searchHeight;
 	
-		&.mm-hasheader
+		&.mm-hasnavbar
 		{
-			padding-top: $mm_searchHeight + $mm_headerHeight;
+			padding-top: $mm_searchHeight + $mm_navbarHeight;
 			
 			.mm-search
 			{
-				top: $mm_headerHeight;
+				top: $mm_navbarHeight;
 			}
 		}
 	}

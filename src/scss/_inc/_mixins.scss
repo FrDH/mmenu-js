@@ -82,12 +82,3 @@
 	white-space: nowrap;
 	overflow: hidden;
 }
-@mixin mm_clearfix()
-{
-	&:after
-	{
-		content: '';
-		display: block;
-		clear: both;
-	}
-}

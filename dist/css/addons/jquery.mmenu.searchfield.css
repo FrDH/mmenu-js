@@ -38,9 +38,9 @@
 
 .mm-panel.mm-hassearch {
   padding-top: 40px; }
-  .mm-panel.mm-hassearch.mm-hasheader {
+  .mm-panel.mm-hassearch.mm-hasnavbar {
     padding-top: 80px; }
-    .mm-panel.mm-hassearch.mm-hasheader .mm-search {
+    .mm-panel.mm-hassearch.mm-hasnavbar .mm-search {
       top: 40px; }
 
 .mm-noresultsmsg {

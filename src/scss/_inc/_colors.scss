@@ -9,7 +9,7 @@
 		background: $baseBg;
 		color: $color;
 
-		.mm-header
+		.mm-navbar
 		{
 			border-color: $borderColor;
 
@@ -32,23 +32,16 @@
 			}
 			> li
 			{
-				> a
+				.mm-prev:before,
+				.mm-next:after,
+				.mm-arrow:after
 				{
-					&.mm-prev,
-					&.mm-next
-					{
-						color: $dimmedColor;
-					}
-					&.mm-prev:before,
-					&.mm-next:after
-					{
-						border-color: $dimmedColor;
-					}
-					&.mm-prev:after,
-					&.mm-next:before
-					{
-						border-color: $borderColor;
-					}
+					border-color: $dimmedColor;
+				}
+				.mm-prev:after,
+				.mm-next:before
+				{
+					border-color: $borderColor;
 				}
 			}
 			> li.mm-selected
@@ -74,31 +67,6 @@
 		.mm-divider 
 		{
 			background: $highlightedBg;
-		}
-	}
-}
-
-@mixin mm_colors_buttonbars( $cls: "",
-	$baseBg: $mm_backgroundColor,
-	$color: $mm_textColor
-) {
-	.mm-menu#{$cls}
-	{
-		.mm-buttonbar
-		{
-			border-color: $color;
-			background: $baseBg;
-			
-			> *
-			{
-				border-color: $color;
-			}
-			
-			> input:checked + label
-			{
-				background: $color;
-				color: $baseBg;
-			}
 		}
 	}
 }
@@ -129,20 +97,6 @@
 		.mm-fixeddivider span
 		{
 			background: $highlightedBg;
-		}
-	}
-}
-
-@mixin mm_colors_footer( $cls: "",
-	$dimmedColor: $mm_dimmedTextColor,
-	$borderColor: $mm_borderColor
-) {
-	.mm-menu#{$cls}
-	{
-		.mm-footer
-		{
-			border-color: $borderColor;
-			color: $dimmedColor;
 		}
 	}
 }

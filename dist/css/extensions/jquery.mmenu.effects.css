@@ -1,34 +1,6 @@
 /*
 	jQuery.mmenu effects extension CSS
 */
-html.mm-effect-slide .mm-menu.mm-offcanvas {
-  -webkit-transition: -webkit-transform 0.4s ease;
-  transition: transform 0.4s ease; }
-html.mm-effect-slide.mm-opened .mm-menu.mm-offcanvas {
-  -webkit-transform: translate3d(-30%, 0, 0);
-  -moz-transform: translate3d(-30%, 0, 0);
-  -ms-transform: translate3d(-30%, 0, 0);
-  -o-transform: translate3d(-30%, 0, 0);
-  transform: translate3d(-30%, 0, 0); }
-html.mm-effect-slide.mm-opening .mm-menu.mm-offcanvas {
-  -webkit-transform: translate3d(0%, 0, 0);
-  -moz-transform: translate3d(0%, 0, 0);
-  -ms-transform: translate3d(0%, 0, 0);
-  -o-transform: translate3d(0%, 0, 0);
-  transform: translate3d(0%, 0, 0); }
-html.mm-effect-slide.mm-right.mm-opened .mm-menu.mm-offcanvas {
-  -webkit-transform: translate3d(30%, 0, 0);
-  -moz-transform: translate3d(30%, 0, 0);
-  -ms-transform: translate3d(30%, 0, 0);
-  -o-transform: translate3d(30%, 0, 0);
-  transform: translate3d(30%, 0, 0); }
-html.mm-effect-slide.mm-right.mm-opening .mm-menu.mm-offcanvas {
-  -webkit-transform: translate3d(0%, 0, 0);
-  -moz-transform: translate3d(0%, 0, 0);
-  -ms-transform: translate3d(0%, 0, 0);
-  -o-transform: translate3d(0%, 0, 0);
-  transform: translate3d(0%, 0, 0); }
-
 html.mm-effect-zoom-menu .mm-menu.mm-offcanvas {
   -webkit-transition: -webkit-transform 0.4s ease;
   -moz-transition: -moz-transform 0.4s ease;
@@ -70,7 +42,35 @@ html.mm-effect-zoom-menu.mm-right.mm-opening .mm-menu.mm-offcanvas {
   -o-transform: scale(1, 1) translate3d(0%, 0, 0);
   transform: scale(1, 1) translate3d(0%, 0, 0); }
 
-html.mm-effect-zoom-panels .mm-menu .mm-panel {
+html.mm-effect-slide-menu .mm-menu.mm-offcanvas {
+  -webkit-transition: -webkit-transform 0.4s ease;
+  transition: transform 0.4s ease; }
+html.mm-effect-slide-menu.mm-opened .mm-menu.mm-offcanvas {
+  -webkit-transform: translate3d(-30%, 0, 0);
+  -moz-transform: translate3d(-30%, 0, 0);
+  -ms-transform: translate3d(-30%, 0, 0);
+  -o-transform: translate3d(-30%, 0, 0);
+  transform: translate3d(-30%, 0, 0); }
+html.mm-effect-slide-menu.mm-opening .mm-menu.mm-offcanvas {
+  -webkit-transform: translate3d(0%, 0, 0);
+  -moz-transform: translate3d(0%, 0, 0);
+  -ms-transform: translate3d(0%, 0, 0);
+  -o-transform: translate3d(0%, 0, 0);
+  transform: translate3d(0%, 0, 0); }
+html.mm-effect-slide-menu.mm-right.mm-opened .mm-menu.mm-offcanvas {
+  -webkit-transform: translate3d(30%, 0, 0);
+  -moz-transform: translate3d(30%, 0, 0);
+  -ms-transform: translate3d(30%, 0, 0);
+  -o-transform: translate3d(30%, 0, 0);
+  transform: translate3d(30%, 0, 0); }
+html.mm-effect-slide-menu.mm-right.mm-opening .mm-menu.mm-offcanvas {
+  -webkit-transform: translate3d(0%, 0, 0);
+  -moz-transform: translate3d(0%, 0, 0);
+  -ms-transform: translate3d(0%, 0, 0);
+  -o-transform: translate3d(0%, 0, 0);
+  transform: translate3d(0%, 0, 0); }
+
+.mm-menu.mm-effect-zoom-panels .mm-panel {
   -webkit-transform: scale(1.5, 1.5) translate3d(100%, 0, 0);
   -moz-transform: scale(1.5, 1.5) translate3d(100%, 0, 0);
   -ms-transform: scale(1.5, 1.5) translate3d(100%, 0, 0);
@@ -86,15 +86,29 @@ html.mm-effect-zoom-panels .mm-menu .mm-panel {
   -ms-transition-property: -ms-transform, left;
   -o-transition-property: -o-transform, left;
   transition-property: transform, left; }
-  html.mm-effect-zoom-panels .mm-menu .mm-panel.mm-opened {
+  .mm-menu.mm-effect-zoom-panels .mm-panel.mm-opened {
     -webkit-transform: scale(1, 1) translate3d(0%, 0, 0);
     -moz-transform: scale(1, 1) translate3d(0%, 0, 0);
     -ms-transform: scale(1, 1) translate3d(0%, 0, 0);
     -o-transform: scale(1, 1) translate3d(0%, 0, 0);
     transform: scale(1, 1) translate3d(0%, 0, 0); }
-    html.mm-effect-zoom-panels .mm-menu .mm-panel.mm-opened.mm-subopened {
+    .mm-menu.mm-effect-zoom-panels .mm-panel.mm-opened.mm-subopened {
       -webkit-transform: scale(0.7, 0.7) translate3d(-30%, 0, 0);
       -moz-transform: scale(0.7, 0.7) translate3d(-30%, 0, 0);
       -ms-transform: scale(0.7, 0.7) translate3d(-30%, 0, 0);
       -o-transform: scale(0.7, 0.7) translate3d(-30%, 0, 0);
       transform: scale(0.7, 0.7) translate3d(-30%, 0, 0); }
+
+.mm-menu.mm-effect-slide-panels-0 .mm-panel.mm-subopened {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0); }
+
+.mm-menu.mm-effect-slide-panels-100 .mm-panel.mm-subopened {
+  -webkit-transform: translate3d(-100%, 0, 0);
+  -moz-transform: translate3d(-100%, 0, 0);
+  -ms-transform: translate3d(-100%, 0, 0);
+  -o-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0); }
