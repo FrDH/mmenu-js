@@ -60,10 +60,13 @@
 	width: 16.66%;
 }
 
-.mm-close:after
+.mm-close
 {
-	content: 'x';
 	text-align: right;
+	&:after
+	{
+		content: 'x';
+	}
 }
 
 .mm-menu.mm-hassearch > .mm-navbar-top
@@ -99,8 +102,7 @@
 }
 .mm-menu.mm-hasnavbar-bottom
 {
-	.mm-panel,
-	.mm-fixeddivider
+	.mm-panel
 	{
 		bottom: $mm_navbarHeight;
 	}

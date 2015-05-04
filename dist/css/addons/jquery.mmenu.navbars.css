@@ -42,9 +42,10 @@
 .mm-navbar-6 > a {
   width: 16.66%; }
 
-.mm-close:after {
-  content: 'x';
+.mm-close {
   text-align: right; }
+  .mm-close:after {
+    content: 'x'; }
 
 .mm-menu.mm-hassearch > .mm-navbar-top {
   top: 40px; }
@@ -59,6 +60,5 @@
 .mm-menu.mm-hasnavbar-top.mm-hassearch .mm-fixeddivider {
   top: 80px; }
 
-.mm-menu.mm-hasnavbar-bottom .mm-panel,
-.mm-menu.mm-hasnavbar-bottom .mm-fixeddivider {
+.mm-menu.mm-hasnavbar-bottom .mm-panel {
   bottom: 40px; }

@@ -29,8 +29,6 @@
 				return;
 			}
 
-			this.$navbars = {};
-
 			if ( !( navs instanceof Array ) )
 			{
 				navs = [ navs ];
@@ -74,6 +72,7 @@
 						{
 							case 'prev':
 							case 'next':
+							case 'close':
 							case 'title':
 								_update = true;
 								break;
@@ -99,8 +98,18 @@
 								break;
 
 							default:
-								_content++;
-								$content.append( opts.content[ c ] );
+								if ( !( opts.content[ c ] instanceof $ ) )
+								{
+									opts.content[ c ] = $( opts.content[ c ] );
+								}
+								that.__findAddBack( opts.content[ c ], 'a' )
+									.each(
+										function()
+										{
+											_content++;
+											$content.append( $(this) );
+										}
+									);
 								break;
 						}
 					}
@@ -119,7 +128,6 @@
 					.prependTo( that.$menu )
 					.append( $content );
 
-				that.$navbars[ poss ] = $navbar;
 				that.$menu.addClass( _c.hasnavbar + '-' + poss );
 
 				if ( _prevbtn )
