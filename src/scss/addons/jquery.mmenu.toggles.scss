@@ -17,7 +17,7 @@ label.mm-check
 {
 	margin: 0;
 	position: absolute;
-	bottom: 50%;
+	top: 50%;
 	z-index: 2;
 	
 	&:before
@@ -33,7 +33,7 @@ label.mm-toggle
 	border-radius: $mm_toggleHeight;
 	width: $mm_toggleWidth;
 	height: $mm_toggleHeight;
-	margin-bottom: -( $mm_toggleHeight / 2 );
+	margin-top: -( $mm_toggleHeight / 2 );
 
 	&:before
 	{
@@ -52,7 +52,7 @@ label.mm-check
 {
 	width: $mm_checkWidth;
 	height: $mm_checkHeight;
-	margin-bottom: -( $mm_checkHeight / 2 );
+	margin-top: -( $mm_checkHeight / 2 );
 
 	&:before
 	{
@@ -72,27 +72,23 @@ input.mm-check:checked ~ label.mm-check:before
 }
 
 
-//	Removed support for toggles and checks in vertical submenus
-//.mm-menu.mm-vertical .mm-listview
-//{
-//	> li label
-//	{
-//		&.mm-toggle,
-//		&.mm-check
-//		{
-//			bottom: auto;
-//			margin-bottom: 0;
-//		}
-//		&.mm-toggle
-//		{
-//			top: ( $mm_btnSize - $mm_toggleHeight ) / 2;
-//		}
-//		&.mm-check
-//		{
-//			top: ( $mm_btnSize - $mm_checkHeight ) / 2;
-//		}
-//	}
-//}
+li.mm-vertical label
+{
+	&.mm-toggle,
+	&.mm-check
+	{
+		bottom: auto;
+		margin-top: 0;
+	}
+	&.mm-toggle
+	{
+		top: ( $mm_btnSize - $mm_toggleHeight ) / 2;
+	}
+	&.mm-check
+	{
+		top: ( $mm_btnSize - $mm_checkHeight ) / 2;
+	}
+}
 
 
 // positioning

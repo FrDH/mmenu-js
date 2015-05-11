@@ -47,6 +47,15 @@
 	$[ _PLUGIN_ ].prototype.___deprecated = function()
 	{
 
+		//	Options 5.2
+		if ( typeof this.opts.searchfield != 'undefined' )
+		{
+			if ( typeof this.opts.searchfield.addTo == 'menu' )
+			{
+				deprecated( 'The value "menu" for the "searchfield.addTo" option', 'the "navbars" add-on', '5.2' );
+			}
+		}
+
 		//	Options 5.1
 		if ( typeof this.opts.header != 'undefined' )
 		{
@@ -214,18 +223,39 @@
 	{
 
 		//	non-available add-ons
-		var addons = [ 'autoHeight', 'backButton', 'counters', 'dividers', 'dragOpen', 'navbars', 'offCanvas', 'searchfield', 'sectionIndexer', 'toggles' ];
-		for ( var a in addons )
+		for ( var a = [ 'autoHeight', 'backButton', 'counters', 'dividers', 'dragOpen', 'navbars', 'offCanvas', 'searchfield', 'sectionIndexer', 'toggles' ], b = 0, l = a.length; b < l; b++ )
 		{
-			if ( typeof this.opts[ addons[ a ] ] != 'undefined' )
+			if ( typeof this.opts[ a[ b ] ] != 'undefined' )
 			{
-				if ( typeof $[ _PLUGIN_ ].addons[ addons[ a ] ] == 'undefined' )
+				if ( typeof $[ _PLUGIN_ ].addons[ a[ b ] ] == 'undefined' )
 				{
-					debug( 'The "' + addons[ a ] + '" add-on is not available.' );
+					debug( 'The "' + a[ b ] + '" add-on is not available.' );
 				}
 			}
 		}
-		
+		if ( typeof $[ _PLUGIN_ ].addons.searchfield == 'undefined' )
+		{
+			if ( typeof this.opts.navbars != 'undefined' )
+			{
+				if ( this.opts.navbars instanceof Array )
+				{
+					for( var n = 0; n < this.opts.navbars.length; n++ )
+					{
+						if ( this.opts.navbars[ n ].content instanceof Array )
+						{
+							for ( var c = 0; c < this.opts.navbars[ n ].content.length; c++ )
+							{
+								if ( this.opts.navbars[ n ].content[ c ] == 'searchfield' )
+								{
+									debug( 'The "searchfield" add-on is not available.' );
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 		var position	= false,
 			zposition	= false;
 

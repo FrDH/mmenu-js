@@ -5,7 +5,6 @@
  * Copyright (c) Fred Heusschen
  */
 
-
 (function( $ ) {
 
 	var _PLUGIN_ = 'mmenu',
@@ -123,7 +122,7 @@
 			{
 				return;
 			}
-			var id = glbl.$page.attr( 'id' );
+			var id = glbl.$page.first().attr( 'id' );
 			if ( id && id.length )
 			{
 				if ( $a.is( '[href="#' + id + '"]' ) )
@@ -148,6 +147,7 @@
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
 		pageNodetype		: 'div',
 		pageSelector		: null,
+		wrapPageIfNeeded	: true,
 		menuWrapperSelector	: 'body',
 		menuInjectMethod	: 'prepend'
 	};
@@ -183,7 +183,12 @@
 		this.closeAllOthers();
 
 		//	Store style and position
-		glbl.$page.data( _d.style, glbl.$page.attr( 'style' ) || '' );
+		glbl.$page.each(
+			function()
+			{
+				$(this).data( _d.style, $(this).attr( 'style' ) || '' );
+			}
+		);
 
 		//	Trigger window-resize to measure height
 		glbl.$wndw.trigger( _e.resize + '-offcanvas', [ true ] );
@@ -226,7 +231,7 @@
 		var that = this;
 
 		//	Callback
-		this.__transitionend( glbl.$page,
+		this.__transitionend( glbl.$page.first(),
 			function()
 			{
 				that.trigger( 'opened' );
@@ -248,7 +253,7 @@
 		var that = this;
 
 		//	Callback
-		this.__transitionend( glbl.$page,
+		this.__transitionend( glbl.$page.first(),
 			function()
 			{
 				that.$menu
@@ -268,7 +273,12 @@
 				}
 
 				//	Restore style and position
-				glbl.$page.attr( 'style', glbl.$page.data( _d.style ) );
+				glbl.$page.each(
+					function()
+					{
+						$(this).attr( 'style', $(this).data( _d.style ) );
+					}
+				);
 
 				that.vars.opened = false;
 				that.trigger( 'closed' );
@@ -300,16 +310,24 @@
 
 	$[ _PLUGIN_ ].prototype.setPage = function( $page )
 	{
+		var that = this,
+			conf = this.conf[ _ADDON_ ];
+
 		if ( !$page || !$page.length )
 		{
-			$page = $(this.conf[ _ADDON_ ].pageSelector, glbl.$body);
-			if ( $page.length > 1 )
+			$page = glbl.$body.find( conf.pageSelector );
+			if ( $page.length > 1 && conf.wrapPageIfNeeded )
 			{
 				$page = $page.wrapAll( '<' + this.conf[ _ADDON_ ].pageNodetype + ' />' ).parent();
 			}
 		}
 
-		$page.attr( 'id', $page.attr( 'id' ) || this.__getUniqueId() );
+		$page.each(
+			function()
+			{
+				$(this).attr( 'id', $(this).attr( 'id' ) || that.__getUniqueId() );		
+			}
+		);
 		$page.addClass( _c.page + ' ' + _c.slideout );
 		glbl.$page = $page;
 
@@ -342,13 +360,16 @@
 			.on( _e.resize + '-offcanvas',
 				function( e, force )
 				{
-					if ( force || glbl.$html.hasClass( _c.opened ) )
+					if ( glbl.$page.length == 1 )
 					{
-						var nh = glbl.$wndw.height();
-						if ( force || nh != _h )
+						if ( force || glbl.$html.hasClass( _c.opened ) )
 						{
-							_h = nh;
-							glbl.$page.css( 'minHeight', nh );
+							var nh = glbl.$wndw.height();
+							if ( force || nh != _h )
+							{
+								_h = nh;
+								glbl.$page.css( 'minHeight', nh );
+							}
 						}
 					}
 				}

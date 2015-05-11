@@ -15,8 +15,6 @@ html.mm-opened {
   position: relative; }
   html.mm-opened body {
     overflow: hidden; }
-  html.mm-opened .mm-page {
-    min-height: 100vh; }
 
 html.mm-background .mm-page {
   background: inherit; }

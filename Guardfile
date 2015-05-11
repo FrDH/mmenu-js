@@ -50,7 +50,7 @@ guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.fixedelements.
   watch ('dist/js/addons/jquery.mmenu.fixedelements.min.js')
 end
 
-guard :concat, type: "js", files: %w(jquery.mmenu.navbars), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.navbars.min"
+guard :concat, type: "js", files: %w(jquery.mmenu.navbars jquery.mmenu.navbar.close jquery.mmenu.navbar.next jquery.mmenu.navbar.prev jquery.mmenu.navbar.searchfield jquery.mmenu.navbar.title), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.navbars.min"
 guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.navbars.min.js" do
   watch ('dist/js/addons/jquery.mmenu.navbars.min.js')
 end

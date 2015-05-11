@@ -5,12 +5,10 @@
  * Copyright (c) Fred Heusschen
  */
 
-
 (function( $ ) {
 
 	var _PLUGIN_ = 'mmenu',
-		_ADDON_  = 'navbars',
-		_SINGLE_ = 'navbar';
+		_ADDON_  = 'navbars';
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
@@ -34,195 +32,93 @@
 				navs = [ navs ];
 			}
 
-			$.each(navs, function( n ) {
-			
-				var opts = navs[ n ];
+			var _pos = {};
 
-				//	Extend shortcut options
-				if ( typeof opts == 'boolean' && opts )
+			$.each(
+				navs,
+				function( n )
 				{
-					opts = {};
-				}
-				if ( typeof opts != 'object' )
-				{
-					opts = {};
-				}
-				if ( typeof opts.content == 'undefined' )
-				{
-					opts.content = [ 'prev', 'title', 'next' ];
-				}
-				opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _SINGLE_ ], opts );
+				
+					var opts = navs[ n ];
 
-				var poss = poss = opts.position || 'top';
+					//	Extend shortcut options
+					if ( typeof opts == 'boolean' && opts )
+					{
+						opts = {};
+					}
+					if ( typeof opts != 'object' )
+					{
+						opts = {};
+					}
+					if ( typeof opts.content == 'undefined' )
+					{
+						opts.content = [ 'prev', 'title' ];
+					}
+					if ( !( opts.content instanceof Array ) )
+					{
+						opts.content = [ opts.content ];
+					}
+					opts = $.extend( true, {}, that.opts.navbar, opts );
+
+					var poss = opts.position;
+					if ( poss != 'bottom' )
+					{
+						poss = 'top';
+					}
+					if ( !_pos[ poss ] )
+					{
+						_pos[ poss ] = 0;
+					}
+					_pos[ poss ]++;
 
 
-				//	Add markup
-				var $navbar = $( '<div class="' + _c.navbar + ' ' + _c.navbar + '-' + poss + '" />' );
-
-				if ( opts.content instanceof Array )
-				{
-					var $content = $( '<div />' ),
-						_content = 0,
-						_update  = false,
-						_prevbtn = false;
+					//	Add markup
+					var $navbar = $( '<div />' )
+						.addClass( _c.navbar )
+						.addClass( _c.navbar + '-' + poss )
+						.addClass( _c.navbar + '-' + poss + '-' + _pos[ poss ] );
 
 					for ( var c = 0, l = opts.content.length; c < l; c++ )
 					{
-						switch ( opts.content[ c ] )
+						var ctnt = $[ _PLUGIN_ ].addons[ _ADDON_ ][ opts.content[ c ] ] || false;
+						if ( ctnt )
 						{
-							case 'prev':
-							case 'next':
-							case 'close':
-							case 'title':
-								_update = true;
-								break;
+							ctnt.call( that, $navbar, opts );
 						}
-						switch ( opts.content[ c ] )
+						else
 						{
-							case 'prev':
-								_prevbtn = true;
-								break;
-						}
-						switch ( opts.content[ c ] )
-						{
-							case 'prev':
-							case 'next':
-							case 'close':
-								$navbar.addClass( _c.hasbtns );
-								$content.append( '<a class="' + _c[ opts.content[ c ] ] + ' ' + _c.btn + '" href="#"></a>' );
-								break;
-
-							case 'title':
-								_content++;
-								$content.append( '<a class="' + _c.title + '"></a>' );
-								break;
-
-							default:
-								if ( !( opts.content[ c ] instanceof $ ) )
-								{
-									opts.content[ c ] = $( opts.content[ c ] );
-								}
-								that.__findAddBack( opts.content[ c ], 'a' )
-									.each(
-										function()
-										{
-											_content++;
-											$content.append( $(this) );
-										}
-									);
-								break;
+							ctnt = opts.content[ c ];
+							if ( !( ctnt instanceof $ ) )
+							{
+								ctnt = $( opts.content[ c ] );
+							}
+							ctnt
+								.each(
+									function()
+									{
+										$navbar.append( $(this) );
+									}
+								);
 						}
 					}
+
+					var _content = $navbar.children().not( '.' + _c.btn ).length;
 					if ( _content > 1 )
 					{
 						$navbar.addClass( _c.navbar + '-' + _content );
 					}
-					$content = $content.html();
-				}
-				else
-				{
-					var $content = opts.content;
-				}
-
-				$navbar
-					.prependTo( that.$menu )
-					.append( $content );
-
-				that.$menu.addClass( _c.hasnavbar + '-' + poss );
-
-				if ( _prevbtn )
-				{
-					that.$menu.addClass( _c.hasnavbar );
-					that.bind( 'init',
-						function( $panel )
-						{
-							$panel.removeClass( _c.hasnavbar );
-						}
-					);
-				}
-
-				//	Update content
-				if ( _update )
-				{
-					var $titl = $navbar.find( '.' + _c.title ),
-						$prev = $navbar.find( '.' + _c.prev ),
-						$next = $navbar.find( '.' + _c.next ),
-						$clse = $navbar.find( '.' + _c.close );
-
-					var update = function( $panl )
+					if ( $navbar.children( '.' + _c.btn ).length )
 					{
-						$panl = $panl || that.$menu.children( '.' + _c.current );
-
-						//	Find title, prev and next
-						var $ttl = $panl.find( '.' + that.conf.classNames[ _ADDON_ ].panelTitle	+ '-' + poss ),
-							$prv = $panl.find( '.' + that.conf.classNames[ _ADDON_ ].panelPrev	+ '-' + poss ),
-							$nxt = $panl.find( '.' + that.conf.classNames[ _ADDON_ ].panelNext	+ '-' + poss ),
-							$prt = $panl.data( _d.parent );
-
-						var _ttl = $ttl.html(),
-							_prv = $prv.attr( 'href' ),
-							_nxt = $nxt.attr( 'href' ),
-							_prt = false;
-
-						var _prv_txt = $prv.html(),
-							_nxt_txt = $nxt.html();
-
-						if ( !_ttl )
-						{
-							_ttl = $panl.children( '.' + _c.navbar ).children( '.' + _c.title ).html();
-						}
-						if ( !_ttl )
-						{
-							_ttl = opts.title;
-						}
-						if ( !_prv )
-						{
-							_prv = $panl.children( '.' + _c.navbar ).children( '.' + _c.prev ).attr( 'href' );
-						}
-
-						switch ( opts.titleLink )
-						{
-							case 'anchor':
-								var _prt = ( $prt ) ? $prt.children( 'a' ).not( '.' + _c.next ).attr( 'href' ) : false;
-								break;
-							
-							case 'panel':
-								var _prt = _prv;
-								break;
-						}
-
-						$titl[ _prt ? 'attr' : 'removeAttr' ]( 'href', _prt );
-						$titl[ _ttl ? 'removeClass' : 'addClass' ]( _c.hidden );
-						$titl.html( _ttl );
-
-						$prev[ _prv ? 'attr' : 'removeAttr' ]( 'href', _prv );
-						$prev[ _prv || _prv_txt ? 'removeClass' : 'addClass' ]( _c.hidden );
-						$prev.html( _prv_txt );
-
-						$next[ _nxt ? 'attr' : 'removeAttr' ]( 'href', _nxt );
-						$next[ _nxt || _nxt_txt ? 'removeClass' : 'addClass' ]( _c.hidden );
-						$next.html( _nxt_txt );
-					};
-
-					that.bind( 'openPanel', update );
-					that.bind( 'init',
-						function()
-						{
-							update.call( that, that.$menu.children( '.' + _c.current ) );
-						}
-					);
-
-					if ( that.opts.offCanvas )
-					{
-						var setPage = function( $page )
-						{
-							$clse.attr( 'href', '#' + $page.attr( 'id' ) );
-						};
-						setPage.call( that, glbl.$page );
-						that.bind( 'setPage', setPage );
+						$navbar.addClass( _c.hasbtns );
 					}
+					$navbar.prependTo( that.$menu );
 				}
-			});
+			);
+
+			for ( var p in _pos )
+			{
+				that.$menu.addClass( _c.hasnavbar + '-' + p + '-' + _pos[ p ] );
+			}
 		},
 
 		//	add: fired once per page load
@@ -241,12 +137,6 @@
 
 
 	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _SINGLE_ ] = {
-//		content 	: ['prev', 'title', 'next'],
-		position	: 'top',
-		title		: 'Menu',
-		titleLink	: 'panel'
-	};
 	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
 		panelTitle	: 'Title',
 		panelNext	: 'Next',

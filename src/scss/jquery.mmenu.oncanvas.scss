@@ -153,16 +153,14 @@ li.mm-vertical.mm-opened > .mm-panel
 	left: 0;
 	right: 0;
 
-	> a
+	> *
 	{
-		text-decoration: none;
 		display: block;
 		padding: ( $mm_btnSize / 4 ) 0;
-
-		&:hover
-		{
-			text-decoration: none;
-		}
+	}
+	a, a:hover
+	{
+		text-decoration: none;
 	}
 	.mm-title
 	{
@@ -187,6 +185,17 @@ li.mm-vertical.mm-opened > .mm-panel
 			padding-right: $mm_panelPadding;
 			right: 0;
 		}
+	}
+}
+.mm-panel
+{
+	.mm-navbar
+	{
+		display: none;
+	}
+	&.mm-hasnavbar .mm-navbar
+	{
+		display: block;
 	}
 }
 

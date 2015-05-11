@@ -5,7 +5,6 @@
  * Copyright (c) Fred Heusschen
  */
 
-
 (function( $ ) {
 
 	var _PLUGIN_ = 'mmenu',
@@ -28,8 +27,7 @@
 			if ( typeof opts == 'boolean' )
 			{
 				opts = {
-					add		: opts,
-					search	: opts
+					add: opts
 				};
 			}
 			if ( typeof opts != 'object' )
@@ -37,6 +35,17 @@
 				opts = {};
 			}
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+
+			this.bind(
+				'close',
+				function()
+				{
+					this.$menu
+						.find( '.' + _c.search )
+						.find( 'input' )
+						.blur();
+				}
+			);
 
 
 			//	Bind functions to update
@@ -48,16 +57,12 @@
 					{
 						switch( opts.addTo )
 						{
-							case 'menu':
-								var $wrapper = this.$menu;
-								break;
-
 							case 'panels':
 								var $wrapper = $panels;
 								break;
 
 							default:
-								var $wrapper = $(opts.addTo, this.$menu).filter( '.' + _c.panel );
+								var $wrapper = $(opts.addTo, this.$menu);
 								break;
 						}
 
@@ -74,32 +79,44 @@
 
 									if ( !$panl.children( '.' + _c.search ).length )
 									{
-										var _node = ( conf.form ) 
+										var _srch = ( conf.form ) 
 											? 'form'
 											: 'div';
 
-										var $node = $( '<' + _node + ' class="' + _c.search + '" />' );
+										var $srch = $( '<' + _srch + ' class="' + _c.search + '" />' );
 			
 										if ( conf.form && typeof conf.form == 'object' )
 										{
 											for ( var f in conf.form )
 											{
-												$node.attr( f, conf.form[ f ] );
+												$srch.attr( f, conf.form[ f ] );
 											}
 										}
+										$srch.append( '<input placeholder="' + opts.placeholder + '" type="text" autocomplete="off" />' );
 
-										$node.append( '<input placeholder="' + opts.placeholder + '" type="text" autocomplete="off" />' )
-											.prependTo( $panl );
-										
-										$panl.addClass( _c.hassearch );
+										if ( $panl.hasClass( _c.search ) )
+										{
+											$panl.replaceWith( $srch );
+										}
+										else
+										{
+											$panl
+												.prepend( $srch )
+												.addClass( _c.hassearch );
+										}
 									}
 
 									if ( opts.noResults )
 									{
-										if ( $panl.is( '.' + _c.menu ) )
+										var inPanel = $panl.closest( '.' + _c.panel ).length;
+
+										//	Not in a panel
+										if ( !inPanel )
 										{
-											$panl = $panl.children( '.' + _c.panel ).first();
+											$panl = that.$menu.children( '.' + _c.panel ).first();
 										}
+
+										//	Add no-results message
 										if ( !$panl.children( '.' + _c.noresultsmsg ).length )
 										{
 											var $lst = $panl.children( '.' + _c.listview );
@@ -111,173 +128,172 @@
 									}
 								}
 						);
-					}
 
-/*
-					if ( this.$menu.children( '.' + _c.search ).length )
-					{
-						this.$menu.addClass( _c.hassearch );
-					}
-*/
 
-					//	Search through list items
-					if ( opts.search )
-					{
-						$('.' + _c.search, this.$menu)
-							.each(
-								function()
-								{
-									var $srch = $(this);
-
-									if ( opts.addTo == 'menu' )
+						//	Search through list items
+						if ( opts.search )
+						{
+							$('.' + _c.search, this.$menu)
+								.each(
+									function()
 									{
-										var $pnls = $('.' + _c.panel, that.$menu),
-											$panl = that.$menu;
-									}
-									else
-									{
-										var $pnls = $srch.closest( '.' + _c.panel ),
-											$panl = $pnls;
-									}
-									var $inpt = $srch.children( 'input' ),
-										$itms = that.__findAddBack( $pnls, '.' + _c.listview ).children( 'li' ),
-										$dvdr = $itms.filter( '.' + _c.divider ),
-										$rslt = that.__filterListItems( $itms );
+										var $srch 	= $(this),
+											inPanel = $srch.closest( '.' + _c.panel ).length;
 
-									var _anchor = '> a',
-										_both = _anchor + ', > span';
-
-									var search = function()
-									{
-
-										var query = $inpt.val().toLowerCase();
-
-										//	Scroll to top
-										$pnls.scrollTop( 0 );
-			
-										//	Search through items
-										$rslt
-											.add( $dvdr )
-											.addClass( _c.hidden )
-											.find( '.' + _c.fullsubopensearch )
-											.removeClass( _c.fullsubopen )
-											.removeClass( _c.fullsubopensearch );
-
-										$rslt
-											.each(
-												function()
-												{
-													var $item = $(this),
-														_search = _anchor;
-
-													if ( opts.showTextItems || ( opts.showSubPanels && $item.find( '.' + _c.next ) ) )
-													{
-														_search = _both;
-													}
-
-													if ( $(_search, $item).text().toLowerCase().indexOf( query ) > -1 )
-													{
-														$item.add( $item.prevAll( '.' + _c.divider ).first() ).removeClass( _c.hidden );
-													}
-												}
-											);
-
-										//	Update sub items
-										if ( opts.showSubPanels )
+										//	In a panel
+										if ( inPanel )
 										{
-											$pnls.each(
-												function( i )
-												{
-													var $panl = $(this);
-													that.__filterListItems( $panl.find( '.' + _c.listview ).children() )
-														.each(
-															function()
-															{
-																var $li = $(this),
-																	$su = $li.data( _d.sub );
-
-																$li.removeClass( _c.nosubresults );
-																if ( $su )
-																{
-																	$su.find( '.' + _c.listview ).children().removeClass( _c.hidden );
-																}
-															}
-														);
-												}
-											);
+											var $pnls = $srch.closest( '.' + _c.panel ),
+												$panl = $pnls;
 										}
 
-										//	Update parent for submenus
-										$( $pnls.get().reverse() )
-											.each(
-												function( i )
-												{
-													var $panl = $(this),
-														$prnt = $panl.data( _d.parent );
+										//	Not in a panel
+										else
+										{
+											var $pnls = $('.' + _c.panel, that.$menu),
+												$panl = that.$menu;
+										}
 
-													if ( $prnt )
+										var $inpt = $srch.children( 'input' ),
+											$itms = that.__findAddBack( $pnls, '.' + _c.listview ).children( 'li' ),
+											$dvdr = $itms.filter( '.' + _c.divider ),
+											$rslt = that.__filterListItems( $itms );
+
+										var _anchor = '> a',
+											_both = _anchor + ', > span';
+
+										var search = function()
+										{
+
+											var query = $inpt.val().toLowerCase();
+
+											//	Scroll to top
+											$pnls.scrollTop( 0 );
+				
+											//	Search through items
+											$rslt
+												.add( $dvdr )
+												.addClass( _c.hidden )
+												.find( '.' + _c.fullsubopensearch )
+												.removeClass( _c.fullsubopen )
+												.removeClass( _c.fullsubopensearch );
+
+											$rslt
+												.each(
+													function()
 													{
-														if ( that.__filterListItems( $panl.find( '.' + _c.listview ).children() ).length )
+														var $item = $(this),
+															_search = _anchor;
+
+														if ( opts.showTextItems || ( opts.showSubPanels && $item.find( '.' + _c.next ) ) )
 														{
-															if ( $prnt.hasClass( _c.hidden ) )
-															{
-																$prnt.children( '.' + _c.next )
-																	.not( '.' + _c.fullsubopen )
-																	.addClass( _c.fullsubopen )
-																	.addClass( _c.fullsubopensearch );
-															}
-															$prnt
-																.removeClass( _c.hidden )
-																.removeClass( _c.nosubresults )
-																.prevAll( '.' + _c.divider )
-																.first()
-																.removeClass( _c.hidden );
+															_search = _both;
 														}
-														else if ( opts.addTo == 'menu' )
+
+														if ( $(_search, $item).text().toLowerCase().indexOf( query ) > -1 )
 														{
-															if ( $panl.hasClass( _c.opened ) )
-															{
-																//	Compensate the timeout for the opening animation
-																setTimeout(
-																	function()
-																	{
-																		that.openPanel( $prnt.closest( '.' + _c.panel ) );
-																	}, ( i + 1 ) * ( that.conf.openingInterval * 1.5 )
-																);
-															}
-															$prnt.addClass( _c.nosubresults );
+															$item.add( $item.prevAll( '.' + _c.divider ).first() ).removeClass( _c.hidden );
 														}
 													}
-												}
-											);
-	
-										//	Show/hide no results message
-										$panl[ $rslt.not( '.' + _c.hidden ).length ? 'removeClass' : 'addClass' ]( _c.noresults );
+												);
 
-										// Update for other addons
-										this.update();
-									}
-
-
-									$inpt
-										.off( _e.keyup + '-searchfield ' + _e.change + '-searchfield' )
-										.on( _e.keyup + '-searchfield',
-											function( e )
+											//	Update sub items
+											if ( opts.showSubPanels )
 											{
-												if ( !preventKeypressSearch( e.keyCode ) )
+												$pnls.each(
+													function( i )
+													{
+														var $panl = $(this);
+														that.__filterListItems( $panl.find( '.' + _c.listview ).children() )
+															.each(
+																function()
+																{
+																	var $li = $(this),
+																		$su = $li.data( _d.sub );
+
+																	$li.removeClass( _c.nosubresults );
+																	if ( $su )
+																	{
+																		$su.find( '.' + _c.listview ).children().removeClass( _c.hidden );
+																	}
+																}
+															);
+													}
+												);
+											}
+
+											//	Update parent for submenus
+											$( $pnls.get().reverse() )
+												.each(
+													function( i )
+													{
+														var $panl = $(this),
+															$prnt = $panl.data( _d.parent );
+
+														if ( $prnt )
+														{
+															if ( that.__filterListItems( $panl.find( '.' + _c.listview ).children() ).length )
+															{
+																if ( $prnt.hasClass( _c.hidden ) )
+																{
+																	$prnt.children( '.' + _c.next )
+																		.not( '.' + _c.fullsubopen )
+																		.addClass( _c.fullsubopen )
+																		.addClass( _c.fullsubopensearch );
+																}
+																$prnt
+																	.removeClass( _c.hidden )
+																	.removeClass( _c.nosubresults )
+																	.prevAll( '.' + _c.divider )
+																	.first()
+																	.removeClass( _c.hidden );
+															}
+															else if ( !inPanel )
+															{
+																if ( $panl.hasClass( _c.opened ) )
+																{
+																	//	Compensate the timeout for the opening animation
+																	setTimeout(
+																		function()
+																		{
+																			that.openPanel( $prnt.closest( '.' + _c.panel ) );
+																		}, ( i + 1 ) * ( that.conf.openingInterval * 1.5 )
+																	);
+																}
+																$prnt.addClass( _c.nosubresults );
+															}
+														}
+													}
+												);
+		
+											//	Show/hide no results message
+											$panl[ $rslt.not( '.' + _c.hidden ).length ? 'removeClass' : 'addClass' ]( _c.noresults );
+
+											// Update for other addons
+											this.update();
+										}
+
+
+										$inpt
+											.off( _e.keyup + '-searchfield ' + _e.change + '-searchfield' )
+											.on( _e.keyup + '-searchfield',
+												function( e )
+												{
+													if ( !preventKeypressSearch( e.keyCode ) )
+													{
+														search.call( that );
+													}
+												}
+											)
+											.on( _e.change + '-searchfield',
+												function( e )
 												{
 													search.call( that );
 												}
-											}
-										)
-										.on( _e.change + '-searchfield',
-											function( e )
-											{
-												search.call( that );
-											}
-										);
-								}
-							);
+											);
+									}
+								);
+						}
 					}
 				}
 		 	);
@@ -301,9 +317,9 @@
 
 	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		add				: false,
-		addTo			: 'menu',
-		search			: false,
+		add 			: false,
+		addTo			: 'panels',
+		search			: true,
 		placeholder		: 'Search',
 		noResults		: 'No results found.',
 		showTextItems	: false,

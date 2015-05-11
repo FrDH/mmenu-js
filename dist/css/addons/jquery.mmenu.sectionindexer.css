@@ -25,7 +25,7 @@
   .mm-indexer a {
     text-decoration: none;
     display: block;
-    height: 3.71%; }
+    height: 3.85%; }
   .mm-indexer ~ .mm-panel.mm-hasindexer {
     padding-right: 40px; }
 
@@ -33,18 +33,6 @@
   right: 0; }
 .mm-hasindexer .mm-fixeddivider {
   right: 20px; }
-
-.mm-hasnavbar-top .mm-indexer {
-  top: 50px; }
-
-.mm-hasnavbar-bottom .mm-indexer {
-  bottom: 50px; }
-
-.mm-hassearch .mm-indexer {
-  top: 50px; }
-
-.mm-hassearch.mm-hasnavbar-top .mm-indexer {
-  top: 90px; }
 
 .mm-menu .mm-indexer a {
   color: rgba(0, 0, 0, 0.3); }

@@ -10,7 +10,7 @@ label.mm-toggle,
 label.mm-check {
   margin: 0;
   position: absolute;
-  bottom: 50%;
+  top: 50%;
   z-index: 2; }
   label.mm-toggle:before,
   label.mm-check:before {
@@ -21,7 +21,7 @@ label.mm-toggle {
   border-radius: 30px;
   width: 50px;
   height: 30px;
-  margin-bottom: -15px; }
+  margin-top: -15px; }
   label.mm-toggle:before {
     border-radius: 30px;
     width: 28px;
@@ -34,7 +34,7 @@ input.mm-toggle:checked ~ label.mm-toggle:before {
 label.mm-check {
   width: 30px;
   height: 30px;
-  margin-bottom: -15px; }
+  margin-top: -15px; }
   label.mm-check:before {
     border-left: 3px solid;
     border-bottom: 3px solid;
@@ -50,6 +50,14 @@ label.mm-check {
 
 input.mm-check:checked ~ label.mm-check:before {
   opacity: 1; }
+
+li.mm-vertical label.mm-toggle, li.mm-vertical label.mm-check {
+  bottom: auto;
+  margin-top: 0; }
+li.mm-vertical label.mm-toggle {
+  top: 5px; }
+li.mm-vertical label.mm-check {
+  top: 5px; }
 
 label.mm-toggle, label.mm-check {
   right: 20px; }

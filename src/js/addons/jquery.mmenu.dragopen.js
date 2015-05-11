@@ -5,7 +5,6 @@
  * Copyright (c) Fred Heusschen
  */
 
-
 (function( $ ) {
 
 	var _PLUGIN_ = 'mmenu',

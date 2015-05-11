@@ -28,11 +28,6 @@ html.mm-opened
 	{
 		overflow: hidden;
 	}
-	.mm-page
-	{
-		min-height: 100vh; 	//	Unfortunately there are still too many Android devices that don't support viewport units,
-							//	therefore there still is some JS in jquery.mmenu.offcanvas.js that measures the window height onWindowResize.
-	}
 }
 
 html.mm-background .mm-page

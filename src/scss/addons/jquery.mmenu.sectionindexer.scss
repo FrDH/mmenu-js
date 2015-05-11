@@ -28,7 +28,7 @@
 	{
 		text-decoration: none;
 		display: block;
-		height: 3.71%;
+		height: 3.85%;
 	}
 
 	~ .mm-panel.mm-hasindexer
@@ -46,23 +46,6 @@
 	{
 		right: $mm_sectionIndexerWidth;
 	}
-}
-
-.mm-hasnavbar-top .mm-indexer
-{
-	top: $mm_navbarHeight + $mm_padding;
-}
-.mm-hasnavbar-bottom .mm-indexer
-{
-	bottom: $mm_navbarHeight + $mm_padding;
-}
-.mm-hassearch .mm-indexer
-{
-	top: $mm_searchHeight + $mm_padding;
-}
-.mm-hassearch.mm-hasnavbar-top .mm-indexer
-{
-	top: $mm_searchHeight + $mm_navbarHeight + $mm_padding;
 }
 
 

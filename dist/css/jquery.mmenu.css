@@ -114,12 +114,11 @@ li.mm-vertical.mm-opened > .mm-panel {
   top: 0;
   left: 0;
   right: 0; }
-  .mm-navbar > a {
-    text-decoration: none;
+  .mm-navbar > * {
     display: block;
     padding: 10px 0; }
-    .mm-navbar > a:hover {
-      text-decoration: none; }
+  .mm-navbar a, .mm-navbar a:hover {
+    text-decoration: none; }
   .mm-navbar .mm-title {
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -137,6 +136,11 @@ li.mm-vertical.mm-opened > .mm-panel {
     .mm-navbar .mm-btn:last-child {
       padding-right: 20px;
       right: 0; }
+
+.mm-panel .mm-navbar {
+  display: none; }
+.mm-panel.mm-hasnavbar .mm-navbar {
+  display: block; }
 
 .mm-listview,
 .mm-listview > li {
@@ -265,7 +269,8 @@ li.mm-vertical.mm-opened > .mm-panel {
   color: rgba(0, 0, 0, 0.7); }
   .mm-menu .mm-navbar {
     border-color: rgba(0, 0, 0, 0.1); }
-    .mm-menu .mm-navbar > a {
+    .mm-menu .mm-navbar > *,
+    .mm-menu .mm-navbar a {
       color: rgba(0, 0, 0, 0.3); }
     .mm-menu .mm-navbar .mm-btn:before,
     .mm-menu .mm-navbar .mm-btn:after {
@@ -307,8 +312,6 @@ html.mm-opened {
   position: relative; }
   html.mm-opened body {
     overflow: hidden; }
-  html.mm-opened .mm-page {
-    min-height: 100vh; }
 
 html.mm-background .mm-page {
   background: inherit; }

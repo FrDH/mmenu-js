@@ -13,10 +13,12 @@
 		{
 			border-color: $borderColor;
 
-			> a
+			> *,
+			a
 			{
 				color: $dimmedColor;
 			}
+
 			.mm-btn:before,
 			.mm-btn:after
 			{

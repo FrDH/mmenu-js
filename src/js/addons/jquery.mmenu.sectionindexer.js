@@ -5,7 +5,6 @@
  * Copyright (c) Fred Heusschen
  */
 
-
 (function( $ ) {
 
 	var _PLUGIN_ = 'mmenu',
@@ -94,13 +93,12 @@
 								'<a href="#w">w</a>' +
 								'<a href="#x">x</a>' +
 								'<a href="#y">y</a>' +
-								'<a href="#z">z</a>' +
-								'<a href="##">#</a>' );
+								'<a href="#z">z</a>' );
 
 						//	Scroll onMouseOver
 						this.$indexer
 							.children()
-							.on( _e.mouseover + '-searchfield ' + _c.touchmove + '-searchfield',
+							.on( _e.mouseover + '-searchfield ' + _c.touchstart + '-searchfield',
 								function( e )
 								{
 									var lttr = $(this).attr( 'href' ).slice( 1 ),
@@ -152,7 +150,7 @@
 			_e = $[ _PLUGIN_ ]._e;
 
 			_c.add( 'indexer hasindexer' );
-			_e.add( 'mouseover touchmove' );
+			_e.add( 'mouseover touchstart' );
 		},
 		
 		//	clickAnchor: prevents default behavior when clicking an anchor

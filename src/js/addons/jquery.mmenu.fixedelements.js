@@ -5,7 +5,6 @@
  * Copyright (c) Fred Heusschen
  */
 
-
 (function( $ ) {
 
 	var _PLUGIN_ = 'mmenu',
@@ -33,9 +32,8 @@
 				//	Refactor fixed classes
 				var _fixd = this.conf.classNames[ _ADDON_ ].fixed;
 
-				this.__refactorClass( $page.find( '.' + _fixd ), _fixd, 'fixed' )
-					.appendTo( glbl.$body )
-					.addClass( _c.slideout );
+				this.__refactorClass( $page.find( '.' + _fixd ), _fixd, 'slideout' )
+					.appendTo( glbl.$body );
 			};
 			setPage.call( this, glbl.$page );
 			this.bind( 'setPage', setPage );

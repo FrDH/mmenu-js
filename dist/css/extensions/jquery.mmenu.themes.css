@@ -6,7 +6,8 @@
   color: rgba(255, 255, 255, 0.8); }
   .mm-menu.mm-theme-dark .mm-navbar {
     border-color: rgba(0, 0, 0, 0.15); }
-    .mm-menu.mm-theme-dark .mm-navbar > a {
+    .mm-menu.mm-theme-dark .mm-navbar > *,
+    .mm-menu.mm-theme-dark .mm-navbar a {
       color: rgba(255, 255, 255, 0.4); }
     .mm-menu.mm-theme-dark .mm-navbar .mm-btn:before,
     .mm-menu.mm-theme-dark .mm-navbar .mm-btn:after {
@@ -64,7 +65,8 @@
   color: rgba(0, 0, 0, 0.6); }
   .mm-menu.mm-theme-white .mm-navbar {
     border-color: rgba(0, 0, 0, 0.1); }
-    .mm-menu.mm-theme-white .mm-navbar > a {
+    .mm-menu.mm-theme-white .mm-navbar > *,
+    .mm-menu.mm-theme-white .mm-navbar a {
       color: rgba(0, 0, 0, 0.3); }
     .mm-menu.mm-theme-white .mm-navbar .mm-btn:before,
     .mm-menu.mm-theme-white .mm-navbar .mm-btn:after {
@@ -122,7 +124,8 @@
   color: rgba(255, 255, 255, 0.6); }
   .mm-menu.mm-theme-black .mm-navbar {
     border-color: rgba(255, 255, 255, 0.2); }
-    .mm-menu.mm-theme-black .mm-navbar > a {
+    .mm-menu.mm-theme-black .mm-navbar > *,
+    .mm-menu.mm-theme-black .mm-navbar a {
       color: rgba(255, 255, 255, 0.4); }
     .mm-menu.mm-theme-black .mm-navbar .mm-btn:before,
     .mm-menu.mm-theme-black .mm-navbar .mm-btn:after {

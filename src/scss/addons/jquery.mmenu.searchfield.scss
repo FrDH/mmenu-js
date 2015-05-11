@@ -4,7 +4,7 @@
 
 @import "../_inc/variables";
 
-$mm_searchfieldHeight: $mm_searchHeight - ( $mm_padding * 1.5 ) !default;
+$mm_searchfieldHeight: $mm_navbarHeight - $mm_padding - 4 !default;
 
 .mm-search,
 .mm-search input
@@ -14,26 +14,11 @@ $mm_searchfieldHeight: $mm_searchHeight - ( $mm_padding * 1.5 ) !default;
 
 .mm-search
 {
-}
-.mm-menu > .mm-search
-{
-	background: inherit;
-	z-index: 3;
-	
-	//	Bugfix
-	@include mm_webkit_prefix( 'transform', translate3d( 0, 0, 0 ) );
-}
-.mm-search
-{
-	height: $mm_searchHeight;
-	width: 100%;
-	padding: $mm_padding $mm_padding 0 $mm_padding;
-	position: absolute;
-	top: 0;
-	left: 0;
+	height: $mm_navbarHeight;
+	padding: ( $mm_padding / 2 + 2 ) $mm_padding 0 $mm_padding;
 
 	input
-	{		
+	{
 		border: none;
 		border-radius: $mm_searchfieldHeight;
 		font: inherit;
@@ -54,13 +39,20 @@ $mm_searchfieldHeight: $mm_searchHeight - ( $mm_padding * 1.5 ) !default;
 
 .mm-panel
 {
+	> .mm-search
+	{
+		width: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
 	&.mm-hassearch
 	{
-		padding-top: $mm_searchHeight;
+		padding-top: $mm_navbarHeight;
 	
 		&.mm-hasnavbar
 		{
-			padding-top: $mm_searchHeight + $mm_navbarHeight;
+			padding-top: $mm_navbarHeight * 2;
 			
 			.mm-search
 			{
@@ -89,25 +81,14 @@ $mm_searchfieldHeight: $mm_searchHeight - ( $mm_padding * 1.5 ) !default;
 	}
 }
 
-.mm-menu
+li.mm-nosubresults > a.mm-next
 {
-	li.mm-nosubresults > a.mm-next
-	{
-		display: none;
+	display: none;
 
-		+ a, 
-		+ span
-		{
-			padding-right: $mm_padding;
-		}
-	}
-	&.mm-hassearch 
+	+ a, 
+	+ span
 	{
-		.mm-panel,
-		.mm-fixeddivider
-		{
-			top: $mm_searchHeight;
-		}
+		padding-right: $mm_padding;
 	}
 }
 

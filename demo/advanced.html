@@ -18,12 +18,26 @@
 					extensions	: [ 'effect-slide-menu', 'pageshadow' ],
 					searchfield	: true,
 					counters	: true,
+					navbar 		: {
+						title		: 'Advanced menu'
+					},
 					navbars		: [
 						{
-							position	: 'top'
+							position	: 'top',
+							content		: [ 'searchfield' ]
+						}, {
+							position	: 'top',
+							content		: [
+								'prev',
+								'title',
+								'close'
+							]
 						}, {
 							position	: 'bottom',
-							content		: [ '<a href="http://mmenu.frebsite.nl">Visit website</a>' ]
+							content		: [
+								'<a href="http://mmenu.frebsite.nl">Visit website</a>',
+								'<a href="http://mmenu.frebsite.nl/wordpress-plugin.html">WordPress plugin</a>'
+							]
 						}
 					]
 				});

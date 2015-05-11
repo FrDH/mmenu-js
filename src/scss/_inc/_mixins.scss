@@ -60,6 +60,35 @@
 }
 
 
+//	Navbars
+@mixin mm_navbar_positioning( $pos, $nr )
+{
+	.mm-navbar-#{$pos}-#{$nr}
+	{
+		#{$pos}: $mm_navbarHeight * ( $nr - 1 );
+	}
+
+	.mm-hasnavbar-#{$pos}-#{$nr}
+	{
+		.mm-panel
+		{
+			#{$pos}: $mm_navbarHeight * $nr;
+		}
+		.mm-indexer
+		{
+			#{$pos}: $mm_padding + ( $mm_navbarHeight * $nr );
+		}
+		@if ( $pos == 'top' )
+		{
+			.mm-fixeddivider
+			{
+				#{$pos}: $mm_navbarHeight * $nr;
+			}
+		}
+	}
+}
+
+
 //	Misc
 @mixin mm_vendor_prefix( $prop, $val )
 {

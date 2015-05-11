@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v5.1.2
+ * jQuery mmenu v5.2.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -11,11 +11,10 @@
  * http://en.wikipedia.org/wiki/MIT_License
  */
 
-
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.1.2';
+		_VERSION_	= '5.2.0';
 
 
 	//	Plugin already excists
@@ -67,6 +66,10 @@
 
 	$[ _PLUGIN_ ].defaults 	= {
 		extensions		: [],
+		navbar 			: {
+			title			: 'Menu',
+			titleLink		: 'panel'
+		},
 		onClick			: {
 //			close			: true,
 //			blockUI			: null,
@@ -243,10 +246,10 @@
 
 			if ( this.cbck[ evnt ] )
 			{
-				for ( e in this.cbck[ evnt ] )
-				{
-					this.cbck[ evnt ][ e ].apply( that, args );
-				}
+				for ( var e = 0, l = this.cbck[ evnt ].length; e < l; e++ )
+                {
+                    this.cbck[ evnt ][ e ].apply( that, args );
+                }
 			}
 		},
 
@@ -395,7 +398,6 @@
 							$p = $t.parent(),
 							$a = $p.children( 'a, span' ).first();
 
-			// TODO: klopt dit?
 						if ( !$p.is( '.' + _c.menu ) )
 						{
 							$p.data( _d.sub, $t );
@@ -434,10 +436,41 @@
 										$p = $a.closest( '.' + _c.panel );
 								}
 
+								var $navbar = $( '<div class="' + _c.navbar + '" />' );
+
 								if ( $p.length )
 								{
 									var id = $p.attr( 'id' );
-									$t.prepend( '<div class="' + _c.navbar + '"><a class="' + _c.btn + ' ' + _c.prev + '" href="#' + id + '" data-target="#' + id + '"></a><a class="' + _c.title + '">' + $a.text() + '</a></div>' );
+									switch ( that.opts.navbar.titleLink )
+									{
+										case 'anchor':
+											_url = $a.attr( 'href' );
+											break;
+
+										case 'panel':
+										case 'parent':
+											_url = '#' + id;
+											break;
+
+										case 'none':
+										default:
+											_url = false;
+											break;
+									}
+
+									$navbar
+										.append( '<a class="' + _c.btn + ' ' + _c.prev + '" href="#' + id + '" data-target="#' + id + '"></a>' )
+										.append( '<a class="' + _c.title + '"' + ( _url ? ' href="' + _url + '"' : '' ) + '>' + $a.text() + '</a>' )
+										.prependTo( $t );
+
+									$t.addClass( _c.hasnavbar );
+								}
+								else if ( that.opts.navbar.title )
+								{
+									$navbar
+										.append( '<a class="' + _c.title + '">' + that.opts.navbar.title + '</a>' )
+										.prependTo( $t );
+
 									$t.addClass( _c.hasnavbar );
 								}
 							}
@@ -637,7 +670,7 @@
 			}
 			return o;
 		},
-		
+
 		__refactorClass: function( $e, o, c )
 		{
 			return $e.filter( '.' + o ).removeClass( o ).addClass( _c[ c ] );
@@ -647,7 +680,7 @@
 		{
 			return $e.find( s ).add( $e.filter( s ) );
 		},
-		
+
 		__filterListItems: function( $i )
 		{
 			return $i
@@ -738,12 +771,12 @@
 		$.each( [ _c, _d, _e ],
 			function( i, o )
 			{
-				o.add = function( c )
+				o.add = function( a )
 				{
-					c = c.split( ' ' );
-					for ( var d in c )
+					a = a.split( ' ' );
+					for ( var b = 0, l = a.length; b < l; b++ )
 					{
-						o[ c[ d ] ] = o.mm( c[ d ] );
+						o[ a[ b ] ] = o.mm( a[ b ] );
 					}
 				};
 			}
