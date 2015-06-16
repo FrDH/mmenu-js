@@ -41,6 +41,11 @@
 .mm-menu.mm-theme-dark .mm-fixeddivider span {
   background: rgba(255, 255, 255, 0.05); }
 
+.mm-menu.mm-iconpanel.mm-theme-dark .mm-panel.mm-opened {
+  border-color: rgba(0, 0, 0, 0.15); }
+.mm-menu.mm-iconpanel.mm-theme-dark .mm-subblocker {
+  background: #333333; }
+
 .mm-menu.mm-pageshadow.mm-theme-dark:after {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); }
 
@@ -100,6 +105,11 @@
 .mm-menu.mm-theme-white .mm-fixeddivider span {
   background: rgba(0, 0, 0, 0.03); }
 
+.mm-menu.mm-iconpanel.mm-theme-white .mm-panel.mm-opened {
+  border-color: rgba(0, 0, 0, 0.1); }
+.mm-menu.mm-iconpanel.mm-theme-white .mm-subblocker {
+  background: white; }
+
 .mm-menu.mm-pageshadow.mm-theme-white:after {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); }
 
@@ -158,6 +168,11 @@
 
 .mm-menu.mm-theme-black .mm-fixeddivider span {
   background: rgba(255, 255, 255, 0.2); }
+
+.mm-menu.mm-iconpanel.mm-theme-black .mm-panel.mm-opened {
+  border-color: rgba(255, 255, 255, 0.2); }
+.mm-menu.mm-iconpanel.mm-theme-black .mm-subblocker {
+  background: black; }
 
 .mm-menu.mm-pageshadow.mm-theme-black:after {
   content: none;

@@ -87,6 +87,30 @@
 		}
 	}
 }
+@mixin mm_navbar_sizing( $nr )
+{
+	.mm-navbar-size-#{$nr}
+	{
+		height: $mm_navbarHeight * $nr;
+	}
+}
+@mixin mm_navbar_content( $nr )
+{
+	.mm-navbar-content-#{$nr} > *
+	{
+		width: round( 100% / $nr * 100 ) / 100;
+	}
+}
+
+
+//	Iconpanels
+@mixin mm_iconpanel_positioning( $nr )
+{
+	.mm-iconpanel .mm-panel.mm-iconpanel-#{$nr}
+	{
+		left: $mm_iconpanelWidth * $nr;
+	}
+}
 
 
 //	Misc
@@ -110,4 +134,13 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+}
+@mixin mm_clearfix()
+{
+	&:after
+	{
+		content: '';
+		display: block;
+		clear: both;
+	}
 }

@@ -98,7 +98,7 @@
 						//	Scroll onMouseOver
 						this.$indexer
 							.children()
-							.on( _e.mouseover + '-searchfield ' + _c.touchstart + '-searchfield',
+							.on( _e.mouseover + '-sectionindexer ' + _c.touchstart + '-sectionindexer',
 								function( e )
 								{
 									var lttr = $(this).attr( 'href' ).slice( 1 ),

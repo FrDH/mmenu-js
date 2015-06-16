@@ -103,6 +103,23 @@
 	}
 }
 
+@mixin mm_colors_iconpanels( $cls: "",
+	$baseBg: $mm_backgroundColor,
+	$borderColor: $mm_borderColor
+) {
+	.mm-menu.mm-iconpanel#{$cls}
+	{
+		.mm-panel.mm-opened
+		{
+			border-color: $borderColor;
+		}
+		.mm-subblocker
+		{
+			background: $baseBg;
+		}
+	}
+}
+
 @mixin mm_colors_pageshadow( $cls: "",
 	$pageShadow: $mm_pageShadow
 ) {

@@ -60,7 +60,15 @@
 					}
 					opts = $.extend( true, {}, that.opts.navbar, opts );
 
-					var poss = opts.position;
+					var poss = opts.position,
+						hght = opts.height;
+
+					if ( typeof hght != 'number' )
+					{
+						hght = 1;
+					}
+					hght = Math.min( 4, Math.max( 1, hght ) );
+
 					if ( poss != 'bottom' )
 					{
 						poss = 'top';
@@ -74,9 +82,14 @@
 
 					//	Add markup
 					var $navbar = $( '<div />' )
-						.addClass( _c.navbar )
-						.addClass( _c.navbar + '-' + poss )
-						.addClass( _c.navbar + '-' + poss + '-' + _pos[ poss ] );
+						.addClass( 
+							_c.navbar + ' ' +
+							_c.navbar + '-' + poss + ' ' +
+							_c.navbar + '-' + poss + '-' + _pos[ poss ] + ' ' +
+							_c.navbar + '-size-' + hght
+						);
+
+					_pos[ poss ] += hght - 1;
 
 					for ( var c = 0, l = opts.content.length; c < l; c++ )
 					{
@@ -102,10 +115,10 @@
 						}
 					}
 
-					var _content = $navbar.children().not( '.' + _c.btn ).length;
+					var _content = Math.ceil( $navbar.children().not( '.' + _c.btn ).length / hght );
 					if ( _content > 1 )
 					{
-						$navbar.addClass( _c.navbar + '-' + _content );
+						$navbar.addClass( _c.navbar + '-content-' + _content );
 					}
 					if ( $navbar.children( '.' + _c.btn ).length )
 					{
@@ -115,9 +128,9 @@
 				}
 			);
 
-			for ( var p in _pos )
+			for ( var poss in _pos )
 			{
-				that.$menu.addClass( _c.hasnavbar + '-' + p + '-' + _pos[ p ] );
+				that.$menu.addClass( _c.hasnavbar + '-' + poss + '-' + _pos[ poss ] );
 			}
 		},
 

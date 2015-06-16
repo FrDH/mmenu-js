@@ -1,5 +1,5 @@
 /*
-	jQuery.mmenu navbar addon CSS
+	jQuery.mmenu navbars addon CSS
 */
 
 @import "../_inc/variables";
@@ -35,32 +35,16 @@
 	padding: 0 $mm_btnSize;
 }
 
-@include mm_navbar_positioning( 'top', 1 );
-@include mm_navbar_positioning( 'top', 2 );
-@include mm_navbar_positioning( 'top', 3 );
-
-@include mm_navbar_positioning( 'bottom', 1 );
-@include mm_navbar_positioning( 'bottom', 2 );
-@include mm_navbar_positioning( 'bottom', 3 );
-
 
 //	Close button
-.mm-close
+.mm-close:after
 {
-	text-align: right;
-	&:after
-	{
-		content: 'x';
-	}
+	content: 'x';
 }
 
 
 //	Buttonbars
-.mm-navbar-2,
-.mm-navbar-3,
-.mm-navbar-4,
-.mm-navbar-5,
-.mm-navbar-6
+.mm-navbar[class*="mm-navbar-content-"]
 {
 	> *
 	{
@@ -68,23 +52,24 @@
 		float: left;
 	}
 }
-.mm-navbar-2 > *
-{
-	width: 50%;
-}
-.mm-navbar-3 > *
-{
-	width: 33.33%;
-}
-.mm-navbar-4 > *
-{
-	width: 25%;
-}
-.mm-navbar-5 > *
-{
-	width: 20%;
-}
-.mm-navbar-6 > *
-{
-	width: 16.66%;
-}
+
+
+@include mm_navbar_positioning( 'top', 1 );
+@include mm_navbar_positioning( 'top', 2 );
+@include mm_navbar_positioning( 'top', 3 );
+@include mm_navbar_positioning( 'top', 4 );
+
+@include mm_navbar_positioning( 'bottom', 1 );
+@include mm_navbar_positioning( 'bottom', 2 );
+@include mm_navbar_positioning( 'bottom', 3 );
+@include mm_navbar_positioning( 'bottom', 4 );
+
+@include mm_navbar_sizing( 2 );
+@include mm_navbar_sizing( 3 );
+@include mm_navbar_sizing( 4 );
+
+@include mm_navbar_content( 2 );
+@include mm_navbar_content( 3 );
+@include mm_navbar_content( 4 );
+@include mm_navbar_content( 5 );
+@include mm_navbar_content( 6 );

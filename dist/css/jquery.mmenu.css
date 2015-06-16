@@ -117,7 +117,8 @@ li.mm-vertical.mm-opened > .mm-panel {
   .mm-navbar > * {
     display: block;
     padding: 10px 0; }
-  .mm-navbar a, .mm-navbar a:hover {
+  .mm-navbar a,
+  .mm-navbar a:hover {
     text-decoration: none; }
   .mm-navbar .mm-title {
     text-overflow: ellipsis;
@@ -134,6 +135,7 @@ li.mm-vertical.mm-opened > .mm-panel {
       padding-left: 20px;
       left: 0; }
     .mm-navbar .mm-btn:last-child {
+      text-align: right;
       padding-right: 20px;
       right: 0; }
 
@@ -151,7 +153,8 @@ li.mm-vertical.mm-opened > .mm-panel {
 
 .mm-listview {
   font: inherit;
-  font-size: 14px; }
+  font-size: 14px;
+  line-height: 20px; }
   .mm-listview a,
   .mm-listview a:hover {
     text-decoration: none; }
@@ -163,7 +166,6 @@ li.mm-vertical.mm-opened > .mm-panel {
       white-space: nowrap;
       overflow: hidden;
       color: inherit;
-      line-height: 20px;
       display: block;
       padding: 10px 10px 10px 20px;
       margin: 0; }
@@ -212,12 +214,32 @@ li.mm-vertical.mm-opened > .mm-panel {
         margin-right: 0; }
 
 .mm-menu > .mm-panel > .mm-listview {
-  margin-left: -20px;
-  margin-right: -20px; }
-  .mm-menu > .mm-panel > .mm-listview.mm-first {
-    margin-top: -20px; }
-  .mm-menu > .mm-panel > .mm-listview.mm-last {
-    padding-bottom: 20px; }
+  margin: 20px -20px; }
+.mm-menu > .mm-panel > .mm-navbar + .mm-listview {
+  margin-top: -20px; }
+
+.mm-listview .mm-inset {
+  list-style: inside disc;
+  padding: 0 10px 15px 40px;
+  margin: 0; }
+  .mm-listview .mm-inset > li {
+    padding: 5px 0; }
+
+.mm-listview .mm-divider {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 10px;
+  text-transform: uppercase;
+  text-indent: 20px;
+  line-height: 25px; }
+
+.mm-listview .mm-spacer {
+  padding-top: 40px; }
+  .mm-listview .mm-spacer > .mm-next {
+    top: 40px; }
+  .mm-listview .mm-spacer.mm-divider {
+    padding-top: 25px; }
 
 .mm-prev:before,
 .mm-next:after,
@@ -247,22 +269,6 @@ li.mm-vertical.mm-opened > .mm-panel {
   border-top: none;
   border-left: none;
   right: 20px; }
-
-.mm-divider {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  font-size: 10px;
-  text-transform: uppercase;
-  text-indent: 20px;
-  line-height: 25px; }
-
-.mm-listview > li.mm-spacer {
-  padding-top: 40px; }
-  .mm-listview > li.mm-spacer > .mm-next {
-    top: 40px; }
-  .mm-listview > li.mm-spacer.mm-divider {
-    padding-top: 25px; }
 
 .mm-menu {
   background: #f3f3f3;

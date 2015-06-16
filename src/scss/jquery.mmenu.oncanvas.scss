@@ -99,21 +99,27 @@
 	@include mm_webkit_prefix( 'transform', none !important );
 }
 
-.mm-vertical .mm-listview .mm-panel,
-.mm-listview .mm-vertical .mm-panel
+.mm-vertical .mm-listview,
+.mm-listview .mm-vertical
 {
-	display: none;
-	padding: $mm_padding 0 $mm_padding $mm_padding;
-
-	.mm-listview > li:last-child:after
+	.mm-panel
 	{
-		border-color: transparent;
+		display: none;
+		padding: $mm_padding 0 $mm_padding $mm_padding;
+
+		.mm-listview > li:last-child:after
+		{
+			border-color: transparent;
+		}
 	}
 }
-.mm-vertical li.mm-opened > .mm-panel,
-li.mm-vertical.mm-opened > .mm-panel
+.mm-vertical li.mm-opened,
+li.mm-vertical.mm-opened
 {
-	display: block;
+	> .mm-panel
+	{
+		display: block;
+	}
 }
 .mm-vertical .mm-listview > li,
 .mm-listview > li.mm-vertical
@@ -158,7 +164,8 @@ li.mm-vertical.mm-opened > .mm-panel
 		display: block;
 		padding: ( $mm_btnSize / 4 ) 0;
 	}
-	a, a:hover
+	a,
+	a:hover
 	{
 		text-decoration: none;
 	}
@@ -182,6 +189,7 @@ li.mm-vertical.mm-opened > .mm-panel
 		}
 		&:last-child
 		{
+			text-align: right;
 			padding-right: $mm_panelPadding;
 			right: 0;
 		}
@@ -213,6 +221,7 @@ li.mm-vertical.mm-opened > .mm-panel
 {
 	font: inherit;
 	font-size: $mm_fontSize;
+	line-height: $mm_btnSize - ( $mm_padding * 2 );
 
 	a,
 	a:hover
@@ -230,7 +239,6 @@ li.mm-vertical.mm-opened > .mm-panel
 			@include mm_ellipsis;
 
 			color: inherit;
-			line-height: $mm_btnSize - ( $mm_padding * 2 );
 			display: block;
 			padding: $mm_listitemPadding $mm_listitemPadding $mm_listitemPadding $mm_listitemIndent;
 			margin: 0;
@@ -290,21 +298,58 @@ li.mm-vertical.mm-opened > .mm-panel
 		}
 	}
 }
-.mm-menu > .mm-panel
+.mm-menu > .mm-panel 
 {
 	> .mm-listview
 	{
-		margin-left: -$mm_panelPadding;
-		margin-right: -$mm_panelPadding;
+		margin: $mm_panelPadding ( -$mm_panelPadding );
+	}
+	> .mm-navbar + .mm-listview
+	{
+		margin-top: -$mm_panelPadding;
+	}
+}
 
-		&.mm-first
-		{
-			margin-top: -$mm_panelPadding;
-		}
-		&.mm-last
-		{
-			padding-bottom: $mm_panelPadding;
-		}
+
+//	Inset lists
+.mm-listview .mm-inset,
+{
+	list-style: inside disc;
+	padding: 0 $mm_listitemPadding ( $mm_listitemPadding * 1.5 ) ( $mm_listitemIndent * 2 );
+	margin: 0;
+
+	> li
+	{
+		padding: ( $mm_listitemPadding / 2 ) 0;
+	}
+}
+
+
+// Dividers
+.mm-listview .mm-divider
+{
+	@include mm_ellipsis;
+
+	font-size: $mm_dividerFontSize;
+	text-transform: uppercase;
+	text-indent: $mm_listitemIndent;
+	line-height: $mm_dividerHeight;
+}
+
+
+// Spacers
+.mm-listview .mm-spacer
+{
+	padding-top: $mm_btnSize;
+	
+	> .mm-next
+	{
+		top: $mm_btnSize;
+	}
+
+	&.mm-divider
+	{
+		padding-top: $mm_dividerHeight;
 	}
 }
 
@@ -324,38 +369,6 @@ li.mm-vertical.mm-opened > .mm-panel
 .mm-arrow:after
 {
 	@include mm_arrow_next;
-}
-
-
-// Dividers
-.mm-divider
-{
-	@include mm_ellipsis;
-
-	font-size: $mm_dividerFontSize;
-	text-transform: uppercase;
-	text-indent: $mm_listitemIndent;
-	line-height: $mm_dividerHeight;
-}
-
-
-// Spacers
-.mm-listview > li
-{
-	&.mm-spacer
-	{
-		padding-top: $mm_btnSize;
-		
-		> .mm-next
-		{
-			top: $mm_btnSize;
-		}
-		
-		&.mm-divider
-		{
-			padding-top: $mm_dividerHeight;
-		}
-	}
 }
 
 

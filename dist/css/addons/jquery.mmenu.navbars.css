@@ -1,5 +1,5 @@
 /*
-	jQuery.mmenu navbar addon CSS
+	jQuery.mmenu navbars addon CSS
 */
 .mm-menu > .mm-navbar {
   background: inherit;
@@ -25,6 +25,13 @@
 
 .mm-navbar.mm-hasbtns {
   padding: 0 40px; }
+
+.mm-close:after {
+  content: 'x'; }
+
+.mm-navbar[class*="mm-navbar-content-"] > * {
+  display: block;
+  float: left; }
 
 .mm-navbar-top-1 {
   top: 0px; }
@@ -56,6 +63,16 @@
 .mm-hasnavbar-top-3 .mm-fixeddivider {
   top: 120px; }
 
+.mm-navbar-top-4 {
+  top: 120px; }
+
+.mm-hasnavbar-top-4 .mm-panel {
+  top: 160px; }
+.mm-hasnavbar-top-4 .mm-indexer {
+  top: 170px; }
+.mm-hasnavbar-top-4 .mm-fixeddivider {
+  top: 160px; }
+
 .mm-navbar-bottom-1 {
   bottom: 0px; }
 
@@ -80,30 +97,34 @@
 .mm-hasnavbar-bottom-3 .mm-indexer {
   bottom: 130px; }
 
-.mm-close {
-  text-align: right; }
-  .mm-close:after {
-    content: 'x'; }
+.mm-navbar-bottom-4 {
+  bottom: 120px; }
 
-.mm-navbar-2 > *,
-.mm-navbar-3 > *,
-.mm-navbar-4 > *,
-.mm-navbar-5 > *,
-.mm-navbar-6 > * {
-  display: block;
-  float: left; }
+.mm-hasnavbar-bottom-4 .mm-panel {
+  bottom: 160px; }
+.mm-hasnavbar-bottom-4 .mm-indexer {
+  bottom: 170px; }
 
-.mm-navbar-2 > * {
+.mm-navbar-size-2 {
+  height: 80px; }
+
+.mm-navbar-size-3 {
+  height: 120px; }
+
+.mm-navbar-size-4 {
+  height: 160px; }
+
+.mm-navbar-content-2 > * {
   width: 50%; }
 
-.mm-navbar-3 > * {
+.mm-navbar-content-3 > * {
   width: 33.33%; }
 
-.mm-navbar-4 > * {
+.mm-navbar-content-4 > * {
   width: 25%; }
 
-.mm-navbar-5 > * {
+.mm-navbar-content-5 > * {
   width: 20%; }
 
-.mm-navbar-6 > * {
-  width: 16.66%; }
+.mm-navbar-content-6 > * {
+  width: 16.67%; }

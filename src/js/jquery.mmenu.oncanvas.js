@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v5.2.0
+ * jQuery mmenu v5.3.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.2.0';
+		_VERSION_	= '5.3.0';
 
 
 	//	Plugin already excists
@@ -81,11 +81,12 @@
 
 	$[ _PLUGIN_ ].configuration = {
 		classNames			: {
-			panel		: 'Panel',
-			vertical	: 'Vertical',
-			selected	: 'Selected',
 			divider		: 'Divider',
-			spacer		: 'Spacer'
+			inset 		: 'Inset',
+			panel		: 'Panel',
+			selected	: 'Selected',
+			spacer		: 'Spacer',
+			vertical	: 'Vertical'
 		},
 		clone				: false,
 		openingInterval		: 25,
@@ -139,7 +140,7 @@
 					return;
 				}
 
-				var $panels = $(this.$menu).children( '.' + _c.panel ),
+				var $panels = this.$menu.children( '.' + _c.panel ),
 					$current = $panels.filter( '.' + _c.current );
 
 				$panels
@@ -152,7 +153,7 @@
 
 				if ( $panel.hasClass( _c.opened ) )
 				{
-					$current
+					$panel.nextAll( '.' + _c.opened )
 						.addClass( _c.highest )
 						.removeClass( _c.opened )
 						.removeClass( _c.subopened );
@@ -174,6 +175,7 @@
 						$panel
 							.removeClass( _c.subopened )
 							.addClass( _c.opened );
+
 					}, this.conf.openingInterval
 				);
 			}
@@ -312,8 +314,12 @@
 			var that = this;
 
 			//	Add List class
-			this.__findAddBack( $panels, 'ul, ol' )
-				.not( '.' + _c.nolistview )
+			var $lists = this.__findAddBack( $panels, 'ul, ol' );
+
+			this.__refactorClass( $lists, this.conf.classNames.inset, 'inset' )
+				.addClass( _c.nolistview + ' ' + _c.nopanel );
+
+			$lists.not( '.' + _c.nolistview )
 				.addClass( _c.listview );
 
 			var $lis = this.__findAddBack( $panels, '.' + _c.listview ).children();
@@ -372,18 +378,6 @@
 						}
 
 						$curpanels = $curpanels.add( $p );
-
-						var $f = $p.children().first(),
-							$l = $p.children().last();
-
-						if ( $f.is( '.' + _c.listview ) )
-						{
-							$f.addClass( _c.first );
-						}
-						if ( $l.is( '.' + _c.listview ) )
-						{
-							$l.addClass( _c.last );
-						}
 					} 
 				);
 
@@ -784,7 +778,7 @@
 
 		//	Classnames
 		_c.mm = function( c ) { return 'mm-' + c; };
-		_c.add( 'wrapper menu vertical panel nopanel current highest opened subopened navbar hasnavbar title btn prev next first last listview nolistview selected divider spacer hidden fullsubopen' );
+		_c.add( 'wrapper menu panel nopanel current highest opened subopened navbar hasnavbar title btn prev next listview nolistview inset vertical selected divider spacer hidden fullsubopen' );
 		_c.umm = function( c )
 		{
 			if ( c.slice( 0, 3 ) == 'mm-' )

@@ -21,6 +21,10 @@
 	@include mm_colors_dividers( $mm_t_cls,
 		$mm_t_highlightedBackgroundColor );
 
+	@include mm_colors_iconpanels( $mm_t_cls,
+		$mm_t_backgroundColor,
+		$mm_t_borderColor );
+
 	@include mm_colors_pageshadow( $mm_t_cls,
 		$mm_t_pageShadow );
 
