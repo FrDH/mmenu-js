@@ -113,5 +113,5 @@ guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.i
 guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.navbars.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.navbars.umd"
 guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.offcanvas.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.offcanvas.umd"
 guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.searchfield.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.searchfield.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.sectionindexer.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.searchfield.umd"
+guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.sectionindexer.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.sectionindexer.umd"
 guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.toggles.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.toggles.umd"
