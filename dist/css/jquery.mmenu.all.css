@@ -215,6 +215,7 @@ li.mm-vertical.mm-opened > .mm-panel {
 
 .mm-menu > .mm-panel > .mm-listview {
   margin: 20px -20px; }
+.mm-menu > .mm-panel > .mm-listview:first-child,
 .mm-menu > .mm-panel > .mm-navbar + .mm-listview {
   margin-top: -20px; }
 
@@ -565,8 +566,28 @@ html.mm-opened.mm-dragging #mm-blocker {
   content: 'x'; }
 
 .mm-navbar[class*="mm-navbar-content-"] > * {
+  box-sizing: border-box;
   display: block;
   float: left; }
+
+.mm-navbar > .mm-breadcrumbs {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  text-align: left;
+  padding: 0 0 0 17px; }
+  .mm-navbar > .mm-breadcrumbs > * {
+    display: inline-block;
+    padding: 10px 3px; }
+  .mm-navbar > .mm-breadcrumbs > a {
+    text-decoration: underline; }
+.mm-navbar.mm-hasbtns .mm-breadcrumbs {
+  margin-left: -40px; }
+.mm-navbar.mm-hasbtns .mm-btn:not(.mm-hidden) + .mm-breadcrumbs {
+  margin-left: 0;
+  padding-left: 0; }
 
 .mm-navbar-top-1 {
   top: 0px; }

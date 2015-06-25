@@ -304,6 +304,7 @@ li.mm-vertical.mm-opened
 	{
 		margin: $mm_panelPadding ( -$mm_panelPadding );
 	}
+	> .mm-listview:first-child,
 	> .mm-navbar + .mm-listview
 	{
 		margin-top: -$mm_panelPadding;

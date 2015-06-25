@@ -215,6 +215,7 @@ li.mm-vertical.mm-opened > .mm-panel {
 
 .mm-menu > .mm-panel > .mm-listview {
   margin: 20px -20px; }
+.mm-menu > .mm-panel > .mm-listview:first-child,
 .mm-menu > .mm-panel > .mm-navbar + .mm-listview {
   margin-top: -20px; }
 

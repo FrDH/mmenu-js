@@ -96,7 +96,7 @@
 						var ctnt = $[ _PLUGIN_ ].addons[ _ADDON_ ][ opts.content[ c ] ] || false;
 						if ( ctnt )
 						{
-							ctnt.call( that, $navbar, opts );
+							ctnt.call( that, $navbar, opts, conf );
 						}
 						else
 						{
@@ -150,6 +150,9 @@
 
 
 	//	Default options and configuration
+	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
+		breadcrumbSeporator: '/'
+	};
 	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
 		panelTitle	: 'Title',
 		panelNext	: 'Next',

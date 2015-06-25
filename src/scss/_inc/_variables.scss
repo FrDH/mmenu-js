@@ -37,8 +37,6 @@ $mm_menuHeight		: 0.8 !default;
 $mm_menuMinHeight	: 140px !default;
 $mm_menuMaxHeight	: 880px !default;
 
-$mm_buttonbarHeight		: $mm_btnSize - ( $mm_padding * 2 ) !default;
-
 $mm_checkHeight			: $mm_btnSize - $mm_padding !default;
 $mm_checkWidth			: $mm_btnSize - $mm_padding !default;
 
@@ -48,6 +46,7 @@ $mm_dividerFontSize		: 10px !default;
 $mm_dividerHeight		: ( $mm_btnSize / 2 ) + ( $mm_padding / 2 ) !default;
 
 $mm_navbarHeight		: $mm_btnSize !default;
+$mm_breadcrumbPadding	: round( $mm_padding / 4 ) !default;
 
 $mm_iconbarWidth		: $mm_btnSize + ( $mm_padding * 2 ) !default;
 $mm_iconpanelWidth		: $mm_btnSize !default;

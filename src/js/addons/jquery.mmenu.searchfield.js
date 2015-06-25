@@ -119,11 +119,11 @@
 										//	Add no-results message
 										if ( !$panl.children( '.' + _c.noresultsmsg ).length )
 										{
-											var $lst = $panl.children( '.' + _c.listview );
+											var $lst = $panl.children( '.' + _c.listview ).first();
 
 											$( '<div class="' + _c.noresultsmsg + '" />' )
 												.append( opts.noResults )
-												[ $lst.length ? 'insertBefore' : 'prependTo' ]( $lst.length ? $lst : $panl );
+												[ $lst.length ? 'insertAfter' : 'prependTo' ]( $lst.length ? $lst : $panl );
 										}
 									}
 								}

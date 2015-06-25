@@ -48,8 +48,48 @@
 {
 	> *
 	{
+		box-sizing: border-box;
 		display: block;
 		float: left;
+	}
+}
+
+
+//	Breadcrumbs
+.mm-navbar 
+{
+	> .mm-breadcrumbs
+	{
+		@include mm_ellipsis;
+
+		-webkit-overflow-scrolling: touch;
+		overflow-x: auto;
+
+		text-align: left;
+		padding: 0 0 0 $mm_panelPadding - $mm_breadcrumbPadding;
+
+		> *
+		{
+			display: inline-block;
+			padding: ( $mm_btnSize / 4 ) $mm_breadcrumbPadding;
+		}
+		> a
+		{
+			text-decoration: underline;
+		}
+	}
+
+	&.mm-hasbtns 
+	{
+		.mm-breadcrumbs
+		{
+			margin-left: -$mm_btnSize;
+		}
+		.mm-btn:not( .mm-hidden ) + .mm-breadcrumbs
+		{
+			margin-left: 0;
+			padding-left: 0;
+		}
 	}
 }
 

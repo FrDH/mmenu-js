@@ -20,23 +20,23 @@
 		//	Add content
 		$navbar.append( '<a class="' + _c.prev + ' ' + _c.btn + '" href="#"></a>' );
 		this.bind( 'init',
-			function( $panel )
+			function( $panl )
 			{
-				$panel.removeClass( _c.hasnavbar );
+				$panl.removeClass( _c.hasnavbar );
 			}
 		);
 
 		//	Update
-		var update = function( $panel )
+		var update = function()
 		{
-			$panel = $panel || this.$menu.children( '.' + _c.current );
+			var $panl = this.$menu.children( '.' + _c.current );
 
 			var $node = $navbar.find( '.' + _c.prev ),
-				$orgn = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelPrev );
+				$orgn = $panl.find( '.' + this.conf.classNames[ _ADDON_ ].panelPrev );
 
 			if ( !$orgn.length )
 			{
-				$orgn = $panel.children( '.' + _c.navbar ).children( '.' + _c.prev );
+				$orgn = $panl.children( '.' + _c.navbar ).children( '.' + _c.prev );
 			}
 			
 			var _url = $orgn.attr( 'href' ),
@@ -48,12 +48,7 @@
 		};
 
 		this.bind( 'openPanel', update );
-		this.bind( 'init',
-			function()
-			{
-				update.call( this );
-			}
-		);
+		this.bind( 'init', update );
 	};
 
 })( jQuery );

@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v5.3.0
+ * jQuery mmenu v5.3.1
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.3.0';
+		_VERSION_	= '5.3.1';
 
 
 	//	Plugin already excists
@@ -67,6 +67,7 @@
 	$[ _PLUGIN_ ].defaults 	= {
 		extensions		: [],
 		navbar 			: {
+			add 			: true,
 			title			: 'Menu',
 			titleLink		: 'panel'
 		},
@@ -457,7 +458,10 @@
 										.append( '<a class="' + _c.title + '"' + ( _url ? ' href="' + _url + '"' : '' ) + '>' + $a.text() + '</a>' )
 										.prependTo( $t );
 
-									$t.addClass( _c.hasnavbar );
+									if ( that.opts.navbar.add )
+									{
+										$t.addClass( _c.hasnavbar );
+									}
 								}
 								else if ( that.opts.navbar.title )
 								{
@@ -465,7 +469,10 @@
 										.append( '<a class="' + _c.title + '">' + that.opts.navbar.title + '</a>' )
 										.prependTo( $t );
 
-									$t.addClass( _c.hasnavbar );
+									if ( that.opts.navbar.add )
+									{
+										$t.addClass( _c.hasnavbar );
+									}
 								}
 							}
 						}
@@ -561,15 +568,18 @@
 						if ( !fired && inMenu )
 						{
 							var _h = $t.attr( 'href' );
-
 							if ( _h.length > 1 && _h.slice( 0, 1 ) == '#' )
 							{
-								var $h = $(_h, that.$menu);
-								if ( $h.is( '.' + _c.panel ) )
+								try
 								{
-									fired = true;
-									that[ $t.parent().hasClass( _c.vertical ) ? 'togglePanel' : 'openPanel' ]( $h );
+									var $h = $(_h, that.$menu);
+									if ( $h.is( '.' + _c.panel ) )
+									{
+										fired = true;
+										that[ $t.parent().hasClass( _c.vertical ) ? 'togglePanel' : 'openPanel' ]( $h );
+									}
 								}
+								catch( err ) {}
 							}
 						}
 
