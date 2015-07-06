@@ -20,6 +20,7 @@
 	{
 		left: -$mm_iconpanelWidth;
 		right: $mm_iconpanelWidth;
+		overflow-y: hidden;
 
 		@include mm_webkit_prefix( 'transform', translate3d( 0, 0, 0 ) );
 	}
@@ -48,7 +49,7 @@
 	position: absolute;
 	top: 0;
 	right: 0;
-	bottom: 0;
+	bottom: -10000px;
 	left: 0;
 	z-index: 3;
 }
