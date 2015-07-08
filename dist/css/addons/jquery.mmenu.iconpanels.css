@@ -8,8 +8,10 @@
   -o-transition-property: -o-transform, left, right;
   transition-property: transform, left, right; }
   .mm-iconpanel .mm-panel.mm-opened {
-    border-left: 1px solid transparent; }
+    border-left: 1px solid;
+    border-color: inherit; }
   .mm-iconpanel .mm-panel.mm-subopened {
+    overflow-y: hidden;
     left: -40px;
     right: 40px;
     -webkit-transform: translate3d(0, 0, 0);
@@ -39,12 +41,8 @@
 .mm-iconpanel .mm-panel.mm-iconpanel-6 {
   left: 240px; }
 
-.mm-menu.mm-iconpanel .mm-panel.mm-opened {
-  border-color: rgba(0, 0, 0, 0.1); }
-.mm-menu.mm-iconpanel .mm-subblocker {
-  background: #f3f3f3; }
-
 .mm-subblocker {
+  background: inherit;
   opacity: 0;
   display: block;
   -webkit-transition: opacity 0.4s ease;
@@ -58,6 +56,6 @@
   position: absolute;
   top: 0;
   right: 0;
-  bottom: 0;
+  bottom: -100000px;
   left: 0;
   z-index: 3; }

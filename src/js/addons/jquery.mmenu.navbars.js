@@ -151,7 +151,7 @@
 
 	//	Default options and configuration
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
-		breadcrumbSeporator: '/'
+		breadcrumbSeparator: '/'
 	};
 	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
 		panelTitle	: 'Title',

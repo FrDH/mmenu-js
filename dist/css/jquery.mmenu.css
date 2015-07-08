@@ -55,6 +55,7 @@
 
 .mm-menu > .mm-panel {
   background: inherit;
+  border-color: inherit;
   -webkit-overflow-scrolling: touch;
   overflow: scroll;
   overflow-x: hidden;
@@ -104,7 +105,8 @@ li.mm-vertical.mm-opened > .mm-panel {
   transform: rotate(45deg); }
 
 .mm-navbar {
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid;
+  border-color: inherit;
   text-align: center;
   line-height: 20px;
   height: 40px;
@@ -160,6 +162,10 @@ li.mm-vertical.mm-opened > .mm-panel {
     text-decoration: none; }
   .mm-listview > li {
     position: relative; }
+    .mm-listview > li, .mm-listview > li:after,
+    .mm-listview > li .mm-next,
+    .mm-listview > li .mm-next:before {
+      border-color: inherit; }
     .mm-listview > li > a,
     .mm-listview > li > span {
       text-overflow: ellipsis;
@@ -273,31 +279,25 @@ li.mm-vertical.mm-opened > .mm-panel {
 
 .mm-menu {
   background: #f3f3f3;
+  border-color: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.7); }
-  .mm-menu .mm-navbar {
-    border-color: rgba(0, 0, 0, 0.1); }
-    .mm-menu .mm-navbar > *,
-    .mm-menu .mm-navbar a {
-      color: rgba(0, 0, 0, 0.3); }
-    .mm-menu .mm-navbar .mm-btn:before,
-    .mm-menu .mm-navbar .mm-btn:after {
-      border-color: rgba(0, 0, 0, 0.3); }
-  .mm-menu .mm-listview > li:after {
-    border-color: rgba(0, 0, 0, 0.1); }
-  .mm-menu .mm-listview > li .mm-prev:before,
-  .mm-menu .mm-listview > li .mm-next:after,
-  .mm-menu .mm-listview > li .mm-arrow:after {
+  .mm-menu .mm-navbar > *,
+  .mm-menu .mm-navbar a {
+    color: rgba(0, 0, 0, 0.3); }
+  .mm-menu .mm-navbar .mm-btn:before, .mm-menu .mm-navbar .mm-btn:after {
     border-color: rgba(0, 0, 0, 0.3); }
-  .mm-menu .mm-listview > li .mm-prev:after,
-  .mm-menu .mm-listview > li .mm-next:before {
+  .mm-menu .mm-listview {
     border-color: rgba(0, 0, 0, 0.1); }
-  .mm-menu .mm-listview > li.mm-selected > a:not(.mm-next),
-  .mm-menu .mm-listview > li.mm-selected > span {
-    background: rgba(255, 255, 255, 0.5); }
-  .mm-menu.mm-vertical .mm-listview li.mm-opened > a.mm-next,
-  .mm-menu.mm-vertical .mm-listview li.mm-opened > .mm-panel,
-  .mm-menu .mm-listview li.mm-opened.mm-vertical > a.mm-next,
-  .mm-menu .mm-listview li.mm-opened.mm-vertical > .mm-panel {
+    .mm-menu .mm-listview > li .mm-next:after,
+    .mm-menu .mm-listview > li .mm-arrow:after {
+      border-color: rgba(0, 0, 0, 0.3); }
+    .mm-menu .mm-listview > li.mm-selected > a:not(.mm-next),
+    .mm-menu .mm-listview > li.mm-selected > span {
+      background: rgba(255, 255, 255, 0.5); }
+  .mm-menu.mm-vertical .mm-listview > li.mm-opened > a.mm-next,
+  .mm-menu.mm-vertical .mm-listview > li.mm-opened > .mm-panel,
+  .mm-menu .mm-listview > li.mm-opened.mm-vertical > a.mm-next,
+  .mm-menu .mm-listview > li.mm-opened.mm-vertical > .mm-panel {
     background: rgba(0, 0, 0, 0.05); }
   .mm-menu .mm-divider {
     background: rgba(0, 0, 0, 0.05); }

@@ -17,7 +17,7 @@
 		var _c = $[ _PLUGIN_ ]._c,
 			_d = $[ _PLUGIN_ ]._d;
 
-		_c.add( 'breadcrumbs seporator' );
+		_c.add( 'breadcrumbs separator' );
 
 
 		//	Add content
@@ -52,7 +52,7 @@
 								$crnt = $crnt.data( _d.parent );
 							}
 							$bcrb
-								.append( crumbs.join( '<span class="' + _c.seporator + '">' + conf.breadcrumbSeporator + '</span>' ) )
+								.append( crumbs.join( '<span class="' + _c.separator + '">' + conf.breadcrumbSeparator + '</span>' ) )
 								.appendTo( $panl.children( '.' + _c.navbar ) );
 						}
 					);

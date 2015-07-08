@@ -7,43 +7,37 @@
 	.mm-menu#{$cls}
 	{
 		background: $baseBg;
+		border-color: $borderColor;
 		color: $color;
 
 		.mm-navbar
 		{
-			border-color: $borderColor;
-
 			> *,
 			a
 			{
 				color: $dimmedColor;
 			}
 
-			.mm-btn:before,
-			.mm-btn:after
+			.mm-btn
 			{
-				border-color: $dimmedColor;
+				&:before,
+				&:after
+				{
+					border-color: $dimmedColor;
+				}
 			}
 		}
 
 		.mm-listview
 		{
-			> li:after
-			{
-				border-color: $borderColor;
-			}
+			border-color: $borderColor;
+
 			> li
 			{
-				.mm-prev:before,
 				.mm-next:after,
 				.mm-arrow:after
 				{
 					border-color: $dimmedColor;
-				}
-				.mm-prev:after,
-				.mm-next:before
-				{
-					border-color: $borderColor;
 				}
 			}
 			> li.mm-selected
@@ -56,8 +50,8 @@
 			}
 		}
 
-		&.mm-vertical .mm-listview li.mm-opened,
-		.mm-listview li.mm-opened.mm-vertical
+		&.mm-vertical .mm-listview > li.mm-opened,
+		.mm-listview > li.mm-opened.mm-vertical
 		{
 			> a.mm-next,
 			> .mm-panel
@@ -99,23 +93,6 @@
 		.mm-fixeddivider span
 		{
 			background: $highlightedBg;
-		}
-	}
-}
-
-@mixin mm_colors_iconpanels( $cls: "",
-	$baseBg: $mm_backgroundColor,
-	$borderColor: $mm_borderColor
-) {
-	.mm-menu.mm-iconpanel#{$cls}
-	{
-		.mm-panel.mm-opened
-		{
-			border-color: $borderColor;
-		}
-		.mm-subblocker
-		{
-			background: $baseBg;
 		}
 	}
 }

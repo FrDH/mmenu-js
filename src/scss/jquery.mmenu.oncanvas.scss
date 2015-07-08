@@ -68,6 +68,7 @@
 .mm-menu > .mm-panel
 {
 	background: inherit;
+	border-color: inherit;
 
 	-webkit-overflow-scrolling: touch;
 	overflow: scroll;
@@ -146,7 +147,8 @@ li.mm-vertical.mm-opened
 
 .mm-navbar
 {
-	border-bottom: 1px solid transparent;
+	border-bottom: 1px solid;
+	border-color: inherit;
 	text-align: center;
 	line-height: $mm_btnSize / 2;
 
@@ -232,6 +234,14 @@ li.mm-vertical.mm-opened
 	> li
 	{
 		position: relative;
+
+		&,
+		&:after,
+		.mm-next,
+		.mm-next:before
+		{
+			border-color: inherit;
+		}
 
 		> a,
 		> span
