@@ -1,9 +1,9 @@
-/*	
+/*
  * jQuery mmenu v5.3.2
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
- *	
+ *
  * Copyright (c) Fred Heusschen
  * www.frebsite.nl
  *
@@ -46,7 +46,7 @@
 		this._initAnchors();
 
 		var $panels = this.$menu.children( this.conf.panelNodetype );
-		
+
 		this._initAddons();
 		this.init( $panels );
 
@@ -117,7 +117,7 @@
 			$i.addClass( _c.selected );
 			this.trigger( 'setSelected', $i );
 		},
-		
+
 		openPanel: function( $panel )
 		{
 			var $l = $panel.parent();
@@ -148,7 +148,7 @@
 					.removeClass( _c.highest )
 					.removeClass( _c.current )
 					.not( $panel )
-					.not( $current )
+					//.not( $current ) #370 - adding _c.hidden to current panel to works in IE9.
 					.not( '.' + _c.vertical )
 					.addClass( _c.hidden );
 
@@ -218,7 +218,7 @@
 
 			this.openPanel( $frst );
 		},
-		
+
 		togglePanel: function( $panel )
 		{
 			var $l = $panel.parent();
@@ -345,7 +345,7 @@
 					.not( '.' + _c.nopanel );
 
 			this.__refactorClass( $oldpanels, this.conf.classNames.vertical, 'vertical' );
-			
+
 			if ( !this.opts.slidingSubmenus )
 			{
 				$oldpanels.addClass( _c.vertical );
@@ -379,7 +379,7 @@
 						}
 
 						$curpanels = $curpanels.add( $p );
-					} 
+					}
 				);
 
 			var $allpanels = $('.' + _c.panel, this.$menu);
@@ -538,7 +538,7 @@
 				.addClass( _c.hidden )
 				.end()
 				.appendTo( this.$menu );
-			
+
 			return $curpanels;
 		},
 
@@ -593,7 +593,7 @@
 						if ( !fired && inMenu )
 						{
 							if ( $t.is( '.' + _c.listview + ' > li > a' )
-								&& !$t.is( '[rel="external"]' ) 
+								&& !$t.is( '[rel="external"]' )
 								&& !$t.is( '[target="_blank"]' ) )
 							{
 
@@ -602,14 +602,14 @@
 								{
 									that.setSelected( $(e.target).parent() );
 								}
-	
+
 								//	Prevent default / don't follow link. Default: false
 								var preventDefault = that.__valueOrFn( that.opts.onClick.preventDefault, $t, _h.slice( 0, 1 ) == '#' );
 								if ( preventDefault )
 								{
 									e.preventDefault();
 								}
-		
+
 								//	Block UI. Default: false if preventDefault, true otherwise
 								if ( that.__valueOrFn( that.opts.onClick.blockUI, $t, !preventDefault ) )
 								{
@@ -648,7 +648,7 @@
 			var that = this,
 				api = {};
 
-			$.each( this._api, 
+			$.each( this._api,
 				function( i )
 				{
 					var fn = this;
@@ -691,7 +691,7 @@
 				.not( '.' + _c.divider )
 				.not( '.' + _c.hidden );
 		},
-		
+
 		__transitionend: function( $e, fn, duration )
 		{
 			var _ended = false,
@@ -703,12 +703,12 @@
 					}
 					_ended = true;
 				};
-	
+
 			$e.one( _e.transitionend, _fn );
 			$e.one( _e.webkitTransitionEnd, _fn );
 			setTimeout( _fn, duration * 1.1 );
 		},
-		
+
 		__getUniqueId: function()
 		{
 			return _c.mm( $[ _PLUGIN_ ].uniqueId++ );
