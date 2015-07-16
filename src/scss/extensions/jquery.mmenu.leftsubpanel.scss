@@ -1,0 +1,30 @@
+/*
+	jQuery.mmenu leftsubpanel extension CSS
+*/
+
+@import "../_inc/variables";
+
+@mixin mm_left_iconpanel_positioning( $nr )
+{
+	.mm-iconpanel.mm-leftsubpanel .mm-panel.mm-iconpanel-#{$nr}
+	{
+		left: 0px;
+		right: $mm_iconpanelWidth * $nr;
+	}
+}
+
+.mm-menu.mm-leftsubpanel
+{
+	.mm-panel:not(.mm-opened)
+	{
+		@include mm_webkit_prefix( 'transform', translate3d( -100%, 0, 0 ) );
+	}
+}
+
+@include mm_left_iconpanel_positioning( 0 );
+@include mm_left_iconpanel_positioning( 1 );
+@include mm_left_iconpanel_positioning( 2 );
+@include mm_left_iconpanel_positioning( 3 );
+@include mm_left_iconpanel_positioning( 4 );
+@include mm_left_iconpanel_positioning( 5 );
+@include mm_left_iconpanel_positioning( 6 );
