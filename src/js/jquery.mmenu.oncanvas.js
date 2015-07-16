@@ -148,9 +148,18 @@
 					.removeClass( _c.highest )
 					.removeClass( _c.current )
 					.not( $panel )
-					//.not( $current ) #370 - adding _c.hidden to current panel to works in IE9.
+					.not( $current )
 					.not( '.' + _c.vertical )
 					.addClass( _c.hidden );
+
+				//#370 - adding _c.hidden to current panel to work in browsers that doesn't support css transitions.
+				if(!supportsTransitions())
+				{
+					$panels
+						.not( $panel )
+						.not( '.' + _c.vertical )
+						.addClass( _c.hidden );
+				}
 
 				if ( $panel.hasClass( _c.opened ) )
 				{
@@ -812,6 +821,24 @@
 
 		$[ _PLUGIN_ ].glbl = glbl;
 	}
+
+	function supportsTransitions() {
+    var b = document.body || document.documentElement,
+        s = b.style,
+        p = 'transition';
+
+    if (typeof s[p] == 'string') { return true; }
+
+    // Tests for vendor specific prop
+    var v = ['Moz', 'webkit', 'Webkit', 'Khtml', 'O', 'ms'];
+    p = p.charAt(0).toUpperCase() + p.substr(1);
+
+    for (var i=0; i<v.length; i++) {
+        if (typeof s[v[i] + p] == 'string') { return true; }
+    }
+
+    return false;
+}
 
 
 })( jQuery );
