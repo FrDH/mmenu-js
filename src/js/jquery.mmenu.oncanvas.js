@@ -1,9 +1,9 @@
-/*	
+/*
  * jQuery mmenu v5.3.2
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
- *	
+ *
  * Copyright (c) Fred Heusschen
  * www.frebsite.nl
  *
@@ -46,7 +46,7 @@
 		this._initAnchors();
 
 		var $panels = this.$menu.children( this.conf.panelNodetype );
-		
+
 		this._initAddons();
 		this.init( $panels );
 
@@ -117,7 +117,7 @@
 			$i.addClass( _c.selected );
 			this.trigger( 'setSelected', $i );
 		},
-		
+
 		openPanel: function( $panel )
 		{
 			var $l = $panel.parent();
@@ -151,6 +151,15 @@
 					.not( $current )
 					.not( '.' + _c.vertical )
 					.addClass( _c.hidden );
+
+				//#370 - adding _c.hidden to current panel to work in browsers that doesn't support css transitions.
+				if(!_c.supportsTransitions)
+				{
+					$panels
+						.not( $panel )
+						.not( '.' + _c.vertical )
+						.addClass( _c.hidden );
+				}
 
 				if ( $panel.hasClass( _c.opened ) )
 				{
@@ -218,7 +227,7 @@
 
 			this.openPanel( $frst );
 		},
-		
+
 		togglePanel: function( $panel )
 		{
 			var $l = $panel.parent();
@@ -345,7 +354,7 @@
 					.not( '.' + _c.nopanel );
 
 			this.__refactorClass( $oldpanels, this.conf.classNames.vertical, 'vertical' );
-			
+
 			if ( !this.opts.slidingSubmenus )
 			{
 				$oldpanels.addClass( _c.vertical );
@@ -379,7 +388,7 @@
 						}
 
 						$curpanels = $curpanels.add( $p );
-					} 
+					}
 				);
 
 			var $allpanels = $('.' + _c.panel, this.$menu);
@@ -538,7 +547,7 @@
 				.addClass( _c.hidden )
 				.end()
 				.appendTo( this.$menu );
-			
+
 			return $curpanels;
 		},
 
@@ -593,7 +602,7 @@
 						if ( !fired && inMenu )
 						{
 							if ( $t.is( '.' + _c.listview + ' > li > a' )
-								&& !$t.is( '[rel="external"]' ) 
+								&& !$t.is( '[rel="external"]' )
 								&& !$t.is( '[target="_blank"]' ) )
 							{
 
@@ -602,14 +611,14 @@
 								{
 									that.setSelected( $(e.target).parent() );
 								}
-	
+
 								//	Prevent default / don't follow link. Default: false
 								var preventDefault = that.__valueOrFn( that.opts.onClick.preventDefault, $t, _h.slice( 0, 1 ) == '#' );
 								if ( preventDefault )
 								{
 									e.preventDefault();
 								}
-		
+
 								//	Block UI. Default: false if preventDefault, true otherwise
 								if ( that.__valueOrFn( that.opts.onClick.blockUI, $t, !preventDefault ) )
 								{
@@ -648,7 +657,7 @@
 			var that = this,
 				api = {};
 
-			$.each( this._api, 
+			$.each( this._api,
 				function( i )
 				{
 					var fn = this;
@@ -691,7 +700,7 @@
 				.not( '.' + _c.divider )
 				.not( '.' + _c.hidden );
 		},
-		
+
 		__transitionend: function( $e, fn, duration )
 		{
 			var _ended = false,
@@ -703,12 +712,12 @@
 					}
 					_ended = true;
 				};
-	
+
 			$e.one( _e.transitionend, _fn );
 			$e.one( _e.webkitTransitionEnd, _fn );
 			setTimeout( _fn, duration * 1.1 );
 		},
-		
+
 		__getUniqueId: function()
 		{
 			return _c.mm( $[ _PLUGIN_ ].uniqueId++ );
@@ -750,6 +759,24 @@
 		touch: 'ontouchstart' in window || navigator.msMaxTouchPoints
 	};
 
+	function supportsTransitions() {
+		var b = document.body || document.documentElement,
+			s = b.style,
+			p = 'transition';
+
+		if (typeof s[p] == 'string') { return true; }
+
+		// Tests for vendor specific prop
+		var v = ['Moz', 'webkit', 'Webkit', 'Khtml', 'O', 'ms'];
+		p = p.charAt(0).toUpperCase() + p.substr(1);
+
+		for (var i=0; i<v.length; i++) {
+			if (typeof s[v[i] + p] == 'string') { return true; }
+		}
+
+		return false;
+	}
+
 
 	//	Global variables
 	var _c, _d, _e, glbl;
@@ -786,6 +813,8 @@
 			}
 		);
 
+		_c.supportsTransitions = supportsTransitions();
+
 		//	Classnames
 		_c.mm = function( c ) { return 'mm-' + c; };
 		_c.add( 'wrapper menu panel nopanel current highest opened subopened navbar hasnavbar title btn prev next listview nolistview inset vertical selected divider spacer hidden fullsubopen' );
@@ -812,6 +841,5 @@
 
 		$[ _PLUGIN_ ].glbl = glbl;
 	}
-
 
 })( jQuery );
