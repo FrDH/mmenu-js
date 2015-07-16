@@ -12,7 +12,8 @@
   transform: translate3d(0, 0, 0); }
 
 .mm-navbar-bottom {
-  border-top: 1px solid transparent;
+  border-top-width: 1px;
+  border-top-style: solid;
   border-bottom: none;
   top: auto;
   bottom: 0; }
