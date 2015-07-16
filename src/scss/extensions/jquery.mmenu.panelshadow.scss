@@ -1,0 +1,21 @@
+/*
+	jQuery.mmenu panelshadow extension CSS
+*/
+
+@import "../_inc/variables";
+
+@mixin mm_iconpanel_shadow( $nr )
+{
+	.mm-iconpanel.mm-panelshadow .mm-panel.mm-iconpanel-#{$nr}
+	{
+		box-shadow: $mm_pageShadow;
+	}
+}
+
+@include mm_iconpanel_shadow( 0 );
+@include mm_iconpanel_shadow( 1 );
+@include mm_iconpanel_shadow( 2 );
+@include mm_iconpanel_shadow( 3 );
+@include mm_iconpanel_shadow( 4 );
+@include mm_iconpanel_shadow( 5 );
+@include mm_iconpanel_shadow( 6 );
