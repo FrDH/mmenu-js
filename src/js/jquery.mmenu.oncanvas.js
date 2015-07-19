@@ -153,7 +153,7 @@
 					.addClass( _c.hidden );
 
 				//#370 - adding _c.hidden to current panel to work in browsers that doesn't support css transitions.
-				if(!_c.supportsTransitions)
+				if(!$.mmenu.support.csstransitions)
 				{
 					$panels
 						.not( $panel )
@@ -751,15 +751,11 @@
 		);
 	};
 
-
-	/*
-		SUPPORT
-	*/
-	$[ _PLUGIN_ ].support = {
-		touch: 'ontouchstart' in window || navigator.msMaxTouchPoints
-	};
-
 	function supportsTransitions() {
+
+		if ( typeof Modernizr !== 'undefined' ) {
+			 return Modernizr.csstransitions; }
+
 		var b = document.body || document.documentElement,
 			s = b.style,
 			p = 'transition';
@@ -777,6 +773,13 @@
 		return false;
 	}
 
+	/*
+		SUPPORT
+	*/
+	$[ _PLUGIN_ ].support = {
+		touch: 'ontouchstart' in window || navigator.msMaxTouchPoints,
+		csstransitions : supportsTransitions()
+	};
 
 	//	Global variables
 	var _c, _d, _e, glbl;
@@ -812,8 +815,6 @@
 				};
 			}
 		);
-
-		_c.supportsTransitions = supportsTransitions();
 
 		//	Classnames
 		_c.mm = function( c ) { return 'mm-' + c; };
