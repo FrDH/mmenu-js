@@ -598,7 +598,8 @@
 							{
 
 								//	Set selected item
-								if ( that.__valueOrFn( that.opts.onClick.setSelected, $t ) )
+								var setSelected = that.__valueOrFn( that.opts.onClick.setSelected, $t );
+								if ( setSelected )
 								{
 									that.setSelected( $(e.target).parent() );
 								}
@@ -620,6 +621,12 @@
 								if ( that.__valueOrFn( that.opts.onClick.close, $t, preventDefault ) )
 								{
 									that.close();
+								}
+
+								// Allow browser to redraw before following link.
+								if ( setSelected && !preventDefault ) {
+									e.preventDefault();
+									setTimeout(function(){ window.location = _h; }, 0);
 								}
 							}
 						}
