@@ -13,7 +13,7 @@ em.mm-counter {
   right: 45px;
   top: 50%; }
   em.mm-counter + a.mm-next {
-    padding-left: 40px; }
+    width: 90px; }
     em.mm-counter + a.mm-next + a,
     em.mm-counter + a.mm-next + span {
       margin-right: 90px; }

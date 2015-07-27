@@ -36,4 +36,9 @@ body {
   right: auto !important;
   bottom: 0 !important;
   left: 0 !important;
-  z-index: 0 !important; }
+  z-index: 0 !important;
+  border-right-width: 1px;
+  border-right-style: solid; }
+  .mm-menu.mm-widescreen.mm-pageshadow:after {
+    content: none;
+    display: none; }

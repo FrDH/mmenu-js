@@ -27,6 +27,9 @@
 
 			glbl = $[ _PLUGIN_ ].glbl;
 
+
+			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+
 			var setPage = function( $page )
 			{
 				//	Refactor fixed classes

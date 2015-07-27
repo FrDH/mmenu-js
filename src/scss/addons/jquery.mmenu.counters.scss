@@ -20,7 +20,7 @@ em.mm-counter
 
 	+ a.mm-next
 	{
-		padding-left: $mm_counterWidth;
+		width: $mm_counterWidth + $mm_subopenWidth;
 
 		+ a,
 		+ span

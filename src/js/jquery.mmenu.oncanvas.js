@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu v5.3.3
+ * jQuery mmenu v5.3.4
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.3.3';
+		_VERSION_	= '5.3.4';
 
 
 	//	Plugin already excists
@@ -151,6 +151,11 @@
 					.not( $current )
 					.not( '.' + _c.vertical )
 					.addClass( _c.hidden );
+
+				if ( !$[ _PLUGIN_ ].support.csstransitions )
+				{
+					$current.addClass( _c.hidden );
+				}
 
 				if ( $panel.hasClass( _c.opened ) )
 				{
@@ -747,7 +752,40 @@
 		SUPPORT
 	*/
 	$[ _PLUGIN_ ].support = {
-		touch: 'ontouchstart' in window || navigator.msMaxTouchPoints
+		touch: 'ontouchstart' in window || navigator.msMaxTouchPoints,
+		csstransitions: (function()
+		{
+			//	Use Modernizr test
+			if ( typeof Modernizr !== 'undefined' )
+			{
+				return Modernizr.csstransitions;
+			}
+
+			var b = document.body || document.documentElement,
+				s = b.style,
+				p = 'transition';
+
+			//	Default support
+			if ( typeof s[ p ] == 'string' )
+			{
+				return true;
+			}
+
+			//	Vendor specific support
+			var v = [ 'Moz', 'webkit', 'Webkit', 'Khtml', 'O', 'ms' ];
+			p = p.charAt( 0 ).toUpperCase() + p.substr( 1 );
+
+			for ( var i = 0; i < v.length; i++ )
+			{
+				if ( typeof s[ v[ i ] + p ] == 'string' )
+				{
+					return true;
+				}
+			}
+
+			//	No css transitions
+			return false;
+		})()
 	};
 
 
