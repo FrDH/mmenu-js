@@ -1,18 +1,19 @@
 # Guardfile for the jQuery mmenu plugin javascript files.
-# Basically, all non-minified files in the "src/js" directory are minified in the "dist/js" directory.
-
-# For some reason, uglify only seems to work if the input and output is the same file.
-# Therefor, we need to copy the contents from the original files to the minified files (using concat) before they can be minified.
-# IMHO, this is pretty idiotic.
+# Basically, all non-minified files in the "src" directory are minified in the "dist" directory.
 
 
 
 
-# Minify core functionality (oncanvas)
+# Minify core (oncanvas)
 
-guard :concat, type: "js", files: %w(jquery.mmenu.oncanvas), input_dir: "src/js", output: "dist/js/jquery.mmenu.oncanvas.min"
-guard 'uglify', :destination_file => "dist/js/jquery.mmenu.oncanvas.min.js" do
-  watch ('dist/js/jquery.mmenu.oncanvas.min.js')
+guard :concat,
+  type: "js",
+  output: "dist/core/js/jquery.mmenu.oncanvas.min",
+  input_dir: "src/core/js",
+  files: %w(jquery.mmenu.oncanvas)
+
+guard 'uglify', :destination_file => "dist/core/js/jquery.mmenu.oncanvas.min.js" do
+  watch ('dist/core/js/jquery.mmenu.oncanvas.min.js')
 end
 
 
@@ -20,98 +21,235 @@ end
 
 # Minify addons
 
-guard :concat, type: "js", files: %w(jquery.mmenu.autoheight), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.autoheight.min"
-guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.autoheight.min.js" do
-  watch ('dist/js/addons/jquery.mmenu.autoheight.min.js')
-end
+guard :concat,
+  type: "js",
+  output: "dist/addons/js/jquery.mmenu.autoheight.min",
+  input_dir: "src/addons/js",
+  files: %w(jquery.mmenu.autoheight)
 
-guard :concat, type: "js", files: %w(jquery.mmenu.backbutton), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.backbutton.min"
-guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.backbutton.min.js" do
-  watch ('dist/js/addons/jquery.mmenu.backbutton.min.js')
-end
-
-guard :concat, type: "js", files: %w(jquery.mmenu.counters), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.counters.min"
-guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.counters.min.js" do
-  watch ('dist/js/addons/jquery.mmenu.counters.min.js')
-end
-
-guard :concat, type: "js", files: %w(jquery.mmenu.dividers), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.dividers.min"
-guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.dividers.min.js" do
-  watch ('dist/js/addons/jquery.mmenu.dividers.min.js')
-end
-
-guard :concat, type: "js", files: %w(jquery.mmenu.dragopen), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.dragopen.min"
-guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.dragopen.min.js" do
-  watch ('dist/js/addons/jquery.mmenu.dragopen.min.js')
-end
-
-guard :concat, type: "js", files: %w(jquery.mmenu.fixedelements), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.fixedelements.min"
-guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.fixedelements.min.js" do
-  watch ('dist/js/addons/jquery.mmenu.fixedelements.min.js')
-end
-
-guard :concat, type: "js", files: %w(jquery.mmenu.iconpanels), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.iconpanels.min"
-guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.iconpanels.min.js" do
-  watch ('dist/js/addons/jquery.mmenu.iconpanels.min.js')
-end
-
-guard :concat, type: "js", files: %w(jquery.mmenu.navbars jquery.mmenu.navbar.breadcrumbs jquery.mmenu.navbar.close jquery.mmenu.navbar.next jquery.mmenu.navbar.prev jquery.mmenu.navbar.searchfield jquery.mmenu.navbar.title), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.navbars.min"
-guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.navbars.min.js" do
-  watch ('dist/js/addons/jquery.mmenu.navbars.min.js')
-end
-
-guard :concat, type: "js", files: %w(jquery.mmenu.offcanvas), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.offcanvas.min"
-guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.offcanvas.min.js" do
-  watch ('dist/js/addons/jquery.mmenu.offcanvas.min.js')
-end
-
-guard :concat, type: "js", files: %w(jquery.mmenu.searchfield), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.searchfield.min"
-guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.searchfield.min.js" do
-  watch ('dist/js/addons/jquery.mmenu.searchfield.min.js')
-end
-
-guard :concat, type: "js", files: %w(jquery.mmenu.sectionindexer), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.sectionindexer.min"
-guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.sectionindexer.min.js" do
-  watch ('dist/js/addons/jquery.mmenu.sectionindexer.min.js')
-end
-
-guard :concat, type: "js", files: %w(jquery.mmenu.toggles), input_dir: "src/js/addons", output: "dist/js/addons/jquery.mmenu.toggles.min"
-guard 'uglify', :destination_file => "dist/js/addons/jquery.mmenu.toggles.min.js" do
-  watch ('dist/js/addons/jquery.mmenu.toggles.min.js')
+guard 'uglify', :destination_file => "dist/addons/js/jquery.mmenu.autoheight.min.js" do
+  watch ('dist/addons/js/jquery.mmenu.autoheight.min.js')
 end
 
 
+guard :concat,
+  type: "js",
+  output: "dist/addons/js/jquery.mmenu.backbutton.min",
+  input_dir: "src/addons/js",
+  files: %w(jquery.mmenu.backbutton)
+
+guard 'uglify', :destination_file => "dist/addons/js/jquery.mmenu.backbutton.min.js" do
+  watch ('dist/addons/js/jquery.mmenu.backbutton.min.js')
+end
 
 
-# Concatenate core functionality + offcanvas
+guard :concat,
+  type: "js",
+  output: "dist/addons/js/jquery.mmenu.counters.min",
+  input_dir: "src/addons/js",
+  files: %w(jquery.mmenu.counters)
 
-guard :concat, type: "js", files: %w(jquery.mmenu.oncanvas.min addons/jquery.mmenu.offcanvas.min), input_dir: "dist/js", output: "dist/js/jquery.mmenu.min"
-
-
-
-
-# Concatenate core functionality + offcanvas + addons
-
-guard :concat, type: "js", files: %w(jquery.mmenu.min addons/jquery.mmenu.autoheight.min addons/jquery.mmenu.backbutton.min addons/jquery.mmenu.counters.min addons/jquery.mmenu.dividers.min addons/jquery.mmenu.dragopen.min addons/jquery.mmenu.fixedelements.min addons/jquery.mmenu.iconpanels.min addons/jquery.mmenu.navbars.min addons/jquery.mmenu.searchfield.min addons/jquery.mmenu.sectionindexer.min addons/jquery.mmenu.toggles.min), input_dir: "dist/js", output: "dist/js/jquery.mmenu.min.all"
-
+guard 'uglify', :destination_file => "dist/addons/js/jquery.mmenu.counters.min.js" do
+  watch ('dist/addons/js/jquery.mmenu.counters.min.js')
+end
 
 
+guard :concat,
+  type: "js",
+  output: "dist/addons/js/jquery.mmenu.dividers.min",
+  input_dir: "src/addons/js",
+  files: %w(jquery.mmenu.dividers)
 
-# Umd all minified files
+guard 'uglify', :destination_file => "dist/addons/js/jquery.mmenu.dividers.min.js" do
+  watch ('dist/addons/js/jquery.mmenu.dividers.min.js')
+end
 
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/jquery.mmenu.oncanvas.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/jquery.mmenu.oncanvas.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/jquery.mmenu.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/jquery.mmenu.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/jquery.mmenu.min.all js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/jquery.mmenu.umd.all"
 
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.autoheight.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.autoheight.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.backbutton.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.backbutton.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.counters.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.counters.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.dividers.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.dividers.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.dragopen.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.dragopen.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.fixedelements.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.fixedelements.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.iconpanels.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.iconpanels.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.navbars.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.navbars.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.offcanvas.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.offcanvas.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.searchfield.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.searchfield.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.sectionindexer.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.sectionindexer.umd"
-guard :concat, type: "js", files: %w(js_umd/_inc/prefix js/addons/jquery.mmenu.toggles.min js_umd/_inc/affix), input_dir: "dist", output: "dist/js_umd/addons/jquery.mmenu.toggles.umd"
+guard :concat,
+  type: "js",
+  output: "dist/addons/js/jquery.mmenu.dragopen.min",
+  input_dir: "src/addons/js",
+  files: %w(jquery.mmenu.dragopen)
+
+guard 'uglify', :destination_file => "dist/addons/js/jquery.mmenu.dragopen.min.js" do
+  watch ('dist/addons/js/jquery.mmenu.dragopen.min.js')
+end
+
+
+guard :concat,
+  type: "js",
+  output: "dist/addons/js/jquery.mmenu.fixedelements.min",
+  input_dir: "src/addons/js",
+  files: %w(jquery.mmenu.fixedelements)
+
+guard 'uglify', :destination_file => "dist/addons/js/jquery.mmenu.fixedelements.min.js" do
+  watch ('dist/addons/js/jquery.mmenu.fixedelements.min.js')
+end
+
+
+guard :concat,
+  type: "js",
+  output: "dist/addons/js/jquery.mmenu.iconpanels.min",
+  input_dir: "src/addons/js",
+  files: %w(jquery.mmenu.iconpanels)
+
+guard 'uglify', :destination_file => "dist/addons/js/jquery.mmenu.iconpanels.min.js" do
+  watch ('dist/addons/js/jquery.mmenu.iconpanels.min.js')
+end
+
+
+guard :concat,
+  type: "js",
+  output: "dist/addons/js/jquery.mmenu.navbars.min",
+  input_dir: "src/addons/js",
+  files: %w(
+    jquery.mmenu.navbars
+    jquery.mmenu.navbar.breadcrumbs
+    jquery.mmenu.navbar.close
+    jquery.mmenu.navbar.next
+    jquery.mmenu.navbar.prev
+    jquery.mmenu.navbar.searchfield
+    jquery.mmenu.navbar.title
+  )
+
+guard 'uglify', :destination_file => "dist/addons/js/jquery.mmenu.navbars.min.js" do
+  watch ('dist/addons/js/jquery.mmenu.navbars.min.js')
+end
+
+
+guard :concat,
+  type: "js",
+  output: "dist/addons/js/jquery.mmenu.offcanvas.min",
+  input_dir: "src/addons/js",
+  files: %w(jquery.mmenu.offcanvas)
+
+guard 'uglify', :destination_file => "dist/addons/js/jquery.mmenu.offcanvas.min.js" do
+  watch ('dist/addons/js/jquery.mmenu.offcanvas.min.js')
+end
+
+
+guard :concat,
+  type: "js",
+  output: "dist/addons/js/jquery.mmenu.searchfield.min",
+  input_dir: "src/addons/js",
+  files: %w(jquery.mmenu.searchfield)
+
+guard 'uglify', :destination_file => "dist/addons/js/jquery.mmenu.searchfield.min.js" do
+  watch ('dist/addons/js/jquery.mmenu.searchfield.min.js')
+end
+
+
+guard :concat,
+  type: "js",
+  output: "dist/addons/js/jquery.mmenu.sectionindexer.min",
+  input_dir: "src/addons/js",
+  files: %w(jquery.mmenu.sectionindexer)
+
+guard 'uglify', :destination_file => "dist/addons/js/jquery.mmenu.sectionindexer.min.js" do
+  watch ('dist/addons/js/jquery.mmenu.sectionindexer.min.js')
+end
+
+
+guard :concat,
+  type: "js",
+  output: "dist/addons/js/jquery.mmenu.toggles.min",
+  input_dir: "src/addons/js",
+  files: %w(jquery.mmenu.toggles)
+
+guard 'uglify', :destination_file => "dist/addons/js/jquery.mmenu.toggles.min.js" do
+  watch ('dist/addons/js/jquery.mmenu.toggles.min.js')
+end
+
+
+
+
+# Concatenate core + offcanvas
+
+guard :concat,
+  type: "js",
+  output: "dist/core/js/jquery.mmenu.min",
+  input_dir: "dist",
+  files: %w(
+    core/js/jquery.mmenu.oncanvas.min
+    addons/js/jquery.mmenu.offcanvas.min
+  )
+
+
+
+
+# Concatenate core + offcanvas + addons
+
+guard :concat, 
+  type: "js",
+  output: "dist/core/js/jquery.mmenu.min.all",
+  input_dir: "dist",
+  files: %w(
+    core/js/jquery.mmenu.min
+    addons/js/jquery.mmenu.autoheight.min
+    addons/js/jquery.mmenu.backbutton.min
+    addons/js/jquery.mmenu.counters.min
+    addons/js/jquery.mmenu.dividers.min
+    addons/js/jquery.mmenu.dragopen.min
+    addons/js/jquery.mmenu.fixedelements.min
+    addons/js/jquery.mmenu.iconpanels.min
+    addons/js/jquery.mmenu.navbars.min
+    addons/js/jquery.mmenu.searchfield.min
+    addons/js/jquery.mmenu.sectionindexer.min
+    addons/js/jquery.mmenu.toggles.min
+  )
+
+
+
+
+# UMD core + offcanvas
+
+guard :concat,
+  type: "js",
+  output: "dist/core/js/umd/jquery.mmenu.umd",
+  input_dir: "dist",
+  files: %w(
+  	../src/core/js/umd/prefix
+    core/js/jquery.mmenu.min
+    ../src/core/js/umd/affix
+  )
+
+
+
+
+# UMD core + offcanvas + addons
+
+guard :concat, 
+  type: "js",
+  output: "dist/core/js/umd/jquery.mmenu.umd.all",
+  input_dir: "dist",
+  files: %w(
+  	../src/core/js/umd/prefix
+    core/js/jquery.mmenu.min.all
+    ../src/core/js/umd/affix
+  )
+
+
+
+
+# Minify 3rd party addons
+
+guard :concat,
+  type: "js",
+  output: "dist/3rdparty/addons/js/jquery.mmenu.currentitem.min",
+  input_dir: "src/3rdparty/addons/js",
+  files: %w(jquery.mmenu.currentitem)
+
+guard 'uglify', :destination_file => "dist/3rdparty/addons/js/jquery.mmenu.currentitem.min.js" do
+  watch ('dist/3rdparty/addons/js/jquery.mmenu.currentitem.min.js')
+end
+
+
+guard :concat,
+  type: "js",
+  output: "dist/3rdparty/addons/js/jquery.mmenu.dragclose.min",
+  input_dir: "src/3rdparty/addons/js",
+  files: %w(jquery.mmenu.dragclose)
+
+guard 'uglify', :destination_file => "dist/3rdparty/addons/js/jquery.mmenu.dragclose.min.js" do
+  watch ('dist/3rdparty/addons/js/jquery.mmenu.dragclose.min.js')
+end

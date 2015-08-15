@@ -1,0 +1,167 @@
+/*
+	jQuery.mmenu effects extension CSS
+*/
+
+@import "../../core/css/_inc/variables";
+
+
+//	Zoom menu
+html.mm-effect-zoom-menu
+{
+	.mm-menu.mm-offcanvas
+	{
+		-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
+		-moz-transition: -moz-transform $mm_transitionDuration $mm_transitionFunction;
+		-ms-transition: -ms-transform $mm_transitionDuration $mm_transitionFunction;
+		-o-transition: -o-transform $mm_transitionDuration $mm_transitionFunction;
+		transition: transform $mm_transitionDuration $mm_transitionFunction;
+	}
+
+	//	Left
+	&.mm-opened .mm-menu.mm-effect-zoom-menu
+	{
+		@include mm_webkit_prefix( 'transform', scale( $mm_zoomScaleDown, $mm_zoomScaleDown ) translate3d( -$mm_subpanelOffset, 0, 0 ) );
+		@include mm_webkit_prefix( 'transform-origin', left center );
+	}
+	&.mm-opening .mm-menu.mm-effect-zoom-menu
+	{
+		@include mm_webkit_prefix( 'transform', scale( 1, 1 ) translate3d( 0%, 0, 0 ) );
+	}
+
+	//	Right
+	&.mm-right
+	{
+		&.mm-opened .mm-menu.mm-offcanvas
+		{
+			@include mm_webkit_prefix( 'transform', scale( $mm_zoomScaleDown, $mm_zoomScaleDown) translate3d( $mm_subpanelOffset, 0, 0 ) );
+			@include mm_webkit_prefix( 'transform-origin', right center );
+		}
+		&.mm-opening .mm-menu.mm-effect-zoom-menu
+		{
+			@include mm_webkit_prefix( 'transform', scale( 1, 1 ) translate3d( 0%, 0, 0 ) );
+		}
+	}
+}
+
+
+//	Slide menu
+html.mm-effect-slide-menu
+{
+	.mm-menu.mm-effect-slide-menu
+	{
+		-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
+		-moz-transition: -moz-transform $mm_transitionDuration $mm_transitionFunction;
+		-ms-transition: -ms-transform $mm_transitionDuration $mm_transitionFunction;
+		-o-transition: -o-transform $mm_transitionDuration $mm_transitionFunction;
+		transition: transform $mm_transitionDuration $mm_transitionFunction;
+	}
+
+	//	Left
+	&.mm-opened .mm-menu.mm-effect-slide-menu
+	{
+		@include mm_webkit_prefix( 'transform', translate3d( -$mm_subpanelOffset, 0, 0 ) );
+	}
+	&.mm-opening .mm-menu.mm-effect-slide-menu
+	{
+		@include mm_webkit_prefix( 'transform', translate3d( 0%, 0, 0 ) );
+	}
+
+	//	Right
+	&.mm-right
+	{
+		&.mm-opened .mm-menu.mm-effect-slide-menu
+		{
+			@include mm_webkit_prefix( 'transform', translate3d( $mm_subpanelOffset, 0, 0 ) );
+		}
+		&.mm-opening .mm-menu.mm-effect-slide-menu
+		{
+			@include mm_webkit_prefix( 'transform', translate3d( 0%, 0, 0 ) );
+		}
+	}
+}
+
+
+//	Fade menu
+html.mm-effect-fade-menu
+{
+	.mm-menu.mm-effect-fade-menu
+	{
+		opacity: 0;
+		@include mm_webkit_prefix( 'transition', opacity $mm_transitionDuration $mm_transitionFunction );
+	}
+	&.mm-opening .mm-menu.mm-effect-fade-menu
+	{
+		opacity: 1;
+	}
+}
+
+
+//	Zoom panels
+.mm-menu.mm-effect-zoom-panels .mm-panel
+{
+	@include mm_webkit_prefix( 'transform', scale( $mm_zoomScaleUp, $mm_zoomScaleUp ) translate3d( 100%, 0, 0 ) );
+	@include mm_webkit_prefix( 'transform-origin', left center );
+	
+	&.mm-opened
+	{
+		@include mm_webkit_prefix( 'transform', scale( 1, 1 ) translate3d( 0%, 0, 0 ) );
+		
+		&.mm-subopened
+		{
+			@include mm_webkit_prefix( 'transform', scale( $mm_zoomScaleDown, $mm_zoomScaleDown ) translate3d( -$mm_subpanelOffset, 0, 0 ) );
+		}
+	}
+}
+
+
+//	Slide panels
+.mm-menu
+{
+	&.mm-effect-slide-panels-0 .mm-panel.mm-subopened
+	{
+		@include mm_webkit_prefix( 'transform', translate3d( 0, 0, 0 ) );
+	}
+
+	&.mm-effect-slide-panels-100 .mm-panel.mm-subopened
+	{
+		@include mm_webkit_prefix( 'transform', translate3d( -100%, 0, 0 ) );
+	}
+}
+
+
+//	Slide list items
+@mixin mm_effect_listitem( $i )
+{
+	&:nth-child( #{$i} )
+	{
+		@include mm_webkit_prefix( 'transition-delay', ( $i * 100ms ) );
+	}
+}
+html.mm-effect-slide-listitems
+{
+	.mm-menu.mm-effect-slide-listitems .mm-listview > li
+	{
+		-webkit-transition: -webkit-transform $mm_transitionDuration $mm_transitionFunction;
+		-moz-transition: -moz-transform $mm_transitionDuration $mm_transitionFunction;
+		-ms-transition: -ms-transform $mm_transitionDuration $mm_transitionFunction;
+		-o-transition: -o-transform $mm_transitionDuration $mm_transitionFunction;
+		transition: transform $mm_transitionDuration $mm_transitionFunction;
+
+		@include mm_effect_listitem( 1 );
+		@include mm_effect_listitem( 2 );
+		@include mm_effect_listitem( 3 );
+		@include mm_effect_listitem( 4 );
+		@include mm_effect_listitem( 5 );
+		@include mm_effect_listitem( 6 );
+		@include mm_effect_listitem( 7 );
+		@include mm_effect_listitem( 8 );
+		@include mm_effect_listitem( 9 );
+
+		@include mm_webkit_prefix( 'transform', translate3d( 100%, 0, 0 ) );
+	}
+
+	&.mm-opening .mm-menu.mm-effect-slide-listitems .mm-panel.mm-opened .mm-listview > li
+	{
+		@include mm_webkit_prefix( 'transform', translate3d( 0, 0, 0 ) );
+	}
+}

@@ -1,0 +1,95 @@
+/*
+	jQuery.mmenu searchfield addon CSS
+*/
+
+@import "../../core/css/_inc/variables";
+
+$mm_searchfieldHeight: $mm_navbarHeight - $mm_padding - 4 !default;
+
+.mm-search,
+.mm-search input
+{
+	box-sizing: border-box;
+}
+
+.mm-search
+{
+	height: $mm_navbarHeight;
+	padding: ( $mm_padding / 2 + 2 ) $mm_padding 0 $mm_padding;
+
+	input
+	{
+		border: none;
+		border-radius: $mm_searchfieldHeight;
+		font: inherit;
+		font-size: $mm_fontSize;
+		line-height: $mm_searchfieldHeight;
+		outline: none;
+		display: block;
+		width: 100%;
+		height: $mm_searchfieldHeight;
+		margin: 0;
+		padding: 0 $mm_padding;
+	}
+	input::-ms-clear
+	{
+		display: none;
+	}
+}
+
+.mm-panel
+{
+	> .mm-search
+	{
+		width: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	&.mm-hassearch
+	{
+		padding-top: $mm_navbarHeight;
+	
+		&.mm-hasnavbar
+		{
+			padding-top: $mm_navbarHeight * 2;
+			
+			.mm-search
+			{
+				top: $mm_navbarHeight;
+			}
+		}
+	}
+}
+.mm-noresultsmsg
+{
+	text-align: center;
+	font-size: round( $mm_fontSize * 1.5 );
+	display: none;
+	padding: $mm_btnSize 0;
+}
+.mm-noresults
+{
+	.mm-noresultsmsg
+	{
+		display: block;
+	}
+	.mm-indexer
+	{
+		display: none !important;
+	}
+}
+
+li.mm-nosubresults > a.mm-next
+{
+	display: none;
+
+	+ a, 
+	+ span
+	{
+		padding-right: $mm_padding;
+	}
+}
+
+
+@include mm_colors_searchfield;
