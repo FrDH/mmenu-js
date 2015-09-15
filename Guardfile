@@ -201,6 +201,53 @@ guard :concat,
 
 
 
+# Minify framework wrappers
+
+guard :concat,
+  type: "js",
+  output: "dist/wrappers/js/jquery.mmenu.jquerymobile.min",
+  input_dir: "src/wrappers/js",
+  files: %w(jquery.mmenu.jquerymobile)
+
+guard 'uglify', :destination_file => "dist/wrappers/js/jquery.mmenu.jquerymobile.min.js" do
+  watch ('dist/wrappers/js/jquery.mmenu.jquerymobile.min.js')
+end
+
+guard :concat,
+  type: "js",
+  output: "dist/wrappers/js/jquery.mmenu.olark.min",
+  input_dir: "src/wrappers/js",
+  files: %w(jquery.mmenu.olark)
+
+guard 'uglify', :destination_file => "dist/wrappers/js/jquery.mmenu.olark.min.js" do
+  watch ('dist/wrappers/js/jquery.mmenu.olark.min.js')
+end
+
+
+guard :concat,
+  type: "js",
+  output: "dist/wrappers/js/jquery.mmenu.turbolinks.min",
+  input_dir: "src/wrappers/js",
+  files: %w(jquery.mmenu.turbolinks)
+
+guard 'uglify', :destination_file => "dist/wrappers/js/jquery.mmenu.turbolinks.min.js" do
+  watch ('dist/wrappers/js/jquery.mmenu.turbolinks.min.js')
+end
+
+
+guard :concat,
+  type: "js",
+  output: "dist/wrappers/js/jquery.mmenu.wordpress.min",
+  input_dir: "src/wrappers/js",
+  files: %w(jquery.mmenu.wordpress)
+
+guard 'uglify', :destination_file => "dist/wrappers/js/jquery.mmenu.wordpress.min.js" do
+  watch ('dist/wrappers/js/jquery.mmenu.wordpress.min.js')
+end
+
+
+
+
 # UMD core + offcanvas
 
 guard :concat,

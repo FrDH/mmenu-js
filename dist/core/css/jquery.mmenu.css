@@ -12,7 +12,8 @@
   position: relative; }
 
 .mm-menu,
-.mm-menu > .mm-panel {
+.mm-panels,
+.mm-panels > .mm-panel {
   margin: 0;
   position: absolute;
   left: 0;
@@ -54,7 +55,12 @@
   .mm-panel.mm-highest {
     z-index: 1; }
 
-.mm-menu > .mm-panel {
+.mm-panels,
+.mm-panels > .mm-panel {
+  background: inherit;
+  border-color: inherit; }
+
+.mm-panels > .mm-panel {
   background: inherit;
   border-color: inherit;
   -webkit-overflow-scrolling: touch;
@@ -63,9 +69,9 @@
   overflow-y: auto;
   box-sizing: border-box;
   padding: 0 20px; }
-  .mm-menu > .mm-panel.mm-hasnavbar {
+  .mm-panels > .mm-panel.mm-hasnavbar {
     padding-top: 40px; }
-  .mm-menu > .mm-panel:before, .mm-menu > .mm-panel:after {
+  .mm-panels > .mm-panel:before, .mm-panels > .mm-panel:after {
     content: '';
     display: block;
     height: 20px; }
@@ -220,10 +226,10 @@ li.mm-vertical.mm-opened > .mm-panel {
         padding-right: 50px;
         margin-right: 0; }
 
-.mm-menu > .mm-panel > .mm-listview {
+.mm-panels > .mm-panel > .mm-listview {
   margin: 20px -20px; }
-.mm-menu > .mm-panel > .mm-listview:first-child,
-.mm-menu > .mm-panel > .mm-navbar + .mm-listview {
+.mm-panels > .mm-panel > .mm-listview:first-child,
+.mm-panels > .mm-panel > .mm-navbar + .mm-listview {
   margin-top: -20px; }
 
 .mm-listview .mm-inset {
@@ -292,6 +298,9 @@ li.mm-vertical.mm-opened > .mm-panel {
     .mm-menu .mm-listview > li .mm-next:after,
     .mm-menu .mm-listview > li .mm-arrow:after {
       border-color: rgba(0, 0, 0, 0.3); }
+    .mm-menu .mm-listview > li a:not(.mm-next) {
+      -webkit-tap-highlight-color: rgba(255, 255, 255, 0.5);
+      tap-highlight-color: rgba(255, 255, 255, 0.5); }
     .mm-menu .mm-listview > li.mm-selected > a:not(.mm-next),
     .mm-menu .mm-listview > li.mm-selected > span {
       background: rgba(255, 255, 255, 0.5); }

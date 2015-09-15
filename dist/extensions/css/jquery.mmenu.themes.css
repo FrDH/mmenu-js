@@ -15,6 +15,9 @@
     .mm-menu.mm-theme-dark .mm-listview > li .mm-next:after,
     .mm-menu.mm-theme-dark .mm-listview > li .mm-arrow:after {
       border-color: rgba(255, 255, 255, 0.4); }
+    .mm-menu.mm-theme-dark .mm-listview > li a:not(.mm-next) {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+      tap-highlight-color: rgba(0, 0, 0, 0.1); }
     .mm-menu.mm-theme-dark .mm-listview > li.mm-selected > a:not(.mm-next),
     .mm-menu.mm-theme-dark .mm-listview > li.mm-selected > span {
       background: rgba(0, 0, 0, 0.1); }
@@ -68,6 +71,9 @@
     .mm-menu.mm-theme-white .mm-listview > li .mm-next:after,
     .mm-menu.mm-theme-white .mm-listview > li .mm-arrow:after {
       border-color: rgba(0, 0, 0, 0.3); }
+    .mm-menu.mm-theme-white .mm-listview > li a:not(.mm-next) {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+      tap-highlight-color: rgba(0, 0, 0, 0.05); }
     .mm-menu.mm-theme-white .mm-listview > li.mm-selected > a:not(.mm-next),
     .mm-menu.mm-theme-white .mm-listview > li.mm-selected > span {
       background: rgba(0, 0, 0, 0.05); }
@@ -121,6 +127,9 @@
     .mm-menu.mm-theme-black .mm-listview > li .mm-next:after,
     .mm-menu.mm-theme-black .mm-listview > li .mm-arrow:after {
       border-color: rgba(255, 255, 255, 0.4); }
+    .mm-menu.mm-theme-black .mm-listview > li a:not(.mm-next) {
+      -webkit-tap-highlight-color: rgba(255, 255, 255, 0.3);
+      tap-highlight-color: rgba(255, 255, 255, 0.3); }
     .mm-menu.mm-theme-black .mm-listview > li.mm-selected > a:not(.mm-next),
     .mm-menu.mm-theme-black .mm-listview > li.mm-selected > span {
       background: rgba(255, 255, 255, 0.3); }

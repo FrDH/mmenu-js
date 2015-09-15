@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v5.4.0
+ * jQuery mmenu v5.4.1
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,11 +14,11 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.4.0';
+		_VERSION_	= '5.4.1';
 
 
 	//	Plugin already excists
-	if ( $[ _PLUGIN_ ] )
+	if ( $[ _PLUGIN_ ] && $[ _PLUGIN_ ].version > _VERSION_ )
 	{
 		return;
 	}
@@ -42,10 +42,10 @@
 			this.___deprecated();
 		}
 
+		var $panels = this.$menu.children( this.conf.panelNodetype );
+
 		this._initMenu();
 		this._initAnchors();
-
-		var $panels = this.$menu.children( this.conf.panelNodetype );
 		
 		this._initAddons();
 		this.init( $panels );
@@ -111,11 +111,11 @@
 			this.trigger( 'update' );
 		},
 
-		setSelected: function( $i )
+		setSelected: function( $li )
 		{
 			this.$menu.find( '.' + _c.listview ).children().removeClass( _c.selected );
-			$i.addClass( _c.selected );
-			this.trigger( 'setSelected', $i );
+			$li.addClass( _c.selected );
+			this.trigger( 'setSelected', $li );
 		},
 		
 		openPanel: function( $panel )
@@ -141,7 +141,7 @@
 					return;
 				}
 
-				var $panels = this.$menu.children( '.' + _c.panel ),
+				var $panels = this.$pnls.children( '.' + _c.panel ),
 					$current = $panels.filter( '.' + _c.current );
 
 				$panels
@@ -290,6 +290,10 @@
 				}
 			);
 
+			//	Add markup
+			this.$pnls = $('<div class="' + _c.panels + '" />').prependTo( this.$menu );
+
+			//	Add classes
 			this.$menu
 				.parent()
 				.addClass( _c.wrapper );
@@ -302,7 +306,7 @@
 				clsn.push( _c.vertical );
 			}
 
-			//	Add extensions
+			//	Add extensions classes
 			this.opts.extensions = ( this.opts.extensions.length )
 				? 'mm-' + this.opts.extensions.join( ' mm-' )
 				: '';
@@ -542,7 +546,7 @@
 				.not( $current.last() )
 				.addClass( _c.hidden )
 				.end()
-				.appendTo( this.$menu );
+				.appendTo( this.$pnls );
 			
 			return $curpanels;
 		},
@@ -826,7 +830,7 @@
 
 		//	Classnames
 		_c.mm = function( c ) { return 'mm-' + c; };
-		_c.add( 'wrapper menu panel nopanel current highest opened subopened navbar hasnavbar title btn prev next listview nolistview inset vertical selected divider spacer hidden fullsubopen' );
+		_c.add( 'wrapper menu panels panel nopanel current highest opened subopened navbar hasnavbar title btn prev next listview nolistview inset vertical selected divider spacer hidden fullsubopen' );
 		_c.umm = function( c )
 		{
 			if ( c.slice( 0, 3 ) == 'mm-' )

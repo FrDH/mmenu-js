@@ -63,10 +63,10 @@
 
 					//	Add the indexer, only if it does not allready excists
 					if ( !this.$indexer && 
-						this.$menu.children( '.' + _c.hasindexer ).length
+						this.$pnls.children( '.' + _c.hasindexer ).length
 					) {
 						this.$indexer = $( '<div class="' + _c.indexer + '" />' )
-							.prependTo( this.$menu )
+							.prependTo( this.$pnls )
 							.append( 
 								'<a href="#a">a</a>' +
 								'<a href="#b">b</a>' +
@@ -102,7 +102,7 @@
 								function( e )
 								{
 									var lttr = $(this).attr( 'href' ).slice( 1 ),
-										$panl = that.$menu.children( '.' + _c.current ),
+										$panl = that.$pnls.children( '.' + _c.current ),
 										$list = $panl.find( '.' + _c.listview );
 
 									var newTop = false,
@@ -136,7 +136,7 @@
 						};
 
 						this.bind( 'openPanel', update );
-						update.call( this, this.$menu.children( '.' + _c.current ) );
+						update.call( this, this.$pnls.children( '.' + _c.current ) );
 					}
 				}
 			);

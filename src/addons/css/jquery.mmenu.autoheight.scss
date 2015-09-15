@@ -7,20 +7,17 @@
 
 .mm-menu
 {
-	&.mm-top,
-	&.mm-bottom
+	&.mm-autoheight
 	{
-		&.mm-autoheight
-		{
-			max-height: percentage( $mm_menuHeight );
+		max-height: percentage( $mm_menuHeight );
 
-			&.mm-fullscreen
-			{
-				max-height: 100%;
-			}
+		&.mm-fullscreen
+		{
+			max-height: 100%;
 		}
 	}
-	&.mm-measureheight > .mm-panel
+
+	&.mm-measureheight > .mm-panels > .mm-panel
 	{
 		bottom: auto !important;
 		height: auto !important;

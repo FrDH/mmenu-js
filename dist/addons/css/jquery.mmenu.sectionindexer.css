@@ -8,8 +8,8 @@
   box-sizing: border-box;
   width: 20px;
   position: absolute;
-  top: 10px;
-  bottom: 10px;
+  top: 0;
+  bottom: 0;
   right: -100px;
   z-index: 3;
   -webkit-transition: right 0.4s ease;
@@ -27,7 +27,7 @@
     display: block;
     height: 3.85%; }
   .mm-indexer ~ .mm-panel.mm-hasindexer {
-    padding-right: 40px; }
+    margin-right: 20px; }
 
 .mm-hasindexer .mm-indexer {
   right: 0; }

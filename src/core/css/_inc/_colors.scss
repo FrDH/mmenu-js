@@ -40,6 +40,14 @@
 					border-color: $dimmedColor;
 				}
 			}
+			> li
+			{
+				a:not(.mm-next)
+				{
+					-webkit-tap-highlight-color: $emphasizedBg;
+					tap-highlight-color: $emphasizedBg;
+				}
+			}
 			> li.mm-selected
 			{
 				> a:not(.mm-next),

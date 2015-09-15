@@ -7,10 +7,7 @@
 html.mm-opened.mm-dragging
 {
 	.mm-menu,
-	.mm-page,
-	.mm-fixed-top,
-	.mm-fixed-bottom,
-	#mm-blocker
+	.mm-slideout
 	{
 		@include mm_webkit_prefix( "transition-duration", 0s );
 	}

@@ -147,6 +147,7 @@
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
 		pageNodetype		: 'div',
 		pageSelector		: null,
+		noPageSelector		: [],
 		wrapPageIfNeeded	: true,
 		menuWrapperSelector	: 'body',
 		menuInjectMethod	: 'prepend'
@@ -316,9 +317,16 @@
 		if ( !$page || !$page.length )
 		{
 			$page = glbl.$body.find( conf.pageSelector );
+
+			if ( conf.noPageSelector.length )
+			{
+				$page = $page.not( conf.noPageSelector.join( ', ' ) );
+			}
 			if ( $page.length > 1 && conf.wrapPageIfNeeded )
 			{
-				$page = $page.wrapAll( '<' + this.conf[ _ADDON_ ].pageNodetype + ' />' ).parent();
+				$page = $page
+					.wrapAll( '<' + this.conf[ _ADDON_ ].pageNodetype + ' />' )
+					.parent();
 			}
 		}
 

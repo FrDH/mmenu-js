@@ -2,11 +2,11 @@
 	jQuery.mmenu iconpanels addon CSS
 */
 .mm-iconpanel .mm-panel {
-  -webkit-transition-property: -webkit-transform, left, right;
-  -moz-transition-property: -moz-transform, left, right;
-  -ms-transition-property: -ms-transform, left, right;
-  -o-transition-property: -o-transform, left, right;
-  transition-property: transform, left, right; }
+  -webkit-transition-property: -webkit-transform, left;
+  -moz-transition-property: -moz-transform, left;
+  -ms-transition-property: -ms-transform, left;
+  -o-transition-property: -o-transform, left;
+  transition-property: transform, left; }
   .mm-iconpanel .mm-panel.mm-opened {
     border-left: 1px solid;
     border-color: inherit; }

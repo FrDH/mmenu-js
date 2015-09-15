@@ -70,20 +70,9 @@
 
 	.mm-hasnavbar-#{$pos}-#{$nr}
 	{
-		.mm-panel
+		.mm-panels
 		{
 			#{$pos}: $mm_navbarHeight * $nr;
-		}
-		.mm-indexer
-		{
-			#{$pos}: $mm_padding + ( $mm_navbarHeight * $nr );
-		}
-		@if ( $pos == 'top' )
-		{
-			.mm-fixeddivider
-			{
-				#{$pos}: $mm_navbarHeight * $nr;
-			}
 		}
 	}
 }

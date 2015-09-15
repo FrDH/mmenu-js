@@ -113,7 +113,7 @@
 										//	Not in a panel
 										if ( !inPanel )
 										{
-											$panl = that.$menu.children( '.' + _c.panel ).first();
+											$panl = that.$pnls.children( '.' + _c.panel ).first();
 										}
 
 										//	Add no-results message

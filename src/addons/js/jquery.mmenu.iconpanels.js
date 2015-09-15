@@ -60,7 +60,7 @@
 
 				var update = function( $panl )
 				{
-					var $allp = that.$menu
+					var $allp = that.$pnls
 						.children( '.' + _c.panel )
 						.removeClass( clsn );
 
@@ -83,7 +83,7 @@
 				this.bind( 'init',
 					function( $panels )
 					{
-						update.call( that, that.$menu.children( '.' + _c.current ) );
+						update.call( that, that.$pnls.children( '.' + _c.current ) );
 						if ( opts.hideNavbars )
 						{
 							$panels.removeClass( _c.hasnavbar )

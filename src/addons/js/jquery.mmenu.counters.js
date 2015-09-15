@@ -76,7 +76,7 @@
 				this.bind( 'update',
 					function()
 					{
-						this.$menu
+						this.$pnls
 							.find( '.' + _c.panel )
 							.each(
 								function()

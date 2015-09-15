@@ -63,7 +63,7 @@
 		//	Update
 		var update = function()
 		{
-			var $panl = this.$menu.children( '.' + _c.current );
+			var $panl = this.$pnls.children( '.' + _c.current );
 
 			var $node = $navbar.find( '.' + _c.breadcrumbs ),
 				$bcrb = $panl.children( '.' + _c.navbar ).children( '.' + _c.breadcrumbs );

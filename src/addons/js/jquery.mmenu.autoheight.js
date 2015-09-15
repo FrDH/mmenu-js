@@ -60,13 +60,12 @@
 			//	Update the height
 			var update = function( $panl )
 			{
-				var $p = this.$menu.children( '.' + _c.current );
-					_top = parseInt( $p.css( 'top' )	, 10 ) || 0;
-					_bot = parseInt( $p.css( 'bottom' )	, 10 ) || 0;
+				var _top = parseInt( this.$pnls.css( 'top' )	, 10 ) || 0;
+					_bot = parseInt( this.$pnls.css( 'bottom' )	, 10 ) || 0;
 
 				this.$menu.addClass( _c.measureheight );
 
-				$panl = $panl || this.$menu.children( '.' + _c.current );
+				$panl = $panl || this.$pnls.children( '.' + _c.current );
 				if ( $panl.is( '.' + _c.vertical ) )
 				{
 					$panl = $panl

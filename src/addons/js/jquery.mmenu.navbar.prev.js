@@ -29,7 +29,7 @@
 		//	Update
 		var update = function()
 		{
-			var $panl = this.$menu.children( '.' + _c.current );
+			var $panl = this.$pnls.children( '.' + _c.current );
 
 			var $node = $navbar.find( '.' + _c.prev ),
 				$orgn = $panl.find( '.' + this.conf.classNames[ _ADDON_ ].panelPrev );

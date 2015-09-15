@@ -60,7 +60,7 @@
 								break;
 			
 							default:
-								var $wrapper = $(opts.addTo, this.$menu).filter( '.' + _c.panel );
+								var $wrapper = $(opts.addTo, this.$pnls).filter( '.' + _c.panel );
 								break;
 						}
 
@@ -118,13 +118,13 @@
 				);
 			}
 			
-			
+
 			//	Fixed dividers
 			if ( opts.fixed )
 			{
 				var update = function( $panl )
 				{
-					$panl = $panl || this.$menu.children( '.' + _c.current );
+					$panl = $panl || this.$pnls.children( '.' + _c.current );
 					var $dvdr = $panl
 						.find( '.' + _c.divider )
 						.not( '.' + _c.hidden );
@@ -132,10 +132,10 @@
 					if ( $dvdr.length )
 					{
 						this.$menu.addClass( _c.hasdividers );
-	
+
 						var scrl = $panl.scrollTop() || 0,
 							text = '';
-	
+
 						if ( $panl.is( ':visible' ) )
 						{
 							$panl
@@ -163,13 +163,15 @@
 
 				//	Add the fixed divider
 				this.$fixeddivider = $('<ul class="' + _c.listview + ' ' + _c.fixeddivider + '"><li class="' + _c.divider + '"></li></ul>')
-					.prependTo( this.$menu )
+					.prependTo( this.$pnls )
 					.children();
 
+
+				//	Set correct value after opening panels
 				this.bind( 'openPanel', update );
 
 
-				//	Set correct value onScroll
+				//	Set correct value after scrolling
 				this.bind( 'init',
 					function( $panels )
 					{
@@ -180,7 +182,7 @@
 								{
 									update.call( that, $(this) );
 								}
-							)
+							);
 					}
 				);
 

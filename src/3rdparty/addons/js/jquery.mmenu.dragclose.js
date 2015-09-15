@@ -119,8 +119,7 @@
 			hammer		: {}
 		}
 	};
-	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
-	};
+	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {};
 
 
 	var _c, _d, _e, glbl;

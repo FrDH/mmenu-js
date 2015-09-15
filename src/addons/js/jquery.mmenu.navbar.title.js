@@ -24,7 +24,7 @@
 		//	Update
 		var update = function( $panel )
 		{
-			$panel = $panel || this.$menu.children( '.' + _c.current );
+			$panel = $panel || this.$pnls.children( '.' + _c.current );
 
 			var $node = $navbar.find( '.' + _c.title ),
 				$orgn = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelTitle );

@@ -21,7 +21,8 @@
 
 //	Menu
 .mm-menu,
-.mm-menu > .mm-panel
+.mm-panels,
+.mm-panels > .mm-panel
 {
 	margin: 0;
 	position: absolute;
@@ -66,7 +67,13 @@
 	}
 }
 
-.mm-menu > .mm-panel
+.mm-panels,
+.mm-panels > .mm-panel
+{
+	background: inherit;
+	border-color: inherit;
+}
+.mm-panels > .mm-panel
 {
 	background: inherit;
 	border-color: inherit;
@@ -309,7 +316,7 @@ li.mm-vertical.mm-opened
 		}
 	}
 }
-.mm-menu > .mm-panel 
+.mm-panels > .mm-panel 
 {
 	> .mm-listview
 	{
