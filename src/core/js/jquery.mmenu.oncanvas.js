@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v5.4.2
+ * jQuery mmenu v5.4.3
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.4.2';
+		_VERSION_	= '5.4.3';
 
 
 	//	Plugin already excists
@@ -42,13 +42,13 @@
 			this.___deprecated();
 		}
 
-		var $panels = this.$menu.children( this.conf.panelNodetype );
-
 		this._initMenu();
 		this._initAnchors();
+
+		var $pnls = this.$pnls.children();
 		
 		this._initAddons();
-		this.init( $panels );
+		this.init( $pnls );
 
 
 		if ( typeof this.___debug == 'function' )
@@ -291,7 +291,9 @@
 			);
 
 			//	Add markup
-			this.$pnls = $('<div class="' + _c.panels + '" />').prependTo( this.$menu );
+			this.$pnls = $( '<div class="' + _c.panels + '" />' )
+				.append( this.$menu.children( this.conf.panelNodetype ) )
+				.prependTo( this.$menu );
 
 			//	Add classes
 			this.$menu
