@@ -17,13 +17,13 @@
 {
 	border-right: none;
 	border-bottom: none;
-	left: $mm_listitemIndent;
+	left: $mm_listitemIndent + 3;
 }
 @mixin mm_arrow_next
 {
 	border-top: none;
 	border-left: none;
-	right: $mm_listitemIndent;
+	right: $mm_listitemIndent + 3;
 }
 
 

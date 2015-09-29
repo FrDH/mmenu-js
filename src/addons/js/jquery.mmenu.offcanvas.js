@@ -89,7 +89,7 @@
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 
-			_c.add( 'offcanvas slideout modal background opening blocker page' );
+			_c.add( 'offcanvas slideout blocking modal background opening blocker page' );
 			_d.add( 'style' );
 			_e.add( 'resize' );
 		},
@@ -141,7 +141,7 @@
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		position		: 'left',
 		zposition		: 'back',
-		modal			: false,
+		blockUI			: true, // 'modal'
 		moveBackground	: true
 	};
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
@@ -166,7 +166,7 @@
 
 		this._openSetup();
 
-		//	Without the timeout, the animation won't work because the element had display: none;
+		//	Without the timeout, the animation won't work because the menu had display: none;
 		setTimeout(
 			function()
 			{
@@ -178,7 +178,8 @@
 
 	$[ _PLUGIN_ ].prototype._openSetup = function()
 	{
-		var that = this;
+		var that = this,
+			opts = this.opts[ _ADDON_ ];
 
 		//	Close other menus
 		this.closeAllOthers();
@@ -192,24 +193,28 @@
 		);
 
 		//	Trigger window-resize to measure height
-		glbl.$wndw.trigger( _e.resize + '-offcanvas', [ true ] );
+		glbl.$wndw.trigger( _e.resize + '-' + _ADDON_, [ true ] );
 
 		var clsn = [ _c.opened ];
 
 		//	Add options
-		if ( this.opts[ _ADDON_ ].modal )
+		if ( opts.blockUI )
+		{
+			clsn.push( _c.blocking );
+		}
+		if ( opts.blockUI == 'modal' )
 		{
 			clsn.push( _c.modal );
 		}
-		if ( this.opts[ _ADDON_ ].moveBackground )
+		if ( opts.moveBackground )
 		{
 			clsn.push( _c.background );
 		}
-		if ( this.opts[ _ADDON_ ].position != 'left' )
+		if ( opts.position != 'left' )
 		{
 			clsn.push( _c.mm( this.opts[ _ADDON_ ].position ) );
 		}
-		if ( this.opts[ _ADDON_ ].zposition != 'back' )
+		if ( opts.zposition != 'back' )
 		{
 			clsn.push( _c.mm( this.opts[ _ADDON_ ].zposition ) );
 		}
@@ -263,6 +268,7 @@
 
 				glbl.$html
 					.removeClass( _c.opened )
+					.removeClass( _c.blocking )
 					.removeClass( _c.modal )
 					.removeClass( _c.background )
 					.removeClass( _c.mm( that.opts[ _ADDON_ ].position ) )
@@ -346,8 +352,8 @@
 	{
 		//	Prevent tabbing
 		glbl.$wndw
-			.off( _e.keydown + '-offcanvas' )
-			.on( _e.keydown + '-offcanvas',
+			.off( _e.keydown + '-' + _ADDON_ )
+			.on(  _e.keydown + '-' + _ADDON_,
 				function( e )
 				{
 					if ( glbl.$html.hasClass( _c.opened ) )
@@ -364,8 +370,8 @@
 		//	Set page min-height to window height
 		var _h = 0;
 		glbl.$wndw
-			.off( _e.resize + '-offcanvas' )
-			.on( _e.resize + '-offcanvas',
+			.off( _e.resize + '-' + _ADDON_ )
+			.on(  _e.resize + '-' + _ADDON_,
 				function( e, force )
 				{
 					if ( glbl.$page.length == 1 )
@@ -388,6 +394,11 @@
 	{
 		var that = this;
 
+		if ( !this.opts[ _ADDON_ ].blockUI )
+		{
+			return;
+		}
+
 		if ( !glbl.$blck )
 		{
 			glbl.$blck = $( '<div id="' + _c.blocker + '" class="' + _c.slideout + '" />' );
@@ -395,17 +406,17 @@
 
 		glbl.$blck
 			.appendTo( glbl.$body )
-			.off( _e.touchstart + '-offcanvas ' + _e.touchmove + '-offcanvas' )
-			.on( _e.touchstart + '-offcanvas ' + _e.touchmove + '-offcanvas',
+			.off( _e.touchstart + '-' + _ADDON_ + ' ' + _e.touchmove + '-' + _ADDON_ )
+			.on(  _e.touchstart + '-' + _ADDON_ + ' ' + _e.touchmove + '-' + _ADDON_,
 				function( e )
 				{
 					e.preventDefault();
 					e.stopPropagation();
-					glbl.$blck.trigger( _e.mousedown + '-offcanvas' );
+					glbl.$blck.trigger( _e.mousedown + '-' + _ADDON_ );
 				}
 			)
-			.off( _e.mousedown + '-offcanvas' )
-			.on( _e.mousedown + '-offcanvas',
+			.off( _e.mousedown + '-' + _ADDON_ )
+			.on(  _e.mousedown + '-' + _ADDON_,
 				function( e )
 				{
 					e.preventDefault();

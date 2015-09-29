@@ -13,11 +13,21 @@
 		content: none;
 	}
 }
+
 .mm-menu.mm-border-full .mm-listview > li,
 .mm-listview.mm-border-full > li
 {
 	&:after
 	{
 		left: 0 !important;
+	}
+}
+
+.mm-menu.mm-border-offset .mm-listview > li,
+.mm-listview.mm-border-offset > li
+{
+	&:after
+	{
+		right: $mm_listitemIndent;
 	}
 }

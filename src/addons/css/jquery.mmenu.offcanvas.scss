@@ -21,8 +21,12 @@
 //	Container, Page, Blocker
 html.mm-opened
 {
-	overflow: hidden;
+	overflow-x: hidden;
 	position: relative;
+}
+html.mm-blocking
+{
+	overflow: hidden;
 
 	body
 	{
@@ -45,13 +49,9 @@ html.mm-background .mm-page
 	left: 0;
 	z-index: 999999;
 }
-html.mm-opened,
-html.mm-blocking
+html.mm-blocking #mm-blocker
 {
-	#mm-blocker
-	{
-		display: block;
-	}
+	display: block;
 }
 
 //	Menu

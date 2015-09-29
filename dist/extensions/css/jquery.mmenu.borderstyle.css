@@ -8,3 +8,7 @@
 .mm-menu.mm-border-full .mm-listview > li:after,
 .mm-listview.mm-border-full > li:after {
   left: 0 !important; }
+
+.mm-menu.mm-border-offset .mm-listview > li:after,
+.mm-listview.mm-border-offset > li:after {
+  right: 20px; }

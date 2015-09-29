@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v5.4.3
+ * jQuery mmenu v5.5.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.4.3';
+		_VERSION_	= '5.5.0';
 
 
 	//	Plugin already excists
@@ -73,7 +73,6 @@
 		},
 		onClick			: {
 //			close			: true,
-//			blockUI			: null,
 //			preventDefault	: null,
 			setSelected		: true
 		},
@@ -620,12 +619,6 @@
 								{
 									e.preventDefault();
 								}
-		
-								//	Block UI. Default: false if preventDefault, true otherwise
-								if ( that.__valueOrFn( that.opts.onClick.blockUI, $t, !preventDefault ) )
-								{
-									glbl.$html.addClass( _c.blocking );
-								}
 
 								//	Close menu. Default: true if preventDefault, false otherwise
 								if ( that.__valueOrFn( that.opts.onClick.close, $t, preventDefault ) )
@@ -762,8 +755,9 @@
 		csstransitions: (function()
 		{
 			//	Use Modernizr test
-			if ( typeof Modernizr !== 'undefined' )
-			{
+			if ( typeof Modernizr !== 'undefined' &&
+				 typeof Modernizr.csstransitions !== 'undefined'
+			) {
 				return Modernizr.csstransitions;
 			}
 
@@ -789,7 +783,7 @@
 				}
 			}
 
-			//	No css transitions
+			//	No support
 			return false;
 		})()
 	};

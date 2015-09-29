@@ -276,13 +276,13 @@ li.mm-vertical.mm-opened > .mm-panel {
 .mm-prev:before {
   border-right: none;
   border-bottom: none;
-  left: 20px; }
+  left: 23px; }
 
 .mm-next:after,
 .mm-arrow:after {
   border-top: none;
   border-left: none;
-  right: 20px; }
+  right: 23px; }
 
 .mm-menu {
   background: #f3f3f3;
@@ -325,9 +325,12 @@ li.mm-vertical.mm-opened > .mm-panel {
   transition: transform 0.4s ease; }
 
 html.mm-opened {
-  overflow: hidden;
+  overflow-x: hidden;
   position: relative; }
-  html.mm-opened body {
+
+html.mm-blocking {
+  overflow: hidden; }
+  html.mm-blocking body {
     overflow: hidden; }
 
 html.mm-background .mm-page {
@@ -343,7 +346,6 @@ html.mm-background .mm-page {
   left: 0;
   z-index: 999999; }
 
-html.mm-opened #mm-blocker,
 html.mm-blocking #mm-blocker {
   display: block; }
 

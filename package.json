@@ -1,6 +1,6 @@
 {
 	"name"			: "jquery.mmenu",
-	"version"		: "5.4.3",
+	"version"		: "5.5.0",
 	"author"		: "Fred Heusschen <info@frebsite.nl>",
 	"repository"    : {
     	"type"			: "git",

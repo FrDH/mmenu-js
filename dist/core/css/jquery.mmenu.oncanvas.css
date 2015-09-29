@@ -273,13 +273,13 @@ li.mm-vertical.mm-opened > .mm-panel {
 .mm-prev:before {
   border-right: none;
   border-bottom: none;
-  left: 20px; }
+  left: 23px; }
 
 .mm-next:after,
 .mm-arrow:after {
   border-top: none;
   border-left: none;
-  right: 20px; }
+  right: 23px; }
 
 .mm-menu {
   background: #f3f3f3;

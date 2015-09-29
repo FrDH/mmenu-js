@@ -46,6 +46,39 @@
 
 	$[ _PLUGIN_ ].prototype.___deprecated = function()
 	{
+		var extensions = this.opts.extensions.join( ' ' );
+
+		//	Options 5.5
+		if ( this.opts.offCanvas )
+		{
+			if ( typeof this.opts.offCanvas.modal != 'undefined' )
+			{
+				deprecated( 'The option "offCanvas.modal"', '"offCanvas.blockUI"', '5.5' );
+			}
+		}
+		if ( typeof this.opts.onClick.blockUI != 'undefined' )
+		{
+			deprecated( 'The option "onClick.blockUI"', null, '5.5' );
+		}
+
+		var arr = {
+			'menu' 		: [ 'zoom', 'slide', 'fade' ],
+			'panels'	: [ 'zoom', 'slide' ],
+			'listitems'	: [ 'slide' ]
+		};
+		for ( var a in arr )
+		{
+			for ( var b in arr[ a ] )
+			{
+				var _o = 'effect-' + arr[ a ][ b ] + '-' + a,
+					_n = 'effect-' + a + '-' + arr[ a ][ b ];
+
+				if ( extensions.indexOf( _o ) > -1 )
+				{
+					deprecated( 'The "' + _o + '" extension', '"' + _n + '"', '5.5' );	
+				}
+			}
+		}
 
 		//	Options 5.2
 		if ( typeof this.opts.searchfield != 'undefined' )
@@ -65,10 +98,10 @@
 		{
 			deprecated( 'The "footer" add-on', 'the "navbars" add-on', '5.1' );
 		}
-		if ( this.opts.extensions.indexOf( 'mm-effect-slide' ) > -1 &&
-			 this.opts.extensions.indexOf( 'mm-effect-slide-menu' ) == -1
+		if ( extensions.indexOf( 'effect-slide' ) > -1 &&
+			 extensions.indexOf( 'effect-menu-slide' ) == -1
 		) {
-			deprecated( 'The "effect-slide" extension', '"effect-slide-menu"', '5.1' );	
+			deprecated( 'The "effect-slide" extension', '"effect-menu-slide"', '5.1' );	
 		}
 
 		//	Configuration 5.1
@@ -221,6 +254,7 @@
 
 	$[ _PLUGIN_ ].prototype.___debug = function()
 	{
+		var extensions = this.opts.extensions;
 
 		//	non-available add-ons
 		for ( var a = [ 'autoHeight', 'backButton', 'counters', 'dividers', 'dragOpen', 'navbars', 'offCanvas', 'searchfield', 'sectionIndexer', 'toggles' ], b = 0, l = a.length; b < l; b++ )
@@ -284,9 +318,9 @@
 		}
 
 		//	incompattible with iconbar
-		var fxSlide 	= ( this.opts.extensions.indexOf( 'mm-effect-slide-menu' ) 	> -1 ),
-			fxZoom		= ( this.opts.extensions.indexOf( 'mm-effect-zoom-menu' ) 	> -1 ),
-			fxZoomPnls	= ( this.opts.extensions.indexOf( 'mm-effect-zoom-panels' ) > -1 ),
+		var fxSlide 	= ( extensions.indexOf( 'mm-effect-menu-slide' ) 	> -1 ),
+			fxZoom		= ( extensions.indexOf( 'mm-effect-menu-zoom' ) 	> -1 ),
+			fxZoomPnls	= ( extensions.indexOf( 'mm-effect-panels-zoom' ) > -1 ),
 			iconbar		= ( $[ _PLUGIN_ ].glbl.$page && parseInt( $[ _PLUGIN_ ].glbl.$page.css( 'padding-right' ) ) > 0 );
 
 		if ( iconbar )
@@ -294,7 +328,7 @@
 			//	iconbar + effects
 			if ( fxSlide || fxZoom )
 			{
-				debug( 'Don\'t use the "iconbar" extension in combination with the "' + ( fxSlide ? 'slide-menu' : 'zoom-menu' ) + '" effect.' );
+				debug( 'Don\'t use the "iconbar" extension in combination with the "' + ( fxSlide ? 'menu-slide' : 'menu-zoom' ) + '" effect.' );
 			}
 			
 			//	iconbar + (z)position
@@ -314,7 +348,7 @@
 		//	effects + vertical submenus
 		if ( fxZoomPnls && !this.opts.slidingSubmenus )
 		{
-			debug( 'Don\'t use the "zoom-panels" effect in combination with the "slidingSubmenus" option set to "false".' );
+			debug( 'Don\'t use the "panels-zoom" effect in combination with the "slidingSubmenus" option set to "false".' );
 		}
 
 		//	effects +  onCanvas / (z)position
@@ -324,16 +358,16 @@
 			{
 				if ( position == 'top' || position == 'bottom' )
 				{
-					debug( 'Don\'t use the "' + ( fxSlide ? 'slide-menu' : 'zoom-menu' ) + '" effect in combination with the "offCanvas.position" option set to "' + position + '".' );
+					debug( 'Don\'t use the "' + ( fxSlide ? 'menu-slide' : 'menu-zoom' ) + '" effect in combination with the "offCanvas.position" option set to "' + position + '".' );
 				}
 				if ( zposition != 'back' )
 				{
-					debug( 'Don\'t use the "' + ( fxSlide ? 'slide-menu' : 'zoom-menu' ) + '" effect in combination with the "offCanvas.zposition" option set to "' + zposition + '".' );
+					debug( 'Don\'t use the "' + ( fxSlide ? 'menu-slide' : 'menu-zoom' ) + '" effect in combination with the "offCanvas.zposition" option set to "' + zposition + '".' );
 				}
 			}
 			else
 			{
-				debug( 'Don\'t use the "' + ( fxSlide ? 'slide-menu' : 'zoom-menu' ) + '" effect in combination with the "offCanvas" option set to "false".' );
+				debug( 'Don\'t use the "' + ( fxSlide ? 'menu-slide' : 'menu-zoom' ) + '" effect in combination with the "offCanvas" option set to "false".' );
 			}
 		}
 	};
