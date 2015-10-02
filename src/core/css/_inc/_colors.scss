@@ -1,0 +1,175 @@
+@mixin mm_colors( $cls: "",
+	$baseBg: $mm_backgroundColor,
+	$color: $mm_textColor, $dimmedColor: $mm_dimmedTextColor,
+	$emphasizedBg: $mm_emphasizedBackgroundColor, $highlightedBg: $mm_highlightedBackgroundColor,
+	$borderColor: $mm_borderColor
+) {
+	.mm-menu#{$cls}
+	{
+		background: $baseBg;
+		border-color: $borderColor;
+		color: $color;
+
+		.mm-navbar
+		{
+			> *,
+			a
+			{
+				color: $dimmedColor;
+			}
+
+			.mm-btn
+			{
+				&:before,
+				&:after
+				{
+					border-color: $dimmedColor;
+				}
+			}
+		}
+
+		.mm-listview
+		{
+			border-color: $borderColor;
+
+			> li
+			{
+				.mm-next:after,
+				.mm-arrow:after
+				{
+					border-color: $dimmedColor;
+				}
+			}
+			> li
+			{
+				a:not(.mm-next)
+				{
+					-webkit-tap-highlight-color: $emphasizedBg;
+					tap-highlight-color: $emphasizedBg;
+				}
+			}
+			> li.mm-selected
+			{
+				> a:not(.mm-next),
+				> span
+				{
+					background: $emphasizedBg;
+				}
+			}
+		}
+
+		&.mm-vertical .mm-listview > li.mm-opened,
+		.mm-listview > li.mm-opened.mm-vertical
+		{
+			> a.mm-next,
+			> .mm-panel
+			{
+				background: $highlightedBg;
+			}
+		}
+
+		.mm-divider 
+		{
+			background: $highlightedBg;
+		}
+	}
+}
+
+@mixin mm_colors_checks( $cls: "",
+	$color: $mm_textColor
+) {
+	.mm-menu#{$cls} label.mm-check:before
+	{
+		border-color: $color;
+	}
+}
+
+@mixin mm_colors_counters( $cls: "",
+	$dimmedColor: $mm_dimmedTextColor
+) {
+	.mm-menu#{$cls} em.mm-counter
+	{
+		color: $dimmedColor;
+	}
+}
+
+@mixin mm_colors_dividers( $cls: "",
+	$highlightedBg: $mm_highlightedBackgroundColor
+) {
+	.mm-menu#{$cls}
+	{
+		.mm-fixeddivider span
+		{
+			background: $highlightedBg;
+		}
+	}
+}
+
+@mixin mm_colors_pageshadow( $cls: "",
+	$pageShadow: $mm_pageShadow
+) {
+	.mm-menu.mm-pageshadow#{$cls}
+	{
+		&:after
+		{
+			@if ( $pageShadow )
+			{
+				box-shadow: $pageShadow;
+			}
+			@else
+			{
+				content: none;
+				display: none;
+			}
+		}
+	}
+}
+
+@mixin mm_colors_searchfield( $cls: "",
+	$inputBg: $mm_inputBackgroundColor, $color: $mm_textColor,
+	$dimmedColor: $mm_dimmedTextColor
+) {
+	.mm-menu#{$cls}
+	{
+		.mm-search input
+		{
+			background: $inputBg;
+			color: $color;
+		}
+		.mm-noresultsmsg
+		{
+			color: $dimmedColor;
+		}
+	}
+}
+
+@mixin mm_colors_sectionindexer( $cls: "",
+	$color: $mm_dimmedTextColor
+) {
+	.mm-menu#{$cls} .mm-indexer a
+	{
+		color: $color;
+	}
+}
+
+@mixin mm_colors_toggles( $cls: "",
+	$buttonBg: $mm_backgroundColor,
+	$offBg: $mm_borderColor, $onBg: $mm_toggleCheckedColor
+) {
+	.mm-menu#{$cls}
+	{
+		label.mm-toggle
+		{
+			background: $offBg;
+		
+			&:before
+			{
+				background: $buttonBg;
+			}
+		}
+		input.mm-toggle:checked ~ label.mm-toggle
+		{
+			background: $onBg;
+		}
+	}
+}

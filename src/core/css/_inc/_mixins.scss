@@ -1,0 +1,135 @@
+//	Arrows
+@mixin mm_arrow
+{
+	content: '';
+	border: 2px solid transparent;
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+
+	@include mm_webkit_prefix( "transform", rotate( -45deg ) );
+}
+@mixin mm_arrow_prev
+{
+	border-right: none;
+	border-bottom: none;
+	left: $mm_listitemIndent + 3;
+}
+@mixin mm_arrow_next
+{
+	border-top: none;
+	border-left: none;
+	right: $mm_listitemIndent + 3;
+}
+
+
+//	Borders
+@mixin mm_border( $border, $pseudo, $pos1, $pos2, $pos3 )
+{
+	&:#{$pseudo}
+	{
+		content: '';
+		border-#{$border}-width: 1px;
+		border-#{$border}-style: solid;
+		display: block;
+		position: absolute;
+		#{$pos1}: 0;
+		#{$pos2}: 0;
+		#{$pos3}: 0;
+	}
+}
+@mixin mm_border_top
+{
+	@include mm_border( "top", "before", "left", "right", "top" );
+}
+@mixin mm_border_right
+{
+	@include mm_border( "right", "after", "top", "bottom", "right" );
+}
+@mixin mm_border_bottom
+{
+	@include mm_border( "bottom", "after", "left", "right", "bottom" );
+}
+@mixin mm_border_left
+{
+	@include mm_border( "left", "before", "top", "bottom", "left" );
+}
+
+
+//	Navbars
+@mixin mm_navbar_positioning( $pos, $nr )
+{
+	.mm-navbar-#{$pos}-#{$nr}
+	{
+		#{$pos}: $mm_navbarHeight * ( $nr - 1 );
+	}
+
+	.mm-hasnavbar-#{$pos}-#{$nr}
+	{
+		.mm-panels
+		{
+			#{$pos}: $mm_navbarHeight * $nr;
+		}
+	}
+}
+@mixin mm_navbar_sizing( $nr )
+{
+	.mm-navbar-size-#{$nr}
+	{
+		height: $mm_navbarHeight * $nr;
+	}
+}
+@mixin mm_navbar_content( $nr )
+{
+	.mm-navbar-content-#{$nr} > *
+	{
+		width: round( 100% / $nr * 100 ) / 100;
+	}
+}
+
+
+//	Iconpanels
+@mixin mm_iconpanel_positioning( $nr )
+{
+	.mm-iconpanel .mm-panel.mm-iconpanel-#{$nr}
+	{
+		left: $mm_iconpanelWidth * $nr;
+	}
+}
+
+
+//	Misc
+@mixin mm_vendor_prefix( $prop, $val )
+{
+	-webkit-#{$prop}: $val;
+	-moz-#{$prop}: $val;
+	-ms-#{$prop}: $val;
+	-o-#{$prop}: $val;
+	#{$prop}: $val;
+}
+@mixin mm_webkit_prefix( $prop, $val )
+{
+//	we're not yet ready to drop vendor prefixes due to IE9 and older versions of FF
+	@include mm_vendor_prefix( $prop, $val );
+//	-webkit-#{$prop}: $val;
+//	#{$prop}: $val;
+}
+@mixin mm_ellipsis()
+{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+@mixin mm_clearfix()
+{
+	&:after
+	{
+		content: '';
+		display: block;
+		clear: both;
+	}
+}

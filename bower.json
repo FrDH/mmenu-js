@@ -1,31 +1,28 @@
 {
-	"name": "jQuery.mmenu",
-	"main": "src/js/jquery.mmenu.min.js",
-	"version": "4.7.5",
-	"homepage": "http://mmenu.frebsite.nl/",
-	"authors": [
-		"Fred Heusschen <info@frebsite.nl>"
+	"name"			: "jQuery.mmenu",
+	"version"		: "5.5.2",
+	"main": [
+		"dist/core/js/jquery.mmenu.min.all.js",
+		"dist/core/css/jquery.mmenu.all.css"
 	],
-	"description": "The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
-	"keywords": [
-		"mmenu",
+	"authors"		: "Fred Heusschen <info@frebsite.nl>",
+	"description"	: "The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
+	"keywords"		: [
+		"app",
+		"list",
+		"listview",
+		"megamenu",
 		"menu",
-		"submenu",
-		"navigation",
-		"on-canvas",
-		"off-canvas",
+		"mmenu",
 		"mobile",
+		"navigation",
+		"off-canvas",
+		"on-canvas",
 		"panels",
-		"app"
+		"submenu"
 	],
-	"ignore": [
-		".jshintrc",
-		"Guardfile",
-		"index.html",
-		"*.json",
-		"README.md"
-	],
-	"dependencies": {
-		"jquery": ">= 1.7.0"
+	"license": "MIT",
+	"dependencies"	: {
+		"jquery"		: ">= 1.7.0"
 	}
 }
