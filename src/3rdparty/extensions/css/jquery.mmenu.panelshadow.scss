@@ -4,8 +4,8 @@
 
 @import "../../../core/css/_inc/variables";
 
-.mm-menu.mm-panelshadow .mm-panel.mm-opened,
-.mm-menu .mm-panelshadow.mm-panel.mm-opened
+.mm-menu.mm-panelshadow .mm-panel.mm-opened:nth-child(n+2),
+.mm-menu .mm-panelshadow.mm-panel.mm-opened:nth-child(n+2)
 {
 	box-shadow: $mm_panelShadow;
 }
