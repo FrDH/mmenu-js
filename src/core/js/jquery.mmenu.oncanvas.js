@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v5.5.2
+ * jQuery mmenu v5.5.3
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.5.2';
+		_VERSION_	= '5.5.3';
 
 
 	//	Plugin already excists
@@ -209,10 +209,10 @@
 				.removeClass( _c.opened );
 
 			//	Horizontal
-			var $pnls = this.$menu.children( '.' + _c.panel ),
+			var $pnls = this.$pnls.children( '.' + _c.panel ),
 				$frst = $pnls.first();
 
-			this.$menu.children( '.' + _c.panel )
+			this.$pnls.children( '.' + _c.panel )
 				.not( $frst )
 				.removeClass( _c.subopened )
 				.removeClass( _c.opened )
