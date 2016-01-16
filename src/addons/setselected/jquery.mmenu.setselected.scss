@@ -1,0 +1,24 @@
+/*
+	jQuery.mmenu setSelected addon CSS
+*/
+
+@import "../../css/_imp/import";
+
+.mm-menu
+{
+	&.mm-hoverselected,
+	&.mm-parentselected
+	{
+		.mm-listview > li
+		{
+			> a:not(.mm-fullsubopen),
+			> a.mm-fullsubopen + span,
+			> a.mm-fullsubopen + a
+			{
+				transition: background $mm_transitionDuration $mm_transitionFunction;
+			}
+		}
+	}
+}
+
+@include mm_colors_setselected;

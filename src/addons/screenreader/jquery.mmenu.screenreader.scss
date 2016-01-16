@@ -1,0 +1,14 @@
+/*
+	jQuery.mmenu screenReader addon CSS
+*/
+
+.mm-sronly
+{
+	text-indent: 10px;
+	overflow: hidden;
+	display: block;
+	width: 1px;
+	height: 1px;
+	position: absolute;
+	z-index: -1;
+}

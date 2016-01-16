@@ -1,0 +1,60 @@
+/*
+	jQuery.mmenu iconPanels addon CSS
+*/
+
+@import "../../css/_imp/import";
+
+@mixin mm_iconpanel_positioning( $nr )
+{
+	.mm-iconpanel .mm-panel.mm-iconpanel-#{$nr}
+	{
+		left: $mm_iconpanelWidth * $nr;
+	}
+}
+
+.mm-iconpanel .mm-panel
+{
+	transition-property: transform, left;
+
+	&.mm-opened
+	{
+		border-left: 1px solid;
+		border-color: inherit;
+	}
+	&.mm-subopened
+	{
+		overflow-y: hidden;
+		left: -$mm_iconpanelWidth;
+
+		transform: translate3d( 0, 0, 0 );
+	}
+}
+
+@include mm_iconpanel_positioning( 0 );
+@include mm_iconpanel_positioning( 1 );
+@include mm_iconpanel_positioning( 2 );
+@include mm_iconpanel_positioning( 3 );
+@include mm_iconpanel_positioning( 4 );
+@include mm_iconpanel_positioning( 5 );
+@include mm_iconpanel_positioning( 6 );
+
+
+.mm-subblocker
+{
+	background: inherit;
+	opacity: 0;
+	display: block;
+
+	transition: opacity $mm_transitionDuration $mm_transitionFunction;
+}
+
+.mm-subopened .mm-subblocker
+{
+	opacity: 0.6;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: -100000px;
+	left: 0;
+	z-index: 3;
+}

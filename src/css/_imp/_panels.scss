@@ -1,0 +1,62 @@
+//	Panels
+
+.mm-panels,
+.mm-panels > .mm-panel
+{
+	background: inherit;
+	border-color: inherit;
+	box-sizing: border-box;
+	margin: 0;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 0;
+}
+.mm-panels
+{
+	overflow: hidden;
+}
+.mm-panel
+{
+	transition: transform $mm_transitionDuration $mm_transitionFunction;
+	transform: translate3d( 100%, 0, 0 );
+	
+	&.mm-opened
+	{
+		transform: translate3d( 0%, 0, 0 );
+	}
+	&.mm-subopened
+	{
+		transform: translate3d( -$mm_subpanelOffset, 0, 0 );
+	}
+	&.mm-highest
+	{
+		z-index: 1;
+	}
+}
+
+.mm-panels > .mm-panel
+{
+	-webkit-overflow-scrolling: touch;
+	overflow: scroll;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	padding: 0 $mm_panelPadding;
+
+	&.mm-hasnavbar
+	{
+		padding-top: $mm_navbarHeight;
+	}
+
+	//	Because padding-bottom in some browsers is ignored when a DIV is scrollable
+	&:before,
+	&:after
+	{
+		content: '';
+		display: block;
+		height: $mm_panelPadding;
+	}
+}

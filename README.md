@@ -8,23 +8,8 @@ Working on a WordPress site? Check out [the mmenu WordPress plugin](http://codec
 
 <img src="http://mmenu.frebsite.nl/img/preview-3.png" alt="jQuery mmenu" width="100%" />
 
-**Position and z-position**<br />
-The menu can be positioned at the top, right, bottom or left, at the back, front or next to the page.
-
-**Submenus**<br />
-Use sliding horizontal or expanding vertical submenus.
-
-**Touch-ready**<br />
-Optionally reveal the menu by dragging the page out of the viewport.
-
-**Add-ons**<br />
-Add a search field, header, footer, dividers, section indexer, counters, toggles and more.
-
-**Extensions**<br />
-Add effects, change the styling and color scheme, change the size and position and more.
-
-**Support**<br />
-Plays nicely with most development frameworks and works well on all major desktop and mobile browsers.
+### Licence
+The jQuery.mmenu plugin is licensed under the [CC-BY-NC-4.0 license](http://creativecommons.org/licenses/by-nc/4.0/).
 
 ### Learn more
 + [Tutorial](http://mmenu.frebsite.nl/tutorials/basic/)
@@ -33,6 +18,7 @@ Plays nicely with most development frameworks and works well on all major deskto
 + [Extensions](http://mmenu.frebsite.nl/documentation/extensions/)
 + [Add-ons](http://mmenu.frebsite.nl/documentation/addons/)
 
-### Licence
-The jQuery.mmenu plugin is dual licensed under the MIT license:
-+ http://en.wikipedia.org/wiki/MIT_License
+### Development
+This project uses [Gulp](http://gulpjs.com/) to check, minify and concatenate the JS and (S)CSS files.
+If you are unfamiliar with Gulp, check [this tutorial](https://travismaynard.com/writing/getting-started-with-gulp) on how to get started.<br />
+Run `gulp watch` in the command-line to put a watch on the files and run all scripts immediately after saving your changes.

@@ -1,0 +1,11 @@
+/*
+	jQuery.mmenu panelshadow extension CSS
+*/
+
+@import "../../../css/_imp/import";
+
+.mm-menu.mm-panelshadow .mm-panel.mm-opened:nth-child(n+2),
+.mm-menu .mm-panelshadow.mm-panel.mm-opened:nth-child(n+2)
+{
+	box-shadow: $mm_panelShadow;
+}

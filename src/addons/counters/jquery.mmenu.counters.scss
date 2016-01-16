@@ -1,0 +1,57 @@
+/*
+	jQuery.mmenu counters addon CSS
+*/
+
+@import "../../css/_imp/import";
+
+
+em.mm-counter
+{
+	font: inherit;
+	font-size: $mm_fontSize;
+	font-style: normal;
+	text-indent: 0;
+	line-height: $mm_btnSize / 2;
+	display: block;
+	margin-top: -( $mm_btnSize / 4 );
+	position: absolute;
+	right: $mm_subopenWidth - 5px;
+	top: 50%;
+
+	+ a.mm-next
+	{
+		width: $mm_counterWidth + $mm_subopenWidth;
+
+		+ a,
+		+ span
+		{
+			margin-right: $mm_counterWidth + $mm_subopenWidth;
+		}
+	}
+	+ a.mm-fullsubopen
+	{
+		padding-left: 0;
+	}
+}
+
+//	Removed support for counters in vertical submenus
+.mm-vertical
+{
+	> .mm-counter
+	{
+		top: ( $mm_btnSize / 4 ) + 2;
+		margin-top: 0;
+	}
+	&.mm-spacer > .mm-counter
+	{
+		margin-top: $mm_btnSize;
+	}
+}
+
+// Search
+.mm-nosubresults > .mm-counter
+{
+	display: none;
+}
+
+@include mm_colors_counters;

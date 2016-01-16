@@ -13,8 +13,10 @@
 		return false;
 	}
 
-	var _log 	= document[ _PLUGIN_ + '_debug_log' ] 	|| console.log,
-		_warn	= document[ _PLUGIN_ + '_debug_warn' ] 	|| console.warn;
+	var _msg	= 0,
+		_info	= document[ _PLUGIN_ + '_debug_info' ] 	|| console.info 	|| function() {},
+		_log 	= document[ _PLUGIN_ + '_debug_log' ] 	|| console.log 		|| function() {},
+		_warn	= document[ _PLUGIN_ + '_debug_warn' ] 	|| console.warn 	|| function() {};
 
 	var glbl = $[ _PLUGIN_ ].glbl,
 		_c = $[ _PLUGIN_ ]._c,
@@ -24,9 +26,10 @@
 
 	function debug( msg )
 	{
+		_msg++;
 		_log( 'MMENU: ' + msg );
-	};
-	function deprecated( depr, repl, vers )
+	}
+	function deprc( depr, repl, vers )
 	{
 		var msg = 'MMENU: ' + depr + ' is deprecated';
 
@@ -40,42 +43,53 @@
 		}
 		msg += '.';
 
+		_msg++;
 		_warn( msg );
-	};
+	}
 
 
 	$[ _PLUGIN_ ].prototype.___deprecated = function()
 	{
+		_msg = 0;
+
 		var extensions = this.opts.extensions.join( ' ' );
+		var arr, a, b, l;
+
+
+		//	Configuration 5.6
+		if ( typeof this.conf.searchfield.form == 'boolean' && this.conf.searchfield.form )
+		{
+			deprc( 'Boolean "true" for the "searchfield.form" configuration option', 'an object', '5.6' );
+		}
 
 		//	Options 5.5
 		if ( this.opts.offCanvas )
 		{
 			if ( typeof this.opts.offCanvas.modal != 'undefined' )
 			{
-				deprecated( 'The option "offCanvas.modal"', '"offCanvas.blockUI"', '5.5' );
+				deprc( 'The option "offCanvas.modal"', '"offCanvas.blockUI"', '5.5' );
 			}
 		}
 		if ( typeof this.opts.onClick.blockUI != 'undefined' )
 		{
-			deprecated( 'The option "onClick.blockUI"', null, '5.5' );
+			deprc( 'The option "onClick.blockUI"', null, '5.5' );
 		}
 
-		var arr = {
+		arr = {
 			'menu' 		: [ 'zoom', 'slide', 'fade' ],
 			'panels'	: [ 'zoom', 'slide' ],
 			'listitems'	: [ 'slide' ]
 		};
-		for ( var a in arr )
+		for ( a in arr )
 		{
-			for ( var b in arr[ a ] )
+			for ( b in arr[ a ] )
 			{
 				var _o = 'effect-' + arr[ a ][ b ] + '-' + a,
 					_n = 'effect-' + a + '-' + arr[ a ][ b ];
 
 				if ( extensions.indexOf( _o ) > -1 )
 				{
-					deprecated( 'The "' + _o + '" extension', '"' + _n + '"', '5.5' );	
+					deprc( 'The "' + _o + '" extension', '"' + _n + '"', '5.5' );	
 				}
 			}
 		}
@@ -83,83 +97,83 @@
 		//	Options 5.2
 		if ( typeof this.opts.searchfield != 'undefined' )
 		{
-			if ( typeof this.opts.searchfield.addTo == 'menu' )
+			if ( this.opts.searchfield.addTo == 'menu' )
 			{
-				deprecated( 'The value "menu" for the "searchfield.addTo" option', 'the "navbars" add-on', '5.2' );
+				deprc( 'The value "menu" for the "searchfield.addTo" option', 'the "navbars" add-on', '5.2' );
 			}
 		}
 
 		//	Options 5.1
 		if ( typeof this.opts.header != 'undefined' )
 		{
-			deprecated( 'The "header" add-on', 'the "navbars" add-on', '5.1' );
+			deprc( 'The "header" add-on', 'the "navbars" add-on', '5.1' );
 		}
 		if ( typeof this.opts.footer != 'undefined' )
 		{
-			deprecated( 'The "footer" add-on', 'the "navbars" add-on', '5.1' );
+			deprc( 'The "footer" add-on', 'the "navbars" add-on', '5.1' );
 		}
 		if ( extensions.indexOf( 'effect-slide' ) > -1 &&
 			 extensions.indexOf( 'effect-menu-slide' ) == -1
 		) {
-			deprecated( 'The "effect-slide" extension', '"effect-menu-slide"', '5.1' );	
+			deprc( 'The "effect-slide" extension', '"effect-menu-slide"', '5.1' );	
 		}
 
 		//	Configuration 5.1
 		if ( typeof this.conf.classNames.header != 'undefined' )
 		{
-			deprecated( 'The "header" add-on', 'the "navbars" add-on', '5.1' );
+			deprc( 'The "header" add-on', 'the "navbars" add-on', '5.1' );
 		}
 		if ( typeof this.conf.classNames.footer != 'undefined' )
 		{
-			deprecated( 'The "footer" add-on', 'the "navbars" add-on', '5.1' );
+			deprc( 'The "footer" add-on', 'the "navbars" add-on', '5.1' );
 		}
 		if ( typeof this.conf.classNames.buttonbars != 'undefined' )
 		{
-			deprecated( 'The "buttonbars" add-on', false, '5.1' );
+			deprc( 'The "buttonbars" add-on', false, '5.1' );
 		}
 
 		//	HTML 5.1
 		if ( this.$menu.find( '.Buttonbar' ).length )
 		{
-			deprecated( 'The buttonbars add-on', false, '5.1' );
+			deprc( 'The buttonbars add-on', false, '5.1' );
 		}
 
 
 		//	Options 5.0
 		if ( typeof this.opts.labels != 'undefined' )
 		{
-			deprecated( 'The "labels" add-on', '"dividers"', '5.0' );
+			deprc( 'The "labels" add-on', '"dividers"', '5.0' );
 		}
 		if ( typeof this.opts.classes != 'undefined' )
 		{
-			deprecated( 'The option "classes"', '"extensions"', '5.0' );
+			deprc( 'The option "classes"', '"extensions"', '5.0' );
 		}
 		if ( typeof this.opts.searchfield != 'undefined' )
 		{
 			if ( typeof this.opts.searchfield.showLinksOnly != 'undefined' )
 			{
-				deprecated( 'The option "searchfield.showLinksOnly"', '"!searchfield.showTextItems"', '5.0' );
+				deprc( 'The option "searchfield.showLinksOnly"', '"!searchfield.showTextItems"', '5.0' );
 			}
 		}
 		
 		//	Configuration 5.0
 		if ( typeof this.conf.classNames.label != 'undefined' )
 		{
-			deprecated( 'The configuration option "classNames.labels"', '"classNames.dividers"', '5.0' );
+			deprc( 'The configuration option "classNames.labels"', '"classNames.dividers"', '5.0' );
 		}
 		
 		//	HTML 5.0
 		if ( this.$menu.find( '.Label' ).length )
 		{
-			deprecated( 'The classname "Label"', '"Divider"', '5.0' );
+			deprc( 'The classname "Label"', '"Divider"', '5.0' );
 		}
 		if ( $( '.FixedTop' ).length )
 		{
-			deprecated( 'The classname "FixedTop"', '"Fixed"', '5.0' );
+			deprc( 'The classname "FixedTop"', '"Fixed"', '5.0' );
 		}
 		if ( $( '.FixedBottom' ).length )
 		{
-			deprecated( 'The classname "FixedBottom"', '"Fixed"', '5.0' );
+			deprc( 'The classname "FixedBottom"', '"Fixed"', '5.0' );
 		}
 
 		//	Custom events 5.0
@@ -167,59 +181,59 @@
 			'setPage setPage.mm setSelected setSelected.mm open open.mm opening opening.mm opened opened.mm close close.mm closing closing.mm closed closed.mm toggle toggle.mm',
 			function( e )
 			{
-				deprecated( 'The custom event "' + e.type + '"', 'the API', '5.0' );
+				deprc( 'The custom event "' + e.type + '"', 'the API', '5.0' );
 			}
-		)
+		);
 
 
 		//	Vendors 4.4
 		if ( typeof 'Hammer' == 'function' && Hammer.VERSION < 2 )
 		{
-			deprecated( 'Older version of the Hammer library', 'version 2 or newer', '4.4' );
+			deprc( 'Older version of the Hammer library', 'version 2 or newer', '4.4' );
 			return;
 		}
 
 
 		//	Options 4.3
-		for ( var a = [ 'position', 'zposition', 'modal', 'moveBackground' ], b = 0, l = a.length; b < l; b++ )
+		for ( a = [ 'position', 'zposition', 'modal', 'moveBackground' ], b = 0, l = a.length; b < l; b++ )
 		{
 			if ( typeof this.opts[ a[ b ] ] != 'undefined' )
 			{
-				deprecated( 'The option "' + a[ b ] + '"', 'offCanvas.' + a[ b ], '4.3' );
+				deprc( 'The option "' + a[ b ] + '"', 'offCanvas.' + a[ b ], '4.3' );
 			}
 		}
 
 		//	Configuration 4.3
-		for ( var a = [ 'panel', 'list', 'selected', 'label', 'spacer' ], b = 0, l = a.length; b < l; b++ )
+		for ( a = [ 'panel', 'list', 'selected', 'label', 'spacer' ], b = 0, l = a.length; b < l; b++ )
 		{
 			if ( typeof this.conf[ a[ b ] + 'Class' ] != 'undefined' )
 			{
-				deprecated( 'The configuration option "' + a[ b ] + 'Class"', 'classNames.' + a[ b ], '4.3' );
+				deprc( 'The configuration option "' + a[ b ] + 'Class"', 'classNames.' + a[ b ], '4.3' );
 			}
 		}
 		if ( typeof this.conf.counterClass != 'undefined' )
 		{
-			deprecated( 'The configuration option "counterClass"', 'classNames.counters.counter', '4.3' );
+			deprc( 'The configuration option "counterClass"', 'classNames.counters.counter', '4.3' );
 		}
 		if ( typeof this.conf.collapsedClass != 'undefined' )
 		{
-			deprecated( 'The configuration option "collapsedClass"', 'classNames.labels.collapsed', '4,3' );
+			deprc( 'The configuration option "collapsedClass"', 'classNames.labels.collapsed', '4,3' );
 		}
 		if ( typeof this.conf.header != 'undefined' )
 		{
-			for ( var a = [ 'panelHeader', 'panelNext', 'panelPrev' ], b = 0, l = a.length; b < l; b++ )
+			for ( a = [ 'panelHeader', 'panelNext', 'panelPrev' ], b = 0, l = a.length; b < l; b++ )
 			{
 				if ( typeof this.conf.header[ a[ b ] + 'Class' ] != 'undefined' )
 				{
-					deprecated( 'The configuration option "header.' + a[ b ] + 'Class"', 'classNames.header.' + a[ b ], '4.3' );
+					deprc( 'The configuration option "header.' + a[ b ] + 'Class"', 'classNames.header.' + a[ b ], '4.3' );
 				}
 			}
 		}
-		for ( var a = [ 'pageNodetype', 'pageSelector', 'menuWrapperSelector', 'menuInjectMethod' ], b = 0, l = a.length; b < l; b++ )
+		for ( a = [ 'pageNodetype', 'pageSelector', 'menuWrapperSelector', 'menuInjectMethod' ], b = 0, l = a.length; b < l; b++ )
 		{
 			if ( typeof this.conf[ a[ b ] ] != 'undefined' )
 			{
-				deprecated( 'The configuration option "' + a[ b ] + '"', 'offCanvas.' + a[ b ], '4.3' );
+				deprc( 'The configuration option "' + a[ b ] + '"', 'offCanvas.' + a[ b ], '4.3' );
 			}
 		}
 
@@ -231,7 +245,7 @@
 			{
 				if ( this.opts.offCanvas.zposition == 'back' || this.opts.offCanvas.zposition == 'next' )
 				{
-					deprecated( 'Using offCanvas.position "' + this.opts.offCanvas.position + '" in combination with offCanvas.zposition "' + this.opts.offCanvas.zposition + '"', 'offCanvas.zposition "front"', '4.2' );
+					deprc( 'Using offCanvas.position "' + this.opts.offCanvas.position + '" in combination with offCanvas.zposition "' + this.opts.offCanvas.zposition + '"', 'offCanvas.zposition "front"', '4.2' );
 				}
 			}
 		}
@@ -240,13 +254,20 @@
 		//	Options 4.1
 		if ( this.opts.onClick && typeof this.opts.onClick.setLocationHref != 'undefined' )
 		{
-			deprecated( 'The option "onClick.setLocationHref"', '!onClick.preventDefault', '4.1' );
+			deprc( 'The option "onClick.setLocationHref"', '!onClick.preventDefault', '4.1' );
 		}
 
 		//	Configuration 4.1
 		if ( typeof this.conf.panelNodeType != 'undefined' )
 		{
-			deprecated( 'The configuration option "panelNodeType"', 'panelNodetype', '4.1' );
+			deprc( 'The configuration option "panelNodeType"', 'panelNodetype', '4.1' );
+		}
+
+
+		//	log results
+		if ( _msg > 0 )
+		{
+			_info( 'MMENU: Found ' + _msg + ' deprecated warning' + ( _msg > 1 ? 's' : '' ) + ' (listed above).' );
 		}
 	};
 
@@ -254,10 +275,10 @@
 
 	$[ _PLUGIN_ ].prototype.___debug = function()
 	{
-		var extensions = this.opts.extensions;
+		_msg = 0;
 
 		//	non-available add-ons
-		for ( var a = [ 'autoHeight', 'backButton', 'counters', 'dividers', 'dragOpen', 'navbars', 'offCanvas', 'searchfield', 'sectionIndexer', 'toggles' ], b = 0, l = a.length; b < l; b++ )
+		for ( var a = [ 'autoHeight', 'backButton', 'counters', 'dividers', 'dragOpen', 'dropdown', 'iconPanels', 'navbars', 'offCanvas', 'searchfield', 'sectionIndexer', 'toggles' ], b = 0, l = a.length; b < l; b++ )
 		{
 			if ( typeof this.opts[ a[ b ] ] != 'undefined' )
 			{
@@ -290,7 +311,22 @@
 			}
 		}
 
-		var position	= false,
+		//	Configuration 5.6
+		if ( this.conf.searchfield.submit )
+		{
+			if ( !this.conf.searchfield.form )
+			{
+				debug( 'The "searchfield.submit" configuration option required the "searchfield.form" configuration option to be set.' );
+			}
+			if ( !this.conf.searchfield.clear )
+			{
+				debug( 'It is not possible to use both the "searchfield.clear" and the "searchfield.submit" configuration options.' );
+			}
+		}
+
+		//	Compat between options, extensions and add-ons
+		var extensions  = this.opts.extensions,
+			position	= false,
 			zposition	= false;
 
 		if ( this.opts.offCanvas )
@@ -302,20 +338,64 @@
 		//	background color
 		if ( zposition == 'back' )
 		{
-			var bg = $('body').css( 'background-color' );
-			if ( typeof bg == 'undefined' || bg  == '' || bg == 'transparent' )
+			switch( $('body').css( 'background-color' ) )
 			{
-				debug( 'Set a background-color for the <BODY />.' );
+				case '':
+				case 'transparent':
+				case 'none':
+				case 'rgba(0,0,0,0)':
+				case 'rgba( 0, 0, 0, 0 )':
+				case 'rgba( 0,0,0,0 )':
+				case 'rgba(0, 0, 0, 0)':
+					debug( 'Set a background-color for the <BODY />.' );
+					break;
 			}
 		}
 
+		//	positioning + autoheight
 		if ( position == 'left' || position == 'right' )
 		{
 			if ( this.opts.autoHeight && this.opts.autoHeight.height != 'default' )
 			{
-				debug( 'Don\'t use the "autoHeight" option with the "offCanvas.position" option set to "' + position + '".' );
+				if ( !this.opts.dropdown.drop )
+				{
+					debug( 'Don\'t use the "autoHeight" option with the "offCanvas.position" option set to "' + position + '".' );
+				}
 			}
 		}
+
+		//	positioning + dropdown
+		if ( this.opts.dropdown.drop )
+		{
+			if ( position && zposition )
+			{
+				if ( position != 'left' )
+				{
+					debug( 'Don\'t use the "dropdown" option with the "offCanvas.position" option set to "' + position + '".' );
+				}
+				else if ( zposition != 'back' )
+				{
+					debug( 'Don\'t use the "dropdown" option with the "offCanvas.zposition" option set to "' + position + '".' );
+				}
+			}
+		}
+
+		//	positioning + popup
+		if ( extensions.indexOf( 'mm-popup' ) > -1 )
+		{
+			if ( position && zposition )
+			{
+				if ( position != 'left' )
+				{
+					debug( 'Don\'t use the "popup" extension with the "offCanvas.position" option set to "' + position + '".' );
+				}
+				else if ( zposition != 'back' )
+				{
+					debug( 'Don\'t use the "popup" extension with the "offCanvas.zposition" option set to "' + position + '".' );
+				}
+			}
+		}
+		
 
 		//	incompattible with iconbar
 		var fxSlide 	= ( extensions.indexOf( 'mm-effect-menu-slide' ) 	> -1 ),
@@ -325,6 +405,12 @@
 
 		if ( iconbar )
 		{
+			//	vertical submenus
+			if ( !this.opts.slidingSubmenus )
+			{
+				debug( 'Don\'t use the "iconbar" extension in combination with the "slidingSubmenus" option set to "false".' );
+			}
+
 			//	iconbar + effects
 			if ( fxSlide || fxZoom )
 			{
@@ -369,6 +455,13 @@
 			{
 				debug( 'Don\'t use the "' + ( fxSlide ? 'menu-slide' : 'menu-zoom' ) + '" effect in combination with the "offCanvas" option set to "false".' );
 			}
+		}
+
+
+		//	log results
+		if ( _msg > 0 )
+		{
+			_info( 'MMENU: Found ' + _msg + ' debug warning' + ( _msg > 1 ? 's' : '' ) + ' (listed above).' );
 		}
 	};
 

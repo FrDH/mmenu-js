@@ -1,0 +1,82 @@
+/*
+	jQuery.mmenu themes extension CSS
+*/
+
+@import "../../css/_imp/import";
+
+@mixin mm_apply_theme( $apply_addons_and_extensions: true )
+{
+	@include mm_colors( $mm_t_cls,
+		$mm_t_backgroundColor,
+		$mm_t_textColor, $mm_t_dimmedTextColor,
+		$mm_t_emphasizedBackgroundColor, $mm_t_highlightedBackgroundColor,
+		$mm_t_borderColor );
+
+	@if( $apply_addons_and_extensions )
+	{
+		@include mm_colors_checks( $mm_t_cls,
+			$mm_t_textColor );
+			
+		@include mm_colors_counters( $mm_t_cls,
+			$mm_t_dimmedTextColor );
+		
+		@include mm_colors_dividers( $mm_t_cls,
+			$mm_t_highlightedBackgroundColor );
+
+		@include mm_colors_pageshadow( $mm_t_cls,
+			$mm_t_pageShadow );
+
+		@include mm_colors_searchfield( $mm_t_cls,
+			$mm_t_inputBackgroundColor, $mm_t_textColor,
+			$mm_t_dimmedTextColor );
+		
+		@include mm_colors_sectionindexer( $mm_t_cls,
+			$mm_t_dimmedTextColor );
+		
+		@include mm_colors_setselected( $mm_t_cls,
+			$mm_t_emphasizedBackgroundColor );
+		
+		@include mm_colors_toggles( $mm_t_cls,
+			$mm_t_backgroundColor,
+			$mm_t_borderColor );
+	}
+}
+
+
+//	Dark
+$mm_t_cls						: ".mm-theme-dark";
+$mm_t_borderColor				: rgba( #000, 0.15 );
+$mm_t_backgroundColor			: #333;
+$mm_t_emphasizedBackgroundColor	: rgba( #000, 0.1 );
+$mm_t_highlightedBackgroundColor: rgba( #fff, 0.05 );
+$mm_t_textColor					: rgba( #fff, 0.8 );
+$mm_t_dimmedTextColor			: rgba( #fff, 0.4 );
+$mm_t_inputBackgroundColor		: rgba( #fff, 0.3 );
+$mm_t_pageShadow				: 0 0 20px rgba( #000, 0.5 );
+@include mm_apply_theme;
+
+
+//	White
+$mm_t_cls						: ".mm-theme-white";
+$mm_t_borderColor				: rgba( #000, 0.1 );
+$mm_t_backgroundColor			: #fff;
+$mm_t_emphasizedBackgroundColor	: rgba( #000, 0.05 );
+$mm_t_highlightedBackgroundColor: rgba( #000, 0.03 );
+$mm_t_textColor					: rgba( #000, 0.6 );
+$mm_t_dimmedTextColor			: rgba( #000, 0.3 );
+$mm_t_inputBackgroundColor		: rgba( #000, 0.05 );
+$mm_t_pageShadow				: 0 0 10px rgba( #000, 0.2 );
+@include mm_apply_theme;
+
+
+//	Black
+$mm_t_cls						: ".mm-theme-black";
+$mm_t_borderColor				: rgba( #fff, 0.2 );
+$mm_t_backgroundColor			: #000;
+$mm_t_emphasizedBackgroundColor	: rgba( #fff, 0.3 );
+$mm_t_highlightedBackgroundColor: rgba( #fff, 0.2 );
+$mm_t_textColor					: rgba( #fff, 0.6 );
+$mm_t_dimmedTextColor			: rgba( #fff, 0.4 );
+$mm_t_inputBackgroundColor		: rgba( #fff, 0.3 );
+$mm_t_pageShadow				: false;
+@include mm_apply_theme;

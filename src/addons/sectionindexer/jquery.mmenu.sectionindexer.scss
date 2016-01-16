@@ -1,0 +1,52 @@
+/*
+	jQuery.mmenu sectionIndexer addon CSS
+*/
+
+@import "../../css/_imp/import";
+
+.mm-indexer
+{
+	background: inherit;
+	text-align: center;
+	font-size: 12px;
+
+	box-sizing: border-box;
+	width: $mm_sectionIndexerWidth;
+
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: -( $mm_sectionIndexerWidth * 5 );
+	z-index: 3;
+	
+	transition: right $mm_transitionDuration $mm_transitionFunction;
+	
+	//	Bugfix
+	transform: translate3d( 0, 0, 0 );
+
+	a
+	{
+		text-decoration: none;
+		display: block;
+		height: 3.85%;
+	}
+
+	~ .mm-panel.mm-hasindexer
+	{
+		padding-right: $mm_panelPadding + $mm_sectionIndexerWidth;
+	}
+}
+.mm-hasindexer
+{
+	.mm-indexer
+	{
+		right: 0;
+	}
+	.mm-fixeddivider
+	{
+		right: $mm_sectionIndexerWidth;
+	}
+}
+
+
+@include mm_colors_sectionindexer;

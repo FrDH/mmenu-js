@@ -1,0 +1,36 @@
+/*
+	jQuery.mmenu pagedim extension CSS
+*/
+
+@import "../../css/_imp/import";
+
+
+html
+{
+	&.mm-pagedim,
+	&.mm-pagedim-white,
+	&.mm-pagedim-black
+	{
+		#mm-blocker
+		{
+			opacity: 0;
+		}
+		&.mm-opening #mm-blocker
+		{
+			opacity: 0.3;
+			transition: opacity $mm_transitionDuration $mm_transitionFunction $mm_transitionDuration;
+		}
+	}
+	&.mm-pagedim #mm-blocker
+	{
+		background: inherit;
+	}
+	&.mm-pagedim-white #mm-blocker
+	{
+		background: #fff;
+	}
+	&.mm-pagedim-black #mm-blocker
+	{
+		background: #000;
+	}
+}

@@ -1,0 +1,64 @@
+//	Animations
+$mm_transitionDuration: 0.4s !default;
+$mm_transitionFunction: ease !default;
+
+//	Colors
+$mm_backgroundColor				: #f3f3f3 !default;
+$mm_borderColor					: rgba( #000, 0.1 ) !default;
+$mm_dimmedTextColor				: rgba( #000, 0.3 ) !default;
+$mm_emphasizedBackgroundColor	: rgba( #fff, 0.5 ) !default;
+$mm_highlightedBackgroundColor	: rgba( #000, 0.05 ) !default;
+$mm_textColor					: rgba( #000, 0.7 ) !default;
+
+//	Sizes
+$mm_menuWidth		: 0.8 !default;
+$mm_menuMinWidth	: 140px !default;
+$mm_menuMaxWidth	: 440px !default;
+
+$mm_menuHeight		: 0.8 !default;
+$mm_menuMinHeight	: 140px !default;
+$mm_menuMaxHeight	: 880px !default;
+
+$mm_padding			: 10px !default;
+
+$mm_btnSize			: 40px !default;
+$mm_fontSize		: 14px !default;
+$mm_listitemIndent	: $mm_padding * 2 !default;
+$mm_listitemPadding	: $mm_padding !default;
+$mm_panelPadding	: $mm_padding * 2 !default;
+$mm_subopenWidth	: $mm_btnSize + $mm_padding !default;
+$mm_subpanelOffset	: 30% !default;
+
+
+//	Addons and Extensions
+$mm_toggleCheckedColor	: #4bd963 !default;
+$mm_toggleHeight		: $mm_btnSize - $mm_padding !default;
+$mm_toggleWidth			: ( $mm_toggleHeight * 2 ) - $mm_padding !default;
+$mm_checkHeight			: $mm_btnSize - $mm_padding !default;
+$mm_checkWidth			: $mm_btnSize - $mm_padding !default;
+
+$mm_counterWidth		: $mm_btnSize !default;
+
+$mm_dividerFontSize		: 10px !default;
+$mm_dividerHeight		: ( $mm_btnSize / 2 ) + ( $mm_padding / 2 ) !default;
+
+$mm_dropdownShadow		: 0 2px 10px rgba( #000, 0.3 ) !default;
+$mm_dropdownTipX		: 20px !default;
+$mm_dropdownTipY		: 10px !default;
+
+$mm_iconbarWidth		: $mm_btnSize + ( $mm_padding * 2 ) !default;
+$mm_iconpanelWidth		: $mm_btnSize !default;
+
+$mm_inputBackgroundColor: rgba( #000, 0.05 ) !default;
+
+$mm_navbarHeight		: $mm_btnSize !default;
+$mm_breadcrumbPadding	: round( $mm_padding / 4 ) !default;
+
+$mm_pageShadow			: 0 0 10px rgba( #000, 0.3 ) !default;
+$mm_panelShadow			: 0 0 10px rgba( #000, 0.3 ) !default;
+$mm_popupShadow			: 0 2px 10px rgba( #000, 0.3 ) !default;
+
+$mm_sectionIndexerWidth	: $mm_padding * 2 !default;
+
+$mm_zoomScaleDown		: 0.7 !default;
+$mm_zoomScaleUp			: 1.5 !default;

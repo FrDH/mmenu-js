@@ -1,0 +1,66 @@
+/*
+	jQuery.mmenu columns addon CSS
+*/
+
+@import "../../css/_imp/import";
+
+@mixin mm_columns_sizing( $nr )
+{
+	.mm-menu.mm-columns .mm-panels > .mm-panel
+	{
+		&.mm-columns-#{$nr}
+		{
+			transform: translate3d( $nr * 100%, 0, 0 );
+		}
+		&.mm-opened:not( [class*="mm-columns-"] ) ~ .mm-panel:not( .mm-opened ).mm-columns-#{$nr}
+		{
+			display: block;
+			transform: translate3d( 100% * ( $nr + 1 ), 0, 0 );
+		}
+	}
+
+	@include mm_sizing( ".mm-columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr );
+
+	@if ( $nr > 0 )
+	{
+		.mm-menu.mm-columns-#{$nr} .mm-panels > .mm-panel
+		{
+			width: ceil( 100% / $nr * 100 ) / 100;
+		}
+	}
+}
+
+.mm-menu.mm-columns
+{
+	transition-property: transform, width, max-width;
+
+	.mm-panels > .mm-panel
+	{
+		width: 100%;
+		right: auto;
+		display: none;
+
+		transition-property: transform, width;
+
+		&.mm-opened
+		{
+			border-right: 1px solid;
+			border-color: inherit;
+			display: block;
+			transform: translate3d( 0, 0, 0 );
+		}
+		&.mm-subopened
+		{
+			transform: translate3d( -100%, 0, 0 );
+			z-index: 2;
+		}
+	}
+}
+
+@include mm_columns_sizing( 0 );
+@include mm_columns_sizing( 1 );
+@include mm_columns_sizing( 2 );
+@include mm_columns_sizing( 3 );
+@include mm_columns_sizing( 4 );
+@include mm_columns_sizing( 5 );
+@include mm_columns_sizing( 6 );

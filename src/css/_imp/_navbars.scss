@@ -1,0 +1,58 @@
+//	Navbars
+
+.mm-navbar
+{
+	border-bottom: 1px solid;
+	border-color: inherit;
+	text-align: center;
+	line-height: $mm_btnSize / 2;
+
+	height: $mm_navbarHeight;
+	padding: 0 $mm_btnSize;
+
+	margin: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+
+	> *
+	{
+		display: block;
+		padding: ( $mm_btnSize / 4 ) 0;
+	}
+	a,
+	a:hover
+	{
+		text-decoration: none;
+	}
+	.mm-title
+	{
+		@include mm_ellipsis;
+	}
+	.mm-btn
+	{
+		&:first-child
+		{
+			padding-left: $mm_panelPadding;
+			left: 0;
+		}
+		&:last-child
+		{
+			text-align: right;
+			padding-right: $mm_panelPadding;
+			right: 0;
+		}
+	}
+}
+.mm-panel
+{
+	.mm-navbar
+	{
+		display: none;
+	}
+	&.mm-hasnavbar .mm-navbar
+	{
+		display: block;
+	}
+}

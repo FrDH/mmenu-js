@@ -1,0 +1,67 @@
+/*
+	jQuery.mmenu dropdown addon CSS
+*/
+
+@import "../../css/_imp/import";
+
+
+.mm-menu.mm-dropdown
+{
+	box-shadow: $mm_dropdownShadow;
+	height: percentage( $mm_menuHeight );
+}
+html.mm-dropdown .mm-slideout
+{
+	transform: none !important;
+	z-index: 0;
+}
+html.mm-dropdown #mm-blocker
+{
+	transition-delay: 0s !important;
+	z-index: 1;
+}
+html.mm-dropdown .mm-menu
+{
+	z-index: 2;
+}
+html.mm-dropdown.mm-opened:not(.mm-opening) .mm-menu
+{
+	display: none;
+}
+
+
+//	Arrow
+.mm-menu
+{
+	&.mm-tip:before
+	{
+		content: '';
+		background: inherit;
+		box-shadow: $mm_dropdownShadow;
+
+		display: block;
+		width: 15px;
+		height: 15px;
+
+		position: absolute;
+		z-index: 0;
+
+		transform: rotate( 45deg );
+	}
+	&.mm-tipleft:before
+	{
+		left: 2 + $mm_dropdownTipX;	// correct rotation
+	}
+	&.mm-tipright:before
+	{
+		right: 2 + $mm_dropdownTipX;	// correct rotation
+	}
+	&.mm-tiptop:before
+	{
+		top: 2 - $mm_dropdownTipY; 	// correct rotation
+	}
+	&.mm-tipbottom:before
+	{
+		bottom: 2 - $mm_dropdownTipY; // correct rotation
+	}
+}

@@ -1,0 +1,52 @@
+//	Vertical submenus
+
+.mm-vertical .mm-panel
+{
+	transform: none !important;
+}
+
+.mm-vertical .mm-listview,
+.mm-listview .mm-vertical
+{
+	.mm-panel
+	{
+		display: none;
+		padding: $mm_padding 0 $mm_padding $mm_padding;
+
+		.mm-listview > li:last-child:after
+		{
+			border-color: transparent;
+		}
+	}
+}
+.mm-vertical li.mm-opened,
+li.mm-vertical.mm-opened
+{
+	> .mm-panel
+	{
+		display: block;
+	}
+}
+.mm-vertical .mm-listview > li,
+.mm-listview > li.mm-vertical
+{
+	> .mm-next
+	{
+		height: $mm_btnSize;
+		bottom: auto;
+
+		&:after
+		{
+			top: ( $mm_btnSize / 2 ) - 4;
+			bottom: auto;
+		}
+	}
+	&.mm-opened
+	{
+		> .mm-next:after
+		{
+			transform: rotate( 45deg );
+			right: $mm_listitemIndent - 1;
+		}
+	}
+}

@@ -1,25 +1,38 @@
 {
-	"name"			: "jquery.mmenu",
-	"version"		: "5.5.3",
-	"author"		: "Fred Heusschen <info@frebsite.nl>",
-	"repository"    : {
-    	"type"			: "git",
-    	"url" 			: "https://github.com/BeSite/jQuery.mmenu.git"
-  	},
-	"description"	: "The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
-	"keywords"		: [
-		"app",
-		"list",
-		"listview",
-		"megamenu",
-		"menu",
-		"mmenu",
-		"mobile",
-		"navigation",
-		"off-canvas",
-		"on-canvas",
-		"panels",
-		"submenu"
-	],
-	"license"		: "MIT"
+  "name": "jquery.mmenu",
+  "version": "5.6.0",
+  "main": "dist/js/jquery.mmenu.all.min.umd.js",
+  "author": "Fred Heusschen <info@frebsite.nl>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FrDH/jQuery.mmenu.git"
+  },
+  "description": "The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
+  "keywords": [
+    "app",
+    "list",
+    "listview",
+    "megamenu",
+    "menu",
+    "mmenu",
+    "mobile",
+    "navigation",
+    "off-canvas",
+    "on-canvas",
+    "panels",
+    "submenu"
+  ],
+  "license": "CC-BY-NC-4.0",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-minify-css": "^1.2.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-ruby-sass": "^2.0.6",
+    "gulp-uglify": "^1.5.1",
+    "gulp-umd": "^0.2.0",
+    "jshint": "^2.8.0"
+  }
 }

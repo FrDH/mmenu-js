@@ -1,0 +1,14 @@
+/*
+	jQuery.mmenu dragOpen addon CSS
+*/
+
+@import "../../css/_imp/import";
+
+html.mm-opened.mm-dragging
+{
+	.mm-menu,
+	.mm-slideout
+	{
+		transition-duration: 0s;
+	}
+}

@@ -1,0 +1,139 @@
+/*
+	jQuery.mmenu navbars addon CSS
+*/
+
+@import "../../css/_imp/import";
+
+@mixin mm_navbar_positioning( $pos, $nr )
+{
+	.mm-navbar-#{$pos}-#{$nr}
+	{
+		#{$pos}: $mm_navbarHeight * ( $nr - 1 );
+	}
+
+	.mm-hasnavbar-#{$pos}-#{$nr}
+	{
+		.mm-panels
+		{
+			#{$pos}: $mm_navbarHeight * $nr;
+		}
+	}
+}
+@mixin mm_navbar_sizing( $nr )
+{
+	.mm-navbar-size-#{$nr}
+	{
+		height: $mm_navbarHeight * $nr;
+	}
+}
+@mixin mm_navbar_content( $nr )
+{
+	.mm-navbar-content-#{$nr} > *
+	{
+		width: round( 100% / $nr * 100 ) / 100;
+	}
+}
+
+.mm-menu > .mm-navbar
+{
+	background: inherit;
+	padding: 0;
+	z-index: 3;
+
+	//	Bugfix
+	transform: translate3d( 0, 0, 0 );
+}
+.mm-navbar-bottom
+{
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-bottom: none;
+	top: auto;
+	bottom: 0;
+}
+
+.mm-navbar-top ~ .mm-navbar-top
+{
+	border-bottom: none;
+}
+.mm-navbar-bottom ~ .mm-navbar-bottom
+{
+	border-top: none;
+}
+
+.mm-navbar.mm-hasbtns
+{
+	padding: 0 $mm_btnSize;
+}
+
+
+//	Buttonbars
+.mm-navbar[class*="mm-navbar-content-"]
+{
+	> *
+	{
+		box-sizing: border-box;
+		display: block;
+		float: left;
+	}
+}
+
+
+//	Breadcrumbs
+.mm-navbar 
+{
+	.mm-breadcrumbs
+	{
+		@include mm_ellipsis;
+
+		-webkit-overflow-scrolling: touch;
+		overflow-x: auto;
+
+		text-align: left;
+		padding: 0 0 0 $mm_panelPadding - $mm_breadcrumbPadding;
+
+		> *
+		{
+			display: inline-block;
+			padding: ( $mm_btnSize / 4 ) $mm_breadcrumbPadding;
+		}
+		> a
+		{
+			text-decoration: underline;
+		}
+	}
+
+	&.mm-hasbtns 
+	{
+		.mm-breadcrumbs
+		{
+			margin-left: -$mm_btnSize;
+		}
+		.mm-btn:not( .mm-hidden ) + .mm-breadcrumbs
+		{
+			margin-left: 0;
+			padding-left: 0;
+		}
+	}
+}
+
+
+@include mm_navbar_positioning( 'top', 1 );
+@include mm_navbar_positioning( 'top', 2 );
+@include mm_navbar_positioning( 'top', 3 );
+@include mm_navbar_positioning( 'top', 4 );
+
+@include mm_navbar_positioning( 'bottom', 1 );
+@include mm_navbar_positioning( 'bottom', 2 );
+@include mm_navbar_positioning( 'bottom', 3 );
+@include mm_navbar_positioning( 'bottom', 4 );
+
+@include mm_navbar_sizing( 2 );
+@include mm_navbar_sizing( 3 );
+@include mm_navbar_sizing( 4 );
+
+@include mm_navbar_content( 2 );
+@include mm_navbar_content( 3 );
+@include mm_navbar_content( 4 );
+@include mm_navbar_content( 5 );
+@include mm_navbar_content( 6 );

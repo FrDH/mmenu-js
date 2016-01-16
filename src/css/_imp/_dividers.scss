@@ -1,0 +1,11 @@
+// Dividers
+
+.mm-listview .mm-divider
+{
+	@include mm_ellipsis;
+
+	font-size: $mm_dividerFontSize;
+	text-transform: uppercase;
+	text-indent: $mm_listitemIndent;
+	line-height: $mm_dividerHeight;
+}

@@ -1,7 +1,7 @@
 {
 	"name"			: "mmenu",
 	"title"			: "jQuery mmenu",
-	"version"		: "5.5.3",
+	"version"		: "5.6.0",
 	"author"		: {
 		"name"			: "Fred Heusschen",
 		"url"			: "http://www.frebsite.nl"
@@ -22,8 +22,8 @@
 		"submenu"
 	],
 	"licenses"		: [{
-		"type"			: "MIT",
-		"url"			: "http://opensource.org/licenses/MIT"
+		"type"			: "CC-BY-NC-4.0",
+		"url"			: "http://creativecommons.org/licenses/by-nc/4.0/"
 	}],
 	"dependencies"	: {
 		"jquery"		: ">=1.7.0"

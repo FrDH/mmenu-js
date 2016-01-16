@@ -1,0 +1,94 @@
+//	Close / clear
+@mixin mm_btn_cross
+{
+	&:before,
+	&:after
+	{
+		content: '';
+		border: 2px solid transparent;
+		display: block;
+		width: 5px;
+		height: 5px;
+		margin: auto;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+
+		transform: rotate( -45deg );
+	}
+	&:before
+	{
+		border-right: none;
+		border-bottom: none;
+		right: $mm_listitemIndent - 2;
+	}
+	&:after
+	{
+		border-left: none;
+		border-top: none;
+		right: $mm_listitemIndent + 5;
+	}
+}
+
+
+// Arrows
+@mixin mm_btn_arrow
+{
+	content: '';
+	border: 2px solid transparent;
+	display: block;
+	width: 8px;
+	height: 8px;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+
+	transform: rotate( -45deg );
+}
+@mixin mm_btn_arrow_prev
+{
+	border-right: none;
+	border-bottom: none;
+	left: $mm_listitemIndent + 3;
+}
+@mixin mm_btn_arrow_next
+{
+	border-top: none;
+	border-left: none;
+	right: $mm_listitemIndent + 3;
+}
+
+
+
+.mm-btn
+{
+	box-sizing: border-box;
+	width: $mm_btnSize;
+	height: $mm_btnSize;
+	position: absolute;
+	top: 0;
+	z-index: 1;
+}
+
+.mm-clear,
+.mm-close
+{
+	@include mm_btn_cross();
+}
+
+.mm-prev:before,
+.mm-next:after,
+.mm-arrow:after
+{
+	@include mm_btn_arrow;
+}
+.mm-prev:before
+{
+	@include mm_btn_arrow_prev;
+}
+.mm-next:after,
+.mm-arrow:after
+{
+	@include mm_btn_arrow_next;
+}
