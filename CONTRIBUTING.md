@@ -9,11 +9,9 @@ process easy and effective for everyone involved.
 The issue tracker is the preferred channel for [bug reports](#bugs) and
 [features requests](#features), but please respect the following restrictions:
 
-* Please **do not** use the issue tracker for personal support requests (use
-  [Stack Overflow](http://stackoverflow.com)).
+* Please **do not** use the issue tracker for personal support requests.
 
-* Please **do not** derail or troll issues. Keep the discussion on topic and
-  respect the opinions of others.
+* Please keep the discussion **on topic** and respect the opinions of others.
 
 
 <a name="bugs"></a>
@@ -28,7 +26,7 @@ Guidelines for bug reports:
    reported.
 
 2. **Check if the issue has been fixed** &mdash; try to reproduce it using the
-   latest `master` or development branch in the repository.
+   latest branch in the repository.
 
 3. **Isolate the problem** &mdash; create a [reduced test
    case](http://css-tricks.com/reduced-test-cases/) and a live example.
