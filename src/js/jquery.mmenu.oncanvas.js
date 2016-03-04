@@ -464,7 +464,9 @@
 									$a = $p.closest( '.' + _c.panel ).find( 'a[href="#' + $t.attr( 'id' ) + '"]' ).first();
 									$p = $a.closest( '.' + _c.panel );
 								}
-
+								
+								// fix: _url undefined
+								var _url = false;
 								var $navbar = $( '<div class="' + _c.navbar + '" />' );
 
 								if ( $p.length )
