@@ -28,8 +28,11 @@ $mm_searchfieldHeight: $mm_navbarHeight - $mm_padding - 4 !default;
 		font-size: $mm_fontSize;
 		line-height: $mm_searchfieldHeight;
 		display: block;
+		box-sizing: border-box;
 		width: 100%;
 		height: $mm_searchfieldHeight;
+		min-height: $mm_searchfieldHeight;
+		max-height: $mm_searchfieldHeight;
 		margin: 0;
 		padding: 0 $mm_padding;
 	}

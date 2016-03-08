@@ -23,7 +23,7 @@
 			glbl = $[ _PLUGIN_ ].glbl;
 
 
-			if ( !$[ _PLUGIN_ ].support.touch || !this.opts.offCanvas || !this.opts.offCanvas.modal )
+			if ( !$[ _PLUGIN_ ].support.touch || !this.opts.offCanvas || !this.opts.offCanvas.blockUI )
 			{
 				return;
 			}

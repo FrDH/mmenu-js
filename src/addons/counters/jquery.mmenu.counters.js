@@ -53,7 +53,19 @@
 				this.bind( 'init',
 					function( $panels )
 					{
-						$panels
+						var $wrapper;
+						switch( opts.addTo )
+						{
+							case 'panels':
+								$wrapper = $panels;
+								break;
+			
+							default:
+								$wrapper = $panels.filter( opts.addTo );
+								break;
+						}
+
+						$wrapper
 							.each(
 								function()
 								{
@@ -77,7 +89,7 @@
 					function()
 					{
 						this.$pnls
-							.find( '.' + _c.panel )
+							.children( '.' + _c.panel )
 							.each(
 								function()
 								{
@@ -127,6 +139,7 @@
 	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		add		: false,
+		addTo	: 'panels',
 		update	: false
 	};
 	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {

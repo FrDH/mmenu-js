@@ -51,6 +51,12 @@
 		padding-top: $mm_navbarHeight;
 	}
 
+	//	Fixes css from other scripts/styles hiding submenus
+	&:not(.mm-hidden)
+	{
+		display: block;
+	}
+
 	//	Because padding-bottom in some browsers is ignored when a DIV is scrollable
 	&:before,
 	&:after

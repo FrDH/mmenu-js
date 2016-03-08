@@ -1,6 +1,6 @@
 .mm-search,.mm-search input{box-sizing:border-box}
 .mm-search{height:40px;padding:7px 10px 0;position:relative}
-.mm-search input{border:none!important;outline:0!important;box-shadow:none!important;border-radius:26px;font:inherit;font-size:14px;line-height:26px;display:block;width:100%;height:26px;margin:0;padding:0 10px}
+.mm-search input{border:none!important;outline:0!important;box-shadow:none!important;border-radius:26px;font:inherit;font-size:14px;line-height:26px;display:block;width:100%;height:26px;min-height:26px;max-height:26px;margin:0;padding:0 10px}
 .mm-search input::-ms-clear{display:none}
 .mm-search .mm-clear,.mm-search .mm-next{right:0}
 .mm-panel>.mm-search{width:100%;position:absolute;top:0;left:0}

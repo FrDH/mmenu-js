@@ -59,9 +59,9 @@
 							case 'panels':
 								$wrapper = $panels;
 								break;
-			
+
 							default:
-								$wrapper = $(opts.addTo, this.$pnls).filter( '.' + _c.panel );
+								$wrapper = $panels.filter( opts.addTo );
 								break;
 						}
 

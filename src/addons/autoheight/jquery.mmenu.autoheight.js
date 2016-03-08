@@ -138,7 +138,7 @@
 
 	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		height: 'default' // 'auto'
+		height: 'default' // 'default/highest/auto'
 	};
 
 

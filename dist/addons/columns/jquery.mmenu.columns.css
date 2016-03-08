@@ -1,5 +1,5 @@
-.mm-menu.mm-columns{transition-property:width,max-width,-webkit-transform;transition-property:transform,width,max-width;transition-property:transform,width,max-width,-webkit-transform}
-.mm-menu.mm-columns .mm-panels>.mm-panel{width:100%;right:auto;display:none;transition-property:width,-webkit-transform;transition-property:transform,width;transition-property:transform,width,-webkit-transform}
+.mm-menu.mm-columns{-webkit-transition-property:width,max-width,-webkit-transform;transition-property:width,max-width,-webkit-transform;transition-property:transform,width,max-width;transition-property:transform,width,max-width,-webkit-transform}
+.mm-menu.mm-columns .mm-panels>.mm-panel{width:100%;right:auto;display:none;-webkit-transition-property:width,-webkit-transform;transition-property:width,-webkit-transform;transition-property:transform,width;transition-property:transform,width,-webkit-transform}
 .mm-menu.mm-columns .mm-panels>.mm-panel.mm-opened{border-right:1px solid;border-color:inherit;display:block;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}
 .mm-menu.mm-columns .mm-panels>.mm-panel.mm-subopened{-webkit-transform:translate3d(-100%,0,0);transform:translate3d(-100%,0,0);z-index:2}
 .mm-menu.mm-columns .mm-panels>.mm-panel.mm-columns-0{-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}

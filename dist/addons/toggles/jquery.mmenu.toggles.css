@@ -5,7 +5,7 @@ label.mm-toggle{border-radius:30px;width:50px;height:30px;margin-top:-15px}
 label.mm-toggle:before{border-radius:30px;width:28px;height:28px;margin:1px}
 input.mm-toggle:checked~label.mm-toggle:before{float:right}
 label.mm-check{width:30px;height:30px;margin-top:-15px}
-label.mm-check:before{border-left:3px solid;border-bottom:3px solid;width:40%;height:20%;margin:25% 0 0 20%;opacity:.1;-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}
+label.mm-check:before{border-left:3px solid;border-bottom:3px solid;width:40%;height:20%;margin:25% 0 0 20%;opacity:.1;-webkit-transform:rotate(-45deg);-ms-transform:rotate(-45deg);transform:rotate(-45deg)}
 input.mm-check:checked~label.mm-check:before{opacity:1}
 li.mm-vertical label.mm-check,li.mm-vertical label.mm-toggle{bottom:auto;margin-top:0;top:5px}
 label.mm-toggle+a,label.mm-toggle+span{padding-right:80px}

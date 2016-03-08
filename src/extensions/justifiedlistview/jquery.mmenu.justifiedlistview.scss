@@ -1,0 +1,47 @@
+/*
+jQuery.mmenu justifiedListview extension CSS
+*/
+
+@import "../../css/_imp/import";
+
+.mm-menu.mm-justified-listview .mm-panels > .mm-panel,
+.mm-menu .mm-panels > .mm-panel.mm-justified-listview
+{
+	&:before,
+	&:after
+	{
+		content: none;
+		display: none;
+	}
+
+	> .mm-listview
+	{
+		display: flex;
+		flex-flow: column nowrap;
+
+		height: 100%;
+		margin-top: 0;
+		margin-bottom: 0;
+
+		> li:not(.mm-divider)
+		{
+			flex: 1 1 0;
+
+			> a:not(.mm-next),
+			> span
+			{
+				box-sizing: border-box;
+				height: 100%;
+
+				&:before
+				{
+					content: '';
+					vertical-align: middle;
+					display: inline-block;
+					height: 100%;
+					width: 0;
+				}
+			}
+		}
+	}
+}

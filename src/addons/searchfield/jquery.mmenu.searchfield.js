@@ -73,7 +73,7 @@
 								break;
 
 							default:
-								$wrapper = $(opts.addTo, this.$menu);
+								$wrapper = this.$menu.find( opts.addTo );
 								break;
 						}
 
@@ -199,7 +199,8 @@
 								}
 							}
 
-							$('.' + _c.search, this.$menu)
+							this.$menu
+								.find( '.' + _c.search )
 								.each(
 									function()
 									{

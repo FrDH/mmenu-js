@@ -1,5 +1,5 @@
 .mm-page{box-sizing:border-box;position:relative}
-.mm-slideout{transition:-webkit-transform .4s ease;transition:transform .4s ease;transition:transform .4s ease,-webkit-transform .4s ease;z-index:1}
+.mm-slideout{-webkit-transition:-webkit-transform .4s ease;transition:-webkit-transform .4s ease;transition:transform .4s ease;transition:transform .4s ease,-webkit-transform .4s ease;z-index:1}
 html.mm-opened{overflow-x:hidden;position:relative}
 html.mm-blocking,html.mm-blocking body{overflow:hidden}
 html.mm-background .mm-page{background:inherit}

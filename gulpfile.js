@@ -34,7 +34,7 @@ gulp.task( 'css', [ 'css-concat-all' ] );
 //	1) compile all SCSS to CSS
 gulp.task( 'css-compile', function() {
 	return sass( 'src/**/*.scss', { style: 'expanded' })
-		.pipe( autoprefixer( 'last 2 version' ) )
+		.pipe( autoprefixer( [ '> 5%', 'last 5 versions' ] ) )
 		.pipe( minifycss({ keepBreaks: true }) )
 		.pipe( gulp.dest( outputDir ) );
 });
