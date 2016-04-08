@@ -239,8 +239,6 @@ li.mm-nosubresults>a.mm-next+a,li.mm-nosubresults>a.mm-next+span{padding-right:1
 .mm-hasindexer .mm-indexer{right:0}
 .mm-hasindexer .mm-fixeddivider{right:20px}
 .mm-menu .mm-indexer a{color:rgba(0,0,0,.3)}
-.mm-menu.mm-hoverselected .mm-listview>li>a.mm-fullsubopen+a,.mm-menu.mm-hoverselected .mm-listview>li>a.mm-fullsubopen+span,.mm-menu.mm-hoverselected .mm-listview>li>a:not(.mm-fullsubopen),.mm-menu.mm-parentselected .mm-listview>li>a.mm-fullsubopen+a,.mm-menu.mm-parentselected .mm-listview>li>a.mm-fullsubopen+span,.mm-menu.mm-parentselected .mm-listview>li>a:not(.mm-fullsubopen){-webkit-transition:background .4s ease;transition:background .4s ease}
-.mm-menu.mm-hoverselected .mm-listview>li>a.mm-fullsubopen:hover+span,.mm-menu.mm-hoverselected .mm-listview>li>a:not(.mm-fullsubopen):hover,.mm-menu.mm-parentselected .mm-listview>li>a.mm-selected.mm-fullsubopen+a,.mm-menu.mm-parentselected .mm-listview>li>a.mm-selected.mm-fullsubopen+span,.mm-menu.mm-parentselected .mm-listview>li>a.mm-selected:not(.mm-fullsubopen){background:rgba(255,255,255,.5)}
 input.mm-check,input.mm-toggle{position:absolute;left:-10000px}
 label.mm-check,label.mm-toggle{margin:0;position:absolute;top:50%;z-index:2;right:20px}
 label.mm-check:before,label.mm-toggle:before{content:'';display:block}
@@ -263,6 +261,8 @@ em.mm-counter+a.mm-next+label.mm-check+a,em.mm-counter+a.mm-next+label.mm-check+
 .mm-menu label.mm-toggle:before{background:#f3f3f3}
 .mm-menu input.mm-toggle:checked~label.mm-toggle{background:#4bd963}
 .mm-menu label.mm-check:before{border-color:rgba(0,0,0,.7)}
+.mm-menu.mm-hoverselected .mm-listview>li>a.mm-fullsubopen+a,.mm-menu.mm-hoverselected .mm-listview>li>a.mm-fullsubopen+span,.mm-menu.mm-hoverselected .mm-listview>li>a:not(.mm-fullsubopen),.mm-menu.mm-parentselected .mm-listview>li>a.mm-fullsubopen+a,.mm-menu.mm-parentselected .mm-listview>li>a.mm-fullsubopen+span,.mm-menu.mm-parentselected .mm-listview>li>a:not(.mm-fullsubopen){-webkit-transition:background .4s ease;transition:background .4s ease}
+.mm-menu.mm-hoverselected .mm-listview>li>a.mm-fullsubopen:hover+span,.mm-menu.mm-hoverselected .mm-listview>li>a:not(.mm-fullsubopen):hover,.mm-menu.mm-parentselected .mm-listview>li>a.mm-selected.mm-fullsubopen+a,.mm-menu.mm-parentselected .mm-listview>li>a.mm-selected.mm-fullsubopen+span,.mm-menu.mm-parentselected .mm-listview>li>a.mm-selected:not(.mm-fullsubopen){background:rgba(255,255,255,.5)}
 .mm-listview.mm-border-none>li:after,.mm-menu.mm-border-none .mm-listview>li:after{content:none}
 .mm-listview.mm-border-full>li:after,.mm-menu.mm-border-full .mm-listview>li:after{left:0!important}
 .mm-listview.mm-border-offset>li:after,.mm-menu.mm-border-offset .mm-listview>li:after{right:20px}
