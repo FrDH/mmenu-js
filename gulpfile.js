@@ -131,7 +131,11 @@ gulp.task( 'js-umd', [ 'js-minify' ], function() {
 			outputDir + '/js/jquery.mmenu.all.min.js',
 		])
 		.pipe( umd({
-			dependencies: function() { return [ 'jQuery' ]; },
+			dependencies: function() { return [ {
+				name 	: 'jquery',
+				global 	: 'jQuery',
+				param 	: 'jQuery'
+			} ]; },
 			exports: function() { return true; },
 			namespace: sanitizeNamespaceForUmd
 		}))

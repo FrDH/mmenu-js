@@ -39,7 +39,10 @@ body
 
 .mm-menu.mm-widescreen
 {
-	display: block;
+	border-right-width: 1px;
+	border-right-style: solid;
+
+	display: block !important;
 	width: $mm_ws_menuWidth !important;
 	min-width: none !important;
 	max-width: none !important;
@@ -50,8 +53,7 @@ body
 	left: 0 !important;
 	z-index: 0 !important;
 
-	border-right-width: 1px;
-	border-right-style: solid;
+	transform: none !important;
 
 	&.mm-pageshadow:after
 	{
