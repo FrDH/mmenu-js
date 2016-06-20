@@ -112,7 +112,7 @@
 						}
 					}
 
-					_content += Math.ceil( $navbar.children().not( '.' + _c.btn ).not( '.' + _c.title + '-prev' ).length / hght );
+					_content += Math.ceil( $navbar.children().not( '.' + _c.btn ).length / hght );
 					if ( _content > 1 )
 					{
 						$navbar.addClass( _c.navbar + '-content-' + _content );

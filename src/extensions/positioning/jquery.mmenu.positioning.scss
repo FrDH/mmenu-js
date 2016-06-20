@@ -5,24 +5,13 @@
 	jQuery.mmenu position extension CSS
 */
 
-.mm-menu.mm-top,
-.mm-menu.mm-bottom
+.mm-menu.mm-offcanvas
 {
-	width: 100%;
-	min-width: 100%;
-	max-width: 100%;
-}
-
-.mm-menu.mm-right
-{
-	left: auto;
-	right: 0;
-}
-
-.mm-menu.mm-bottom
-{
-	top: auto;
-	bottom: 0;
+	&.mm-right
+	{
+		left: auto;
+		right: 0;
+	}
 }
 
 @include mm_sizing_right;
@@ -33,7 +22,6 @@
 	jQuery.mmenu z-position extension CSS
 */
 
-// reset defaults
 html.mm-front
 {
 	.mm-slideout
@@ -45,14 +33,13 @@ html.mm-front
 	{
 		z-index: 1;
 	}
-	.mm-menu
+	.mm-menu.mm-offcanvas
 	{
 		z-index: 2;
 	}
 }
 
-// animations
-.mm-menu
+.mm-menu.mm-offcanvas
 {
 	&.mm-front,
 	&.mm-next
@@ -73,8 +60,20 @@ html.mm-front
 	{
 		transform: translate3d( 0, 100%, 0 );
 	}
+	&.mm-top,
+	&.mm-bottom
+	{
+		width: 100%;
+		min-width: 100%;
+		max-width: 100%;
+	}
+	&.mm-bottom
+	{
+		top: auto;
+		bottom: 0;
+	}
 }
-html.mm-opening .mm-menu
+html.mm-opening .mm-menu.mm-offcanvas
 {
 	&.mm-front,
 	&.mm-next

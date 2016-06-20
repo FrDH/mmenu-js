@@ -10,8 +10,6 @@
 
 $mm_ws_menuWidth: 30% !default;
 
-
-// Positioning and sizing
 html,
 body
 {
@@ -21,6 +19,7 @@ body
 {
 	position: relative;
 }
+
 #mm-blocker
 {
 	display: none !important;
@@ -36,7 +35,6 @@ body
 	background: inherit;
 	box-sizing: border-box;
 }
-
 .mm-menu.mm-widescreen
 {
 	border-right-width: 1px;

@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v5.6.4
+ * jQuery mmenu v5.6.5
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -449,67 +449,62 @@
 						}
 
 						//	Navbar
-						if ( !$t.children( '.' + _c.navbar ).length )
+						if ( $t.children( '.' + _c.navbar ).length ||
+							$p.hasClass( _c.vertical )
+						) {
+							return;
+						}
+
+						if ( $p.parent().is( '.' + _c.listview ) )
 						{
-							if ( !$p.hasClass( _c.vertical ) )
+							//	Listview, the panel wrapping this panel
+							$p = $p.closest( '.' + _c.panel );
+						}
+						else
+						{
+							//	Non-listview, the first panel that has an anchor that links to this panel
+							$a = $p.closest( '.' + _c.panel ).find( 'a[href="#' + $t.attr( 'id' ) + '"]' ).first();
+							$p = $a.closest( '.' + _c.panel );
+						}
+						
+						// fix: _url undefined
+						var _url = false;
+						var $navbar = $( '<div class="' + _c.navbar + '" />' );
+
+						if ( that.opts.navbar.add )
+						{
+							$t.addClass( _c.hasnavbar );
+						}
+
+						if ( $p.length )
+						{
+							id = $p.attr( 'id' );
+							switch ( that.opts.navbar.titleLink )
 							{
-								if ( $p.parent().is( '.' + _c.listview ) )
-								{
-									//	Listview, the panel wrapping this panel
-									$p = $p.closest( '.' + _c.panel );
-								}
-								else
-								{
-									//	Non-listview, the first panel that has an anchor that links to this panel
-									$a = $p.closest( '.' + _c.panel ).find( 'a[href="#' + $t.attr( 'id' ) + '"]' ).first();
-									$p = $a.closest( '.' + _c.panel );
-								}
-								
-								// fix: _url undefined
-								var _url = false;
-								var $navbar = $( '<div class="' + _c.navbar + '" />' );
+								case 'anchor':
+									_url = $a.attr( 'href' );
+									break;
 
-								if ( $p.length )
-								{
-									id = $p.attr( 'id' );
-									switch ( that.opts.navbar.titleLink )
-									{
-										case 'anchor':
-											_url = $a.attr( 'href' );
-											break;
+								case 'panel':
+								case 'parent':
+									_url = '#' + id;
+									break;
 
-										case 'panel':
-										case 'parent':
-											_url = '#' + id;
-											break;
-
-										default:
-											_url = false;
-											break;
-									}
-
-									$navbar
-										.append( '<a class="' + _c.btn + ' ' + _c.prev + '" href="#' + id + '" data-target="#' + id + '" />' )
-										.append( $('<a class="' + _c.title + '"' + ( _url ? ' href="' + _url + '"' : '' ) + ' />').text( $a.text() ) )
-										.prependTo( $t );
-
-									if ( that.opts.navbar.add )
-									{
-										$t.addClass( _c.hasnavbar );
-									}
-								}
-								else if ( that.opts.navbar.title )
-								{
-									$navbar
-										.append( '<a class="' + _c.title + '">' + that.opts.navbar.title + '</a>' )
-										.prependTo( $t );
-
-									if ( that.opts.navbar.add )
-									{
-										$t.addClass( _c.hasnavbar );
-									}
-								}
+								default:
+									_url = false;
+									break;
 							}
+
+							$navbar
+								.append( '<a class="' + _c.btn + ' ' + _c.prev + '" href="#' + id + '" data-target="#' + id + '" />' )
+								.append( $('<a class="' + _c.title + '"' + ( _url ? ' href="' + _url + '"' : '' ) + ' />').text( $a.text() ) )
+								.prependTo( $t );
+						}
+						else if ( that.opts.navbar.title )
+						{
+							$navbar
+								.append( '<a class="' + _c.title + '">' + that.opts.navbar.title + '</a>' )
+								.prependTo( $t );
 						}
 					}
 				);
