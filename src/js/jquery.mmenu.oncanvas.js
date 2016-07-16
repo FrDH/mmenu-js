@@ -740,6 +740,16 @@
 			var _ended = false,
 				_fn = function()
 				{
+
+					// Prevent bubbling up the transitionend event from children
+					if ( $(e.target).is(glbl.$page) ) {
+						$e.unbind(_e.transitionend);
+						$e.unbind(_e.webkitTransitionEnd);
+					}
+					else {
+						return false;
+					}
+
 					if ( !_ended )
 					{
 						fn.call( $e[ 0 ] );
