@@ -742,7 +742,7 @@
 				{
 
 					// Prevent bubbling up the transitionend event from children
-					if ( $(e.target).is(glbl.$page) ) {
+					if ( $(e.target).is(glbl.$page.first()) ) {
 						$e.unbind(_e.transitionend);
 						$e.unbind(_e.webkitTransitionEnd);
 					}
