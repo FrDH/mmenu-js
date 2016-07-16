@@ -20,6 +20,7 @@
 	}
 
 	@include mm_sizing( ".mm-columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr );
+	@include mm_sizing_right(".mm-columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr);
 
 	@if ( $nr > 0 )
 	{
