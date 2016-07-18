@@ -738,16 +738,19 @@
 		__transitionend: function( $e, fn, duration )
 		{
 			var _ended = false,
-				_fn = function()
+				_fn = function(e)
 				{
 
-					// Prevent bubbling up the transitionend event from children
-					if ( $(e.target).is(glbl.$page.first()) ) {
-						$e.unbind(_e.transitionend);
-						$e.unbind(_e.webkitTransitionEnd);
-					}
-					else {
-						return false;
+					if (typeof e !== 'undefined') {
+						
+						if ( $(e.target).is(glbl.$page.first()) ) {
+							$e.unbind(_e.transitionend);
+							$e.unbind(_e.webkitTransitionEnd);
+						}
+						else {
+							return false;
+						}
+
 					}
 
 					if ( !_ended )
@@ -757,8 +760,8 @@
 					_ended = true;
 				};
 	
-			$e.one( _e.transitionend, _fn );
-			$e.one( _e.webkitTransitionEnd, _fn );
+			$e.on( _e.transitionend, _fn );
+			$e.on( _e.webkitTransitionEnd, _fn );
 			setTimeout( _fn, duration * 1.1 );
 		},
 		
