@@ -743,7 +743,7 @@
 
 					if (typeof e !== 'undefined') {
 						
-						if ( $(e.target).is(glbl.$page.first()) ) {
+						if ( $(e.target).is($e) ) {
 							$e.unbind(_e.transitionend);
 							$e.unbind(_e.webkitTransitionEnd);
 						}
@@ -760,8 +760,8 @@
 					_ended = true;
 				};
 	
-			$e.on( _e.transitionend, _fn );
-			$e.on( _e.webkitTransitionEnd, _fn );
+			$e.one( _e.transitionend, _fn );
+			$e.one( _e.webkitTransitionEnd, _fn );
 			setTimeout( _fn, duration * 1.1 );
 		},
 		
