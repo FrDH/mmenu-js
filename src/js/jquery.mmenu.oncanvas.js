@@ -738,8 +738,21 @@
 		__transitionend: function( $e, fn, duration )
 		{
 			var _ended = false,
-				_fn = function()
+				_fn = function(e)
 				{
+
+					if (typeof e !== 'undefined') {
+						
+						if ( $(e.target).is($e) ) {
+							$e.unbind(_e.transitionend);
+							$e.unbind(_e.webkitTransitionEnd);
+						}
+						else {
+							return false;
+						}
+
+					}
+
 					if ( !_ended )
 					{
 						fn.call( $e[ 0 ] );
