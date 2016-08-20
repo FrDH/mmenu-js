@@ -1,11 +1,11 @@
 /*
-	jQuery.mmenu pageShadow extension CSS
+	jQuery.mmenu shadows extension CSS
 */
 
 @import "../../css/_imp/import";
 
 
-.mm-menu.mm-pageshadow
+.mm-menu.mm-shadow-page
 {
 	&:after
 	{
@@ -34,3 +34,4 @@
 }
 
 @include mm_colors_pageshadow();
+@include mm_colors_panelshadow();

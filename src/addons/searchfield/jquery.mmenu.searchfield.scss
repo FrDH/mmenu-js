@@ -99,7 +99,8 @@ li.mm-nosubresults > a.mm-next
 
 .mm-panels > .mm-resultspanel:not( .mm-opened )
 {
-	transform: translate3d( 0, 0, 0 );
+	//	transform: translate3d( 0, 0, 0 );
+	@include mm_translate( 0, 0 );
 }
 
 

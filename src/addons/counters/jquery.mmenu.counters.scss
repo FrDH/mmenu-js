@@ -31,10 +31,24 @@ em.mm-counter
 	+ a.mm-fullsubopen
 	{
 		padding-left: 0;
+
+		+ a,
+		+ span
+		{
+			padding-right: $mm_counterWidth + $mm_subopenWidth;
+		}
+	}
+}
+.mm-listview em.mm-counter + .mm-next.mm-fullsubopen
+{
+	+ a,
+	+ span
+	{
+		padding-right: $mm_counterWidth + $mm_subopenWidth;
 	}
 }
 
-//	Removed support for counters in vertical submenus
+//	Counters in vertical submenus
 .mm-vertical
 {
 	> .mm-counter

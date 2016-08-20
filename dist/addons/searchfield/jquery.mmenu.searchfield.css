@@ -11,6 +11,6 @@
 .mm-noresults .mm-indexer{display:none!important}
 li.mm-nosubresults>a.mm-next{display:none}
 li.mm-nosubresults>a.mm-next+a,li.mm-nosubresults>a.mm-next+span{padding-right:10px}
-.mm-panels>.mm-resultspanel:not(.mm-opened){-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}
-.mm-menu .mm-search input{background:rgba(0,0,0,.05);color:rgba(0,0,0,.7)}
+.mm-panels>.mm-resultspanel:not(.mm-opened){-webkit-transform:translate(0,0);-ms-transform:translate(0,0);transform:translate(0,0);-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}
+.mm-menu .mm-search input{background:rgba(0,0,0,.05);color:rgba(0,0,0,.75)}
 .mm-menu .mm-noresultsmsg{color:rgba(0,0,0,.3)}

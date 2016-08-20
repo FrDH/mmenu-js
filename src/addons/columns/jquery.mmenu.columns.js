@@ -23,7 +23,7 @@
 			glbl = $[ _PLUGIN_ ].glbl;
 
 
-			//	Extend shortcut options
+			//	Extend shorthand options
 			if ( typeof opts == 'boolean' )
 			{
 				opts = {
@@ -72,10 +72,6 @@
 				var init = function( $panels )
 				{
 					openPanel.call( this, this.$pnls.children( '.' + _c.current ) );
-					if ( opts.hideNavbars )
-					{
-						$panels.removeClass( _c.hasnavbar );
-					}
 				};
 				var openMenu = function()
 				{
@@ -188,8 +184,7 @@
 		visible		: {
 			min			: 1,
 			max			: 3
-		},
-		hideNavbars	: false
+		}
 	};
 
 

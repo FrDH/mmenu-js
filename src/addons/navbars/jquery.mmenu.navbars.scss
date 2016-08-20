@@ -41,7 +41,8 @@
 	z-index: 3;
 
 	//	Bugfix
-	transform: translate3d( 0, 0, 0 );
+	//	transform: translate3d( 0, 0, 0 );
+	@include mm_translate( 0, 0 );
 }
 .mm-navbar-bottom
 {

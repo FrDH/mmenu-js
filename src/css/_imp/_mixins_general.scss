@@ -32,6 +32,11 @@
 
 
 //	Misc
+@mixin mm_translate( $x: 0, $y: 0, $z: 0 )
+{
+	transform: translate( $x, $y );
+	transform: translate3d( $x, $y, $z );
+}
 @mixin mm_ellipsis()
 {
 	text-overflow: ellipsis;

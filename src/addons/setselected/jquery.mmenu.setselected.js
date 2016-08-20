@@ -23,7 +23,7 @@
 			glbl = $[ _PLUGIN_ ].glbl;
 
 
-			//	Extend shortcut options
+			//	Extend shorthand options
 			if ( typeof opts == 'boolean' )
 			{
 				opts = {
@@ -38,8 +38,33 @@
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
 
+			//	Find current by URL
+			if ( opts.current == 'detect' )
+			{
+				var findCurrent = function( url )
+				{
+					url = url.split( "?" )[ 0 ].split( "#" )[ 0 ];
+
+					var $a = that.$menu.find( 'a[href="'+ url +'"], a[href="'+ url +'/"]' );
+					if ( $a.length )
+					{
+						that.setSelected( $a.parent(), true );
+					}
+					else
+					{
+						url = url.split( '/' ).slice( 0, -1 );
+						if ( url.length )
+						{
+							findCurrent( url.join( '/' ) );
+						}
+					}
+				};
+
+				findCurrent( window.location.href );
+			}
+
 			//	Remove current selected item
-			if ( !opts.current )
+			else if ( !opts.current )
 			{
 				this.bind( 'init',
 					function( $panels )

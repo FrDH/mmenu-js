@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v5.6.5
+ * jQuery mmenu v5.7.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.6.4';
+		_VERSION_	= '5.7.0';
 
 
 	//	Plugin already excists
@@ -41,6 +41,7 @@
 		{
 			this.___deprecated();
 		}
+
 
 		this._initMenu();
 		this._initAnchors();
@@ -429,7 +430,7 @@
 
 						if ( !$p.is( '.' + _c.panels ) )
 						{
-							$p.data( _d.sub, $t );
+							$p.data( _d.child, $t );
 							$t.data( _d.parent, $p );
 						}
 
@@ -738,19 +739,20 @@
 		__transitionend: function( $e, fn, duration )
 		{
 			var _ended = false,
-				_fn = function(e)
+				_fn = function( e )
 				{
 
-					if (typeof e !== 'undefined') {
-						
-						if ( $(e.target).is($e) ) {
-							$e.unbind(_e.transitionend);
-							$e.unbind(_e.webkitTransitionEnd);
+					if ( typeof e !== 'undefined' )
+					{
+						if ( $(e.target).is( $e ) )
+						{
+							$e.unbind( _e.transitionend );
+							$e.unbind( _e.webkitTransitionEnd );
 						}
-						else {
+						else
+						{
 							return false;
 						}
-
 					}
 
 					if ( !_ended )
@@ -760,8 +762,8 @@
 					_ended = true;
 				};
 	
-			$e.one( _e.transitionend, _fn );
-			$e.one( _e.webkitTransitionEnd, _fn );
+			$e.on( _e.transitionend, _fn );
+			$e.on( _e.webkitTransitionEnd, _fn );
 			setTimeout( _fn, duration * 1.1 );
 		},
 		
@@ -838,6 +840,26 @@
 
 			//	No support
 			return false;
+		})(),
+		csstransforms: (function() {
+			if ( typeof Modernizr !== 'undefined' &&
+				 typeof Modernizr.csstransforms !== 'undefined'
+			) {
+				return Modernizr.csstransforms;
+			}
+
+			//	w/o Modernizr, we'll assume you only support modern browsers :/
+			return true;
+		})(),
+		csstransforms3d: (function() {
+			if ( typeof Modernizr !== 'undefined' &&
+				 typeof Modernizr.csstransforms3d !== 'undefined'
+			) {
+				return Modernizr.csstransforms3d;
+			}
+
+			//	w/o Modernizr, we'll assume you only support modern browsers :/
+			return true;
 		})()
 	};
 
@@ -864,6 +886,7 @@
 		_c = {};
 		_d = {};
 		_e = {};
+
 		$.each( [ _c, _d, _e ],
 			function( i, o )
 			{
@@ -892,7 +915,7 @@
 
 		//	Datanames
 		_d.mm = function( d ) { return 'mm-' + d; };
-		_d.add( 'parent sub' );
+		_d.add( 'parent child' );
 
 		//	Eventnames
 		_e.mm = function( e ) { return e + '.mm'; };

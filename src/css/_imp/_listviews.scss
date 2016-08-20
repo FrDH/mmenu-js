@@ -41,11 +41,6 @@
 			display: block;
 			padding: $mm_listitemPadding $mm_listitemPadding $mm_listitemPadding $mm_listitemIndent;
 			margin: 0;
-
-			&.mm-arrow
-			{
-				padding-right: $mm_subopenWidth;
-			}
 		}
 		
 		&:not(.mm-divider)

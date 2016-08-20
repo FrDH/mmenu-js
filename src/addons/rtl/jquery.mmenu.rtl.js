@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu {ADDON} addon
+ * jQuery mmenu RTL addon
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen
@@ -8,7 +8,7 @@
 (function( $ ) {
 
 	var _PLUGIN_ = 'mmenu',
-		_ADDON_  = '{ADDON}';
+		_ADDON_  = 'rtl';
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
@@ -22,18 +22,27 @@
 
 			glbl = $[ _PLUGIN_ ].glbl;
 
+
 			//	Extend shorthand options
-			//	Extend shorthand configuration
-			//	...
+			if ( typeof opts != 'object' )
+			{
+				opts = {
+					use: opts
+				};
+			}
+			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
-			//	Add methods to api
-//			this._api = $.merge( this._api, [ 'fn1', 'fn2' ] );
+			//	Autodetect
+			if ( typeof opts.use != 'boolean' )
+			{
+				opts.use = ( ( glbl.$html.attr( 'dir' ) || '' ).toLowerCase() == 'rtl' );
+			}
 
-			//	Bind functions to update
-//			this.bind( 'update', function() {} );
-//			this.bind( 'init', function() {} );
-//			this.bind( 'initPage', function() {} );
-
+			//	Use RTL
+			if ( opts.use )
+			{
+				this.$menu.addClass( _c.rtl );
+			}
 		},
 
 		//	add: fired once per page load
@@ -43,27 +52,17 @@
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 	
-			//	...Add classnames, data and events
+			_c.add( 'rtl' );
 		},
 
 		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu )
-		{
-//			if ( $a.is( '.CLASSNAME' ) )
-//			{
-//				return true;
-//			}
-//			return false;
-		}
+		clickAnchor: function( $a, inMenu ) {}
 	};
 
 
 	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		//	...
-	};
-	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
-		//	...
+		use: 'detect'
 	};
 
 

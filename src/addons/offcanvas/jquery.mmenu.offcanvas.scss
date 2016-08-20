@@ -69,5 +69,8 @@ html.mm-blocking #mm-blocker
 	}
 }
 
+//	IE9 hack
+ .mm-menu.mm-offcanvas.mm-no-csstransforms.mm-current.mm-opened { z-index: 10; } 
+
 
 @include mm_sizing;

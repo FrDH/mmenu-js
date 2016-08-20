@@ -7,8 +7,9 @@ html.mm-background .mm-page{background:inherit}
 html.mm-blocking #mm-blocker{display:block}
 .mm-menu.mm-offcanvas{z-index:0;display:none;position:fixed;width:80%;min-width:140px;max-width:440px}
 .mm-menu.mm-offcanvas.mm-current{display:block}
-html.mm-opening .mm-slideout{-webkit-transform:translate3d(80%,0,0);transform:translate3d(80%,0,0)}
-@media all and (max-width:175px){html.mm-opening .mm-slideout{-webkit-transform:translate3d(140px,0,0);transform:translate3d(140px,0,0)}
+.mm-menu.mm-offcanvas.mm-no-csstransforms.mm-current.mm-opened{z-index:10}
+html.mm-opening .mm-slideout{-webkit-transform:translate(80%,0);-ms-transform:translate(80%,0);transform:translate(80%,0);-webkit-transform:translate3d(80%,0,0);transform:translate3d(80%,0,0)}
+@media all and (max-width:175px){html.mm-opening .mm-slideout{-webkit-transform:translate(140px,0);-ms-transform:translate(140px,0);transform:translate(140px,0);-webkit-transform:translate3d(140px,0,0);transform:translate3d(140px,0,0)}
 }
-@media all and (min-width:550px){html.mm-opening .mm-slideout{-webkit-transform:translate3d(440px,0,0);transform:translate3d(440px,0,0)}
+@media all and (min-width:550px){html.mm-opening .mm-slideout{-webkit-transform:translate(440px,0);-ms-transform:translate(440px,0);transform:translate(440px,0);-webkit-transform:translate3d(440px,0,0);transform:translate3d(440px,0,0)}
 }

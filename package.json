@@ -1,6 +1,6 @@
 {
   "name": "jquery.mmenu",
-  "version": "5.6.5",
+  "version": "5.7.0",
   "main": "dist/js/jquery.mmenu.all.min.umd.js",
   "author": "Fred Heusschen <info@frebsite.nl>",
   "repository": {

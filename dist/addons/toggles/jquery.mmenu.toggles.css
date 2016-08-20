@@ -19,4 +19,4 @@ em.mm-counter+a.mm-next+label.mm-check+a,em.mm-counter+a.mm-next+label.mm-check+
 .mm-menu label.mm-toggle{background:rgba(0,0,0,.1)}
 .mm-menu label.mm-toggle:before{background:#f3f3f3}
 .mm-menu input.mm-toggle:checked~label.mm-toggle{background:#4bd963}
-.mm-menu label.mm-check:before{border-color:rgba(0,0,0,.7)}
+.mm-menu label.mm-check:before{border-color:rgba(0,0,0,.75)}

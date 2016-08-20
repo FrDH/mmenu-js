@@ -12,7 +12,8 @@
 	{
 		.mm-slideout
 		{
-			transform: translate3d( percentage( $width ), 0, 0 );
+			//	transform: translate3d( percentage( $width ), 0, 0 );
+			@include mm_translate( percentage( $width ), 0 );
 		}
 	}
 
@@ -22,7 +23,8 @@
 		{
 			.mm-slideout
 			{
-				transform: translate3d( $minWidth, 0, 0 );
+				//	transform: translate3d( $minWidth, 0, 0 );
+				@include mm_translate( $minWidth, 0 );
 			}
 		}
 	}
@@ -31,7 +33,8 @@
 		{
 			.mm-slideout
 			{
-				transform: translate3d( $maxWidth, 0, 0 );
+				//	transform: translate3d( $maxWidth, 0, 0 );
+				@include mm_translate( $maxWidth, 0 );
 			}
 		}
 	}
@@ -45,7 +48,8 @@
 	{
 		.mm-slideout
 		{
-			transform: translate3d( -( percentage( $width ) ), 0, 0 );
+			//	transform: translate3d( -( percentage( $width ) ), 0, 0 );
+			@include mm_translate( -( percentage( $width ) ), 0 );
 		}
 	}
 
@@ -55,7 +59,8 @@
 		{
 			.mm-slideout
 			{
-				transform: translate3d( -$minWidth, 0, 0 );
+				//	transform: translate3d( -$minWidth, 0, 0 );
+				@include mm_translate( -$minWidth, 0 );
 			}
 		}
 	}
@@ -64,7 +69,8 @@
 		{
 			.mm-slideout
 			{
-				transform: translate3d( -$maxWidth, 0, 0 );
+				//	transform: translate3d( -$maxWidth, 0, 0 );
+				@include mm_translate( -$maxWidth, 0 );
 			}
 		}
 	}

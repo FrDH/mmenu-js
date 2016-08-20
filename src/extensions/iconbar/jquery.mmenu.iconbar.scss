@@ -22,5 +22,6 @@ body
 {
 	box-sizing: border-box;	
 	padding-right: $mm_iconbarWidth;
-	transform: translate3d( $mm_iconbarWidth, 0, 0 );
+	//	transform: translate3d( $mm_iconbarWidth, 0, 0 );
+	@include mm_translate( $mm_iconbarWidth, 0 );
 }

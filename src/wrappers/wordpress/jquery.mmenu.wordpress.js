@@ -10,4 +10,8 @@
 
 	$[ _PLUGIN_ ].configuration.classNames.selected = 'current-menu-item';
 
+	$("#wpadminbar")
+		.css( 'position', 'fixed' )
+		.addClass( 'mm-slideout' );
+
 })( jQuery );

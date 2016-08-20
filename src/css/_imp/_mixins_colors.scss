@@ -2,7 +2,8 @@
 	$baseBg: $mm_backgroundColor,
 	$color: $mm_textColor, $dimmedColor: $mm_dimmedTextColor,
 	$emphasizedBg: $mm_emphasizedBackgroundColor, $highlightedBg: $mm_highlightedBackgroundColor,
-	$borderColor: $mm_borderColor
+	$borderColor: $mm_borderColor,
+	$navbarColor: $mm_navbarColor
 ) {
 	.mm-menu#{$cls}
 	{
@@ -15,7 +16,7 @@
 			> *,
 			a
 			{
-				color: $dimmedColor;
+				color: $navbarColor;
 			}
 		}
 
@@ -24,7 +25,7 @@
 			&:before,
 			&:after
 			{
-				border-color: $dimmedColor;
+				border-color: $navbarColor;
 			}
 		}
 
@@ -34,8 +35,7 @@
 
 			> li
 			{
-				.mm-next:after,
-				.mm-arrow:after
+				.mm-next:after
 				{
 					border-color: $dimmedColor;
 				}
@@ -107,7 +107,7 @@
 @mixin mm_colors_pageshadow( $cls: "",
 	$pageShadow: $mm_pageShadow
 ) {
-	.mm-menu.mm-pageshadow#{$cls}
+	.mm-menu.mm-shadow-page#{$cls}
 	{
 		&:after
 		{
@@ -121,6 +121,14 @@
 				display: none;
 			}
 		}
+	}
+}
+@mixin mm_colors_panelshadow( $cls: "",
+	$panelShadow: $mm_panelShadow
+) {
+	.mm-menu.mm-shadow-panels .mm-panel.mm-opened:nth-child(n+2)
+	{
+		box-shadow: $panelShadow;
 	}
 }
 

@@ -29,7 +29,7 @@
 			}
 
 
-			//	Extend shortcut options
+			//	Extend shorthand options
 			if ( typeof opts == 'boolean' )
 			{
 				opts = {

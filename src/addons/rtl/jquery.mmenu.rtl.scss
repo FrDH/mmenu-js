@@ -1,0 +1,272 @@
+/*
+	jQuery.mmenu RTL addon CSS
+*/
+
+@import "../../css/_imp/import";
+
+.mm-menu.mm-rtl
+{
+	direction: rtl;
+
+
+	//	Off-canvas menu
+
+	&.mm-offcanvas
+	{
+		right: auto;
+	}
+
+
+	//	Panels
+
+	.mm-panel:not(.mm-opened)
+	{
+	//	transform: translate3d( -100%, 0, 0 );
+		@include mm_translate( -100%, 0 );
+	}
+	.mm-panel.mm-subopened
+	{
+	//	transform: translate3d( 30%, 0, 0 );
+		@include mm_translate( 30%, 0 );
+	}
+
+	.mm-navbar
+	{
+		.mm-btn
+		{
+			&:first-child
+			{
+				left: auto;
+				right: 0;
+			}
+			&:last-child
+			{
+				right: auto;
+				left: 0;
+			}
+		}
+		.mm-next:after
+		{
+			@include mm_btn_arrow_prev;
+		}
+		.mm-prev:before
+		{
+			@include mm_btn_arrow_next;
+		}
+	}
+
+
+
+	//	Listviews
+
+	.mm-listview
+	{
+		> li
+		{
+			&:not(.mm-divider)::after
+			{
+				left: 0;
+				right: $mm_listitemIndent;
+			}
+			> a,
+			> span
+			{
+				&:not(.mm-next)
+				{
+					padding-left: $mm_listitemPadding;
+					padding-right: $mm_listitemIndent !important;
+					margin-right: 0 !important;
+				}
+			}
+		}
+		.mm-next
+		{
+			right: auto;
+			left: 0;
+
+			&:before
+			{
+				left: auto;
+				right: 0;
+			}
+			&:after
+			{
+				@include mm_btn_arrow_prev;
+			}
+
+			+ a,
+			+ span
+			{
+				margin-left: $mm_subopenWidth;
+			}
+
+			&.mm-fullsubopen
+			{
+				+ a,
+				+ span
+				{
+					padding-left: $mm_subopenWidth;
+				}
+			}
+		}
+	}
+}
+
+
+//	Counters add-on
+
+.mm-menu.mm-rtl
+{
+	em.mm-counter
+	{
+		left: $mm_subopenWidth - 5px;
+		right: auto;
+
+		+ a.mm-next
+		{
+			+ a,
+			+ span
+			{
+				margin-left: $mm_counterWidth + $mm_subopenWidth;
+			}
+		}
+	}
+	.mm-listview em.mm-counter + .mm-fullsubopen
+	{
+		+ a,
+		+ span
+		{
+			padding-left: $mm_counterWidth + $mm_subopenWidth;
+		}
+	}
+}
+
+
+//	Toggles add-on
+
+.mm-menu.mm-rtl
+{
+	label
+	{
+		&.mm-toggle,
+		&.mm-check
+		{
+			left: $mm_padding * 2;
+			right: auto !important;
+		}
+		
+		&.mm-toggle
+		{
+			+ a,
+			+ span
+			{
+				padding-left: $mm_toggleWidth + ( $mm_padding * 3 );
+			}
+		}
+		
+		&.mm-check
+		{
+			+ a,
+			+ span
+			{
+				padding-left: $mm_checkWidth + ( $mm_padding * 3 );
+			}
+		}
+	}
+
+	//	with subopen
+	a.mm-next + label
+	{
+		&.mm-toggle,
+		&.mm-check
+		{
+			left: $mm_subopenWidth + $mm_padding;
+			
+			+ a,
+			+ span
+			{
+				margin-left: $mm_subopenWidth;
+			}
+		}
+		&.mm-toggle
+		{
+			+ a,
+			+ span
+			{
+				padding-left: $mm_toggleWidth + ( $mm_padding * 2 );
+			}
+		}
+		&.mm-check
+		{
+			+ a,
+			+ span
+			{
+				padding-left: $mm_checkWidth + ( $mm_padding * 2 );
+			}
+		}
+	}
+
+	//	with counter
+	em.mm-counter + a.mm-next + label
+	{
+		&.mm-toggle,
+		&.mm-check
+		{
+			left: $mm_counterWidth + $mm_subopenWidth + $mm_padding;
+
+			+ a,
+			+ span
+			{
+				margin-left: $mm_counterWidth + $mm_subopenWidth;
+			}
+		}
+	}
+}
+
+
+//	Icon panels add-on
+
+@mixin mm_rtl_iconpanels( $nr )
+{
+	&.mm-iconpanel-#{$nr}
+	{
+		right: $mm_iconpanelWidth * $nr;
+	}
+}
+
+.mm-menu.mm-rtl
+{
+	.mm-panel[class*="mm-iconpanel-"]
+	{
+		left: 0px;
+
+		&.mm-subopened
+		{
+		//	transform: translate3d( 0, 0, 0 );
+			@include mm_translate( 0, 0 );
+		}
+	}
+
+	&.mm-iconpanel
+	{
+		.mm-panel
+		{
+			transition-property: transform, right;
+
+			@include mm_rtl_iconpanels( 0 );
+			@include mm_rtl_iconpanels( 1 );
+			@include mm_rtl_iconpanels( 2 );
+			@include mm_rtl_iconpanels( 3 );
+			@include mm_rtl_iconpanels( 4 );
+			@include mm_rtl_iconpanels( 5 );
+			@include mm_rtl_iconpanels( 6 );
+
+			&.mm-opened
+			{
+				border-left: none;
+				border-right: 1px solid;
+				border-color: inherit;
+			}
+		}
+	}
+}

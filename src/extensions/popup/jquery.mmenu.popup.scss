@@ -20,7 +20,8 @@
 	bottom: auto;
 	right: auto;
 	
-	transform: translate3d( -50%, -50%, 0 );
+	//	transform: translate3d( -50%, -50%, 0 );
+	@include mm_translate( -50%, -50% );
 }
 html.mm-popup.mm-opening .mm-menu.mm-popup
 {

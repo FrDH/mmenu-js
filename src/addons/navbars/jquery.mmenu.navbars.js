@@ -41,7 +41,7 @@
 				
 					var opts = navs[ n ];
 
-					//	Extend shortcut options
+					//	Extend shorthand options
 					if ( typeof opts == 'boolean' && opts )
 					{
 						opts = {};

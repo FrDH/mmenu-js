@@ -1,5 +1,5 @@
 .mm-navbar-bottom,.mm-navbar-top~.mm-navbar-top{border-bottom:none}
-.mm-menu>.mm-navbar{background:inherit;padding:0;z-index:3;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}
+.mm-menu>.mm-navbar{background:inherit;padding:0;z-index:3;-webkit-transform:translate(0,0);-ms-transform:translate(0,0);transform:translate(0,0);-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}
 .mm-navbar-bottom{border-top-width:1px;border-top-style:solid;top:auto;bottom:0}
 .mm-navbar-bottom~.mm-navbar-bottom{border-top:none}
 .mm-navbar.mm-hasbtns{padding:0 40px}

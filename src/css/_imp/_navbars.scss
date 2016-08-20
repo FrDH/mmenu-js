@@ -34,13 +34,11 @@
 	{
 		&:first-child
 		{
-			padding-left: $mm_panelPadding;
 			left: 0;
 		}
 		&:last-child
 		{
 			text-align: right;
-			padding-right: $mm_panelPadding;
 			right: 0;
 		}
 	}

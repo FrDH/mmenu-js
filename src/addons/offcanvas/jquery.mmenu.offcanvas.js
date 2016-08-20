@@ -68,6 +68,15 @@
 				.parent()
 				.removeClass( _c.wrapper );
 
+			if ( !$[ _PLUGIN_ ].support.csstransforms )
+			{
+				this.$menu.addClass( _c[ 'no-csstransforms' ] );
+			}
+			if ( !$[ _PLUGIN_ ].support.csstransforms3d )
+			{
+				this.$menu.addClass( _c[ 'no-csstransforms3d' ] );
+			}
+
 
 			//	Setup the page
 			this.setPage( glbl.$page );
@@ -102,7 +111,7 @@
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 
-			_c.add( 'offcanvas slideout blocking modal background opening blocker page' );
+			_c.add( 'offcanvas slideout blocking modal background opening blocker page no-csstransforms3d' );
 			_d.add( 'style' );
 			_e.add( 'resize' );
 		},

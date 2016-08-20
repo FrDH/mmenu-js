@@ -15,8 +15,7 @@
 		<script type="text/javascript">
 			$(function() {
 				$('nav#menu').mmenu({
-					extensions	: [ 'effect-slide-menu', 'pageshadow' ],
-					searchfield	: true,
+					extensions	: [ 'effect-slide-menu', 'shadow-page', 'shadow-panels' ],
 					counters	: true,
 					navbar 		: {
 						title		: 'Advanced menu'
@@ -52,15 +51,14 @@
 			<div class="content">
 				<p><strong>This is an advanced demo.</strong><br />
 					Click the menu icon to open the menu.</p>
-				<p>For more demos, a tutorial, documentation and support, please visit <a href="http://mmenu.frebsite.nl" target="_blank">mmenu.frebsite.nl</a></p>			
 			</div>
 			<nav id="menu">
 				<ul>
 					<li><a href="#">Home</a></li>
-					<li><a href="#about">About us</a>
+					<li><span>About us</span>
 						<ul>
 							<li><a href="#about/history">History</a></li>
-							<li><a href="#about/team">The team</a>
+							<li><span>The team</span>
 								<ul>
 									<li><a href="#about/team/management">Management</a></li>
 									<li><a href="#about/team/sales">Sales</a></li>

@@ -2,7 +2,7 @@
 	jQuery.mmenu widescreen extension CSS
 	
 	To use on widescreens only, include it using a mediaquery:
-	<link type="text/css" href="mmenu-widescreen.css" media="all and (min-width: 900px)"/>
+	<link type="text/css" href="jquery.mmenu.widescreen.css" media="all and (min-width: 900px)"/>
 */
 
 @import "../../css/_imp/import";
@@ -10,11 +10,13 @@
 
 $mm_ws_menuWidth: 30% !default;
 
+/*
 html,
 body
 {
 	overflow: auto !important;
 }
+*/
 body
 {
 	position: relative;
@@ -49,7 +51,7 @@ body
 	right: auto !important;
 	bottom: 0 !important;
 	left: 0 !important;
-	z-index: 0 !important;
+	z-index: 100 !important;
 
 	transform: none !important;
 

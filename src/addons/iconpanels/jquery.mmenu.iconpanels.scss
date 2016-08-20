@@ -26,7 +26,8 @@
 		overflow-y: hidden;
 		left: -$mm_iconpanelWidth;
 
-		transform: translate3d( 0, 0, 0 );
+		//	transform: translate3d( 0, 0, 0 );
+		@include mm_translate( 0, 0 );
 	}
 }
 

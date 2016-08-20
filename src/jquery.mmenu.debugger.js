@@ -13,10 +13,8 @@
 		return false;
 	}
 
-	var _msg	= 0,
-		_info	= document[ _PLUGIN_ + '_debug_info' ] 	|| console.info 	|| function() {},
-		_log 	= document[ _PLUGIN_ + '_debug_log' ] 	|| console.log 		|| function() {},
-		_warn	= document[ _PLUGIN_ + '_debug_warn' ] 	|| console.warn 	|| function() {};
+	var _msg = 0,
+		_cns = document[ _PLUGIN_ + '_console' ] || console || { info: function() {}, log: function() {}, warn: function() {} };
 
 	var glbl = $[ _PLUGIN_ ].glbl,
 		_c = $[ _PLUGIN_ ]._c,
@@ -27,7 +25,7 @@
 	function debug( msg )
 	{
 		_msg++;
-		_log( 'MMENU: ' + msg );
+		_cns.log( 'MMENU: ' + msg );
 	}
 	function deprc( depr, repl, vers )
 	{
@@ -44,7 +42,7 @@
 		msg += '.';
 
 		_msg++;
-		_warn( msg );
+		_cns.warn( msg );
 	}
 
 
@@ -54,6 +52,38 @@
 
 		var extensions = this.opts.extensions.join( ' ' );
 		var arr, a, b, l;
+
+
+		//	Options 5.7
+		if ( ( typeof this.opts.currentItem == 'boolean' && this.opts.currentItem )
+			|| ( typeof this.opts.currentItem == 'object' && this.opts.currentItem.find )
+		) {
+			deprc( 'The "currentItem" add-on', '"setSelected.current": "detect"', '5.7' );
+		}
+
+		//	Add-ons 5.7
+		if ( typeof this.opts.dragOpen != 'undefined' )
+		{
+			deprc( 'The "dragOpen" add-on', 'the "drag" add-on', '5.7' );
+		}
+		if ( typeof this.opts.dragClose != 'undefined' )
+		{
+			deprc( 'The "dragClose" add-on', 'the "drag" add-on', '5.7' );
+		}
+
+		//	Extensions 5.7
+		if ( extensions.indexOf( 'pageshadow' ) > -1 )
+		{
+			deprc( 'The "pageshadow" extension', '"shadow-page"', '5.7' );
+		}
+		if ( extensions.indexOf( 'panelshadow' ) > -1 )
+		{
+			deprc( 'The "panelshadow" extension', '"shadow-panels"', '5.7' );
+		}
+		if ( extensions.indexOf( 'leftSubpanels' ) > -1 )
+		{
+			deprc( 'The "leftSubpanels" extension', 'the "rtl" add-on', '5.7' );	
+		}
 
 
 		//	Configuration 5.6
@@ -267,7 +297,7 @@
 		//	log results
 		if ( _msg > 0 )
 		{
-			_info( 'MMENU: Found ' + _msg + ' deprecated warning' + ( _msg > 1 ? 's' : '' ) + ' (listed above).' );
+			_cns.info( 'MMENU: Found ' + _msg + ' deprecated warning' + ( _msg > 1 ? 's' : '' ) + ' (listed above).' );
 		}
 	};
 
@@ -278,7 +308,7 @@
 		_msg = 0;
 
 		//	non-available add-ons
-		for ( var a = [ 'autoHeight', 'backButton', 'counters', 'dividers', 'dragOpen', 'dropdown', 'iconPanels', 'navbars', 'offCanvas', 'searchfield', 'sectionIndexer', 'toggles' ], b = 0, l = a.length; b < l; b++ )
+		for ( var a = [ 'autoHeight', 'backButton', 'columns', 'counters', 'dividers', 'dragOpen', 'dropdown', 'iconPanels', 'navbars', 'offCanvas', 'rtl', 'screenReader', 'scrollBugFix', 'searchfield', 'sectionIndexer', 'setSelected', 'toggles' ], b = 0, l = a.length; b < l; b++ )
 		{
 			if ( typeof this.opts[ a[ b ] ] != 'undefined' )
 			{
@@ -290,7 +320,11 @@
 		}
 		if ( typeof $[ _PLUGIN_ ].addons.searchfield == 'undefined' )
 		{
-			if ( typeof this.opts.navbars != 'undefined' )
+			if ( typeof this.opts.searchfield != 'undefined' )
+			{
+				debug( 'The "searchfield" add-on is not available.' );
+			}
+			else if ( typeof this.opts.navbars != 'undefined' )
 			{
 				if ( this.opts.navbars instanceof Array )
 				{
@@ -311,12 +345,21 @@
 			}
 		}
 
+		//	Options 5.6
+		if ( this.opts.searchfield.addTo != 'menu' )
+		{
+			if ( this.opts.resultsPanel && this.opts.resultsPanel.add )
+			{
+				debug( 'Using the "searchfield.resultsPanel" option requires the searchfield to be added to a navbar.' );
+			}
+		}
+
 		//	Configuration 5.6
 		if ( this.conf.searchfield.submit )
 		{
 			if ( !this.conf.searchfield.form )
 			{
-				debug( 'The "searchfield.submit" configuration option required the "searchfield.form" configuration option to be set.' );
+				debug( 'The "searchfield.submit" configuration option requires the "searchfield.form" configuration option to be set.' );
 			}
 			if ( !this.conf.searchfield.clear )
 			{
@@ -461,7 +504,7 @@
 		//	log results
 		if ( _msg > 0 )
 		{
-			_info( 'MMENU: Found ' + _msg + ' debug warning' + ( _msg > 1 ? 's' : '' ) + ' (listed above).' );
+			_cns.info( 'MMENU: Found ' + _msg + ' debug warning' + ( _msg > 1 ? 's' : '' ) + ' (listed above).' );
 		}
 	};
 

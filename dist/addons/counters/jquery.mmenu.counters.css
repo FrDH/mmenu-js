@@ -2,6 +2,7 @@ em.mm-counter{font:inherit;font-size:14px;font-style:normal;text-indent:0;line-h
 em.mm-counter+a.mm-next{width:90px}
 em.mm-counter+a.mm-next+a,em.mm-counter+a.mm-next+span{margin-right:90px}
 em.mm-counter+a.mm-fullsubopen{padding-left:0}
+.mm-listview em.mm-counter+.mm-next.mm-fullsubopen+a,.mm-listview em.mm-counter+.mm-next.mm-fullsubopen+span,em.mm-counter+a.mm-fullsubopen+a,em.mm-counter+a.mm-fullsubopen+span{padding-right:90px}
 .mm-vertical>.mm-counter{top:12px;margin-top:0}
 .mm-vertical.mm-spacer>.mm-counter{margin-top:40px}
 .mm-nosubresults>.mm-counter{display:none}

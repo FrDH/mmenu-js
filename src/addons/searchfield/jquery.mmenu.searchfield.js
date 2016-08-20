@@ -23,7 +23,7 @@
 			glbl = $[ _PLUGIN_ ].glbl;
 
 
-			//	Extend shortcut options
+			//	Extend shorthand options
 			if ( typeof opts == 'boolean' )
 			{
 				opts = {
@@ -41,8 +41,6 @@
 				};
 			}
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
-
-			//	Extend shortcut configuration
 			conf = this.conf[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].configuration[ _ADDON_ ], conf );
 
 
@@ -298,7 +296,7 @@
 																function()
 																{
 																	var $li = $(this),
-																		$su = $li.data( _d.sub );
+																		$su = $li.data( _d.child );
 
 																	$li.removeClass( _c.nosubresults );
 																	if ( $su )

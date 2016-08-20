@@ -10,12 +10,14 @@
 	{
 		&.mm-columns-#{$nr}
 		{
-			transform: translate3d( $nr * 100%, 0, 0 );
+		//	transform: translate3d( $nr * 100%, 0, 0 );
+			@include mm_translate( $nr * 100%, 0 );
 		}
 		&.mm-opened:not( [class*="mm-columns-"] ) ~ .mm-panel:not( .mm-opened ).mm-columns-#{$nr}
 		{
 			display: block;
-			transform: translate3d( 100% * ( $nr + 1 ), 0, 0 );
+		//	transform: translate3d( 100% * ( $nr + 1 ), 0, 0 );
+			@include mm_translate( ($nr + 1) * 100%, 0 );
 		}
 	}
 
@@ -48,11 +50,13 @@
 			border-right: 1px solid;
 			border-color: inherit;
 			display: block;
-			transform: translate3d( 0, 0, 0 );
+		//	transform: translate3d( 0, 0, 0 );
+			@include mm_translate( 0%, 0 );
 		}
 		&.mm-subopened
 		{
-			transform: translate3d( -100%, 0, 0 );
+		//	transform: translate3d( -100%, 0, 0 );
+			@include mm_translate( -100%, 0 );
 			z-index: 2;
 		}
 	}

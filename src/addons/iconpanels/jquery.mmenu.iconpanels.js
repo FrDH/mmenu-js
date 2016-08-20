@@ -23,7 +23,7 @@
 			glbl = $[ _PLUGIN_ ].glbl;
 
 
-			//	Extend shortcut options
+			//	Extend shorthand options
 			if ( typeof opts == 'boolean' )
 			{
 				opts = {
@@ -86,10 +86,7 @@
 					function( $panels )
 					{
 						update.call( that, that.$pnls.children( '.' + _c.current ) );
-						if ( opts.hideNavbars )
-						{
-							$panels.removeClass( _c.hasnavbar );
-						}
+
 						$panels
 							.not( '.' + _c.vertical )
 							.each(
@@ -124,8 +121,7 @@
 	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		add 		: false,
-		visible		: 3,
-		hideNavbars	: false
+		visible		: 3
 	};
 
 
