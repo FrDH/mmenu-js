@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v5.7.0
+ * jQuery mmenu v5.7.1
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.7.0';
+		_VERSION_	= '5.7.1';
 
 
 	//	Plugin already excists
@@ -30,7 +30,7 @@
 	$[ _PLUGIN_ ] = function( $menu, opts, conf )
 	{
 		this.$menu	= $menu;
-		this._api	= [ 'bind', 'init', 'update', 'setSelected', 'getInstance', 'openPanel', 'closePanel', 'closeAllPanels' ];
+		this._api	= [ 'bind', 'initPanels', 'update', 'setSelected', 'getInstance', 'openPanel', 'closePanel', 'closeAllPanels' ];
 		this.opts	= opts;
 		this.conf	= conf;
 		this.vars	= {};
@@ -49,7 +49,7 @@
 		var $pnls = this.$pnls.children();
 		
 		this._initAddons();
-		this.init( $pnls );
+		this.initPanels( $pnls );
 
 
 		if ( typeof this.___debug == 'function' )
@@ -67,6 +67,8 @@
 
 	$[ _PLUGIN_ ].defaults 	= {
 		extensions		: [],
+		initMenu 		: function() {},
+		initPanels 		: function() {},
 		navbar 			: {
 			add 			: true,
 			title			: 'Menu',
@@ -97,12 +99,24 @@
 
 	$[ _PLUGIN_ ].prototype = {
 
-		init: function( $panels )
+//	TEMP backward compat
+init: function( $panels )
+{
+	this.initPanels( $panels );
+},
+
+		initPanels: function( $panels )
 		{
 			$panels = $panels.not( '.' + _c.nopanel );
 			$panels = this._initPanels( $panels );
 
-			this.trigger( 'init', $panels );
+			//	Via options
+			this.opts.initPanels.call( this, $panels );
+
+			//	Via API
+			this.trigger( 'initPanels', $panels );
+
+			//	Update
 			this.trigger( 'update' );
 		},
 
@@ -117,7 +131,7 @@
 			$li.addClass( _c.selected );
 			this.trigger( 'setSelected', $li );
 		},
-		
+
 		openPanel: function( $panel )
 		{
 			var $l = $panel.parent(),
@@ -263,6 +277,10 @@
 
 		bind: function( evnt, fn )
 		{
+
+//	TEMP backward compat
+evnt = (evnt == 'init') ? 'initPanels' : evnt;
+
 			this.cbck[ evnt ] = this.cbck[ evnt ] || [];
 			this.cbck[ evnt ].push( fn );
 		},
@@ -272,6 +290,9 @@
 			var that = this,
 				args = Array.prototype.slice.call( arguments ),
 				evnt = args.shift();
+
+//	TEMP backward compat
+evnt = (evnt == 'init') ? 'initPanels' : evnt;
 
 			if ( this.cbck[ evnt ] )
 			{
@@ -286,13 +307,11 @@
 		{
 			var that = this;
 
-			//	Add ID
-			this.$menu.attr( 'id', this.$menu.attr( 'id' ) || this.__getUniqueId() );
-
 			//	Clone if needed
 			if ( this.conf.clone )
 			{
-				this.$menu = this.$menu.clone( true );
+				this.$orig = this.$menu;
+				this.$menu = this.$orig.clone( true );
 				this.$menu.add( this.$menu.find( '[id]' ) )
 					.filter( '[id]' )
 					.each(
@@ -303,16 +322,11 @@
 					);
 			}
 
-			//	Strip whitespace
-			this.$menu.contents().each(
-				function()
-				{
-					if ( $(this)[ 0 ].nodeType == 3 )
-					{
-						$(this).remove();
-					}
-				}
-			);
+			//	Via options
+			this.opts.initMenu.call( this, this.$menu, this.$orig );
+
+			//	Add ID
+			this.$menu.attr( 'id', this.$menu.attr( 'id' ) || this.__getUniqueId() );
 
 			//	Add markup
 			this.$pnls = $( '<div class="' + _c.panels + '" />' )
@@ -326,7 +340,6 @@
 
 			var clsn = [ _c.menu ];
 
-			//	Add direction class
 			if ( !this.opts.slidingSubmenus )
 			{
 				clsn.push( _c.vertical );

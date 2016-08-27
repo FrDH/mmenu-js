@@ -23,7 +23,7 @@ $mm_searchfieldHeight: $mm_navbarHeight - $mm_padding - 4 !default;
 		border: none !important;
 		outline: none !important;
 		box-shadow: none !important;
-		border-radius: $mm_searchfieldHeight;
+		border-radius: 4px;
 		font: inherit;
 		font-size: $mm_fontSize;
 		line-height: $mm_searchfieldHeight;

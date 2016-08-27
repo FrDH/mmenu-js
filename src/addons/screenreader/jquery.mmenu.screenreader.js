@@ -76,7 +76,7 @@
 				{
 					aria_value( $panels.find( '.' + _c.prev + ', .' + _c.next ), 'haspopup', true );
 				};
-				this.bind( 'init', aria_init );
+				this.bind( 'initPanels', aria_init );
 				aria_init.call( this, this.$menu.children( '.' + _c.navbar ) );
 			}
 
@@ -111,7 +111,7 @@
 							);
 					}
 				};
-				this.bind( 'init', text_init );
+				this.bind( 'initPanels', text_init );
 				text_init.call( this, this.$menu );
 			}
 		},

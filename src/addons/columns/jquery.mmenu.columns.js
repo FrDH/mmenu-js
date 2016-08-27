@@ -69,7 +69,7 @@
 				}
 				clsn = clsn.join( ' ' );
 
-				var init = function( $panels )
+				var initPanel = function( $panels )
 				{
 					openPanel.call( this, this.$pnls.children( '.' + _c.current ) );
 				};
@@ -107,7 +107,7 @@
 
 				this.bind( 'open', openMenu );
 				this.bind( 'close', closeMenu );
-				this.bind( 'init', init );
+				this.bind( 'initPanels', initPanel );
 				this.bind( 'openPanel', openPanel );
 				this.bind( 'openingPanel', openMenu );
 				this.bind( 'openedPanel', openMenu );

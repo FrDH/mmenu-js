@@ -22,7 +22,7 @@
 
 		//	Add content
 		var $crumbs = $('<span class="' + _c.breadcrumbs + '" />').appendTo( $navbar );
-		this.bind( 'init',
+		this.bind( 'initPanels',
 			function( $panels )
 			{
 				$panels
@@ -71,7 +71,7 @@
 		};
 
 		this.bind( 'openPanel', update );
-		this.bind( 'init', update );
+		this.bind( 'initPanels', update );
 
 
 		//	Maintain content count

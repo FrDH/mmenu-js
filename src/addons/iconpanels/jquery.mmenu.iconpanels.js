@@ -82,7 +82,7 @@
 				};
 
 				this.bind( 'openPanel', update );
-				this.bind( 'init',
+				this.bind( 'initPanels',
 					function( $panels )
 					{
 						update.call( that, that.$pnls.children( '.' + _c.current ) );

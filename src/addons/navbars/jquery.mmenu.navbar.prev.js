@@ -19,7 +19,7 @@
 
 		//	Add content
 		var $prev = $('<a class="' + _c.prev + ' ' + _c.btn + '" href="#" />').appendTo( $navbar );
-		this.bind( 'init',
+		this.bind( 'initPanels',
 			function( $panl )
 			{
 				$panl
@@ -56,7 +56,7 @@
 		};
 
 		this.bind( 'openPanel', update );
-		this.bind( 'init',
+		this.bind( 'initPanels',
 			function()
 			{
 				update.call( this );

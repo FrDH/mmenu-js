@@ -39,7 +39,7 @@
 		};
 
 		this.bind( 'openPanel', update );
-		this.bind( 'init',
+		this.bind( 'initPanels',
 			function()
 			{
 				update.call( this );

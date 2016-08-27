@@ -1,0 +1,31 @@
+/*
+	jQuery.mmenu Bootstrap wrapper CSS
+*/
+
+.mm-panel.mm-bootstrap-navbar
+{
+	.navbar-form,
+	> p
+	{
+		display: block;
+		margin: 20px 0;
+	}
+	> .btn
+	{
+		display: inline-block;
+		margin: 20px 5px 20px 0;
+	}
+	> .mm-navbar
+	{
+		+ .navbar-form,
+		+ p,
+		+ .btn
+		{
+			margin-top: 0;
+		}
+	}
+	> .navbar-form
+	{
+		padding: 0;
+	}
+}

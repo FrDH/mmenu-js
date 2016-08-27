@@ -110,7 +110,7 @@
 
 			if ( opts.height == 'highest' )
 			{
-				this.bind( 'init', update );
+				this.bind( 'initPanels', update );
 			}
 			if ( opts.height == 'auto' )
 			{

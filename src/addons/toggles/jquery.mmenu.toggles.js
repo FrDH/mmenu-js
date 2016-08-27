@@ -23,7 +23,7 @@
 			glbl = $[ _PLUGIN_ ].glbl;
 
 
-			this.bind( 'init',
+			this.bind( 'initPanels',
 				function( $panels )
 				{
 

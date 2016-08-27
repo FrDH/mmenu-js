@@ -39,7 +39,7 @@
 
 
 			//	Refactor counter class
-			this.bind( 'init',
+			this.bind( 'initPanels',
 				function( $panels )
 				{
 					this.__refactorClass( $('em', $panels), this.conf.classNames[ _ADDON_ ].counter, 'counter' );
@@ -50,7 +50,7 @@
 			//	Add the counters
 			if ( opts.add )
 			{
-				this.bind( 'init',
+				this.bind( 'initPanels',
 					function( $panels )
 					{
 						var $wrapper;

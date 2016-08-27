@@ -47,7 +47,7 @@
 		};
 
 		this.bind( 'openPanel', update );
-		this.bind( 'init',
+		this.bind( 'initPanels',
 			function( $panels )
 			{
 				update.call( this );

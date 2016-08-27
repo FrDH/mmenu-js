@@ -23,15 +23,25 @@
 			glbl = $[ _PLUGIN_ ].glbl;
 
 			//	Extend shorthand options
+			if ( typeof opts != 'object' )
+			{
+				opts = {};
+			}
+			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+
 			//	Extend shorthand configuration
-			//	...
+			if ( typeof conf != 'object' )
+			{
+				conf = {};
+			}
+			conf = this.conf[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].configuration[ _ADDON_ ], conf );
 
 			//	Add methods to api
 //			this._api = $.merge( this._api, [ 'fn1', 'fn2' ] );
 
 			//	Bind functions to update
 //			this.bind( 'update', function() {} );
-//			this.bind( 'init', function() {} );
+//			this.bind( 'initPanels', function() {} );
 //			this.bind( 'initPage', function() {} );
 
 		},

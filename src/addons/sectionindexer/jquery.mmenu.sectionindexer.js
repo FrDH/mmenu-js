@@ -37,7 +37,7 @@
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
 
-			this.bind( 'init',
+			this.bind( 'initPanels',
 				function( $panels )
 				{
 					//	Set the panel(s)

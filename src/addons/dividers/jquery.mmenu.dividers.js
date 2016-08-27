@@ -39,7 +39,7 @@
 
 
 			//	Refactor collapsed class
-			this.bind( 'init',
+			this.bind( 'initPanels',
 				function( $panels )
 				{
 					this.__refactorClass( $('li', this.$menu), this.conf.classNames[ _ADDON_ ].collapsed, 'collapsed' );
@@ -50,7 +50,7 @@
 			//	Add dividers
 			if ( opts.add )
 			{
-				this.bind( 'init',
+				this.bind( 'initPanels',
 					function( $panels )
 					{
 						var $wrapper;
@@ -96,7 +96,7 @@
 			//	Toggle collapsed list items
 			if ( opts.collapse )
 			{
-				this.bind( 'init',
+				this.bind( 'initPanels',
 					function( $panels )
 					{
 						$('.' + _c.divider, $panels )
@@ -175,7 +175,7 @@
 
 
 				//	Set correct value after scrolling
-				this.bind( 'init',
+				this.bind( 'initPanels',
 					function( $panels )
 					{
 						$panels

@@ -66,7 +66,7 @@
 			//	Remove current selected item
 			else if ( !opts.current )
 			{
-				this.bind( 'init',
+				this.bind( 'initPanels',
 					function( $panels )
 					{
 						$panels
@@ -111,7 +111,7 @@
 				};
 
 				this.bind( 'openedPanel', update );
-				this.bind( 'init',
+				this.bind( 'initPanels',
 					function( $panls )
 					{
 						update.call( this, this.$pnls.children( '.' + _c.current ) );

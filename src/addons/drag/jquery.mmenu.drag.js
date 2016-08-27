@@ -72,7 +72,7 @@
 			//	Drag close panels
 			if ( opts.panels.close )
 			{
-				this.bind( 'init',
+				this.bind( 'initPanels',
 					function( $panels )
 					{
 						dragClosePanels.call( this, $panels, opts.panels, conf.panels, glbl );

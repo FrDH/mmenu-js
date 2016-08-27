@@ -57,9 +57,10 @@
 
 
 			//	Bind functions to update
-			this.bind( 'init',
+			this.bind( 'initPanels',
 				function( $panels )
 				{
+
 					//	Add the searchfield(s)
 					if ( opts.add )
 					{
@@ -193,7 +194,7 @@
 										.append( '<ul class="' + _c.listview + '" />' )
 										.append( this.$pnls.find( '.' + _c.noresultsmsg ).first().clone() );
 
-									this.init( $rpnl );
+									this.initPanels( $rpnl );
 								}
 							}
 
