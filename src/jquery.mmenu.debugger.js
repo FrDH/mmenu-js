@@ -85,6 +85,14 @@
 			deprc( 'The "leftSubpanels" extension', 'the "rtl" add-on', '5.7' );	
 		}
 
+		//	API 5.7
+		this.bind( 'init',
+			function()
+			{
+				deprc( 'The API method "init"', '"initPanels"', '5.7' );
+			}
+		);
+
 
 		//	Configuration 5.6
 		if ( typeof this.conf.searchfield.form == 'boolean' && this.conf.searchfield.form )
