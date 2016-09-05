@@ -86,12 +86,13 @@
 		}
 
 		//	API 5.7
-		this.bind( 'init',
-			function()
-			{
-				deprc( 'The API method "init"', '"initPanels"', '5.7' );
-			}
-		);
+		//	Won't work untill the backward compat has been removed
+		// this.bind( 'init',
+		// 	function()
+		// 	{
+		// 		deprc( 'The API method "init"', '"initPanels"', '5.7' );
+		// 	}
+		// );
 
 
 		//	Configuration 5.6
