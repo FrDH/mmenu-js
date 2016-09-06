@@ -103,8 +103,10 @@
 					while ( $li && $li.length )
 					{
 						$li = $li
+							.not( '.' + _c.vertical )
 							.children( '.' + _c.next )
 							.addClass( _c.selected )
+							.end()
 							.closest( '.' + _c.panel )
 							.data( _d.parent );
 					}

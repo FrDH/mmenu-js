@@ -89,7 +89,7 @@
 					function()
 					{
 						this.$pnls
-							.children( '.' + _c.panel )
+							.find( '.' + _c.panel )
 							.each(
 								function()
 								{

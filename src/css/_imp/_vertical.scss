@@ -45,7 +45,7 @@ li.mm-vertical.mm-opened
 	{
 		> .mm-next:after
 		{
-			transform: rotate( 45deg );
+			transform: rotate( 225deg );
 			right: $mm_listitemIndent - 1;
 		}
 	}
