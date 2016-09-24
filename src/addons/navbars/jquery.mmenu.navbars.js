@@ -34,6 +34,11 @@
 
 			var _pos = {};
 
+			if ( !navs.length )
+			{
+				return;
+			}
+
 			$.each(
 				navs,
 				function( n )

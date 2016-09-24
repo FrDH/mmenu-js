@@ -82,15 +82,28 @@ nav:not(.mm-menu)
 }
 .header a
 {
-	background: center center no-repeat transparent;
-	background-image: url( data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADhJREFUeNpi/P//PwOtARMDHQBdLGFBYtMq3BiHT3DRPU4YR4NrNAmPJuHRJDyahEeT8Ii3BCDAAF0WBj5Er5idAAAAAElFTkSuQmCC );
-
 	display: block;
-	width: 40px;
-	height: 40px;
+	width: 28px;
+	height: 18px;
+	padding: 11px;
 	position: absolute;
 	top: 0;
-	left: 10px;
+	left: 0;
+}
+.header a:before,
+.header a:after
+{
+	content: '';
+	display: block;
+	background: #fff;
+	height: 2px;
+}
+.header a span
+{
+	background: #fff;
+	display: block;
+	height: 2px;
+	margin: 6px 0;
 }
 .content
 {

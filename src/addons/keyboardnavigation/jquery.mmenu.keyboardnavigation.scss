@@ -1,0 +1,11 @@
+/*
+	jQuery.mmenu keyboardNavigation addon CSS
+*/
+
+@import "../../css/_imp/import";
+
+.mm-keyboardfocus a:focus {
+	outline: none;
+}
+
+@include mm_colors_keyboardnavigation;

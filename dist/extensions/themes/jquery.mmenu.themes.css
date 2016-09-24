@@ -39,11 +39,11 @@
 .mm-menu.mm-theme-black .mm-listview>li.mm-selected>a:not(.mm-next),.mm-menu.mm-theme-black .mm-listview>li.mm-selected>span{background:rgba(255,255,255,.3)}
 .mm-menu.mm-theme-black .mm-divider,.mm-menu.mm-theme-black .mm-fixeddivider span,.mm-menu.mm-theme-black .mm-listview>li.mm-opened.mm-vertical>.mm-panel,.mm-menu.mm-theme-black .mm-listview>li.mm-opened.mm-vertical>a.mm-next,.mm-menu.mm-theme-black.mm-vertical .mm-listview>li.mm-opened>.mm-panel,.mm-menu.mm-theme-black.mm-vertical .mm-listview>li.mm-opened>a.mm-next{background:rgba(255,255,255,.2)}
 .mm-menu.mm-theme-black label.mm-check:before{border-color:rgba(255,255,255,.6)}
+.mm-menu.mm-hoverselected.mm-theme-black .mm-listview>li>a.mm-fullsubopen:hover+span,.mm-menu.mm-hoverselected.mm-theme-black .mm-listview>li>a:not(.mm-fullsubopen):hover,.mm-menu.mm-keyboardfocus a:focus,.mm-menu.mm-parentselected.mm-theme-black .mm-listview>li>a.mm-selected.mm-fullsubopen+a,.mm-menu.mm-parentselected.mm-theme-black .mm-listview>li>a.mm-selected.mm-fullsubopen+span,.mm-menu.mm-parentselected.mm-theme-black .mm-listview>li>a.mm-selected:not(.mm-fullsubopen){background:rgba(255,255,255,.3)}
 .mm-menu.mm-shadow-page.mm-theme-black:after{content:none;display:none}
 .mm-menu.mm-shadow-panels .mm-panel.mm-opened:nth-child(n+2){box-shadow:false}
 .mm-menu.mm-theme-black .mm-search input{background:rgba(255,255,255,.3);color:rgba(255,255,255,.6)}
 .mm-menu.mm-theme-black .mm-indexer a,.mm-menu.mm-theme-black .mm-noresultsmsg{color:rgba(255,255,255,.4)}
-.mm-menu.mm-hoverselected.mm-theme-black .mm-listview>li>a.mm-fullsubopen:hover+span,.mm-menu.mm-hoverselected.mm-theme-black .mm-listview>li>a:not(.mm-fullsubopen):hover,.mm-menu.mm-parentselected.mm-theme-black .mm-listview>li>a.mm-selected.mm-fullsubopen+a,.mm-menu.mm-parentselected.mm-theme-black .mm-listview>li>a.mm-selected.mm-fullsubopen+span,.mm-menu.mm-parentselected.mm-theme-black .mm-listview>li>a.mm-selected:not(.mm-fullsubopen){background:rgba(255,255,255,.3)}
 .mm-menu.mm-theme-black label.mm-toggle{background:rgba(255,255,255,.2)}
 .mm-menu.mm-theme-black label.mm-toggle:before{background:#000}
 .mm-menu.mm-theme-black input.mm-toggle:checked~label.mm-toggle{background:#4bd963}

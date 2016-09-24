@@ -24,6 +24,9 @@
 		@include mm_colors_dividers( $mm_t_cls,
 			$mm_t_highlightedBackgroundColor );
 
+		@include mm_colors_keyboardnavigation( $mm_t_cls,
+			$mm_t_emphasizedBackgroundColor );
+
 		@include mm_colors_pageshadow( $mm_t_cls,
 			$mm_t_pageShadow );
 

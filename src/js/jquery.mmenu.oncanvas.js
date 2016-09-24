@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v5.7.2
+ * jQuery mmenu v5.7.4
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.7.2';
+		_VERSION_	= '5.7.4';
 
 
 	//	Plugin already excists
@@ -110,13 +110,9 @@ init: function( $panels )
 			$panels = $panels.not( '.' + _c.nopanel );
 			$panels = this._initPanels( $panels );
 
-			//	Via options
 			this.opts.initPanels.call( this, $panels );
 
-			//	Via API
 			this.trigger( 'initPanels', $panels );
-
-			//	Update
 			this.trigger( 'update' );
 		},
 
@@ -129,6 +125,7 @@ init: function( $panels )
 		{
 			this.$menu.find( '.' + _c.listview ).children().removeClass( _c.selected );
 			$li.addClass( _c.selected );
+
 			this.trigger( 'setSelected', $li );
 		},
 
@@ -147,6 +144,7 @@ init: function( $panels )
 					return;
 				}
 				$l.addClass( _c.opened );
+
 				this.trigger( 'openPanel', $panel );
 				this.trigger( 'openingPanel', $panel );
 				this.trigger( 'openedPanel', $panel );
@@ -227,6 +225,7 @@ init: function( $panels )
 			if ( $l.hasClass( _c.vertical ) )
 			{
 				$l.removeClass( _c.opened );
+
 				this.trigger( 'closePanel', $panel );
 				this.trigger( 'closingPanel', $panel );
 				this.trigger( 'closedPanel', $panel );
@@ -360,9 +359,9 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 		{
 			var that = this;
 
-			//	Add List class
 			var $lists = this.__findAddBack( $panels, 'ul, ol' );
 
+			//	Add List classname
 			this.__refactorClass( $lists, this.conf.classNames.inset, 'inset' )
 				.addClass( _c.nolistview + ' ' + _c.nopanel );
 
@@ -371,16 +370,10 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 
 			var $lis = this.__findAddBack( $panels, '.' + _c.listview ).children();
 
-			//	Refactor Selected class
+			//	Refactor classnames
 			this.__refactorClass( $lis, this.conf.classNames.selected, 'selected' );
-
-			//	Refactor divider class
 			this.__refactorClass( $lis, this.conf.classNames.divider, 'divider' );
-
-			//	Refactor Spacer class
 			this.__refactorClass( $lis, this.conf.classNames.spacer, 'spacer' );
-
-			//	Refactor Panel class
 			this.__refactorClass( this.__findAddBack( $panels, '.' + this.conf.classNames.panel ), this.conf.classNames.panel, 'panel' );
 
 			//	Create panels
@@ -799,7 +792,8 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 		opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults, opts );
 		conf = $.extend( true, {}, $[ _PLUGIN_ ].configuration, conf );
 
-		return this.each(
+		var $result = $();
+		this.each(
 			function()
 			{
 				var $menu = $(this);
@@ -810,8 +804,12 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 
 				var _menu = new $[ _PLUGIN_ ]( $menu, opts, conf );
 				_menu.$menu.data( _PLUGIN_, _menu.__api() );
+
+				$result = $result.add( _menu.$menu );
 			}
 		);
+
+		return $result;
 	};
 
 

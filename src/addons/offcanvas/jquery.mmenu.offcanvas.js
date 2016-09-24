@@ -119,9 +119,11 @@
 		//	clickAnchor: prevents default behavior when clicking an anchor
 		clickAnchor: function( $a, inMenu )
 		{
+			var that = this;
+
 			if ( !this.opts[ _ADDON_ ] )
 			{
-				return false;
+				return;
 			}
 
 			//	Open menu
@@ -130,11 +132,39 @@
 			{
 				if ( $a.is( '[href="#' + id + '"]' ) )
 				{
+
+					//	Opening this menu from within this menu
+					//		-> Do nothing
+					if ( inMenu )
+					{
+						return true;
+					}
+
+					//	Opening this menu from within a second menu
+					//		-> Close the second menu before opening this menu
+					var $m = $a.closest( '.' + _c.menu );
+					if ( $m.length )
+					{
+						var _m = $m.data( 'mmenu' );
+						if ( _m && _m.close )
+						{
+							_m.close();
+							that.__transitionend( $m,
+								function()
+								{
+									that.open();
+								}, that.conf.transitionDuration
+							);
+							return true;
+						}
+					}
+
+					//	Opening this menu
 					this.open();
 					return true;
 				}
 			}
-			
+
 			//	Close menu
 			if ( !glbl.$page )
 			{
@@ -151,7 +181,7 @@
 				}
 			}
 
-			return false;
+			return;
 		}
 	};
 
@@ -244,9 +274,13 @@
 		glbl.$html.addClass( clsn.join( ' ' ) );
 
 		//	Open
-		setTimeout(function(){
-            that.vars.opened = true;
-        },this.conf.openingInterval);
+		//	Without the timeout, the animation won't work because the menu had display: none;
+		setTimeout(
+			function()
+			{
+            	that.vars.opened = true;
+        	}, this.conf.openingInterval
+        );
 
 		this.$menu.addClass( _c.current + ' ' + _c.opened );
 	};
@@ -270,6 +304,7 @@
 
 	$[ _PLUGIN_ ].prototype.close = function()
 	{
+
 		if ( !this.vars.opened )
 		{
 			return;
@@ -281,22 +316,23 @@
 		this.__transitionend( glbl.$page.first(),
 			function()
 			{
-				that.$menu
-					.removeClass( _c.current )
-					.removeClass( _c.opened );
+				that.$menu.removeClass( _c.current + ' ' + _c.opened );
 
-				glbl.$html
-					.removeClass( _c.opened )
-					.removeClass( _c.blocking )
-					.removeClass( _c.modal )
-					.removeClass( _c.background )
-					.removeClass( _c.mm( that.opts[ _ADDON_ ].position ) )
-					.removeClass( _c.mm( that.opts[ _ADDON_ ].zposition ) );
+				var clsn = [
+					_c.opened,
+					_c.blocking,
+					_c.modal,
+					_c.background,
+					_c.mm( that.opts[ _ADDON_ ].position ),
+					_c.mm( that.opts[ _ADDON_ ].zposition )
+				];
 
 				if ( that.opts.extensions )
 				{
-					glbl.$html.removeClass( that.opts.extensions );
+					clsn.push( that.opts.extensions );
 				}
+
+				glbl.$html.removeClass( clsn.join( ' ' ) );
 
 				//	Restore style and position
 				glbl.$page.each(
@@ -314,6 +350,7 @@
 
 		//	Closing
 		glbl.$html.removeClass( _c.opening );
+		
 		this.trigger( 'close' );
 		this.trigger( 'closing' );
 	};

@@ -223,6 +223,8 @@ html.mm-dropdown.mm-opened:not(.mm-opening) .mm-menu{display:none}
 .mm-iconpanel .mm-panel.mm-iconpanel-6{left:240px}
 .mm-subblocker{background:inherit;opacity:0;display:block;-webkit-transition:opacity .4s ease;transition:opacity .4s ease}
 .mm-subopened .mm-subblocker{opacity:.6;position:absolute;top:0;right:0;bottom:-100000px;left:0;z-index:3}
+.mm-keyboardfocus a:focus{outline:0}
+.mm-menu.mm-keyboardfocus a:focus{background:rgba(255,255,255,.5)}
 .mm-navbar-bottom,.mm-navbar-top~.mm-navbar-top{border-bottom:none}
 .mm-menu>.mm-navbar{background:inherit;padding:0;z-index:3;-webkit-transform:translate(0,0);-ms-transform:translate(0,0);transform:translate(0,0);-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}
 .mm-navbar-bottom{border-top-width:1px;border-top-style:solid;top:auto;bottom:0}
@@ -468,11 +470,11 @@ html.mm-opening .mm-menu.mm-offcanvas.mm-front,html.mm-opening .mm-menu.mm-offca
 .mm-menu.mm-theme-black .mm-listview>li.mm-selected>a:not(.mm-next),.mm-menu.mm-theme-black .mm-listview>li.mm-selected>span{background:rgba(255,255,255,.3)}
 .mm-menu.mm-theme-black .mm-divider,.mm-menu.mm-theme-black .mm-fixeddivider span,.mm-menu.mm-theme-black .mm-listview>li.mm-opened.mm-vertical>.mm-panel,.mm-menu.mm-theme-black .mm-listview>li.mm-opened.mm-vertical>a.mm-next,.mm-menu.mm-theme-black.mm-vertical .mm-listview>li.mm-opened>.mm-panel,.mm-menu.mm-theme-black.mm-vertical .mm-listview>li.mm-opened>a.mm-next{background:rgba(255,255,255,.2)}
 .mm-menu.mm-theme-black label.mm-check:before{border-color:rgba(255,255,255,.6)}
+.mm-menu.mm-hoverselected.mm-theme-black .mm-listview>li>a.mm-fullsubopen:hover+span,.mm-menu.mm-hoverselected.mm-theme-black .mm-listview>li>a:not(.mm-fullsubopen):hover,.mm-menu.mm-keyboardfocus a:focus,.mm-menu.mm-parentselected.mm-theme-black .mm-listview>li>a.mm-selected.mm-fullsubopen+a,.mm-menu.mm-parentselected.mm-theme-black .mm-listview>li>a.mm-selected.mm-fullsubopen+span,.mm-menu.mm-parentselected.mm-theme-black .mm-listview>li>a.mm-selected:not(.mm-fullsubopen){background:rgba(255,255,255,.3)}
 .mm-menu.mm-shadow-page.mm-theme-black:after{content:none;display:none}
 .mm-menu.mm-shadow-panels .mm-panel.mm-opened:nth-child(n+2){box-shadow:false}
 .mm-menu.mm-theme-black .mm-search input{background:rgba(255,255,255,.3);color:rgba(255,255,255,.6)}
 .mm-menu.mm-theme-black .mm-indexer a,.mm-menu.mm-theme-black .mm-noresultsmsg{color:rgba(255,255,255,.4)}
-.mm-menu.mm-hoverselected.mm-theme-black .mm-listview>li>a.mm-fullsubopen:hover+span,.mm-menu.mm-hoverselected.mm-theme-black .mm-listview>li>a:not(.mm-fullsubopen):hover,.mm-menu.mm-parentselected.mm-theme-black .mm-listview>li>a.mm-selected.mm-fullsubopen+a,.mm-menu.mm-parentselected.mm-theme-black .mm-listview>li>a.mm-selected.mm-fullsubopen+span,.mm-menu.mm-parentselected.mm-theme-black .mm-listview>li>a.mm-selected:not(.mm-fullsubopen){background:rgba(255,255,255,.3)}
 .mm-menu.mm-theme-black label.mm-toggle{background:rgba(255,255,255,.2)}
 .mm-menu.mm-theme-black label.mm-toggle:before{background:#000}
 .mm-menu.mm-theme-black input.mm-toggle:checked~label.mm-toggle{background:#4bd963}
