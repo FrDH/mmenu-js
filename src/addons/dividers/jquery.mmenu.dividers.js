@@ -1,4 +1,4 @@
-/*	
+/*
  * jQuery mmenu dividers addon
  * mmenu.frebsite.nl
  *
@@ -119,7 +119,7 @@
 					}
 				);
 			}
-			
+
 
 			//	Fixed dividers
 			if ( opts.fixed )
@@ -153,7 +153,7 @@
 									}
 								);
 						}
-	
+
 						this.$fixeddivider.text( text );
 					}
 					else
@@ -198,7 +198,7 @@
 			_c = $[ _PLUGIN_ ]._c;
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
-	
+
 			_c.add( 'collapsed uncollapsed fixeddivider hasdividers' );
 			_e.add( 'scroll' );
 		},
@@ -212,10 +212,10 @@
 				if ( $l.is( '.' + _c.divider ) )
 				{
 					var $e = $l.nextUntil( '.' + _c.divider, '.' + _c.collapsed );
-			
+
 					$l.toggleClass( _c.opened );
 					$e[ $l.hasClass( _c.opened ) ? 'addClass' : 'removeClass' ]( _c.uncollapsed );
-					
+
 					return true;
 				}
 			}

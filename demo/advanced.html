@@ -16,7 +16,7 @@
 			$(function() {
 				$('nav#menu').mmenu({
 					extensions	: [ 'effect-slide-menu', 'shadow-page', 'shadow-panels' ],
-					counters	: true,
+					counters	: false,
 					navbar 		: {
 						title		: 'Advanced menu'
 					},
@@ -41,6 +41,18 @@
 				});
 			});
 		</script>
+		<style>
+			.sr-only {
+		    position: absolute;
+		    width: 1px;
+		    height: 1px;
+		    margin: -1px;
+		    padding: 0;
+		    overflow: hidden;
+		    clip: rect(0, 0, 0, 0);
+		    border: 0;
+			}
+		</style>
 	</head>
 	<body>
 		<div id="page">
