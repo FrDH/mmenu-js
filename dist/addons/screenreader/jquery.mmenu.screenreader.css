@@ -1,1 +1,2 @@
-.mm-sronly{text-indent:10px;overflow:hidden;display:block;width:1px;height:1px;position:absolute;z-index:-1}
+.mm-sronly{position:absolute!important;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);-webkit-clip-path:inset(50%);clip-path:inset(50%);padding:0!important;height:1px!important;width:1px!important;overflow:hidden}
+body:hover .mm-sronly a,body:hover .mm-sronly button,body:hover .mm-sronly input{display:none!important}

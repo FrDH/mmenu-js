@@ -16,6 +16,14 @@
 			$(function() {
 				$('nav#menu').mmenu({
 					extensions	: [ 'effect-slide-menu', 'shadow-page', 'shadow-panels' ],
+					keyboardNavigation: {
+               enable: true,
+							 enhance: true
+          },
+					screenReader: {
+						aria: true,
+						text: true
+					},
 					counters	: true,
 					navbar 		: {
 						title		: 'Advanced menu'
