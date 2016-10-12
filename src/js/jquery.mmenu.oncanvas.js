@@ -3,7 +3,7 @@
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
- *	
+ *
  * Copyright (c) Fred Heusschen
  * www.frebsite.nl
  *
@@ -47,7 +47,7 @@
 		this._initAnchors();
 
 		var $pnls = this.$pnls.children();
-		
+
 		this._initAddons();
 		this.initPanels( $pnls );
 
@@ -257,7 +257,7 @@ init: function( $panels )
 
 			this.openPanel( $frst );
 		},
-		
+
 		togglePanel: function( $panel )
 		{
 			var $l = $panel.parent();
@@ -384,7 +384,7 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 					.not( '.' + _c.nopanel );
 
 			this.__refactorClass( $oldpanels, this.conf.classNames.vertical, 'vertical' );
-			
+
 			if ( !this.opts.slidingSubmenus )
 			{
 				$oldpanels.addClass( _c.vertical );
@@ -418,7 +418,7 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 						}
 
 						$curpanels = $curpanels.add( $p );
-					} 
+					}
 				);
 
 			var $allpanels = $('.' + _c.panel, this.$menu);
@@ -451,6 +451,10 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 								if ( $a.is( 'span' ) )
 								{
 									$b.addClass( _c.fullsubopen );
+									$c = $a.clone();
+									$c.addClass('sr-only');
+									$c.appendTo( $b );
+									$a.attr('aria-hidden', 'true');
 								}
 							}
 						}
@@ -473,7 +477,7 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 							$a = $p.closest( '.' + _c.panel ).find( 'a[href="#' + $t.attr( 'id' ) + '"]' ).first();
 							$p = $a.closest( '.' + _c.panel );
 						}
-						
+
 						// fix: _url undefined
 						var _url = false;
 						var $navbar = $( '<div class="' + _c.navbar + '" />' );
@@ -580,7 +584,7 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 					}
 				)
 				.appendTo( this.$pnls );
-			
+
 			return $curpanels;
 		},
 
@@ -644,7 +648,7 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 								{
 									that.setSelected( $(e.target).parent() );
 								}
-	
+
 								//	Prevent default / don't follow link. Default: false
 								var preventDefault = that.__valueOrFn( that.opts.onClick.preventDefault, $t, _h.slice( 0, 1 ) == '#' );
 								if ( preventDefault )
@@ -698,7 +702,7 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 			var that = this,
 				api = {};
 
-			$.each( this._api, 
+			$.each( this._api,
 				function( i )
 				{
 					var fn = this;
@@ -767,12 +771,12 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 					}
 					_ended = true;
 				};
-	
+
 			$e.on( _e.transitionend, _fn );
 			$e.on( _e.webkitTransitionEnd, _fn );
 			setTimeout( _fn, duration * 1.1 );
 		},
-		
+
 		__getUniqueId: function()
 		{
 			return _c.mm( $[ _PLUGIN_ ].uniqueId++ );
