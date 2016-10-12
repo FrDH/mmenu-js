@@ -1,14 +1,29 @@
 /*
 	jQuery.mmenu screenReader addon CSS
+	@note improved version, supports RTL mode and more
+	@see https://developer.yahoo.com/blogs/ydn/clip-hidden-content-better-accessibility-53456.html
+	@note `clip` is deprecated but works everywhere
+	@see https://developer.mozilla.org/en-US/docs/Web/CSS/clip
+	@note `clip-path` is the future-proof version, but not very well supported yet
+	@see https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path
 */
 
 .mm-sronly
 {
-	text-indent: 10px;
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	padding: 0 !important;
+	border:  !important;
+	height: 1px !important;
+	width: 1px !important;
 	overflow: hidden;
-	display: block;
-	width: 1px;
-	height: 1px;
-	position: absolute;
-	z-index: -1;
+}
+
+body:hover .mm-sronly a,
+body:hover .mm-sronly input,
+body:hover .mm-sronly button
+{
+	display: none !important;
 }

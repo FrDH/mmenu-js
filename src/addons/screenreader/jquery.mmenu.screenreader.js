@@ -1,4 +1,4 @@
-/*	
+/*
  * jQuery mmenu screenReader addon
  * mmenu.frebsite.nl
  *
@@ -60,7 +60,6 @@
 				var aria_update = function()
 				{
 					aria_value( this.$menu.find( '.' + _c.hidden ), 'hidden', true );
-					aria_value( this.$menu.find( '[aria-hidden="true"]' ).not( '.' + _c.hidden ), 'hidden', false );
 				};
 				var aria_openPanel = function( $panel )
 				{
@@ -75,7 +74,9 @@
 				var aria_init = function( $panels )
 				{
 					aria_value( $panels.find( '.' + _c.prev + ', .' + _c.next ), 'haspopup', true );
+					aria_value( $panels.find( '.' + _c.next ).next('span'), 'hidden', true );
 				};
+
 				this.bind( 'initPanels', aria_init );
 				aria_init.call( this, this.$menu.children( '.' + _c.navbar ) );
 			}
@@ -106,7 +107,8 @@
 							.each(
 								function()
 								{
-									$(this).html( text_span( conf.text[ $(this).parent().is( '.' + _c.vertical ) ? 'toggleSubmenu' : 'openSubmenu' ] ) );
+									$n = $(this).next('span');
+									$(this).html( text_span( $n.text() ) );
 								}
 							);
 					}
