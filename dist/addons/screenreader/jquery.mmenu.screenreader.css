@@ -1,2 +1,2 @@
-.mm-sronly{position:absolute!important;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);-webkit-clip-path:inset(50%);clip-path:inset(50%);padding:0!important;height:1px!important;width:1px!important;white-space:nowrap;overflow:hidden}
-body:hover .mm-sronly a,body:hover .mm-sronly button,body:hover .mm-sronly input{display:none!important}
+.sr-only{border:0!important;clip:rect(1px,1px,1px,1px);-webkit-clip-path:inset(50%);clip-path:inset(50%);height:1px!important;overflow:hidden;padding:0!important;position:absolute!important;width:1px!important;white-space:nowrap}
+body:hover .sr-only a,body:hover .sr-only button,body:hover .sr-only input{display:none!important}
