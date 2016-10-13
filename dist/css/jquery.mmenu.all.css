@@ -292,8 +292,9 @@ html.mm-dropdown.mm-opened:not(.mm-opening) .mm-menu{display:none}
 .mm-menu.mm-rtl.mm-iconpanel .mm-panel.mm-iconpanel-5{right:200px}
 .mm-menu.mm-rtl.mm-iconpanel .mm-panel.mm-iconpanel-6{right:240px}
 .mm-menu.mm-rtl.mm-iconpanel .mm-panel.mm-opened{border-left:none;border-right:1px solid;border-color:inherit}
-.sr-only{border:0!important;clip:rect(1px,1px,1px,1px);-webkit-clip-path:inset(50%);clip-path:inset(50%);height:1px!important;overflow:hidden;padding:0!important;position:absolute!important;width:1px!important;white-space:nowrap}
-body:hover .sr-only a,body:hover .sr-only button,body:hover .sr-only input{display:none!important}
+@charset "UTF-8";
+.mm-sronly{border:0!important;clip:rect(1px,1px,1px,1px);-webkit-clip-path:inset(50%);clip-path:inset(50%);height:1px!important;overflow:hidden;padding:0!important;position:absolute!important;width:1px!important;white-space:nowrap}
+body:hover .mm-sronly a,body:hover .mm-sronly button,body:hover .mm-sronly input{display:none!important}
 .mm-search,.mm-search input{box-sizing:border-box}
 .mm-search{height:40px;padding:7px 10px 0;position:relative}
 .mm-search input{border:none!important;outline:0!important;box-shadow:none!important;border-radius:4px;font:inherit;font-size:14px;line-height:26px;display:block;width:100%;height:26px;min-height:26px;max-height:26px;margin:0;padding:0 10px}

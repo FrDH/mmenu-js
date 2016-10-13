@@ -1,6 +1,7 @@
 /*
 	Improved screen reader only CSS class
 	@note improved version, supports RTL mode and more
+  @author Thierry Koblentz
 	@see https://developer.yahoo.com/blogs/ydn/clip-hidden-content-better-accessibility-53456.html
 	* 1.
 		@note `clip` is deprecated but works everywhere
@@ -8,12 +9,15 @@
 	* 2.
 		@note `clip-path` is the future-proof version, but not very well supported yet
 		@see https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path
+		@author Yvain Liechti
+		@see https://twitter.com/ryuran78/status/778943389819604992
 	* 3.
 		@note preventing text to be condensed
-		@see https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe#.k1z6hluwe
+    @author J. Renée Beach
+		@see https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
 */
 
-.sr-only {
+.mm-sronly {
 	border: 0 !important;
 	clip: rect(1px, 1px, 1px, 1px); /* 1 */
 	clip-path: inset(50%);          /* 2 */
@@ -25,8 +29,8 @@
 	white-space: nowrap;            /* 3 */
 }
 
-body:hover .sr-only a,
-body:hover .sr-only input,
-body:hover .sr-only button {
+body:hover .mm-sronly a,
+body:hover .mm-sronly input,
+body:hover .mm-sronly button {
 	display: none !important;
 }
