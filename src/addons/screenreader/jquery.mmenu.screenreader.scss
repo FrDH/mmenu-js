@@ -1,7 +1,7 @@
 /*
 	Improved screen reader only CSS class
 	@note improved version, supports RTL mode and more
-  @author Thierry Koblentz
+	@author Thierry Koblentz
 	@see https://developer.yahoo.com/blogs/ydn/clip-hidden-content-better-accessibility-53456.html
 	* 1.
 		@note `clip` is deprecated but works everywhere
@@ -13,24 +13,23 @@
 		@see https://twitter.com/ryuran78/status/778943389819604992
 	* 3.
 		@note preventing text to be condensed
-    @author J. Renée Beach
+		author J. Renée Beach
 		@see https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+	* 4.
+		@note prevents element to be stretched if already positionned
+		@author Yvain Liechti
 */
 
 .mm-sronly {
 	border: 0 !important;
-	clip: rect(1px, 1px, 1px, 1px); /* 1 */
-	clip-path: inset(50%);          /* 2 */
+	bottom: auto !important;                   /* 4 */
+	clip: rect(1px, 1px, 1px, 1px) !important; /* 1 */
+	clip-path: inset(50%) !important;          /* 2 */
 	height: 1px !important;
-	overflow: hidden;
+	overflow: hidden !important;
 	padding: 0 !important;
 	position: absolute !important;
+	right: auto !important;                    /* 4 */
 	width: 1px !important;
-	white-space: nowrap;            /* 3 */
-}
-
-body:hover .mm-sronly a,
-body:hover .mm-sronly input,
-body:hover .mm-sronly button {
-	display: none !important;
+	white-space: nowrap !important;            /* 3 */
 }

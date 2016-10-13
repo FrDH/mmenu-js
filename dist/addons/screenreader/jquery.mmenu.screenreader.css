@@ -1,3 +1,2 @@
 @charset "UTF-8";
-.mm-sronly{border:0!important;clip:rect(1px,1px,1px,1px);-webkit-clip-path:inset(50%);clip-path:inset(50%);height:1px!important;overflow:hidden;padding:0!important;position:absolute!important;width:1px!important;white-space:nowrap}
-body:hover .mm-sronly a,body:hover .mm-sronly button,body:hover .mm-sronly input{display:none!important}
+.mm-sronly{border:0!important;bottom:auto!important;clip:rect(1px,1px,1px,1px)!important;-webkit-clip-path:inset(50%)!important;clip-path:inset(50%)!important;height:1px!important;overflow:hidden!important;padding:0!important;position:absolute!important;right:auto!important;width:1px!important;white-space:nowrap!important}
