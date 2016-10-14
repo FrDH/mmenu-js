@@ -1,6 +1,7 @@
 /*
 	Improved screen reader only CSS class
-	@note improved version, supports RTL mode and more
+	@author Gaël Poupard
+	@note Based on Yahoo!'s technique
 	@author Thierry Koblentz
 	@see https://developer.yahoo.com/blogs/ydn/clip-hidden-content-better-accessibility-53456.html
 	* 1.
@@ -16,20 +17,20 @@
 		author J. Renée Beach
 		@see https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
 	* 4.
-		@note prevents element to be stretched if already positionned
-		@author Yvain Liechti
+		@note !important is important
+		@note Obviously you wanna hide something
+		@author Harry Roberts
+		@see http://csswizardry.com/2016/05/the-importance-of-important/
 */
 
 .mm-sronly {
 	border: 0 !important;
-	bottom: auto !important;                   /* 4 */
 	clip: rect(1px, 1px, 1px, 1px) !important; /* 1 */
 	clip-path: inset(50%) !important;          /* 2 */
 	height: 1px !important;
 	overflow: hidden !important;
 	padding: 0 !important;
 	position: absolute !important;
-	right: auto !important;                    /* 4 */
 	width: 1px !important;
 	white-space: nowrap !important;            /* 3 */
 }
