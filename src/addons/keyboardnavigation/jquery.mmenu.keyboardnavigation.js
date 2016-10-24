@@ -8,7 +8,7 @@
 (function( $ ) {
 
 	var _PLUGIN_ = 'mmenu',
-			_ADDON_  = 'keyboardNavigation';
+		_ADDON_  = 'keyboardNavigation';
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
@@ -57,7 +57,7 @@
 							.find( focs )
 							.first()
 							.addClass( _c.tabstart );
-						$( '.' + _c.listview )
+						$( '.' + _c.panels + ' > .' + _c.panel )
 							.each(
 								function()
 								{
@@ -120,8 +120,7 @@
 	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		enable: false,
-		enhance: false,
-		trigger: '[href="#menu"]'
+		enhance: false
 	};
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {};
 
