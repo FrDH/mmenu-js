@@ -1,4 +1,4 @@
-/*	
+/*
  * jQuery mmenu keyboardNavigation addon
  * mmenu.frebsite.nl
  *
@@ -8,7 +8,7 @@
 (function( $ ) {
 
 	var _PLUGIN_ = 'mmenu',
-		_ADDON_  = 'keyboardNavigation';
+			_ADDON_  = 'keyboardNavigation';
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
@@ -36,6 +36,10 @@
 			}
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
+			if ( opts.trigger )
+			{
+				$( opts.trigger ).addClass( _c.trigger );
+			}
 
 			//	Enable keyboard navigation
 			if ( opts.enable )
@@ -46,18 +50,22 @@
 					this.$menu.addClass( _c.keyboardfocus );
 				}
 
-				var $start = $('<input class="' + _c.tabstart + '" tabindex="0" type="text" />'),
-					$end   = $('<input class="' + _c.tabend   + '" tabindex="0" type="text" />');
-
 				this.bind( 'initPanels',
 					function()
 					{
 						this.$menu
-							.prepend( $start )
-							.append(  $end )
-							.children( '.' + _c.navbar )
-								.find( focs )
-								.attr( 'tabindex', 0 );
+							.find( focs )
+							.first()
+							.addClass( _c.tabstart );
+						$( '.' + _c.listview )
+							.each(
+								function()
+								{
+									$(this).find( focs )
+									.last()
+									.addClass( _c.tabend );
+								}
+							);
 					}
 				);
 
@@ -100,8 +108,8 @@
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 
-			_c.add( 'tabstart tabend keyboardfocus' );
-			_e.add( 'focusin keydown' );
+			_c.add( 'tabstart tabend keyboardfocus trigger' );
+			_e.add( 'keydown focusout' );
 		},
 
 		//	clickAnchor: prevents default behavior when clicking an anchor
@@ -125,23 +133,23 @@
 		glbl.$wndw
 			.off( _e.keydown + '-offCanvas' );
 
-		//	Prevent tabbing outside an offcanvas menu
-		glbl.$wndw
-			.off( _e.focusin + '-' + _ADDON_ )
-			.on( _e.focusin + '-' + _ADDON_,
-				function( e ) 
-				{
-					if ( glbl.$html.hasClass( _c.opened ) )
+			//	When trigger lose focus and mmenu is opened, send focus to first mmenu item
+			glbl.$wndw
+				.off( _e.focusout + '-' + _ADDON_ )
+				.on( _e.focusout + '-' + _ADDON_,
+					function( e )
 					{
 						var $t = $(e.target);
 
-						if ( $t.is( '.' + _c.tabend ) )
+						if ( glbl.$html.hasClass( _c.opened ) )
 						{
-							$t.parent().find( '.' + _c.tabstart ).focus();
+							if ( $t.is( '.' + _c.trigger ) )
+							{
+								$( '.' + _c.tabstart ).focus();
+							}
 						}
 					}
-				}
-			);
+				);
 
 		//	Default keyboard navigation
 		glbl.$wndw
@@ -150,7 +158,7 @@
 				function( e )
 				{
 					var $t = $(e.target),
-						$m = $t.closest( '.' + _c.menu );
+							$m = $t.closest( '.' + _c.menu );
 
 					if ( $m.length )
 					{
@@ -165,11 +173,21 @@
 							switch( e.keyCode )
 							{
 								//	press enter to toggle and check
-								case 13: 
-									if ( $t.is( '.mm-toggle' ) || 
-										 $t.is( '.mm-check' )
+								case 13:
+									if ( $t.is( '.mm-toggle' ) ||
+										 	 $t.is( '.mm-check' )
 									) {
 										$t.trigger( _e.click );
+									}
+									break;
+
+								// Press tab
+								case 9:
+									// on last link, and not if back tabbing (shift key + tab)
+									if ( $t.is( '.' + _c.tabend ) && !e.shiftKey )
+									{
+										e.preventDefault();
+										$( '.' + _c.trigger ).focus();
 									}
 									break;
 
@@ -184,6 +202,7 @@
 							}
 						}
 					}
+
 				}
 			);
 
@@ -195,7 +214,7 @@
 					function( e )
 					{
 						var $t = $(e.target),
-							$m = $t.closest( '.' + _c.menu );
+								$m = $t.closest( '.' + _c.menu );
 
 						if ( $m.length )
 						{
@@ -217,7 +236,7 @@
 								switch( e.keyCode )
 								{
 									//	close submenu with backspace
-									case 8: 
+									case 8:
 										var $p = $t.closest( '.' + _c.panel ).data( _d.parent );
 										if ( $p && $p.length )
 										{
@@ -287,13 +306,13 @@
 		}
 
 		var $pnls = this.$pnls.children( '.' + _c.panel ),
-			$hidn = $pnls.not( $panl );
+				$hidn = $pnls.not( $panl );
 
 		$hidn.find( focs ).attr( 'tabindex', -1 );
 		$panl.find( focs ).attr( 'tabindex', 0 );
 
 		//	_c.toggle will result in an empty string if the toggle addon is not loaded
-		$panl.find( 'input.mm-toggle, input.mm-check' ).attr( 'tabindex', -1 );
+		$panl.find( 'input.mm-toggle, input.mm-check, a[href].' + _c.title ).attr( 'tabindex', -1 );
 	}
 
 })( jQuery );
