@@ -8,7 +8,7 @@
 (function( $ ) {
 
 	var _PLUGIN_ = 'mmenu',
-		_ADDON_  = 'screenReader';
+			_ADDON_  = 'screenReader';
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
@@ -75,6 +75,12 @@
 				{
 					aria_value( $panels.find( '.' + _c.prev + ', .' + _c.next ), 'haspopup', true );
 					aria_value( $panels.find( '.' + _c.next ).next('span'), 'hidden', true );
+					$panels.find( '.' + _c.prev + ', .' + _c.next ).each(
+						function() {
+							$o = $(this).attr( 'href' ).replace( '#', '' );
+							$(this).attr( 'aria-owns', $o );
+						}
+					);
 				};
 
 				this.bind( 'initPanels', aria_init );
@@ -91,10 +97,20 @@
 					$panels
 						.children( '.' + _c.navbar )
 						.children( '.' + _c.prev )
-						.html( text_span( conf.text.closeSubmenu ) )
-						.end()
-						.children( '.' + _c.next )
-						.html( text_span( conf.text.openSubmenu ) )
+						.each(
+							function()
+							{
+								$n = $(this).next('a');
+								$(this).html( text_span( $n.text() ) );
+							}
+						)
+						.next( '.' + _c.title)
+						.each(
+							function()
+							{
+								aria_value( $(this), 'hidden', true);
+							}
+						)
 						.end()
 						.children( '.' + _c.close )
 						.html( text_span( conf.text.closeMenu ) );
@@ -140,16 +156,12 @@
 	};
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
 		text: {
-			closeMenu		: 'Close menu',
-			closeSubmenu	: 'Close submenu',
-			openSubmenu		: 'Open submenu',
-			toggleSubmenu	: 'Toggle submenu'
+			closeMenu	: 'Close menu'
 		}
 	};
 
 
 	var _c, _d, _e, glbl;
-
 
 	function aria_value( $elem, attr, value )
 	{
