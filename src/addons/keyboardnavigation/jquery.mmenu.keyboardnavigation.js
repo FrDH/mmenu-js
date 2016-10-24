@@ -120,7 +120,8 @@
 	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		enable: false,
-		enhance: false
+		enhance: false,
+		trigger: '[href="#menu"]'
 	};
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {};
 
