@@ -4,7 +4,7 @@ jQuery.mmenu
 The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp. It is very customizable through a wide range of options, extensions and add-ons and it will always fit your needs.
 
 Need help? Have a look at [the documentation](http://mmenu.frebsite.nl) for demos, tutorials, documentation and support.<br />
-Working on a WordPress site? Check out [the mmenu WordPress plugin](http://codecanyon.net/item/mmenu-wordpress-plugin/11630470?ref=FrDH).
+Working on a WordPress site? Check out [the mmenu WordPress plugin](http://mmenu.frebsite.nl/wordpress-plugin.html).
 
 <img src="http://mmenu.frebsite.nl/img/preview-3.png" alt="jQuery mmenu" width="100%" />
 

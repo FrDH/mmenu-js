@@ -1,13 +1,11 @@
 var gulp 			= require( 'gulp' ),
 	sass 			= require( 'gulp-ruby-sass' ),
 	autoprefixer 	= require( 'gulp-autoprefixer' ),
-	minifycss 		= require( 'gulp-minify-css' ),
-	jshint 			= require( 'gulp-jshint' ),
+	cleancss		= require( 'gulp-clean-css' ),
 	uglify 			= require( 'gulp-uglify' ),
 	rename 			= require( 'gulp-rename' ),
 	concat 			= require( 'gulp-concat' ),
 	umd				= require( 'gulp-umd' );
-
 
 var outputDir 		= 'dist';
 
@@ -22,8 +20,8 @@ gulp.task( 'default', function() {
 
 //	Watch task 'gulp watch': Starts a watch on CSS and JS tasks
 gulp.task( 'watch', function() {
-  gulp.watch( 'src/**/*.scss'	, [ 'css' ] );
-  gulp.watch( 'src/**/*.js'		, [ 'js' ] );
+	gulp.watch( 'src/**/*.scss'	, [ 'css' ] );
+	gulp.watch( 'src/**/*.js'	, [ 'js'  ] );
 });
 
 
@@ -35,7 +33,7 @@ gulp.task( 'css', [ 'css-concat-all' ] );
 gulp.task( 'css-compile', function() {
 	return sass( 'src/**/*.scss', { style: 'expanded' })
 		.pipe( autoprefixer( [ '> 5%', 'last 5 versions' ] ) )
-		.pipe( minifycss({ keepBreaks: true }) )
+		.pipe( cleancss() )
 		.pipe( gulp.dest( outputDir ) );
 });
 
@@ -43,7 +41,7 @@ gulp.task( 'css-compile', function() {
 gulp.task( 'css-concat-core', [ 'css-compile' ], function() {
 	return gulp.src([
 			outputDir + '/css/jquery.mmenu.oncanvas.css',
-			outputDir + '/addons/offcanvas/jquery.mmenu.offcanvas.css',
+			outputDir + '/addons/offcanvas/jquery.mmenu.offcanvas.css'
 		])
 		.pipe( concat( 'jquery.mmenu.css' ) )
 		.pipe( gulp.dest( outputDir + '/css' ) );
@@ -56,8 +54,8 @@ gulp.task( 'css-concat-all', [ 'css-concat-core' ], function() {
 			outputDir + '/addons/offcanvas/jquery.mmenu.offcanvas.css',
 			outputDir + '/addons/**/*.css',
 			outputDir + '/extensions/**/*.css',
-			'!**/jquery.mmenu.iconbar.css',
-			'!**/jquery.mmenu.widescreen.css'
+			'!' + outputDir + '/extensions/iconbar/jquery.mmenu.iconbar.css',
+			'!' + outputDir + '/extensions/widescreen/jquery.mmenu.widescreen.css'
 		])
 		.pipe( concat( 'jquery.mmenu.all.css' ) )
 		.pipe( gulp.dest( outputDir + '/css' ) );
@@ -118,8 +116,6 @@ gulp.task( 'js-minify', [ 'js-concat-all' ], function() {
 	return gulp.src([
 			outputDir + '/**/*.min.js'
 		])
-		.pipe( jshint('.jshintrc') )
-		.pipe( jshint.reporter( 'default' ) )
 		.pipe( uglify({ preserveComments: 'license' }) )
 		.pipe( gulp.dest( outputDir ) );
 });

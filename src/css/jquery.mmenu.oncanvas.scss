@@ -4,14 +4,14 @@
 
 @import "_imp/import";
 
-@import "_imp/menu";
-@import "_imp/panels";
-@import "_imp/vertical";
-@import "_imp/buttons";
-@import "_imp/navbars";
-@import "_imp/listviews";
-@import "_imp/inset_lists";
-@import "_imp/dividers";
-@import "_imp/spacers";
+@import "_core/menu";
+@import "_core/panels";
+@import "_core/vertical";
+@import "_core/buttons";
+@import "_core/navbars";
+@import "_core/listviews";
+@import "_core/inset_lists";
+@import "_core/dividers";
+@import "_core/spacers";
 
 @include mm_colors;
