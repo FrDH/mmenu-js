@@ -16,7 +16,7 @@ You can [purchase a license](http://mmenu.frebsite.nl/download.html) if you want
 + jQuery 1.7 or higher
 
 ### Learn more
-+ [Tutorial](http://mmenu.frebsite.nl/tutorials/basic/)
++ [Tutorial](http://mmenu.frebsite.nl/tutorials/off-canvas/)
 + [Options](http://mmenu.frebsite.nl/documentation/options/)
 + [API](http://mmenu.frebsite.nl/documentation/api.html)
 + [Extensions](http://mmenu.frebsite.nl/documentation/extensions/)
