@@ -1,4 +1,4 @@
-/*	
+/*
  * jQuery mmenu navbar addon next content
  * mmenu.frebsite.nl
  *
@@ -29,11 +29,13 @@
 			$panel = $panel || this.$pnls.children( '.' + _c.current );
 
 			var $orgn = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelNext );
-			
+
 			_url = $orgn.attr( 'href' );
+			_owns = $orgn.attr( 'aria-owns' );
 			_txt = $orgn.html();
 
 			$next[ _url ? 'attr' : 'removeAttr' ]( 'href', _url );
+			$prev[ _owns ? 'attr' : 'removeAttr' ]( 'aria-owns', _owns );
 			$next[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
 			$next.html( _txt );
 		};
