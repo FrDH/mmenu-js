@@ -15,20 +15,14 @@
 		<script type="text/javascript">
 			$(function() {
 				$('nav#menu').mmenu({
-					extensions	: [ 'effect-slide-menu', 'shadow-page', 'shadow-panels' ],
-					keyboardNavigation: {
-               enable: true,
-							 enhance: true
-          },
-					screenReader: {
-						aria: true,
-						text: true
+					extensions				: [ 'effect-slide-menu', 'shadow-page', 'shadow-panels' ],
+					keyboardNavigation 		: true,
+					screenReader 			: true,
+					counters				: true,
+					navbar 	: {
+						title	: 'Advanced menu'
 					},
-					counters	: true,
-					navbar 		: {
-						title		: 'Advanced menu'
-					},
-					navbars		: [
+					navbars	: [
 						{
 							position	: 'top',
 							content		: [ 'searchfield' ]
