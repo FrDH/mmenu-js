@@ -1,4 +1,4 @@
-/*	
+/*
  * jQuery mmenu screenReader addon
  * mmenu.frebsite.nl
  *
@@ -8,7 +8,7 @@
 (function( $ ) {
 
 	var _PLUGIN_ = 'mmenu',
-		_ADDON_  = 'screenReader';
+			_ADDON_  = 'screenReader';
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
@@ -37,7 +37,6 @@
 			}
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
-
 			//	Aria hidden / haspopup
 			if ( opts.aria )
 			{
@@ -60,7 +59,6 @@
 				var aria_update = function()
 				{
 					aria_value( this.$menu.find( '.' + _c.hidden ), 'hidden', true );
-					aria_value( this.$menu.find( '[aria-hidden="true"]' ).not( '.' + _c.hidden ), 'hidden', false );
 				};
 				var aria_openPanel = function( $panel )
 				{
@@ -75,7 +73,19 @@
 				var aria_init = function( $panels )
 				{
 					aria_value( $panels.find( '.' + _c.prev + ', .' + _c.next ), 'haspopup', true );
+					aria_value( $panels.find( '.' + _c.next ).next('span'), 'hidden', true );
+
+					$panels
+						.find( '.' + _c.prev + ', .' + _c.next  )
+						.each(
+							function()
+							{
+								$o = $(this).attr( 'href' ).replace( '#', '' );
+								aria_value( $(this), 'owns', $o );
+							}
+					);
 				};
+
 				this.bind( 'initPanels', aria_init );
 				aria_init.call( this, this.$menu.children( '.' + _c.navbar ) );
 			}
@@ -90,13 +100,42 @@
 					$panels
 						.children( '.' + _c.navbar )
 						.children( '.' + _c.prev )
-						.html( text_span( conf.text.closeSubmenu ) )
-						.end()
+						.each(
+							function()
+							{
+								$n = $(this).next('a');
+								$(this).html( text_span( $n.text() + conf.text.closeSubmenu ) );
+							}
+						);
+					$panels
+						.children( '.' + _c.navbar )
+						.children( '.' + _c.prev )
+						.next( '.' + _c.title)
+						.each(
+							function()
+							{
+								aria_value( $(this), 'hidden', true);
+							}
+						);
+					$panels
+						.children( '.' + _c.listview )
 						.children( '.' + _c.next )
-						.html( text_span( conf.text.openSubmenu ) )
-						.end()
+						.each(
+							function()
+							{
+								$n = $(this).next('span');
+								$(this).html( text_span( $n.text() + conf.text.openSubmenu ) );
+							}
+						);
+					$panels
+						.children( '.' + _c.navbar )
 						.children( '.' + _c.close )
-						.html( text_span( conf.text.closeMenu ) );
+						.each(
+							function()
+							{
+								$(this).html( text_span( conf.text.closeMenu ) );
+							}
+						);
 
 					if ( $panels.is( '.' + _c.panel ) )
 					{
@@ -106,7 +145,8 @@
 							.each(
 								function()
 								{
-									$(this).html( text_span( conf.text[ $(this).parent().is( '.' + _c.vertical ) ? 'toggleSubmenu' : 'openSubmenu' ] ) );
+									$n = $(this).next('span');
+									$(this).html( text_span( $n.text() + conf.text[ $(this).parent().is( '.' + _c.vertical ) ? 'toggleSubmenu' : 'openSubmenu' ] ) );
 								}
 							);
 					}
@@ -138,22 +178,21 @@
 	};
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
 		text: {
-			closeMenu		: 'Close menu',
-			closeSubmenu	: 'Close submenu',
-			openSubmenu		: 'Open submenu',
-			toggleSubmenu	: 'Toggle submenu'
+			closeMenu       : 'Close menu',
+      closeSubmenu    : ' (close submenu)',
+      openSubmenu     : ' (open submenu)',
+      toggleSubmenu   : ' (toggle submenu)'
 		}
 	};
 
 
 	var _c, _d, _e, glbl;
 
-
 	function aria_value( $elem, attr, value )
 	{
 		$elem
 			.prop( 'aria-' + attr, value )
-			[ value ? 'attr' : 'removeAttr' ]( 'aria-' + attr, 'true' );
+			[ value ? 'attr' : 'removeAttr' ]( 'aria-' + attr, value );
 	}
 	function text_span( text )
 	{
