@@ -1,4 +1,4 @@
-/*	
+/*
  * jQuery mmenu navbar addon prev content
  * mmenu.frebsite.nl
  *
@@ -46,11 +46,13 @@
 			{
 				$orgn = $panel.children( '.' + _c.navbar ).children( '.' + _c.prev );
 			}
-			
-			_url = $orgn.attr( 'href' );
-			_txt = $orgn.html();
+
+			_url  = $orgn.attr( 'href' );
+			_owns = $orgn.attr( 'aria-owns' );
+			_txt  = $orgn.html();
 
 			$prev[ _url ? 'attr' : 'removeAttr' ]( 'href', _url );
+			$prev[ _owns ? 'attr' : 'removeAttr' ]( 'aria-owns', _owns );
 			$prev[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
 			$prev.html( _txt );
 		};

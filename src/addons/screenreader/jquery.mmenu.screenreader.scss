@@ -1,14 +1,37 @@
 /*
-	jQuery.mmenu screenReader addon CSS
+	Improved screen reader only CSS class
+	@author Gaël Poupard
+	@note Based on Yahoo!'s technique
+	@author Thierry Koblentz
+	@see https://developer.yahoo.com/blogs/ydn/clip-hidden-content-better-accessibility-53456.html
+	* 1.
+		@note `clip` is deprecated but works everywhere
+		@see https://developer.mozilla.org/en-US/docs/Web/CSS/clip
+	* 2.
+		@note `clip-path` is the future-proof version, but not very well supported yet
+		@see https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path
+		@author Yvain Liechti
+		@see https://twitter.com/ryuran78/status/778943389819604992
+	* 3.
+		@note preventing text to be condensed
+		author J. Renée Beach
+		@see https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+	* 4.
+		@note !important is important
+		@note Obviously you wanna hide something
+		@author Harry Roberts
+		@see http://csswizardry.com/2016/05/the-importance-of-important/
 */
 
-.mm-sronly
-{
-	text-indent: 10px;
-	overflow: hidden;
-	display: block;
-	width: 1px;
-	height: 1px;
-	position: absolute;
-	z-index: -1;
+.mm-sronly {
+	border: 0 !important;
+	clip: rect(1px, 1px, 1px, 1px) !important; /* 1 */
+	-webkit-clip-path: inset(50%) !important;  /* 2 */
+					clip-path: inset(50%) !important;  /* 2 */
+	height: 1px !important;
+	overflow: hidden !important;
+	padding: 0 !important;
+	position: absolute !important;
+	width: 1px !important;
+	white-space: nowrap !important;            /* 3 */
 }
