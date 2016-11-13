@@ -35,7 +35,7 @@
 			_txt = $orgn.html();
 
 			$next[ _url ? 'attr' : 'removeAttr' ]( 'href', _url );
-			$next[ _own ? 'attr' : 'removeAttr' ]( 'aria-owns', _owns );
+			$next[ _own ? 'attr' : 'removeAttr' ]( 'aria-owns', _own );
 			$next[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
 			$next.html( _txt );
 		};
