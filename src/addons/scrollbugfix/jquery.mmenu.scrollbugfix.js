@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu scrollBugFix addon
+ * jQuery mmenu scrollBugFix add-on
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen

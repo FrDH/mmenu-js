@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v5.7.6
+ * jQuery mmenu v5.7.7
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	var _PLUGIN_	= 'mmenu',
-		_VERSION_	= '5.7.6';
+		_VERSION_	= '5.7.7';
 
 
 	//	Plugin already excists
@@ -30,7 +30,7 @@
 	$[ _PLUGIN_ ] = function( $menu, opts, conf )
 	{
 		this.$menu	= $menu;
-		this._api	= [ 'bind', 'initPanels', 'update', 'setSelected', 'getInstance', 'openPanel', 'closePanel', 'closeAllPanels' ];
+		this._api	= [ 'bind', 'getInstance', 'update', 'initPanels', 'openPanel', 'closePanel', 'closeAllPanels', 'setSelected' ];
 		this.opts	= opts;
 		this.conf	= conf;
 		this.vars	= {};
@@ -105,6 +105,16 @@ init: function( $panels )
 	this.initPanels( $panels );
 },
 
+		getInstance: function()
+		{
+			return this;
+		},
+
+		update: function()
+		{
+			this.trigger( 'update' );
+		},
+
 		initPanels: function( $panels )
 		{
 			$panels = $panels.not( '.' + _c.nopanel );
@@ -114,19 +124,6 @@ init: function( $panels )
 
 			this.trigger( 'initPanels', $panels );
 			this.trigger( 'update' );
-		},
-
-		update: function()
-		{
-			this.trigger( 'update' );
-		},
-
-		setSelected: function( $li )
-		{
-			this.$menu.find( '.' + _c.listview ).children().removeClass( _c.selected );
-			$li.addClass( _c.selected );
-
-			this.trigger( 'setSelected', $li );
 		},
 
 		openPanel: function( $panel )
@@ -145,9 +142,9 @@ init: function( $panels )
 				}
 				$l.addClass( _c.opened );
 
-				this.trigger( 'openPanel', $panel );
+				this.trigger( 'openPanel' 	, $panel );
 				this.trigger( 'openingPanel', $panel );
-				this.trigger( 'openedPanel', $panel );
+				this.trigger( 'openedPanel'	, $panel );
 			}
 
 			//	Horizontal
@@ -194,7 +191,7 @@ init: function( $panels )
 
 				that.trigger( 'openPanel', $panel );
 
-				//	Without the timeout, the animation won't work because the element had display: none;
+				//	Without the timeout the animation won't work because the element had display: none;
 				setTimeout(
 					function()
 					{
@@ -226,9 +223,9 @@ init: function( $panels )
 			{
 				$l.removeClass( _c.opened );
 
-				this.trigger( 'closePanel', $panel );
+				this.trigger( 'closePanel'	, $panel );
 				this.trigger( 'closingPanel', $panel );
-				this.trigger( 'closedPanel', $panel );
+				this.trigger( 'closedPanel'	, $panel );
 			}
 		},
 
@@ -269,9 +266,12 @@ init: function( $panels )
 			}
 		},
 
-		getInstance: function()
+		setSelected: function( $li )
 		{
-			return this;
+			this.$menu.find( '.' + _c.listview ).children( '.' + _c.selected ).removeClass( _c.selected );
+			$li.addClass( _c.selected );
+
+			this.trigger( 'setSelected', $li );
 		},
 
 		bind: function( evnt, fn )
@@ -353,6 +353,8 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 			}
 
 			this.$menu.addClass( clsn.join( ' ' ) );
+
+			this.trigger( '_initMenu' );
 		},
 
 		_initPanels: function( $panels )
@@ -510,7 +512,7 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 						else if ( that.opts.navbar.title )
 						{
 							$navbar
-								.append( '<a class="' + _c.title + '">' + that.opts.navbar.title + '</a>' )
+								.append( '<a class="' + _c.title + '">' + $[ _PLUGIN_ ].i18n( that.opts.navbar.title ) + '</a>' )
 								.prependTo( $t );
 						}
 					}
@@ -580,7 +582,9 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 					}
 				)
 				.appendTo( this.$pnls );
-			
+
+			this.trigger( '_initPanels', $curpanels );
+
 			return $curpanels;
 		},
 
@@ -661,6 +665,8 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 						}
 					}
 				);
+
+			this.trigger( '_initAnchors' );
 		},
 
 		_initAddons: function()
@@ -678,6 +684,8 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 			{
 				$[ _PLUGIN_ ].addons[ a ].setup.call( this );
 			}
+
+			this.trigger( '_initAddons' );
 		},
 
 		_getOriginalMenuId: function()
@@ -811,6 +819,35 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 
 		return $result;
 	};
+
+
+	/*
+		I18N
+	*/
+	$[ _PLUGIN_ ].i18n = (function() {
+
+		var trns = {};
+
+		return function( t )
+		{
+			switch( typeof t )
+			{
+				case 'object':
+					$.extend( trns, t );
+					return trns;
+					break;
+
+				case 'string':
+					return trns[ t ] || t;
+					break;
+
+				case 'undefined':
+				default:
+					return trns;
+					break;
+			}
+		};
+	})();
 
 
 	/*

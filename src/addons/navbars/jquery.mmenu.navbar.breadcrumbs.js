@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu navbar addon breadcrumbs content
+ * jQuery mmenu navbar add-on breadcrumbs content
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen

@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu screenReader addon
+ * jQuery mmenu screenReader add-on
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen
@@ -8,7 +8,7 @@
 (function( $ ) {
 
 	var _PLUGIN_ = 'mmenu',
-			_ADDON_  = 'screenReader';
+		_ADDON_  = 'screenReader';
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
@@ -37,10 +37,11 @@
 			}
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
-			//	Aria hidden / haspopup
+
+			//	Aria
 			if ( opts.aria )
 			{
-				//	Aria hidden
+				//	Apply aria-hidden to menu when closed
 				if ( this.opts.offCanvas )
 				{
 					var aria_open = function()
@@ -51,108 +52,153 @@
 					{
 						aria_value( this.$menu, 'hidden', true );
 					};
-					this.bind( 'open', aria_open );
-					this.bind( 'close', aria_close );
-					aria_close.call( this );
+					this.bind( 'open'	, aria_open );
+					this.bind( 'close'	, aria_close );
+
+					aria_value( this.$menu, 'hidden', true );
 				}
 
+				//	Apply aria-hidden to hidden content
 				var aria_update = function()
 				{
-					aria_value( this.$menu.find( '.' + _c.hidden ), 'hidden', true );
+					//	TODO, unfortunately, aria-hidden is not per se non-visible
+					//	Searchfield add-on will need this to work
+					//	Maybe LI's only?
+//					aria_value( this.$menu.find( '.' + _c.hidden ), 'hidden', true );
 				};
 				var aria_openPanel = function( $panel )
 				{
-					aria_value( this.$pnls.children( '.' + _c.panel ).not( $panel ).not( '.' + _c.hidden ), 'hidden', true );
+					var $navb = this.$menu.children( '.' + _c.navbar ),
+						$prev = $navb.children( '.' + _c.prev ),
+						$next = $navb.children( '.' + _c.next ),
+						$titl = $navb.children( '.' + _c.title );
+
+					//	Apply aria-hidden to prev- and next-buttons when hidden
+					aria_value( $prev, 'hidden', $prev.is( '.' + _c.hidden ) );
+					aria_value( $next, 'hidden', $next.is( '.' + _c.hidden ) );
+
+					//	Apply aria-hidden to the title if the prev-button has screen reader text and is visible
+					if ( opts.text )
+					{
+						aria_value( $titl, 'hidden', !$prev.is( '.' + _c.hidden ) );
+					}
+
+					//	Apply aria-hidden to hidden panels
+					aria_value( this.$pnls.children( '.' + _c.panel ).not( $panel ), 'hidden', true );
 					aria_value( $panel, 'hidden', false );
 				};
-				this.bind( 'update', aria_update );
-				this.bind( 'openPanel', aria_update );
-				this.bind( 'openPanel', aria_openPanel );
+				this.bind( 'update' 	, aria_update );
+				this.bind( 'openPanel' 	, aria_update );
+				this.bind( 'openPanel' 	, aria_openPanel );
 
-				//	Aria haspopup
 				var aria_init = function( $panels )
 				{
-					aria_value( $panels.find( '.' + _c.prev + ', .' + _c.next ), 'haspopup', true );
-					aria_value( $panels.find( '.' + _c.next ).next('span'), 'hidden', true );
+					var $n;
 
-					$panels
-						.find( '.' + _c.prev + ', .' + _c.next  )
-						.each(
-							function()
-							{
-								$o = $(this).attr( 'href' ).replace( '#', '' );
-								aria_value( $(this), 'owns', $o );
-							}
+					$panels = $panels || this.$menu;
+
+					var $navb = $panels.children( '.' + _c.navbar ),
+						$prev = $navb.children( '.' + _c.prev ),
+						$next = $navb.children( '.' + _c.next ),
+						$titl = $navb.children( '.' + _c.title );
+
+					//	Apply aria-haspopup to prev- and next-buttons
+					aria_value( $prev, 'haspopup', true );
+					aria_value( $next, 'haspopup', true );
+
+					//	Apply aria-owns to prev- and next-buttons
+					$n = ( $panels.is( '.' + _c.panel ) )
+						? $panels.find( '.' + _c.prev + ', .' + _c.next )
+						: $prev.add( $next );
+
+					$n.each(
+						function()
+						{
+							aria_value( $(this), 'owns', $(this).attr( 'href' ).replace( '#', '' ) );
+						}
 					);
-				};
 
-				this.bind( 'initPanels', aria_init );
-				aria_init.call( this, this.$menu.children( '.' + _c.navbar ) );
+					//	Apply aria-hidden to item text if the (full-width-)next-button has screen reader text
+					if ( opts.text )
+					{
+						if ( $panels.is( '.' + _c.panel ) )
+						{
+							$n = $panels
+								.find( '.' + _c.listview )
+								.find( '.' + _c.fullsubopen )
+								.parent()
+								.children( 'span' );
+
+							aria_value( $n, 'hidden', true );
+						}
+					}
+				};
+				this.bind( 'initPanels'	, aria_init );
+				this.bind( '_initAddons', aria_init );
 			}
 
 
-			//	Screen reader text
+			//	Text
 			if ( opts.text )
 			{
-				//	Navbar prev button
 				var text_init = function( $panels )
 				{
-					$panels
-						.children( '.' + _c.navbar )
-						.children( '.' + _c.prev )
+					var $n;
+
+					$panels = $panels || this.$menu;
+
+					var $navb = $panels.children( '.' + _c.navbar );
+
+					//	Apply screen reader text to the prev-button
+					$navb
 						.each(
 							function()
 							{
-								$n = $(this).next('a');
-								$(this).html( text_span( $n.text() + conf.text.closeSubmenu ) );
-							}
-						);
-					$panels
-						.children( '.' + _c.navbar )
-						.children( '.' + _c.prev )
-						.next( '.' + _c.title)
-						.each(
-							function()
-							{
-								aria_value( $(this), 'hidden', true);
-							}
-						);
-					$panels
-						.children( '.' + _c.listview )
-						.children( '.' + _c.next )
-						.each(
-							function()
-							{
-								$n = $(this).next('span');
-								$(this).html( text_span( $n.text() + conf.text.openSubmenu ) );
-							}
-						);
-					$panels
-						.children( '.' + _c.navbar )
-						.children( '.' + _c.close )
-						.each(
-							function()
-							{
-								$(this).html( text_span( conf.text.closeMenu ) );
+								var $t  = $(this),
+									txt = $[ _PLUGIN_ ].i18n( conf.text.closeSubmenu );
+
+								$n = $t.children( '.' + _c.title );
+								if ( $n.length )
+								{
+									txt += ' (' + $n.text() + ')';
+								}
+
+								$t.children( '.' + _c.prev )
+									.html( text_span( txt ) );
 							}
 						);
 
+					//	Apply screen reader text to the close-button
+					$navb
+						.children( '.' + _c.close )
+						.html( text_span( $[ _PLUGIN_ ].i18n( conf.text.closeMenu ) ) );
+
+					//	Apply screen reader text to the next-button
 					if ( $panels.is( '.' + _c.panel ) )
 					{
 						$panels
 							.find( '.' + _c.listview )
-							.find( '.' + _c.next )
+							.children( 'li' )
+							.children( '.' + _c.next )
 							.each(
 								function()
 								{
-									$n = $(this).next('span');
-									$(this).html( text_span( $n.text() + conf.text[ $(this).parent().is( '.' + _c.vertical ) ? 'toggleSubmenu' : 'openSubmenu' ] ) );
+									var $t = $(this),
+										txt = $[ _PLUGIN_ ].i18n( conf.text[ $t.parent().is( '.' + _c.vertical ) ? 'toggleSubmenu' : 'openSubmenu' ] );
+									
+									$n = $t.nextAll( 'span, a' ).first();
+									if ( $n.length )
+									{
+										txt += ' (' + $n.text() + ')';
+									}
+
+									$t.html( text_span( txt ) );
 								}
 							);
 					}
 				};
-				this.bind( 'initPanels', text_init );
-				text_init.call( this, this.$menu );
+				this.bind( 'initPanels'	, text_init );
+				this.bind( '_initAddons', text_init );
 			}
 		},
 
@@ -179,9 +225,9 @@
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
 		text: {
 			closeMenu       : 'Close menu',
-      closeSubmenu    : ' (close submenu)',
-      openSubmenu     : ' (open submenu)',
-      toggleSubmenu   : ' (toggle submenu)'
+			closeSubmenu    : 'Close submenu',
+			openSubmenu     : 'Open submenu',
+			toggleSubmenu   : 'Toggle submenu'
 		}
 	};
 

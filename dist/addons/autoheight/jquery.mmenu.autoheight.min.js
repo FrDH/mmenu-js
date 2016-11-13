@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu autoHeight addon
+ * jQuery mmenu autoHeight add-on
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen

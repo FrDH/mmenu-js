@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu navbar addon close content
+ * jQuery mmenu navbar add-on close content
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen

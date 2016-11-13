@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu offCanvas addon
+ * jQuery mmenu offCanvas add-on
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen

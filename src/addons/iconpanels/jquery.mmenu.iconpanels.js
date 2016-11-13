@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu iconPanels addon
+ * jQuery mmenu iconPanels add-on
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen

@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu searchfield addon
+ * jQuery mmenu searchfield add-on
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen
@@ -95,7 +95,7 @@
 											submit = that.__valueOrFn( conf.submit, $panl );
 
 										var $srch = $( '<' + ( form ? 'form' : 'div' ) + ' class="' + _c.search + '" />' ),
-											$inpt = $( '<input placeholder="' + opts.placeholder + '" type="text" autocomplete="off" />' );
+											$inpt = $( '<input placeholder="' + $[ _PLUGIN_ ].i18n( opts.placeholder ) + '" type="text" autocomplete="off" />' );
 
 										$srch.append( $inpt );
 
@@ -169,7 +169,7 @@
 											var $lst = $panl.children( '.' + _c.listview ).first();
 
 											$( '<div class="' + _c.noresultsmsg + ' ' + _c.hidden + '" />' )
-												.append( opts.noResults )
+												.append( $[ _PLUGIN_ ].i18n( opts.noResults ) )
 												[ $lst.length ? 'insertAfter' : 'prependTo' ]( $lst.length ? $lst : $panl );
 										}
 									}
@@ -190,7 +190,7 @@
 								{
 									$rpnl = $( '<div class="' + _c.panel + ' ' + _c.resultspanel + ' ' + _c.hidden + '" />' )
 										.appendTo( this.$pnls )
-										.append( '<div class="' + _c.navbar + ' ' + _c.hidden + '"><a class="' + _c.title + '">' + opts.resultsPanel.title + '</a></div>' )
+										.append( '<div class="' + _c.navbar + ' ' + _c.hidden + '"><a class="' + _c.title + '">' + $[ _PLUGIN_ ].i18n( opts.resultsPanel.title ) + '</a></div>' )
 										.append( '<ul class="' + _c.listview + '" />' )
 										.append( this.$pnls.find( '.' + _c.noresultsmsg ).first().clone() );
 

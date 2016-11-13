@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu drag addon
+ * jQuery mmenu drag add-on
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen

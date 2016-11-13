@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu sectionIndexer addon
+ * jQuery mmenu sectionIndexer add-on
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen

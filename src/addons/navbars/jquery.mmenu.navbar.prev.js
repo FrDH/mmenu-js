@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu navbar addon prev content
+ * jQuery mmenu navbar add-on prev content
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen
@@ -19,6 +19,7 @@
 
 		//	Add content
 		var $prev = $('<a class="' + _c.prev + ' ' + _c.btn + '" href="#" />').appendTo( $navbar );
+
 		this.bind( 'initPanels',
 			function( $panl )
 			{
@@ -31,7 +32,7 @@
 
 
 		//	Update
-		var _url, _txt;
+		var _url, _txt, _own;
 
 		var update = function( $panel )
 		{
@@ -47,12 +48,12 @@
 				$orgn = $panel.children( '.' + _c.navbar ).children( '.' + _c.prev );
 			}
 
-			_url  = $orgn.attr( 'href' );
-			_owns = $orgn.attr( 'aria-owns' );
-			_txt  = $orgn.html();
+			_url = $orgn.attr( 'href' );
+			_own = $orgn.attr( 'aria-owns' );
+			_txt = $orgn.html();
 
 			$prev[ _url ? 'attr' : 'removeAttr' ]( 'href', _url );
-			$prev[ _owns ? 'attr' : 'removeAttr' ]( 'aria-owns', _owns );
+			$prev[ _own ? 'attr' : 'removeAttr' ]( 'aria-owns', _own );
 			$prev[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
 			$prev.html( _txt );
 		};

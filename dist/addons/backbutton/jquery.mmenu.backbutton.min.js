@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu backButton addon
+ * jQuery mmenu backButton add-on
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen

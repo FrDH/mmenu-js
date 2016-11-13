@@ -1,5 +1,5 @@
 /*	
- * jQuery mmenu navbar addon searchfield content
+ * jQuery mmenu navbar add-on searchfield content
  * mmenu.frebsite.nl
  *
  * Copyright (c) Fred Heusschen
