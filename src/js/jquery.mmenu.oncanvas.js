@@ -644,7 +644,8 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 							{
 
 								//	Set selected item
-								if ( that.__valueOrFn( that.opts.onClick.setSelected, $t ) )
+								var setSelected = that.__valueOrFn( that.opts.onClick.setSelected, $t );
+								if ( setSelected )
 								{
 									that.setSelected( $(e.target).parent() );
 								}
@@ -660,6 +661,12 @@ evnt = (evnt == 'init') ? 'initPanels' : evnt;
 								if ( that.__valueOrFn( that.opts.onClick.close, $t, preventDefault ) )
 								{
 									that.close();
+								}
+
+								// Allow browser to redraw before following link.
+								if ( setSelected && !preventDefault ) {
+									e.preventDefault();
+									setTimeout(function(){ window.location = _h; }, 0);
 								}
 							}
 						}
