@@ -45,7 +45,7 @@
 
 
 			//	Blur searchfield
-			this.bind( 'close',
+			this.bind( 'close:start',
 				function()
 				{
 					this.$menu
@@ -57,7 +57,7 @@
 
 
 			//	Bind functions to update
-			this.bind( 'initPanels',
+			this.bind( 'initPanels:after',
 				function( $panels )
 				{
 
@@ -188,7 +188,7 @@
 								var $rpnl = this.$pnls.children( '.' + _c.resultspanel );
 								if ( !$rpnl.length )
 								{
-									$rpnl = $( '<div class="' + _c.panel + ' ' + _c.resultspanel + ' ' + _c.hidden + '" />' )
+									$rpnl = $( '<div class="' + _c.panel + ' ' + _c.resultspanel + ' ' + _c.noanimation + ' ' + _c.hidden + '" />' )
 										.appendTo( this.$pnls )
 										.append( '<div class="' + _c.navbar + ' ' + _c.hidden + '"><a class="' + _c.title + '">' + $[ _PLUGIN_ ].i18n( opts.resultsPanel.title ) + '</a></div>' )
 										.append( '<ul class="' + _c.listview + '" />' )
@@ -330,7 +330,7 @@
 																{
 																	if ( opts.resultsPanel.dividers )
 																	{
-																		$itms = $itms.add( '<li class="' + _c.divider + '">' + $(this).children( '.' + _c.navbar ).text() + '</li>' );
+																		$itms = $itms.add( '<li class="' + _c.divider + '">' + $(this).children( '.' + _c.navbar ).children( '.' + _c.title ).text() + '</li>' );
 																	}
 																	$itms = $itms.add( $i );
 																}
@@ -401,7 +401,8 @@
 											$panl.find( '.' + _c.noresultsmsg )[ $rslt.not( '.' + _c.hidden ).length ? 'addClass' : 'removeClass' ]( _c.hidden );
 
 											//	Update for other addons
-											this.update();
+											this.trigger( 'updateListview' );
+
 										};
 
 										$inpt

@@ -13,6 +13,9 @@
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ][ _CONTENT_ ] = function( $navbar, opts, conf )
 	{
+		var that = this;
+
+
 		//	Get vars
 		var _c = $[ _PLUGIN_ ]._c,
 			_d = $[ _PLUGIN_ ]._d;
@@ -22,56 +25,69 @@
 
 		//	Add content
 		var $crumbs = $('<span class="' + _c.breadcrumbs + '" />').appendTo( $navbar );
-		this.bind( 'initPanels',
-			function( $panels )
+
+		this.bind( 'initNavbar:after',
+			function( $panel )
 			{
-				$panels
-					.removeClass( _c.hasnavbar )
-					.each(
-						function()
-						{
-							var crumbs = [],
-								$panl = $(this),
-								$bcrb = $( '<span class="' + _c.breadcrumbs + '"></span>' ),
-								$crnt = $(this).children().first(),
-								first = true;
+				$panel.removeClass( _c.hasnavbar );
+					
+				var crumbs = [],
+					$bcrb = $( '<span class="' + _c.breadcrumbs + '"></span>' ),
+					$crnt = $panel,
+					first = true;
 
-							while ( $crnt && $crnt.length )
-							{
-								if ( !$crnt.is( '.' + _c.panel ) )
-								{
-									$crnt = $crnt.closest( '.' + _c.panel );
-								}
+				while ( $crnt && $crnt.length )
+				{
+					if ( !$crnt.is( '.' + _c.panel ) )
+					{
+						$crnt = $crnt.closest( '.' + _c.panel );
+					}
 
-								var text = $crnt.children( '.' + _c.navbar ).children( '.' + _c.title ).text();
-								crumbs.unshift( first ? '<span>' + text + '</span>' : '<a href="#' + $crnt.attr( 'id' ) + '">' + text + '</a>' );
+					if ( !$crnt.hasClass( _c.vertical ) )
+					{
+						var text = $crnt.children( '.' + _c.navbar ).children( '.' + _c.title ).text();
+						crumbs.unshift( first ? '<span>' + text + '</span>' : '<a href="#' + $crnt.attr( 'id' ) + '">' + text + '</a>' );
 
-								first = false;
-								$crnt = $crnt.data( _d.parent );
-							}
-							$bcrb
-								.append( crumbs.join( '<span class="' + _c.separator + '">' + conf.breadcrumbSeparator + '</span>' ) )
-								.appendTo( $panl.children( '.' + _c.navbar ) );
-						}
-					);
+						first = false;
+					}
+					$crnt = $crnt.data( _d.parent );
+				}
+				$bcrb
+					.append( crumbs.join( '<span class="' + _c.separator + '">' + conf.breadcrumbSeparator + '</span>' ) )
+					.appendTo( $panel.children( '.' + _c.navbar ) );
+			}
+		);
+
+		//	Update for to opened panel
+		this.bind( 'openPanel:start',
+			function( $panel )
+			{
+				$crumbs.html( 
+					$panel
+						.children( '.' + _c.navbar )
+						.children( '.' + _c.breadcrumbs )
+						.html() || ''
+				);
 			}
 		);
 
 
-		//	Update
-		var update = function()
-		{
-			$crumbs.html( 
-				this.$pnls
-					.children( '.' + _c.current )
+		//	Add screenreader / aria support
+		this.bind( 'initNavbar:after:sr-aria',
+			function( $panel )
+			{
+				$panel
 					.children( '.' + _c.navbar )
 					.children( '.' + _c.breadcrumbs )
-					.html()
-			);
-		};
-
-		this.bind( 'openPanel', update );
-		this.bind( 'initPanels', update );
+					.children( 'a' )
+					.each(
+						function()
+						{
+							that.__sr_aria( $(this), 'owns', $(this).attr( 'href' ).slice( 1 ) );
+						}
+					);
+			}
+		);
 
 
 		//	Maintain content count

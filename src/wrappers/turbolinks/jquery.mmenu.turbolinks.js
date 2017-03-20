@@ -1,5 +1,5 @@
 /*	
- * Turbolinks wrapper for jQuery mmenu
+ * Turbolinks (5 and up) wrapper for jQuery mmenu
  * Include this file after including the jquery.mmenu plugin for default Turbolinks support.
  */
 
@@ -9,23 +9,35 @@
 	var _PLUGIN_ = 'mmenu';
 
 	//	Vars
-	var ready, classnames, $html;
+	var classnames, $html;
 
 	//	Store the HTML classnames onDocumentReady
 	$(document).on(
-		'ready',
+		'turbolinks:before-visit',
 		function()
 		{
 			$html = $('html');
 			classnames = $html.attr( 'class' );
+			classnames = $.grep(
+				classnames.split( /\s+/ ),
+				function( name )
+				{
+					return !/mm-/.test( name );
+				}
+			).join( ' ' );
 		}
 	);
 
 	//	Reset the HTML classnames and reset the $.mmenu.glbl variable on page:change
 	$(document).on(
-		'page:load',
+		'turbolinks:load',
 		function()
 		{
+			if ( typeof $html === 'undefined' )
+			{
+				return;
+			}
+
 			$html.attr( 'class', classnames );
 			$[ _PLUGIN_ ].glbl = false;
 		}

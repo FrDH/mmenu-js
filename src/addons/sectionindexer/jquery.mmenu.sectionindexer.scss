@@ -2,7 +2,7 @@
 	jQuery.mmenu sectionIndexer addon CSS
 */
 
-@import "../../css/_imp/import";
+@import "../../scss/import";
 
 .mm-indexer
 {
@@ -17,7 +17,7 @@
 	top: 0;
 	bottom: 0;
 	right: -( $mm_sectionIndexerWidth * 5 );
-	z-index: 3;
+	z-index: 15;
 	
 	transition: right $mm_transitionDuration $mm_transitionFunction;
 	

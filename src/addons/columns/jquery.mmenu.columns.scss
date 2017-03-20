@@ -2,62 +2,52 @@
 	jQuery.mmenu columns addon CSS
 */
 
-@import "../../css/_imp/import";
+@import "../../scss/import";
 
 @mixin mm_columns_sizing( $nr )
 {
-	.mm-menu.mm-columns .mm-panels > .mm-panel
+	.mm-columns .mm-panels > .mm-columns-#{$nr}
 	{
-		&.mm-columns-#{$nr}
+		@include mm_translate( $nr * 100%, 0 );
+	}
+
+	.mm-columns-#{$nr} .mm-panels > .mm-panel
+	{
+		z-index: $nr;
+		@if ( $nr > 0 )
 		{
-		//	transform: translate3d( $nr * 100%, 0, 0 );
-			@include mm_translate( $nr * 100%, 0 );
+			width: ceil( 100% / $nr * 100 ) / 100;
 		}
-		&.mm-opened:not( [class*="mm-columns-"] ) ~ .mm-panel:not( .mm-opened ).mm-columns-#{$nr}
+		else
 		{
-			display: block;
-		//	transform: translate3d( 100% * ( $nr + 1 ), 0, 0 );
+			width: 100%;
+		}
+
+		&:not( .mm-opened ):not( .mm-subopened )
+		{
 			@include mm_translate( ($nr + 1) * 100%, 0 );
 		}
 	}
 
 	@include mm_sizing( ".mm-columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr );
 	@include mm_sizing_right(".mm-columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr);
-
-	@if ( $nr > 0 )
-	{
-		.mm-menu.mm-columns-#{$nr} .mm-panels > .mm-panel
-		{
-			width: ceil( 100% / $nr * 100 ) / 100;
-		}
-	}
 }
 
-.mm-menu.mm-columns
+.mm-columns
 {
-	transition-property: transform, width, max-width;
+	transition-property: width;
 
 	.mm-panels > .mm-panel
 	{
-		width: 100%;
 		right: auto;
-		display: none;
+		transition-property: width, transform;
 
-		transition-property: transform, width;
-
-		&.mm-opened
-		{
-			border-right: 1px solid;
-			border-color: inherit;
-			display: block;
-		//	transform: translate3d( 0, 0, 0 );
-			@include mm_translate( 0%, 0 );
-		}
+		&.mm-opened,
 		&.mm-subopened
 		{
-		//	transform: translate3d( -100%, 0, 0 );
-			@include mm_translate( -100%, 0 );
-			z-index: 2;
+			border-left: 1px solid;
+			border-color: inherit;
+			display: block !important;
 		}
 	}
 }
@@ -67,5 +57,23 @@
 @include mm_columns_sizing( 2 );
 @include mm_columns_sizing( 3 );
 @include mm_columns_sizing( 4 );
-@include mm_columns_sizing( 5 );
-@include mm_columns_sizing( 6 );
+
+
+.mm-columns.mm-offcanvas
+{
+	&.mm-bottom,
+	&.mm-top
+	{
+		width: 100%;
+		max-width: 100%;
+		min-width: 100%;
+	}
+}
+html.mm-opening .mm-columns.mm-offcanvas
+{
+	&.mm-front,
+	&.mm-next
+	{
+		transition-property: width, min-width, max-width, transform;
+	}
+}

@@ -59,15 +59,20 @@
 						}
 					}
 				};
+				this.bind( 'initMenu:after',
+					function()
+					{
+						findCurrent( window.location.href );
+					}
+				);
 
-				findCurrent( window.location.href );
 			}
 
 			//	Remove current selected item
 			else if ( !opts.current )
 			{
-				this.bind( 'initPanels',
-					function( $panels )
+				this.bind( 'initListview:after',
+					function( $panel )
 					{
 						$panels
 							.find( '.' + _c.listview )
@@ -81,42 +86,47 @@
 			//	Add :hover effect on items
 			if ( opts.hover )
 			{
-				this.$menu.addClass( _c.hoverselected );
+				this.bind( 'initMenu:after',
+					function()
+					{
+						this.$menu.addClass( _c.hoverselected );
+					}
+				);
 			}
 
 
 			//	Set parent item selected for submenus
 			if ( opts.parent )
 			{
-				this.$menu.addClass( _c.parentselected );
-
-				var update = function( $panel )
-				{
-					//	Remove all
-					this.$pnls
-						.find( '.' + _c.listview )
-						.find( '.' + _c.next )
-						.removeClass( _c.selected );
-
-					//	Move up the DOM tree
-					var $li = $panel.data( _d.parent );
-					while ( $li && $li.length )
+				this.bind( 'openPanel:finish',
+					function( $panel )
 					{
-						$li = $li
-							.not( '.' + _c.vertical )
-							.children( '.' + _c.next )
-							.addClass( _c.selected )
-							.end()
-							.closest( '.' + _c.panel )
-							.data( _d.parent );
+						//	Remove all
+						this.$pnls
+							.find( '.' + _c.listview )
+							.find( '.' + _c.next )
+							.removeClass( _c.selected );
+
+						//	Move up the DOM tree
+						var $parent = $panel.data( _d.parent );
+						while ( $parent )
+						{
+							$parent
+								.not( '.' + _c.vertical )
+								.children( '.' + _c.next )
+								.addClass( _c.selected );
+						
+							$parent = $parent		
+								.closest( '.' + _c.panel )
+								.data( _d.parent );
+						}
 					}
-				};
+				);
 
-				this.bind( 'openedPanel', update );
-				this.bind( 'initPanels',
-					function( $panls )
+				this.bind( 'initMenu:after',
+					function()
 					{
-						update.call( this, this.$pnls.children( '.' + _c.current ) );
+						this.$menu.addClass( _c.parentselected );
 					}
 				);
 			}

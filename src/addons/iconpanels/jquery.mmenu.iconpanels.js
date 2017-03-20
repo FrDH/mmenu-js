@@ -49,8 +49,6 @@
 			if ( opts.add )
 			{
 
-				this.$menu.addClass( _c.iconpanel );
-
 				var clsn = [];
 				for ( var i = 0; i <= opts.visible; i++ )
 				{
@@ -58,7 +56,7 @@
 				}
 				clsn = clsn.join( ' ' );
 
-				var update = function( $panel )
+				var setPanels = function( $panel )
 				{
 					if ( $panel.hasClass( _c.vertical ) )
 					{
@@ -74,30 +72,37 @@
 						.not( '.' + _c.vertical )
 						.slice( -opts.visible )
 						.each(
-							function( x )
+							function( i )
 							{
-								$(this).addClass( _c.iconpanel + '-' + x );
+								$(this).addClass( _c.iconpanel + '-' + i );
 							}
 						);
 				};
 
-				this.bind( 'openPanel', update );
-				this.bind( 'initPanels',
+				this.bind( 'initMenu:after',
+					function()
+					{
+						this.$menu.addClass( _c.iconpanel );
+					}
+				);
+
+				this.bind( 'openPanel:start', setPanels );
+				this.bind( 'initPanels:after',
 					function( $panels )
 					{
-						update.call( that, that.$pnls.children( '.' + _c.current ) );
-
-						$panels
-							.not( '.' + _c.vertical )
-							.each(
-								function()
-								{
-									if ( !$(this).children( '.' + _c.subblocker ).length )
-									{
-										$(this).prepend( '<a href="#' + $(this).closest( '.' + _c.panel ).attr( 'id' ) + '" class="' + _c.subblocker + '" />' );
-									}
-								}
-							);
+						setPanels.call( that, that.$pnls.children( '.' + _c.opened ) );
+					}
+				);
+				this.bind( 'initListview:after',
+					function( $panel )
+					{
+						if ( !$panel.hasClass( _c.vertical ) )
+						{
+							if ( !$panel.children( '.' + _c.subblocker ).length )
+							{
+								$panel.prepend( '<a href="#' + $panel.closest( '.' + _c.panel ).attr( 'id' ) + '" class="' + _c.subblocker + '" />' );
+							}
+						}
 					}
 				);
 			}

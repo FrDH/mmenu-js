@@ -2,26 +2,28 @@
 	jQuery.mmenu iconbar extension CSS
 */
 
-@import "../../css/_imp/import";
+@import "../../scss/import";
 
 
-body
+html.mm-iconbar
 {
-	overflow-x: hidden;
+	body
+	{
+		overflow-x: hidden;
+	}
+	.mm-page
+	{
+		background: inherit;
+		min-height: 100vh;
+	}
+	.mm-slideout
+	{
+		box-sizing: border-box;	
+		padding-right: $mm_iconbarWidth;
+		@include mm_translate( $mm_iconbarWidth, 0 );
+	}
 }
 .mm-menu.mm-iconbar
 {
 	display: block;
-}
-.mm-page
-{
-	background: inherit;
-	min-height: 100vh;
-}
-.mm-slideout
-{
-	box-sizing: border-box;	
-	padding-right: $mm_iconbarWidth;
-	//	transform: translate3d( $mm_iconbarWidth, 0, 0 );
-	@include mm_translate( $mm_iconbarWidth, 0 );
 }

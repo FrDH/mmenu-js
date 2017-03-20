@@ -2,40 +2,50 @@
 	jQuery.mmenu widescreen extension CSS
 	
 	To use on widescreens only, include it using a mediaquery:
-	<link type="text/css" href="jquery.mmenu.widescreen.css" media="all and (min-width: 900px)"/>
+	$("#my-menu").mmenu({
+		extensions: {
+			'(min-width: 1300px)' : [ 'widescreen' ]
+		};
+	});
 */
 
-@import "../../css/_imp/import";
+@import "../../scss/import";
 
 
 $mm_ws_menuWidth: 30% !default;
 
-/*
-html,
-body
-{
-	overflow: auto !important;
-}
-*/
-body
-{
-	position: relative;
-}
 
-#mm-blocker
+
+html.mm-widescreen
 {
-	display: none !important;
-}
-.mm-slideout
-{
-	transform: none !important;
-	width: 100 - $mm_ws_menuWidth !important;
-	margin-left: $mm_ws_menuWidth !important;
-}
-.mm-page
-{
-	background: inherit;
-	box-sizing: border-box;
+	body
+	{
+		position: relative;
+	}
+	#mm-blocker
+	{
+		display: none !important;
+	}
+	.mm-slideout
+	{
+		transform: none !important;
+		width: 100 - $mm_ws_menuWidth !important;
+		margin-left: $mm_ws_menuWidth !important;
+	}
+	.mm-page
+	{
+		background: inherit;
+		box-sizing: border-box;
+	}
+
+	&.mm-blocking
+	{
+		&,
+		body
+		{
+			overflow: auto;
+		}
+	}
 }
 .mm-menu.mm-widescreen
 {
@@ -44,7 +54,7 @@ body
 
 	display: block !important;
 	width: $mm_ws_menuWidth !important;
-	min-width: none !important;
+	min-width: 0 !important;
 	max-width: none !important;
 
 	top: 0 !important;

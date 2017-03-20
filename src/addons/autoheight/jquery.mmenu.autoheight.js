@@ -16,10 +16,6 @@
 		//	setup: fired once per menu
 		setup: function()
 		{
-			if ( !this.opts.offCanvas )
-			{
-				return;
-			}
 
 			var that = this,
 				opts = this.opts[ _ADDON_ ],
@@ -53,34 +49,40 @@
 				return;
 			}
 
-			this.$menu.addClass( _c.autoheight );
+
+			this.bind( 'initMenu:after',
+				function()
+				{
+					this.$menu.addClass( _c.autoheight );
+				}
+			);
 
 
-			//	Update the height
-			var update = function( $panl )
+			//	Set the height
+			var setHeight = function( $panel )
 			{
-				if ( !this.vars.opened )
+				if ( this.opts.offCanvas && !this.vars.opened )
 				{
 					return;
 				}
 
-				var _top = parseInt( this.$pnls.css( 'top' )	, 10 ) || 0,
-					_bot = parseInt( this.$pnls.css( 'bottom' )	, 10 ) || 0,
+				var _top = Math.max( parseInt( this.$pnls.css( 'top' )		, 10 ), 0 ) || 0,
+					_bot = Math.max( parseInt( this.$pnls.css( 'bottom' )	, 10 ), 0 ) || 0,
 					_hgh = 0;
 
 				this.$menu.addClass( _c.measureheight );
 
 				if ( opts.height == 'auto' )
 				{
-					$panl = $panl || this.$pnls.children( '.' + _c.current );
-					if ( $panl.is( '.' + _c.vertical ) )
+					$panel = $panel || this.$pnls.children( '.' + _c.opened );
+					if ( $panel.is( '.' + _c.vertical ) )
 					{
-						$panl = $panl
+						$panel = $panel
 							.parents( '.' + _c.panel )
 							.not( '.' + _c.vertical )
 							.first();
 					}
-					_hgh = $panl.outerHeight();
+					_hgh = $panel.outerHeight();
 				}
 				else if ( opts.height == 'highest' )
 				{
@@ -88,15 +90,15 @@
 						.each(
 							function()
 							{
-								var $panl = $(this);
-								if ( $panl.is( '.' + _c.vertical ) )
+								var $panel = $(this);
+								if ( $panel.is( '.' + _c.vertical ) )
 								{
-									$panl = $panl
+									$panel = $panel
 										.parents( '.' + _c.panel )
 										.not( '.' + _c.vertical )
 										.first();
 								}
-								_hgh = Math.max( _hgh, $panl.outerHeight() );
+								_hgh = Math.max( _hgh, $panel.outerHeight() );
 							}
 						);
 				}
@@ -106,17 +108,20 @@
 					.removeClass( _c.measureheight );
 			};
 
-			this.bind( 'opening', update );
+			if ( this.opts.offCanvas )
+			{
+				this.bind( 'open:start'			, setHeight );
+			}
 
 			if ( opts.height == 'highest' )
 			{
-				this.bind( 'initPanels', update );
+				this.bind( 'initPanels:after' 	, setHeight );
 			}
 			if ( opts.height == 'auto' )
 			{
-				this.bind( 'update', update );
-				this.bind( 'openPanel', update );
-				this.bind( 'closePanel', update );
+				this.bind( 'updateListview'		, setHeight );
+				this.bind( 'openPanel:start'	, setHeight );
+				this.bind( 'closePanel:finish'	, setHeight );
 			}
 		},
 

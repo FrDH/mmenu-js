@@ -2,7 +2,7 @@
 	jQuery.mmenu iconPanels addon CSS
 */
 
-@import "../../css/_imp/import";
+@import "../../scss/import";
 
 @mixin mm_iconpanel_positioning( $nr )
 {
@@ -12,21 +12,19 @@
 	}
 }
 
-.mm-iconpanel .mm-panel
+.mm-iconpanel .mm-panels > .mm-panel
 {
 	transition-property: transform, left;
 
-	&.mm-opened
+	&.mm-opened,
+	&.mm-subopened
 	{
 		border-left: 1px solid;
 		border-color: inherit;
+		display: block !important;
 	}
 	&.mm-subopened
 	{
-		overflow-y: hidden;
-		left: -$mm_iconpanelWidth;
-
-		//	transform: translate3d( 0, 0, 0 );
 		@include mm_translate( 0, 0 );
 	}
 }
@@ -45,6 +43,13 @@
 	background: inherit;
 	opacity: 0;
 	display: block;
+	max-height: 100%;
+
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	z-index: 3;
 
 	transition: opacity $mm_transitionDuration $mm_transitionFunction;
 }
@@ -52,10 +57,5 @@
 .mm-subopened .mm-subblocker
 {
 	opacity: 0.6;
-	position: absolute;
-	top: 0;
-	right: 0;
 	bottom: -100000px;
-	left: 0;
-	z-index: 3;
 }

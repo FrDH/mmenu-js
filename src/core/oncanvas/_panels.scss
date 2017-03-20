@@ -1,0 +1,77 @@
+.mm-panels,
+.mm-panels > .mm-panel
+{
+	background: inherit;
+	border-color: inherit;
+	box-sizing: border-box;
+	margin: 0;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 0;
+}
+.mm-panels
+{
+	overflow: hidden;
+}
+.mm-panel
+{
+	@include mm_translate( 100%, 0 );
+	transition: transform $mm_transitionDuration $mm_transitionFunction;
+	transform-origin: top left;
+
+	&.mm-opened
+	{
+		@include mm_translate( 0%, 0 );
+	}
+	&.mm-subopened
+	{
+		@include mm_translate( -$mm_subpanelOffset, 0 );
+	}
+	&.mm-highest
+	{
+		z-index: 1;
+	}
+
+	&.mm-noanimation
+	{
+		transition: none !important;
+
+		&.mm-subopened
+		{
+			@include mm_translate( 0, 0 );
+		}
+	}
+}
+
+.mm-panels > .mm-panel
+{
+	-webkit-overflow-scrolling: touch;
+	overflow: scroll;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	padding: 0 $mm_panelPadding;
+
+	&.mm-hasnavbar
+	{
+		padding-top: $mm_navbarHeight;
+	}
+
+	//	Fixes css from other scripts/styles hiding submenus
+	&:not(.mm-hidden)
+	{
+		display: block;
+	}
+
+	//	Because padding-bottom in some browsers is ignored when a DIV is scrollable
+	&:before,
+	&:after
+	{
+		content: '';
+		display: block;
+		height: $mm_panelPadding;
+	}
+}

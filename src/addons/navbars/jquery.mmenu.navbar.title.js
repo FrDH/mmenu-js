@@ -18,39 +18,63 @@
 
 
 		//	Add content
-		var $title = $('<a class="' + _c.title + '" />').appendTo( $navbar );
+		var $title = $('<a class="' + _c.title + '" />')
+			.appendTo( $navbar );
 
 
-		//	Update
+		//	Update to opened panel
 		var _url, _txt;
+		var $org;
 
-		var update = function( $panel )
-		{
-			$panel = $panel || this.$pnls.children( '.' + _c.current );
-			if ( $panel.hasClass( _c.vertical ) )
+		this.bind( 'openPanel:start',
+			function( $panel )
 			{
-				return;
+				if ( $panel.hasClass( _c.vertical ) )
+				{
+					return;
+				}
+
+				$org = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelTitle );
+				if ( !$org.length )
+				{
+					$org = $panel.children( '.' + _c.navbar ).children( '.' + _c.title );
+				}
+
+				_url = $org.attr( 'href' );
+				_txt = $org.html() || opts.title;
+
+				$title[ _url ? 'attr' : 'removeAttr' ]( 'href', _url );
+				$title[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
+				$title.html( _txt );
 			}
+		);
 
-			var $orgn = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelTitle );
-			if ( !$orgn.length )
+
+		//	Add screenreader / aria support
+		var $prev;
+
+		this.bind( 'openPanel:start:sr-aria',
+			function( $panel )
 			{
-				$orgn = $panel.children( '.' + _c.navbar ).children( '.' + _c.title );
-			}
-
-			_url = $orgn.attr( 'href' );
-			_txt = $orgn.html() || opts.title;
-
-			$title[ _url ? 'attr' : 'removeAttr' ]( 'href', _url );
-			$title[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
-			$title.html( _txt );
-		};
-
-		this.bind( 'openPanel', update );
-		this.bind( 'initPanels',
-			function( $panels )
-			{
-				update.call( this );
+				if ( this.opts.screenReader.text )
+				{
+					if ( !$prev )
+					{
+						$prev = this.$menu
+							.children( '.' + _c.navbars + '-top' + ', .' + _c.navbars + '-bottom' )
+							.children( '.' + _c.navbar )
+							.children( '.' + _c.prev );
+					}
+					if ( $prev.length )
+					{
+						var hidden = true;
+						if ( this.opts.navbar.titleLink == 'parent' )
+						{
+							hidden = !$prev.hasClass( _c.hidden );
+						}
+						this.__sr_aria( $title, 'hidden', hidden );
+					}
+				}
 			}
 		);
 

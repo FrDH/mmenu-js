@@ -2,34 +2,36 @@
 	jQuery.mmenu pageDim extension CSS
 */
 
-@import "../../css/_imp/import";
+@import "../../scss/import";
 
 
-html
+.mm-menu.mm-opened[class*="mm-pagedim"]
 {
-	&.mm-pagedim,
-	&.mm-pagedim-white,
-	&.mm-pagedim-black
+	~ #mm-blocker
 	{
-		#mm-blocker
-		{
-			opacity: 0;
-		}
-		&.mm-opening #mm-blocker
-		{
-			opacity: 0.3;
-			transition: opacity $mm_transitionDuration $mm_transitionFunction $mm_transitionDuration;
-		}
+		opacity: 0;
 	}
-	&.mm-pagedim #mm-blocker
+}
+
+html.mm-opening .mm-menu.mm-opened[class*="mm-pagedim"]
+{
+	~ #mm-blocker
+	{
+		opacity: $mm_pagedimOpacity;
+		transition: opacity $mm_transitionDuration $mm_transitionFunction $mm_transitionDuration;
+	}
+}
+.mm-menu.mm-opened
+{
+	&.mm-pagedim ~ #mm-blocker
 	{
 		background: inherit;
 	}
-	&.mm-pagedim-white #mm-blocker
+	&.mm-pagedim-white ~ #mm-blocker
 	{
 		background: #fff;
 	}
-	&.mm-pagedim-black #mm-blocker
+	&.mm-pagedim-black ~ #mm-blocker
 	{
 		background: #000;
 	}

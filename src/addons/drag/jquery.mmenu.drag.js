@@ -66,16 +66,21 @@
 			//	Drag open the menu
 			if ( opts.menu.open )
 			{
-				dragOpenMenu.call( this, opts.menu, conf.menu, glbl );
+				this.bind( 'setPage:after',
+					function()
+					{
+						dragOpenMenu.call( this, opts.menu, conf.menu, glbl );
+					}
+				);
 			}
 
 			//	Drag close panels
 			if ( opts.panels.close )
 			{
-				this.bind( 'initPanels',
-					function( $panels )
+				this.bind( 'initPanel:after',
+					function( $panel )
 					{
-						dragClosePanels.call( this, $panels, opts.panels, conf.panels, glbl );
+						dragClosePanel.call( this, $panel, opts.panels, conf.panels, glbl );
 					}
 				);
 			}
@@ -86,6 +91,7 @@
 		{
 			if ( typeof Hammer != 'function' || Hammer.VERSION < 2 )
 			{
+				$[ _PLUGIN_ ].addons[ _ADDON_ ].add = function() {};
 				$[ _PLUGIN_ ].addons[ _ADDON_ ].setup = function() {};
 				return;
 			}
@@ -308,7 +314,7 @@
 							_stage = 2;
 
 							that._openSetup();
-							that.trigger( 'opening' );
+							that.trigger( 'open:start' );
 							glbl.$html.addClass( _c.dragging );
 
 							_maxDistance = minMax( 
@@ -349,35 +355,38 @@
 	}
 
 
-	function dragClosePanels( $panels, opts, conf, glbl )
+	function dragClosePanel( $panel, opts, conf, glbl )
 	{
 		var that = this;
+		var $parent = $panel.data( _d.parent );
 
-		//	Bind events
-		$panels.each(
-			function()
-			{
-				var $panl = $(this),
-					$prnt = $panl.data( _d.parent );
+		if ( $parent )
+		{
+			$parent = $parent.closest( '.' + _c.panel );
 
-				if ( $prnt )
-				{
-					$prnt = $prnt.closest( '.' + _c.panel );
-
-					if ( $prnt.length )
+			var _hammer = new Hammer( $panel[ 0 ], that.opts[ _ADDON_ ].vendors.hammer ),
+				timeout = null;
+			_hammer
+				.on( 'panright',
+					function( e )
 					{
-						var _hammer = new Hammer( $panl[ 0 ], that.opts[ _ADDON_ ].vendors.hammer );
-						_hammer
-							.on( 'panright',
-								function( e )
-								{
-									that.openPanel( $prnt );
-								}
-							);
+						if ( timeout )
+						{
+							return;
+						}
+						that.openPanel( $parent );
+
+						//	prevent dragging while panel still open.
+						timeout = setTimeout(
+							function()
+							{
+								clearTimeout( timeout );
+								timeout = null;
+							}, that.conf.openingInterval + that.conf.transitionDuration
+						);
 					}
-				}
-			}
-		);
+				);
+		}
 	}
 
 })( jQuery );

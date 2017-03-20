@@ -37,7 +37,7 @@
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
 
-			this.bind( 'initPanels',
+			this.bind( 'initPanels:after',
 				function( $panels )
 				{
 					//	Set the panel(s)
@@ -49,7 +49,7 @@
 							case 'panels':
 								 $wrapper = $panels;
 								break;
-			
+
 							default:
 								$wrapper = $(opts.addTo, this.$menu).filter( '.' + _c.panel );
 								break;
@@ -59,83 +59,84 @@
 							.find( '.' + _c.divider )
 							.closest( '.' + _c.panel )
 							.addClass( _c.hasindexer );
-					}
 
 
-					//	Add the indexer, only if it does not allready excists
-					if ( !this.$indexer && 
-						this.$pnls.children( '.' + _c.hasindexer ).length
-					) {
-						this.$indexer = $( '<div class="' + _c.indexer + '" />' )
-							.prependTo( this.$pnls )
-							.append( 
-								'<a href="#a">a</a>' +
-								'<a href="#b">b</a>' +
-								'<a href="#c">c</a>' +
-								'<a href="#d">d</a>' +
-								'<a href="#e">e</a>' +
-								'<a href="#f">f</a>' +
-								'<a href="#g">g</a>' +
-								'<a href="#h">h</a>' +
-								'<a href="#i">i</a>' +
-								'<a href="#j">j</a>' +
-								'<a href="#k">k</a>' +
-								'<a href="#l">l</a>' +
-								'<a href="#m">m</a>' +
-								'<a href="#n">n</a>' +
-								'<a href="#o">o</a>' +
-								'<a href="#p">p</a>' +
-								'<a href="#q">q</a>' +
-								'<a href="#r">r</a>' +
-								'<a href="#s">s</a>' +
-								'<a href="#t">t</a>' +
-								'<a href="#u">u</a>' +
-								'<a href="#v">v</a>' +
-								'<a href="#w">w</a>' +
-								'<a href="#x">x</a>' +
-								'<a href="#y">y</a>' +
-								'<a href="#z">z</a>' );
+						//	Add the indexer, only if it does not allready excists
+						if ( !this.$indexer )
+						{
+							this.$indexer = $( '<div class="' + _c.indexer + '" />' )
+								.prependTo( this.$pnls )
+								.append( 
+									'<a href="#a">a</a>' +
+									'<a href="#b">b</a>' +
+									'<a href="#c">c</a>' +
+									'<a href="#d">d</a>' +
+									'<a href="#e">e</a>' +
+									'<a href="#f">f</a>' +
+									'<a href="#g">g</a>' +
+									'<a href="#h">h</a>' +
+									'<a href="#i">i</a>' +
+									'<a href="#j">j</a>' +
+									'<a href="#k">k</a>' +
+									'<a href="#l">l</a>' +
+									'<a href="#m">m</a>' +
+									'<a href="#n">n</a>' +
+									'<a href="#o">o</a>' +
+									'<a href="#p">p</a>' +
+									'<a href="#q">q</a>' +
+									'<a href="#r">r</a>' +
+									'<a href="#s">s</a>' +
+									'<a href="#t">t</a>' +
+									'<a href="#u">u</a>' +
+									'<a href="#v">v</a>' +
+									'<a href="#w">w</a>' +
+									'<a href="#x">x</a>' +
+									'<a href="#y">y</a>' +
+									'<a href="#z">z</a>' );
 
-						//	Scroll onMouseOver
-						this.$indexer
-							.children()
-							.on( _e.mouseover + '-sectionindexer ' + _c.touchstart + '-sectionindexer',
-								function( e )
-								{
-									var lttr = $(this).attr( 'href' ).slice( 1 ),
-										$panl = that.$pnls.children( '.' + _c.current ),
-										$list = $panl.find( '.' + _c.listview );
+							//	Scroll onMouseOver
+							this.$indexer
+								.children()
+								.on( _e.mouseover + '-' + _ADDON_ + ' ' + _c.touchstart + '-' + _ADDON_,
+									function( e )
+									{
+										var lttr = $(this).attr( 'href' ).slice( 1 ),
+											$panl = that.$pnls.children( '.' + _c.opened ),
+											$list = $panl.find( '.' + _c.listview );
 
-									var newTop = false,
-										oldTop = $panl.scrollTop();
+										var newTop = false,
+											oldTop = $panl.scrollTop();
 
-									$panl.scrollTop( 0 );
-									$list
-										.children( '.' + _c.divider )
-										.not( '.' + _c.hidden )
-										.each(
-											function()
-											{
-												if ( newTop === false &&
-													lttr == $(this).text().slice( 0, 1 ).toLowerCase()
-												) {
-													newTop = $(this).position().top;
+										$panl.scrollTop( 0 );
+										$list
+											.children( '.' + _c.divider )
+											.not( '.' + _c.hidden )
+											.each(
+												function()
+												{
+													if ( newTop === false &&
+														lttr == $(this).text().slice( 0, 1 ).toLowerCase()
+													) {
+														newTop = $(this).position().top;
+													}
 												}
-											}
-										);
-									$panl.scrollTop( newTop !== false ? newTop : oldTop );
-								}
-							);
+											);
+
+										$panl.scrollTop( newTop !== false ? newTop : oldTop );
+									}
+								);
+						}
 
 
 						//	Show or hide the indexer
-						var update = function( $panl )
+						var update = function( $panel )
 						{
-							that.$menu[ ( $panl.hasClass( _c.hasindexer ) ? 'add' : 'remove' ) + 'Class' ]( _c.hasindexer );
+							$panel = $panel || this.$pnls.children( '.' + _c.opened );
+							this.$menu[ ( $panel.hasClass( _c.hasindexer ) ? 'add' : 'remove' ) + 'Class' ]( _c.hasindexer );
 						};
 
-						this.bind( 'openPanel', update );
-						update.call( this, this.$pnls.children( '.' + _c.current ) );
+						this.bind( 'openPanel:start', 	update );
+						this.bind( 'initPanels:after',	update );
 					}
 				}
 			);

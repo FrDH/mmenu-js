@@ -27,19 +27,19 @@
 
 			glbl = $[ _PLUGIN_ ].glbl;
 
-
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
-			var setPage = function( $page )
+
+			var insertElements = function( $page )
 			{
 				//	Refactor fixed classes
 				var _fixd = this.conf.classNames[ _ADDON_ ].fixed;
 
 				this.__refactorClass( $page.find( '.' + _fixd ), _fixd, 'slideout' )
-					.appendTo( glbl.$body );
+					[ conf.elemInsertMethod ]( conf.elemInsertSelector );
 			};
-			setPage.call( this, glbl.$page );
-			this.bind( 'setPage', setPage );
+
+			this.bind( 'setPage:after', insertElements );
 		},
 
 		//	add: fired once per page load
@@ -58,6 +58,10 @@
 
 
 	//	Default options and configuration
+	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
+		elemInsertMethod	: 'appendTo',
+		elemInsertSelector	: 'body'
+	};
 	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
 		fixed 	: 'Fixed'
 	};

@@ -1,7 +1,7 @@
 {
   "name": "jquery.mmenu",
-  "version": "5.7.8",
-  "main": "dist/js/jquery.mmenu.all.min.umd.js",
+  "version": "6.0.0",
+  "main": "dist/jquery.mmenu.all.min.js",
   "author": "Fred Heusschen <info@frebsite.nl>",
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-ruby-sass": "^2.0.6",
     "gulp-uglify": "^1.5.1",
-    "gulp-umd": "^0.2.0"
+    "gulp-umd": "^0.2.0",
+    "event-stream": "^0.2.0"
   }
 }

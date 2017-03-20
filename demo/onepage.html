@@ -8,8 +8,7 @@
 		<title>jQuery.mmenu demo</title>
 
 		<link type="text/css" rel="stylesheet" href="css/demo.css" />
-		<link type="text/css" rel="stylesheet" href="../dist/css/jquery.mmenu.css" />
-		<link type="text/css" rel="stylesheet" href="../dist/addons/dragopen/jquery.mmenu.dragopen.css" />
+		<link type="text/css" rel="stylesheet" href="../dist/jquery.mmenu.all.css" />
 		
 		<!-- for the one page layout -->
 		<style type="text/css">
@@ -38,9 +37,9 @@
 			.header,
 			.footer
 			{
-				box-sizing: border-box;
-				width: 100%;
 				position: fixed;
+				left: 0;
+				right: 0;
 			}
 			.header
 			{
@@ -50,51 +49,30 @@
 			{
 				bottom: 0;
 			}
+			@media (min-width: 800px) {
+				.header a
+				{
+					display: none;
+				}
+			}
 		</style>
 		
 		<script type="text/javascript" src="http://hammerjs.github.io/dist/hammer.min.js"></script>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.js"></script>
 
-		<script type="text/javascript" src="../dist/js/jquery.mmenu.min.js"></script>
-		<script type="text/javascript" src="../dist/addons/dragopen/jquery.mmenu.dragopen.min.js"></script>
-		<script type="text/javascript" src="../dist/addons/fixedelements/jquery.mmenu.fixedelements.min.js"></script>
+		<script type="text/javascript" src="../dist/jquery.mmenu.all.min.js"></script>
 		<script type="text/javascript">
 			$(function() {
-				var $menu = $('nav#menu'),
-					$html = $('html, body');
-
-				$menu.mmenu({
-					dragOpen: true
+				$('nav#menu').mmenu({
+					drag 		: true,
+					pageScroll 	: {
+						scroll 		: true,
+						update		: true
+					},
+					extensions	: {
+						'(min-width: 800px)': [ 'widescreen' ]
+					}
 				});
-
-				var $anchor = false;
-				$menu.find( 'li > a' ).on(
-					'click',
-					function( e )
-					{
-						$anchor = $(this);
-					}
-				);
-
-				var api = $menu.data( 'mmenu' );
-				api.bind( 'closed',
-					function()
-					{
-						if ( $anchor )
-						{
-							var href = $anchor.attr( 'href' );
-							$anchor = false;
-
-							//	if the clicked link is linked to an anchor, scroll the page to that anchor 
-							if ( href.slice( 0, 1 ) == '#' )
-							{
-								$html.animate({
-									scrollTop: $( href ).offset().top
-								});	
-							}
-						}
-					}
-				);
 			});
 		</script>
 	</head>
@@ -108,13 +86,11 @@
 				<div id="intro">
 					<p><strong>This is a demo.</strong><br />
 						Click the menu icon to open the menu.</p>
-					
-					<p>The links in the menu link to a section on the same page, some small javascript makes the page scroll smoothly.</p>
+					<p>Some of the links in the menu link to a section on this page.</p>
 				</div>
 				<div id="first">
 					<p><strong>This is the first section.</strong><br />
 						Notice how the fixed header and footer slide out along with the page.</p>
-
 					<p><a href="#menu">Open the menu.</a></p>
 				</div>
 				<div id="second">
@@ -124,7 +100,8 @@
 				</div>
 				<div id="third">
 					<p><strong>This is the third section.</strong><br />
-						<a href="#menu">Open the menu.</a></p>
+						It is also the last section.</p>
+					<p><a href="#menu">Open the menu.</a></p>
 				</div>
 			</div>
 			<div class="footer Fixed">
@@ -136,6 +113,10 @@
 					<li><a href="#first">First section</a></li>
 					<li><a href="#second">Second section</a></li>
 					<li><a href="#third">Third section</a></li>
+
+					<li class="Divider">Other demos</li>
+					<li><a href="default.html">Default demo</a></li>
+					<li><a href="advanced.html">Advanced demo</a></li>
 				</ul>
 			</nav>
 		</div>

@@ -58,9 +58,8 @@
 				opts.visible.min = Math.max( 1, Math.min( 6, opts.visible.min ) );
 				opts.visible.max = Math.max( opts.visible.min, Math.min( 6, opts.visible.max ) );
 
-				this.$menu.addClass( _c.columns );
 
-				var $nds = ( this.opts.offCanvas ) ? this.$menu.add( glbl.$html ) : this.$menu,
+				var $mnu = ( this.opts.offCanvas ) ? this.$menu.add( glbl.$html ) : this.$menu,
 					clsn = [];
 
 				for ( var i = 0; i <= opts.visible.max; i++ )
@@ -69,48 +68,57 @@
 				}
 				clsn = clsn.join( ' ' );
 
-				var initPanel = function( $panels )
+
+				var countPanels = function( $panel )
 				{
-					openPanel.call( this, this.$pnls.children( '.' + _c.current ) );
-				};
-				var openMenu = function()
-				{
-					var _num = this.$pnls.children( '.' + _c.panel ).filter( '.' + _c.opened ).length;
+					var _num = this.$pnls.children( '.' + _c.subopened ).length;
+					if ( $panel && !$panel.hasClass( _c.subopened ) )
+					{
+						_num++;
+					}
 					_num = Math.min( opts.visible.max, Math.max( opts.visible.min, _num ) );
 
-					$nds.removeClass( clsn )
+					$mnu.removeClass( clsn )
 						.addClass( _c.columns + '-' + _num );
 				};
-				var closeMenu = function()
+				var uncountPanels = function()
 				{
-					if ( this.opts.offCanvas )
-					{
-						glbl.$html.removeClass( clsn );
-					}
+					$mnu.removeClass( clsn );
 				};
-				var openPanel = function( $panel )
+				var setupPanels = function( $panel )
 				{
 					this.$pnls
 						.children( '.' + _c.panel )
 						.removeClass( clsn )
 						.filter( '.' + _c.subopened )
-						.removeClass( _c.hidden )
 						.add( $panel )
 						.slice( -opts.visible.max )
 						.each(
-							function( x )
+							function( i )
 							{
-								$(this).addClass( _c.columns + '-' + x );
+								$(this).addClass( _c.columns + '-' + i );
 							}
 						);
 				};
 
-				this.bind( 'open', openMenu );
-				this.bind( 'close', closeMenu );
-				this.bind( 'initPanels', initPanel );
-				this.bind( 'openPanel', openPanel );
-				this.bind( 'openingPanel', openMenu );
-				this.bind( 'openedPanel', openMenu );
+				this.bind( 'initMenu:after',
+					function()
+					{
+						this.$menu.addClass( _c.columns );
+					}
+				);
+				this.bind( 'initPanels:after',
+					function( $panels )
+					{
+						setupPanels.call( this, this.$pnls.children( '.' + _c.opened ) );
+					}
+				);
+
+				this.bind( 'open:start'			, countPanels );
+				this.bind( 'openPanel:start'	, countPanels );
+				this.bind( 'openPanel:start' 	, setupPanels );
+				this.bind( 'close:finish'		, uncountPanels );
+
 
 				if ( !this.opts.offCanvas )
 				{
@@ -159,7 +167,6 @@
 									$panl
 										.removeClass( _c.subopened )
 										.removeClass( _c.opened )
-										.removeClass( _c.current )
 										.removeClass( _c.highest )
 										.addClass( _c.hidden );
 								}

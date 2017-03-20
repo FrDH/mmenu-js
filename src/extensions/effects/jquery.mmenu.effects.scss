@@ -2,23 +2,23 @@
 	jQuery.mmenu effects extension CSS
 */
 
-@import "../../css/_imp/import";
+@import "../../scss/import";
 
 
 //	Zoom menu
-.mm-menu.mm-effect-menu-zoom
+.mm-menu.mm-fx-menu-zoom
 {
 	transition: transform $mm_transitionDuration $mm_transitionFunction;
 }
 html
 {
 	//	Left
-	&.mm-opened .mm-menu.mm-effect-menu-zoom
+	&.mm-opened .mm-menu.mm-fx-menu-zoom
 	{
 		transform: scale( $mm_zoomScaleDown, $mm_zoomScaleDown ) translate3d( -$mm_subpanelOffset, 0, 0 );
 		transform-origin: left center;
 	}
-	&.mm-opening .mm-menu.mm-effect-menu-zoom
+	&.mm-opening .mm-menu.mm-fx-menu-zoom
 	{
 		transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
 	}
@@ -26,12 +26,12 @@ html
 	//	Right
 	&.mm-right
 	{
-		&.mm-opened .mm-menu.mm-effect-menu-zoom
+		&.mm-opened .mm-menu.mm-fx-menu-zoom
 		{
 			transform: scale( $mm_zoomScaleDown, $mm_zoomScaleDown) translate3d( $mm_subpanelOffset, 0, 0 );
 			transform-origin: right center;
 		}
-		&.mm-opening .mm-menu.mm-effect-menu-zoom
+		&.mm-opening .mm-menu.mm-fx-menu-zoom
 		{
 			transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
 		}
@@ -40,19 +40,19 @@ html
 
 
 //	Slide menu
-.mm-menu.mm-effect-menu-slide
+.mm-menu.mm-fx-menu-slide
 {
 	transition: transform $mm_transitionDuration $mm_transitionFunction;
 }
 html
 {
 	//	Left
-	&.mm-opened .mm-menu.mm-effect-menu-slide
+	&.mm-opened .mm-menu.mm-fx-menu-slide
 	{
 		//	transform: translate3d( -$mm_subpanelOffset, 0, 0 );
 		@include mm_translate( -$mm_subpanelOffset, 0 );
 	}
-	&.mm-opening .mm-menu.mm-effect-menu-slide
+	&.mm-opening .mm-menu.mm-fx-menu-slide
 	{
 		//	transform: translate3d( 0%, 0, 0 );
 		@include mm_translate( 0%, 0 );
@@ -61,12 +61,12 @@ html
 	//	Right
 	&.mm-right
 	{
-		&.mm-opened .mm-menu.mm-effect-menu-slide
+		&.mm-opened .mm-menu.mm-fx-menu-slide
 		{
 			//	transform: translate3d( $mm_subpanelOffset, 0, 0 );
 			@include mm_translate( $mm_subpanelOffset, 0 );
 		}
-		&.mm-opening .mm-menu.mm-effect-menu-slide
+		&.mm-opening .mm-menu.mm-fx-menu-slide
 		{
 			//	transform: translate3d( 0%, 0, 0 );
 			@include mm_translate( 0%, 0 );
@@ -76,27 +76,46 @@ html
 
 
 //	Fade menu
-.mm-menu.mm-effect-menu-fade
+.mm-menu.mm-fx-menu-fade
 {
 	opacity: 0;
 	transition: opacity $mm_transitionDuration $mm_transitionFunction;
 }
-html.mm-opening .mm-menu.mm-effect-menu-fade
+html.mm-opening .mm-menu.mm-fx-menu-fade
 {
 	opacity: 1;
 }
 
 
-//	Zoom panels
-.mm-menu.mm-effect-panels-zoom .mm-panel
+//	No effect panels
+.mm-menu
 {
-	transform: scale( $mm_zoomScaleUp, $mm_zoomScaleUp ) translate3d( 100%, 0, 0 );
-	transform-origin: left center;
-	
-	&.mm-opened
+	&.mm-fx-panels-none .mm-panel,
+	.mm-fx-panels-none.mm-panel
 	{
-		transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
+		transition-property: none;
 		
+		&.mm-subopened
+		{
+			@include mm_translate( 0, 0 );
+		}
+	}
+}
+
+
+//	Zoom panels
+.mm-menu
+{
+	&.mm-fx-panels-zoom .mm-panel,
+	.mm-fx-panels-zoom.mm-panel
+	{
+		transform-origin: left center;
+		transform: scale( $mm_zoomScaleUp, $mm_zoomScaleUp ) translate3d( 100%, 0, 0 );
+
+		&.mm-opened
+		{
+			transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
+		}
 		&.mm-subopened
 		{
 			transform: scale( $mm_zoomScaleDown, $mm_zoomScaleDown ) translate3d( -$mm_subpanelOffset, 0, 0 );
@@ -108,21 +127,41 @@ html.mm-opening .mm-menu.mm-effect-menu-fade
 //	Slide panels
 .mm-menu
 {
-	&.mm-effect-panels-slide-0 .mm-panel.mm-subopened
+	&.mm-fx-panels-slide-0 .mm-panel.mm-subopened,
+	.mm-fx-panels-slide-0.mm-panel.mm-subopened
 	{
-		//	transform: translate3d( 0, 0, 0 );
 		@include mm_translate( 0, 0 );
 	}
 
-	&.mm-effect-panels-slide-100 .mm-panel.mm-subopened
+	&.mm-fx-panels-slide-100 .mm-panel.mm-subopened,
+	.mm-fx-panels-slide-100.mm-panel.mm-subopened
 	{
-		//	transform: translate3d( -100%, 0, 0 );
 		@include mm_translate( -100%, 0 );
 	}
 }
 
 
-//	Listitem basis delay
+//	SlideUp panels
+.mm-menu
+{
+	&.mm-fx-panels-slide-up .mm-panel,
+	.mm-fx-panels-slide-up.mm-panel
+	{
+		@include mm_translate( 0, 100% );
+
+		&.mm-opened
+		{
+			@include mm_translate( 0, 0 );
+		}
+		&.mm-subopened
+		{
+			@include mm_translate( 0, 0% );
+		}
+	}
+}
+
+
+//	Listitem delay
 @mixin mm_effect_listitem_delay( $i )
 {
 	&:nth-child( #{$i} )
@@ -130,7 +169,7 @@ html.mm-opening .mm-menu.mm-effect-menu-fade
 		transition-delay: ( $i * 50ms );
 	}
 }
-.mm-menu[class*="mm-effect-listitems-"] .mm-listview > li
+.mm-menu[class*="mm-fx-listitems-"] .mm-listview > li
 {
 	transition: none $mm_transitionDuration $mm_transitionFunction;
 
@@ -153,41 +192,39 @@ html.mm-opening .mm-menu.mm-effect-menu-fade
 
 
 //	Slide list items
-.mm-menu.mm-effect-listitems-slide .mm-listview > li
+.mm-menu.mm-fx-listitems-slide .mm-listview > li
 {
 	transition-property: transform, opacity;
-	//	transform: translate3d( 50%, 0, 0 );
 	@include mm_translate( 50%, 0 );
 	opacity: 0;
 }
-html.mm-opening .mm-menu.mm-effect-listitems-slide .mm-panel.mm-opened .mm-listview > li
+html.mm-opening .mm-menu.mm-fx-listitems-slide .mm-panel.mm-opened .mm-listview > li
 {
-	//	transform: translate3d( 0, 0, 0 );
 	@include mm_translate( 0, 0 );
 	opacity: 1;
 }
 
 
 //	Fade list items
-.mm-menu.mm-effect-listitems-fade .mm-listview > li
+.mm-menu.mm-fx-listitems-fade .mm-listview > li
 {
 	transition-property: opacity;
 	opacity: 0;
 }
-html.mm-opening .mm-menu.mm-effect-listitems-fade .mm-panel.mm-opened .mm-listview > li
+html.mm-opening .mm-menu.mm-fx-listitems-fade .mm-panel.mm-opened .mm-listview > li
 {
 	opacity: 1;
 }
 
 
 //	Drop list items
-.mm-menu.mm-effect-listitems-drop .mm-listview > li
+.mm-menu.mm-fx-listitems-drop .mm-listview > li
 {
 	transition-property: opacity, top;
 	opacity: 0;
 	top: -25%;
 }
-html.mm-opening .mm-menu.mm-effect-listitems-drop .mm-panel.mm-opened .mm-listview > li
+html.mm-opening .mm-menu.mm-fx-listitems-drop .mm-panel.mm-opened .mm-listview > li
 {
 	opacity: 1;
 	top: 0;

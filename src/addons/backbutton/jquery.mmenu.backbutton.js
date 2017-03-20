@@ -46,7 +46,7 @@
 			if ( opts.close )
 			{
 				var _hash = '#' + that.$menu.attr( 'id' );
-				this.bind( 'opened',
+				this.bind( 'open:finish',
 					function( e )
 					{
 						if ( location.hash != _hash )

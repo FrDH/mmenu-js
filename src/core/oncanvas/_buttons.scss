@@ -1,0 +1,32 @@
+@if ( $mm_css_buttons )
+{
+	.mm-btn
+	{
+		box-sizing: border-box;
+		width: $mm_btnSize;
+		height: $mm_btnSize;
+		position: absolute;
+		top: 0;
+		z-index: 1;
+	}
+
+	.mm-clear,
+	.mm-close
+	{
+		@include mm_btn_cross();
+	}
+
+	.mm-prev:before,
+	.mm-next:after
+	{
+		@include mm_btn_arrow;
+	}
+	.mm-prev:before
+	{
+		@include mm_btn_arrow_prev;
+	}
+	.mm-next:after
+	{
+		@include mm_btn_arrow_next;
+	}	
+}

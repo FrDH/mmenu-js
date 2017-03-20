@@ -40,39 +40,58 @@
 			//	Sliding submenus
 			if ( opts.load )
 			{
-				this.$menu
-					.find( 'li' )
-					.find( 'li' )
-					.children( this.conf.panelNodetype )
-					.each(
-						function()
-						{
-							$(this)
-								.parent()
-								.addClass( _c.lazysubmenu )
-								.data( _d.lazysubmenu, this )
-								.end()
-								.remove();
-						}
-					);
 
-				this.bind( 'openingPanel',
-					function( $panl )
+				//	prevent all sub panels from initPanels
+				this.bind( 'initMenu:after',
+					function()
 					{
-						var $prnt = $panl.find( '.' + _c.lazysubmenu );
-						if ( $prnt.length )
-						{
-							$prnt.each(
-								function()
-								{
-									$(this)
-										.append( $(this).data( _d.lazysubmenu ) )
-										.removeData( _d.lazysubmenu )
-										.removeClass( _c.lazysubmenu );
-								}
-							);
+						this.$pnls
+							.find( 'li' )
+							.children( this.conf.panelNodetype )
+							.not( '.' + _c.inset )
+							.not( '.' + _c.nolistview )
+							.not( '.' + _c.nopanel )
+							.addClass( _c.lazysubmenu + ' ' + _c.nolistview + ' ' + _c.nopanel );
+					}
+				);
 
-							this.initPanels( $panl );
+				//	prepare current and one level sub panels for initPanels
+				this.bind( 'initPanels:before',
+					function( $panels )
+					{
+						$panels = $panels || this.$pnls.children( this.conf.panelNodetype );
+
+						this.__findAddBack( $panels, '.' + _c.lazysubmenu )
+							.not( '.' + _c.lazysubmenu + ' .' + _c.lazysubmenu )
+							.removeClass( _c.lazysubmenu + ' ' + _c.nolistview + ' ' + _c.nopanel );
+					}
+				);
+
+				//	initPanels for the default opened panel
+				this.bind( 'initOpened:before',
+					function()
+					{
+						var $selected = this.$pnls
+							.find( '.' + this.conf.classNames.selected )
+							.closest( '.' + _c.lazysubmenu );
+
+						if ( $selected.length )
+						{
+							this.initPanels( $selected );
+						}
+					}
+				);
+
+				//	initPanels for current- and sub panels before openPanel
+				this.bind( 'openPanel:before',
+					function( $panel )
+					{
+						$panels = this.__findAddBack( $panel, '.' + _c.lazysubmenu )
+							.not( '.' + _c.lazysubmenu + ' .' + _c.lazysubmenu );
+
+						if ( $panels.length )
+						{
+							this.initPanels( $panels );
 						}
 					}
 				);

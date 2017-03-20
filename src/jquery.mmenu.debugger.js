@@ -50,18 +50,70 @@
 	{
 		_msg = 0;
 
-		var extensions = this.opts.extensions.join( ' ' );
+		var ext = this.opts.extensions,
+			extensions = '';
+
+		if ( ext.constructor === Array )
+		{
+			ext = {
+				'all' : ext
+			};
+		}
+		for ( var e in ext )
+		{
+			extensions += ext[ e ].join( ' ' ) + ' ';
+		}
+
 		var arr, a, b, l;
 
 
-		//	Options 5.7
+		//	Options 6.0
+		if ( this.opts.counters )
+		{
+			if ( typeof this.opts.counters.update != 'undefined' )
+			{
+				deprc( 'The option "counters.update"', '"counters.count"', '6.0' );
+			}
+		}
+		if ( this.opts.navbar && this.opts.navbar.titleLink == 'panel' )
+		{
+			deprc( 'The value "panel" for the "navbar.titleLink" option', '"parent"', '6.0' );
+		}
+
+		//	Extensions 6.0
+		if ( extensions.indexOf( 'effect-' ) > -1 )
+		{
+			deprc( 'The "effect-" prefix for the "effects" extension', '"fx-"', '6.0' );
+		}
+		if ( extensions.indexOf( 'justfied-listview' ) > -1 )
+		{
+			deprc( 'The "justified-listview" extension', '"listview-justify"', '6.0' );
+		}
+
+		//	Configuration 6.0
+		if ( typeof this.conf.offCanvas.menuInjectMethod != 'undefined' )
+		{
+			if ( this.conf.offCanvas.menuInjectMethod == 'append' ||
+				this.conf.offCanvas.menuInjectMethod == 'prepend'
+			) {
+				deprc( '"' + this.conf.offCanvas.menuInjectMethod + '" for the "offCanvas.menuInjectMethod" configuration option', '"' + this.conf.offCanvas.menuInjectMethod + 'To"', '5.8' );
+			}
+
+			deprc( 'The "offCanvas.menuInjectMethod" configuration option', '"offCanvas.menuInsertMethod"', '6.0' );
+		}
+		if ( typeof this.conf.offCanvas.menuWrapperSelector != 'undefined' )
+		{
+			deprc( 'The "offCanvas.menuWrapperSelector" configuration option', '"offCanvas.menuInsertSelector"', '6.0' );
+		}
+
+
+		//	Add-ons 5.7
 		if ( ( typeof this.opts.currentItem == 'boolean' && this.opts.currentItem )
 			|| ( typeof this.opts.currentItem == 'object' && this.opts.currentItem.find )
 		) {
 			deprc( 'The "currentItem" add-on', '"setSelected.current": "detect"', '5.7' );
 		}
 
-		//	Add-ons 5.7
 		if ( typeof this.opts.dragOpen != 'undefined' )
 		{
 			deprc( 'The "dragOpen" add-on', 'the "drag" add-on', '5.7' );
@@ -85,14 +137,14 @@
 			deprc( 'The "leftSubpanels" extension', 'the "rtl" add-on', '5.7' );	
 		}
 
+
 		//	API 5.7
-		//	Won't work untill the backward compat has been removed
-		// this.bind( 'init',
-		// 	function()
-		// 	{
-		// 		deprc( 'The API method "init"', '"initPanels"', '5.7' );
-		// 	}
-		// );
+		this.bind( 'init',
+			function()
+			{
+				deprc( 'The API method "init"', '"initPanels"', '5.7' );
+			}
+		);
 
 
 		//	Configuration 5.6
@@ -303,6 +355,9 @@
 		}
 
 
+	//	----------------------	//
+
+
 		//	log results
 		if ( _msg > 0 )
 		{
@@ -317,8 +372,11 @@
 		_msg = 0;
 
 		//	non-available add-ons
-		for ( var a = [ 'autoHeight', 'backButton', 'columns', 'counters', 'dividers', 'dragOpen', 'dropdown', 'iconPanels', 'navbars', 'offCanvas', 'rtl', 'screenReader', 'scrollBugFix', 'searchfield', 'sectionIndexer', 'setSelected', 'toggles' ], b = 0, l = a.length; b < l; b++ )
-		{
+		for ( var a = [
+				'offCanvas', 'screenReader', 'scrollBugFix',
+				'autoHeight', 'backButton', 'columns', 'counters', 'dividers', 'drag', 'dropdown', 'iconPanels', 'keyboardNavigation', 'lazySubmenus', 'navbars', 'pageScroll', 'rtl', 'searchfield', 'sectionIndexer', 'setSelected', 'toggles'
+			], b = 0, l = a.length; b < l; b++
+		) {
 			if ( typeof this.opts[ a[ b ] ] != 'undefined' )
 			{
 				if ( typeof $[ _PLUGIN_ ].addons[ a[ b ] ] == 'undefined' )
@@ -377,9 +435,22 @@
 		}
 
 		//	Compat between options, extensions and add-ons
-		var extensions  = this.opts.extensions,
-			position	= false,
+		var position	= false,
 			zposition	= false;
+
+		var ext = this.opts.extensions,
+			extensions = '';
+
+		if ( ext.constructor === Array )
+		{
+			ext = {
+				'all' : ext
+			};
+		}
+		for ( var e in ext )
+		{
+			extensions += ext[ e ] + ' ';
+		}
 
 		if ( this.opts.offCanvas )
 		{
@@ -401,18 +472,6 @@
 				case 'rgba(0, 0, 0, 0)':
 					debug( 'Set a background-color for the <BODY />.' );
 					break;
-			}
-		}
-
-		//	positioning + autoheight
-		if ( position == 'left' || position == 'right' )
-		{
-			if ( this.opts.autoHeight && this.opts.autoHeight.height != 'default' )
-			{
-				if ( !this.opts.dropdown.drop )
-				{
-					debug( 'Don\'t use the "autoHeight" option with the "offCanvas.position" option set to "' + position + '".' );
-				}
 			}
 		}
 
@@ -508,6 +567,9 @@
 				debug( 'Don\'t use the "' + ( fxSlide ? 'menu-slide' : 'menu-zoom' ) + '" effect in combination with the "offCanvas" option set to "false".' );
 			}
 		}
+
+
+	//	----------------------	//
 
 
 		//	log results

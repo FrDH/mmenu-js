@@ -53,70 +53,67 @@
 				return;
 			}
 
+			var $bttn;
 
-			if ( typeof opts.position.of != 'string' )
-			{
-				var id = this.$menu.attr( 'id' );
-				if ( id && id.length )
+			this.bind( 'initMenu:after',
+				function()
 				{
-					if ( this.conf.clone )
+					this.$menu.addClass( _c.dropdown );
+
+					if ( opts.tip )
 					{
-						id = _c.umm( id );
+						this.$menu.addClass( _c.tip );
 					}
-					opts.position.of = '[href="#' + id + '"]';
+
+					if ( typeof opts.position.of != 'string' )
+					{
+						var id = this._getOriginalMenuId();
+						if ( id && id.length )
+						{
+							opts.position.of = '[href="#' + id + '"]';
+						}
+					}
+					if ( typeof opts.position.of != 'string' )
+					{
+						return;
+					}
+
+
+					//	Get the button to put the menu next to
+					$bttn = $(opts.position.of);
+
+					//	Emulate hover effect
+					opts.event = opts.event.split( ' ' );
+					if ( opts.event.length == 1 )
+					{
+						opts.event[ 1 ] = opts.event[ 0 ];
+					}
+					if ( opts.event[ 0 ] == 'hover' )
+					{
+						$bttn
+							.on( _e.mouseenter + '-' + _ADDON_,
+								function()
+								{
+									that.open();
+								}
+							);
+					}
+					if ( opts.event[ 1 ] == 'hover' )
+					{
+						this.$menu
+							.on( _e.mouseleave + '-' + _ADDON_,
+								function()
+								{
+									that.close();
+								}
+							);
+					}
 				}
-			}
-			if ( typeof opts.position.of != 'string' )
-			{
-				return;
-			}
-
-
-			//	Get the button to put the menu next to
-			var $bttn = $(opts.position.of);
-			if ( !$bttn.length )
-			{
-				return;
-			}
-
-			this.$menu.addClass( _c.dropdown );
-
-			if ( opts.tip )
-			{
-				this.$menu.addClass( _c.tip );
-			}
-
-
-			//	Emulate hover effect
-			opts.event = opts.event.split( ' ' );
-			if ( opts.event.length == 1 )
-			{
-				opts.event[ 1 ] = opts.event[ 0 ];
-			}
-			if ( opts.event[ 0 ] == 'hover' )
-			{
-				$bttn
-					.on( _e.mouseenter + '-dropdown',
-						function()
-						{
-							that.open();
-						}
-					);
-			}
-			if ( opts.event[ 1 ] == 'hover' )
-			{
-				this.$menu
-					.on( _e.mouseleave + '-dropdown',
-						function()
-						{
-							that.close();
-						}
-					);
-			}
+			);
 
 
 			//	Add/remove classname and style when opening/closing the menu
-			this.bind( 'opening',
+			this.bind( 'open:start',
 				function()
 				{
 					this.$menu.data( _d.style, this.$menu.attr( 'style' ) || '' );
@@ -124,7 +121,7 @@
 				}
 			);
 
-			this.bind( 'closed',
+			this.bind( 'close:finish',
 				function()
 				{
 					this.$menu.attr( 'style', this.$menu.data( _d.style ) );
@@ -200,7 +197,7 @@
 					cls.push( _c[ ( dir == 'x' ) ? 'tipright' : 'tipbottom' ] );
 				}
 
-				css[ _max ] = Math.min( $[ _PLUGIN_ ].configuration[ _ADDON_ ][ _siz ].max, max );
+				css[ _max ] = Math.min( conf[ _siz ].max, max );
 
 				return [ css, cls ];
 			};
@@ -232,10 +229,10 @@
 				}
 			};
 
-			this.bind( 'opening', position );
+			this.bind( 'open:start', position );
 
 			glbl.$wndw
-				.on( _e.resize + '-dropdown',
+				.on( _e.resize + '-' + _ADDON_,
 					function( e )
 					{
 						position.call( that );
@@ -245,7 +242,7 @@
 			if ( !this.opts.offCanvas.blockUI )
 			{
 				glbl.$wndw
-					.on( _e.scroll + '-dropdown',
+					.on( _e.scroll + '-' + _ADDON_,
 						function( e )
 						{
 							position.call( that );

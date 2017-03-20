@@ -8,19 +8,25 @@
 		<title>jQuery.mmenu demo</title>
 
 		<link type="text/css" rel="stylesheet" href="css/demo.css" />
-		<link type="text/css" rel="stylesheet" href="../dist/css/jquery.mmenu.all.css" />
+		<link type="text/css" rel="stylesheet" href="../dist/jquery.mmenu.all.css" />
 
 		<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.js"></script>
-		<script type="text/javascript" src="../dist/js/jquery.mmenu.all.min.js"></script>
+		<script type="text/javascript" src="../dist/jquery.mmenu.all.min.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				$('nav#menu').mmenu({
-					extensions				: [ 'effect-slide-menu', 'shadow-page', 'shadow-panels' ],
-					keyboardNavigation 		: true,
-					screenReader 			: true,
-					counters				: true,
-					navbar 	: {
-						title	: 'Advanced menu'
+					extensions	: [ 'fx-menu-slide', 'shadow-page', 'shadow-panels', 'listview-large', 'pagedim-white' ],
+					iconPanels	: true,
+					counters	: true,
+					keyboardNavigation : {
+						enable	: true,
+						enhance	: true
+					},
+					searchfield : {
+						placeholder	: 'Search menu items'
+					},
+					navbar : {
+						title : 'Advanced menu'
 					},
 					navbars	: [
 						{
@@ -28,18 +34,16 @@
 							content		: [ 'searchfield' ]
 						}, {
 							position	: 'top',
-							content		: [
-								'prev',
-								'title',
-								'close'
-							]
+							content		: [ 'breadcrumbs', 'close' ]
 						}, {
 							position	: 'bottom',
-							content		: [
-								'<a href="http://mmenu.frebsite.nl/wordpress-plugin.html" target="_blank">WordPress plugin</a>'
-							]
+							content		: [ '<a href="http://mmenu.frebsite.nl/wordpress-plugin" target="_blank">WordPress plugin</a>' ]
 						}
 					]
+				}, {
+					searchfield : {
+						clear : true
+					}
 				});
 			});
 		</script>

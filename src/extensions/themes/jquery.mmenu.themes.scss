@@ -2,7 +2,7 @@
 	jQuery.mmenu themes extension CSS
 */
 
-@import "../../css/_imp/import";
+@import "../../scss/import";
 
 @mixin mm_apply_theme( $apply_addons_and_extensions: true )
 {
@@ -70,7 +70,7 @@ $mm_t_cls						: ".mm-theme-white";
 $mm_t_borderColor				: rgba( #000, 0.1 );
 $mm_t_backgroundColor			: #fff;
 $mm_t_emphasizedBackgroundColor	: rgba( #000, 0.05 );
-$mm_t_highlightedBackgroundColor: rgba( #000, 0.03 );
+$mm_t_highlightedBackgroundColor: rgba( #000, 0.05 );
 $mm_t_textColor					: rgba( #000, 0.6 );
 $mm_t_dimmedTextColor			: rgba( #000, 0.3 );
 $mm_t_navbarColor				: rgba( #000, 0.3 );

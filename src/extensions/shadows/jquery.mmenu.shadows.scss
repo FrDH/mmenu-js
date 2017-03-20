@@ -2,7 +2,7 @@
 	jQuery.mmenu shadows extension CSS
 */
 
-@import "../../css/_imp/import";
+@import "../../scss/import";
 
 
 .mm-menu.mm-shadow-page
@@ -16,7 +16,7 @@
 		position: absolute;
 		left: 100%;
 		top: -10%;
-		z-index: 99;
+		z-index: 100;
 	}
 	
 	&.mm-right:after

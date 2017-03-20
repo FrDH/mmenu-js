@@ -41,7 +41,12 @@
 			//	Use RTL
 			if ( opts.use )
 			{
-				this.$menu.addClass( _c.rtl );
+				this.bind( 'initMenu:after',
+					function()
+					{
+						this.$menu.addClass( _c.rtl );
+					}
+				);
 			}
 		},
 

@@ -23,17 +23,18 @@
 			glbl = $[ _PLUGIN_ ].glbl;
 
 
-			this.bind( 'initPanels',
-				function( $panels )
+			this.bind( 'initListview:after',
+				function( $panel )
 				{
 
 					//	Refactor toggle classes
-					this.__refactorClass( $('input', $panels), this.conf.classNames[ _ADDON_ ].toggle, 'toggle' );
-					this.__refactorClass( $('input', $panels), this.conf.classNames[ _ADDON_ ].check, 'check' );
+					this.__refactorClass( $panel.find( 'input' ), this.conf.classNames[ _ADDON_ ].toggle, 'toggle' );
+					this.__refactorClass( $panel.find( 'input' ), this.conf.classNames[ _ADDON_ ].check, 'check' );
 			
 
 					//	Add markup
-					$('input.' + _c.toggle + ', input.' + _c.check, $panels)
+					$panel
+						.find( 'input.' + _c.toggle + ', input.' + _c.check )
 						.each(
 							function()
 							{

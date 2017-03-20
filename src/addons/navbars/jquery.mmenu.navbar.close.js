@@ -19,16 +19,27 @@
 
 
 		//	Add content
-		var $close = $('<a class="' + _c.close + ' ' + _c.btn + '" href="#" />').appendTo( $navbar );
+		var $close = $('<a class="' + _c.close + ' ' + _c.btn + '" href="#" />')
+			.appendTo( $navbar );
 
 
-		//	Update
-		var setPage = function( $page )
-		{
-			$close.attr( 'href', '#' + $page.attr( 'id' ) );
-		};
-		setPage.call( this, glbl.$page );
-		this.bind( 'setPage', setPage );
+		//	Update to page node
+		this.bind( 'setPage:after',
+			function( $page )
+			{
+				$close.attr( 'href', '#' + $page.attr( 'id' ) );
+			}
+		);
+
+
+		//	Add screenreader / text support
+		this.bind( 'setPage:after:sr-text',
+			function( $page )
+			{
+				$close.html( this.__sr_text( $[ _PLUGIN_ ].i18n( this.conf.screenReader.text.closeMenu ) ) );
+				this.__sr_aria( $close, 'owns', $close.attr( 'href' ).slice( 1 ) );
+			}
+		);
 
 
 		//	Detract content count

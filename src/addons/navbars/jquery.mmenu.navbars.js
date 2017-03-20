@@ -32,7 +32,8 @@
 				navs = [ navs ];
 			}
 
-			var _pos = {};
+			var _pos = {},
+				$pos = {};
 
 			if ( !navs.length )
 			{
@@ -65,16 +66,22 @@
 					}
 					opts = $.extend( true, {}, that.opts.navbar, opts );
 
+					//	Create node
+					var $navbar = $( '<div class="' + _c.navbar+ '" />' );
+						
 
-					//	Get position and height
-					var poss = opts.position,
-						hght = opts.height;
+					//	Get height
+					var hght = opts.height;
 
 					if ( typeof hght != 'number' )
 					{
 						hght = 1;
 					}
 					hght = Math.min( 4, Math.max( 1, hght ) );
+					$navbar.addClass( _c.navbar + '-size-' + hght );
+
+					//	Get position
+					var poss = opts.position;
 
 					if ( poss != 'bottom' )
 					{
@@ -84,27 +91,23 @@
 					{
 						_pos[ poss ] = 0;
 					}
-					_pos[ poss ]++;
+					_pos[ poss ] += hght;
+
+					if ( !$pos[ poss ] )
+					{
+						$pos[ poss ] = $( '<div class="' + _c.navbars + '-' + poss + '" />' );
+					}
+					$pos[ poss ].append( $navbar );
 
 
-					//	Add markup
-					var $navbar = $( '<div />' )
-						.addClass( 
-							_c.navbar + ' ' +
-							_c.navbar + '-' + poss + ' ' +
-							_c.navbar + '-' + poss + '-' + _pos[ poss ] + ' ' +
-							_c.navbar + '-size-' + hght
-						);
-
-					_pos[ poss ] += hght - 1;
-
-					var _content = 0;
+					//	Add content
+					var cont = 0;
 					for ( var c = 0, l = opts.content.length; c < l; c++ )
 					{
 						var ctnt = $[ _PLUGIN_ ].addons[ _ADDON_ ][ opts.content[ c ] ] || false;
 						if ( ctnt )
 						{
-							_content += ctnt.call( that, $navbar, opts, conf );
+							cont += ctnt.call( that, $navbar, opts, conf );
 						}
 						else
 						{
@@ -117,23 +120,29 @@
 						}
 					}
 
-					_content += Math.ceil( $navbar.children().not( '.' + _c.btn ).length / hght );
-					if ( _content > 1 )
+					cont += Math.ceil( $navbar.children().not( '.' + _c.btn ).length / hght );
+					if ( cont > 1 )
 					{
-						$navbar.addClass( _c.navbar + '-content-' + _content );
+						$navbar.addClass( _c.navbar + '-content-' + cont );
 					}
 					if ( $navbar.children( '.' + _c.btn ).length )
 					{
 						$navbar.addClass( _c.hasbtns );
 					}
-					$navbar.prependTo( that.$menu );
 				}
 			);
 
-			for ( var poss in _pos )
-			{
-				that.$menu.addClass( _c.hasnavbar + '-' + poss + '-' + _pos[ poss ] );
-			}
+			//	Add to menu
+			this.bind( 'initMenu:after',
+				function()
+				{
+					for ( var poss in _pos )
+					{
+						this.$menu.addClass( _c.hasnavbar + '-' + poss + '-' + _pos[ poss ] );
+						this.$menu[ poss == 'bottom' ? 'append' : 'prepend' ]( $pos[ poss ] );
+					}
+				}
+			);
 		},
 
 		//	add: fired once per page load
@@ -143,7 +152,7 @@
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 
-			_c.add( 'close hasbtns' );
+			_c.add( 'navbars close hasbtns' );
 		},
 
 		//	clickAnchor: prevents default behavior when clicking an anchor

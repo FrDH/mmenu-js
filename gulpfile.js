@@ -1,3 +1,16 @@
+/*
+	jQuery.mmenu gulpfile.js
+
+	Default gulp tasks	:
+	$ gulp 				: Runs "css" and "js" tasks
+	$ gulp watch		: Starts a watch on "css" and "js" tasks
+
+	Custom gulp tasks	:
+	$ gulp custom-css 	: Compile and concatenate custom CSS.
+	$ gulp custom-build : Concatenate JS and CSS files.
+*/
+
+
 var gulp 			= require( 'gulp' ),
 	sass 			= require( 'gulp-ruby-sass' ),
 	autoprefixer 	= require( 'gulp-autoprefixer' ),
@@ -5,114 +18,186 @@ var gulp 			= require( 'gulp' ),
 	uglify 			= require( 'gulp-uglify' ),
 	rename 			= require( 'gulp-rename' ),
 	concat 			= require( 'gulp-concat' ),
-	umd				= require( 'gulp-umd' );
+	umd				= require( 'gulp-umd' ),
+	ms				= require( 'merge-stream' ),
+	fs 				= require( 'fs' );
 
-var outputDir 		= 'dist';
+
+var inputDir 		= 'src',
+	outputDir 		= 'dist',
+	customDir 		= './../mmenu-custom',
+	translations	= [ 'nl', 'de' ];
+
+
+function sanitizeNamespaceForUmd( file ) {
+	path = file.path.split( '\\' ).join( '/' ).split( '/' );
+	path = path[ path.length - 1 ];
+	return path.split( '.' ).join( '_' );
+}
 
 
 
-//	Default task 'gulp': Runs both CSS and JS tasks
-gulp.task( 'default', function() {
-    gulp.start( 'css', 'js' );
+
+
+/*
+	$ gulp
+*/
+
+gulp.task( 'default', [ 'custom-css-reset' ], function() {
+	gulp.start( [ 'js', 'css' ] );
 });
 
 
 
-//	Watch task 'gulp watch': Starts a watch on CSS and JS tasks
-gulp.task( 'watch', function() {
-	gulp.watch( 'src/**/*.scss'	, [ 'css' ] );
-	gulp.watch( 'src/**/*.js'	, [ 'js'  ] );
+
+
+/*
+	$ gulp watch
+*/
+
+gulp.task( 'watch', [ 'custom-css-reset' ], function() {
+	gulp.watch( inputDir + '/**/*.scss'	, [ 'css' ] );
+	gulp.watch( inputDir + '/**/*.js'	, [ 'js'  ] );
 });
 
 
 
-//	CSS task 'gulp css': Compiles all CSS
+
+
+/*
+	$ gulp css
+*/
+
 gulp.task( 'css', [ 'css-concat-all' ] );
 
-//	1) compile all SCSS to CSS
+
+//	1)	Compile all SCSS to CSS
 gulp.task( 'css-compile', function() {
-	return sass( 'src/**/*.scss', { style: 'expanded' })
+
+	return sass( inputDir + '/**/*.scss', { style: 'expanded' })
 		.pipe( autoprefixer( [ '> 5%', 'last 5 versions' ] ) )
 		.pipe( cleancss() )
 		.pipe( gulp.dest( outputDir ) );
 });
 
-//	2) concatenate core + offCanvas in dist dir
+
+//	2) 	Concatenate core
+//		Can't use glob, needs to be in specific order
 gulp.task( 'css-concat-core', [ 'css-compile' ], function() {
+
 	return gulp.src([
-			outputDir + '/css/jquery.mmenu.oncanvas.css',
-			outputDir + '/addons/offcanvas/jquery.mmenu.offcanvas.css'
+			outputDir + '/core/oncanvas/jquery.mmenu.oncanvas.css',
+			outputDir + '/core/offcanvas/jquery.mmenu.offcanvas.css',
+			outputDir + '/core/screenreader/jquery.mmenu.screenreader.css'
 		])
 		.pipe( concat( 'jquery.mmenu.css' ) )
-		.pipe( gulp.dest( outputDir + '/css' ) );
+		.pipe( gulp.dest( outputDir ) );
 });
 
-//	3) concatenate core + offCanvas + addons in dist dir
+
+//	3) 	Concatenate all in dist dir
 gulp.task( 'css-concat-all', [ 'css-concat-core' ], function() {
+
 	return gulp.src([
-			outputDir + '/css/jquery.mmenu.oncanvas.css',
-			outputDir + '/addons/offcanvas/jquery.mmenu.offcanvas.css',
-			outputDir + '/addons/**/*.css',
+			outputDir + '/jquery.mmenu.css',
 			outputDir + '/extensions/**/*.css',
-			'!' + outputDir + '/extensions/iconbar/jquery.mmenu.iconbar.css',
-			'!' + outputDir + '/extensions/widescreen/jquery.mmenu.widescreen.css'
+			outputDir + '/addons/**/*.css'
 		])
 		.pipe( concat( 'jquery.mmenu.all.css' ) )
-		.pipe( gulp.dest( outputDir + '/css' ) );
+		.pipe( gulp.dest( outputDir ) );
 });
 
 
 
-//	JS task 'gulp js': Runs all JS tasks
-//		A bit extensive, but it needs to concatenate certain files in a certain order
-//		The dependencies ensure everything is done in the right order
+
+
+/*
+	$ gulp js: Runs all JS tasks
+		A bit extensive, but it needs to concatenate certain files in a certain order
+		The dependencies ensure everything is done in the right order
+*/
+
 gulp.task( 'js', [ 'js-umd' ] );
 
-//	1) copy all except for the navbars add-on into dist dir
+
+//	1) 	Copy all into dist dir
+//		Exclude translations
+//		Exclude navbars add-on
 gulp.task( 'js-copy', function() {
+
 	return gulp.src([
-			'src/*/**/*.js',
-			'!src/addons/navbars/**/*.js'
+			inputDir + '/*/**/*.js',
+			'!' + inputDir + '/**/translations/*.js',
+			'!' + inputDir + '/addons/navbars/**/*.js'
 		])
 		.pipe( rename({ suffix: '.min' }) )
 		.pipe( gulp.dest( outputDir ) );
 });
 
-//	2) concatenate navbars add-on into dist dir
-gulp.task( 'js-concat-navbar', [ 'js-copy' ], function() {
+
+//	2) 	Concatenate core
+//		Can't use glob, needs to be in specific order
+gulp.task( 'js-concat-core', [ 'js-copy' ], function() {
+
 	return gulp.src([
-			'src/addons/navbars/jquery.mmenu.navbars.js',
-			'src/addons/navbars/**/*.js'
+			inputDir + '/core/oncanvas/jquery.mmenu.oncanvas.js',
+			inputDir + '/core/offcanvas/jquery.mmenu.offcanvas.js',
+			inputDir + '/core/scrollbugfix/jquery.mmenu.scrollbugfix.js',
+			inputDir + '/core/screenreader/jquery.mmenu.screenreader.js'
+		])
+		.pipe( concat( 'jquery.mmenu.min.js' ) )
+		.pipe( gulp.dest( outputDir ) );
+});
+
+
+//	3)	Concatenate translations
+gulp.task( 'js-concat-translations', [ 'js-concat-core' ], function() {
+
+	var streams = [],
+		stream;
+
+	for ( var t = 0; t < translations.length; t++ )
+	{
+		stream = gulp.src([
+				inputDir + '/**/translations/jquery.mmenu.' + translations[ t ] + '.js'
+			])
+			.pipe( concat( 'jquery.mmenu.' + translations[ t ] + '.min.js' ) )
+			.pipe( gulp.dest( outputDir + '/translations/' + translations[ t ] ) );
+
+		streams.push( stream );
+	}
+
+	return ms.apply( this, streams );
+});
+
+
+//	4) 	Concatenate navbars add-on
+gulp.task( 'js-concat-navbar', [ 'js-concat-translations' ], function() {
+
+	return gulp.src([
+			inputDir + '/addons/navbars/jquery.mmenu.navbars.js',
+			inputDir + '/addons/navbars/**/*.js'
 		])
 		.pipe( concat( 'jquery.mmenu.navbars.min.js' ) )
 		.pipe( gulp.dest( outputDir + '/addons/navbars' ) );
 });
 
-//	3) concatenate core + offCanvas + scrollBugFix in dist dir
-gulp.task( 'js-concat-core', [ 'js-concat-navbar' ], function() {
-	return gulp.src([
-			outputDir + '/js/jquery.mmenu.oncanvas.min.js',
-			outputDir + '/addons/offcanvas/jquery.mmenu.offcanvas.min.js',
-			outputDir + '/addons/scrollbugfix/jquery.mmenu.scrollbugfix.min.js',
-		])
-		.pipe( concat( 'jquery.mmenu.min.js' ) )
-		.pipe( gulp.dest( outputDir + '/js' ) );
-});
 
-//	4) concatenate core + offCanvas + scrollBugFix + addons in dist dir
-gulp.task( 'js-concat-all', [ 'js-concat-core' ], function() {
+//	5) 	Concatenate all
+gulp.task( 'js-concat-all', [ 'js-concat-navbar' ], function() {
+
 	return gulp.src([
-			outputDir + '/js/jquery.mmenu.oncanvas.min.js',
-			outputDir + '/addons/offcanvas/jquery.mmenu.offcanvas.min.js',
-			outputDir + '/addons/scrollbugfix/jquery.mmenu.scrollbugfix.min.js',
+			outputDir + '/jquery.mmenu.min.js',
 			outputDir + '/addons/**/*.js'
 		])
 		.pipe( concat( 'jquery.mmenu.all.min.js' ) )
-		.pipe( gulp.dest( outputDir + '/js' ) );
+		.pipe( gulp.dest( outputDir ) );
 });
 
-//	5) minify all in dist dir
+
+//	6)	Minify all
 gulp.task( 'js-minify', [ 'js-concat-all' ], function() {
+
 	return gulp.src([
 			outputDir + '/**/*.min.js'
 		])
@@ -120,11 +205,13 @@ gulp.task( 'js-minify', [ 'js-concat-all' ], function() {
 		.pipe( gulp.dest( outputDir ) );
 });
 
-//	6) umd core + offCanvas + scrollBugFix + addons in dist dir
+
+//	7)	UMD core
 gulp.task( 'js-umd', [ 'js-minify' ], function() {
+
 	return gulp.src([
-			outputDir + '/js/jquery.mmenu.min.js',
-			outputDir + '/js/jquery.mmenu.all.min.js',
+			outputDir + '/jquery.mmenu.min.js',
+			outputDir + '/jquery.mmenu.all.min.js',
 		])
 		.pipe( umd({
 			dependencies: function() { return [ {
@@ -135,12 +222,141 @@ gulp.task( 'js-umd', [ 'js-minify' ], function() {
 			exports: function() { return true; },
 			namespace: sanitizeNamespaceForUmd
 		}))
-		.pipe( rename({ suffix: '.umd' }) )
-		.pipe( gulp.dest( outputDir + '/js' ) );
+		.pipe( gulp.dest( outputDir ) );
 });
-function sanitizeNamespaceForUmd( file ) {
-	path = file.path.split( '\\' ).join( '/' ).split( '/' );
-	path = path[ path.length - 1 ];
-	return path.split( '.' ).join( '_' );
-}
+
+
+
+
+
+/*
+	$ gulp custom-css
+*/
+
+gulp.task( 'custom-css', [ 'custom-css-sass' ] );
+
+
+//	1)	Create backup _variables.scss from original _variables.scss
+gulp.task( 'custom-css-backup', function() {
+
+	fs.stat( inputDir + '/scss/_variables.bu.scss', function( err, stat ) {
+		if ( err != null )
+		{
+			return gulp.src( inputDir + '/scss/_variables.scss' )
+				.pipe( concat( '_variables.bu.scss' ) )
+				.pipe( gulp.dest( inputDir + '/scss' ) );
+		}
+	});
+});
+
+
+//	2)	Concatenate custom _variables.scss with backup _variables.scss
+gulp.task( 'custom-css-set', [ 'custom-css-backup' ], function() {
+
+	fs.stat( inputDir + '/scss/_variables.bu.scss', function( err, stat ) {
+		if ( err == null )
+		{
+			return gulp.src([
+					customDir + '/_variables.scss',
+					inputDir  + '/scss/_variables.bu.scss' 
+				])
+				.pipe( concat( '_variables.scss' ) )
+				.pipe( gulp.dest( inputDir + '/scss' ) );
+		}
+	});
+});
+
+
+//	3)	Compile css
+gulp.task( 'custom-css-sass', [ 'custom-css-set' ], function() {
+
+	return sass( inputDir + '/**/*.scss', { style: 'expanded' })
+		.pipe( autoprefixer( [ '> 5%', 'last 5 versions' ] ) )
+		.pipe( cleancss() )
+		.pipe( gulp.dest( outputDir ) );
+});
+
+
+//	x) Reset the css
+gulp.task( 'custom-css-reset', function() {
+
+	fs.stat( inputDir + '/scss/_variables.bu.scss', function( err, stat ) {
+		if ( err == null )
+		{
+			return gulp.src([
+					inputDir  + '/scss/_variables.bu.scss' 
+				])
+				.pipe( concat( '_variables.scss' ) )
+				.pipe( gulp.dest( inputDir + '/scss' ) );
+		}
+	});
+});
+
+
+
+
+
+/*
+	$ gulp custom-build
+*/
+
+gulp.task( 'custom-build', [ 'custom-build-umd' ] );
+
+
+//	1)	Concatenate JS and CSS
+gulp.task( 'custom-build-concat', function() {
+
+	var builds 	= require( customDir + '/_builds.json' ),
+		streams = [],
+		stream;
+
+	for ( var b = 0; b < builds.length; b++ )
+	{
+
+		var js  = [];
+		var css = [];
+
+		for ( var f in builds[ b ].files )
+		{
+			for ( var s = 0; s < builds[ b ].files[ f ].length; s++ )
+			{
+				var script = builds[ b ].files[ f ][ s ];
+
+				js.push(  outputDir + '/' + f + '/' + script + '/jquery.mmenu.' + script + '.min.js' );
+				css.push( outputDir + '/' + f + '/' + script + '/jquery.mmenu.' + script + '.css' );
+			}
+		}
+
+		stream = gulp.src( js )
+			.pipe( concat( builds[ b ].name + '.min.js' ) )
+			.pipe( gulp.dest( customDir + '/' + outputDir ) );
+
+		streams.push( stream );
+
+		stream = gulp.src( css )
+			.pipe( concat( builds[ b ].name + '.css' ) )
+			.pipe( gulp.dest( customDir + '/' + outputDir ) );
+
+		streams.push( stream );
+	}
+
+	return ms.apply( this, streams );
+});
+
+
+//	2)	UMD JS
+gulp.task( 'custom-build-umd', [ 'custom-build-concat' ], function() {
+
+	return gulp.src( customDir + '/' + outputDir + '/*.min.js' )
+		.pipe( umd({
+			dependencies: function() { return [ {
+				name 	: 'jquery',
+				global 	: 'jQuery',
+				param 	: 'jQuery'
+			} ]; },
+			exports: function() { return true; },
+			namespace: sanitizeNamespaceForUmd
+		}))
+		.pipe( gulp.dest( customDir + '/' + outputDir ) );
+});
 

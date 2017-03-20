@@ -40,7 +40,7 @@
 //			this._api = $.merge( this._api, [ 'fn1', 'fn2' ] );
 
 			//	Bind functions to update
-//			this.bind( 'update', function() {} );
+//			this.bind( 'updateListview', function() {} );
 //			this.bind( 'initPanels', function() {} );
 //			this.bind( 'initPage', function() {} );
 

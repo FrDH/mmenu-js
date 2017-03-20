@@ -1,9 +1,9 @@
 {
 	"name"			: "jQuery.mmenu",
-	"version"		: "5.7.8",
+	"version"		: "6.0.0",
 	"main": [
-		"dist/js/jquery.mmenu.all.min.umd.js",
-		"dist/css/jquery.mmenu.all.css"
+		"dist/jquery.mmenu.all.min.js",
+		"dist/jquery.mmenu.all.css"
 	],
 	"authors"		: "Fred Heusschen <info@frebsite.nl>",
 	"description"	: "The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",

@@ -9,8 +9,6 @@
 	var _PLUGIN_ = 'mmenu';
 
 	//	Add olark id to the noPageSelector array
-	$[ _PLUGIN_ ].configuration.offCanvas = $[ _PLUGIN_ ].configuration.offCanvas || {};
-	$[ _PLUGIN_ ].configuration.offCanvas.noPageSelector = $[ _PLUGIN_ ].configuration.offCanvas.noPageSelector || [];
 	$[ _PLUGIN_ ].configuration.offCanvas.noPageSelector.push( '#olark' );
 
 })( jQuery );

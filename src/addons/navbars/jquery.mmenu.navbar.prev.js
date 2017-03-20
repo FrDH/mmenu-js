@@ -18,51 +18,59 @@
 
 
 		//	Add content
-		var $prev = $('<a class="' + _c.prev + ' ' + _c.btn + '" href="#" />').appendTo( $navbar );
+		var $prev = $('<a class="' + _c.prev + ' ' + _c.btn + '" href="#" />')
+			.appendTo( $navbar );
 
-		this.bind( 'initPanels',
-			function( $panl )
+		
+		this.bind( 'initNavbar:after',
+			function( $panel )
 			{
-				$panl
-					.removeClass( _c.hasnavbar )
-					.children( '.' + _c.navbar )
-					.addClass( _c.hidden );
+				$panel.removeClass( _c.hasnavbar );
 			}
 		);
 
 
-		//	Update
-		var _url, _txt, _own;
+		//	Update to opened panel
+		var $org;
+		var _url, _txt;
 
-		var update = function( $panel )
-		{
-			$panel = $panel || this.$pnls.children( '.' + _c.current );
-			if ( $panel.hasClass( _c.vertical ) )
+		this.bind( 'openPanel:start', 
+			function( $panel )
 			{
-				return;
+				if ( $panel.hasClass( _c.vertical ) )
+				{
+					return;
+				}
+
+				$org = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelPrev );
+				if ( !$org.length )
+				{
+					$org = $panel.children( '.' + _c.navbar ).children( '.' + _c.prev );
+				}
+
+				_url = $org.attr( 'href' );
+				_txt = $org.html();
+
+				$prev[ _url ? 'attr' : 'removeAttr' ]( 'href', _url );
+				$prev[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
+				$prev.html( _txt );
 			}
+		);
 
-			var $orgn = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelPrev );
-			if ( !$orgn.length )
+
+		//	Add screenreader / aria support
+		this.bind( 'initNavbar:after:sr-aria',
+			function( $panel )
 			{
-				$orgn = $panel.children( '.' + _c.navbar ).children( '.' + _c.prev );
+				var $navbar = $panel.children( '.' + _c.navbar );
+				this.__sr_aria( $navbar, 'hidden', true );
 			}
-
-			_url = $orgn.attr( 'href' );
-			_own = $orgn.attr( 'aria-owns' );
-			_txt = $orgn.html();
-
-			$prev[ _url ? 'attr' : 'removeAttr' ]( 'href', _url );
-			$prev[ _own ? 'attr' : 'removeAttr' ]( 'aria-owns', _own );
-			$prev[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
-			$prev.html( _txt );
-		};
-
-		this.bind( 'openPanel', update );
-		this.bind( 'initPanels',
-			function()
+		);
+		this.bind( 'openPanel:start:sr-aria',
+			function( $panel )
 			{
-				update.call( this );
+				this.__sr_aria( $prev, 'hidden', $prev.hasClass( _c.hidden ) );
+				this.__sr_aria( $prev, 'owns', ( $prev.attr( 'href' ) || '' ).slice( 1 ) );
 			}
 		);
 

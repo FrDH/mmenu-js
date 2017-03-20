@@ -39,10 +39,10 @@
 
 
 			//	Refactor counter class
-			this.bind( 'initPanels',
-				function( $panels )
+			this.bind( 'initListview:after',
+				function( $panel )
 				{
-					this.__refactorClass( $('em', $panels), this.conf.classNames[ _ADDON_ ].counter, 'counter' );
+					this.__refactorClass( $('em', $panel), this.conf.classNames[ _ADDON_ ].counter, 'counter' );
 				}
 			);
 
@@ -50,18 +50,18 @@
 			//	Add the counters
 			if ( opts.add )
 			{
-				this.bind( 'initPanels',
-					function( $panels )
+				this.bind( 'initListview:after',
+					function( $panel )
 					{
 						var $wrapper;
 						switch( opts.addTo )
 						{
 							case 'panels':
-								$wrapper = $panels;
+								$wrapper = $panel;
 								break;
 			
 							default:
-								$wrapper = $panels.filter( opts.addTo );
+								$wrapper = $panel.filter( opts.addTo );
 								break;
 						}
 
@@ -69,12 +69,12 @@
 							.each(
 								function()
 								{
-									var $prnt = $(this).data( _d.parent );
-									if ( $prnt )
+									var $parent = $(this).data( _d.parent );
+									if ( $parent )
 									{
-										if ( !$prnt.children( 'em.' + _c.counter ).length )
+										if ( !$parent.children( 'em.' + _c.counter ).length )
 										{
-											$prnt.prepend( $( '<em class="' + _c.counter + '" />' ) );
+											$parent.prepend( $( '<em class="' + _c.counter + '" />' ) );
 										}
 									}
 								}
@@ -85,39 +85,40 @@
 
 			if ( opts.update )
 			{
-				this.bind( 'update',
-					function()
-					{
-						this.$pnls
-							.find( '.' + _c.panel )
-							.each(
-								function()
-								{
-									var $panl = $(this),
-										$prnt = $panl.data( _d.parent );
+				var count = function( $panels )
+				{
+					$panels = $panels || this.$pnls.children( '.' + _c.panel );
 
-									if ( !$prnt )
-									{
-										return;
-									}
+					$panels.each(
+						function()
+						{
+							var $panel 	= $(this),
+								$parent = $panel.data( _d.parent );
 
-									var $cntr = $prnt.children( 'em.' + _c.counter );
-									if ( !$cntr.length )
-									{
-										return;
-									}
+							if ( !$parent )
+							{
+								return;
+							}
 
-									$panl = $panl.children( '.' + _c.listview );
-									if ( !$panl.length )
-									{
-										return;
-									}
+							var $counter = $parent.children( 'em.' + _c.counter );
+							if ( !$counter.length )
+							{
+								return;
+							}
 
-									$cntr.html( that.__filterListItems( $panl.children() ).length );
-								}
-							);
-					}
-				);
+							$panel = $panel.children( '.' + _c.listview );
+							if ( !$panel.length )
+							{
+								return;
+							}
+
+							$counter.html( that.__filterListItems( $panel.children() ).length );
+						}
+					);
+				};
+
+				this.bind( 'initListview:after'	, count );
+				this.bind( 'updateListview'		, count );
 			}
 		},
 
@@ -140,7 +141,7 @@
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		add		: false,
 		addTo	: 'panels',
-		update	: false
+		count	: false
 	};
 	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
 		counter: 'Counter'

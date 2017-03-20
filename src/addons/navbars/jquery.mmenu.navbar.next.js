@@ -18,33 +18,36 @@
 
 
 		//	Add content
-		var $next = $('<a class="' + _c.next + ' ' + _c.btn + '" href="#" />').appendTo( $navbar );
+		var $next = $('<a class="' + _c.next + ' ' + _c.btn + '" href="#" />')
+			.appendTo( $navbar );
 
 
-		//	Update
-		var _url, _txt, _own;
+		//	Update to opened panel
+		var $org;
+		var _url, _txt;
 
-		var update = function( $panel )
-		{
-			$panel = $panel || this.$pnls.children( '.' + _c.current );
 
-			var $orgn = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelNext );
-
-			_url = $orgn.attr( 'href' );
-			_own = $orgn.attr( 'aria-owns' );
-			_txt = $orgn.html();
-
-			$next[ _url ? 'attr' : 'removeAttr' ]( 'href', _url );
-			$next[ _own ? 'attr' : 'removeAttr' ]( 'aria-owns', _own );
-			$next[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
-			$next.html( _txt );
-		};
-
-		this.bind( 'openPanel', update );
-		this.bind( 'initPanels',
-			function()
+		this.bind( 'openPanel:start',
+			function( $panel )
 			{
-				update.call( this );
+				$org = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelNext );
+
+				_url = $org.attr( 'href' );
+				_txt = $org.html();
+
+				$next[ _url ? 'attr' : 'removeAttr' ]( 'href', _url );
+				$next[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
+				$next.html( _txt );
+			}
+		);
+
+
+		//	Add screenreader / aria support
+		this.bind( 'openPanel:start:sr-aria',
+			function( $panel )
+			{
+				this.__sr_aria( $next, 'hidden', $next.hasClass( _c.hidden ) );
+				this.__sr_aria( $next, 'owns', ( $next.attr( 'href' ) || '' ).slice( 1 ) );
 			}
 		);
 
