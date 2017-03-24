@@ -233,7 +233,7 @@ gulp.task( 'js-umd', [ 'js-minify' ], function() {
 	$ gulp custom-css
 */
 
-gulp.task( 'custom-css', [ 'custom-css-sass' ] );
+gulp.task( 'custom-css', [ 'custom-css-compile' ] );
 
 
 //	1)	Create backup _variables.scss from original _variables.scss
@@ -268,12 +268,8 @@ gulp.task( 'custom-css-set', [ 'custom-css-backup' ], function() {
 
 
 //	3)	Compile css
-gulp.task( 'custom-css-sass', [ 'custom-css-set' ], function() {
-
-	return sass( inputDir + '/**/*.scss', { style: 'expanded' })
-		.pipe( autoprefixer( [ '> 5%', 'last 5 versions' ] ) )
-		.pipe( cleancss() )
-		.pipe( gulp.dest( outputDir ) );
+gulp.task( 'custom-css-compile', [ 'custom-css-set' ], function() {
+	return gulp.start( [ 'css' ] );
 });
 
 
