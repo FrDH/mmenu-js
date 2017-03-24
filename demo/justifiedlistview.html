@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="author" content="www.frebsite.nl" />
+		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+
+		<title>jQuery.mmenu - Demo</title>
+
+		<link type="text/css" rel="stylesheet" href="css/demo1.css" />
+		<link type="text/css" rel="stylesheet" href="../dist/jquery.mmenu.css" />
+		<link type="text/css" rel="stylesheet" href="../dist/addons/navbars/jquery.mmenu.navbars.css" />
+		<link type="text/css" rel="stylesheet" href="../dist/extensions/themes/jquery.mmenu.themes.css" />
+		<link type="text/css" rel="stylesheet" href="../dist/extensions/effects/jquery.mmenu.effects.css" />
+		<link type="text/css" rel="stylesheet" href="../dist/extensions/borderstyle/jquery.mmenu.borderstyle.css" />
+		<link type="text/css" rel="stylesheet" href="../dist/extensions/listview/jquery.mmenu.listview.css" />
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" />
+		<style type="text/css">
+			.mm-menu.mm-theme-black {
+				background: #600;
+				background: linear-gradient(135deg, #960 10%,#600 70%);
+			}
+			.mm-menu > .mm-navbar,
+			.mm-panels,
+			.mm-panels > .mm-panel {
+				background: none;
+			}
+			.mm-navbar-size-3 {
+				text-align: center;
+				position: relative;
+				border-bottom: none;
+			}
+			.mm-navbar-size-3:before {
+				content: "";
+				display: inline-block;
+				vertical-align: middle;
+				height: 100%;
+				width: 1px;
+			}
+			.mm-navbar-size-3 > * {
+				display: inline-block;
+				vertical-align: middle;
+			}
+			.mm-navbar-size-3 a
+			{
+				border: 1px solid rgba(255, 255, 255, 0.6);
+			}
+			.mm-navbar-size-3 img {
+				opacity: 0.6;
+				border: 1px solid #fff;
+				border-radius: 60px;
+				width: 60px;
+				height: 60px;
+				padding: 10px;
+				margin: 0 10px;
+			}
+			.mm-navbar-size-3 a {
+				border-radius: 40px;
+				color: rgba(255, 255, 255, 0.6) !important;
+				font-size: 16px !important;
+				line-height: 40px;
+				width: 40px;
+				height: 40px;
+				padding: 0;
+			}
+			.mm-navbar-size-3 a:hover {
+				border-color: #fff;
+				color: #fff !important;
+			}
+			.mm-listview {
+				text-transform: uppercase;
+				font-size: 12px;
+			}
+			.mm-listview li:last-child:after {
+				content: none;
+				display: none;
+			}
+			
+			.mm-listview a,
+			.mm-listview span {
+				text-align: center;
+			}
+			.mm-listview .mm-next.mm-fullsubopen + a,
+			.mm-listview .mm-next.mm-fullsubopen + span
+			{
+				padding-right: 20px;
+			}
+			.mm-listview > li > a,
+			.mm-listview > li > a + span,
+			.mm-listview > li > a .fa {
+				color: rgba(255, 255, 255, 0.6);
+			}
+			.mm-listview > li > a:hover,
+			.mm-listview > li > a:hover + span,
+			.mm-listview > li > a:hover .fa {
+				color: #fff;
+			}
+			.mm-listview > li .fa {
+				position: absolute;
+				left: 20px;
+				top: 50%;
+				margin-top: -10px;
+			}
+		</style>
+
+		<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.js"></script>
+
+		<script type="text/javascript" src="../dist/jquery.mmenu.min.js"></script>
+		<script type="text/javascript" src="../dist/addons/navbars/jquery.mmenu.navbars.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#menu").mmenu({
+					extensions 	: [
+						"theme-black",
+						"listview-justify",
+						"fx-panels-slide-100",
+						"fx-listitems-slide",
+						"fx-menu-slide",
+						"border-offset"
+					],
+					navbars		: [{
+						height 	: 3,
+						content : [ 
+							'<a href="#/" class="fa fa-phone"></a>',
+							'<img src="inc/profile-2-w.png" />',
+							'<a href="#/" class="fa fa-envelope"></a>'
+						]
+					}, true]
+				}, {
+				}).on( 'click',
+					'a[href^="#/"]',
+					function() {
+						alert( "Thank you for clicking, but that's a demo link." );
+						return false;
+					}
+				);
+			});
+		</script>
+	</head>
+	<body>
+		<div id="page">
+			<div class="header">
+				<a href="#menu"></a>
+				Demo
+			</div>
+			<div class="content">
+				<p><strong>This is a demo.</strong><br/>
+					Click the menu icon to open a custom styled menu.</p>
+			</div>
+		</div>
+		<nav id="menu">
+			<ul>
+				<li><a href="#/"><i class="fa fa-home"></i>Home</a></li>
+				<li><span><i class="fa fa-user"></i>About us</span>
+					<ul>
+						<li><a href="#/about/history">History</a></li>
+						<li><a href="#/about/team">The team</a></li>
+						<li><a href="#/about/address">Our address</a></li>
+					</ul>
+				</li>
+				<li><a href="#/contact"><i class="fa fa-envelope"></i> Contact</a></li>
+			</ul>
+		</nav>
+	</body>
+</html>
