@@ -1,13 +1,14 @@
 /*
-	jQuery.mmenu gulpfile.js
+	Tasks:
 
-	Default gulp tasks	:
-	$ gulp 				: Runs "css" and "js" tasks
-	$ gulp watch		: Starts a watch on "css" and "js" tasks
+	$ gulp 					: Runs "css" and "js" tasks
+	$ gulp watch			: Starts a watch on "css" and "js" tasks
 
-	Custom gulp tasks	:
-	$ gulp custom-css 	: Compile and concatenate custom CSS.
-	$ gulp custom-build : Concatenate JS and CSS files.
+
+	Flags:
+
+	--output ../path/to 	: Sets the output directory to the specified directory
+	--custom ../path/to 	: Creates a custom build using _build.json and _variables.scss from the specified directory
 */
 
 
@@ -25,7 +26,7 @@ var gulp 			= require( 'gulp' ),
 
 var inputDir 		= 'src',
 	outputDir 		= 'dist',
-	customDir 		= './../mmenu-custom',
+	customDir 		= null,
 	translations	= [ 'nl', 'de' ];
 
 
@@ -36,6 +37,32 @@ function sanitizeNamespaceForUmd( file ) {
 }
 
 
+function getCustomDir( dir ) {
+	var index = process.argv.indexOf( '--' + dir );
+	if ( index > -1 )
+	{
+		var dir = process.argv[ index + 1 ];
+		return ( dir && dir.slice( 0, 2 ) != '--' ) ? dir : false;
+	}
+	return false;
+}
+
+
+function start( type ) {
+
+	var output = getCustomDir( 'output' ),
+		custom = getCustomDir( 'custom' );
+
+	if ( output ) {
+		outputDir = output;
+	}
+	if ( custom ) {
+		customDir = custom;
+	}
+
+	gulp.start( [ type + '-' + ( custom ? 'custom' : 'default' ) ] );
+}
+
 
 
 
@@ -43,11 +70,20 @@ function sanitizeNamespaceForUmd( file ) {
 	$ gulp
 */
 
-gulp.task( 'default', [ 'custom-css-reset' ], function() {
+gulp.task( 'default', function() {
+	start( 'build' );	
+});
+
+gulp.task( 'build-default', [ 'default-set' ], function() {
 	gulp.start( [ 'js', 'css' ] );
 });
 
-
+gulp.task( 'build-custom', [ 'custom-set' ], function() {
+	gulp.start( [ 'build-custom-concat' ] );
+});
+gulp.task( 'build-custom-concat', [ 'js', 'css' ], function() {
+	gulp.start( [ 'custom-build' ] );
+});
 
 
 
@@ -55,9 +91,24 @@ gulp.task( 'default', [ 'custom-css-reset' ], function() {
 	$ gulp watch
 */
 
-gulp.task( 'watch', [ 'custom-css-reset' ], function() {
+gulp.task( 'watch', function() {
+	start( 'watch' );
+});
+
+gulp.task( 'watch-default', [ 'default-set' ], function() {
 	gulp.watch( inputDir + '/**/*.scss'	, [ 'css' ] );
 	gulp.watch( inputDir + '/**/*.js'	, [ 'js'  ] );
+});
+
+gulp.task( 'watch-custom', [ 'custom-set' ], function() {
+	gulp.watch( inputDir + '/**/*.scss'	, [ 'watch-custom-css' ] );
+	gulp.watch( inputDir + '/**/*.js'	, [ 'watch-custom-js'  ] );
+});
+gulp.task( 'watch-custom-css', [ 'css' ], function() {
+	gulp.start( [ 'custom-build' ] );
+});
+gulp.task( 'watch-custom-js', [ 'js' ], function() {
+	gulp.start( [ 'custom-build' ] );
 });
 
 
@@ -230,14 +281,12 @@ gulp.task( 'js-umd', [ 'js-minify' ], function() {
 
 
 /*
-	$ gulp custom-css
+	Custom tasks
 */
 
-gulp.task( 'custom-css', [ 'custom-css-compile' ] );
 
-
-//	1)	Create backup _variables.scss from original _variables.scss
-gulp.task( 'custom-css-backup', function() {
+//	Create backup _variables.scss from original _variables.scss
+gulp.task( 'custom-backup', function() {
 
 	fs.stat( inputDir + '/scss/_variables.bu.scss', function( err, stat ) {
 		if ( err != null )
@@ -250,8 +299,8 @@ gulp.task( 'custom-css-backup', function() {
 });
 
 
-//	2)	Concatenate custom _variables.scss with backup _variables.scss
-gulp.task( 'custom-css-set', [ 'custom-css-backup' ], function() {
+//	Concatenate custom _variables.scss with backup _variables.scss
+gulp.task( 'custom-set', [ 'custom-backup' ], function() {
 
 	fs.stat( inputDir + '/scss/_variables.bu.scss', function( err, stat ) {
 		if ( err == null )
@@ -267,14 +316,8 @@ gulp.task( 'custom-css-set', [ 'custom-css-backup' ], function() {
 });
 
 
-//	3)	Compile css
-gulp.task( 'custom-css-compile', [ 'custom-css-set' ], function() {
-	return gulp.start( [ 'css' ] );
-});
-
-
-//	x) Reset the css
-gulp.task( 'custom-css-reset', function() {
+//	Reset the css
+gulp.task( 'default-set', function() {
 
 	fs.stat( inputDir + '/scss/_variables.bu.scss', function( err, stat ) {
 		if ( err == null )
@@ -282,68 +325,36 @@ gulp.task( 'custom-css-reset', function() {
 			return gulp.src([
 					inputDir  + '/scss/_variables.bu.scss' 
 				])
-				.pipe( concat( '_variables.scss' ) )
+				.pipe( rename( '_variables.scss' ) )
 				.pipe( gulp.dest( inputDir + '/scss' ) );
 		}
 	});
 });
 
 
+//	Concatenate JS and CSS
+gulp.task( 'custom-build', function() {
 
-
-
-/*
-	$ gulp custom-build
-*/
-
-gulp.task( 'custom-build', [ 'custom-build-umd' ] );
-
-
-//	1)	Concatenate JS and CSS
-gulp.task( 'custom-build-concat', function() {
-
-	var builds 	= require( customDir + '/_builds.json' ),
+	var build 	= require( customDir + '/_build.json' ),
 		streams = [],
 		stream;
 
-	for ( var b = 0; b < builds.length; b++ )
+	var js  = [],
+		css = [];
+
+	for ( var f in build.files )
 	{
-
-		var js  = [];
-		var css = [];
-
-		for ( var f in builds[ b ].files )
+		for ( var s = 0; s < build.files[ f ].length; s++ )
 		{
-			for ( var s = 0; s < builds[ b ].files[ f ].length; s++ )
-			{
-				var script = builds[ b ].files[ f ][ s ];
+			var script = build.files[ f ][ s ];
 
-				js.push(  outputDir + '/' + f + '/' + script + '/jquery.mmenu.' + script + '.min.js' );
-				css.push( outputDir + '/' + f + '/' + script + '/jquery.mmenu.' + script + '.css' );
-			}
+			js.push(  outputDir + '/' + f + '/' + script + '/jquery.mmenu.' + script + '.min.js' );
+			css.push( outputDir + '/' + f + '/' + script + '/jquery.mmenu.' + script + '.css' );
 		}
-
-		stream = gulp.src( js )
-			.pipe( concat( builds[ b ].name + '.min.js' ) )
-			.pipe( gulp.dest( customDir + '/' + outputDir ) );
-
-		streams.push( stream );
-
-		stream = gulp.src( css )
-			.pipe( concat( builds[ b ].name + '.css' ) )
-			.pipe( gulp.dest( customDir + '/' + outputDir ) );
-
-		streams.push( stream );
 	}
 
-	return ms.apply( this, streams );
-});
-
-
-//	2)	UMD JS
-gulp.task( 'custom-build-umd', [ 'custom-build-concat' ], function() {
-
-	return gulp.src( customDir + '/' + outputDir + '/*.min.js' )
+	stream = gulp.src( js )
+		.pipe( concat( build.name + '.min.js' ) )
 		.pipe( umd({
 			dependencies: function() { return [ {
 				name 	: 'jquery',
@@ -353,6 +364,16 @@ gulp.task( 'custom-build-umd', [ 'custom-build-concat' ], function() {
 			exports: function() { return true; },
 			namespace: sanitizeNamespaceForUmd
 		}))
-		.pipe( gulp.dest( customDir + '/' + outputDir ) );
+		.pipe( gulp.dest( customDir + '/' ) );
+
+	streams.push( stream );
+
+	stream = gulp.src( css )
+		.pipe( concat( build.name + '.css' ) )
+		.pipe( gulp.dest( customDir + '/' ) );
+
+	streams.push( stream );
+
+	return ms.apply( this, streams );
 });
 
