@@ -20,7 +20,8 @@
 
 	&.mm-measureheight
 	{
-		.mm-panel
+		.mm-panel:not(.mm-vertical),
+		.mm-panel.mm-vertical.mm-opened
 		{
 			display: block !important;
 		}

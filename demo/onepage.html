@@ -12,23 +12,15 @@
 		
 		<!-- for the one page layout -->
 		<style type="text/css">
-			#intro,
-			#first,
-			#second,
-			#third
-			{
-				height: 400px;
-			}
-			#intro
-			{
-				padding-top: 0;
-			}
-			#first,
-			#second,
-			#third
+			section
 			{
 				border-top: 1px solid #ccc;
-				padding-top: 150px;
+				padding: 150px 0 200px;
+			}
+			section:first-child
+			{
+				border-top: none;
+				padding-top: 0;
 			}
 		</style>
 		
@@ -60,7 +52,7 @@
 		<script type="text/javascript" src="http://hammerjs.github.io/dist/hammer.min.js"></script>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.js"></script>
 
-		<script type="text/javascript" src="../dist/jquery.mmenu.all.min.js"></script>
+		<script type="text/javascript" src="../dist/jquery.mmenu.all.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				$('nav#menu').mmenu({
@@ -83,26 +75,26 @@
 				Demo
 			</div>
 			<div class="content" id="content">
-				<div id="intro">
-					<p><strong>This is a demo.</strong><br />
+				<section id="intro">
+					<p><strong>This is a demo</strong><br />
 						Click the menu icon to open the menu.</p>
 					<p>Some of the links in the menu link to a section on this page.</p>
-				</div>
-				<div id="first">
-					<p><strong>This is the first section.</strong><br />
-						Notice how the fixed header and footer slide out along with the page.</p>
+				</section>
+				<section id="widescreen">
+					<p><strong>Widescreen extension</strong><br />
+						On wider screens, the menu will always be opened.</p>
 					<p><a href="#menu">Open the menu.</a></p>
-				</div>
-				<div id="second">
-					<p><strong>This is the second section.</strong><br />
+				</section>
+				<section id="drag">
+					<p><strong>Drag add-on</strong><br />
 						You can also drag the page to the right to open the menu.</p>
 					<p><a href="#menu">Open the menu.</a></p>
-				</div>
-				<div id="third">
-					<p><strong>This is the third section.</strong><br />
-						It is also the last section.</p>
+				</section>
+				<section id="fixed">
+					<p><strong>Fixed elements</strong><br />
+						Notice how the fixed header and footer slide out along with the page.</p>
 					<p><a href="#menu">Open the menu.</a></p>
-				</div>
+				</section>
 			</div>
 			<div class="footer Fixed">
 				Fixed footer :-)
@@ -110,9 +102,9 @@
 			<nav id="menu">
 				<ul>
 					<li><a href="#content">Introduction</a></li>
-					<li><a href="#first">First section</a></li>
-					<li><a href="#second">Second section</a></li>
-					<li><a href="#third">Third section</a></li>
+					<li><a href="#widescreen">Widescreen extension</a></li>
+					<li><a href="#drag">Drag add-on</a></li>
+					<li><a href="#fixed">Fixed elements</a></li>
 
 					<li class="Divider">Other demos</li>
 					<li><a href="default.html">Default demo</a></li>

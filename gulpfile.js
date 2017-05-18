@@ -9,18 +9,24 @@
 
 	--output ../path/to 	: Sets the output directory to the specified directory
 	--custom ../path/to 	: Creates a custom build using _build.json and _variables.scss from the specified directory
+
+
+	Complete example:
+
+	$ gulp --custom ../mmenu-custom --output ../my-custom-build
 */
 
 
 var gulp 			= require( 'gulp' ),
-	sass 			= require( 'gulp-ruby-sass' ),
+	sass 			= require( 'gulp-sass' ),
 	autoprefixer 	= require( 'gulp-autoprefixer' ),
 	cleancss		= require( 'gulp-clean-css' ),
 	uglify 			= require( 'gulp-uglify' ),
 	rename 			= require( 'gulp-rename' ),
 	concat 			= require( 'gulp-concat' ),
 	umd				= require( 'gulp-umd' ),
-	ms				= require( 'merge-stream' ),
+	typescript		= require( 'gulp-typescript' ),
+	merge			= require( 'merge-stream' ),
 	fs 				= require( 'fs' );
 
 
@@ -37,7 +43,7 @@ function sanitizeNamespaceForUmd( file ) {
 }
 
 
-function getCustomDir( dir ) {
+function getOption( dir ) {
 	var index = process.argv.indexOf( '--' + dir );
 	if ( index > -1 )
 	{
@@ -50,8 +56,8 @@ function getCustomDir( dir ) {
 
 function start( type ) {
 
-	var output = getCustomDir( 'output' ),
-		custom = getCustomDir( 'custom' );
+	var output = getOption( 'output' ),
+		custom = getOption( 'custom' );
 
 	if ( output ) {
 		outputDir = output;
@@ -97,12 +103,12 @@ gulp.task( 'watch', function() {
 
 gulp.task( 'watch-default', [ 'default-set' ], function() {
 	gulp.watch( inputDir + '/**/*.scss'	, [ 'css' ] );
-	gulp.watch( inputDir + '/**/*.js'	, [ 'js'  ] );
+	gulp.watch( inputDir + '/**/*.ts'	, [ 'js'  ] );
 });
 
 gulp.task( 'watch-custom', [ 'custom-set' ], function() {
 	gulp.watch( inputDir + '/**/*.scss'	, [ 'watch-custom-css' ] );
-	gulp.watch( inputDir + '/**/*.js'	, [ 'watch-custom-js'  ] );
+	gulp.watch( inputDir + '/**/*.ts'	, [ 'watch-custom-js'  ] );
 });
 gulp.task( 'watch-custom-css', [ 'css' ], function() {
 	gulp.start( [ 'custom-build' ] );
@@ -125,9 +131,9 @@ gulp.task( 'css', [ 'css-concat-all' ] );
 //	1)	Compile all SCSS to CSS
 gulp.task( 'css-compile', function() {
 
-	return sass( inputDir + '/**/*.scss', { style: 'expanded' })
-		.pipe( autoprefixer( [ '> 5%', 'last 5 versions' ] ) )
-		.pipe( cleancss() )
+	return gulp.src( inputDir + '/**/*.scss' )
+    	.pipe( sass().on( 'error', sass.logError ) )
+    	.pipe( cleancss() )
 		.pipe( gulp.dest( outputDir ) );
 });
 
@@ -174,29 +180,29 @@ gulp.task( 'js', [ 'js-umd' ] );
 //	1) 	Copy all into dist dir
 //		Exclude translations
 //		Exclude navbars add-on
-gulp.task( 'js-copy', function() {
+gulp.task( 'js-typescript', function() {
 
 	return gulp.src([
-			inputDir + '/*/**/*.js',
-			'!' + inputDir + '/**/translations/*.js',
-			'!' + inputDir + '/addons/navbars/**/*.js'
+			inputDir + '/*/**/*.ts',
+			'!' + inputDir + '/**/translations/*.ts',
+			'!' + inputDir + '/addons/navbars/**/*.ts'
 		])
-		.pipe( rename({ suffix: '.min' }) )
+		.pipe( typescript() )
 		.pipe( gulp.dest( outputDir ) );
 });
 
 
 //	2) 	Concatenate core
 //		Can't use glob, needs to be in specific order
-gulp.task( 'js-concat-core', [ 'js-copy' ], function() {
+gulp.task( 'js-concat-core', [ 'js-typescript' ], function() {
 
 	return gulp.src([
-			inputDir + '/core/oncanvas/jquery.mmenu.oncanvas.js',
-			inputDir + '/core/offcanvas/jquery.mmenu.offcanvas.js',
-			inputDir + '/core/scrollbugfix/jquery.mmenu.scrollbugfix.js',
-			inputDir + '/core/screenreader/jquery.mmenu.screenreader.js'
+			outputDir + '/core/oncanvas/jquery.mmenu.oncanvas.js',
+			outputDir + '/core/offcanvas/jquery.mmenu.offcanvas.js',
+			outputDir + '/core/scrollbugfix/jquery.mmenu.scrollbugfix.js',
+			outputDir + '/core/screenreader/jquery.mmenu.screenreader.js'
 		])
-		.pipe( concat( 'jquery.mmenu.min.js' ) )
+		.pipe( concat( 'jquery.mmenu.js' ) )
 		.pipe( gulp.dest( outputDir ) );
 });
 
@@ -210,15 +216,16 @@ gulp.task( 'js-concat-translations', [ 'js-concat-core' ], function() {
 	for ( var t = 0; t < translations.length; t++ )
 	{
 		stream = gulp.src([
-				inputDir + '/**/translations/jquery.mmenu.' + translations[ t ] + '.js'
+				inputDir + '/**/translations/jquery.mmenu.' + translations[ t ] + '.ts'
 			])
-			.pipe( concat( 'jquery.mmenu.' + translations[ t ] + '.min.js' ) )
+			.pipe( typescript() )
+			.pipe( concat( 'jquery.mmenu.' + translations[ t ] + '.js' ) )
 			.pipe( gulp.dest( outputDir + '/translations/' + translations[ t ] ) );
 
 		streams.push( stream );
 	}
 
-	return ms.apply( this, streams );
+	return merge.apply( this, streams );
 });
 
 
@@ -226,10 +233,11 @@ gulp.task( 'js-concat-translations', [ 'js-concat-core' ], function() {
 gulp.task( 'js-concat-navbar', [ 'js-concat-translations' ], function() {
 
 	return gulp.src([
-			inputDir + '/addons/navbars/jquery.mmenu.navbars.js',
-			inputDir + '/addons/navbars/**/*.js'
+			inputDir + '/addons/navbars/jquery.mmenu.navbars.ts',
+			inputDir + '/addons/navbars/**/*.ts'
 		])
-		.pipe( concat( 'jquery.mmenu.navbars.min.js' ) )
+		.pipe( typescript() )
+		.pipe( concat( 'jquery.mmenu.navbars.js' ) )
 		.pipe( gulp.dest( outputDir + '/addons/navbars' ) );
 });
 
@@ -238,10 +246,10 @@ gulp.task( 'js-concat-navbar', [ 'js-concat-translations' ], function() {
 gulp.task( 'js-concat-all', [ 'js-concat-navbar' ], function() {
 
 	return gulp.src([
-			outputDir + '/jquery.mmenu.min.js',
+			outputDir + '/jquery.mmenu.js',
 			outputDir + '/addons/**/*.js'
 		])
-		.pipe( concat( 'jquery.mmenu.all.min.js' ) )
+		.pipe( concat( 'jquery.mmenu.all.js' ) )
 		.pipe( gulp.dest( outputDir ) );
 });
 
@@ -250,19 +258,19 @@ gulp.task( 'js-concat-all', [ 'js-concat-navbar' ], function() {
 gulp.task( 'js-minify', [ 'js-concat-all' ], function() {
 
 	return gulp.src([
-			outputDir + '/**/*.min.js'
+			outputDir + '/**/*.js'
 		])
 		.pipe( uglify({ preserveComments: 'license' }) )
 		.pipe( gulp.dest( outputDir ) );
 });
 
 
-//	7)	UMD core
+//	7)	UMD
 gulp.task( 'js-umd', [ 'js-minify' ], function() {
 
 	return gulp.src([
-			outputDir + '/jquery.mmenu.min.js',
-			outputDir + '/jquery.mmenu.all.min.js',
+			outputDir + '/jquery.mmenu.js',
+			outputDir + '/jquery.mmenu.all.js',
 		])
 		.pipe( umd({
 			dependencies: function() { return [ {
@@ -348,14 +356,18 @@ gulp.task( 'custom-build', function() {
 		{
 			var script = build.files[ f ][ s ];
 
-			js.push(  outputDir + '/' + f + '/' + script + '/jquery.mmenu.' + script + '.min.js' );
+			js.push(  outputDir + '/' + f + '/' + script + '/jquery.mmenu.' + script + '.js' );
 			css.push( outputDir + '/' + f + '/' + script + '/jquery.mmenu.' + script + '.css' );
 		}
 	}
 
+	//	js
 	stream = gulp.src( js )
-		.pipe( concat( build.name + '.min.js' ) )
-		.pipe( umd({
+		.pipe( concat( build.name + '.js' ) );
+
+	if ( build.umd )
+	{
+		stream = stream.pipe( umd({
 			dependencies: function() { return [ {
 				name 	: 'jquery',
 				global 	: 'jQuery',
@@ -363,17 +375,19 @@ gulp.task( 'custom-build', function() {
 			} ]; },
 			exports: function() { return true; },
 			namespace: sanitizeNamespaceForUmd
-		}))
-		.pipe( gulp.dest( customDir + '/' ) );
+		}));
+	}
+	stream = stream.pipe( gulp.dest( customDir + '/' ) );
 
 	streams.push( stream );
 
+	//	css
 	stream = gulp.src( css )
 		.pipe( concat( build.name + '.css' ) )
 		.pipe( gulp.dest( customDir + '/' ) );
 
 	streams.push( stream );
 
-	return ms.apply( this, streams );
+	return merge.apply( this, streams );
 });
 

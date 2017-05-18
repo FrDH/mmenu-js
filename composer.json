@@ -1,6 +1,6 @@
 {
 	"name"			: "jQuery.mmenu",
-	"version"		: "6.0.2",
+	"version"		: "6.1.0",
 	"authors"		: "Fred Heusschen <info@frebsite.nl>",
 	"description"	: "The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
 	"keywords"		: [
@@ -14,6 +14,7 @@
 		"navigation",
 		"off-canvas",
 		"on-canvas",
+		"curtain",
 		"panels",
 		"submenu"
 	],

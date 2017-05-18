@@ -96,7 +96,7 @@
 			if ( this.conf.offCanvas.menuInjectMethod == 'append' ||
 				this.conf.offCanvas.menuInjectMethod == 'prepend'
 			) {
-				deprc( '"' + this.conf.offCanvas.menuInjectMethod + '" for the "offCanvas.menuInjectMethod" configuration option', '"' + this.conf.offCanvas.menuInjectMethod + 'To"', '5.8' );
+				deprc( '"' + this.conf.offCanvas.menuInjectMethod + '" for the "offCanvas.menuInjectMethod" configuration option', '"' + this.conf.offCanvas.menuInjectMethod + 'To"', '6.0' );
 			}
 
 			deprc( 'The "offCanvas.menuInjectMethod" configuration option', '"offCanvas.menuInsertMethod"', '6.0' );

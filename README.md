@@ -18,11 +18,11 @@ You can [purchase a license](http://mmenu.frebsite.nl/download.html) if you want
 ### Learn more
 + [Tutorial](http://mmenu.frebsite.nl/tutorials/off-canvas/)
 + [Options](http://mmenu.frebsite.nl/documentation/core/options.html)
-+ [API](http://mmenu.frebsite.nl/documentation/core/api.html)
 + [Extensions](http://mmenu.frebsite.nl/documentation/extensions/)
 + [Add-ons](http://mmenu.frebsite.nl/documentation/addons/)
++ [API](http://mmenu.frebsite.nl/documentation/core/api.html)
 
 ### Development
-This project uses [Gulp](http://gulpjs.com/) to check, minify and concatenate the JS and (S)CSS files.
+This project uses [Gulp](http://gulpjs.com/) to transpile, minify and concatenate the TS/JS and SCSS/CSS files.
 If you are unfamiliar with Gulp, check [this tutorial](https://travismaynard.com/writing/getting-started-with-gulp) on how to get started.<br />
 Run `gulp watch` in the command-line to put a watch on the files and run all scripts immediately after saving your changes.
