@@ -148,7 +148,7 @@
 
 
 		//	Configuration 5.6
-		if ( typeof this.conf.searchfield.form == 'boolean' && this.conf.searchfield.form )
+		if ( typeof this.conf.searchfield != "undefined" && typeof this.conf.searchfield.form == 'boolean' && this.conf.searchfield.form )
 		{
 			deprc( 'Boolean "true" for the "searchfield.form" configuration option', 'an object', '5.6' );
 		}
@@ -413,7 +413,7 @@
 		}
 
 		//	Options 5.6
-		if ( this.opts.searchfield.addTo != 'menu' )
+		if ( typeof this.opts.searchfield != "undefined" && this.opts.searchfield.addTo != 'menu' )
 		{
 			if ( this.opts.resultsPanel && this.opts.resultsPanel.add )
 			{
@@ -422,7 +422,7 @@
 		}
 
 		//	Configuration 5.6
-		if ( this.conf.searchfield.submit )
+		if ( typeof this.opts.searchfield != "undefined" && this.conf.searchfield.submit )
 		{
 			if ( !this.conf.searchfield.form )
 			{
@@ -476,7 +476,7 @@
 		}
 
 		//	positioning + dropdown
-		if ( this.opts.dropdown.drop )
+		if ( typeof this.opts.dropdown != "undefined" && this.opts.dropdown.drop )
 		{
 			if ( position && zposition )
 			{
