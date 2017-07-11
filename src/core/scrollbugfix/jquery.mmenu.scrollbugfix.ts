@@ -102,7 +102,7 @@
 	    glbl.$body
 	    	.off( _e.touchstart + '-' + _ADDON_ )
 	    	.on( _e.touchstart + '-' + _ADDON_,
-		    	'.' + _c.panels + '> .' + _c.opened,
+		    	'.' + _c.panels + '> .' + _c.panel,
 		    	function( e )
 		    	{
 			        if ( glbl.$html.hasClass( _c.opened ) )
@@ -127,7 +127,7 @@
 		    )
 	 		.off( _e.touchmove + '-' + _ADDON_ )
 	 		.on( _e.touchmove + '-' + _ADDON_,
-		 		'.' + _c.panels + '> .' + _c.opened,
+		 		'.' + _c.panels + '> .' + _c.panel,
 		 		function( e )
 		 		{
 			        if ( glbl.$html.hasClass( _c.opened ) )
@@ -150,7 +150,7 @@
 	    				.children( '.' + _c.opened )
 			        	.scrollTop( 0 )
 			        	.css({ '-webkit-overflow-scrolling': 'auto' })
-			        	.css({ '-webkit-overflow-scrolling': "touch" });
+			        	.css({ '-webkit-overflow-scrolling': 'touch' });
 				}
 	    	);
 	};

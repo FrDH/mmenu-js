@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v6.1.0
+ * jQuery mmenu v6.1.1
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	const _PLUGIN_ 	: string = 'mmenu';
-	const _VERSION_	: string = '6.1.0';
+	const _VERSION_	: string = '6.1.1';
 
 
 	//	Newer version of the plugin already excists
@@ -149,7 +149,7 @@
 					.addClass( _c.opened );
 
 				//	Open first non-vertical parent panel
-				this.openPanel(
+				this.openPanel( 
 					$panel
 						.parents( '.' + _c.panel )
 						.not( '.' + _c.vertical )
@@ -277,12 +277,12 @@
 		{
 			this.trigger( 'closePanel:before', $panel );
 
-			var $l = $panel.parent();
+			var $li = $panel.parent();
 
 			//	Vertical only
-			if ( $l.hasClass( _c.vertical ) )
+			if ( $li.hasClass( _c.vertical ) )
 			{
-				$l.removeClass( _c.opened );
+				$li.removeClass( _c.opened );
 
 				this.trigger( 'closePanel', $panel );
 			}
@@ -534,6 +534,12 @@
 
 			var that  = this;
 
+			//	Stop if already a panel
+			if ( $panel.hasClass( _c.panel ) )
+			{
+				return $panel;
+			}
+
 			//	Refactor panel classnames
 			this.__refactorClass( $panel, this.conf.classNames.panel 	, 'panel' );
 			this.__refactorClass( $panel, this.conf.classNames.nopanel 	, 'nopanel' );
@@ -548,12 +554,6 @@
 			if ( $panel.hasClass( _c.nopanel ) )
 			{
 				return false;
-			}
-
-			//	Stop if already a panel
-			if ( $panel.hasClass( _c.panel ) )
-			{
-				return $panel;
 			}
 
 

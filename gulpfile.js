@@ -133,6 +133,7 @@ gulp.task( 'css-compile', function() {
 
 	return gulp.src( inputDir + '/**/*.scss' )
     	.pipe( sass().on( 'error', sass.logError ) )
+    	.pipe( autoprefixer( [ '> 5%', 'last 5 versions' ] ) )
     	.pipe( cleancss() )
 		.pipe( gulp.dest( outputDir ) );
 });
