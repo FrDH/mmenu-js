@@ -189,13 +189,13 @@
 								var $rpnl = this.$pnls.children( '.' + _c.resultspanel );
 								if ( !$rpnl.length )
 								{
-									$rpnl = $( '<div class="' + _c.panel + ' ' + _c.resultspanel + ' ' + _c.noanimation + ' ' + _c.hidden + '" />' )
+									$rpnl = $( '<div class="' + _c.resultspanel + ' ' + _c.noanimation + ' ' + _c.hidden + '" />' )
 										.appendTo( this.$pnls )
 										.append( '<div class="' + _c.navbar + ' ' + _c.hidden + '"><a class="' + _c.title + '">' + $[ _PLUGIN_ ].i18n( opts.resultsPanel.title ) + '</a></div>' )
 										.append( '<ul class="' + _c.listview + '" />' )
 										.append( this.$pnls.find( '.' + _c.noresultsmsg ).first().clone() );
 
-									this.initPanels( $rpnl );
+									this._initPanel( $rpnl );
 								}
 							}
 
