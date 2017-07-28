@@ -6,7 +6,7 @@
 
 (function( $ ) {
 
-	var _PLUGIN_ = 'mmenu';
+	const _PLUGIN_ = 'mmenu';
 
 	$[ _PLUGIN_ ].defaults.onClick.close			= true;
 	$[ _PLUGIN_ ].defaults.onClick.preventDefault	= false;

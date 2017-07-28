@@ -6,8 +6,8 @@
 
 (function( $ ) {
 
-	var _PLUGIN_ = 'mmenu',
-		_WRAPPR_ = 'bootstrap';
+	const _PLUGIN_ = 'mmenu';
+	const _WRAPPR_ = 'bootstrap';
 
 
 	//	Set some config

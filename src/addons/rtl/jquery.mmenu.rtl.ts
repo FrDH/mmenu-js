@@ -7,8 +7,8 @@
 
 (function( $ ) {
 
-	var _PLUGIN_ = 'mmenu',
-		_ADDON_  = 'rtl';
+	const _PLUGIN_ = 'mmenu';
+	const _ADDON_  = 'rtl';
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {

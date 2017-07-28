@@ -7,9 +7,9 @@
 
 (function( $ ) {
 
-	var _PLUGIN_ 	= 'mmenu',
-		_ADDON_  	= 'navbars',
-		_CONTENT_	= 'next';
+	const _PLUGIN_ 	= 'mmenu';
+	const _ADDON_  	= 'navbars';
+	const _CONTENT_	= 'next';
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ][ _CONTENT_ ] = function( $navbar, opts )
 	{

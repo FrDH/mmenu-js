@@ -6,7 +6,7 @@
 
 (function( $ ) {
 
-	var _PLUGIN_ = 'mmenu';
+	const _PLUGIN_ = 'mmenu';
 
 	//	Vars
 	var ready, classnames, $html;

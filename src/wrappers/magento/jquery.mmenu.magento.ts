@@ -6,7 +6,7 @@
 
 (function( $ ) {
 
-	var _PLUGIN_ = 'mmenu';
+	const _PLUGIN_ = 'mmenu';
 
 	$[ _PLUGIN_ ].configuration.classNames.selected = 'active';
 

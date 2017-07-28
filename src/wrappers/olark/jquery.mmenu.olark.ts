@@ -6,7 +6,7 @@
 
 (function( $ ) {
 
-	var _PLUGIN_ = 'mmenu';
+	const _PLUGIN_ = 'mmenu';
 
 	//	Add olark id to the noPageSelector array
 	$[ _PLUGIN_ ].configuration.offCanvas.noPageSelector.push( '#olark' );

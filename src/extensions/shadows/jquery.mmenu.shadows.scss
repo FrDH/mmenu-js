@@ -17,6 +17,7 @@
 		left: 100%;
 		top: -10%;
 		z-index: 100;
+		clip-path: polygon(-20px 0, 0px 0, 0px 100%, -20px 100%);
 	}
 	
 	&.mm-right:after

@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v6.1.2
+ * jQuery mmenu v6.1.3
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -13,8 +13,8 @@
 
 (function( $ ) {
 
-	const _PLUGIN_ 	: string = 'mmenu';
-	const _VERSION_	: string = '6.1.2';
+	const _PLUGIN_  = 'mmenu';
+	const _VERSION_	= '6.1.3';
 
 
 	//	Newer version of the plugin already excists
@@ -61,11 +61,11 @@
 	};
 
 	$[ _PLUGIN_ ].version 	= _VERSION_;
-	$[ _PLUGIN_ ].addons 	= {};
+	$[ _PLUGIN_ ].addons  	= {};
 	$[ _PLUGIN_ ].uniqueId 	= 0;
 
 
-	$[ _PLUGIN_ ].defaults 	= {
+	$[ _PLUGIN_ ].defaults  = {
 		extensions		: [],
 		initMenu 		: function() {},
 		initPanels 		: function() {},

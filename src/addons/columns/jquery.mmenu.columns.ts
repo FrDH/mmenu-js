@@ -7,8 +7,8 @@
 
 (function( $ ) {
 
-	var _PLUGIN_ = 'mmenu',
-		_ADDON_  = 'columns';
+	const _PLUGIN_ = 'mmenu';
+	const _ADDON_  = 'columns';
 
 
 	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
@@ -60,7 +60,7 @@
 
 
 				var $mnu = ( this.opts.offCanvas ) ? this.$menu.add( glbl.$html ) : this.$menu,
-					clsn : string = '';
+					clsn = '';
 
 				for ( var i = 0; i <= opts.visible.max; i++ )
 				{
@@ -90,6 +90,7 @@
 				};
 				var setupPanels = function( $panel )
 				{
+					$panel = $panel || this.$pnls.children( '.' + _c.opened );
 					this.$pnls
 						.children( '.' + _c.panel )
 						.removeClass( clsn )
@@ -110,23 +111,9 @@
 						this.$menu.addClass( _c.columns );
 					}
 				);
-				this.bind( 'initPanels:after',
-					function( $panels )
-					{
-						setupPanels.call( this, this.$pnls.children( '.' + _c.opened ) );
-					}
-				);
 
-				this.bind( 'open:start'			, countPanels );
-				this.bind( 'openPanel:start'	, countPanels );
-				this.bind( 'openPanel:start' 	, setupPanels );
-				this.bind( 'close:finish'		, uncountPanels );
-
-
-				if ( !this.opts.offCanvas )
-				{
-					countPanels.call( this );
-				}
+				this.bind( 'openPanel:start', countPanels );
+				this.bind( 'openPanel:start', setupPanels );
 			}
 		},
 
@@ -160,7 +147,7 @@
 						var $h = $(_h, this.$menu);
 						if ( $h.is( '.' + _c.panel ) )
 						{
-							var colnr : number = parseInt( $a.closest( '.' + _c.panel ).attr( 'class' ).split( _c.columns + '-' )[ 1 ].split( ' ' )[ 0 ], 10 ) + 1;
+							var colnr = parseInt( $a.closest( '.' + _c.panel ).attr( 'class' ).split( _c.columns + '-' )[ 1 ].split( ' ' )[ 0 ], 10 ) + 1;
 							while( colnr > 0 )
 							{
 								var $panl = this.$pnls.children( '.' + _c.columns + '-' + colnr );
