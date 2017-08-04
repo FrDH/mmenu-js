@@ -84,6 +84,8 @@
 			this.bind( 'initMenu:after',
 				function()
 				{
+					var that = this;
+
 					//	Setup the page
 					this.setPage( glbl.$page );
 
@@ -107,7 +109,12 @@
 						var id = this._getOriginalMenuId();
 						if ( id && id == hash.slice( 1 ) )
 						{
-							this.open();
+							setTimeout(
+								function()
+								{
+									that.open();
+								},1000
+							);
 						}
 					}
 				}

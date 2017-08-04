@@ -16,6 +16,13 @@
 		//	setup: fired once per menu
 		setup: function()
 		{
+			//	Keyboard navigation on touchscreens opens the virtual keyboard :/
+			if ( $[ _PLUGIN_ ].support.touch )
+			{
+				return;
+			}
+
+
 			var that = this,
 				opts = this.opts[ _ADDON_ ],
 				conf = this.conf[ _ADDON_ ];
