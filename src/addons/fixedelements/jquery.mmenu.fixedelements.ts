@@ -45,6 +45,8 @@
 
 				this.__refactorClass( $stck, _stck, 'sticky' );
 
+				$stck = $page.find( '.' + _c.sticky );
+
 				if ( $stck.length )
 				{
 					this.bind( 
