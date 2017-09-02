@@ -10,7 +10,7 @@
 	}
 	html.mm-opening
 	{
-		.mm-menu#{$cls} ~ .mm-slideout
+		.mm-menu#{$cls}.mm-opened ~ .mm-slideout
 		{
 			@include mm_translate( percentage( $width ), 0 );
 		}
@@ -20,7 +20,7 @@
 	@media all and (max-width: $minWidth / $width ) {
 		html.mm-opening
 		{
-			.mm-menu#{$cls} ~ .mm-slideout
+			.mm-menu#{$cls}.mm-opened ~ .mm-slideout
 			{
 				@include mm_translate( $minWidth, 0 );
 			}
@@ -29,7 +29,7 @@
 	@media all and (min-width: $maxWidth / $width ) {
 		html.mm-opening
 		{
-			.mm-menu#{$cls} ~ .mm-slideout
+			.mm-menu#{$cls}.mm-opened ~ .mm-slideout
 			{
 				@include mm_translate( $maxWidth, 0 );
 			}
@@ -43,7 +43,7 @@
 ) {
 	html.mm-right.mm-opening
 	{
-		.mm-menu#{$cls} ~ .mm-slideout
+		.mm-menu#{$cls}.mm-opened ~ .mm-slideout
 		{
 			@include mm_translate( -( percentage( $width ) ), 0 );
 		}
@@ -53,7 +53,7 @@
 	@media all and ( max-width: $minWidth / $width ) {
 		html.mm-right.mm-opening
 		{
-			.mm-menu#{$cls} ~ .mm-slideout
+			.mm-menu#{$cls}.mm-opened ~ .mm-slideout
 			{
 				@include mm_translate( -$minWidth, 0 );
 			}
@@ -62,7 +62,7 @@
 	@media all and ( min-width: $maxWidth / $width ) {
 		html.mm-right.mm-opening
 		{
-			.mm-menu#{$cls} ~ .mm-slideout
+			.mm-menu#{$cls}.mm-opened ~ .mm-slideout
 			{
 				@include mm_translate( -$maxWidth, 0 );
 			}

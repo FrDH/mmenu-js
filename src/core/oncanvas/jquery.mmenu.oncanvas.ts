@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v6.1.5
+ * jQuery mmenu v6.1.6
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	const _PLUGIN_  = 'mmenu';
-	const _VERSION_	= '6.1.5';
+	const _VERSION_	= '6.1.6';
 
 
 	//	Newer version of the plugin already excists
@@ -188,7 +188,6 @@
 				}
 				//	/old browser support
 
-
 				//	'Close' all children
 				$panels
 					.not( $panel )
@@ -216,8 +215,7 @@
 				$panel
 					.removeClass( _c.hidden );
 
-
-				var start = function()
+				this.openPanelStart = function()
 				{
 					$current.removeClass( _c.opened );
 					$panel.addClass( _c.opened );
@@ -236,7 +234,8 @@
 					this.trigger( 'openPanel:start', $panel );
 				};
 
-				var finish = function()
+
+				this.openPanelFinish = function()
 				{
 					$current.removeClass( _c.highest ).addClass( _c.hidden );
 					$panel.removeClass( _c.highest );
@@ -254,19 +253,19 @@
 							that.__transitionend( $panel,
 								function()
 								{
-									finish.call( that );
+									that.openPanelFinish.call( that );
 								}, that.conf.transitionDuration
 							);
 
-							start.call( that );
+							that.openPanelStart.call( that );
 
-						}, this.conf.openingInterval
+						}, that.conf.openingInterval
 					);
 				}
 				else
 				{
-					start.call( this );
-					finish.call( this );
+					this.openPanelStart.call( this );
+					this.openPanelFinish.call( this );
 				}
 			}
 
@@ -290,7 +289,7 @@
 			this.trigger( 'closePanel:after', $panel );
 		},
 
-		closeAllPanels: function()
+		closeAllPanels: function( $panel )
 		{
 			this.trigger( 'closeAllPanels:before' );
 
@@ -304,7 +303,7 @@
 
 			//	Horizontal
 			var $pnls = this.$pnls.children( '.' + _c.panel ),
-				$frst = $pnls.first();
+				$frst = ( $panel && $panel.length ) ? $panel : $pnls.first();
 
 			this.$pnls
 				.children( '.' + _c.panel )
@@ -314,7 +313,7 @@
 				.removeClass( _c.highest )
 				.addClass( _c.hidden );
 
-			this.openPanel( $frst );
+			this.openPanel( $frst, false );
 
 			this.trigger( 'closeAllPanels:after' );
 		},
@@ -807,7 +806,10 @@
 								//	Close menu. Default: true if preventDefault, false otherwise
 								if ( that.__valueOrFn( that.opts.onClick.close, $t, preventDefault ) )
 								{
-									that.close();
+									if ( that.opts.offCanvas && typeof that.close == 'function' )
+									{
+										that.close();
+									}
 								}
 							}
 						}
@@ -927,13 +929,13 @@
 
 					if ( !_ended )
 					{
-						$e.unbind( _e.transitionend );
-						$e.unbind( _e.webkitTransitionEnd );
+						$e.off( _e.transitionend );
+						$e.off( _e.webkitTransitionEnd );
 						fn.call( $e[ 0 ] );
 					}
 					_ended = true;
 				};
-	
+
 			$e.on( _e.transitionend, _fn );
 			$e.on( _e.webkitTransitionEnd, _fn );
 			setTimeout( _fn, duration * 1.1 );

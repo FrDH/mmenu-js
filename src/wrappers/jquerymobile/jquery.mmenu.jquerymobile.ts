@@ -9,7 +9,7 @@
 	var _PLUGIN_ = 'mmenu';
 
 	//	Vars
-	var api: any = false;
+	var apis: any[] = [];
 
 	//	Set some defaults
 	$[ _PLUGIN_ ].defaults.onClick.close = false;
@@ -19,11 +19,14 @@
 
 	//	Get api
 	$(window).load(function() {
-		api = $('.mm-menu').data( 'mmenu' );
+		$('.mm-menu').each(function() {
+			apis.push( $(this).data( 'mmenu' ) );
+		})
 	});
 
-	//	Change pages
 	$(window).load(function() {
+
+		//	Change pages
 		$('body').on(
 			'click',
 			'.mm-menu a',
@@ -36,21 +39,23 @@
 				}
 			}
 		);
-	});
 
-	//	When changing pages
-	$(window).load(function() {
-		if ( api )
-		{
-			$('body').on(
-				'pagecontainerchange',
-				function( e, args )
+		//	When changing pages
+		$('body').on(
+			'pagecontainerchange',
+			function( e, args )
+			{
+				for ( var a = 0; a < apis.length; a++ )
 				{
-					api.close();
-					api.setPage( args.toPage );
+					if ( apis[ a ] && typeof apis[ a ].close == 'function' )
+					{
+						apis[ a ].close();
+						apis[ a ].setPage( args.toPage );
+					}
 				}
-			);
-		}
+			}
+		);
+
 	});
 
 

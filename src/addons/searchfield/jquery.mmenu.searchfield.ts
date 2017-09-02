@@ -316,8 +316,7 @@
 											{
 												if ( query === '' )
 												{
-													this.closeAllPanels();
-													this.openPanel( this.$pnls.children( '.' + _c.subopened ).last() );
+													this.closeAllPanels( this.$pnls.children( '.' + _c.subopened ).last() );
 												}
 												else
 												{
@@ -382,7 +381,7 @@
 																}
 																else if ( !inPanel )
 																{
-																	if ( $panl.hasClass( _c.opened ) )
+																	if ( $panl.hasClass( _c.opened ) || $panl.hasClass( _c.subopened ) )
 																	{
 																		//	Compensate the timeout for the opening animation
 																		setTimeout(

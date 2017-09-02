@@ -51,9 +51,6 @@
 			}
 
 
-			glbl.$allMenus = ( glbl.$allMenus || $() ).add( this.$menu );
-
-
 			//	Setup the menu
 			this.vars.opened = false;
 			
@@ -424,7 +421,8 @@
 
 	$[ _PLUGIN_ ].prototype.closeAllOthers = function()
 	{
-		glbl.$allMenus
+		glbl.$body
+			.find( '.' + _c.menu + '.' + _c.offcanvas )
 			.not( this.$menu )
 			.each(
 				function()
