@@ -219,7 +219,7 @@
 										//	Not in a panel
 										else
 										{
-											$pnls = $('.' + _c.panel, that.pnls);
+											$pnls = that.$pnls.find( '.' + _c.panel );
 											$panl = that.$menu;
 										}
 

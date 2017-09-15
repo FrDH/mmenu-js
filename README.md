@@ -10,7 +10,7 @@ Working on a WordPress site? Check out [the mmenu WordPress plugin](http://mmenu
 
 ### Licence
 The jQuery.mmenu plugin is licensed under the [CC-BY-NC-4.0 license](http://creativecommons.org/licenses/by-nc/4.0/).<br />
-You can [purchase a license](http://mmenu.frebsite.nl/download.html) if you want to use it in a commercial website.
+You can [purchase a license](http://mmenu.frebsite.nl/download.html) if you want to use it in a commercial project.
 
 ### Dependencies
 + jQuery 1.7 or higher
