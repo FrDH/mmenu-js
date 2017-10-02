@@ -1,6 +1,6 @@
 {
 	"name"      	: "jquery.mmenu",
-	"version"   	: "6.1.7",
+	"version"   	: "6.1.8",
 	"main"      	: "dist/jquery.mmenu.all.js",
 	"author"    	: "Fred Heusschen <info@frebsite.nl>",
 	"license"   	: "CC-BY-NC-4.0",

@@ -27,8 +27,6 @@
 
 			glbl = $[ _PLUGIN_ ].glbl;
 
-			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
-
 
 			var setPage = function( $page )
 			{
@@ -53,7 +51,7 @@
 						'open:before',
 						function()
 						{
-							var _s = glbl.$wndw.scrollTop();
+							var _s = glbl.$wndw.scrollTop() + conf.sticky.offset;
 
 							$stck.each(
 								function()
@@ -94,6 +92,9 @@
 
 	//	Default options and configuration
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
+		sticky 	: {
+			offset: 0
+		},
 		elemInsertMethod	: 'appendTo',
 		elemInsertSelector	: 'body'
 	};

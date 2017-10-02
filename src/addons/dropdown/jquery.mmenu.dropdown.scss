@@ -24,13 +24,13 @@ html.mm-dropdown .mm-menu
 {
 	z-index: 2;
 }
-html.mm-dropdown.mm-opened:not(.mm-opening) .mm-menu
+html.mm-dropdown.mm-opened:not(.mm-opening) .mm-menu.mm-dropdown
 {
 	display: none;
 }
 
 
-//	Arrow
+//	Tip
 .mm-menu
 {
 	&.mm-tip:before
@@ -48,20 +48,21 @@ html.mm-dropdown.mm-opened:not(.mm-opening) .mm-menu
 
 		transform: rotate( 45deg );
 	}
+
 	&.mm-tipleft:before
 	{
-		left: 2 + $mm_dropdownTipX;	// correct rotation
+		left: 2 + $mm_dropdownTipX;
 	}
 	&.mm-tipright:before
 	{
-		right: 2 + $mm_dropdownTipX;	// correct rotation
+		right: 2 + $mm_dropdownTipX;
 	}
 	&.mm-tiptop:before
 	{
-		top: 2 - $mm_dropdownTipY; 	// correct rotation
+		top: 2 - $mm_dropdownTipY;
 	}
 	&.mm-tipbottom:before
 	{
-		bottom: 2 - $mm_dropdownTipY; // correct rotation
+		bottom: 2 - $mm_dropdownTipY;
 	}
 }
