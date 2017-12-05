@@ -1,4 +1,4 @@
-/*	
+/*
  * Bootstrap wrapper for jQuery mmenu
  * Include this file after including the jquery.mmenu plugin for default Bootstrap tabs, pills and navbar support.
  */
@@ -25,7 +25,7 @@
 
 		for ( var t = 0; t < types.length; t++ )
 		{
-			if ( $menu.children( '.' + types[ t ] ).length )
+			if ( $menu.find( '.' + types[ t ] ).length )
 			{
 				_type = types[ t ];
 				break;
@@ -73,7 +73,7 @@
 						$(this).replaceWith( '<span>' + $(this).html() + '</span>' );
 					}
 				);
-			
+
 			$dropdown
 				.children( '.dropdown-menu' )
 				.removeClass( 'dropdown-menu' );
@@ -114,6 +114,6 @@
 				});
 		}
 	};
-	
+
 
 })( jQuery );
