@@ -33,7 +33,7 @@ var gulp 			= require( 'gulp' ),
 var inputDir 		= 'src',
 	outputDir 		= 'dist',
 	customDir 		= null,
-	translations	= [ 'nl', 'de' ];
+	translations	= [ 'nl', 'de', 'ru' ];
 
 
 function sanitizeNamespaceForUmd( file ) {
