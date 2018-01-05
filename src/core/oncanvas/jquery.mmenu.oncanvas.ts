@@ -1,5 +1,5 @@
 /*
- * jQuery mmenu v6.1.8
+ * jQuery mmenu v7.0.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	const _PLUGIN_  = 'mmenu';
-	const _VERSION_	= '6.1.8';
+	const _VERSION_	= '7.0.0';
 
 
 	//	Newer version of the plugin already excists
@@ -43,6 +43,8 @@
 			this.___deprecated();
 		}
 
+		this._initHooks();
+		this._initWrappers();
 		this._initAddons();
 		this._initExtensions();
 
@@ -61,14 +63,15 @@
 	};
 
 	$[ _PLUGIN_ ].version 	= _VERSION_;
-	$[ _PLUGIN_ ].addons  	= {};
 	$[ _PLUGIN_ ].uniqueId 	= 0;
+	$[ _PLUGIN_ ].wrappers 	= {};
+	$[ _PLUGIN_ ].addons  	= {};
 
 
 	$[ _PLUGIN_ ].defaults  = {
+		hooks 			: {},
 		extensions		: [],
-		initMenu 		: function() {},
-		initPanels 		: function() {},
+		wrappers		: [],
 		navbar 			: {
 			add 			: true,
 			title			: 'Menu',
@@ -138,21 +141,26 @@
 
 
 			//	vertical
-			if ( $panel.hasClass( _c.vertical ) )
+			if ( $panel.parent( '.' + _c.listitem + '_vertical' ).length )
 			{
 
 				//	Open current and all vertical parent panels
 				$panel
-					.add( $panel.parents( '.' + _c.vertical ) )
-					.removeClass( _c.hidden )
-					.parent( 'li' )
-					.addClass( _c.opened );
+					.parents( '.' + _c.listitem + '_vertical' )
+					.addClass( _c.listitem + '_opened' )
+					.children( '.' + _c.panel )
+					.removeClass( _c.hidden );
 
 				//	Open first non-vertical parent panel
 				this.openPanel( 
 					$panel
 						.parents( '.' + _c.panel )
-						.not( '.' + _c.vertical )
+						.not(
+							function()
+							{
+								return $(this).parent( '.' + _c.listitem + '_vertical' ).length
+							}
+						)
 						.first()
 				);
 
@@ -163,24 +171,24 @@
 			//	Horizontal
 			else
 			{
-				if ( $panel.hasClass( _c.opened ) )
+				if ( $panel.hasClass( _c.panel + '_opened' ) )
 				{
 					return;
 				}
 
 				var $panels 	= this.$pnls.children( '.' + _c.panel ),
-					$current 	= $panels.filter( '.' + _c.opened );
+					$current 	= this.$pnls.children( '.' + _c.panel + '_opened' );
 
 				//	old browser support
 				if ( !$[ _PLUGIN_ ].support.csstransitions )
 				{
 					$current
 						.addClass( _c.hidden )
-						.removeClass( _c.opened );
+						.removeClass( _c.panel + '_opened' );
 
 					$panel
 						.removeClass( _c.hidden )
-						.addClass( _c.opened );
+						.addClass( _c.panel + '_opened' );
 
 					this.trigger( 'openPanel:start' , $panel );
 					this.trigger( 'openPanel:finish', $panel );
@@ -191,23 +199,23 @@
 				//	'Close' all children
 				$panels
 					.not( $panel )
-					.removeClass( _c.subopened );
+					.removeClass( _c.panel + '_opened-parent' );
 
 				//	'Open' all parents
 				var $parent = $panel.data( _d.parent );
 				while( $parent )
 				{
 					$parent = $parent.closest( '.' + _c.panel );
-					if ( !$parent.is( '.' + _c.vertical ) )
+					if ( !$parent.parent( '.' + _c.listitem + '_vertical' ).length )
 					{
-						$parent.addClass( _c.subopened );
+						$parent.addClass( _c.panel + '_opened-parent' );
 					}
 					$parent = $parent.data( _d.parent );
 				}
 
 				//	Add classes for animation
 				$panels
-					.removeClass( _c.highest )
+					.removeClass( _c.panel + '_highest' )
 					.not( $current )
 					.not( $panel )
 					.addClass( _c.hidden );
@@ -215,35 +223,35 @@
 				$panel
 					.removeClass( _c.hidden );
 
-				this.openPanelStart = function()
+				var openPanelStart = function()
 				{
-					$current.removeClass( _c.opened );
-					$panel.addClass( _c.opened );
+					$current.removeClass( _c.panel + '_opened' );
+					$panel.addClass( _c.panel + '_opened' );
 
-					if ( $panel.hasClass( _c.subopened ) )
+					if ( $panel.hasClass( _c.panel + '_opened-parent' ) )
 					{
-						$current.addClass( _c.highest );
-						$panel.removeClass( _c.subopened );
+						$current.addClass( _c.panel + '_highest' );
+						$panel.removeClass( _c.panel + '_opened-parent' );
 					}
 					else
 					{
-						$current.addClass( _c.subopened );
-						$panel.addClass( _c.highest );
+						$current.addClass( _c.panel + '_opened-parent' );
+						$panel.addClass( _c.panel + '_highest' );
 					}
 
-					this.trigger( 'openPanel:start', $panel );
+					that.trigger( 'openPanel:start', $panel );
 				};
 
 
-				this.openPanelFinish = function()
+				var openPanelFinish = function()
 				{
-					$current.removeClass( _c.highest ).addClass( _c.hidden );
-					$panel.removeClass( _c.highest );
+					$current.removeClass( _c.panel + '_highest' ).addClass( _c.hidden );
+					$panel.removeClass( _c.panel + '_highest' );
 
-					this.trigger( 'openPanel:finish', $panel );
+					that.trigger( 'openPanel:finish', $panel );
 				}
 
-				if ( animation && !$panel.hasClass( _c.noanimation ) )
+				if ( animation && !$panel.hasClass( _c.panel + '_noanimation' ) )
 				{
 					//	Without the timeout the animation will not work because the element had display: none;
 					setTimeout(
@@ -253,19 +261,19 @@
 							that.__transitionend( $panel,
 								function()
 								{
-									that.openPanelFinish.call( that );
+									openPanelFinish();
 								}, that.conf.transitionDuration
 							);
 
-							that.openPanelStart.call( that );
+							openPanelStart();
 
 						}, that.conf.openingInterval
 					);
 				}
 				else
 				{
-					this.openPanelStart.call( this );
-					this.openPanelFinish.call( this );
+					openPanelStart();
+					openPanelFinish();
 				}
 			}
 
@@ -278,10 +286,11 @@
 
 			var $li = $panel.parent();
 
-			//	Vertical only
-			if ( $li.hasClass( _c.vertical ) )
+			//	Vertical
+			if ( $li.hasClass( _c.listitem + '_vertical' ) )
 			{
-				$li.removeClass( _c.opened );
+				$li.removeClass( _c.listitem + '_opened' );
+				$panel.addClass( _c.hidden );
 
 				this.trigger( 'closePanel', $panel );
 			}
@@ -297,9 +306,9 @@
 			this.$pnls
 				.find( '.' + _c.listview )
 				.children()
-				.removeClass( _c.selected )
-				.filter( '.' + _c.vertical )
-				.removeClass( _c.opened );
+				.removeClass(  _c.listitem + '_selected' )
+				.filter( '.' + _c.listitem + '_vertical' )
+				.removeClass(  _c.listitem + '_opened' );
 
 			//	Horizontal
 			var $pnls = this.$pnls.children( '.' + _c.panel ),
@@ -308,9 +317,9 @@
 			this.$pnls
 				.children( '.' + _c.panel )
 				.not( $frst )
-				.removeClass( _c.subopened )
-				.removeClass( _c.opened )
-				.removeClass( _c.highest )
+				.removeClass( _c.panel + '_opened' )
+				.removeClass( _c.panel + '_opened-parent' )
+				.removeClass( _c.panel + '_highest' )
 				.addClass( _c.hidden );
 
 			this.openPanel( $frst, false );
@@ -320,12 +329,12 @@
 		
 		togglePanel: function( $panel )
 		{
-			var $l = $panel.parent();
+			var $li = $panel.parent();
 
 			//	Vertical only
-			if ( $l.hasClass( _c.vertical ) )
+			if ( $li.hasClass( _c.listitem + '_vertical' ) )
 			{
-				this[ $l.hasClass( _c.opened ) ? 'closePanel' : 'openPanel' ]( $panel );
+				this[ $li.hasClass( _c.listitem + '_opened' ) ? 'closePanel' : 'openPanel' ]( $panel );
 			}
 		},
 
@@ -333,8 +342,11 @@
 		{
 			this.trigger( 'setSelected:before', $li );
 
-			this.$menu.find( '.' + _c.listview ).children( '.' + _c.selected ).removeClass( _c.selected );
-			$li.addClass( _c.selected );
+			this.$menu
+				.find( '.' + _c.listitem + '_selected' )
+				.removeClass( _c.listitem + '_selected' );
+
+			$li.addClass( _c.listitem + '_selected' );
 
 			this.trigger( 'setSelected:after', $li );
 		},
@@ -373,22 +385,43 @@
 			this.mtch[ mdia ].push( func );
 		},
 
+		_initHooks: function()
+		{
+			for ( var h in this.opts.hooks )
+			{
+				this.bind( h, this.opts.hooks[ h ] );
+			}
+		},
+
+		_initWrappers: function()
+		{
+			this.trigger( 'initWrappers:before' );
+
+			for ( var w = 0; w < this.opts.wrappers.length; w++ )
+			{
+				var wrapper = $[ _PLUGIN_ ].wrappers[ this.opts.wrappers[ w ] ];
+				if ( typeof wrapper == 'function' )
+				{
+					wrapper.call( this );
+				}
+			}
+
+			this.trigger( 'initWrappers:after' );
+		},
+
 		_initAddons: function()
 		{
 			this.trigger( 'initAddons:before' );
 
-			//	Add add-ons to plugin
-			var adns;
-			for ( adns in $[ _PLUGIN_ ].addons )
+			var a;
+			for ( a in $[ _PLUGIN_ ].addons )
 			{
-				$[ _PLUGIN_ ].addons[ adns ].add.call( this );
-				$[ _PLUGIN_ ].addons[ adns ].add = function() {};
+				$[ _PLUGIN_ ].addons[ a ].add.call( this );
+				$[ _PLUGIN_ ].addons[ a ].add = function() {};
 			}
-
-			//	Setup add-ons for menu
-			for ( adns in $[ _PLUGIN_ ].addons )
+			for ( a in $[ _PLUGIN_ ].addons )
 			{
-				$[ _PLUGIN_ ].addons[ adns ].setup.call( this );
+				$[ _PLUGIN_ ].addons[ a ].setup.call( this );
 			}
 
 			this.trigger( 'initAddons:after' );
@@ -411,7 +444,7 @@
 			//	Loop over object
 			for ( var mdia in this.opts.extensions )
 			{
-				this.opts.extensions[ mdia ] = this.opts.extensions[ mdia ].length ? 'mm-' + this.opts.extensions[ mdia ].join( ' mm-' ) : '';
+				this.opts.extensions[ mdia ] = this.opts.extensions[ mdia ].length ? _c.menu + '_' + this.opts.extensions[ mdia ].join( ' ' + _c.menu + '_' ) : '';
 				if ( this.opts.extensions[ mdia ] )
 				{
 					(function( mdia ) {
@@ -452,9 +485,6 @@
 					);
 			}
 
-			//	Via options
-			this.opts.initMenu.call( this, this.$menu, this.$orig );
-
 			//	Add ID
 			this.$menu.attr( 'id', this.$menu.attr( 'id' ) || this.__getUniqueId() );
 
@@ -464,15 +494,8 @@
 				.prependTo( this.$menu );
 
 			//	Add classes
-			var clsn = [ _c.menu ];
-
-			if ( !this.opts.slidingSubmenus )
-			{
-				clsn.push( _c.vertical );
-			}
-
 			this.$menu
-				.addClass( clsn.join( ' ' ) )
+				.addClass( _c.menu )
 				.parent()
 				.addClass( _c.wrapper );
 
@@ -491,13 +514,15 @@
 			var init = function( $panels )
 			{
 				$panels
-					.filter( this.conf.panelNodetype )
+					.filter( that.conf.panelNodetype )
 					.each(
-						function()
+						function( x )
 						{
+
 							var $panel = that._initPanel( $(this) );
 							if ( $panel )
 							{
+
 								that._initNavbar( $panel );
 								that._initListview( $panel );
 
@@ -512,17 +537,14 @@
 
 								if ( $child.length )
 								{
-									init.call( that, $child );
+									init( $child );
 								}
 							}
 						}
 					);
 			};
 
-			init.call( this, $panels );
-
-			//	Init via options
-			this.opts.initPanels.call( this, $newpanels );
+			init( $panels );
 
 			this.trigger( 'initPanels:after', $newpanels );
 		},
@@ -531,7 +553,7 @@
 		{
 			this.trigger( 'initPanel:before', $panel );
 
-			var that  = this;
+			var that = this;
 
 			//	Stop if already a panel
 			if ( $panel.hasClass( _c.panel ) )
@@ -540,12 +562,11 @@
 			}
 
 			//	Refactor panel classnames
-			this.__refactorClass( $panel, this.conf.classNames.panel 	, 'panel' );
-			this.__refactorClass( $panel, this.conf.classNames.nopanel 	, 'nopanel' );
-			this.__refactorClass( $panel, this.conf.classNames.vertical , 'vertical' );
-			this.__refactorClass( $panel, this.conf.classNames.inset 	, 'inset' );
+			this.__refactorClass( $panel, this.conf.classNames.panel 	, _c.panel 		);
+			this.__refactorClass( $panel, this.conf.classNames.nopanel 	, _c.nopanel 	);
+			this.__refactorClass( $panel, this.conf.classNames.inset 	, _c.listview + '_inset'	);
 
-			$panel.filter( '.' + _c.inset )
+			$panel.filter( '.' + _c.listview + '_inset' )
 				.addClass( _c.nopanel );
 
 
@@ -557,30 +578,27 @@
 
 
 			//	Wrap UL/OL in DIV
-			var vertical = ( $panel.hasClass( _c.vertical ) || !this.opts.slidingSubmenus );
-
-			$panel.removeClass( _c.vertical );
+			var vertical = ( $panel.hasClass( this.conf.classNames.vertical ) || !this.opts.slidingSubmenus );
+			$panel.removeClass( this.conf.classNames.vertical );
 
 			var id = $panel.attr( 'id' ) || this.__getUniqueId();
-			$panel.removeAttr( 'id' );
 
 			if ( $panel.is( 'ul, ol' ) )
 			{
+				$panel.removeAttr( 'id' );
+
 				$panel.wrap( '<div />' );
 				$panel = $panel.parent();
 			}
 
-			$panel
-				.addClass( _c.panel + ' ' + _c.hidden )
-				.attr( 'id', id );
+			$panel.attr( 'id', id );
+			$panel.addClass( _c.panel + ' ' + _c.hidden );
 
 			var $parent = $panel.parent( 'li' );
 
 			if ( vertical )
 			{
-				$panel
-					.add( $parent )
-					.addClass( _c.vertical );
+				$parent.addClass( _c.listitem + '_vertical' );
 			}
 			else
 			{
@@ -611,12 +629,12 @@
 			var $parent = $panel.data( _d.parent ),
 				$navbar = $( '<div class="' + _c.navbar + '" />' );
 
-			var title: string = $[ _PLUGIN_ ].i18n( this.opts.navbar.title );
-			var href: string = '';
+			var title: string = this.__getPanelTitle( $panel, this.opts.navbar.title );
+			var href : string = '';
 
 			if ( $parent && $parent.length )
 			{
-				if ( $parent.hasClass( _c.vertical ) )
+				if ( $parent.hasClass( _c.listitem + '_vertical' ) )
 				{
 					return;
 				}
@@ -626,7 +644,7 @@
 				{
 					var $a = $parent
 						.children( 'a, span' )
-						.not( '.' + _c.next );
+						.not( '.' + _c.btn + '_next' );
 				}
 
 				//	Non-listview, the first anchor in the parent panel that links to this panel
@@ -641,7 +659,7 @@
 				$parent = $a.closest( '.' + _c.panel );
 
 				var id = $parent.attr( 'id' );
-				title  = $a.text();
+				title = this.__getPanelTitle( $panel, $('<span>' + $a.text() + '</span>').text() );
 
 				switch ( this.opts.navbar.titleLink )
 				{
@@ -654,7 +672,7 @@
 						break;
 				}
 
-				$navbar.append( '<a class="' + _c.btn + ' ' + _c.prev + '" href="#' + id + '" />' );
+				$navbar.append( '<a class="' + _c.btn + ' ' + _c.btn + '_prev ' + _c.navbar + '__btn" href="#' + id + '" />' );
 			}
 			else if ( !this.opts.navbar.title )
 			{
@@ -663,10 +681,10 @@
 
 			if ( this.opts.navbar.add )
 			{
-				$panel.addClass( _c.hasnavbar );
+				$panel.addClass( _c.panel + '_has-navbar' );
 			}
 
-			$navbar.append( '<a class="' + _c.title + '"' + ( href.length ? ' href="' + href + '"' : '' ) + '>' + title + '</a>' )
+			$navbar.append( '<a class="' + _c.navbar + '__title"' + ( href.length ? ' href="' + href + '"' : '' ) + '>' + title + '</a>' )
 				.prependTo( $panel );
 
 			this.trigger( 'initNavbar:after', $panel );
@@ -679,35 +697,33 @@
 			//	Refactor listviews classnames
 			var $ul = this.__childAddBack( $panel, 'ul, ol' );
 
-			this.__refactorClass( $ul, this.conf.classNames.nolistview 	, 'nolistview' );
-
-			$ul.filter( '.' + this.conf.classNames.inset )
-				.addClass( _c.nolistview );
+			this.__refactorClass( $ul, this.conf.classNames.nolistview 	, _c.nolistview );
 
 
 			//	Refactor listitems classnames
 			var $li = $ul
 				.not( '.' + _c.nolistview )
 				.addClass( _c.listview )
-				.children();
+				.children()
+				.addClass( _c.listitem );
 
-			this.__refactorClass( $li, this.conf.classNames.selected 	, 'selected' );
-			this.__refactorClass( $li, this.conf.classNames.divider 	, 'divider' );
-			this.__refactorClass( $li, this.conf.classNames.spacer 		, 'spacer' );
+			this.__refactorClass( $li, this.conf.classNames.selected 	, _c.listitem + '_selected' );
+			this.__refactorClass( $li, this.conf.classNames.divider 	, _c.listitem + '_divider'	);
+			this.__refactorClass( $li, this.conf.classNames.spacer 		, _c.listitem + '_spacer'	);
 
 
 			//	Add open link to parent listitem
 			var $parent = $panel.data( _d.parent );
-			if ( $parent && $parent.parent().is( '.' + _c.listview ) )
+			if ( $parent && $parent.is( '.' + _c.listitem ) )
 			{
-				if ( !$parent.children( '.' + _c.next ).length )
+				if ( !$parent.children( '.' + _c.btn + '_next' ).length )
 				{
 					var $a = $parent.children( 'a, span' ).first(),
-						$b = $( '<a class="' + _c.next + '" href="#' + $panel.attr( 'id' ) + '" />' ).insertBefore( $a );
+						$b = $( '<a class="' + _c.btn + '_next' + '" href="#' + $panel.attr( 'id' ) + '" />' ).insertBefore( $a );
 
 					if ( $a.is( 'span' ) )
 					{
-						$b.addClass( _c.fullsubopen );
+						$b.addClass( _c.btn + '_fullwidth' );
 					}
 				}
 			}
@@ -720,11 +736,10 @@
 			this.trigger( 'initOpened:before' );
 
 			var $selected = this.$pnls
-				.find( '.' + _c.listview )
-				.children( '.' + _c.selected )
-				.removeClass( _c.selected )
+				.find( '.' + _c.listitem + '_selected' )
+				.removeClass( _c.listitem + '_selected' )
 				.last()
-				.addClass( _c.selected );
+				.addClass( _c.listitem + '_selected' );
 
 			var $current = ( $selected.length ) 
 				? $selected.closest( '.' + _c.panel )
@@ -737,6 +752,8 @@
 
 		_initAnchors: function()
 		{
+			this.trigger( 'initAnchors:before' );
+
 			var that = this;
 
 			glbl.$body
@@ -745,103 +762,118 @@
 					function( e )
 					{
 						var $t = $(this),
-							fired 	= false,
-							inMenu 	= that.$menu.find( $t ).length;
+							_h = $t.attr( 'href' );
 
-						//	Find behavior for addons
-						for ( var a in $[ _PLUGIN_ ].addons )
-						{
-							if ( $[ _PLUGIN_ ].addons[ a ].clickAnchor.call( that, $t, inMenu ) )
-							{
-								fired = true;
-								break;
-							}
-						}
+						var inMenu 		= that.$menu.find( $t ).length, 
+							inListview 	= $t.is( '.' + _c.listitem + ' > a' ),
+							toExternal 	= $t.is( '[rel="external"]' ) || $t.is( '[target="_blank"]' );
 
-						var _h = $t.attr( 'href' );
 
 						//	Open/Close panel
-						if ( !fired && inMenu )
+						if ( inMenu )
 						{
 							if ( _h.length > 1 && _h.slice( 0, 1 ) == '#' )
 							{
 								try
 								{
-									var $h = $(_h, that.$menu);
+									var $h = that.$menu.find( _h );
 									if ( $h.is( '.' + _c.panel ) )
 									{
-										fired = true;
-										that[ $t.parent().hasClass( _c.vertical ) ? 'togglePanel' : 'openPanel' ]( $h );
+										that[ $t.parent().hasClass( _c.listitem + '_vertical' ) ? 'togglePanel' : 'openPanel' ]( $h );
+
+										e.preventDefault();
+										return;
 									}
 								}
 								catch( err ) {}
 							}
 						}
 
-						if ( fired )
+
+						var onClick = {
+							close 			: null,
+							setSelected 	: null,
+							preventDefault	: _h.slice( 0, 1 ) == '#'
+						};
+
+						//	Find behavior for addons
+						for ( var a in $[ _PLUGIN_ ].addons )
 						{
-							e.preventDefault();
+							var addonClick = $[ _PLUGIN_ ].addons[ a ].clickAnchor.call( that, $t, inMenu, inListview, toExternal );
+							if ( addonClick )
+							{
+								if ( typeof addonClick == 'boolean' )
+								{
+									e.preventDefault();
+									return;
+								}
+								if ( typeof addonClick == 'object' )
+								{
+									onClick = $.extend( {}, onClick, addonClick );
+								}
+							}
 						}
 
 
 						//	All other anchors in lists
-						if ( !fired && inMenu )
+						if ( inMenu && inListview && !toExternal )
 						{
-							if ( $t.is( '.' + _c.listview + ' > li > a' ) && !$t.is( '[rel="external"]' ) && !$t.is( '[target="_blank"]' ) )
+
+							//	Set selected item, Default: true
+							if ( that.__valueOrFn( $t, that.opts.onClick.setSelected, onClick.setSelected ) )
 							{
+								that.setSelected( $(e.target).parent() );
+							}
 
-								//	Set selected item
-								if ( that.__valueOrFn( that.opts.onClick.setSelected, $t ) )
-								{
-									that.setSelected( $(e.target).parent() );
-								}
-	
-								//	Prevent default / don't follow link. Default: false
-								var preventDefault = that.__valueOrFn( that.opts.onClick.preventDefault, $t, _h.slice( 0, 1 ) == '#' );
-								if ( preventDefault )
-								{
-									e.preventDefault();
-								}
+							//	Prevent default / don't follow link. Default: false
+							if ( that.__valueOrFn( $t, that.opts.onClick.preventDefault, onClick.preventDefault ) )
+							{
+								e.preventDefault();
+							}
 
-								//	Close menu. Default: true if preventDefault, false otherwise
-								if ( that.__valueOrFn( that.opts.onClick.close, $t, preventDefault ) )
+							//	Close menu. Default: false
+							if ( that.__valueOrFn( $t, that.opts.onClick.close, onClick.close ) )
+							{
+								if ( that.opts.offCanvas && typeof that.close == 'function' )
 								{
-									if ( that.opts.offCanvas && typeof that.close == 'function' )
-									{
-										that.close();
-									}
+									that.close();
 								}
 							}
 						}
+
 					}
 				);
+
+			this.trigger( 'initAnchors:after' );
 		},
 
 		_initMatchMedia: function()
 		{
 			var that = this;
-
-			this._fireMatchMedia();
-
-			glbl.$wndw
-				.on(  _e.resize,
-					function( e )
-					{
-						that._fireMatchMedia();
-					}
-				);
-		},
-
-		_fireMatchMedia: function()
-		{
+			
 			for ( var mdia in this.mtch )
 			{
-				var fn = window.matchMedia && window.matchMedia( mdia ).matches ? 'yes' : 'no';
+				(function() {
+					var mdi = mdia,
+						mql = window.matchMedia( mdi );
 
-				for ( var m = 0; m < this.mtch[ mdia ].length; m++ )
-				{
-					this.mtch[ mdia ][ m ][ fn ].call( this );
-				}
+					that._fireMatchMedia( mdi, mql );
+					mql.addListener(
+						function( mql )
+						{
+							that._fireMatchMedia( mdi, mql );
+						}
+					);
+				})();
+			}
+		},
+
+		_fireMatchMedia: function( mdia, m )
+		{
+			var fn = m.matches ? 'yes' : 'no';
+			for ( var i = 0; i < this.mtch[ mdia ].length; i++ )
+			{
+				this.mtch[ mdia ][ i ][ fn ].call( this );
 			}
 		},
 
@@ -874,22 +906,57 @@
 			return api;
 		},
 
-		__valueOrFn: function( o, $e, d )
+		__valueOrFn: function( $e, o, d )
 		{
 			if ( typeof o == 'function' )
 			{
-				return o.call( $e[ 0 ] );
+				var v = o.call( $e[ 0 ] );
+				if ( typeof v != 'undefined' )
+				{
+					return v;
+				}
 			}
-			if ( typeof o == 'undefined' && typeof d != 'undefined' )
+			if ( ( typeof o == 'function' || typeof o == 'undefined' ) && typeof d != 'undefined' )
 			{
 				return d;
 			}
 			return o;
 		},
 
+		__getPanelTitle: function( $p, d )
+		{
+			var title: string;
+
+			//	Function
+			if ( typeof this.opts.navbar.title == 'function' )
+			{
+				title = this.opts.navbar.title.call( $p[ 0 ] );
+			}
+
+			//	Data attr
+			if ( typeof title == 'undefined' )
+			{
+				title = $p.data( _d.title );
+			}
+
+			if ( typeof title != 'undefined' )
+			{
+				return title;
+			}
+
+			//	Fallback
+			if ( typeof d == 'string' )
+			{
+				return $[ _PLUGIN_ ].i18n( d );
+			}
+
+			//	Default
+			return $[ _PLUGIN_ ].i18n( $[ _PLUGIN_ ].defaults.navbar.title );
+		},
+
 		__refactorClass: function( $e, o, c )
 		{
-			return $e.filter( '.' + o ).removeClass( o ).addClass( _c[ c ] );
+			return $e.filter( '.' + o ).removeClass( o ).addClass( c );
 		},
 
 		__findAddBack: function( $e, s )
@@ -904,14 +971,31 @@
 		__filterListItems: function( $li )
 		{
 			return $li
-				.not( '.' + _c.divider )
+				.not( '.' + _c.listitem + '_divider' )
 				.not( '.' + _c.hidden );
 		},
 		__filterListItemAnchors: function( $li )
 		{
 			return this.__filterListItems( $li )
 				.children( 'a' )
-				.not( '.' + _c.next );
+				.not( '.' + _c.btn + '_next' );
+		},
+
+		__openPanelWoAnimation( $panel )
+		{
+			if ( $panel.hasClass( _c.panel + '_noanimation' ) )
+			{
+				return;
+			}
+
+			$panel.addClass( _c.panel + '_noanimation' );
+			this.__transitionend( $panel,
+				function()
+				{
+					$panel.removeClass( _c.panel + '_noanimation' );
+				}, this.conf.openingInterval
+			);
+			this.openPanel( $panel );
 		},
 
 		__transitionend: function( $e, fn, duration )
@@ -1089,7 +1173,7 @@
 
 		//	Classnames
 		_c.mm = function( c ) { return 'mm-' + c; };
-		_c.add( 'wrapper menu panels panel nopanel highest opened subopened navbar hasnavbar title btn prev next listview nolistview inset vertical selected divider spacer hidden fullsubopen noanimation' );
+		_c.add( 'wrapper menu panels panel nopanel navbar listview nolistview listitem btn hidden' );
 		_c.umm = function( c )
 		{
 			if ( c.slice( 0, 3 ) == 'mm-' )
@@ -1101,7 +1185,7 @@
 
 		//	Datanames
 		_d.mm = function( d ) { return 'mm-' + d; };
-		_d.add( 'parent child' );
+		_d.add( 'parent child title' );
 
 		//	Eventnames
 		_e.mm = function( e ) { return e + '.mm'; };

@@ -74,10 +74,10 @@
 				this.bind( 'initListview:after',
 					function( $panel )
 					{
-						this.$pnls
+						$panel
 							.find( '.' + _c.listview )
-							.children( '.' + _c.selected )
-							.removeClass( _c.selected );
+							.children( '.' + _c.listitem + '_selected' )
+							.removeClass( _c.listitem + '_selected' );
 					}
 				);
 			}
@@ -89,7 +89,7 @@
 				this.bind( 'initMenu:after',
 					function()
 					{
-						this.$menu.addClass( _c.hoverselected );
+						this.$menu.addClass( _c.menu + '_selected-hover' );
 					}
 				);
 			}
@@ -104,17 +104,16 @@
 						//	Remove all
 						this.$pnls
 							.find( '.' + _c.listview )
-							.find( '.' + _c.next )
-							.removeClass( _c.selected );
+							.find( '.' + _c.listitem + '_selected-parent' )
+							.removeClass( _c.listitem + '_selected-parent' );
 
 						//	Move up the DOM tree
 						var $parent = $panel.data( _d.parent );
 						while ( $parent )
 						{
 							$parent
-								.not( '.' + _c.vertical )
-								.children( '.' + _c.next )
-								.addClass( _c.selected );
+								.not( '.' + _c.listitem + '_vertical' )
+								.addClass( _c.listitem + '_selected-parent' );
 						
 							$parent = $parent		
 								.closest( '.' + _c.panel )
@@ -126,7 +125,7 @@
 				this.bind( 'initMenu:after',
 					function()
 					{
-						this.$menu.addClass( _c.parentselected );
+						this.$menu.addClass( _c.menu + '_selected-parent' );
 					}
 				);
 			}
@@ -138,8 +137,6 @@
 			_c = $[ _PLUGIN_ ]._c;
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
-
-			_c.add( 'hoverselected parentselected' );
 		},
 
 		//	clickAnchor: prevents default behavior when clicking an anchor

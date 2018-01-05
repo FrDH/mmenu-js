@@ -1,19 +1,30 @@
 /*
-	jQuery.mmenu fullscreen extension CSS
-*/
+ * jQuery mmenu fullscreen extension
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
-$mm_fs_class	: ".mm-fullscreen";
-$mm_fs_full		: 1 !default;
-$mm_fs_min		: 140px !default;
-$mm_fs_max		: 10000px !default;
+$mm_fullscreen_full		: 1;
+$mm_fullscreen_min		: 140px;
+$mm_fullscreen_max		: 10000px;
 
-@include mm_sizing( $mm_fs_class,
-	$mm_fs_full, $mm_fs_min, $mm_fs_max );
 
-@include mm_sizing_right( $mm_fs_class,
-	$mm_fs_full, $mm_fs_min, $mm_fs_max);
+@if ( $mm_opt_fullscreen )
+{
+	@include mm_offcanvas_size( ".mm-menu_fullscreen",
+		$mm_fullscreen_full, $mm_fullscreen_min, $mm_fullscreen_max );
 
-@include mm_sizing_zposition( $mm_fs_class,
-	$mm_fs_full, $mm_fs_min, $mm_fs_max );
+//	TODO position
+	@include mm_position_right( ".mm-menu_fullscreen",
+		$mm_fullscreen_full, $mm_fullscreen_min, $mm_fullscreen_max);
+
+	@include mm_position_top( ".mm-menu_fullscreen",
+		$mm_fullscreen_full, $mm_fullscreen_min, $mm_fullscreen_max );
+
+	@include mm_position_bottom( ".mm-menu_fullscreen",
+		$mm_fullscreen_full, $mm_fullscreen_min, $mm_fullscreen_max );
+}

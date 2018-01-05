@@ -1,44 +1,51 @@
 /*
-	jQuery.mmenu popup extension CSS
-*/
+ * jQuery mmenu popup extension
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
 
-.mm-menu.mm-popup
+@if ( $mm_opt_popup )
 {
-	transition: opacity $mm_transitionDuration $mm_transitionFunction;
-	opacity: 0;
-
-	box-shadow: $mm_popupShadow;
-	height: percentage( $mm_menuHeight );
-	min-height: $mm_menuMinHeight;
-	max-height: $mm_menuMaxHeight;
-
-	top: 50%;
-	left: 50%;
-	bottom: auto;
-	right: auto;
-	z-index: 2;
-	
-	//	transform: translate3d( -50%, -50%, 0 );
-	@include mm_translate( -50%, -50% );
-
-	&.mm-opened
+	.mm-menu_popup
 	{
-		~ .mm-slideout
+		transition: opacity $mm_transitionDuration $mm_transitionFunction;
+		opacity: 0;
+
+		box-shadow: $mm_popupShadow;
+		height: percentage( $mm_menuHeight );
+		min-height: $mm_menuMinHeight;
+		max-height: $mm_menuMaxHeight;
+
+		top: 50%;
+		left: 50%;
+		bottom: auto;
+		right: auto;
+		z-index: 2;
+		
+		//	transform: translate3d( -50%, -50%, 0 );
+		@include mm_translate( -50%, -50% );
+
+		&.mm-menu_opened
 		{
-			transform: none !important;
-			z-index: 0;
-		}
-		~ #mm-blocker
-		{
-			transition-delay: 0s !important;
-			z-index: 1;
+			~ .mm-slideout
+			{
+				transform: none !important;
+				z-index: 0;
+			}
+			~ .mm-page__blocker
+			{
+				transition-delay: 0s !important;
+				z-index: 1;
+			}
 		}
 	}
-}
-html.mm-opening .mm-menu.mm-popup
-{
-	opacity: 1;
+	.mm-wrapper_opening .mm-menu_popup
+	{
+		opacity: 1;
+	}
 }

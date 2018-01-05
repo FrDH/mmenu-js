@@ -1,0 +1,197 @@
+//	Colors
+@mixin mm_colors( $cls: ".mm-menu",
+	$baseBg: $mm_backgroundColor,
+	$color: $mm_textColor, $dimmedColor: $mm_dimmedTextColor,
+	$emphasizedBg: $mm_emphasizedBackgroundColor, $highlightedBg: $mm_highlightedBackgroundColor,
+	$borderColor: $mm_borderColor,
+	$navbarColor: $mm_navbarColor
+) {
+	#{$cls}
+	{
+		background: $baseBg;
+		border-color: $borderColor;
+		color: $color;
+
+		.mm-navbar
+		{
+			> *,
+			a
+			{
+				color: $navbarColor;
+			}
+		}
+
+		@if ( $mm_opt_buttons )
+		{
+			.mm-btn
+			{
+				&:before,
+				&:after
+				{
+					border-color: $navbarColor;
+				}
+			}
+		}
+
+		.mm-listview
+		{
+			@if ( $mm_opt_buttons )
+			{
+				.mm-btn_next:after
+				{
+					border-color: $dimmedColor;
+				}
+			}
+
+			a:not( .mm-btn_next )
+			{
+				-webkit-tap-highlight-color: $emphasizedBg;
+				tap-highlight-color: $emphasizedBg;
+			}
+		}
+
+		.mm-listitem_selected
+		{
+			> a:not( .mm-btn_next ),
+			> span
+			{
+				background: $emphasizedBg;
+			}
+		}
+
+		.mm-listitem_opened
+		{
+			> .mm-btn_next,
+			> .mm-panel
+			{
+				background: $highlightedBg;
+			}
+		}
+
+		.mm-listitem_divider 
+		{
+			background: $highlightedBg;
+		}
+	}
+}
+
+
+
+//	Close / clear button
+@mixin mm_btn_cross
+{
+	&:before,
+	&:after
+	{
+		content: '';
+		border: 2px solid transparent;
+		box-sizing: content-box;
+		display: block;
+		width: 5px;
+		height: 5px;
+		margin: auto;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+
+		transform: rotate( -45deg );
+	}
+	&:before
+	{
+		border-right: none;
+		border-bottom: none;
+		right: $mm_listitemIndent - 2;
+	}
+	&:after
+	{
+		border-left: none;
+		border-top: none;
+		right: $mm_listitemIndent + 5;
+	}
+}
+
+// Arrow buttons
+@mixin mm_btn_arrow
+{
+	content: '';
+	border-top: 2px solid transparent;
+	border-left: 2px solid transparent;
+	box-sizing: content-box;
+	display: block;
+	width: 8px;
+	height: 8px;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+}
+@mixin mm_btn_arrow_prev
+{
+	transform: rotate( -45deg );
+	left: $mm_listitemIndent + 3;
+	right: auto;
+}
+@mixin mm_btn_arrow_next
+{
+	transform: rotate( 135deg );
+	right: $mm_listitemIndent + 3;
+	left: auto;
+}
+
+
+
+//	Borders
+@mixin mm_border( $border, $pseudo, $pos1, $pos2, $pos3 )
+{
+	&:#{$pseudo}
+	{
+		content: '';
+		border-#{$border}-width: 1px;
+		border-#{$border}-style: solid;
+		display: block;
+		position: absolute;
+		#{$pos1}: 0;
+		#{$pos2}: 0;
+		#{$pos3}: 0;
+	}
+}
+@mixin mm_border_top
+{
+	@include mm_border( "top", "before", "left", "right", "top" );
+}
+@mixin mm_border_right
+{
+	@include mm_border( "right", "after", "top", "bottom", "right" );
+}
+@mixin mm_border_bottom
+{
+	@include mm_border( "bottom", "after", "left", "right", "bottom" );
+}
+@mixin mm_border_left
+{
+	@include mm_border( "left", "before", "top", "bottom", "left" );
+}
+
+
+
+//	Misc
+@mixin mm_translate( $x: 0, $y: 0, $z: 0 )
+{
+	transform: translate( $x, $y );
+	transform: translate3d( $x, $y, $z );
+}
+@mixin mm_ellipsis()
+{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+@mixin mm_clearfix()
+{
+	&:after
+	{
+		content: '';
+		display: block;
+		clear: both;
+	}
+}

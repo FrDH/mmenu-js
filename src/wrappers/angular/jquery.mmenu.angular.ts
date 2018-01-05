@@ -1,15 +1,23 @@
 /*	
- * AngularJS wrapper for jQuery mmenu
- * Include this file after including the jquery.mmenu plugin for default AngularJS route support.
+ * jQuery mmenu Angular wrapper
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
  */
-
 
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
+	const _WRAPPR_ = 'angular';
 
-	$[ _PLUGIN_ ].defaults.onClick.close			= true;
-	$[ _PLUGIN_ ].defaults.onClick.preventDefault	= false;
-	$[ _PLUGIN_ ].defaults.onClick.setSelected		= true;
+
+	$[ _PLUGIN_ ].wrappers[ _WRAPPR_ ] = function()
+	{
+		this.opts.onClick = {
+			close			: true,
+			preventDefault	: false,
+			setSelected		: true
+		};
+	};
 
 })( jQuery );

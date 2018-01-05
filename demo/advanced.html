@@ -7,34 +7,74 @@
 
 		<title>jQuery.mmenu demo</title>
 
-		<link type="text/css" rel="stylesheet" href="css/demo.css" />
-		<link type="text/css" rel="stylesheet" href="../dist/jquery.mmenu.all.css" />
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="css/demo.css" />
+		<link rel="stylesheet" href="../dist/jquery.mmenu.all.css" />
 
-		<script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-		<script type="text/javascript" src="../dist/jquery.mmenu.all.js"></script>
-		<script type="text/javascript">
+		<style>
+			@media (min-width: 992px) {
+				.header a {
+					display: none;
+				}
+			}
+
+			.mm-navbar_tabs span {
+				display: inline-block;
+				margin-left: 8px;
+			}
+			@media (max-width: 450px) {
+				.mm-navbar_tabs span {
+					display: none;
+				}
+			}
+		</style>
+
+		<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="../dist/jquery.mmenu.all.js"></script>
+		<script>
 			$(function() {
 				$('nav#menu').mmenu({
-					extensions	: [ 'fx-menu-slide', 'shadow-page', 'shadow-panels', 'listview-large', 'pagedim-white' ],
-					iconPanels	: true,
+					extensions	: [ 'theme-dark' ],
+					setSelected	: true,
 					counters	: true,
-					keyboardNavigation : {
-						enable	: true,
-						enhance	: true
-					},
 					searchfield : {
-						placeholder	: 'Search menu items'
+						placeholder		: 'Search menu items'
 					},
-					navbar : {
-						title : 'Advanced menu'
+					iconbar		: {
+						add 		: true,
+						size		: 40,
+						top 		: [ 
+							'<a href="#/"><span class="fa fa-home"></span></a>'
+						],
+						bottom 		: [
+							'<a href="#/"><span class="fa fa-twitter"></span></a>',
+							'<a href="#/"><span class="fa fa-facebook"></span></a>',
+							'<a href="#/"><span class="fa fa-youtube"></span></a>'
+						]
 					},
-					navbars	: [
+					sidebar		: {
+						collapsed		: {
+							use 			: '(min-width: 450px)',
+							size			: 40,
+							hideNavbar		: false
+						},
+						expanded		: {
+							use 			: '(min-width: 992px)',
+							size			: 35
+						}
+					},
+					navbars		: [
 						{
-							position	: 'top',
 							content		: [ 'searchfield' ]
 						}, {
-							position	: 'top',
-							content		: [ 'breadcrumbs', 'close' ]
+							type		: 'tabs',
+							content		: [ 
+								'<a href="#panel-menu"><i class="fa fa-bars"></i> <span>Menu</span></a>', 
+								'<a href="#panel-account"><i class="fa fa-user"></i> <span>Account</span></a>', 
+								'<a href="#panel-cart"><i class="fa fa-shopping-cart"></i> <span>Cart</span></a>'
+							]
+						}, {
+							content		: [ 'prev', 'breadcrumbs', 'close' ]
 						}, {
 							position	: 'bottom',
 							content		: [ '<a href="http://mmenu.frebsite.nl/wordpress-plugin" target="_blank">WordPress plugin</a>' ]
@@ -42,9 +82,19 @@
 					]
 				}, {
 					searchfield : {
-						clear : true
+						clear 		: true
+					},
+					navbars		: {
+						breadcrumbs	: {
+							removeFirst	: true
+						}
 					}
 				});
+
+				$('a[href^="#/"]').click(function() {
+					alert( 'Thank you for clicking, but that\'s a demo link' );
+					return false;
+				})
 			});
 		</script>
 	</head>
@@ -59,23 +109,43 @@
 					Click the menu icon to open the menu.</p>
 			</div>
 			<nav id="menu">
-				<ul>
-					<li><a href="#">Home</a></li>
-					<li><span>About us</span>
-						<ul>
-							<li><a href="#about/history">History</a></li>
-							<li><span>The team</span>
-								<ul>
-									<li><a href="#about/team/management">Management</a></li>
-									<li><a href="#about/team/sales">Sales</a></li>
-									<li><a href="#about/team/development">Development</a></li>
-								</ul>
-							</li>
-							<li><a href="#about/address">Our address</a></li>
-						</ul>
-					</li>
-					<li><a href="#contact">Contact</a></li>
-				</ul>
+				<div id="panel-menu">
+					<ul>
+						<li><a href="#/">Home</a></li>
+						<li><span>About us</span>
+							<ul>
+								<li><a href="#/">History</a></li>
+								<li><span>The team</span>
+									<ul>
+										<li><a href="#/">Management</a></li>
+										<li><a href="#/">Sales</a></li>
+										<li><a href="#/">Development</a></li>
+									</ul>
+								</li>
+								<li><a href="#/">Our address</a></li>
+							</ul>
+						</li>
+						<li><a href="#/">Contact</a></li>
+
+						<li class="Divider">Other demos</li>
+						<li><a href="default.html">Default demo</a></li>
+						<li><a href="onepage.html">One page demo</a></li>
+					</ul>
+				</div>
+
+				<div id="panel-account">
+					<ul>
+						<li><a href="#/">My profile</a></li>
+						<li><a href="#/">Privacy settings</a></li>
+						<li><a href="#/">Activity</a></li>
+						<li><a href="#/">Sign out</a></li>
+					</ul>
+				</div>
+
+				<div id="panel-cart">
+					<p style="text-align: center; padding-top: 30px;">Your shoppingcart is empty.<br />
+						<a href="#/">Continue shopping.</a></p>
+				</div>
 			</nav>
 		</div>
 	</body>

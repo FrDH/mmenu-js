@@ -1,11 +1,20 @@
-/*
-	jQuery.mmenu keyboardNavigation addon CSS
-*/
+/*	
+ * jQuery mmenu keyboardNavigation add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
-.mm-keyboardfocus a:focus {
-	outline: none;
+
+@if ( $mm_opt_keyboardnavigation )
+{
+	.mm-menu_keyboardfocus a:focus
+	{
+		outline: none;
+	}
+
+	@include mm_keyboardnavigation_colors;
 }
-
-@include mm_colors_keyboardnavigation;

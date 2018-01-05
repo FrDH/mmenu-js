@@ -1,46 +1,51 @@
 /*	
- * Turbolinks (5 and up) wrapper for jQuery mmenu
- * Include this file after including the jquery.mmenu plugin for default Turbolinks support.
+ * jQuery mmenu Turbolinks wrapper
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
  */
-
 
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
+	const _WRAPPR_ = 'turbolinks';
 
-	//	Vars
-	var classnames, $html;
 
-	//	Store the HTML classnames onDocumentReady
-	$(document).on(
-		'turbolinks:before-visit',
-		function()
-		{
-			$html = $('html');
-			classnames = $html.attr( 'class' );
-			classnames = $.grep(
-				classnames.split( /\s+/ ),
-				function( name: string )
+	$[ _PLUGIN_ ].wrappers[ _WRAPPR_ ] = function()
+	{
+		var classnames, $html;
+
+		$(document)
+
+			//	Store the HTML classnames onDocumentReady
+			.on( 'turbolinks:before-visit',
+				function()
 				{
-					return !/mm-/.test( name );
+					$html = $('html');
+					classnames = $html.attr( 'class' );
+					classnames = $.grep(
+						classnames.split( /\s+/ ),
+						function( name: string )
+						{
+							return !/mm-/.test( name );
+						}
+					).join( ' ' );
 				}
-			).join( ' ' );
-		}
-	);
+			)
 
-	//	Reset the HTML classnames and reset the $.mmenu.glbl variable on page:change
-	$(document).on(
-		'turbolinks:load',
-		function()
-		{
-			if ( typeof $html === 'undefined' )
-			{
-				return;
-			}
+			//	Reset the HTML classnames and reset the $.mmenu.glbl variable on page:change
+			.on( 'turbolinks:load',
+				function()
+				{
+					if ( typeof $html === 'undefined' )
+					{
+						return;
+					}
 
-			$html.attr( 'class', classnames );
-			$[ _PLUGIN_ ].glbl = false;
-		}
-	);
+					$html.attr( 'class', classnames );
+					$[ _PLUGIN_ ].glbl = false;
+				}
+			);
+	};
 
 })( jQuery );

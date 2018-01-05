@@ -1,0 +1,57 @@
+{
+	"name" 	: "jquery.mmenu.all",
+	"umd"	: true,
+	"files" : {
+		"core" : [
+			"oncanvas",
+			"offcanvas",
+			"screenreader",
+			"scrollbugfix"
+		],
+		"extensions" : [
+			"borderstyle",
+			"effects",
+			"fullscreen",
+			"listview",
+			"multiline",
+			"pagedim",
+			"popup",
+			"positioning",
+			"shadows",
+			"themes",
+			"tileview"
+		],
+		"addons" : [
+			"autoheight",
+			"backbutton",
+			"columns",
+			"counters",
+			"dividers",
+			"drag",
+			"dropdown",
+			"fixedelements",
+			"iconbar",
+			"iconpanels",
+			"keyboardnavigation",
+			"lazysubmenus",
+			"navbars",
+			"pagescroll",
+			"rtl",
+			"searchfield",
+			"sectionindexer",
+			"setselected",
+			"sidebar",
+			"toggles"
+		],
+		"wrappers" : [
+			"angular",
+			"bootstrap",
+			"jquerymobile",
+			"magento",
+			"olark",
+			"turbolinks",
+			"wordpress"
+		],
+		"translations" : [ "de", "nl" ]
+	}
+}

@@ -5,7 +5,7 @@
 	$[ _PLUGIN_ ].i18n({
 		'Search'			: 'Suche',
 		'No results found.'	: 'Keine Ergebnisse gefunden.',
-		'Search results'	: 'Suchergebnisse'
+		'cancel'			: 'beenden'
 	});
 
 })( jQuery );

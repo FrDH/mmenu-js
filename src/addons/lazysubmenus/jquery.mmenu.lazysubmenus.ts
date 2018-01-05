@@ -51,7 +51,7 @@
 							.not( '.' + _c.inset )
 							.not( '.' + _c.nolistview )
 							.not( '.' + _c.nopanel )
-							.addClass( _c.lazysubmenu + ' ' + _c.nolistview + ' ' + _c.nopanel );
+							.addClass( _c.panel + '_lazysubmenu ' + _c.nolistview + ' ' + _c.nopanel );
 					}
 				);
 
@@ -61,9 +61,9 @@
 					{
 						$panels = $panels || this.$pnls.children( this.conf.panelNodetype );
 
-						this.__findAddBack( $panels, '.' + _c.lazysubmenu )
-							.not( '.' + _c.lazysubmenu + ' .' + _c.lazysubmenu )
-							.removeClass( _c.lazysubmenu + ' ' + _c.nolistview + ' ' + _c.nopanel );
+						this.__findAddBack( $panels, '.' + _c.panel + '_lazysubmenu' )
+							.not( '.' + _c.panel + '_lazysubmenu .' + _c.panel + '_lazysubmenu' )
+							.removeClass( _c.panel + '_lazysubmenu ' + _c.nolistview + ' ' + _c.nopanel );
 					}
 				);
 
@@ -73,11 +73,11 @@
 					{
 						var $selected = this.$pnls
 							.find( '.' + this.conf.classNames.selected )
-							.parents( '.' + _c.lazysubmenu );
+							.parents( '.' + _c.panel + '_lazysubmenu' );
 
 						if ( $selected.length )
 						{
-							$selected.removeClass( _c.lazysubmenu + ' ' + _c.nolistview + ' ' + _c.nopanel );
+							$selected.removeClass( _c.panel + '_lazysubmenu ' + _c.nolistview + ' ' + _c.nopanel );
 							this.initPanels( $selected.last() );
 						}
 					}
@@ -87,8 +87,8 @@
 				this.bind( 'openPanel:before',
 					function( $panel )
 					{
-						var $panels = this.__findAddBack( $panel, '.' + _c.lazysubmenu )
-							.not( '.' + _c.lazysubmenu + ' .' + _c.lazysubmenu );
+						var $panels = this.__findAddBack( $panel, '.' + _c.panel + '_lazysubmenu' )
+							.not( '.' + _c.panel + '_lazysubmenu .' + _c.panel + '_lazysubmenu' );
 
 						if ( $panels.length )
 						{
@@ -105,9 +105,6 @@
 			_c = $[ _PLUGIN_ ]._c;
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
-
-			_c.add( 'lazysubmenu' );
-			_d.add( 'lazysubmenu' );
 		},
 
 		//	clickAnchor: prevents default behavior when clicking an anchor

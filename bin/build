@@ -1,0 +1,66 @@
+<?php
+
+include dirname( __FILE__ ) . '/_inc.php';
+
+$langs	= [];
+$output = '{
+	"name" 	: "jquery.mmenu.all",
+	"umd"	: true,
+	"files" : {';
+
+foreach( $parts as $part )
+{
+	$output .= '
+		"' . $part . '" : [';
+
+	$scripts = scandir( $src . '/' . $part . '/' );
+
+	foreach( $scripts as $script )
+	{
+		switch ( $script )
+		{
+			case ".":
+			case "..":
+			case ".DS_Store":
+				continue 2;
+				break;
+		}
+
+		$output .= '
+			"' . $script . '",';
+
+		if ( is_dir( $src . '/' . $part . '/' . $script . '/translations' ) )
+		{
+			$files = scandir( $src . '/' . $part . '/' . $script . '/translations' );
+			foreach( $files as $file )
+			{
+				switch ( $file )
+				{
+					case ".":
+					case "..":
+					case ".DS_Store":
+						continue 2;
+						break;
+				}
+
+				$lang = end( explode( '.', current( explode( '.ts', $file ) ) ) );
+				if ( !in_array( $lang, $langs ) )
+				{
+					$langs[] = $lang;
+				}
+			}
+		}
+	}
+	$output = substr( $output, 0, -1 );
+	$output .= '
+		],';
+}
+$output .= '
+		"translations" : [ "' . implode( '", "', $langs ) . '" ]
+	}
+}
+';
+
+
+file_put_contents( getDist() . '/_build.json' , $output );
+

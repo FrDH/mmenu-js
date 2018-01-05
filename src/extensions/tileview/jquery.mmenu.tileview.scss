@@ -1,22 +1,28 @@
 /*
-	jQuery.mmenu tileview extension CSS
-*/
+ * jQuery mmenu tileview extension
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
 
-.mm-menu
+@if ( $mm_opt_tileview_xs or $mm_opt_tileview_s or $mm_opt_tileview_m or $mm_opt_tileview_l or $mm_opt_tileview_xl )
 {
-	&.mm-tileview .mm-listview,
-	.mm-tileview.mm-listview
+	.mm-menu_tileview,
+	.mm-panel_tileview
 	{
-		@include mm_clearfix;
-
-		> li
+		.mm-listview
 		{
-			width: 50%;
-			height: 0;
-			padding: 50% 0 0 0;
+			margin: 0 !important;
+
+			@include mm_clearfix;
+		}
+		.mm-listitem
+		{
+			padding: 0;
 			float: left;
 			position: relative;
 
@@ -29,25 +35,44 @@
 				z-index: -1;
 			}
 
-			&.mm-tile-xs
+			@if ( $mm_opt_tileview_m )
 			{
-				width: 12.5%;
-				padding-top: 12.5%;
+				width: 50%;
+				height: 0;
+				padding-top: 50%;
 			}
-			&.mm-tile-s
+
+			@if ( $mm_opt_tileview_xs )
 			{
-				width: 25%;
-				padding-top: 25%;
+				&.mm-tile-xs
+				{
+					width: 12.5%;
+					padding-top: 12.5%;
+				}
 			}
-			&.mm-tile-l
+			@if ( $mm_opt_tileview_s )
 			{
-				width: 75%;
-				padding-top: 75%;
+				&.mm-tile-s
+				{
+					width: 25%;
+					padding-top: 25%;
+				}
 			}
-			&.mm-tile-xl
+			@if ( $mm_opt_tileview_l )
 			{
-				width: 100%;
-				padding-top: 100%;
+				&.mm-tile-l
+				{
+					width: 75%;
+					padding-top: 75%;
+				}
+			}
+			@if ( $mm_opt_tileview_xl )
+			{
+				&.mm-tile-xl
+				{
+					width: 100%;
+					padding-top: 100%;
+				}
 			}
 
 			> a,
@@ -63,36 +88,39 @@
 				bottom: 1px;
 				left: 0;
 			}
-			> .mm-next
-			{
-				width: auto;
 
-				&:before,
-				&:after
+			@if ( $mm_opt_buttons )
+			{
+				> .mm-btn_next
 				{
-					content: none;
-					display: none;
+					width: auto;
+
+					&:before,
+					&:after
+					{
+						content: none;
+						display: none;
+					}
 				}
 			}
 		}
+		.mm-listitem_divider
+		{
+			display: none;
+		}
 	}
 
-	&.mm-tileview
+	.mm-menu_tileview .mm-panel,
+	.mm-panel_tileview
 	{
-		.mm-panel
-		{
-			padding-left: 0;
-			padding-right: 0;
+		padding-left: 0;
+		padding-right: 0;
 
-			&:after
-			{
-				content: none;
-				display: none;
-			}
-		}
-		.mm-listview
+		&:before,
+		&:after
 		{
-			margin: 0;
+			content: none;
+			display: none;
 		}
 	}
 }

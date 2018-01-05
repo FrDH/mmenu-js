@@ -1,38 +1,55 @@
 /*
-	jQuery.mmenu pageDim extension CSS
-*/
+ * jQuery mmenu pageDim extension
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
 
-.mm-menu.mm-opened[class*="mm-pagedim"]
+@if ( $mm_opt_pagedim_default or $mm_opt_pagedim_black or $mm_opt_pagedim_white )
 {
-	~ #mm-blocker
+	[class*="mm-menu_pagedim"].mm-menu_opened
 	{
-		opacity: 0;
+		~ .mm-page__blocker
+		{
+			opacity: 0;
+		}
 	}
-}
 
-html.mm-opening .mm-menu.mm-opened[class*="mm-pagedim"]
-{
-	~ #mm-blocker
+	.mm-wrapper_opening [class*="mm-menu_pagedim"].mm-menu_opened
 	{
-		opacity: $mm_pagedimOpacity;
-		transition: opacity $mm_transitionDuration $mm_transitionFunction $mm_transitionDuration;
+		~ .mm-page__blocker
+		{
+			opacity: $mm_pagedimOpacity;
+			transition: opacity $mm_transitionDuration $mm_transitionFunction $mm_transitionDuration;
+		}
 	}
-}
-.mm-menu.mm-opened
-{
-	&.mm-pagedim ~ #mm-blocker
+
+	.mm-menu_opened
 	{
-		background: inherit;
-	}
-	&.mm-pagedim-white ~ #mm-blocker
-	{
-		background: #fff;
-	}
-	&.mm-pagedim-black ~ #mm-blocker
-	{
-		background: #000;
+		@if ( $mm_opt_pagedim_default )
+		{
+			&.mm-menu_pagedim ~ .mm-page__blocker
+			{
+				background: inherit;
+			}
+		}
+		@if ( $mm_opt_pagedim_black )
+		{
+			&.mm-menu_pagedim-black ~ .mm-page__blocker
+			{
+				background: #000;
+			}
+		}
+		@if ( $mm_opt_pagedim_white )
+		{
+			&.mm-menu_pagedim-white ~ .mm-page__blocker
+			{
+				background: #fff;
+			}
+		}
 	}
 }

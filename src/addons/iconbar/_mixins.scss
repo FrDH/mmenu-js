@@ -1,0 +1,38 @@
+@mixin mm_iconbar_size( $width: $mm_btnSize )
+{
+	.mm-menu_iconbar-#{$width}
+	{
+		.mm-panels,
+		.mm-navbars_top,
+		.mm-navbars_bottom
+		{
+			left: $width + px;
+		}
+		.mm-iconbar
+		{
+			width: $width + px;
+		}
+	}
+}
+
+@mixin mm_iconbar_colors( $cls: "",
+	$dimmedColor: $mm_dimmedTextColor
+) {
+	#{$cls} .mm-iconbar
+	{
+		&,
+		a
+		{
+			color: $dimmedColor;
+		}
+	}
+}
+
+@mixin mm_iconbar_colors_tabs( $cls: "",
+	$emphasizedBg: $mm_navbartabsBackgroundColor
+) {
+	#{$cls} .mm-iconbar__tab_selected
+	{
+		background: $emphasizedBg;
+	}
+}

@@ -1,101 +1,106 @@
 /*
-	jQuery.mmenu effects extension CSS
-*/
+ * jQuery mmenu effects extension
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
 
-//	Zoom menu
-.mm-menu.mm-fx-menu-zoom
+@if ( $mm_opt_effects_menuzoom )
 {
-	transition: transform $mm_transitionDuration $mm_transitionFunction;
-}
-html
-{
-	//	Left
-	&.mm-opened .mm-menu.mm-fx-menu-zoom
+	//	Zoom menu
+	.mm-menu_fx-menu-zoom
+	{
+		transition: transform $mm_transitionDuration $mm_transitionFunction;
+	}
+
+	//	Zoom menu Left
+	.mm-wrapper_opened .mm-menu_fx-menu-zoom
 	{
 		transform: scale( $mm_zoomScaleDown, $mm_zoomScaleDown ) translate3d( -$mm_subpanelOffset, 0, 0 );
 		transform-origin: left center;
 	}
-	&.mm-opening .mm-menu.mm-fx-menu-zoom
+	.mm-wrapper_opening .mm-menu_fx-menu-zoom
 	{
 		transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
 	}
 
-	//	Right
-	&.mm-right
+// TODO position
+	//	Zoom menu Right
+	.mm-wrapper_opened .mm-menu_fx-menu-zoom.mm-menu_position-right
 	{
-		&.mm-opened .mm-menu.mm-fx-menu-zoom
-		{
-			transform: scale( $mm_zoomScaleDown, $mm_zoomScaleDown) translate3d( $mm_subpanelOffset, 0, 0 );
-			transform-origin: right center;
-		}
-		&.mm-opening .mm-menu.mm-fx-menu-zoom
-		{
-			transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
-		}
+		transform: scale( $mm_zoomScaleDown, $mm_zoomScaleDown) translate3d( $mm_subpanelOffset, 0, 0 );
+		transform-origin: right center;
+	}
+	.mm-wrapper_opening .mm-menu_fx-menu-zoom.mm-menu_position-right
+	{
+		transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
 	}
 }
 
 
-//	Slide menu
-.mm-menu.mm-fx-menu-slide
+@if ( $mm_opt_effects_menuslide )
 {
-	transition: transform $mm_transitionDuration $mm_transitionFunction;
-}
-html
-{
-	//	Left
-	&.mm-opened .mm-menu.mm-fx-menu-slide
+	//	Slide menu
+	.mm-menu_fx-menu-slide
+	{
+		transition: transform $mm_transitionDuration $mm_transitionFunction;
+	}
+
+	//	Slide menu Left
+	.mm-wrapper_opened .mm-menu_fx-menu-slide
 	{
 		//	transform: translate3d( -$mm_subpanelOffset, 0, 0 );
 		@include mm_translate( -$mm_subpanelOffset, 0 );
 	}
-	&.mm-opening .mm-menu.mm-fx-menu-slide
+	.mm-wrapper_opening .mm-menu_fx-menu-slide
 	{
 		//	transform: translate3d( 0%, 0, 0 );
 		@include mm_translate( 0%, 0 );
 	}
 
-	//	Right
-	&.mm-right
+// TODO position
+	//	Slide menu Right
+	.mm-wrapper_opened .mm-menu_fx-menu-slide.mm-menu_position-right
 	{
-		&.mm-opened .mm-menu.mm-fx-menu-slide
-		{
-			//	transform: translate3d( $mm_subpanelOffset, 0, 0 );
-			@include mm_translate( $mm_subpanelOffset, 0 );
-		}
-		&.mm-opening .mm-menu.mm-fx-menu-slide
-		{
-			//	transform: translate3d( 0%, 0, 0 );
-			@include mm_translate( 0%, 0 );
-		}
+		//	transform: translate3d( $mm_subpanelOffset, 0, 0 );
+		@include mm_translate( $mm_subpanelOffset, 0 );
+	}
+	.mm-wrapper_opening .mm-menu_fx-menu-slide.mm-menu_position-right
+	{
+		//	transform: translate3d( 0%, 0, 0 );
+		@include mm_translate( 0%, 0 );
 	}
 }
 
 
-//	Fade menu
-.mm-menu.mm-fx-menu-fade
+@if ( $mm_opt_effects_menufade )
 {
-	opacity: 0;
-	transition: opacity $mm_transitionDuration $mm_transitionFunction;
-}
-html.mm-opening .mm-menu.mm-fx-menu-fade
-{
-	opacity: 1;
+	//	Fade menu
+	.mm-menu_fx-menu-fade
+	{
+		opacity: 0;
+		transition: opacity $mm_transitionDuration $mm_transitionFunction;
+	}
+	.mm-wrapper_opening .mm-menu_fx-menu-fade
+	{
+		opacity: 1;
+	}
 }
 
 
-//	No effect panels
-.mm-menu
+@if ( $mm_opt_effects_panelsnone )
 {
-	&.mm-fx-panels-none .mm-panel,
-	.mm-fx-panels-none.mm-panel
+	//	No effect panels
+	.mm-menu_fx-panels-none .mm-panel,
+	.mm-panel_fx-none
 	{
 		transition-property: none;
 		
-		&.mm-subopened
+		&.mm-panel_opened-parent
 		{
 			@include mm_translate( 0, 0 );
 		}
@@ -103,20 +108,20 @@ html.mm-opening .mm-menu.mm-fx-menu-fade
 }
 
 
-//	Zoom panels
-.mm-menu
+@if ( $mm_opt_effects_panelszoom )
 {
-	&.mm-fx-panels-zoom .mm-panel,
-	.mm-fx-panels-zoom.mm-panel
+	//	Zoom panels
+	.mm-menu_fx-panels-zoom .mm-panel,
+	.mm-panel_fx-zoom
 	{
 		transform-origin: left center;
 		transform: scale( $mm_zoomScaleUp, $mm_zoomScaleUp ) translate3d( 100%, 0, 0 );
 
-		&.mm-opened
+		&.mm-panel_opened
 		{
 			transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
 		}
-		&.mm-subopened
+		&.mm-panel_opened-parent
 		{
 			transform: scale( $mm_zoomScaleDown, $mm_zoomScaleDown ) translate3d( -$mm_subpanelOffset, 0, 0 );
 		}
@@ -124,108 +129,117 @@ html.mm-opening .mm-menu.mm-fx-menu-fade
 }
 
 
-//	Slide panels
-.mm-menu
+@if ( $mm_opt_effects_panelsslide )
 {
-	&.mm-fx-panels-slide-0 .mm-panel.mm-subopened,
-	.mm-fx-panels-slide-0.mm-panel.mm-subopened
+	//	Slide panels
+	.mm-menu_fx-panels-slide-0 .mm-panel_opened-parent,
+	.mm-panel_fx-slide-0.mm-panel_opened-parent
 	{
 		@include mm_translate( 0, 0 );
 	}
 
-	&.mm-fx-panels-slide-100 .mm-panel.mm-subopened,
-	.mm-fx-panels-slide-100.mm-panel.mm-subopened
+	.mm-menu_fx-panels-slide-100 .mm-panel_opened-parent,
+	.mm-panel_fx-slide-100.mm-panel_opened-parent
 	{
 		@include mm_translate( -100%, 0 );
 	}
-}
 
-
-//	SlideUp panels
-.mm-menu
-{
-	&.mm-fx-panels-slide-up .mm-panel,
-	.mm-fx-panels-slide-up.mm-panel
+	//	Slide panels Up
+	.mm-panel_fx-slide-up,
+	.mm-menu_fx-panels-slide-up .mm-panel
 	{
 		@include mm_translate( 0, 100% );
-
-		&.mm-opened
-		{
-			@include mm_translate( 0, 0 );
-		}
-		&.mm-subopened
-		{
-			@include mm_translate( 0, 0% );
-		}
 	}
-}
-
-
-//	Listitem delay
-@mixin mm_effect_listitem_delay( $i )
-{
-	&:nth-child( #{$i} )
+	.mm-panel_fx-slide-up.mm-panel_opened,
+	.mm-menu_fx-panels-slide-up .mm-panel_opened,
+	.mm-menu_fx-panels-slide-up .mm-panel_opened-parent
 	{
-		transition-delay: ( $i * 50ms );
+		@include mm_translate( 0, 0% );
+	}
+
+	//	Slide panels Right
+	.mm-panel_fx-slide-right,
+	.mm-menu_fx-panels-slide-right .mm-panel
+	{
+		@include mm_translate( -100%, 0 );
+	}
+	.mm-panel_fx-slide-right.mm-panel_opened,
+	.mm-menu_fx-panels-slide-right .mm-panel_opened,
+	.mm-menu_fx-panels-slide-right .mm-panel_opened-parent
+	{
+		@include mm_translate( 0, 0% );
 	}
 }
-.mm-menu[class*="mm-fx-listitems-"] .mm-listview > li
-{
-	transition: none $mm_transitionDuration $mm_transitionFunction;
 
-	@include mm_effect_listitem_delay( 1 );
-	@include mm_effect_listitem_delay( 2 );
-	@include mm_effect_listitem_delay( 3 );
-	@include mm_effect_listitem_delay( 4 );
-	@include mm_effect_listitem_delay( 5 );
-	@include mm_effect_listitem_delay( 6 );
-	@include mm_effect_listitem_delay( 7 );
-	@include mm_effect_listitem_delay( 8 );
-	@include mm_effect_listitem_delay( 9 );
-	@include mm_effect_listitem_delay( 10 );
-	@include mm_effect_listitem_delay( 11 );
-	@include mm_effect_listitem_delay( 12 );
-	@include mm_effect_listitem_delay( 13 );
-	@include mm_effect_listitem_delay( 14 );
-	@include mm_effect_listitem_delay( 15 );
+
+@if ( $mm_opt_effects_listitemsslide or $mm_opt_effects_listitemsfade or $mm_opt_effects_listitemsdrop )
+{
+	//	Listitem delay
+	[class*="mm-menu_fx-listitems-"] .mm-listitem
+	{
+		transition: none $mm_transitionDuration $mm_transitionFunction;
+
+		@include mm_effect_listitem_delay( 1 );
+		@include mm_effect_listitem_delay( 2 );
+		@include mm_effect_listitem_delay( 3 );
+		@include mm_effect_listitem_delay( 4 );
+		@include mm_effect_listitem_delay( 5 );
+		@include mm_effect_listitem_delay( 6 );
+		@include mm_effect_listitem_delay( 7 );
+		@include mm_effect_listitem_delay( 8 );
+		@include mm_effect_listitem_delay( 9 );
+		@include mm_effect_listitem_delay( 10 );
+		@include mm_effect_listitem_delay( 11 );
+		@include mm_effect_listitem_delay( 12 );
+		@include mm_effect_listitem_delay( 13 );
+		@include mm_effect_listitem_delay( 14 );
+		@include mm_effect_listitem_delay( 15 );
+	}
 }
 
 
-//	Slide list items
-.mm-menu.mm-fx-listitems-slide .mm-listview > li
+@if ( $mm_opt_effects_listitemsslide )
 {
-	transition-property: transform, opacity;
-	@include mm_translate( 50%, 0 );
-	opacity: 0;
-}
-html.mm-opening .mm-menu.mm-fx-listitems-slide .mm-panel.mm-opened .mm-listview > li
-{
-	@include mm_translate( 0, 0 );
-	opacity: 1;
-}
-
-
-//	Fade list items
-.mm-menu.mm-fx-listitems-fade .mm-listview > li
-{
-	transition-property: opacity;
-	opacity: 0;
-}
-html.mm-opening .mm-menu.mm-fx-listitems-fade .mm-panel.mm-opened .mm-listview > li
-{
-	opacity: 1;
+	//	Slide list items
+	.mm-menu_fx-listitems-slide .mm-listitem
+	{
+		transition-property: transform, opacity;
+		@include mm_translate( 50%, 0 );
+		opacity: 0;
+	}
+	.mm-wrapper_opening .mm-menu_fx-listitems-slide .mm-panel_opened .mm-listitem
+	{
+		@include mm_translate( 0, 0 );
+		opacity: 1;
+	}
 }
 
-
-//	Drop list items
-.mm-menu.mm-fx-listitems-drop .mm-listview > li
+@if ( $mm_opt_effects_listitemsfade )
 {
-	transition-property: opacity, top;
-	opacity: 0;
-	top: -25%;
+	//	Fade list items
+	.mm-menu_fx-listitems-fade .mm-listitem
+	{
+		transition-property: opacity;
+		opacity: 0;
+	}
+	.mm-wrapper_opening .mm-menu_fx-listitems-fade .mm-panel_opened .mm-listitem
+	{
+		opacity: 1;
+	}
 }
-html.mm-opening .mm-menu.mm-fx-listitems-drop .mm-panel.mm-opened .mm-listview > li
+
+@if ( $mm_opt_effects_listitemsdrop )
 {
-	opacity: 1;
-	top: 0;
+	//	Drop list items
+	.mm-menu_fx-listitems-drop .mm-listitem
+	{
+		transition-property: opacity, top;
+		opacity: 0;
+		top: -25%;
+	}
+	.mm-wrapper_opening .mm-menu_fx-listitems-drop .mm-panel_opened .mm-listitem
+	{
+		opacity: 1;
+		top: 0;
+	}
 }

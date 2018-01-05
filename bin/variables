@@ -1,0 +1,51 @@
+<?php
+
+include dirname( __FILE__ ) . '/_inc.php';
+
+$output = '';
+
+function addFile( $file, $script )
+{
+	global $output;
+
+	if ( file_exists( $file ) )
+	{
+		$var = file_get_contents( $file );
+		$output .= '
+
+/* ' . $script . ' */
+' . $var;
+
+	}
+}
+addFile( $src . '/scss/_variables.org.scss', 'core' );
+
+foreach( $parts as $part )
+{
+	
+	$scripts = scandir( $src . '/' . $part . '/' );
+
+	foreach( $scripts as $script )
+	{
+		switch ( $script )
+		{
+			case ".":
+			case "..":
+			case ".DS_Store":
+				continue 2;
+				break;
+		}
+		$dir = $src . '/' . $part . '/' . $script;
+		if ( !is_dir( $dir ) )
+		{
+			continue 1;
+		}
+
+		addFile( $dir . '/_variables.scss', $script );
+	}
+}
+$output .= '
+
+';
+
+file_put_contents( getDist() . '/_variables.custom.scss' , $output );

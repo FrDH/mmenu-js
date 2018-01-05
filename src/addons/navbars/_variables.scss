@@ -1,0 +1,8 @@
+$mm_opt_navbars					: true !default;
+$mm_opt_navbars_top				: $mm_opt_navbars !default;
+$mm_opt_navbars_bottom			: $mm_opt_navbars !default;
+$mm_opt_navbars_breadcrumbs		: $mm_opt_navbars !default;
+$mm_opt_navbars_tabs			: $mm_opt_navbars !default;
+
+$mm_breadcrumbPadding			: round( $mm_padding / 4 ) !default;
+$mm_navbartabsBackgroundColor	: $mm_emphasizedBackgroundColor !default;

@@ -1,18 +1,27 @@
 /*
-	jQuery.mmenu multiline extension CSS
-*/
+ * jQuery mmenu multiline extension
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
 
-.mm-menu.mm-multiline .mm-listview > li,
-.mm-menu .mm-listview.mm-multiline > li,
-.mm-menu .mm-listview > li.mm-multiline
+@if ( $mm_opt_multiline )
 {
-	> a,
-	> span
+	.mm-menu_multiline,
+	.mm-panel_multiline
 	{
-		text-overflow: clip;
-		white-space: normal;
+		.mm-listitem
+		{
+			> a,
+			> span
+			{
+				text-overflow: clip;
+				white-space: normal;
+			}
+		}
 	}
 }

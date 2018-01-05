@@ -1,76 +1,85 @@
-/*
-	jQuery.mmenu offCanvas addon CSS
-*/
+/*	
+ * jQuery mmenu offCanvas add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
 
-//	Animations
-.mm-page
+@if ( $mm_opt_offcanvas )
 {
-	box-sizing: border-box;
-	position: relative;
-}
-.mm-slideout
-{
-	transition: transform $mm_transitionDuration $mm_transitionFunction;
-	z-index: 1;
-}
-
-//	Container, Page, Blocker
-html.mm-opened
-{
-	overflow-x: hidden;
-	position: relative;
-}
-html.mm-blocking
-{
-	overflow: hidden;
-
-	body
+	//	Animations
+	.mm-page
 	{
-		overflow: hidden;
+		box-sizing: border-box;
+		position: relative;
 	}
-}
-
-html.mm-background .mm-page
-{
-	background: inherit;
-}
-#mm-blocker
-{
-	background: rgba( 3, 2, 1, 0 );
-	display: none;
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 2;
-}
-html.mm-blocking #mm-blocker
-{
-	display: block;
-}
-
-//	Menu
-.mm-menu
-{
-	&.mm-offcanvas
+	.mm-slideout
 	{
-		z-index: 0;
+		transition: transform $mm_transitionDuration $mm_transitionFunction;
+		z-index: 1;
+	}
+
+	//	Container, Page, Blocker
+	.mm-wrapper_opened
+	{
+		overflow-x: hidden;
+		position: relative;
+	}
+
+	.mm-wrapper_background .mm-page
+	{
+		background: inherit;
+	}
+
+
+	//	Menu
+	.mm-menu_offcanvas
+	{
 		display: none;
 		position: fixed;
+		right: auto;
+		z-index: 0;
 
-		&.mm-opened
+		&.mm-menu_opened
+		{
+			display: block;
+		}
+	}
+
+	//	IE9 hack
+	.mm-menu_offcanvas.mm-menu_opened.mm-no-csstransforms { z-index: 10; } 
+
+	@include mm_offcanvas_size;
+}
+
+@if ( $mm_opt_offcanvas_blocker )
+{
+	.mm-page__blocker
+	{
+		background: rgba( 3, 2, 1, 0 );
+		display: none;
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 2;
+	}
+	.mm-wrapper_blocking
+	{
+		overflow: hidden;
+
+		body
+		{
+			overflow: hidden;
+		}
+		.mm-page__blocker
 		{
 			display: block;
 		}
 	}
 }
-
-//	IE9 hack
- .mm-menu.mm-offcanvas.mm-no-csstransforms.mm-opened { z-index: 10; } 
-
-
-@include mm_sizing;

@@ -1,68 +1,88 @@
-/*
-	jQuery.mmenu dropdown addon CSS
-*/
+/*	
+ * jQuery mmenu dropdown add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
-
-
-.mm-menu.mm-dropdown
-{
-	box-shadow: $mm_dropdownShadow;
-	height: percentage( $mm_menuHeight );
-}
-html.mm-dropdown .mm-slideout
-{
-	transform: none !important;
-	z-index: 0;
-}
-html.mm-dropdown #mm-blocker
-{
-	transition-delay: 0s !important;
-	z-index: 1;
-}
-html.mm-dropdown .mm-menu
-{
-	z-index: 2;
-}
-html.mm-dropdown.mm-opened:not(.mm-opening) .mm-menu.mm-dropdown
-{
-	display: none;
-}
+@import "../../mixins";
+@import "../../variables";
 
 
-//	Tip
-.mm-menu
+@if ( $mm_opt_dropdown )
 {
-	&.mm-tip:before
+	.mm-menu_dropdown
 	{
-		content: '';
-		background: inherit;
 		box-shadow: $mm_dropdownShadow;
-
-		display: block;
-		width: 15px;
-		height: 15px;
-
-		position: absolute;
-		z-index: 0;
-
-		transform: rotate( 45deg );
+		height: percentage( $mm_menuHeight );	
 	}
 
-	&.mm-tipleft:before
+	.mm-wrapper_dropdown
 	{
-		left: 2 + $mm_dropdownTipX;
+		.mm-slideout
+		{
+			transform: none !important;
+			z-index: 0;
+		}
+
+		@if ( $mm_opt_offcanvas_blocker )
+		{
+			.mm-page__blocker
+			{
+				transition-delay: 0s !important;
+				z-index: 1;
+			}
+		}
+
+		@if ( $mm_opt_dropdown )
+		{
+			.mm-menu_dropdown
+			{
+				z-index: 2;
+			}
+
+			&.mm-wrapper_opened:not( .mm-wrapper_opening ) .mm-menu_dropdown
+			{
+				display: none;
+			}
+		}
 	}
-	&.mm-tipright:before
+
+
+	//	Tip
+	@if ( $mm_opt_dropdown_tip )
 	{
-		right: 2 + $mm_dropdownTipX;
-	}
-	&.mm-tiptop:before
-	{
-		top: 2 - $mm_dropdownTipY;
-	}
-	&.mm-tipbottom:before
-	{
-		bottom: 2 - $mm_dropdownTipY;
+		[class*="mm-menu_tip-"]:before
+		{
+			content: '';
+			background: inherit;
+			box-shadow: $mm_dropdownShadow;
+
+			display: block;
+			width: 15px;
+			height: 15px;
+
+			position: absolute;
+			z-index: 0;
+
+			transform: rotate( 45deg );
+		}
+
+		.mm-menu_tip-left:before
+		{
+			left: 2 + $mm_dropdownTipX;
+		}
+		.mm-menu_tip-right:before
+		{
+			right: 2 + $mm_dropdownTipX;
+		}
+		.mm-menu_tip-top:before
+		{
+			top: 2 - $mm_dropdownTipY;
+		}
+		.mm-menu_tip-bottom:before
+		{
+			bottom: 2 - $mm_dropdownTipY;
+		}
 	}
 }

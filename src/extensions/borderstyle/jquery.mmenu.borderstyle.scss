@@ -1,36 +1,46 @@
 /*
-	jQuery.mmenu borderStyle extension CSS
-*/
+ * jQuery mmenu borderStyle extension
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
 
-.mm-menu.mm-border-none .mm-listview > li,
-.mm-menu .mm-listview.mm-border-none > li,
-.mm-menu .mm-listview > li.mm-border-none
+@if ( $mm_opt_borderstyle_none )
 {
-	&:after
+	.mm-menu_border-none,
+	.mm-panel_border-none
 	{
-		content: none;
+		 .mm-listitem:after
+		{
+			content: none;
+		}
 	}
 }
 
-.mm-menu.mm-border-full .mm-listview > li,
-.mm-menu .mm-listview.mm-border-full > li,
-.mm-menu .mm-listview > li.mm-border-full
+@if ( $mm_opt_borderstyle_full )
 {
-	&:after
+	.mm-menu_border-full,
+	.mm-panel_border-full
 	{
-		left: 0 !important;
+		.mm-listitem:after
+		{
+			left: 0 !important;
+		}
 	}
 }
 
-.mm-menu.mm-border-offset .mm-listview > li,
-.mm-menu .mm-listview.mm-border-offset > li,
-.mm-menu .mm-listview > li.mm-border-offset
+@if ( $mm_opt_borderstyle_offset )
 {
-	&:after
+	.mm-menu_border-offset,
+	.mm-panel_border-offset
 	{
-		right: $mm_listitemIndent;
+		.mm-listitem:after
+		{
+			right: $mm_listitemIndent;
+		}
 	}
 }

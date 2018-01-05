@@ -1,0 +1,18 @@
+@mixin mm_sectionindexer_position( $pos, $nr )
+{
+	.mm-menu_navbar_#{$pos}-#{$nr}
+	{
+		.mm-sectionindexer
+		{
+			#{$pos}: ($mm_navbarHeight * $nr) + 2;
+		}
+	}
+}
+@mixin mm_sectionindexer_colors( $cls: "",
+	$color: $mm_dimmedTextColor
+) {
+	#{$cls} .mm-sectionindexer a
+	{
+		color: $color;
+	}
+}

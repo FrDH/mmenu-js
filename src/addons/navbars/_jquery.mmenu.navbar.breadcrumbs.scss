@@ -1,0 +1,46 @@
+/*	
+ * jQuery mmenu navbar add-on breadcrumbs content
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
+
+@if ( $mm_opt_navbars_breadcrumbs )
+{
+	.mm-navbar__breadcrumbs
+	{
+		@include mm_ellipsis;
+
+		-webkit-overflow-scrolling: touch;
+		overflow-x: auto;
+
+		text-align: left;
+		padding: 0 0 0 $mm_panelPadding - $mm_breadcrumbPadding;
+
+		> *
+		{
+			display: inline-block;
+			padding: ( $mm_navbarHeight / 4 ) $mm_breadcrumbPadding;
+		}
+		> a
+		{
+			text-decoration: underline;
+		}
+	}
+
+	.mm-navbar_has-btns 
+	{
+		.mm-navbar__breadcrumbs
+		{
+			margin-left: -$mm_btnSize;
+		}
+		@if ( $mm_opt_buttons )
+		{
+			.mm-btn:not( .mm-hidden ) + .mm-navbar__breadcrumbs
+			{
+				margin-left: 0;
+				padding-left: 0;
+			}
+		}
+	}
+}

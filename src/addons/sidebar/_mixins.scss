@@ -1,0 +1,36 @@
+@mixin mm_sidebar_collapsed_size( $width )
+{
+	.mm-wrapper_sidebar-collapsed-#{$width},
+	[class*="mm-wrapper_sidebar-expanded-"].mm-menu_sidebar-closed.mm-menu_sidebar-collapsed-#{$width}
+	{
+		.mm-slideout
+		{
+			width: calc( 100% - #{$width}px );
+			@include mm_translate( #{$width}px, 0 );
+		}
+	}
+}
+
+@mixin mm_sidebar_expanded_size( $width )
+{
+	$menuWidth: $width / 100;
+	$pageWidth: 1 - $menuWidth;
+
+	.mm-wrapper_sidebar-expanded-#{$width}
+	{
+		&:not( .mm-wrapper_sidebar-closed )
+		{
+			.mm-slideout
+			{
+				width: percentage( $pageWidth );
+				//	Can't use mm_translate with !important :/
+				transform: translate( percentage( $menuWidth / $pageWidth ), 0 ) !important;
+				transform: translate3d( percentage( $menuWidth / $pageWidth ), 0, 0 ) !important;
+			}
+		}
+		.mm-menu_sidebar-expanded
+		{
+			width: percentage( $menuWidth ) !important;
+		}
+	}
+}

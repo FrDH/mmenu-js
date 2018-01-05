@@ -1,5 +1,7 @@
 /*
- * Magento wrapper for jQuery mmenu
- * Include this file after including the jquery.mmenu plugin for default Magento support.
+ * jQuery mmenu Magento wrapper
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
  */
-!function(e){var a="mmenu";e[a].configuration.classNames.selected="active"}(jQuery);
+!function(e){var n="mmenu",a="magento";e[n].wrappers[a]=function(){this.conf.classNames.selected="active"}}(jQuery);

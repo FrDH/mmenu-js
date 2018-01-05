@@ -50,7 +50,7 @@
 			this.bind( 'open:start',
 				function()
 				{
-					this.$pnls.children( '.' + _c.opened ).scrollTop( 0 );
+					this.$pnls.children( '.' + _c.panel + '_opened' ).scrollTop( 0 );
 				}
 			);
 			this.bind( 'initMenu:after',
@@ -91,7 +91,7 @@
 	    	.on( _e.touchmove + '-' + _ADDON_,
 		    	function( e )
 		    	{
-					if ( glbl.$html.hasClass( _c.opened ) )
+					if ( glbl.$html.hasClass( _c.wrapper + '_opened' ) )
 					{
 						e.preventDefault();
 					}
@@ -105,7 +105,7 @@
 		    	'.' + _c.panels + '> .' + _c.panel,
 		    	function( e )
 		    	{
-			        if ( glbl.$html.hasClass( _c.opened ) )
+			        if ( glbl.$html.hasClass( _c.wrapper + '_opened' ) )
 			        {
 			        	if ( !scrolling )
 						{
@@ -130,7 +130,7 @@
 		 		'.' + _c.panels + '> .' + _c.panel,
 		 		function( e )
 		 		{
-			        if ( glbl.$html.hasClass( _c.opened ) )
+			        if ( glbl.$html.hasClass( _c.wrapper + '_opened' ) )
 			        {
 				        if ( $(this)[ 0 ].scrollHeight > $(this).innerHeight() )
 				        {
@@ -147,7 +147,7 @@
 	    		function()
 	    		{
 	    			that.$pnls
-	    				.children( '.' + _c.opened )
+	    				.children( '.' + _c.panel + '_opened' )
 			        	.scrollTop( 0 )
 			        	.css({ '-webkit-overflow-scrolling': 'auto' })
 			        	.css({ '-webkit-overflow-scrolling': 'touch' });

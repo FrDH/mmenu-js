@@ -1,29 +1,45 @@
-/*
-	jQuery.mmenu autoHeight addon CSS
-*/
+/*	
+ * jQuery mmenu autoHeight add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
 
-.mm-menu
+@if ( $mm_opt_autoheight )
 {
-	&.mm-autoheight
+	.mm-menu_autoheight
 	{
 		transition: none $mm_transitionDuration $mm_transitionFunction;
 		transition-property: transform, height;
 
-		&:not( .mm-offcanvas )
+		&:not( .mm-menu_offcanvas )
 		{
 			position: relative;
 		}
+
+		&.mm-menu_position-top,
+		&.mm-menu_position-bottom
+		{
+			max-height: percentage( $mm_menuHeight );
+		}
 	}
 
-	&.mm-measureheight
+	.mm-menu_autoheight-measuring
 	{
-		.mm-panel:not(.mm-vertical),
-		.mm-panel.mm-vertical.mm-opened
+		.mm-panel
 		{
 			display: block !important;
+		}
+		@if ( $mm_opt_vertical )
+		{
+			.mm-listitem_vertical:not( .mm-listitem_opened ) .mm-panel
+			{
+				display: none !important;
+			}
 		}
 		.mm-panels > .mm-panel
 		{

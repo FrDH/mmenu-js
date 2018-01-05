@@ -42,7 +42,8 @@
 			this.bind( 'initListview:after',
 				function( $panel )
 				{
-					this.__refactorClass( $('em', $panel), this.conf.classNames[ _ADDON_ ].counter, 'counter' );
+					var cntrclss = this.conf.classNames[ _ADDON_ ].counter;
+					this.__refactorClass( $panel.find( '.' + cntrclss ), cntrclss, _c.counter );
 				}
 			);
 
@@ -72,7 +73,7 @@
 									var $parent = $(this).data( _d.parent );
 									if ( $parent )
 									{
-										if ( !$parent.children( 'em.' + _c.counter ).length )
+										if ( !$parent.children( '.' + _c.counter ).length )
 										{
 											$parent.prepend( $( '<em class="' + _c.counter + '" />' ) );
 										}
@@ -129,7 +130,7 @@
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 	
-			_c.add( 'counter search noresultsmsg' );
+			_c.add( 'counter' );
 		},
 
 		//	clickAnchor: prevents default behavior when clicking an anchor

@@ -1,4 +1,4 @@
-@if ( $mm_css_buttons )
+@if ( $mm_opt_buttons )
 {
 	.mm-btn
 	{
@@ -10,23 +10,28 @@
 		z-index: 1;
 	}
 
-	.mm-clear,
-	.mm-close
+	.mm-btn_fullwidth
+	{
+		width: 100%;
+	}
+
+	.mm-btn_clear,
+	.mm-btn_close
 	{
 		@include mm_btn_cross();
 	}
 
-	.mm-prev:before,
-	.mm-next:after
+	.mm-btn_prev:before,
+	.mm-btn_next:after
 	{
 		@include mm_btn_arrow;
 	}
-	.mm-prev:before
+	.mm-btn_prev:before
 	{
 		@include mm_btn_arrow_prev;
 	}
-	.mm-next:after
+	.mm-btn_next:after
 	{
 		@include mm_btn_arrow_next;
-	}	
+	}
 }

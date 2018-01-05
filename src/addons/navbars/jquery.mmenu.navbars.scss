@@ -1,143 +1,91 @@
-/*
-	jQuery.mmenu navbars addon CSS
-*/
+/*	
+ * jQuery mmenu navbar add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
-@mixin mm_navbar_positioning( $pos, $nr )
+
+@if ( $mm_opt_navbars )
 {
-	.mm-hasnavbar-#{$pos}-#{$nr}
+	@if ( $mm_opt_navbars_top or $mm_opt_navbars_bottom )
 	{
-		.mm-panels
+		.mm-navbars_top,
+		.mm-navbars_bottom
 		{
-			#{$pos}: $mm_navbarHeight * $nr;
-		}
-	}
-}
-@mixin mm_navbar_sizing( $nr )
-{
-	.mm-navbar-size-#{$nr}
-	{
-		height: $mm_navbarHeight * $nr;
-	}
-}
-@mixin mm_navbar_content( $nr )
-{
-	.mm-navbar-content-#{$nr} > *
-	{
-		width: round( 100% / $nr * 100 ) / 100;
-	}
-}
+			background: inherit;
+			border-color: inherit;
+			border-width: 0;
+			position: absolute;
+		    left: 0;
+		    right: 0;
+			z-index: 1;
 
-.mm-navbars-top,
-.mm-navbars-bottom
-{
-	background: inherit;
-	border-color: inherit;
-	border-width: 0;
-	overflow: hidden;
-	position: absolute;
-    left: 0;
-    right: 0;
-	z-index: 3;
+			> .mm-navbar
+			{
+				border-width: 0;
+				border-color: inherit;
+				display: flex;
+				position: relative;
 
-	> .mm-navbar
-	{
-		border: none;
-		padding: 0;
-		position: relative;
+				//	Bugfix
+				@include mm_translate( 0, 0 );
 
-		//	Bugfix
-		@include mm_translate( 0, 0 );
-	}
-}
-.mm-navbars-top
-{
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
-	top: 0;
-}
-.mm-navbars-bottom
-{
-	border-top-style: solid;
-	border-top-width: 1px;
-	bottom: 0;
-}
+				&:not( .mm-navbar_has-btns )
+				{
+					padding: 0;
+				}
 
-
-.mm-navbar.mm-hasbtns
-{
-	padding: 0 $mm_btnSize;
-}
-
-
-//	Buttonbars
-.mm-navbar[class*="mm-navbar-content-"]
-{
-	> *
-	{
-		box-sizing: border-box;
-		display: block;
-		float: left;
-	}
-}
-
-
-//	Breadcrumbs
-.mm-navbar 
-{
-	.mm-breadcrumbs
-	{
-		@include mm_ellipsis;
-
-		-webkit-overflow-scrolling: touch;
-		overflow-x: auto;
-
-		text-align: left;
-		padding: 0 0 0 $mm_panelPadding - $mm_breadcrumbPadding;
-
-		> *
-		{
-			display: inline-block;
-			padding: ( $mm_btnSize / 4 ) $mm_breadcrumbPadding;
-		}
-		> a
-		{
-			text-decoration: underline;
+				> :not( img ):not( .mm-btn )
+				{
+					flex: 1;
+				}
+			}
 		}
 	}
 
-	&.mm-hasbtns 
+	@if ( $mm_opt_navbars_top )
 	{
-		.mm-breadcrumbs
+		.mm-navbars_top
 		{
-			margin-left: -$mm_btnSize;
+			border-bottom-style: solid;
+			border-bottom-width: 1px;
+			top: 0;
+			bottom: auto;
 		}
-		.mm-btn:not( .mm-hidden ) + .mm-breadcrumbs
-		{
-			margin-left: 0;
-			padding-left: 0;
-		}
+
+		@include mm_navbar_position( 'top', 1 );
+		@include mm_navbar_position( 'top', 2 );
+		@include mm_navbar_position( 'top', 3 );
+		@include mm_navbar_position( 'top', 4 );
 	}
+
+	@if ( $mm_opt_navbars_bottom )
+	{
+		.mm-navbars_bottom
+		{
+			border-top-style: solid;
+			border-top-width: 1px;
+			bottom: 0;
+			top: auto;
+		}
+
+		@include mm_navbar_position( 'bottom', 1 );
+		@include mm_navbar_position( 'bottom', 2 );
+		@include mm_navbar_position( 'bottom', 3 );
+		@include mm_navbar_position( 'bottom', 4 );
+	}
+
+
+
+	@include mm_navbar_size( 2 );
+	@include mm_navbar_size( 3 );
+	@include mm_navbar_size( 4 );
 }
 
+@import 'jquery.mmenu.navbar.breadcrumbs';
+@import 'jquery.mmenu.navbar.tabs';
 
-@include mm_navbar_positioning( 'top', 1 );
-@include mm_navbar_positioning( 'top', 2 );
-@include mm_navbar_positioning( 'top', 3 );
-@include mm_navbar_positioning( 'top', 4 );
-
-@include mm_navbar_positioning( 'bottom', 1 );
-@include mm_navbar_positioning( 'bottom', 2 );
-@include mm_navbar_positioning( 'bottom', 3 );
-@include mm_navbar_positioning( 'bottom', 4 );
-
-@include mm_navbar_sizing( 2 );
-@include mm_navbar_sizing( 3 );
-@include mm_navbar_sizing( 4 );
-
-@include mm_navbar_content( 2 );
-@include mm_navbar_content( 3 );
-@include mm_navbar_content( 4 );
-@include mm_navbar_content( 5 );
-@include mm_navbar_content( 6 );

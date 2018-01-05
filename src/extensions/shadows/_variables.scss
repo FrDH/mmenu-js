@@ -1,0 +1,6 @@
+$mm_opt_shadows			: true !default;
+$mm_opt_shadows_page	: $mm_opt_shadows !default;
+$mm_opt_shadows_panels	: $mm_opt_shadows !default;
+
+$mm_pageShadow			: 0 0 10px rgba( #000, 0.3 ) !default;
+$mm_panelShadow			: 0 0 10px rgba( #000, 0.3 ) !default;

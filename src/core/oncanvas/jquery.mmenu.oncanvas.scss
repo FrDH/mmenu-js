@@ -1,8 +1,12 @@
-/*
-	jQuery.mmenu oncanvas CSS
-*/
+/*!	
+ * jQuery mmenu
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
 @import "menu";
 @import "panels";

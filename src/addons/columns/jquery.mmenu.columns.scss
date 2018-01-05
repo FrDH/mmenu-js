@@ -1,79 +1,76 @@
-/*
-	jQuery.mmenu columns addon CSS
-*/
+/*	
+ * jQuery mmenu columns add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
-@mixin mm_columns_sizing( $nr )
+
+@if ( $mm_opt_columns )
 {
-	.mm-columns .mm-panels > .mm-columns-#{$nr}
+	[class*="mm-menu_columns-"]
 	{
-		@include mm_translate( $nr * 100%, 0 );
-	}
+		transition-property: width;
 
-	.mm-columns-#{$nr} .mm-panels > .mm-panel
-	{
-		z-index: $nr;
-		@if ( $nr > 0 )
+		.mm-panels 
 		{
-			width: ceil( 100% / $nr * 100 ) / 100;
-		}
-		else
-		{
-			width: 100%;
-		}
-
-		&:not( .mm-opened ):not( .mm-subopened )
-		{
-			@include mm_translate( ($nr + 1) * 100%, 0 );
-		}
-	}
-
-	@include mm_sizing( ".mm-columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr );
-	@include mm_sizing_right(".mm-columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr);
-}
-
-.mm-columns
-{
-	transition-property: width;
-
-	.mm-panels > .mm-panel
-	{
-		right: auto;
-		transition-property: width, transform;
-
-		&.mm-opened,
-		&.mm-subopened
-		{
-			border-left: 1px solid;
-			border-color: inherit;
-			display: block !important;
+			> .mm-panel
+			{
+				right: auto;
+				transition-property: width, transform;
+			}
+			> .mm-panel_opened,
+			> .mm-panel_opened-parent
+			{
+				display: block !important;
+			}
 		}
 	}
-}
-
-@include mm_columns_sizing( 0 );
-@include mm_columns_sizing( 1 );
-@include mm_columns_sizing( 2 );
-@include mm_columns_sizing( 3 );
-@include mm_columns_sizing( 4 );
-
-
-.mm-columns.mm-offcanvas
-{
-	&.mm-bottom,
-	&.mm-top
+	[class*="mm-panel_columns-"]
 	{
-		width: 100%;
-		max-width: 100%;
-		min-width: 100%;
+		border-right: 1px solid;
+		border-color: inherit;
 	}
-}
-html.mm-opening .mm-columns.mm-offcanvas
-{
-	&.mm-front,
-	&.mm-next
+	.mm-menu_columns-1 .mm-panel_columns-0,
+	.mm-menu_columns-2 .mm-panel_columns-1,
+	.mm-menu_columns-3 .mm-panel_columns-2,
+	.mm-menu_columns-4 .mm-panel_columns-3
 	{
-		transition-property: width, min-width, max-width, transform;
+		border-right: none;
+	}
+
+	@include mm_columns_size( 0 );
+	@include mm_columns_size( 1 );
+	@include mm_columns_size( 2 );
+	@include mm_columns_size( 3 );
+	@include mm_columns_size( 4 );
+
+
+	@if ( $mm_opt_positioning_top or $mm_opt_positioning_bottom )
+	{
+		[class*="mm-menu_columns-"]
+		{
+			&.mm-menu_position-bottom,
+			&.mm-menu_position-top
+			{
+				width: 100%;
+				max-width: 100%;
+				min-width: 100%;
+			}
+		}
+	}
+
+	@if ( $mm_opt_positioning_front )
+	{
+		.mm-wrapper_opening [class*="mm-menu_columns-"]
+		{
+			&.mm-menu_position-front
+			{
+				transition-property: width, min-width, max-width, transform;
+			}
+		}
 	}
 }

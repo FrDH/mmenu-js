@@ -1,0 +1,48 @@
+@mixin mm_navbar_position( $pos, $nr )
+{
+	.mm-menu_navbar_#{$pos}-#{$nr}
+	{
+		.mm-panels
+		{
+			#{$pos}: $mm_navbarHeight * $nr;
+		}
+	}
+}
+@mixin mm_navbar_size( $nr )
+{
+	.mm-navbar_size-#{$nr}
+	{
+		height: $mm_navbarHeight * $nr;
+	}
+}
+@mixin mm_navbar_tabs_borders( $top, $bottom, $last, $first )
+{
+	.mm-navbars_#{$top}
+	{
+		.mm-navbar_tabs:not( :#{$last}-child )
+		{
+			border-#{$bottom}-width: 1px;
+			border-#{$bottom}-style: solid;
+			border-#{$bottom}-color: inherit;
+		}
+		.mm-navbar__tab_selected
+		{
+			border-#{$bottom}: none;
+			margin-#{$bottom}: -1px;
+		}
+		.mm-navbar_tabs:#{$first}-child .mm-navbar__tab_selected
+		{
+			border-#{$top}: none;
+		}
+	}
+}
+@mixin mm_navbar_colors_tabs( $cls: "",
+	$emphasizedBg: $mm_navbartabsBackgroundColor
+) {
+	#{$cls} .mm-navbars_top.mm-navbars_has-tabs > .mm-navbar:not( .mm-navbar_tabs ),
+	#{$cls} .mm-navbars_bottom.mm-navbars_has-tabs .mm-navbar_tabs ~ .mm-navbar,
+	#{$cls} .mm-navbar_tabs > :not( .mm-navbar__tab_selected )
+	{
+		background: $emphasizedBg;
+	}
+}
