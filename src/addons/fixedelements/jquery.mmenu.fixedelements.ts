@@ -34,32 +34,33 @@
 				var _fixd = this.conf.classNames[ _ADDON_ ].fixed,
 					$fixd = $page.find( '.' + _fixd );
 
-				this.__refactorClass( $fixd, _fixd, 'slideout' );
+				this.__refactorClass( $fixd, _fixd, _c.slideout );
 				$fixd[ conf.elemInsertMethod ]( conf.elemInsertSelector );
 
 				//	Sticky elements
 				var _stck = this.conf.classNames[ _ADDON_ ].sticky,
 					$stck = $page.find( '.' + _stck );
 
-				this.__refactorClass( $stck, _stck, 'sticky' );
+				this.__refactorClass( $stck, _stck, _c.sticky );
 
 				$stck = $page.find( '.' + _c.sticky );
 
 				if ( $stck.length )
 				{
 					this.bind( 
-						'open:before',
+						'open:start',
 						function()
 						{
-							var _s = glbl.$wndw.scrollTop() + conf.sticky.offset;
-
-							$stck.each(
-								function()
-								{
-									$(this).css( 'top', parseInt( $(this).css( 'top' ), 10 ) + _s );
-								}
-							);
-
+							if ( glbl.$html.css( 'overflow' ) == 'hidden' )
+							{
+								var _s = glbl.$wndw.scrollTop() + conf.sticky.offset;
+								$stck.each(
+									function()
+									{
+										$(this).css( 'top', parseInt( $(this).css( 'top' ), 10 ) + _s );
+									}
+								);
+							}
 						}
 					);
 					this.bind(

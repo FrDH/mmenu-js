@@ -44,7 +44,7 @@
 				this.bind( 'initMenu:after',
 					function()
 					{
-						this.$menu.addClass( _c.rtl );
+						this.$menu.addClass( _c.menu + '_rtl' );
 					}
 				);
 			}
@@ -56,8 +56,6 @@
 			_c = $[ _PLUGIN_ ]._c;
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
-	
-			_c.add( 'rtl' );
 		},
 
 		//	clickAnchor: prevents default behavior when clicking an anchor

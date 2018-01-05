@@ -36,6 +36,7 @@
 			}
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
+			var $indexer = null;
 
 			this.bind( 'initPanels:after',
 				function( $panels )
@@ -56,16 +57,16 @@
 						}
 
 						$wrapper
-							.find( '.' + _c.divider )
+							.find( '.' + _c.listitem + '_divider' )
 							.closest( '.' + _c.panel )
-							.addClass( _c.hasindexer );
+							.addClass( _c.panel + '_has-sectionindexer' );
 
 
 						//	Add the indexer, only if it does not allready excists
-						if ( !this.$indexer )
+						if ( !$indexer )
 						{
-							this.$indexer = $( '<div class="' + _c.indexer + '" />' )
-								.prependTo( this.$pnls )
+							$indexer = $( '<div class="' + _c.sectionindexer + '" />' )
+								.prependTo( this.$menu )
 								.append( 
 									'<a href="#a">a</a>' +
 									'<a href="#b">b</a>' +
@@ -95,13 +96,13 @@
 									'<a href="#z">z</a>' );
 
 							//	Scroll onMouseOver
-							this.$indexer
-								.children()
+							$indexer
 								.on( _e.mouseover + '-' + _ADDON_ + ' ' + _e.touchstart + '-' + _ADDON_,
+									'a',
 									function( e )
 									{
-										var lttr = $(this).attr( 'href' ).slice( 1 ),
-											$panl = that.$pnls.children( '.' + _c.opened ),
+										var lttr = $(e.target).attr( 'href' ).slice( 1 ),
+											$panl = that.$pnls.children( '.' + _c.panel + '_opened' ),
 											$list = $panl.find( '.' + _c.listview );
 
 										var newTop: number = -1;
@@ -109,7 +110,7 @@
 
 										$panl.scrollTop( 0 );
 										$list
-											.children( '.' + _c.divider )
+											.children( '.' + _c.listitem + '_divider' )
 											.not( '.' + _c.hidden )
 											.each(
 												function()
@@ -131,8 +132,8 @@
 						//	Show or hide the indexer
 						var update = function( $panel )
 						{
-							$panel = $panel || this.$pnls.children( '.' + _c.opened );
-							this.$menu[ ( $panel.hasClass( _c.hasindexer ) ? 'add' : 'remove' ) + 'Class' ]( _c.hasindexer );
+							$panel = $panel || this.$pnls.children( '.' + _c.panel + '_opened' );
+							this.$menu[ ( $panel.hasClass( _c.panel + '_has-sectionindexer' ) ? 'add' : 'remove' ) + 'Class' ]( _c.menu + '_has-sectionindexer' );
 						};
 
 						this.bind( 'openPanel:start', 	update );
@@ -149,7 +150,7 @@
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 
-			_c.add( 'indexer hasindexer' );
+			_c.add( 'sectionindexer' );
 			_e.add( 'mouseover' );
 		},
 		

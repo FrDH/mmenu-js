@@ -1,14 +1,22 @@
-/*
-	jQuery.mmenu dragOpen addon CSS
-*/
+/*	
+ * jQuery mmenu drag add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
-html.mm-opened.mm-dragging
+
+@if ( $mm_opt_drag )
 {
-	.mm-menu,
-	.mm-slideout
+	.mm-wrapper_opened.mm-dragging
 	{
-		transition-duration: 0s;
+		.mm-menu,
+		.mm-slideout
+		{
+			transition-duration: 0s;
+		}
 	}
 }

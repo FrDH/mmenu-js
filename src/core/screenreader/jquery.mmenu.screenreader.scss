@@ -1,37 +1,28 @@
 /*
-	Improved screen reader only CSS class
-	@author Gaël Poupard
-	@note Based on Yahoo!'s technique
-	@author Thierry Koblentz
-	@see https://developer.yahoo.com/blogs/ydn/clip-hidden-content-better-accessibility-53456.html
-	* 1.
-		@note `clip` is deprecated but works everywhere
-		@see https://developer.mozilla.org/en-US/docs/Web/CSS/clip
-	* 2.
-		@note `clip-path` is the future-proof version, but not very well supported yet
-		@see https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path
-		@author Yvain Liechti
-		@see https://twitter.com/ryuran78/status/778943389819604992
-	* 3.
-		@note preventing text to be condensed
-		author J. Renée Beach
-		@see https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
-	* 4.
-		@note !important is important
-		@note Obviously you wanna hide something
-		@author Harry Roberts
-		@see http://csswizardry.com/2016/05/the-importance-of-important/
-*/
+ * jQuery mmenu screenReader add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-.mm-sronly
+@import "../../mixins";
+@import "../../variables";
+
+
+@if ( $mm_opt_screenreader )
 {
-	border: 0 !important;
-	clip: rect(1px, 1px, 1px, 1px) !important; 	/* 1 */
-	clip-path: inset(50%) !important;  			/* 2 */
-	white-space: nowrap !important;				/* 3 */
-	width: 1px !important;
-	height: 1px !important;
-	padding: 0 !important;
-	overflow: hidden !important;
-	position: absolute !important;
+	.mm-sronly
+	{
+		border: 0 !important;
+		clip: rect(1px, 1px, 1px, 1px) !important;
+		clip-path: inset(50%) !important;
+		white-space: nowrap !important;
+		width: 1px !important;
+		min-width: 1px !important;
+		height: 1px !important;
+		min-height: 1px !important;
+		padding: 0 !important;
+		overflow: hidden !important;
+		position: absolute !important;
+	}
 }

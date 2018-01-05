@@ -32,7 +32,7 @@
 			if ( typeof opts == 'boolean' )
 			{
 				opts = {
-					close	: opts
+					close: opts
 				};
 			}
 			if ( typeof opts != 'object' )
@@ -41,33 +41,73 @@
 			}
 			opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 			
+			var _menu  = '#' + this.$menu.attr( 'id' );
 
 			//	Close menu
 			if ( opts.close )
 			{
-				var _hash = '#' + that.$menu.attr( 'id' );
-				this.bind( 'open:finish',
-					function( e )
+
+				var states = [];
+
+				function setStates()
+				{
+					states = [ _menu ];
+					this.$pnls.children( '.' + _c.panel + '_opened-parent' )
+						.add( that.$pnls.children( '.' + _c.panel + '_opened' ) )
+						.each(
+							function()
+							{
+								states.push( '#' + $(this).attr( 'id' ) );
+							}
+						);
+				}
+
+				this.bind( 'open:finish', function() {
+					history.pushState( null, document.title, _menu );
+				});
+				this.bind( 'open:finish', setStates );
+				this.bind( 'openPanel:finish', setStates );
+				this.bind( 'close:finish',
+					function()
 					{
-						if ( location.hash != _hash )
-						{
-							history.pushState( null, document.title, _hash );
-						}
+						states = [];
+						history.back();
+						history.pushState( null, document.title, location.pathname + location.search );
 					}
 				);
 
 				$(window).on( 'popstate',
 					function( e )
 					{
-	
-						if ( glbl.$html.hasClass( _c.opened ) )
+						if ( that.vars.opened )
 						{
-							e.stopPropagation();
-							that.close();
+							if ( states.length )
+							{
+								states = states.slice( 0, -1 );
+								var hash = states[ states.length - 1 ];
+
+								if ( hash == _menu )
+								{
+									that.close();
+								}
+								else
+								{
+									that.openPanel( $( hash ) );
+									history.pushState( null, document.title, _menu );
+								}
+							}
 						}
-						else if ( location.hash == _hash )
+					}
+				);
+			}
+
+			if ( opts.open )
+			{
+				$(window).on( 'popstate',
+					function( e )
+					{
+						if ( !that.vars.opened && location.hash == _menu )
 						{
-							e.stopPropagation();
 							that.open();
 						}
 					}
@@ -96,7 +136,8 @@
 
 	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		close: false
+		close 	: false,
+		open 	: false
 	};
 
 

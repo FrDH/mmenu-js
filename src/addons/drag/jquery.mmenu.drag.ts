@@ -191,7 +191,29 @@
 
 		var new_distance, drag_distance, css_value;
 
-		switch( this.opts.offCanvas.position )
+
+		//	Find menu position from Positioning extension
+		var x = this.opts.extensions.all;
+		var position = ( typeof x == 'undefined' )
+			? 'left'
+			: ( x.indexOf( _c.mm( 'position-right' ) ) > -1 )
+				? 'right'
+				: ( x.indexOf( _c.mm( 'position-top' ) ) > -1 )
+					? 'top'
+					: ( x.indexOf( _c.mm( 'position-bottom' ) ) > -1 )
+						? 'bottom'
+						: 'left';
+
+		var zposition = ( typeof x == 'undefined' )
+			? 'back'
+			: ( x.indexOf( _c.mm( 'position-top' 	  ) ) > -1 ) ||
+			  ( x.indexOf( _c.mm( 'position-bottom' ) ) > -1 ) ||
+			  ( x.indexOf( _c.mm( 'position-front'  ) ) > -1 )
+				? 'front'
+				: 'back';
+
+
+		switch( position )
 		{
 			case 'top':
 			case 'bottom':
@@ -203,7 +225,7 @@
 				break;
 		}
 
-		switch( this.opts.offCanvas.position )
+		switch( position )
 		{	
 			case 'right':
 			case 'bottom':
@@ -218,12 +240,8 @@
 				break;
 		}
 
-		switch( this.opts.offCanvas.position )
+		switch( position )
 		{
-			case 'left':
-				
-				break;
-
 			case 'right':
 				drag.open_dir 	= 'left';
 				drag.close_dir 	= 'right';
@@ -240,17 +258,18 @@
 				break;
 		}
 
-		switch ( this.opts.offCanvas.zposition )
+		switch ( zposition )
 		{
 			case 'front':
 				getSlideNodes = function()
 				{
-					return this.$menu;
+					return that.$menu;
 				};
 				break;
 		}
 
-		var $dragNode = this.__valueOrFn( opts.node, this.$menu, glbl.$page );
+		var $slideOutNodes;
+		var $dragNode = this.__valueOrFn( this.$menu, opts.node, glbl.$page );
 
 		if ( typeof $dragNode == 'string' )
 		{
@@ -266,7 +285,7 @@
 				function( e )
 				{
 					doPanstart( e.center[ drag.typeLower ] );
-					glbl.$slideOutNodes = getSlideNodes();
+					$slideOutNodes = getSlideNodes();
 					_direction = drag.open_dir;
 				}
 			);
@@ -286,7 +305,6 @@
 			.on( drag.events,
 				function( e )
 				{
-
 					new_distance = e[ 'delta' + drag.typeUpper ];
 					if ( drag.negative )
 					{
@@ -304,7 +322,7 @@
 					{
 						if ( _stage == 1 )
 						{
-							if ( glbl.$html.hasClass( _c.opened ) )
+							if ( glbl.$html.hasClass( _c.wrapper + '_opened' ) )
 							{
 								return;
 							}
@@ -323,14 +341,14 @@
 					}
 					if ( _stage == 2 )
 					{
-						drag_distance = minMax( _distance, 10, _maxDistance ) - ( that.opts.offCanvas.zposition == 'front' ? _maxDistance : 0 );
+						drag_distance = minMax( _distance, 10, _maxDistance ) - ( zposition == 'front' ? _maxDistance : 0 );
 						if ( drag.negative )
 						{
 							drag_distance = -drag_distance;
 						}
 						css_value = 'translate' + drag.typeUpper + '(' + drag_distance + 'px )';
 
-						glbl.$slideOutNodes.css({
+						$slideOutNodes.css({
 							'-webkit-transform': '-webkit-' + css_value,	
 							'transform': css_value
 						});
@@ -345,7 +363,7 @@
 					if ( _stage == 2 )
 					{
 						glbl.$html.removeClass( _c.dragging );
-						glbl.$slideOutNodes.css( 'transform', '' );
+						$slideOutNodes.css( 'transform', '' );
 						that[ _direction == drag.open_dir ? '_openFinish' : 'close' ]();
 					}
 		        	_stage = 0;
@@ -365,6 +383,7 @@
 
 			var _hammer = new Hammer( $panel[ 0 ], that.opts[ _ADDON_ ].vendors.hammer ),
 				timeout = null;
+
 			_hammer
 				.on( 'panright',
 					function( e )

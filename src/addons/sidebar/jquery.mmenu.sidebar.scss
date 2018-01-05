@@ -1,0 +1,122 @@
+/*	
+ * jQuery mmenu sidebar add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
+
+@import "../../mixins";
+@import "../../variables";
+
+
+@if ( $mm_opt_sidebar_collapsed or $mm_opt_sidebar_expanded )
+{
+	[class*="mm-wrapper_sidebar-collapsed-"],
+	[class*="mm-wrapper_sidebar-expanded-"]
+	{
+		body
+		{
+			position: relative;
+		}
+		.mm-slideout
+		{
+			transition-property: width, transform;
+		}
+		.mm-page
+		{
+			background: inherit;
+			box-sizing: border-box;
+			min-height: 100vh;
+		}
+	}
+
+	[class*="mm-wrapper_sidebar-collapsed-"] .mm-menu_sidebar-collapsed,
+	[class*="mm-wrapper_sidebar-expanded-"] .mm-menu_sidebar-expanded
+	{
+		display: block !important;
+		top: 0 !important;
+		right: auto !important;
+		bottom: 0 !important;
+		left: 0 !important;
+	}
+}
+
+@if ( $mm_opt_sidebar_collapsed )
+{
+	[class*="mm-wrapper_sidebar-collapsed-"]:not( .mm-wrapper_opening ) 
+	{
+		.mm-menu_hidenavbar .mm-navbar,
+		.mm-menu_hidedivider .mm-listitem_divider
+		{
+			opacity: 0;
+		}
+	}
+
+	@each $size in $mm_sidebarCollapsedSizes
+	{
+		@include mm_sidebar_collapsed_size( $size );
+	}
+}
+
+@if ( $mm_opt_sidebar_expanded )
+{
+	[class*="mm-wrapper_sidebar-expanded-"]
+	{
+		.mm-menu_sidebar-expanded
+		{
+			border-right-width: 1px;
+			border-right-style: solid;
+			min-width: 0 !important;
+			max-width: 100000px !important;
+
+			@if ( $mm_opt_shadows_page )
+			{
+				&.mm-menu_pageshadow:after
+				{
+					content: none;
+					display: none;
+				}
+			}
+		}
+
+		@if ( $mm_opt_offcanvas_blocker )
+		{
+			&.mm-wrapper_blocking
+			{
+				&,
+				body
+				{
+					overflow: visible;
+				}
+			}
+			.mm-page__blocker
+			{
+				display: none !important;
+			}
+		}
+	}
+
+	@each $size in $mm_sidebarExpandedSizes
+	{
+		@include mm_sidebar_expanded_size( $size );
+	}
+}
+
+@if ( $mm_opt_sidebar_blocker )
+{
+	.mm-menu__blocker
+	{
+		background: rgba( 3, 2, 1, 0 );
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 3;
+	}
+	.mm-menu_opened .mm-menu__blocker
+	{
+		display: none;
+	}
+}

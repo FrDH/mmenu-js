@@ -56,7 +56,7 @@
 					{
 						if ( opts.enhance )
 						{
-							this.$menu.addClass( _c.keyboardfocus );
+							this.$menu.addClass( _c.menu + '_keyboardfocus' );
 						}
 
 						this[ '_initWindow_' + _ADDON_ ]( opts.enhance );
@@ -74,24 +74,24 @@
 							.attr( 'tabindex', -1 );
 					}
 				);
-				this.bind( 'open:start',
-					function()
-					{
-						tabindex.call( this );
-					}
-				);
+				// this.bind( 'open:start',
+				// 	function()
+				// 	{
+				// 		tabindex.call( this );
+				// 	}
+				// );
 				this.bind( 'open:finish',
 					function()
 					{
 						focus.call( this, null, opts.enable );
 					}
 				);
-				this.bind( 'openPanel:start',
-					function( $panl )
-					{
-						tabindex.call( this, $panl );
-					}
-				);
+				// this.bind( 'openPanel:start',
+				// 	function( $panl )
+				// 	{
+				// 		tabindex.call( this, $panl );
+				// 	}
+				// );
 				this.bind( 'openPanel:finish',
 					function( $panl )
 					{
@@ -101,10 +101,12 @@
 
 
 				//	Add screenreader / aria support
-				this.bind( 'initOpened:after',
+				this.bind( 'initOpened:after:sr-aria',
 					function()
 					{
-						this.__sr_aria( this.$menu.children( '.' + _c.mm( 'tabstart' ) + ', .' + _c.mm( 'tabend' ) ), 'hidden', true );
+						var $btns = this.$menu.children( '.' + _c.tabstart + ', .' + _c.tabend );
+						this.__sr_aria( $btns, 'hidden', true );
+						this.__sr_role( $btns, 'presentation' );
 					}
 				);
 			}
@@ -117,7 +119,7 @@
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 
-			_c.add( 'tabstart tabend keyboardfocus' );
+			_c.add( 'tabstart tabend' );
 			_e.add( 'focusin keydown' );
 		},
 
@@ -148,7 +150,7 @@
 			.on( _e.focusin + '-' + _ADDON_,
 				function( e ) 
 				{
-					if ( glbl.$html.hasClass( _c.opened ) )
+					if ( glbl.$html.hasClass( _c.wrapper + '_opened' ) )
 					{
 						var $t = $(e.target);
 
@@ -220,7 +222,7 @@
 							var api = $m.data( 'mmenu' );
 
 							//	special case for input and textarea
-							if ( $t.is( 'input, textarea' ) )
+							if ( $t.is( 'input' ) )
 							{
 								switch( e.keyCode )
 								{
@@ -236,7 +238,7 @@
 								{
 									//	close submenu with backspace
 									case 8: 
-										var $p = $t.closest( '.' + _c.panel ).data( _d.parent );
+										var $p = $m.find( '.' + _c.panel + '_opened' ).data( _d.parent );
 										if ( $p && $p.length )
 										{
 											api.openPanel( $p.closest( '.' + _c.panel ) );
@@ -245,7 +247,7 @@
 
 									//	close menu with esc
 									case 27:
-										if ( $m.hasClass( _c.offcanvas ) )
+										if ( $m.hasClass( _c.menu + '_offcanvas' ) )
 										{
 											api.close();
 										}
@@ -264,11 +266,11 @@
 
 	function focus( $panl, enable )
 	{
-		$panl = $panl || this.$pnls.children( '.' + _c.opened );
+		$panl = $panl || this.$pnls.children( '.' + _c.panel + '_opened' );
 
 		var $focs = $(),
 			$navb = this.$menu
-				.children( '.' + _c.mm( 'navbars-top' ) + ', .' + _c.mm( 'navbars-bottom' )  )
+				.children( '.' + _c.mm( 'navbars_top' ) + ', .' + _c.mm( 'navbars_bottom' )  )
 				.children( '.' + _c.navbar );
 
 		//	already focus in navbar
@@ -288,7 +290,7 @@
 				$focs = $panl.find( focs ).not( '.' + _c.hidden );
 			}
 
-			//	first anchor in navbar
+			//	first element in navbar
 			if ( !$focs.length )
 			{
 				$focs = $navb
@@ -305,22 +307,20 @@
 
 		$focs.first().focus();
 	}
-	function tabindex( $panl )
-	{
-		if ( !$panl )
-		{
-			$panl = this.$pnls.children( '.' + _c.opened );
-		}
+	// function tabindex( $panl )
+	// {
+	// 	$panl = $panl || this.$pnls.children( '.' + _c.panel + '_opened' );
 
-		var $pnls = this.$pnls.children( '.' + _c.panel ),
-			$hidn = $pnls.not( $panl );
+	// 	var $pnls = this.$pnls.children( '.' + _c.panel ),
+	// 		$hidn = $pnls.not( $panl );
 
-		$hidn.find( focs ).attr( 'tabindex', -1 );
-		$panl.find( focs ).attr( 'tabindex', 0 );
+	// 	$hidn.find( focs ).attr( 'tabindex', -1 );
+	// 	$panl.find( focs ).filter( '[tabindex="-1"]' ).removeAttr( 'tabindex' );
+	// 	$panl.find( focs ).attr( 'tabindex', 0 );
 
-		//	_c.toggle will result in an empty string if the toggle addon is not loaded
-		$panl.find( '.' + _c.mm( 'toggle' ) + ', .' + _c.mm( 'check' ) ).attr( 'tabindex', -1 );
-		$panl.children( '.' + _c.navbar ).children( '.' + _c.title ).attr( 'tabindex', -1 );
-	}
+	// 		_c.toggle will result in an empty string if the toggle addon is not loaded
+	// 	$panl.find( '.' + _c.mm( 'toggle' ) + ', .' + _c.mm( 'check' ) ).attr( 'tabindex', -1 );
+	// 	$panl.children( '.' + _c.navbar ).children( '.' + _c.title ).attr( 'tabindex', -1 );
+	// }
 
 })( jQuery );

@@ -1,5 +1,7 @@
 /*
- * Olark wrapper for jQuery mmenu
- * Include this file after including the jquery.mmenu plugin for default Olark support.
+ * jQuery mmenu Olark wrapper
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
  */
-!function(n){var o="mmenu";n[o].configuration.offCanvas.noPageSelector.push("#olark")}(jQuery);
+!function(n){var o="mmenu",a="olark";n[o].wrappers[a]=function(){this.conf.offCanvas.noPageSelector.push("#olark")}}(jQuery);

@@ -53,7 +53,7 @@
 			this.bind( 'initMenu:after',
 				function()
 				{
-					this.$menu.addClass( _c.autoheight );
+					this.$menu.addClass( _c.menu + '_autoheight' );
 				}
 			);
 
@@ -70,16 +70,21 @@
 					_bot = Math.max( parseInt( this.$pnls.css( 'bottom' )	, 10 ), 0 ) || 0,
 					_hgh = 0;
 
-				this.$menu.addClass( _c.measureheight );
+				this.$menu.addClass( _c.menu + '_autoheight-measuring' );
 
 				if ( opts.height == 'auto' )
 				{
-					$panel = $panel || this.$pnls.children( '.' + _c.opened );
-					if ( $panel.is( '.' + _c.vertical ) )
+					$panel = $panel || this.$pnls.children( '.' + _c.panel + '_opened' );
+					if ( $panel.parent( '.' + _c.listitem + '_vertical' ).length )
 					{
 						$panel = $panel
 							.parents( '.' + _c.panel )
-							.not( '.' + _c.vertical );
+							.not(
+								function()
+								{
+									return $(this).parent( '.' + _c.listitem + '_vertical' ).length
+								}
+							);
 					}
 					if ( !$panel.length )
 					{
@@ -90,26 +95,31 @@
 				}
 				else if ( opts.height == 'highest' )
 				{
-					this.$pnls.children()
+					this.$pnls
+						.children('.' + _c.panel )
 						.each(
 							function()
 							{
-								var $panel = $(this);
-								if ( $panel.is( '.' + _c.vertical ) )
+								var $panel: any = $(this);
+								if ( $panel.parent( '.' + _c.listitem + '_vertical' ).length )
 								{
 									$panel = $panel
 										.parents( '.' + _c.panel )
-										.not( '.' + _c.vertical )
-										.first();
+										.not(
+											function()
+											{
+												return $(this).parent( '.' + _c.listitem + '_vertical' ).length
+											}
+										);
 								}
-								_hgh = Math.max( _hgh, $panel.outerHeight() );
+								_hgh = Math.max( _hgh, $panel.first().outerHeight() );
 							}
 						);
 				}
 
 				this.$menu
 					.height( _hgh + _top + _bot )
-					.removeClass( _c.measureheight );
+					.removeClass( _c.menu + '_autoheight-measuring' );
 			};
 
 			if ( this.opts.offCanvas )
@@ -136,7 +146,6 @@
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 
- 			_c.add( 'autoheight measureheight' );
 			_e.add( 'resize' );
 		},
 

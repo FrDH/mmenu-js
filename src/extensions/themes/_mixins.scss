@@ -1,0 +1,77 @@
+@mixin mm_theme_colors()
+{
+	@include mm_colors( $mm_t_cls,
+		$mm_t_backgroundColor,
+		$mm_t_textColor, $mm_t_dimmedTextColor,
+		$mm_t_emphasizedBackgroundColor, $mm_t_highlightedBackgroundColor,
+		$mm_t_borderColor,
+		$mm_t_navbarColor );
+
+	@if ( $mm_opt_counters )
+	{
+		@include mm_counters_colors( $mm_t_cls,
+			$mm_t_dimmedTextColor );
+	}
+
+	@if ( $mm_opt_iconbar )
+	{
+		@include mm_iconbar_colors( $mm_t_cls,
+			$mm_t_dimmedTextColor );
+	}
+
+	@if ( $mm_opt_keyboardnavigation )
+	{
+		@include mm_keyboardnavigation_colors( $mm_t_cls,
+			$mm_t_emphasizedBackgroundColor );
+	}
+
+	@if ( $mm_opt_navbars_tabs )
+	{
+		@include mm_navbar_colors_tabs( $mm_t_cls,
+			$mm_t_emphasizedBackgroundColor );
+	}
+
+	@if ( $mm_opt_shadows_page )
+	{
+		@include mm_pageshadow_colors( $mm_t_cls,
+			$mm_t_pageShadow );
+	}
+
+	@if ( $mm_opt_shadows_panels )
+	{
+		@include mm_panelshadow_colors( $mm_t_cls,
+			$mm_t_panelShadow );
+	}
+
+	@if ( $mm_opt_searchfield )
+	{
+		@include mm_searchfield_colors( $mm_t_cls,
+			$mm_t_inputBackgroundColor, $mm_t_textColor,
+			$mm_t_dimmedTextColor );
+	}
+	
+	@if ( $mm_opt_sectionindexer )
+	{
+		@include mm_sectionindexer_colors( $mm_t_cls,
+			$mm_t_dimmedTextColor );
+	}
+	
+	@if ( $mm_opt_setselected )
+	{
+		@include mm_setselected_colors( $mm_t_cls,
+			$mm_t_emphasizedBackgroundColor );
+	}
+	
+	@if ( $mm_opt_checks )
+	{
+		@include mm_checks_colors( $mm_t_cls,
+			$mm_t_textColor );
+	}
+
+	@if ( $mm_opt_toggles )
+	{
+		@include mm_toggles_colors( $mm_t_cls,
+			$mm_t_backgroundColor,
+			$mm_t_borderColor );
+	}
+}

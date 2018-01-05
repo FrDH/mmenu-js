@@ -6,15 +6,14 @@
 
 (function( $ ) {
 
-	const _PLUGIN_ = 'mmenu';
+	var _PLUGIN_ = 'mmenu';
 	
 	if ( typeof console == 'undefined' )
 	{
 		return false;
 	}
 
-	var _msg = 0,
-		_cns = document[ _PLUGIN_ + '_console' ] || console || { info: function() {}, log: function() {}, warn: function() {} };
+	var _cns = document[ _PLUGIN_ + '_console' ] || console || { info: function() {}, log: function() {}, warn: function() {} };
 
 	var glbl = $[ _PLUGIN_ ].glbl,
 		_c = $[ _PLUGIN_ ]._c,
@@ -24,8 +23,7 @@
 
 	function debug( msg )
 	{
-		_msg++;
-		_cns.log( 'MMENU: ' + msg );
+		_cns.warn( 'MMENU: ' + msg );
 	}
 	function deprc( depr, repl, vers )
 	{
@@ -41,15 +39,12 @@
 		}
 		msg += '.';
 
-		_msg++;
 		_cns.warn( msg );
 	}
 
 
 	$[ _PLUGIN_ ].prototype.___deprecated = function()
 	{
-		_msg = 0;
-
 		var ext = this.opts.extensions,
 			extensions = '';
 
@@ -65,6 +60,47 @@
 		}
 
 		var arr, a, b, l;
+
+
+		//	Opties 7.0
+		if ( typeof this.opts.initMenu == 'function' )
+		{
+			deprc( 'The option "initMenu"', '"hooks.initMenu:before" or "hooks.initMenu:after"', '7.0' );
+		}
+		if ( typeof this.opts.initPanels == 'function' )
+		{
+			deprc( 'The option "initPanels"', '"hooks.initPanels:before", "hooks.initPanels:after", "hooks.initPanel:before" or "hooks.initPanel:after"', '7.0' );
+		}
+
+		//	Addons 7.0
+		if ( this.opts.offCanvas )
+		{
+			if ( this.opts.offCanvas.position )
+			{
+				deprc( 'The option "offCanvas.position"', 'the "positioning" extension', '7.0' );
+			}
+			if ( this.opts.offCanvas.zposition )
+			{
+				deprc( 'The option "offCanvas.zposition"', 'the "positioning" extension', '7.0' );
+			}
+
+			if ( this.opts.searchfield && typeof this.opts.searchfield.resultsPanel != 'undefined' )
+			{
+				deprc( 'The option "searchfield.resultsPanel"', '"searchfield.panel"', '7.0' );
+			}
+			
+		}
+
+		//	Extensions 7.0
+		if ( extensions.indexOf( 'widescreen' ) > -1 )
+		{
+			deprc( 'The "widescreen" extension', 'the "sidebar" add-on', '7.0' );
+		}
+		if ( extensions.indexOf( 'iconbar' ) > -1 )
+		{
+			deprc( 'The "iconbar" extension', 'the "sidebar" add-on', '7.0' );
+		}
+
 
 
 		//	Options 6.0
@@ -166,25 +202,6 @@
 			deprc( 'The option "onClick.blockUI"', null, '5.5' );
 		}
 
-		arr = {
-			'menu' 		: [ 'zoom', 'slide', 'fade' ],
-			'panels'	: [ 'zoom', 'slide' ],
-			'listitems'	: [ 'slide' ]
-		};
-		for ( a in arr )
-		{
-			for ( b in arr[ a ] )
-			{
-				var _o = 'effect-' + arr[ a ][ b ] + '-' + a,
-					_n = 'effect-' + a + '-' + arr[ a ][ b ];
-
-				if ( extensions.indexOf( _o ) > -1 )
-				{
-					deprc( 'The "' + _o + '" extension', '"' + _n + '"', '5.5' );	
-				}
-			}
-		}
-
 		//	Options 5.2
 		if ( typeof this.opts.searchfield != 'undefined' )
 		{
@@ -203,9 +220,8 @@
 		{
 			deprc( 'The "footer" add-on', 'the "navbars" add-on', '5.1' );
 		}
-		if ( extensions.indexOf( 'effect-slide' ) > -1 &&
-			 extensions.indexOf( 'effect-menu-slide' ) == -1
-		) {
+		if ( extensions.indexOf( 'effect-slide' ) > -1 )
+		{
 			deprc( 'The "effect-slide" extension', '"effect-menu-slide"', '5.1' );	
 		}
 
@@ -306,38 +322,11 @@
 		{
 			deprc( 'The configuration option "counterClass"', 'classNames.counters.counter', '4.3' );
 		}
-		if ( typeof this.conf.collapsedClass != 'undefined' )
-		{
-			deprc( 'The configuration option "collapsedClass"', 'classNames.labels.collapsed', '4,3' );
-		}
-		if ( typeof this.conf.header != 'undefined' )
-		{
-			for ( a = [ 'panelHeader', 'panelNext', 'panelPrev' ], b = 0, l = a.length; b < l; b++ )
-			{
-				if ( typeof this.conf.header[ a[ b ] + 'Class' ] != 'undefined' )
-				{
-					deprc( 'The configuration option "header.' + a[ b ] + 'Class"', 'classNames.header.' + a[ b ], '4.3' );
-				}
-			}
-		}
 		for ( a = [ 'pageNodetype', 'pageSelector', 'menuWrapperSelector', 'menuInjectMethod' ], b = 0, l = a.length; b < l; b++ )
 		{
 			if ( typeof this.conf[ a[ b ] ] != 'undefined' )
 			{
 				deprc( 'The configuration option "' + a[ b ] + '"', 'offCanvas.' + a[ b ], '4.3' );
-			}
-		}
-
-
-		//	Options 4.2
-		if ( this.opts.offCanvas )
-		{
-			if ( this.opts.offCanvas.position == 'top' || this.opts.offCanvas.position == 'bottom' )
-			{
-				if ( this.opts.offCanvas.zposition == 'back' || this.opts.offCanvas.zposition == 'next' )
-				{
-					deprc( 'Using offCanvas.position "' + this.opts.offCanvas.position + '" in combination with offCanvas.zposition "' + this.opts.offCanvas.zposition + '"', 'offCanvas.zposition "front"', '4.2' );
-				}
 			}
 		}
 
@@ -353,28 +342,16 @@
 		{
 			deprc( 'The configuration option "panelNodeType"', 'panelNodetype', '4.1' );
 		}
-
-
-	//	----------------------	//
-
-
-		//	log results
-		if ( _msg > 0 )
-		{
-			_cns.info( 'MMENU: Found ' + _msg + ' deprecated warning' + ( _msg > 1 ? 's' : '' ) + ' (listed above).' );
-		}
 	};
 
 
 
 	$[ _PLUGIN_ ].prototype.___debug = function()
 	{
-		_msg = 0;
-
 		//	non-available add-ons
 		for ( var a = [
 				'offCanvas', 'screenReader', 'scrollBugFix',
-				'autoHeight', 'backButton', 'columns', 'counters', 'dividers', 'drag', 'dropdown', 'iconPanels', 'keyboardNavigation', 'lazySubmenus', 'navbars', 'pageScroll', 'rtl', 'searchfield', 'sectionIndexer', 'setSelected', 'toggles'
+				'autoHeight', 'backButton', 'columns', 'counters', 'dividers', 'drag', 'dropdown', 'iconbar', 'iconPanels', 'keyboardNavigation', 'lazySubmenus', 'navbars', 'pageScroll', 'rtl', 'searchfield', 'sectionIndexer', 'setSelected', 'sidebar', 'toggles'
 			], b = 0, l = a.length; b < l; b++
 		) {
 			if ( typeof this.opts[ a[ b ] ] != 'undefined' )
@@ -387,11 +364,7 @@
 		}
 		if ( typeof $[ _PLUGIN_ ].addons.searchfield == 'undefined' )
 		{
-			if ( typeof this.opts.searchfield != 'undefined' )
-			{
-				debug( 'The "searchfield" add-on is not available.' );
-			}
-			else if ( typeof this.opts.navbars != 'undefined' )
+			if ( typeof this.opts.navbars != 'undefined' )
 			{
 				if ( this.opts.navbars instanceof Array )
 				{
@@ -412,15 +385,6 @@
 			}
 		}
 
-		//	Options 5.6
-		if ( typeof this.opts.searchfield != "undefined" && this.opts.searchfield.addTo != 'menu' )
-		{
-			if ( this.opts.resultsPanel && this.opts.resultsPanel.add )
-			{
-				debug( 'Using the "searchfield.resultsPanel" option requires the searchfield to be added to a navbar.' );
-			}
-		}
-
 		//	Configuration 5.6
 		if ( typeof this.opts.searchfield != "undefined" && this.conf.searchfield.submit )
 		{
@@ -428,7 +392,7 @@
 			{
 				debug( 'The "searchfield.submit" configuration option requires the "searchfield.form" configuration option to be set.' );
 			}
-			if ( !this.conf.searchfield.clear )
+			if ( this.conf.searchfield.clear )
 			{
 				debug( 'It is not possible to use both the "searchfield.clear" and the "searchfield.submit" configuration options.' );
 			}
@@ -454,8 +418,30 @@
 
 		if ( this.opts.offCanvas )
 		{
-			position	= this.opts.offCanvas.position;
-			zposition	= this.opts.offCanvas.zposition;
+			position	= 'left';
+			zposition	= 'back';
+		}
+		switch( true )
+		{
+			case extensions.indexOf( 'position-right' ) > -1:
+				position = 'right';
+				break;
+
+			case extensions.indexOf( 'position-top' ) > -1:
+				position = 'top';
+				zposition = 'front';
+				break;
+
+			case extensions.indexOf( 'position-bottom' ) > -1:
+				position = 'bottom';
+				zposition = 'front';
+				break;
+		}
+		switch( true )
+		{
+			case extensions.indexOf( 'position-front' ) > -1:
+				zposition = 'front';
+				break;
 		}
 
 		//	background color
@@ -475,6 +461,22 @@
 			}
 		}
 
+		//	positioning + sidebar
+		if ( typeof this.opts.sidebar != "undefined" && ( this.opts.sidebar.collapsed.use || this.opts.sidebar.expanded.use ) )
+		{
+			if ( position && zposition )
+			{
+				if ( position != 'left' )
+				{
+					debug( 'Don\'t use the "sidebar" add-on with the "position-' + position + '" extension.' );
+				}
+				else if ( zposition != 'back' )
+				{
+					debug( 'Don\'t use the "sidebar" add-on with the "position-' + zposition + '" extension.' );
+				}
+			}
+		}
+
 		//	positioning + dropdown
 		if ( typeof this.opts.dropdown != "undefined" && this.opts.dropdown.drop )
 		{
@@ -482,65 +484,37 @@
 			{
 				if ( position != 'left' )
 				{
-					debug( 'Don\'t use the "dropdown" option with the "offCanvas.position" option set to "' + position + '".' );
+					debug( 'Don\'t use the "dropdown" add-on with the "position-' + position + '" extension.' );
 				}
 				else if ( zposition != 'back' )
 				{
-					debug( 'Don\'t use the "dropdown" option with the "offCanvas.zposition" option set to "' + position + '".' );
+					debug( 'Don\'t use the "dropdown" add-on with the "position-' + zposition + '" extension.' );
 				}
 			}
 		}
 
 		//	positioning + popup
-		if ( extensions.indexOf( 'mm-popup' ) > -1 )
+		if ( extensions.indexOf( 'popup' ) > -1 )
 		{
 			if ( position && zposition )
 			{
 				if ( position != 'left' )
 				{
-					debug( 'Don\'t use the "popup" extension with the "offCanvas.position" option set to "' + position + '".' );
+					debug( 'Don\'t use the "popup" extension with the "position-' + position + '" extension.' );
 				}
 				else if ( zposition != 'back' )
 				{
-					debug( 'Don\'t use the "popup" extension with the "offCanvas.zposition" option set to "' + position + '".' );
+					debug( 'Don\'t use the "popup" extension with the "position-' + zposition + '" extension.' );
 				}
 			}
 		}
 		
 
-		//	incompattible with iconbar
-		var fxSlide 	= ( extensions.indexOf( 'mm-effect-menu-slide' ) 	> -1 ),
-			fxZoom		= ( extensions.indexOf( 'mm-effect-menu-zoom' ) 	> -1 ),
-			fxZoomPnls	= ( extensions.indexOf( 'mm-effect-panels-zoom' ) > -1 ),
-			iconbar		= ( $[ _PLUGIN_ ].glbl.$page && parseInt( $[ _PLUGIN_ ].glbl.$page.css( 'padding-right' ) ) > 0 );
+		//	incompattible with effects
+		var fxSlide 	= ( extensions.indexOf( 'mm-fx-menu-slide' ) 	> -1 ),
+			fxZoom		= ( extensions.indexOf( 'mm-fx-menu-zoom' ) 	> -1 ),
+			fxZoomPnls	= ( extensions.indexOf( 'mm-fx-panels-zoom' ) 	> -1 );
 
-		if ( iconbar )
-		{
-			//	vertical submenus
-			if ( !this.opts.slidingSubmenus )
-			{
-				debug( 'Don\'t use the "iconbar" extension in combination with the "slidingSubmenus" option set to "false".' );
-			}
-
-			//	iconbar + effects
-			if ( fxSlide || fxZoom )
-			{
-				debug( 'Don\'t use the "iconbar" extension in combination with the "' + ( fxSlide ? 'menu-slide' : 'menu-zoom' ) + '" effect.' );
-			}
-			
-			//	iconbar + (z)position
-			if ( this.opts.offCanvas )
-			{
-				if ( position != 'left' )
-				{
-					debug( 'Don\'t use the "iconbar" extension in combination with the "offCanvas.position" option set to "' + position + '".' );
-				}
-				if ( zposition != 'back' )
-				{
-					debug( 'Don\'t use the "iconbar" extension in combination with the "offCanvas.zposition" option set to "' + zposition + '".' );
-				}
-			}
-		}
 
 		//	effects + vertical submenus
 		if ( fxZoomPnls && !this.opts.slidingSubmenus )
@@ -555,27 +529,17 @@
 			{
 				if ( position == 'top' || position == 'bottom' )
 				{
-					debug( 'Don\'t use the "' + ( fxSlide ? 'menu-slide' : 'menu-zoom' ) + '" effect in combination with the "offCanvas.position" option set to "' + position + '".' );
+					debug( 'Don\'t use the "' + ( fxSlide ? 'menu-slide' : 'menu-zoom' ) + '" effect in combination with the "position-' + position + '" extension.' );
 				}
 				if ( zposition != 'back' )
 				{
-					debug( 'Don\'t use the "' + ( fxSlide ? 'menu-slide' : 'menu-zoom' ) + '" effect in combination with the "offCanvas.zposition" option set to "' + zposition + '".' );
+					debug( 'Don\'t use the "' + ( fxSlide ? 'menu-slide' : 'menu-zoom' ) + '" effect in combination with the "position-' + zposition + '" extension.' );
 				}
 			}
 			else
 			{
 				debug( 'Don\'t use the "' + ( fxSlide ? 'menu-slide' : 'menu-zoom' ) + '" effect in combination with the "offCanvas" option set to "false".' );
 			}
-		}
-
-
-	//	----------------------	//
-
-
-		//	log results
-		if ( _msg > 0 )
-		{
-			_cns.info( 'MMENU: Found ' + _msg + ' debug warning' + ( _msg > 1 ? 's' : '' ) + ' (listed above).' );
 		}
 	};
 

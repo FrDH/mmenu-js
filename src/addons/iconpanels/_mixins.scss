@@ -1,0 +1,30 @@
+@mixin mm_iconpanel_size( $width: 40, $dir: 'left' )
+{
+	.mm-menu_iconpanel-#{$width}
+	{
+		@include mm_iconpanel_position( 0, $width, $dir );
+		@include mm_iconpanel_position( 1, $width, $dir );
+		@include mm_iconpanel_position( 2, $width, $dir );
+		@include mm_iconpanel_position( 3, $width, $dir );
+
+		.mm-panel_iconpanel-first
+		{
+			~ .mm-panel,
+			~ .mm-panel_opened ~ .mm-listview_fixeddivider
+			{
+				#{$dir}: $width + px;
+			}
+		}
+	}
+}
+@mixin mm_iconpanel_position( $nr, $width, $dir )
+{
+	.mm-panel_iconpanel-#{$nr}
+	{
+		&,
+		&.mm-panel_opened ~ .mm-listview_fixeddivider
+		{
+			#{$dir}: ($width * $nr) + px;
+		}
+	}
+}

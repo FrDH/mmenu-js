@@ -1,0 +1,75 @@
+/*	
+ * jQuery mmenu iconbar add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
+
+@import "../../mixins";
+@import "../../variables";
+
+
+@if ( $mm_opt_iconbar )
+{
+	.mm-iconbar
+	{
+		border-color: inherit;
+		border-style: solid;
+		border-width: 0;
+		border-right-width: 1px;
+
+		text-align: center;
+		line-height: $mm_btnSize / 2;
+
+		overflow: hidden;
+		box-sizing: border-box;
+
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		z-index: 2;
+	}
+
+	.mm-iconbar__top,
+	.mm-iconbar__bottom
+	{
+		width: inherit;
+		position: absolute;
+
+		//	Bugfix
+		@include mm_translate( 0, 0 );
+
+		> *
+		{
+			box-sizing: border-box;
+			display: block;
+			padding: ( $mm_btnSize / 4 ) 0;
+		}
+		a,
+		a:hover
+		{
+			text-decoration: none;
+		}
+	}
+	.mm-iconbar__top
+	{
+		top: 0;
+	}
+	.mm-iconbar__bottom
+	{
+		bottom: 0;
+	}
+
+	@each $size in $mm_iconbarSizes
+	{
+		@include mm_iconbar_size( $size );	
+	}
+
+	@include mm_iconbar_colors;
+}
+
+@if ( $mm_opt_iconbar_tabs )
+{
+	@include mm_iconbar_colors_tabs;
+}

@@ -1,56 +1,69 @@
-/*
-	jQuery.mmenu dividers addon CSS
-*/
+/*	
+ * jQuery mmenu dividers add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
 
-
-//	Collapsed
-.mm-divider
+@if ( $mm_opt_dividers )
 {
-	> span
+	.mm-listitem_divider
 	{
-		@include mm_ellipsis;
-		padding: 0;
-		line-height: $mm_dividerHeight;
+		opacity: 1;
+		transition: opacity $mm_transitionDuration $mm_transitionFunction;
 	}
 
-	&.mm-opened a.mm-next:after
+	@if ( $mm_opt_dividers_light )
 	{
-		transform: rotate( 45deg );
+		.mm-menu_dividers-light .mm-listitem_divider
+		{
+			background: inherit;
+			font-size: inherit;
+			color: $mm_dimmedTextColor;
+			padding-top: $mm_listitemPadding * 1.5;
+			padding-bottom: $mm_listitemPadding / 2;
+		}
+	}
+
+	@if ( $mm_opt_borderstyle_none )
+	{
+		.mm-border-none .mm-listitem_divider
+		{
+			border-top-width: 1px;
+			border-top-style: solid;
+		}
+	}
+
+
+	//	Fixed
+	@if ( $mm_opt_dividers_fixed )
+	{
+		.mm-listview_fixeddivider
+		{
+			background: inherit;
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			z-index: 10;
+			
+			//	Bugfix
+			@include mm_translate( 0, 0 );
+			
+			&:after
+			{
+				content: none !important;
+				display: none !important;
+			}
+		}
+		.mm-panel_dividers .mm-listview_fixeddivider
+		{
+			display: block;
+		}
 	}
 }
-.mm-collapsed:not( .mm-uncollapsed )
-{
-	display: none;
-}
-
-
-//	Fixed
-.mm-fixeddivider
-{
-	background: inherit;
-	display: none;
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: 10;
-	
-	//	Bugfix
-	@include mm_translate( 0, 0 );
-	
-	&:after
-	{
-		content: none !important;
-		display: none !important;
-	}
-}
-.mm-hasdividers .mm-fixeddivider
-{
-	display: block;
-}
-
-
-@include mm_colors_dividers;

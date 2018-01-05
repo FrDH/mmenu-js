@@ -49,8 +49,8 @@
 			}
 		</style>
 		
-		<script type="text/javascript" src="http://hammerjs.github.io/dist/hammer.min.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="http://cdn.jsdelivr.net/hammerjs/2.0.8/hammer.min.js"></script>
 
 		<script type="text/javascript" src="../dist/jquery.mmenu.all.js"></script>
 		<script type="text/javascript">
@@ -61,8 +61,12 @@
 						scroll 		: true,
 						update		: true
 					},
-					extensions	: {
-						'(min-width: 800px)': [ 'widescreen' ]
+					// extensions: {
+					// 	'all': ['pagedim-white'],
+					// 	'(min-width: 400px)' : ['pagedim-black']
+					// },
+					sidebar 	: {
+						expanded 	: 800
 					}
 				});
 			});

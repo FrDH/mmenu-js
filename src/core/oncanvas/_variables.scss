@@ -1,0 +1,33 @@
+//	Opt in CSS
+$mm_opt_navbar				: true !default;
+$mm_opt_listviews			: true !default;
+$mm_opt_listviews_divider	: $mm_opt_listviews !default;
+$mm_opt_listviews_spacer	: $mm_opt_listviews !default;
+$mm_opt_vertical			: $mm_opt_listviews !default;
+$mm_opt_buttons				: $mm_opt_listviews or $mm_opt_navbar !default;
+
+//	Animations
+$mm_transitionDuration 			: 0.4s !default;
+$mm_transitionFunction 			: ease !default;
+
+//	Colors
+$mm_backgroundColor				: #f3f3f3 !default;
+$mm_borderColor					: rgba( #000, 0.1 ) !default;
+$mm_dimmedTextColor				: rgba( #000, 0.3 ) !default;
+$mm_emphasizedBackgroundColor	: rgba( #fff, 0.4 ) !default;
+$mm_highlightedBackgroundColor	: rgba( #000, 0.05 ) !default;
+$mm_navbarColor					: rgba( #000, 0.3 ) !default;
+$mm_textColor					: rgba( #000, 0.75 ) !default;
+
+//	Sizes
+$mm_padding						: 10px !default;
+
+$mm_btnSize						: 40px !default;
+$mm_listitemIndent				: $mm_padding * 2 !default;
+$mm_listitemPadding				: $mm_padding !default;
+$mm_panelPadding				: $mm_padding * 2 !default;
+$mm_subopenWidth				: $mm_btnSize + $mm_padding !default;
+$mm_subpanelOffset				: 30% !default;
+
+$mm_dividerFontSize				: 75% !default;
+$mm_navbarHeight				: $mm_btnSize !default;

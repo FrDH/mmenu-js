@@ -1,0 +1,718 @@
+//	Sizing left (default)
+@mixin mm_offcanvas_size( $cls: ".mm-menu_offcanvas",
+	$width: $mm_menuWidth, $minWidth: $mm_menuMinWidth, $maxWidth: $mm_menuMaxWidth
+) {
+	#{$cls}
+	{
+		width: percentage( $width );
+		min-width: $minWidth;
+		max-width: $maxWidth;
+	}
+	.mm-wrapper_opening
+	{
+		#{$cls}.mm-menu_opened ~ .mm-slideout
+		{
+			@include mm_translate( #{$width * 100}vw, 0 );
+		}
+	}
+
+	//	adjust for min- and max-width
+	@media all and (max-width: $minWidth / $width ) {
+		.mm-wrapper_opening
+		{
+			#{$cls}.mm-menu_opened ~ .mm-slideout
+			{
+				@include mm_translate( $minWidth, 0 );
+			}
+		}
+	}
+	@media all and (min-width: $maxWidth / $width ) {
+		.mm-wrapper_opening
+		{
+			#{$cls}.mm-menu_opened ~ .mm-slideout
+			{
+				@include mm_translate( $maxWidth, 0 );
+			}
+		}
+	}
+}
+
+//	Colors
+@mixin mm_colors( $cls: ".mm-menu",
+	$baseBg: $mm_backgroundColor,
+	$color: $mm_textColor, $dimmedColor: $mm_dimmedTextColor,
+	$emphasizedBg: $mm_emphasizedBackgroundColor, $highlightedBg: $mm_highlightedBackgroundColor,
+	$borderColor: $mm_borderColor,
+	$navbarColor: $mm_navbarColor
+) {
+	#{$cls}
+	{
+		background: $baseBg;
+		border-color: $borderColor;
+		color: $color;
+
+		.mm-navbar
+		{
+			> *,
+			a
+			{
+				color: $navbarColor;
+			}
+		}
+
+		@if ( $mm_opt_buttons )
+		{
+			.mm-btn
+			{
+				&:before,
+				&:after
+				{
+					border-color: $navbarColor;
+				}
+			}
+		}
+
+		.mm-listview
+		{
+			@if ( $mm_opt_buttons )
+			{
+				.mm-btn_next:after
+				{
+					border-color: $dimmedColor;
+				}
+			}
+
+			a:not( .mm-btn_next )
+			{
+				-webkit-tap-highlight-color: $emphasizedBg;
+				tap-highlight-color: $emphasizedBg;
+			}
+		}
+
+		.mm-listitem_selected
+		{
+			> a:not( .mm-btn_next ),
+			> span
+			{
+				background: $emphasizedBg;
+			}
+		}
+
+		.mm-listitem_opened
+		{
+			> .mm-btn_next,
+			> .mm-panel
+			{
+				background: $highlightedBg;
+			}
+		}
+
+		.mm-listitem_divider 
+		{
+			background: $highlightedBg;
+		}
+	}
+}
+
+
+
+//	Close / clear button
+@mixin mm_btn_cross
+{
+	&:before,
+	&:after
+	{
+		content: '';
+		border: 2px solid transparent;
+		box-sizing: content-box;
+		display: block;
+		width: 5px;
+		height: 5px;
+		margin: auto;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+
+		transform: rotate( -45deg );
+	}
+	&:before
+	{
+		border-right: none;
+		border-bottom: none;
+		right: $mm_listitemIndent - 2;
+	}
+	&:after
+	{
+		border-left: none;
+		border-top: none;
+		right: $mm_listitemIndent + 5;
+	}
+}
+
+// Arrow buttons
+@mixin mm_btn_arrow
+{
+	content: '';
+	border-top: 2px solid transparent;
+	border-left: 2px solid transparent;
+	box-sizing: content-box;
+	display: block;
+	width: 8px;
+	height: 8px;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+}
+@mixin mm_btn_arrow_prev
+{
+	transform: rotate( -45deg );
+	left: $mm_listitemIndent + 3;
+	right: auto;
+}
+@mixin mm_btn_arrow_next
+{
+	transform: rotate( 135deg );
+	right: $mm_listitemIndent + 3;
+	left: auto;
+}
+
+
+
+//	Borders
+@mixin mm_border( $border, $pseudo, $pos1, $pos2, $pos3 )
+{
+	&:#{$pseudo}
+	{
+		content: '';
+		border-#{$border}-width: 1px;
+		border-#{$border}-style: solid;
+		display: block;
+		position: absolute;
+		#{$pos1}: 0;
+		#{$pos2}: 0;
+		#{$pos3}: 0;
+	}
+}
+@mixin mm_border_top
+{
+	@include mm_border( "top", "before", "left", "right", "top" );
+}
+@mixin mm_border_right
+{
+	@include mm_border( "right", "after", "top", "bottom", "right" );
+}
+@mixin mm_border_bottom
+{
+	@include mm_border( "bottom", "after", "left", "right", "bottom" );
+}
+@mixin mm_border_left
+{
+	@include mm_border( "left", "before", "top", "bottom", "left" );
+}
+
+
+
+//	Misc
+@mixin mm_translate( $x: 0, $y: 0, $z: 0 )
+{
+	transform: translate( $x, $y );
+	transform: translate3d( $x, $y, $z );
+}
+@mixin mm_ellipsis()
+{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+@mixin mm_clearfix()
+{
+	&:after
+	{
+		content: '';
+		display: block;
+		clear: both;
+	}
+}
+@mixin mm_columns_size( $nr )
+{
+	[class*="mm-menu_columns-"] .mm-panels > .mm-panel_columns-#{$nr}
+	{
+		@include mm_translate( $nr * 100%, 0 );
+	}
+
+	.mm-menu_columns-#{$nr} .mm-panels > .mm-panel
+	{
+		z-index: $nr;
+		@if ( $nr > 0 )
+		{
+			width: ceil( 100% / $nr * 100 ) / 100;
+		}
+		else
+		{
+			width: 100%;
+		}
+
+		&:not( .mm-panel_opened ):not( .mm-panel_opened-parent )
+		{
+			@include mm_translate( ($nr + 1) * 100%, 0 );
+		}
+	}
+
+	@include mm_offcanvas_size( ".mm-menu_columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr );
+	@include mm_position_right( ".mm-menu_columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr );
+}
+@mixin mm_counters_colors( $cls: "",
+	$dimmedColor: $mm_dimmedTextColor
+) {
+	#{$cls} .mm-counter
+	{
+		color: $dimmedColor;
+	}
+}
+@mixin mm_iconbar_size( $width: $mm_btnSize )
+{
+	.mm-menu_iconbar-#{$width}
+	{
+		.mm-panels,
+		.mm-navbars_top,
+		.mm-navbars_bottom
+		{
+			left: $width + px;
+		}
+		.mm-iconbar
+		{
+			width: $width + px;
+		}
+	}
+}
+
+@mixin mm_iconbar_colors( $cls: "",
+	$dimmedColor: $mm_dimmedTextColor
+) {
+	#{$cls} .mm-iconbar
+	{
+		&,
+		a
+		{
+			color: $dimmedColor;
+		}
+	}
+}
+
+@mixin mm_iconbar_colors_tabs( $cls: "",
+	$emphasizedBg: $mm_navbartabsBackgroundColor
+) {
+	#{$cls} .mm-iconbar__tab_selected
+	{
+		background: $emphasizedBg;
+	}
+}
+
+@mixin mm_iconpanel_size( $width: 40, $dir: 'left' )
+{
+	.mm-menu_iconpanel-#{$width}
+	{
+		@include mm_iconpanel_position( 0, $width, $dir );
+		@include mm_iconpanel_position( 1, $width, $dir );
+		@include mm_iconpanel_position( 2, $width, $dir );
+		@include mm_iconpanel_position( 3, $width, $dir );
+
+		.mm-panel_iconpanel-first
+		{
+			~ .mm-panel,
+			~ .mm-panel_opened ~ .mm-listview_fixeddivider
+			{
+				#{$dir}: $width + px;
+			}
+		}
+	}
+}
+@mixin mm_iconpanel_position( $nr, $width, $dir )
+{
+	.mm-panel_iconpanel-#{$nr}
+	{
+		&,
+		&.mm-panel_opened ~ .mm-listview_fixeddivider
+		{
+			#{$dir}: ($width * $nr) + px;
+		}
+	}
+}
+@mixin mm_keyboardnavigation_colors( $cls: "",
+	$emphasizedBg: $mm_emphasizedBackgroundColor
+) {
+	#{$cls}.mm-menu_keyboardfocus a:focus
+	{
+		background: $emphasizedBg;
+	}
+}
+@mixin mm_navbar_position( $pos, $nr )
+{
+	.mm-menu_navbar_#{$pos}-#{$nr}
+	{
+		.mm-panels
+		{
+			#{$pos}: $mm_navbarHeight * $nr;
+		}
+	}
+}
+@mixin mm_navbar_size( $nr )
+{
+	.mm-navbar_size-#{$nr}
+	{
+		height: $mm_navbarHeight * $nr;
+	}
+}
+@mixin mm_navbar_tabs_borders( $top, $bottom, $last, $first )
+{
+	.mm-navbars_#{$top}
+	{
+		.mm-navbar_tabs:not( :#{$last}-child )
+		{
+			border-#{$bottom}-width: 1px;
+			border-#{$bottom}-style: solid;
+			border-#{$bottom}-color: inherit;
+		}
+		.mm-navbar__tab_selected
+		{
+			border-#{$bottom}: none;
+			margin-#{$bottom}: -1px;
+		}
+		.mm-navbar_tabs:#{$first}-child .mm-navbar__tab_selected
+		{
+			border-#{$top}: none;
+		}
+	}
+}
+@mixin mm_navbar_colors_tabs( $cls: "",
+	$emphasizedBg: $mm_navbartabsBackgroundColor
+) {
+	#{$cls} .mm-navbars_top.mm-navbars_has-tabs > .mm-navbar:not( .mm-navbar_tabs ),
+	#{$cls} .mm-navbars_bottom.mm-navbars_has-tabs .mm-navbar_tabs ~ .mm-navbar,
+	#{$cls} .mm-navbar_tabs > :not( .mm-navbar__tab_selected )
+	{
+		background: $emphasizedBg;
+	}
+}
+@mixin mm_searchfield_colors( $cls: "",
+	$inputBg: $mm_inputBackgroundColor, $color: $mm_textColor,
+	$dimmedColor: $mm_dimmedTextColor
+) {
+	#{$cls} .mm-searchfield input
+	{
+		background: $inputBg;
+		color: $color;
+	}
+	#{$cls} .mm-panel__noresultsmsg
+	{
+		color: $dimmedColor;
+	}
+}
+@mixin mm_sectionindexer_position( $pos, $nr )
+{
+	.mm-menu_navbar_#{$pos}-#{$nr}
+	{
+		.mm-sectionindexer
+		{
+			#{$pos}: ($mm_navbarHeight * $nr) + 2;
+		}
+	}
+}
+@mixin mm_sectionindexer_colors( $cls: "",
+	$color: $mm_dimmedTextColor
+) {
+	#{$cls} .mm-sectionindexer a
+	{
+		color: $color;
+	}
+}
+@mixin mm_setselected_colors( $cls: "",
+	$emphasizedBg: $mm_emphasizedBackgroundColor
+) {
+	#{$cls}.mm-menu_selected-hover
+	{
+		.mm-listview:hover > .mm-listitem_selected
+		{
+			> a,
+			> span
+			{
+				background: none;
+			}
+		}
+		.mm-listitem
+		{
+			> a:not( .mm-btn_fullwidth ):hover,
+			> a.mm-btn_fullwidth:hover + span
+			{
+				background: $emphasizedBg;
+			}
+		}
+	}
+
+	#{$cls}.mm-menu_selected-parent
+	{
+		.mm-panel_opened-parent .mm-listitem:not( .mm-listitem_selected-parent )
+		{
+			> a,
+			> span
+			{
+				background: none;
+			}
+		}
+		.mm-listitem_selected-parent
+		{
+			> a.mm-btn_next:not( .mm-btn_fullwidth ),
+			> a.mm-btn_fullwidth + span
+			{
+				background: $emphasizedBg;
+			}
+		}
+	}
+}
+@mixin mm_sidebar_collapsed_size( $width )
+{
+	.mm-wrapper_sidebar-collapsed-#{$width},
+	[class*="mm-wrapper_sidebar-expanded-"].mm-menu_sidebar-closed.mm-menu_sidebar-collapsed-#{$width}
+	{
+		.mm-slideout
+		{
+			width: calc( 100% - #{$width}px );
+			@include mm_translate( #{$width}px, 0 );
+		}
+	}
+}
+
+@mixin mm_sidebar_expanded_size( $width )
+{
+	$menuWidth: $width / 100;
+	$pageWidth: 1 - $menuWidth;
+
+	.mm-wrapper_sidebar-expanded-#{$width}
+	{
+		&:not( .mm-wrapper_sidebar-closed )
+		{
+			.mm-slideout
+			{
+				width: percentage( $pageWidth );
+				//	Can't use mm_translate with !important :/
+				transform: translate( percentage( $menuWidth / $pageWidth ), 0 ) !important;
+				transform: translate3d( percentage( $menuWidth / $pageWidth ), 0, 0 ) !important;
+			}
+		}
+		.mm-menu_sidebar-expanded
+		{
+			width: percentage( $menuWidth ) !important;
+		}
+	}
+}
+@mixin mm_checks_colors( $cls: "",
+	$color: $mm_textColor
+) {
+	#{$cls} label.mm-check:before
+	{
+		border-color: $color;
+	}
+}
+@mixin mm_toggles_colors( $cls: "",
+	$buttonBg: $mm_backgroundColor,
+	$offBg: $mm_borderColor, $onBg: $mm_toggleCheckedColor
+) {
+	#{$cls} label.mm-toggle
+	{
+		background: $offBg;
+	
+		&:before
+		{
+			background: $buttonBg;
+		}
+	}
+	#{$cls}input.mm-toggle:checked ~ label.mm-toggle
+	{
+		background: $onBg;
+	}
+}
+@mixin mm_effect_listitem_delay( $i )
+{
+	&:nth-child( #{$i} )
+	{
+		transition-delay: ( $i * 50ms );
+	}
+}
+@mixin mm_listviewSize( $size )
+{
+	$pad: (($size - $mm_btnSize) / 2) + $mm_listitemPadding;
+
+	.mm-menu_listview-#{$size}
+	{
+		.mm-listitem
+		{
+			> a:not( .mm-btn_next ),
+			> span
+			{
+				padding: $pad $mm_listitemPadding $pad $mm_listitemIndent;
+			}
+		}
+		@if ( $mm_opt_buttons )
+		{
+			.mm-listitem_vertical > .mm-btn_next
+			{
+				height: $size;
+			}
+		}
+	}
+}
+
+//	Position right
+@mixin mm_position_right( $cls: "",
+	$width: $mm_menuWidth, $minWidth: $mm_menuMinWidth, $maxWidth: $mm_menuMaxWidth
+) {
+	.mm-wrapper_opening
+	{
+		#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
+		{
+			@include mm_translate( -( #{$width * 100}vw ), 0 );
+		}
+	}
+
+	//	adjust for min- and max-width
+	@media all and ( max-width: $minWidth / $width ) {
+		.mm-wrapper_opening
+		{
+			#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
+			{
+				@include mm_translate( -$minWidth, 0 );
+			}
+		}
+	}
+	@media all and ( min-width: $maxWidth / $width ) {
+		.mm-wrapper_opening
+		{
+			#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
+			{
+				@include mm_translate( -$maxWidth, 0 );
+			}
+		}
+	}
+}
+
+//	Position top
+@mixin mm_position_top( $cls: "",
+	$height: $mm_menuHeight, $minHeight: $mm_menuMinHeight, $maxHeight: $mm_menuMaxHeight
+) {
+	#{$cls}.mm-menu_position-top
+	{
+		height: #{$height * 100}vh;
+		min-height: $minHeight;
+		max-height: $maxHeight;
+	}
+}
+
+//	Position bottom
+@mixin mm_position_bottom( $cls: "",
+	$height: $mm_menuHeight, $minHeight: $mm_menuMinHeight, $maxHeight: $mm_menuMaxHeight
+) {
+	#{$cls}.mm-menu_position-bottom
+	{
+		height: #{$height * 100}vh;
+		min-height: $minHeight;
+		max-height: $maxHeight;
+	}
+}
+
+@mixin mm_pageshadow_colors( $cls: "",
+	$pageShadow: $mm_pageShadow
+) {
+	#{$cls}.mm-menu_shadow-page
+	{
+		&:after
+		{
+			box-shadow: $pageShadow;
+		}
+	}
+}
+@mixin mm_panelshadow_colors( $cls: "",
+	$panelShadow: $mm_panelShadow
+) {
+	#{$cls}.mm-menu_shadow-panels .mm-panel
+	{
+		box-shadow: $panelShadow;
+	}
+}
+@mixin mm_theme_colors()
+{
+	@include mm_colors( $mm_t_cls,
+		$mm_t_backgroundColor,
+		$mm_t_textColor, $mm_t_dimmedTextColor,
+		$mm_t_emphasizedBackgroundColor, $mm_t_highlightedBackgroundColor,
+		$mm_t_borderColor,
+		$mm_t_navbarColor );
+
+	@if ( $mm_opt_counters )
+	{
+		@include mm_counters_colors( $mm_t_cls,
+			$mm_t_dimmedTextColor );
+	}
+
+	@if ( $mm_opt_iconbar )
+	{
+		@include mm_iconbar_colors( $mm_t_cls,
+			$mm_t_dimmedTextColor );
+	}
+
+	@if ( $mm_opt_keyboardnavigation )
+	{
+		@include mm_keyboardnavigation_colors( $mm_t_cls,
+			$mm_t_emphasizedBackgroundColor );
+	}
+
+	@if ( $mm_opt_navbars_tabs )
+	{
+		@include mm_navbar_colors_tabs( $mm_t_cls,
+			$mm_t_emphasizedBackgroundColor );
+	}
+
+	@if ( $mm_opt_shadows_page )
+	{
+		@include mm_pageshadow_colors( $mm_t_cls,
+			$mm_t_pageShadow );
+	}
+
+	@if ( $mm_opt_shadows_panels )
+	{
+		@include mm_panelshadow_colors( $mm_t_cls,
+			$mm_t_panelShadow );
+	}
+
+	@if ( $mm_opt_searchfield )
+	{
+		@include mm_searchfield_colors( $mm_t_cls,
+			$mm_t_inputBackgroundColor, $mm_t_textColor,
+			$mm_t_dimmedTextColor );
+	}
+	
+	@if ( $mm_opt_sectionindexer )
+	{
+		@include mm_sectionindexer_colors( $mm_t_cls,
+			$mm_t_dimmedTextColor );
+	}
+	
+	@if ( $mm_opt_setselected )
+	{
+		@include mm_setselected_colors( $mm_t_cls,
+			$mm_t_emphasizedBackgroundColor );
+	}
+	
+	@if ( $mm_opt_checks )
+	{
+		@include mm_checks_colors( $mm_t_cls,
+			$mm_t_textColor );
+	}
+
+	@if ( $mm_opt_toggles )
+	{
+		@include mm_toggles_colors( $mm_t_cls,
+			$mm_t_backgroundColor,
+			$mm_t_borderColor );
+	}
+}

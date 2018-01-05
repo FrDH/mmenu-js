@@ -1,50 +1,52 @@
-@if ( $mm_css_vertical )
+@if ( $mm_opt_vertical )
 {
 
-	.mm-vertical .mm-panel
+	.mm-listitem_vertical > .mm-panel
 	{
 		transform: none !important;
+
+		display: none;
+		padding: $mm_padding 0 $mm_padding $mm_padding;
+
+		&:before,
+		&:after
+		{
+			content: none;
+			display: none;
+		}
+	}
+	.mm-listitem_opened > .mm-panel
+	{
+		display: block;
 	}
 
-	.mm-vertical .mm-listview,
-	.mm-listview .mm-vertical
+	.mm-listitem_vertical
 	{
-		.mm-panel
+		@if ( $mm_opt_buttons )
 		{
-			display: none;
-			padding: $mm_padding 0 $mm_padding $mm_padding;
-
-			.mm-listview > li:last-child:after
+			> .mm-btn_next
 			{
-				border-color: transparent;
+				box-sizing: border-box;
+				height: $mm_btnSize;
+				bottom: auto;
 			}
 		}
-	}
-	.mm-vertical li.mm-opened,
-	li.mm-vertical.mm-opened
-	{
-		> .mm-panel
+
+		.mm-listitem:last-child:after
 		{
-			display: block;
+			border-color: transparent;
 		}
 	}
-	.mm-vertical .mm-listview > li,
-	.mm-listview > li.mm-vertical
+	
+	@if ( $mm_opt_buttons )
 	{
-		> .mm-next
+		.mm-listitem_opened
 		{
-			box-sizing: border-box;
-			height: $mm_btnSize;
-			bottom: auto;
-		}
-		&.mm-opened
-		{
-			> .mm-next:after
+			> .mm-btn_next:after
 			{
 				transform: rotate( 225deg );
 				right: $mm_listitemIndent - 1;
 			}
 		}
 	}
-	
 }

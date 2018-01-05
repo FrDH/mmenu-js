@@ -1,0 +1,43 @@
+@mixin mm_setselected_colors( $cls: "",
+	$emphasizedBg: $mm_emphasizedBackgroundColor
+) {
+	#{$cls}.mm-menu_selected-hover
+	{
+		.mm-listview:hover > .mm-listitem_selected
+		{
+			> a,
+			> span
+			{
+				background: none;
+			}
+		}
+		.mm-listitem
+		{
+			> a:not( .mm-btn_fullwidth ):hover,
+			> a.mm-btn_fullwidth:hover + span
+			{
+				background: $emphasizedBg;
+			}
+		}
+	}
+
+	#{$cls}.mm-menu_selected-parent
+	{
+		.mm-panel_opened-parent .mm-listitem:not( .mm-listitem_selected-parent )
+		{
+			> a,
+			> span
+			{
+				background: none;
+			}
+		}
+		.mm-listitem_selected-parent
+		{
+			> a.mm-btn_next:not( .mm-btn_fullwidth ),
+			> a.mm-btn_fullwidth + span
+			{
+				background: $emphasizedBg;
+			}
+		}
+	}
+}

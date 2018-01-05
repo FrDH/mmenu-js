@@ -59,60 +59,95 @@
 				opts.visible.max = Math.max( opts.visible.min, Math.min( 6, opts.visible.max ) );
 
 
-				var $mnu = ( this.opts.offCanvas ) ? this.$menu.add( glbl.$html ) : this.$menu,
-					clsn = '';
+				var colm = '',
+					colp = '';
 
 				for ( var i = 0; i <= opts.visible.max; i++ )
 				{
-					clsn += ' ' + _c.columns + '-' + i;
+					colm += ' ' + _c.menu  + '_columns-' + i;
+					colp += ' ' + _c.panel + '_columns-' + i;
 				}
-				if ( clsn.length )
+				if ( colm.length )
 				{
-					clsn = clsn.slice( 1 );
+					colm = colm.slice( 1 );
+					colp = colp.slice( 1 );
 				}
 
+				var rmvc = colp + ' ' + _c.panel + '_opened ' + _c.panel + '_opened-parent ' + _c.panel + '_highest';
 
-				var countPanels = function( $panel )
+
+				//	Close all later opened panels
+				function closeLaterPanels( $panel )
 				{
-					var _num = this.$pnls.children( '.' + _c.subopened ).length;
-					if ( $panel && !$panel.hasClass( _c.subopened ) )
+					var $prnt = $panel.data( _d.parent );
+					if ( !$prnt )
+					{
+						return;
+					}
+
+					$prnt = $prnt.closest( '.' + _c.panel );
+					if ( !$prnt.length )
+					{
+						return;
+					}
+
+					var colnr = $prnt.attr( 'class' );
+					if ( !colnr )
+					{
+						return;
+					}
+
+					colnr = colnr.split( _c.panel + '_columns-' )[ 1 ];
+					if ( !colnr )
+					{
+						return;
+					}
+
+					colnr = parseInt( colnr.split( ' ' )[ 0 ], 10 ) + 1;
+					while( colnr > 0 )
+					{
+						var $panl = this.$pnls.children( '.' + _c.panel + '_columns-' + colnr );
+						if ( $panl.length )
+						{
+							colnr++;
+							$panl.removeClass( rmvc )
+								.addClass( _c.hidden );
+						}
+						else
+						{
+							colnr = -1;
+							break;
+						}
+					}
+				}
+				var setupPanels = function( $panel )
+				{
+					var _num = this.$pnls.children( '.' + _c.panel + '_opened-parent' ).length;
+					if ( !$panel.hasClass( _c.panel + '_opened-parent' ) )
 					{
 						_num++;
 					}
 					_num = Math.min( opts.visible.max, Math.max( opts.visible.min, _num ) );
 
-					$mnu.removeClass( clsn )
-						.addClass( _c.columns + '-' + _num );
-				};
-				var uncountPanels = function()
-				{
-					$mnu.removeClass( clsn );
-				};
-				var setupPanels = function( $panel )
-				{
-					$panel = $panel || this.$pnls.children( '.' + _c.opened );
+					this.$menu
+						.removeClass( colm )
+						.addClass( _c.menu + '_columns-' + _num );
+
 					this.$pnls
 						.children( '.' + _c.panel )
-						.removeClass( clsn )
-						.filter( '.' + _c.subopened )
+						.removeClass( colp )
+						.filter( '.' + _c.panel + '_opened-parent' )
 						.add( $panel )
 						.slice( -opts.visible.max )
 						.each(
 							function( i )
 							{
-								$(this).addClass( _c.columns + '-' + i );
+								$(this).addClass( _c.panel + '_columns-' + i );
 							}
 						);
 				};
 
-				this.bind( 'initMenu:after',
-					function()
-					{
-						this.$menu.addClass( _c.columns );
-					}
-				);
-
-				this.bind( 'openPanel:start', countPanels );
+				this.bind( 'openPanel:before', closeLaterPanels );
 				this.bind( 'openPanel:start', setupPanels );
 			}
 		},
@@ -123,55 +158,10 @@
 			_c = $[ _PLUGIN_ ]._c;
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
-	
-			_c.add( 'columns' );
 		},
 
 		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu )
-		{
-			if ( !this.opts[ _ADDON_ ].add )
-			{
-				return false;
-			}
-
-			if ( inMenu )
-			{
-				var that = this;
-
-				var _h = $a.attr( 'href' );
-				if ( _h.length > 1 && _h.slice( 0, 1 ) == '#' )
-				{
-					try
-					{
-						var $h = $(_h, this.$menu);
-						if ( $h.is( '.' + _c.panel ) )
-						{
-							var colnr = parseInt( $a.closest( '.' + _c.panel ).attr( 'class' ).split( _c.columns + '-' )[ 1 ].split( ' ' )[ 0 ], 10 ) + 1;
-							while( colnr > 0 )
-							{
-								var $panl = this.$pnls.children( '.' + _c.columns + '-' + colnr );
-								if ( $panl.length )
-								{
-									colnr++;
-									$panl
-										.removeClass( _c.subopened )
-										.removeClass( _c.opened )
-										.removeClass( _c.highest )
-										.addClass( _c.hidden );
-								}
-								else
-								{
-									colnr = -1;
-									break;
-								}
-							}
-						}
-					}
-					catch( err ) {}
-				}
-			}
-		}
+		clickAnchor: function( $a, inMenu ) {}
 	};
 
 

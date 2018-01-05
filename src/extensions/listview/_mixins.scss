@@ -1,0 +1,23 @@
+@mixin mm_listviewSize( $size )
+{
+	$pad: (($size - $mm_btnSize) / 2) + $mm_listitemPadding;
+
+	.mm-menu_listview-#{$size}
+	{
+		.mm-listitem
+		{
+			> a:not( .mm-btn_next ),
+			> span
+			{
+				padding: $pad $mm_listitemPadding $pad $mm_listitemIndent;
+			}
+		}
+		@if ( $mm_opt_buttons )
+		{
+			.mm-listitem_vertical > .mm-btn_next
+			{
+				height: $size;
+			}
+		}
+	}
+}

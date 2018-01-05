@@ -67,7 +67,7 @@
 					opts = $.extend( true, {}, that.opts.navbar, opts );
 
 					//	Create node
-					var $navbar = $( '<div class="' + _c.navbar+ '" />' );
+					var $navbar = $( '<div class="' + _c.navbar + '" />' );
 						
 
 					//	Get height
@@ -77,16 +77,28 @@
 					{
 						hght = 1;
 					}
-					hght = Math.min( 4, Math.max( 1, hght ) );
-					$navbar.addClass( _c.navbar + '-size-' + hght );
+					else
+					{
+						hght = Math.min( 4, Math.max( 1, hght ) );
+						if ( hght > 1 )
+						{
+							$navbar.addClass( _c.navbar + '_size-' + hght );
+						}
+					}
 
 					//	Get position
 					var poss = opts.position;
 
-					if ( poss != 'bottom' )
+					switch( poss )
 					{
-						poss = 'top';
+						case 'bottom':
+							break;
+
+						default:
+							poss = 'top';
+							break;
 					}
+
 					if ( !_pos[ poss ] )
 					{
 						_pos[ poss ] = 0;
@@ -95,19 +107,18 @@
 
 					if ( !$pos[ poss ] )
 					{
-						$pos[ poss ] = $( '<div class="' + _c.navbars + '-' + poss + '" />' );
+						$pos[ poss ] = $( '<div class="' + _c.navbars + '_' + poss + '" />' );
 					}
 					$pos[ poss ].append( $navbar );
 
 
 					//	Add content
-					var cont = 0;
 					for ( var c = 0, l = opts.content.length; c < l; c++ )
 					{
-						var ctnt = $[ _PLUGIN_ ].addons[ _ADDON_ ][ opts.content[ c ] ] || false;
+						var ctnt = $[ _PLUGIN_ ].addons[ _ADDON_ ][ opts.content[ c ] ] || null;
 						if ( ctnt )
 						{
-							cont += ctnt.call( that, $navbar, opts, conf );
+							ctnt.call( that, $navbar, opts, conf );
 						}
 						else
 						{
@@ -120,14 +131,16 @@
 						}
 					}
 
-					cont += Math.ceil( $navbar.children().not( '.' + _c.btn ).length / hght );
-					if ( cont > 1 )
+					//	Call type
+					var type = $[ _PLUGIN_ ].addons[ _ADDON_ ][ opts.type ] || null;
+					if ( type )
 					{
-						$navbar.addClass( _c.navbar + '-content-' + cont );
+						type.call( that, $navbar, opts, conf );
 					}
+
 					if ( $navbar.children( '.' + _c.btn ).length )
 					{
-						$navbar.addClass( _c.hasbtns );
+						$navbar.addClass( _c.navbar + '_has-btns' );
 					}
 				}
 			);
@@ -138,7 +151,7 @@
 				{
 					for ( var poss in _pos )
 					{
-						this.$menu.addClass( _c.hasnavbar + '-' + poss + '-' + _pos[ poss ] );
+						this.$menu.addClass( _c.menu + '_navbar_' + poss + '-' + _pos[ poss ] );
 						this.$menu[ poss == 'bottom' ? 'append' : 'prepend' ]( $pos[ poss ] );
 					}
 				}
@@ -152,7 +165,7 @@
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 
-			_c.add( 'navbars close hasbtns' );
+			_c.add( _ADDON_ );
 		},
 
 		//	clickAnchor: prevents default behavior when clicking an anchor
@@ -162,7 +175,10 @@
 
 	//	Default options and configuration
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
-		breadcrumbSeparator: '/'
+		breadcrumbs: {
+			separator 		: '/',
+			removeFirst 	: false
+		}
 	};
 	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {};
 

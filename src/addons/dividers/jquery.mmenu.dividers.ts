@@ -38,14 +38,16 @@
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
 
-			//	Refactor collapsed class
-			this.bind( 'initListview:after',
-				function( $panel )
-				{
-					this.__refactorClass( $panel.find( 'li' ), this.conf.classNames[ _ADDON_ ].collapsed, 'collapsed' );
-				}
-			);
-
+			//	Type dividers
+			if ( opts.type )
+			{
+				this.bind( 'initMenu:after',
+					function()
+					{
+						this.$menu.addClass( _c.menu + '_' + _ADDON_ + '-' + opts.type );
+					}
+				);
+			}
 
 			//	Add dividers
 			if ( opts.add )
@@ -71,10 +73,11 @@
 						}
 
 						$wrapper
+							.children( '.' + _c.listitem + '_divider' )
+							.remove();
+							
+						$wrapper
 							.find( '.' + _c.listview )
-							.find( '.' + _c.divider )
-							.remove()
-							.end()
 							.each(
 								function()
 								{
@@ -87,39 +90,10 @@
 												if ( letter != last && letter.length )
 												{
 													last = letter;
-													$( '<li class="' + _c.divider + '">' + letter + '</li>' ).insertBefore( this );
+													$( '<li class="' + _c.listitem + ' ' + _c.listitem + '_divider' + '">' + letter + '</li>' ).insertBefore( this );
 												}
 											}
 										);
-								}
-							);
-					}
-				);
-			}
-
-
-			//	Toggle collapsed list items
-			if ( opts.collapse )
-			{
-				this.bind( 'initListview:after',
-					function( $panel )
-					{
-						$panel
-							.find( '.' + _c.divider )
-							.each(
-								function()
-								{
-									var $l = $(this),
-										$e = $l.nextUntil( '.' + _c.divider, '.' + _c.collapsed );
-
-									if ( $e.length )
-									{
-										if ( !$l.children( '.' + _c.next ).length )
-										{
-											$l.wrapInner( '<span />' );
-											$l.prepend( '<a href="#" class="' + _c.next + ' ' + _c.fullsubopen + '" />' );
-										}
-									}
 								}
 							);
 					}
@@ -136,8 +110,8 @@
 					{
 						if ( typeof this.$fixeddivider == 'undefined' )
 						{
-							this.$fixeddivider = $('<ul class="' + _c.listview + ' ' + _c.fixeddivider + '"><li class="' + _c.divider + '"></li></ul>')
-								.prependTo( this.$pnls )
+							this.$fixeddivider = $('<ul class="' + _c.listview + ' ' + _c.listview + '_fixeddivider"><li class="' + _c.listitem + ' ' + _c.listitem + '_divider' + '"></li></ul>')
+								.appendTo( this.$pnls )
 								.children();
 						}
 					}
@@ -145,15 +119,14 @@
 
 				var setValue = function( $panel )
 				{
-					$panel = $panel || this.$pnls.children( '.' + _c.opened );
+					$panel = $panel || this.$pnls.children( '.' + _c.panel + '_opened' );
 					if ( $panel.is( ':hidden' ) )
 					{
 						return;
 					}
 
 					var $dvdr = $panel
-						.children( '.' + _c.listview)
-						.children( '.' + _c.divider )
+						.find( '.' + _c.listitem + '_divider' )
 						.not( '.' + _c.hidden );
 
 					var scrl = $panel.scrollTop() || 0,
@@ -170,7 +143,7 @@
 					);
 
 					this.$fixeddivider.text( text );
-					this.$pnls[ text.length ? 'addClass' : 'removeClass' ]( _c.hasdividers );
+					this.$pnls[ text.length ? 'addClass' : 'removeClass' ]( _c.panel + '_dividers' );
 				};
 
 				//	Set correct value when opening menu
@@ -191,7 +164,10 @@
 							.on(  _e.scroll + '-' + _ADDON_ + ' ' + _e.touchmove + '-' + _ADDON_,
 								function( e )
 								{
-									setValue.call( that, $panel );
+									if ( $panel.hasClass( _c.panel + '_opened' ) )
+									{
+										setValue.call( that, $panel );
+									}
 								}
 							);
 					}
@@ -206,29 +182,12 @@
 			_c = $[ _PLUGIN_ ]._c;
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
-	
-			_c.add( 'collapsed uncollapsed fixeddivider hasdividers' );
+
 			_e.add( 'scroll' );
 		},
 
 		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu )
-		{
-			if ( this.opts[ _ADDON_ ].collapse && inMenu )
-			{
-				var $l = $a.parent();
-				if ( $l.is( '.' + _c.divider ) )
-				{
-					var $e = $l.nextUntil( '.' + _c.divider, '.' + _c.collapsed );
-			
-					$l.toggleClass( _c.opened );
-					$e[ $l.hasClass( _c.opened ) ? 'addClass' : 'removeClass' ]( _c.uncollapsed );
-					
-					return true;
-				}
-			}
-			return false;
-		}
+		clickAnchor: function( $a, inMenu ) {}
 	};
 
 
@@ -237,10 +196,7 @@
 		add			: false,
 		addTo		: 'panels',
 		fixed		: false,
-		collapse	: false
-	};
-	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
-		collapsed: 'Collapsed'
+		type		: null
 	};
 
 

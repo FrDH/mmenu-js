@@ -1,0 +1,38 @@
+//	Sizing left (default)
+@mixin mm_offcanvas_size( $cls: ".mm-menu_offcanvas",
+	$width: $mm_menuWidth, $minWidth: $mm_menuMinWidth, $maxWidth: $mm_menuMaxWidth
+) {
+	#{$cls}
+	{
+		width: percentage( $width );
+		min-width: $minWidth;
+		max-width: $maxWidth;
+	}
+	.mm-wrapper_opening
+	{
+		#{$cls}.mm-menu_opened ~ .mm-slideout
+		{
+			@include mm_translate( #{$width * 100}vw, 0 );
+		}
+	}
+
+	//	adjust for min- and max-width
+	@media all and (max-width: $minWidth / $width ) {
+		.mm-wrapper_opening
+		{
+			#{$cls}.mm-menu_opened ~ .mm-slideout
+			{
+				@include mm_translate( $minWidth, 0 );
+			}
+		}
+	}
+	@media all and (min-width: $maxWidth / $width ) {
+		.mm-wrapper_opening
+		{
+			#{$cls}.mm-menu_opened ~ .mm-slideout
+			{
+				@include mm_translate( $maxWidth, 0 );
+			}
+		}
+	}
+}

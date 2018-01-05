@@ -1,0 +1,8 @@
+$mm_opt_toggles			: true !default;
+$mm_opt_checks			: true !default;
+
+$mm_toggleCheckedColor	: #4bd963 !default;
+$mm_toggleHeight		: $mm_btnSize - $mm_padding !default;
+$mm_toggleWidth			: ( $mm_toggleHeight * 2 ) - $mm_padding !default;
+$mm_checkHeight			: $mm_btnSize - $mm_padding !default;
+$mm_checkWidth			: $mm_btnSize - $mm_padding !default;

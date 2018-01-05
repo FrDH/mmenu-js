@@ -1,0 +1,8 @@
+@mixin mm_keyboardnavigation_colors( $cls: "",
+	$emphasizedBg: $mm_emphasizedBackgroundColor
+) {
+	#{$cls}.mm-menu_keyboardfocus a:focus
+	{
+		background: $emphasizedBg;
+	}
+}

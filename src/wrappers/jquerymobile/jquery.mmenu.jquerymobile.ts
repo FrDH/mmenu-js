@@ -1,62 +1,54 @@
 /*	
- * jQuery Mobile wrapper for jQuery mmenu
- * Include this file after including the jquery.mmenu plugin for default jQuery Mobile support.
+ * jQuery mmenu jQuery Mobile wrapper
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
  */
-
 
 (function( $ ) {
 
-	var _PLUGIN_ = 'mmenu';
+	const _PLUGIN_ = 'mmenu';
+	const _WRAPPR_ = 'jqueryMobile';
 
-	//	Vars
-	var apis: any[] = [];
 
-	//	Set some defaults
-	$[ _PLUGIN_ ].defaults.onClick.close = false;
+	$[ _PLUGIN_ ].wrappers[ _WRAPPR_ ] = function()
+	{
+		var that = this;
 
-	//	Set current page
-	$[ _PLUGIN_ ].configuration.offCanvas.pageSelector = 'div.ui-page-active';
-
-	//	Get api
-	$(window).load(function() {
-		$('.mm-menu').each(function() {
-			apis.push( $(this).data( 'mmenu' ) );
-		})
-	});
-
-	$(window).load(function() {
-
-		//	Change pages
-		$('body').on(
-			'click',
-			'.mm-menu a',
-			function( e )
-			{
-				if ( !e.isDefaultPrevented() )
-				{
-					e.preventDefault();
-					$( 'body' ).pagecontainer( 'change', this.href );
-				}
-			}
-		);
+		this.opts.onClick.close = false;
+		this.conf.offCanvas.pageSelector = 'div.ui-page-active';
 
 		//	When changing pages
 		$('body').on(
 			'pagecontainerchange',
 			function( e, args )
 			{
-				for ( var a = 0; a < apis.length; a++ )
+				if ( typeof that.close == 'function' )
 				{
-					if ( apis[ a ] && typeof apis[ a ].close == 'function' )
-					{
-						apis[ a ].close();
-						apis[ a ].setPage( args.toPage );
-					}
+					that.close();
+					that.setPage( args.toPage );
 				}
 			}
 		);
 
-	});
-
+		//	Change pages
+		this.bind( 'initAnchors:after',
+			function()
+			{
+				$('body').on(
+					'click',
+					'.mm-listview a',
+					function( e )
+					{
+						if ( !e.isDefaultPrevented() )
+						{
+							e.preventDefault();
+							$( 'body' )[ 'pagecontainer' ]( 'change', this.href );
+						}
+					}
+				);
+			}
+		);
+	};
 
 })( jQuery );

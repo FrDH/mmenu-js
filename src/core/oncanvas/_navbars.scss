@@ -1,55 +1,57 @@
-@if ( $mm_css_navbars )
+@if ( $mm_opt_navbar )
 {
 	.mm-navbar
 	{
 		border-bottom: 1px solid;
 		border-color: inherit;
 		text-align: center;
-		line-height: $mm_btnSize / 2;
+		line-height: $mm_navbarHeight / 2;
 
+		display: none;
 		height: $mm_navbarHeight;
 		padding: 0 $mm_btnSize;
-
 		margin: 0;
+
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
+		
+		opacity: 1;
+		transition: opacity $mm_transitionDuration $mm_transitionFunction;
 
 		> *
 		{
+			box-sizing: border-box;
 			display: block;
-			padding: ( $mm_btnSize / 4 ) 0;
+			padding: ( $mm_navbarHeight / 4 ) 0;
 		}
 		a,
 		a:hover
 		{
 			text-decoration: none;
 		}
-		.mm-title
+	}
+
+	.mm-navbar__title
+	{
+		@include mm_ellipsis;
+	}
+	.mm-navbar__btn
+	{
+		&:first-child
 		{
-			@include mm_ellipsis;
+			left: 0;
 		}
-		.mm-btn
+		&:last-child
 		{
-			&:first-child
-			{
-				left: 0;
-			}
-			&:last-child
-			{
-				text-align: right;
-				right: 0;
-			}
+			text-align: right;
+			right: 0;
 		}
 	}
-	.mm-panel
+	.mm-panel_has-navbar
 	{
 		.mm-navbar
-		{
-			display: none;
-		}
-		&.mm-hasnavbar .mm-navbar
 		{
 			display: block;
 		}

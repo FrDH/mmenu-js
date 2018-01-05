@@ -1,71 +1,76 @@
-/*
-	jQuery.mmenu counters addon CSS
-*/
+/*	
+ * jQuery mmenu counters add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
 
-em.mm-counter
+@if ( $mm_opt_counters )
 {
-	font: inherit;
-	font-size: $mm_fontSize;
-	font-style: normal;
-	text-indent: 0;
-	line-height: $mm_btnSize / 2;
-	display: block;
-	margin-top: -( $mm_btnSize / 4 );
-	position: absolute;
-	right: $mm_subopenWidth - 5px;
-	top: 50%;
-
-	+ a.mm-next
+	.mm-counter
 	{
-		width: $mm_counterWidth + $mm_subopenWidth;
+		font-style: normal;
+		line-height: $mm_btnSize / 2;
+		display: block;
+		margin-top: -( $mm_btnSize / 4 );
+		position: absolute;
+		right: $mm_subopenWidth - 5px;
+		top: 50%;
 
-		+ a,
-		+ span
+		@if ( $mm_opt_buttons )
 		{
-			margin-right: $mm_counterWidth + $mm_subopenWidth;
+			+ .mm-btn_next:not( .mm-btn_fullwidth )
+			{
+				width: $mm_counterWidth + $mm_subopenWidth;
+
+				+ a,
+				+ span
+				{
+					margin-right: $mm_counterWidth + $mm_subopenWidth;
+				}
+			}
+			+ .mm-btn_fullwidth
+			{
+				+ a,
+				+ span
+				{
+					padding-right: $mm_counterWidth + $mm_subopenWidth;
+				}
+			}
 		}
 	}
-	+ a.mm-fullsubopen
-	{
-		padding-left: 0;
 
-		+ a,
-		+ span
+
+	//	Counters in vertical submenus
+	@if ( $mm_opt_vertical )
+	{
+		.mm-listitem_vertical
 		{
-			padding-right: $mm_counterWidth + $mm_subopenWidth;
+			> .mm-counter
+			{
+				top: ( $mm_btnSize / 4 ) + 2;
+				margin-top: 0;
+			}
+			&.mm-listitem_spacer > .mm-counter
+			{
+				margin-top: $mm_btnSize;
+			}
 		}
 	}
-}
-.mm-listview em.mm-counter + .mm-next.mm-fullsubopen
-{
-	+ a,
-	+ span
-	{
-		padding-right: $mm_counterWidth + $mm_subopenWidth;
-	}
-}
 
-//	Counters in vertical submenus
-.mm-vertical
-{
-	> .mm-counter
+	// Searchfield
+	@if ( $mm_opt_searchfield )
 	{
-		top: ( $mm_btnSize / 4 ) + 2;
-		margin-top: 0;
+		.mm-listitem_nosubitems > .mm-counter
+		{
+			display: none;
+		}
 	}
-	&.mm-spacer > .mm-counter
-	{
-		margin-top: $mm_btnSize;
-	}
-}
 
-// Search
-.mm-nosubresults > .mm-counter
-{
-	display: none;
-}
 
-@include mm_colors_counters;
+	@include mm_counters_colors;
+}

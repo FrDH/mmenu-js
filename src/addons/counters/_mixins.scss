@@ -1,0 +1,8 @@
+@mixin mm_counters_colors( $cls: "",
+	$dimmedColor: $mm_dimmedTextColor
+) {
+	#{$cls} .mm-counter
+	{
+		color: $dimmedColor;
+	}
+}

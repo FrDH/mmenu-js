@@ -1,61 +1,81 @@
-/*
-	jQuery.mmenu iconPanels addon CSS
-*/
+/*	
+ * jQuery mmenu iconPanels add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
-@mixin mm_iconpanel_positioning( $nr )
+
+@if ( $mm_opt_iconpanels )
 {
-	.mm-iconpanel .mm-panel.mm-iconpanel-#{$nr}
+	[class*="mm-menu_iconpanel-"] .mm-panels 
 	{
-		left: $mm_iconpanelWidth * $nr;
+		> .mm-panel
+		{
+			transition-property: transform, left;
+		}
+
+		> .mm-panel_iconpanel-first,
+		> .mm-panel_iconpanel-first.mm-panel_opened ~ .mm-listview_fixeddivider
+		{
+			left: 0;
+		}
+
+		> .mm-panel_opened,
+		> .mm-panel_opened-parent
+		{
+			display: block !important;
+
+			&[class*="mm-panel_iconpanel-"]:not( .mm-panel_iconpanel-first ):not( .mm-panel_iconpanel-0 ),
+			{
+				border-left: 1px solid;
+				border-color: inherit;
+			}
+		}
+		> .mm-panel_opened-parent
+		{
+			overflow-y: hidden;
+			@include mm_translate( 0, 0 );
+		}
+	}
+	[class*="mm-menu_iconpanel-"]
+	{
+		&.mm-menu_hidenavbar .mm-panel_opened-parent .mm-navbar,
+		&.mm-menu_hidedivider .mm-panel_opened-parent .mm-listitem_divider
+		{
+			opacity: 0;
+		}
+	}
+
+	@each $size in $mm_iconpanelSizes
+	{
+		@include mm_iconpanel_size( $size );
 	}
 }
 
-.mm-iconpanel .mm-panels > .mm-panel
+@if ( $mm_opt_iconpanels_blocker )
 {
-	transition-property: transform, left;
-
-	&.mm-opened,
-	&.mm-subopened
+	.mm-panel__blocker
 	{
-		border-left: 1px solid;
-		border-color: inherit;
-		display: block !important;
+		background: inherit;
+		opacity: 0;
+		display: block;
+
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		z-index: 3;
+
+		transition: opacity $mm_transitionDuration $mm_transitionFunction;
 	}
-	&.mm-subopened
+
+	.mm-panel_opened-parent .mm-panel__blocker
 	{
-		@include mm_translate( 0, 0 );
+		opacity: 0.6;
+		bottom: -100000px;
 	}
-}
-
-@include mm_iconpanel_positioning( 0 );
-@include mm_iconpanel_positioning( 1 );
-@include mm_iconpanel_positioning( 2 );
-@include mm_iconpanel_positioning( 3 );
-@include mm_iconpanel_positioning( 4 );
-@include mm_iconpanel_positioning( 5 );
-@include mm_iconpanel_positioning( 6 );
-
-
-.mm-subblocker
-{
-	background: inherit;
-	opacity: 0;
-	display: block;
-	max-height: 100%;
-
-	position: absolute;
-	top: 0;
-	right: 0;
-	left: 0;
-	z-index: 3;
-
-	transition: opacity $mm_transitionDuration $mm_transitionFunction;
-}
-
-.mm-subopened .mm-subblocker
-{
-	opacity: 0.6;
-	bottom: -100000px;
 }

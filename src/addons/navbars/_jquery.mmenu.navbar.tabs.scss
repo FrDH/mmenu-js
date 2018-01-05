@@ -1,0 +1,44 @@
+/*	
+ * jQuery mmenu navbar add-on tabs content
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
+
+
+@if ( $mm_opt_navbars_tabs )
+{
+	.mm-navbar_tabs,
+	.mm-navbar_tabs ~ .mm-navbar
+	{
+		background: inherit !important;
+	}
+
+	.mm-navbar__tab_selected
+	{
+		background: inherit;
+		border-width: 1px;
+		border-style: solid;
+		border-color: inherit;
+
+		&:first-child
+		{
+			border-left: none;
+		}
+		&:last-child
+		{
+			border-right: none;
+		}
+	}
+
+	@if ( $mm_opt_navbars_top )
+	{
+		@include mm_navbar_tabs_borders( 'top', 'bottom', 'last', 'first' );
+	}
+	@if ( $mm_opt_navbars_bottom )
+	{
+		@include mm_navbar_tabs_borders( 'bottom', 'top', 'first', 'last' );
+	}
+
+	@include mm_navbar_colors_tabs;
+}

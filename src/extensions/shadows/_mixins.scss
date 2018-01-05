@@ -1,0 +1,19 @@
+@mixin mm_pageshadow_colors( $cls: "",
+	$pageShadow: $mm_pageShadow
+) {
+	#{$cls}.mm-menu_shadow-page
+	{
+		&:after
+		{
+			box-shadow: $pageShadow;
+		}
+	}
+}
+@mixin mm_panelshadow_colors( $cls: "",
+	$panelShadow: $mm_panelShadow
+) {
+	#{$cls}.mm-menu_shadow-panels .mm-panel
+	{
+		box-shadow: $panelShadow;
+	}
+}

@@ -37,10 +37,7 @@
 			{
 				opts = {};
 			}
-			if ( opts.position == 'top' || opts.position == 'bottom' )
-			{
-				opts.zposition = 'front';
-			}
+
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
 
@@ -54,17 +51,8 @@
 			//	Setup the menu
 			this.vars.opened = false;
 			
-			var clsn = [ _c.offcanvas ];
+			var clsn = [ _c.menu + '_offcanvas' ];
 
-			//	position classes
-			if ( opts.position != 'left' )
-			{
-				clsn.push( _c.mm( opts.position ) );
-			}
-			if ( opts.zposition != 'back' )
-			{
-				clsn.push( _c.mm( opts.zposition ) );
-			}
 
 			//	support classes
 			if ( !$[ _PLUGIN_ ].support.csstransforms )
@@ -110,40 +98,8 @@
 								function()
 								{
 									that.open();
-								},1000
+								}, 1000
 							);
-						}
-					}
-				}
-			);
-
-
-			//	Add extension classes to <html>
-			this.bind( 'initExtensions:after',
-				function()
-				{
-					var exts = [ _c.mm( 'widescreen' ), _c.mm( 'iconbar' )];
-					for ( var e = 0; e < exts.length; e++ )
-					{
-						for ( var mdia in this.opts.extensions )
-						{
-							if ( this.opts.extensions[ mdia ].indexOf( exts[ e ] ) > -1 )
-							{
-								(function( mdia, e ) {
-									that.matchMedia( mdia,
-										function()
-										{
-											glbl.$html.addClass( exts[ e ] );
-										},
-										function()
-										{
-											glbl.$html.removeClass( exts[ e ] );
-										}
-									);
-								})( mdia, e );
-
-								break;
-							}
 						}
 					}
 				}
@@ -179,7 +135,7 @@
 			_d = $[ _PLUGIN_ ]._d;
 			_e = $[ _PLUGIN_ ]._e;
 
-			_c.add( 'offcanvas slideout blocking modal background opening blocker page no-csstransforms3d' );
+			_c.add( 'slideout page no-csstransforms3d' );
 			_d.add( 'style' );
 		},
 
@@ -199,11 +155,11 @@
 			{
 				if ( $a.is( '[href="#' + id + '"]' ) )
 				{
-
 					//	Opening this menu from within this menu
-					//		-> Do nothing
+					//		-> Open menu
 					if ( inMenu )
 					{
+						this.open();
 						return true;
 					}
 
@@ -255,8 +211,8 @@
 
 	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		position		: 'left',
-		zposition		: 'back',
+		// position		: 'left',
+		// zposition		: 'back',
 		blockUI			: true,
 		moveBackground	: true
 	};
@@ -314,28 +270,20 @@
 		//	Trigger window-resize to measure height
 		glbl.$wndw.trigger( _e.resize + '-' + _ADDON_, [ true ] );
 
-		var clsn = [ _c.opened ];
+		var clsn = [ _c.wrapper + '_opened' ];
 
 		//	Add options
 		if ( opts.blockUI )
 		{
-			clsn.push( _c.blocking );
+			clsn.push( _c.wrapper + '_blocking' );
 		}
 		if ( opts.blockUI == 'modal' )
 		{
-			clsn.push( _c.modal );
+			clsn.push( _c.wrapper + '_modal' );
 		}
 		if ( opts.moveBackground )
 		{
-			clsn.push( _c.background );
-		}
-		if ( opts.position != 'left' )
-		{
-			clsn.push( _c.mm( this.opts[ _ADDON_ ].position ) );
-		}
-		if ( opts.zposition != 'back' )
-		{
-			clsn.push( _c.mm( this.opts[ _ADDON_ ].zposition ) );
+			clsn.push( _c.wrapper + '_background' );
 		}
 
 		glbl.$html.addClass( clsn.join( ' ' ) );
@@ -349,7 +297,7 @@
         	}, this.conf.openingInterval
         );
 
-		this.$menu.addClass( _c.opened );
+		this.$menu.addClass( _c.menu + '_opened' );
 	};
 
 	$[ _PLUGIN_ ].prototype._openFinish = function()
@@ -366,7 +314,7 @@
 
 		//	Opening
 		this.trigger( 'open:start' );
-		glbl.$html.addClass( _c.opening );
+		glbl.$html.addClass( _c.wrapper + '_opening' );
 	};
 
 	$[ _PLUGIN_ ].prototype.close = function()
@@ -384,15 +332,13 @@
 		this.__transitionend( glbl.$page.first(),
 			function()
 			{
-				that.$menu.removeClass( _c.opened );
+				that.$menu.removeClass( _c.menu + '_opened' );
 
 				var clsn = [
-					_c.opened,
-					_c.blocking,
-					_c.modal,
-					_c.background,
-					_c.mm( that.opts[ _ADDON_ ].position ),
-					_c.mm( that.opts[ _ADDON_ ].zposition )
+					_c.wrapper + '_opened',
+					_c.wrapper + '_blocking',
+					_c.wrapper + '_modal',
+					_c.wrapper + '_background'
 				];
 
 				glbl.$html.removeClass( clsn.join( ' ' ) );
@@ -414,7 +360,7 @@
 		//	Closing
 		this.trigger( 'close:start' );
 
-		glbl.$html.removeClass( _c.opening );
+		glbl.$html.removeClass( _c.wrapper + '_opening' );
 
 		this.trigger( 'close:after' );
 	};
@@ -422,7 +368,7 @@
 	$[ _PLUGIN_ ].prototype.closeAllOthers = function()
 	{
 		glbl.$body
-			.find( '.' + _c.menu + '.' + _c.offcanvas )
+			.find( '.' + _c.menu + '_offcanvas' )
 			.not( this.$menu )
 			.each(
 				function()
@@ -479,7 +425,7 @@
 			.on(  _e.keydown + '-' + _ADDON_,
 				function( e )
 				{
-					if ( glbl.$html.hasClass( _c.opened ) )
+					if ( glbl.$html.hasClass( _c.wrapper + '_opened' ) )
 					{
 						if ( e.keyCode == 9 )
 						{
@@ -499,7 +445,7 @@
 				{
 					if ( glbl.$page.length == 1 )
 					{
-						if ( force || glbl.$html.hasClass( _c.opened ) )
+						if ( force || glbl.$html.hasClass( _c.wrapper + '_opened' ) )
 						{
 							var nh = glbl.$wndw.height();
 							if ( force || nh != _h )
@@ -524,7 +470,7 @@
 
 		if ( !glbl.$blck )
 		{
-			glbl.$blck = $( '<div id="' + _c.blocker + '" class="' + _c.slideout + '" />' );
+			glbl.$blck = $( '<div class="' + _c.page + '__blocker ' + _c.slideout + '" />' );
 		}
 
 		glbl.$blck
@@ -543,7 +489,7 @@
 				function( e )
 				{
 					e.preventDefault();
-					if ( !glbl.$html.hasClass( _c.modal ) )
+					if ( !glbl.$html.hasClass( _c.wrapper + '_modal' ) )
 					{
 						that.closeAllOthers();
 						that.close();

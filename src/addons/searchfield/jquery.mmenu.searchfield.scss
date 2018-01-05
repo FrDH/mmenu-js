@@ -1,102 +1,132 @@
-/*
-	jQuery.mmenu searchfield addon CSS
-*/
+/*	
+ * jQuery mmenu searchfield add-on
+ * mmenu.frebsite.nl
+ *
+ * Copyright (c) Fred Heusschen
+ */
 
-@import "../../scss/import";
+@import "../../mixins";
+@import "../../variables";
 
-$mm_searchfieldHeight: $mm_navbarHeight - $mm_padding - 4 !default;
 
-.mm-search,
-.mm-search input
+@if ( $mm_opt_searchfield )
 {
-	box-sizing: border-box;
-}
+	.mm-searchfield
+	{
+		height: $mm_navbarHeight;
+		padding: 0;
+		display: flex;
 
-.mm-search
-{
-	height: $mm_navbarHeight;
-	padding: ( $mm_padding / 2 + 2 ) $mm_padding 0 $mm_padding;
-	position: relative;
+		input
+		{
+			border: none !important;
+			outline: none !important;
+			box-shadow: none !important;
+			border-radius: 4px;
+			font: inherit;
+			font-size: inherit;
+			line-height: $mm_searchfieldHeight;
+			display: block;
+			box-sizing: border-box;
+			width: 100%;
+			max-width: 100%;
+			height: $mm_searchfieldHeight;
+			min-height: $mm_searchfieldHeight;
+			max-height: $mm_searchfieldHeight;
+			margin: 0;
+			padding: 0 $mm_padding;
+		}
+		input::-ms-clear
+		{
+			display: none;
+		}
+	}
+	.mm-searchfield__input
+	{
+		padding: ( $mm_padding / 2 + 2 ) $mm_padding 0 $mm_padding;
+		position: relative;
+	}
 
-	input
+	.mm-panel__noresultsmsg
 	{
-		border: none !important;
-		outline: none !important;
-		box-shadow: none !important;
-		border-radius: 4px;
-		font: inherit;
-		font-size: $mm_fontSize;
-		line-height: $mm_searchfieldHeight;
-		display: block;
-		box-sizing: border-box;
-		width: 100%;
-		height: $mm_searchfieldHeight;
-		min-height: $mm_searchfieldHeight;
-		max-height: $mm_searchfieldHeight;
-		margin: 0;
-		padding: 0 $mm_padding;
-	}
-	input::-ms-clear
-	{
-		display: none;
+		text-align: center;
+		font-size: 150%;
+		padding: $mm_btnSize 0;
 	}
 
-	.mm-clear,
-	.mm-next
+	@if ( $mm_opt_searchfield_btn )
 	{
-		right: 0;
+		.mm-searchfield__btn
+		{
+			right: 0;
+			top: 0;
+		}
 	}
-}
 
-.mm-panel
-{
-	> .mm-search
+	@if ( $mm_opt_searchfield_searchpanel )
 	{
-		width: 100%;
-		position: absolute;
-		top: 0;
-		left: 0;
+		.mm-searchfield__input
+		{
+			flex: 1;
+			box-sizing: border-box;
+			width: 100%;
+			max-width: 100%;
+		}
+		.mm-searchfield__cancel
+		{
+			text-decoration: none;
+			line-height: $mm_navbarHeight;
+			display: block;
+			padding-right: $mm_padding;
+			margin-right: -100px;
+
+			transition: margin $mm_transitionDuration $mm_transitionFunction;
+		}
+		.mm-searchfield__cancel-active
+		{
+			margin-right: 0;
+		}
 	}
-	&.mm-hassearch
+
+	@if ( $mm_opt_searchfield_panel )
 	{
-		padding-top: $mm_navbarHeight;
-	
-		&.mm-hasnavbar
+		.mm-panel > .mm-searchfield
+		{
+			width: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+
+		.mm-panel_has-searchfield
+		{
+			padding-top: $mm_navbarHeight;
+		}
+		.mm-panel_has-navbar.mm-panel_has-searchfield
 		{
 			padding-top: $mm_navbarHeight * 2;
 			
-			> .mm-search
+			> .mm-searchfield
 			{
 				top: $mm_navbarHeight;
 			}
 		}
 	}
-}
-.mm-noresultsmsg
-{
-	text-align: center;
-	font-size: round( $mm_fontSize * 1.5 );
-	padding: $mm_btnSize 0;
-}
-.mm-noresults
-{
-	.mm-indexer
+
+	@if ( $mm_opt_buttons )
 	{
-		display: none !important;
+		.mm-listitem_nosubitems > .mm-btn_next
+		{
+			display: none;
+
+			+ a, 
+			+ span
+			{
+				padding-right: $mm_padding;
+			}
+		}
 	}
+
+
+	@include mm_searchfield_colors;
 }
-
-li.mm-nosubresults > a.mm-next
-{
-	display: none;
-
-	+ a, 
-	+ span
-	{
-		padding-right: $mm_padding;
-	}
-}
-
-
-
-@include mm_colors_searchfield;

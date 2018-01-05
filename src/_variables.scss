@@ -1,0 +1,168 @@
+$mm_opt_offcanvas			: true !default;
+$mm_opt_offcanvas_blocker	: $mm_opt_offcanvas !default;
+
+$mm_menuWidth				: 0.8 !default;
+$mm_menuMinWidth			: 140px !default;
+$mm_menuMaxWidth			: 440px !default;
+
+$mm_menuHeight				: 0.8 !default;
+$mm_menuMinHeight			: 140px !default;
+$mm_menuMaxHeight			: 880px !default;
+
+//	Opt in CSS
+$mm_opt_navbar				: true !default;
+$mm_opt_listviews			: true !default;
+$mm_opt_listviews_divider	: $mm_opt_listviews !default;
+$mm_opt_listviews_spacer	: $mm_opt_listviews !default;
+$mm_opt_vertical			: $mm_opt_listviews !default;
+$mm_opt_buttons				: $mm_opt_listviews or $mm_opt_navbar !default;
+
+//	Animations
+$mm_transitionDuration 			: 0.4s !default;
+$mm_transitionFunction 			: ease !default;
+
+//	Colors
+$mm_backgroundColor				: #f3f3f3 !default;
+$mm_borderColor					: rgba( #000, 0.1 ) !default;
+$mm_dimmedTextColor				: rgba( #000, 0.3 ) !default;
+$mm_emphasizedBackgroundColor	: rgba( #fff, 0.4 ) !default;
+$mm_highlightedBackgroundColor	: rgba( #000, 0.05 ) !default;
+$mm_navbarColor					: rgba( #000, 0.3 ) !default;
+$mm_textColor					: rgba( #000, 0.75 ) !default;
+
+//	Sizes
+$mm_padding						: 10px !default;
+
+$mm_btnSize						: 40px !default;
+$mm_listitemIndent				: $mm_padding * 2 !default;
+$mm_listitemPadding				: $mm_padding !default;
+$mm_panelPadding				: $mm_padding * 2 !default;
+$mm_subopenWidth				: $mm_btnSize + $mm_padding !default;
+$mm_subpanelOffset				: 30% !default;
+
+$mm_dividerFontSize				: 75% !default;
+$mm_navbarHeight				: $mm_btnSize !default;
+$mm_opt_screenreader	: true;
+
+$mm_opt_autoheight	: true !default;
+$mm_opt_columns	: true !default;
+$mm_opt_counters	: true !default;
+
+$mm_counterWidth 	: $mm_btnSize !default;
+$mm_opt_dividers 		: true !default;
+$mm_opt_dividers_light	: true !default;
+$mm_opt_dividers_fixed	: true !default;
+
+$mm_opt_drag	: true !default;
+
+$mm_opt_dropdown		: true !default;
+$mm_opt_dropdown_tip	: $mm_opt_dropdown !default;
+
+$mm_dropdownShadow		: 0 2px 10px rgba( #000, 0.3 ) !default;
+$mm_dropdownTipX		: 20px !default;
+$mm_dropdownTipY		: 10px !default;
+$mm_opt_iconbar			: true !default;
+$mm_opt_iconbar_tabs	: $mm_opt_iconbar !default;
+
+$mm_iconbarSizes		: [ 40, 60, 80 ] !default;
+$mm_opt_iconpanels			: true !default;
+$mm_opt_iconpanels_blocker	: $mm_opt_iconpanels !default;
+
+$mm_iconpanelSizes			: [ 40, 60, 80 ] !default;
+
+$mm_opt_keyboardnavigation	: true !default;
+
+$mm_opt_navbars					: true !default;
+$mm_opt_navbars_top				: $mm_opt_navbars !default;
+$mm_opt_navbars_bottom			: $mm_opt_navbars !default;
+$mm_opt_navbars_breadcrumbs		: $mm_opt_navbars !default;
+$mm_opt_navbars_tabs			: $mm_opt_navbars !default;
+
+$mm_breadcrumbPadding			: round( $mm_padding / 4 ) !default;
+$mm_navbartabsBackgroundColor	: $mm_emphasizedBackgroundColor !default;
+$mm_opt_rtl	: true !default;
+
+$mm_opt_searchfield				: true !default;
+$mm_opt_searchfield_btn			: $mm_opt_searchfield !default;
+$mm_opt_searchfield_panel		: $mm_opt_searchfield !default;
+$mm_opt_searchfield_searchpanel : $mm_opt_searchfield !default;
+
+$mm_inputBackgroundColor		: rgba( #000, 0.05 ) !default;
+$mm_searchfieldHeight 			: $mm_navbarHeight - $mm_padding - 4 !default;
+$mm_opt_sectionindexer		: true !default;
+
+$mm_sectionIndexerWidth		: 20px !default;
+$mm_opt_setselected	: true !default;
+
+$mm_opt_sidebar				: true !default;
+$mm_opt_sidebar_collapsed	: $mm_opt_sidebar !default;
+$mm_opt_sidebar_expanded	: $mm_opt_sidebar !default;
+$mm_opt_sidebar_blocker		: $mm_opt_sidebar !default;
+
+$mm_sidebarCollapsedSizes	: [40, 60, 80] !default;
+$mm_sidebarExpandedSizes	: [25, 30, 35] !default;
+$mm_opt_toggles			: true !default;
+$mm_opt_checks			: true !default;
+
+$mm_toggleCheckedColor	: #4bd963 !default;
+$mm_toggleHeight		: $mm_btnSize - $mm_padding !default;
+$mm_toggleWidth			: ( $mm_toggleHeight * 2 ) - $mm_padding !default;
+$mm_checkHeight			: $mm_btnSize - $mm_padding !default;
+$mm_checkWidth			: $mm_btnSize - $mm_padding !default;
+$mm_opt_borderstyle			: true !default;
+$mm_opt_borderstyle_none	: $mm_opt_borderstyle !default;
+$mm_opt_borderstyle_full	: $mm_opt_borderstyle !default;
+$mm_opt_borderstyle_offset	: $mm_opt_borderstyle !default;
+
+$mm_opt_effects					: true !default;
+$mm_opt_effects_menuzoom		: $mm_opt_effects !default;
+$mm_opt_effects_menuslide		: $mm_opt_effects !default;
+$mm_opt_effects_menufade		: $mm_opt_effects !default;
+$mm_opt_effects_panelsnone		: $mm_opt_effects !default;
+$mm_opt_effects_panelszoom		: $mm_opt_effects !default;
+$mm_opt_effects_panelsslide		: $mm_opt_effects !default;
+$mm_opt_effects_listitemsslide	: $mm_opt_effects !default;
+$mm_opt_effects_listitemsfade	: $mm_opt_effects !default;
+$mm_opt_effects_listitemsdrop	: $mm_opt_effects !default;
+
+$mm_zoomScaleDown				: 0.7 !default;
+$mm_zoomScaleUp					: 1.5 !default;
+$mm_opt_fullscreen	: true !default;
+$mm_opt_listview			: true !default;
+$mm_opt_listview_sizes		: $mm_opt_listview !default;
+$mm_opt_listview_justify	: $mm_opt_listview !default;
+$mm_opt_listview_inset		: $mm_opt_listview !default;
+
+$mm_listitemSizes			: [30, 50, 60] !default;
+$mm_opt_multiline	: true !default;
+$mm_opt_pagedim				: true !default;
+$mm_opt_pagedim_default		: $mm_opt_pagedim !default;
+$mm_opt_pagedim_black		: $mm_opt_pagedim !default;
+$mm_opt_pagedim_white		: $mm_opt_pagedim !default;
+
+$mm_pagedimOpacity 			: 0.3 !default;
+$mm_opt_popup		: true !default;
+
+$mm_popupShadow		: 0 2px 10px rgba( #000, 0.3 ) !default;
+
+$mm_opt_positioning			: true !default;
+$mm_opt_positioning_right	: $mm_opt_positioning !default;
+$mm_opt_positioning_top		: $mm_opt_positioning !default;
+$mm_opt_positioning_bottom	: $mm_opt_positioning !default;
+$mm_opt_positioning_front	: $mm_opt_positioning !default;
+$mm_opt_shadows			: true !default;
+$mm_opt_shadows_page	: $mm_opt_shadows !default;
+$mm_opt_shadows_panels	: $mm_opt_shadows !default;
+
+$mm_pageShadow			: 0 0 10px rgba( #000, 0.3 ) !default;
+$mm_panelShadow			: 0 0 10px rgba( #000, 0.3 ) !default;
+$mm_opt_themes			: true !default;
+$mm_opt_themes_white	: $mm_opt_themes !default;
+$mm_opt_themes_dark		: $mm_opt_themes !default;
+$mm_opt_themes_black	: $mm_opt_themes !default;
+$mm_opt_tileview	: true !default;
+$mm_opt_tileview_xs	: $mm_opt_tileview !default;
+$mm_opt_tileview_s	: $mm_opt_tileview !default;
+$mm_opt_tileview_m	: $mm_opt_tileview !default;
+$mm_opt_tileview_l	: $mm_opt_tileview !default;
+$mm_opt_tileview_xl	: $mm_opt_tileview !default;

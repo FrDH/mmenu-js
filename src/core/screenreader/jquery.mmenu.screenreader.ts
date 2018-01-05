@@ -54,7 +54,7 @@
 						this.bind( 'close:start'		, function() { this.trigger( 'close:start:sr-aria' 		) });
 						this.bind( 'close:finish'		, function() { this.trigger( 'close:finish:sr-aria' 	) });
 						this.bind( 'open:start'			, function() { this.trigger( 'open:start:sr-aria' 		) });
-						this.bind( 'open:finish'		, function() { this.trigger( 'open:finish:sr-aria' 		) });
+						this.bind( 'initOpened:after'	, function() { this.trigger( 'initOpened:after:sr-aria'	) });
 					}
 				);
 
@@ -87,7 +87,7 @@
 
 						var $shown = $panel.add(
 							$panel
-								.find( '.' + _c.vertical + '.' + _c.opened )
+								.find( '.' + _c.listitem + '_vertical .' + _c.listitem + '_opened' )
 								.children( '.' + _c.panel )
 						);
 
@@ -108,7 +108,7 @@
 					function( $panels )
 					{
 						var $btns = $panels
-							.find( '.' + _c.prev + ', .' + _c.next )
+							.find( '.' + _c.btn )
 							.each(
 								function()
 								{
@@ -126,7 +126,7 @@
 					function( $panel )
 					{
 						var $navbar = $panel.children( '.' + _c.navbar );
-						this.__sr_aria( $navbar, 'hidden', !$panel.hasClass( _c.hasnavbar ) );
+						this.__sr_aria( $navbar, 'hidden', !$panel.hasClass( _c.panel + '_has-navbar' ) );
 					}
 				);
 
@@ -141,7 +141,7 @@
 						
 							var $span = $panel
 								.find( '.' + _c.listview )
-								.find( '.' + _c.fullsubopen )
+								.find( '.' + _c.btn + '_fullwidth' )
 								.parent()
 								.children( 'span' );
 
@@ -157,7 +157,7 @@
 							function( $panel )
 							{
 								var $navbar = $panel.children( '.' + _c.navbar ),
-									hidden  = ( $navbar.children( '.' + _c.prev ).length ) ? true : false;
+									hidden  = ( $navbar.children( '.' + _c.btn + '_prev' ).length ) ? true : false;
 
 								this.__sr_aria( $navbar.children( '.' + _c.title ), 'hidden', hidden );
 							}
@@ -195,7 +195,7 @@
 							txt += ' (' + _text + ')';
 						}
 
-						$navbar.children( '.' + _c.prev ).html( this.__sr_text( txt ) );
+						$navbar.children( '.' + _c.btn + '_prev' ).html( this.__sr_text( txt ) );
 					}
 				);
 
@@ -207,10 +207,10 @@
 						var $parent = $panel.data( _d.parent );
 						if ( $parent && $parent.length )
 						{
-							var $next = $parent.children( '.' + _c.next ),
+							var $next = $parent.children( '.' + _c.btn + '_next' ),
 								_text = $next.nextAll( 'span, a' ).first().text();
 
-							var txt = $[ _PLUGIN_ ].i18n( conf.text[ $next.parent().is( '.' + _c.vertical ) ? 'toggleSubmenu' : 'openSubmenu' ] );
+							var txt = $[ _PLUGIN_ ].i18n( conf.text[ $next.parent().is( '.' + _c.listitem + '_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
 
 							if ( _text )
 							{
@@ -260,6 +260,12 @@
 		$elem
 			.prop( 'aria-' + attr, value )
 			[ value ? 'attr' : 'removeAttr' ]( 'aria-' + attr, value );
+	};
+	$[ _PLUGIN_ ].prototype.__sr_role = function( $elem, value )
+	{
+		$elem
+			.prop( 'role', value )
+			[ value ? 'attr' : 'removeAttr' ]( 'role', value );
 	};
 	$[ _PLUGIN_ ].prototype.__sr_text = function( text )
 	{
