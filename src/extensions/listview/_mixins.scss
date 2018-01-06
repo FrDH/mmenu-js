@@ -9,7 +9,8 @@
 			> a:not( .mm-btn_next ),
 			> span
 			{
-				padding: $pad $mm_listitemPadding $pad $mm_listitemIndent;
+				padding-top: $pad;
+				padding-bottom: $pad;
 			}
 		}
 		@if ( $mm_opt_buttons )
