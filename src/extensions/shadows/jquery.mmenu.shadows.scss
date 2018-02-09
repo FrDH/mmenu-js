@@ -23,20 +23,25 @@
 			left: 100%;
 			top: -10%;
 			z-index: 100;
-			clip-path: polygon(-20px 0, 0px 0, 0px 100%, -20px 100%);
+			clip-path: polygon(-20px 0, 0 0, 0 100%, -20px 100%);
 		}
 		
-
-	//	TODO position
-		&.mm-menu_position-right:after
+		@if ( $mm_opt_positioning_right )
 		{
-			left: auto;
-			right: 100%;
+			&.mm-menu_position-right:after
+			{
+				left: auto;
+				right: 100%;
+				clip-path: polygon(20px 0, 40px 0, 40px 100%, 20px 100%);
+			}
 		}
-		&.mm-menu_position-front:after
+		@if ( $mm_opt_positioning_front )
 		{
-			content: none;
-			display: none;
+			&.mm-menu_position-front:after
+			{
+				content: none;
+				display: none;
+			}
 		}
 	}
 
