@@ -1,6 +1,6 @@
 {
 	"name"			: "jQuery.mmenu",
-	"version"		: "7.0.2",
+	"version"		: "7.0.3",
 	"main"			: [
 		"dist/jquery.mmenu.all.js",
 		"dist/jquery.mmenu.all.css"

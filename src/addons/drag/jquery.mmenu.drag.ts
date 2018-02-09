@@ -194,21 +194,22 @@
 
 		//	Find menu position from Positioning extension
 		var x = this.opts.extensions.all;
+
 		var position = ( typeof x == 'undefined' )
 			? 'left'
-			: ( x.indexOf( _c.mm( 'position-right' ) ) > -1 )
+			: ( x.indexOf( _c.menu + '_position-right' ) > -1 )
 				? 'right'
-				: ( x.indexOf( _c.mm( 'position-top' ) ) > -1 )
+				: ( x.indexOf( _c.menu + '_position-top' ) > -1 )
 					? 'top'
-					: ( x.indexOf( _c.mm( 'position-bottom' ) ) > -1 )
+					: ( x.indexOf( _c.menu + '_position-bottom' ) > -1 )
 						? 'bottom'
 						: 'left';
 
 		var zposition = ( typeof x == 'undefined' )
 			? 'back'
-			: ( x.indexOf( _c.mm( 'position-top' 	  ) ) > -1 ) ||
-			  ( x.indexOf( _c.mm( 'position-bottom' ) ) > -1 ) ||
-			  ( x.indexOf( _c.mm( 'position-front'  ) ) > -1 )
+			: ( x.indexOf( _c.menu + '_position-top' 	) > -1 ) ||
+			  ( x.indexOf( _c.menu + '_position-bottom' ) > -1 ) ||
+			  ( x.indexOf( _c.menu + '_position-front'  ) > -1 )
 				? 'front'
 				: 'back';
 
