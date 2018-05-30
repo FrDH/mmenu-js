@@ -532,7 +532,7 @@
 								var $child = $panel
 									.children( '.' + _c.listview )
 									.children( 'li' )
-									.children( that.conf.panelNodeType )
+									.children( that.conf.panelNodetype )
 									.add( $panel.children( '.' + that.conf.classNames.panel ) );
 
 								if ( $child.length )
