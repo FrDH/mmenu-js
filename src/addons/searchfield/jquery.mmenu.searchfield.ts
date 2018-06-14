@@ -1,8 +1,6 @@
 /*	
  * jQuery mmenu searchfield add-on
  * mmenu.frebsite.nl
- *
- * Copyright (c) Fred Heusschen
  */
 
 (function( $ ) {
@@ -118,7 +116,7 @@
 							{
 								var $srch = that._initSearchfield( $(this) );
 
-								if ( opts.search )
+								if ( opts.search && $srch.length )
 								{
 									that._initSearching( $srch );
 								}
@@ -272,13 +270,13 @@
 		//	No searchfield in vertical submenus	
 		if ( $wrpr.parent( '.' + _c.listitem + '_vertical' ).length )
 		{
-			return;
+			return $();
 		}
 
 		//	Only one searchfield per panel
 		if (  $wrpr.find( '.' + _c.searchfield ).length )
 		{
-			return;
+			return $();
 		}
 
 

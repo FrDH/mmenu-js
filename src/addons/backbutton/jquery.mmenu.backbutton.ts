@@ -1,8 +1,6 @@
 /*	
  * jQuery mmenu backButton add-on
  * mmenu.frebsite.nl
- *
- * Copyright (c) Fred Heusschen
  */
 
 (function( $ ) {

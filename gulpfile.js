@@ -242,7 +242,12 @@ gulp.task( 'js-compile', function() {
 
 	return gulp.src( files )
 		.pipe( typescript() )
-		.pipe( uglify({ preserveComments: 'license' }) )
+		.pipe( uglify({ 
+			preserveComments: 'license',
+			output: {
+				comments: "/^!/"
+			}
+		}) )
 		.pipe( gulp.dest( outputDir ) );
 });
 
@@ -281,7 +286,12 @@ gulp.task( 'js-translations', [ 'js-concat' ], function() {
 
 		stream = gulp.src( files )
 			.pipe( typescript() )
-			.pipe( uglify({ preserveComments: 'license' }) )
+			.pipe( uglify({
+				preserveComments: 'license',
+				output: {
+					comments: "/^!/"
+				}
+			}) )
 			.pipe( concat( 'jquery.mmenu.' + lang + '.js' ) )
 			.pipe( gulp.dest( outputDir + '/translations/' + lang ) );
 

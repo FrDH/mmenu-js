@@ -1,8 +1,6 @@
 /*	
  * jQuery mmenu RTL add-on
  * mmenu.frebsite.nl
- *
- * Copyright (c) Fred Heusschen
  */
 
 (function( $ ) {

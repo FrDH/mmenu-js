@@ -1,8 +1,6 @@
 /*	
  * jQuery mmenu WordPress wrapper
  * mmenu.frebsite.nl
- *
- * Copyright (c) Fred Heusschen
  */
 
 (function( $ ) {

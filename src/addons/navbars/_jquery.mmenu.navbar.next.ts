@@ -1,8 +1,6 @@
 /*
  * jQuery mmenu navbar add-on next content
  * mmenu.frebsite.nl
- *
- * Copyright (c) Fred Heusschen
  */
 
 (function( $ ) {

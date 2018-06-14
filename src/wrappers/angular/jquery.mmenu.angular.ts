@@ -1,8 +1,6 @@
 /*	
  * jQuery mmenu Angular wrapper
  * mmenu.frebsite.nl
- *
- * Copyright (c) Fred Heusschen
  */
 
 (function( $ ) {

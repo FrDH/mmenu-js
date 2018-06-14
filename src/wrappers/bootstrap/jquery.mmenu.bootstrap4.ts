@@ -1,8 +1,6 @@
 /*	
  * jQuery mmenu Bootstrap 4 wrapper
  * mmenu.frebsite.nl
- *
- * Copyright (c) Fred Heusschen
  */
 
 (function( $ ) {
