@@ -84,7 +84,7 @@
 					{
 						e.preventDefault();
 						e.stopImmediatePropagation();
-						that.open();
+						that[ that.vars.opened ? 'close' : 'open' ]();
 					}
 				);
 		}

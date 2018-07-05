@@ -22,27 +22,35 @@
 			this.conf.clone = true;
 
 			//	After initMenu, filter and refactor HTML for tabs, pills and navbars
-			this.opts.initMenu = function( $menu )
+			this.opts.hooks = this.opts.hooks || {};
+			
+			var _type: string 	= '',
+				types: string[]	= [ 'nav-tabs', 'nav-pills', 'navbar-nav' ];
+
+			for ( var t = 0; t < types.length; t++ )
 			{
-				var _type: string 	= '',
-					types: string[]	= [ 'nav-tabs', 'nav-pills', 'navbar-nav' ];
-
-				for ( var t = 0; t < types.length; t++ )
+				if ( this.$menu.find( '.' + types[ t ] ).length )
 				{
-					if ( $menu.find( '.' + types[ t ] ).length )
-					{
-						_type = types[ t ];
-						break;
-					}
+					_type = types[ t ];
+					break;
 				}
-
-				if ( _type.length )
+			}
+			if ( _type.length )
+			{
+				this.opts.hooks[ 'initMenu:before' ] = function()
+				{
+					if ( _type == 'navbar-nav' )
+					{
+						this.$menu.wrapInner( '<div />' );
+					}
+				};
+				this.opts.hooks[ 'initMenu:after' ] = function()
 				{
 					init.menu.call( this );
 					init.dropdown.call( this );
 					init[ _type.split( 'nav-' ).join( '' ).split( '-nav' ).join( '' ) ].call( this );
-				}
-			};
+				};
+			}
 		}
 	};
 
@@ -52,8 +60,9 @@
 		menu: function()
 		{
 			this.$menu
-				.children()
+				.find( '.nav' )
 				.removeClass( 'nav' )
+				.end()
 				.find( '.sr-only' ).remove().end()
 				.find( '.divider:empty' ).remove();
 
@@ -87,13 +96,13 @@
 		tabs: function()
 		{
 			this.$menu
-				.children()
+				.find( '.nav-tabs' )
 				.removeClass( 'nav-tabs' );
 		},
 		pills: function()
 		{
 			this.$menu
-				.children()
+				.find( '.nav-pills' )
 				.removeClass( 'nav-pills' );
 		},
 		navbar: function()
@@ -102,9 +111,7 @@
 
 			this.$menu
 				.removeClass( 'collapse navbar-collapse' )
-				.wrapInner( '<div />' )
-				.children()
-				.children()
+				.find( '[class*="navbar-"]' )
 				.removeClass( 'navbar-left navbar-right navbar-nav navbar-text navbar-btn' );
 
 			var $form = this.$menu.find( '.navbar-form' );
