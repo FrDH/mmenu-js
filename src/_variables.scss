@@ -1,21 +1,8 @@
-$mm_opt_offcanvas			: true !default;
-$mm_opt_offcanvas_blocker	: $mm_opt_offcanvas !default;
-
-$mm_menuWidth				: 0.8 !default;
-$mm_menuMinWidth			: 140px !default;
-$mm_menuMaxWidth			: 440px !default;
-
-$mm_menuHeight				: 0.8 !default;
-$mm_menuMinHeight			: 140px !default;
-$mm_menuMaxHeight			: 880px !default;
-
 //	Opt in CSS
-$mm_opt_navbar				: true !default;
-$mm_opt_listviews			: true !default;
-$mm_opt_listviews_divider	: $mm_opt_listviews !default;
-$mm_opt_listviews_spacer	: $mm_opt_listviews !default;
-$mm_opt_vertical			: $mm_opt_listviews !default;
-$mm_opt_buttons				: $mm_opt_listviews or $mm_opt_navbar !default;
+$mm_opt_rtl 					: true !default;
+$mm_opt_listviews_divider		: true !default;
+$mm_opt_listviews_spacer		: true !default;
+$mm_opt_vertical				: true !default;
 
 //	Animations
 $mm_transitionDuration 			: 0.4s !default;
@@ -32,17 +19,34 @@ $mm_textColor					: rgba( #000, 0.75 ) !default;
 
 //	Sizes
 $mm_padding						: 10px !default;
+$mm_lineHeight					: 20px !default;
 
-$mm_btnSize						: 40px !default;
+$mm_btnSize						: 44px !default;
+
+$mm_listitemSize				: $mm_btnSize !default;
 $mm_listitemIndent				: $mm_padding * 2 !default;
-$mm_listitemPadding				: $mm_padding !default;
+$mm_subopenWidth				: $mm_btnSize + $mm_padding !default; // mag weg?
+
+$mm_navbarSize					: $mm_btnSize !default;
+
 $mm_panelPadding				: $mm_padding * 2 !default;
-$mm_subopenWidth				: $mm_btnSize + $mm_padding !default;
 $mm_subpanelOffset				: 30% !default;
 
-$mm_dividerFontSize				: 75% !default;
-$mm_navbarHeight				: $mm_btnSize !default;
+
+$mm_opt_offcanvas			: true !default;
+$mm_opt_offcanvas_blocker	: $mm_opt_offcanvas !default;
+
+$mm_menuWidth				: 0.8 !default;
+$mm_menuMinWidth			: 240px !default;
+$mm_menuMaxWidth			: 440px !default;
+
+$mm_menuHeight				: 0.8 !default;
+$mm_menuMinHeight			: 140px !default;
+$mm_menuMaxHeight			: 880px !default;
+
 $mm_opt_screenreader	: true;
+
+
 
 $mm_opt_autoheight	: true !default;
 $mm_opt_columns	: true !default;
@@ -64,11 +68,26 @@ $mm_dropdownTipY		: 10px !default;
 $mm_opt_iconbar			: true !default;
 $mm_opt_iconbar_tabs	: $mm_opt_iconbar !default;
 
-$mm_iconbarSizes		: [ 40, 60, 80 ] !default;
+$mm_iconbarSize			: $mm_btnSize !default;
+
+
+//	deprecated
+$mm_opt_iconbar_sizes	: $mm_opt_iconbar !default;
+
+//	deprecated in favor of using scc var --mm-iconbar-size
+$mm_iconbarSizes		: [ 60, 80 ] !default;
+
 $mm_opt_iconpanels			: true !default;
 $mm_opt_iconpanels_blocker	: $mm_opt_iconpanels !default;
 
-$mm_iconpanelSizes			: [ 40, 60, 80 ] !default;
+$mm_iconpanelSize 			: $mm_btnSize !default;
+
+
+//	deprecated
+$mm_opt_iconpael_sizes		: $mm_opt_iconpanels !default;
+
+//	deprecated in favor of using css var --mm-iconpanel-size
+$mm_iconpanelSizes			: [ 60, 80 ] !default;
 
 $mm_opt_keyboardnavigation	: true !default;
 
@@ -78,9 +97,8 @@ $mm_opt_navbars_bottom			: $mm_opt_navbars !default;
 $mm_opt_navbars_breadcrumbs		: $mm_opt_navbars !default;
 $mm_opt_navbars_tabs			: $mm_opt_navbars !default;
 
-$mm_breadcrumbPadding			: round( $mm_padding / 4 ) !default;
+$mm_breadcrumbPadding			: 10px !default;
 $mm_navbartabsBackgroundColor	: $mm_emphasizedBackgroundColor !default;
-$mm_opt_rtl	: true !default;
 
 $mm_opt_searchfield				: true !default;
 $mm_opt_searchfield_btn			: $mm_opt_searchfield !default;
@@ -88,10 +106,11 @@ $mm_opt_searchfield_panel		: $mm_opt_searchfield !default;
 $mm_opt_searchfield_searchpanel : $mm_opt_searchfield !default;
 
 $mm_inputBackgroundColor		: rgba( #000, 0.05 ) !default;
-$mm_searchfieldHeight 			: $mm_navbarHeight - $mm_padding - 4 !default;
+
 $mm_opt_sectionindexer		: true !default;
 
-$mm_sectionIndexerWidth		: 20px !default;
+$mm_sectionIndexerSize 		: 20px !default;
+
 $mm_opt_setselected	: true !default;
 
 $mm_opt_sidebar				: true !default;
@@ -99,8 +118,15 @@ $mm_opt_sidebar_collapsed	: $mm_opt_sidebar !default;
 $mm_opt_sidebar_expanded	: $mm_opt_sidebar !default;
 $mm_opt_sidebar_blocker		: $mm_opt_sidebar !default;
 
-$mm_sidebarCollapsedSizes	: [40, 60, 80] !default;
+$mm_sidebarCollapsedSize 	: $mm_btnSize !default;
+$mm_sidebarExpandedSize 	: $mm_menuMaxWidth !default;
+
+//	deprecated in favor of usin css var --mm-sidebar-collapsed-size
+$mm_sidebarCollapsedSizes	: [60, 80] !default;
+
+//	deprecated in favor of usin css var --mm-sidebar-expanded-size
 $mm_sidebarExpandedSizes	: [25, 30, 35] !default;
+
 $mm_opt_toggles			: true !default;
 $mm_opt_checks			: true !default;
 
@@ -128,12 +154,21 @@ $mm_opt_effects_listitemsdrop	: $mm_opt_effects !default;
 $mm_zoomScaleDown				: 0.7 !default;
 $mm_zoomScaleUp					: 1.5 !default;
 $mm_opt_fullscreen	: true !default;
+
+$mm_fullscreen_full		: 1;
+$mm_fullscreen_min		: 140px;
+$mm_fullscreen_max		: 10000px;
 $mm_opt_listview			: true !default;
-$mm_opt_listview_sizes		: $mm_opt_listview !default;
 $mm_opt_listview_justify	: $mm_opt_listview !default;
 $mm_opt_listview_inset		: $mm_opt_listview !default;
 
+
+//	deprecated
+$mm_opt_listview_sizes		: $mm_opt_listview !default;
+
+//	deprecated in favor of using scc var --mm-listitem-size
 $mm_listitemSizes			: [30, 50, 60] !default;
+
 $mm_opt_multiline	: true !default;
 $mm_opt_pagedim				: true !default;
 $mm_opt_pagedim_default		: $mm_opt_pagedim !default;

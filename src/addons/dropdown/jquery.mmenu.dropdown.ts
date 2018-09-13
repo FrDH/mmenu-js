@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu dropdown add-on
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
@@ -201,7 +196,10 @@
 					}
 				}
 
-				css[ _max ] = Math.min( conf[ _siz ].max, max );
+				if ( opts.fitViewport )
+				{
+					css[ _max ] = Math.min( conf[ _siz ].max, max );
+				}
 
 				return [ css, cls ];
 			};
@@ -274,6 +272,7 @@
 	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		drop 		: false,
+		fitViewport	: true,
 		event		: 'click',
 		position	: {},
 		tip			: true

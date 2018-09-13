@@ -1,0 +1,7 @@
+@if ( $mm_opt_rtl )
+{
+	[dir="rtl"] .mm-menu
+	{
+		direction: rtl;
+	}
+}

@@ -1,0 +1,43 @@
+@if ( $mm_opt_navbars_breadcrumbs )
+{
+	.mm-navbar__breadcrumbs
+	{
+		@include mm_ellipsis;
+
+		-webkit-overflow-scrolling: touch;
+		overflow-x: auto;
+
+		text-align: left;
+		padding: 0 0 0 $mm_panelPadding - $mm_breadcrumbPadding;
+
+		> *
+		{
+			display: inline-block;
+			padding: $mm_breadcrumbPadding;
+
+			padding-top: ($mm_navbarSize - $mm_lineHeight) * .5; //	IE11 fallback
+			padding-top: calc( (var( --mm-navbar-size ) - var( --mm-line-height )) * .5 );
+
+			padding-bottom: ($mm_navbarSize - $mm_lineHeight) * .5; //	IE11 fallback
+			padding-bottom: calc( (var( --mm-navbar-size ) - var( --mm-line-height )) * .5 );
+		}
+		> a
+		{
+			text-decoration: underline;
+		}
+	}
+
+	.mm-navbar_has-btns 
+	{
+		.mm-navbar__breadcrumbs
+		{
+			margin-left: -$mm_btnSize;
+		}
+
+		.mm-btn:not( .mm-hidden ) + .mm-navbar__breadcrumbs
+		{
+			margin-left: 0;
+			padding-left: 0;
+		}
+	}
+}

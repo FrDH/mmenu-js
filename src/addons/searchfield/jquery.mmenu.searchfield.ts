@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu searchfield add-on
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
@@ -159,7 +154,7 @@
 			if ( $a.hasClass( _c.searchfield + '__btn' ) )
 			{
 				//	Clicking the clear button
-				if ( $a.hasClass( _c.btn + '_clear' ) )
+				if ( $a.hasClass( _c.btn + '_close' ) )
 				{
 					var $inpt = $a.closest( '.' + _c.searchfield ).find( 'input' );
 					$inpt.val( '' );
@@ -282,7 +277,7 @@
 
 		var $srch = $( '<' + ( conf.form ? 'form' : 'div' ) + ' class="' + _c.searchfield + '" />' ),
 			$inpd = $( '<div class="' + _c.searchfield + '__input" />' ),
-			$inpt = $( '<input placeholder="' + $[ _PLUGIN_ ].i18n( opts.placeholder ) + '" type="text" autocomplete="off" />' );
+			$inpt = $( '<input placeholder="' + this.i18n( opts.placeholder ) + '" type="text" autocomplete="off" />' );
 
 		$inpd.append( $inpt ).appendTo( $srch );
 
@@ -312,7 +307,7 @@
 		//	Add the clear button
 		if ( conf.clear )
 		{
-			$('<a class="' + _c.btn + ' ' + _c.btn + '_clear ' + _c.searchfield + '__btn" href="#" />')
+			$('<a class="' + _c.btn + ' ' + _c.btn + '_close ' + _c.searchfield + '__btn" href="#" />')
 				.appendTo( $inpd );
 		}
 
@@ -327,7 +322,7 @@
 
 		if ( opts.cancel )
 		{
-			$('<a href="#" class="' + _c.searchfield + '__cancel">' + $[ _PLUGIN_ ].i18n( 'cancel' ) + '</a>')
+			$('<a href="#" class="' + _c.searchfield + '__cancel">' + this.i18n( 'cancel' ) + '</a>')
 				.appendTo( $srch );
 		}
 
@@ -363,10 +358,20 @@
 			data.$nrsp = this.$menu;
 		}
 
+		//	Filter out vertical submenus
+		data.$pnls = data.$pnls.not(
+			function()
+			{
+				return $(this).parent( '.' + _c.listitem + '_vertical' ).length;
+			}
+		);
+
+		//	Filter out search panel
 		if ( opts.panel.add )
 		{
 			data.$pnls = data.$pnls.not( '.' + _c.panel + '_search' );
 		}
+
 
 		var $inpt = $srch.find( 'input' ),
 			$cncl = $srch.find( '.' + _c.searchfield + '__cancel' ),
@@ -468,7 +473,7 @@
 		//	Add no-results message
 		var $lst = $wrpr.children( '.' + _c.listview ).first(),
 			$msg = $( '<div class="' + _c.panel + '__noresultsmsg ' + _c.hidden + '" />' )
-				.append( $[ _PLUGIN_ ].i18n( opts.noResults ) );
+				.append(this.i18n( opts.noResults ) );
 
 		if ( $lst.length )
 		{

@@ -16,16 +16,19 @@
 //	Menu
 .mm-menu
 {
+	line-height: $mm_lineHeight; //	IE11 fallback
+	line-height: var( --mm-line-height );
+
 	box-sizing: border-box;
 	background: inherit;
 	display: block;
 	padding: 0;
 	margin: 0;
 	position: absolute;
-	left: 0;
 	right: 0;
 	top: 0;
 	bottom: 0;
+	left: 0;
 	z-index: 0;
 
 	-webkit-font-smoothing: antialiased;

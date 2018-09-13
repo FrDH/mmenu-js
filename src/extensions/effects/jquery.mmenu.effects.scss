@@ -1,10 +1,6 @@
-/*
- * jQuery mmenu effects extension
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_effects_menuzoom )
@@ -26,7 +22,6 @@
 		transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
 	}
 
-// TODO position
 	//	Zoom menu Right
 	.mm-wrapper_opened .mm-menu_fx-menu-zoom.mm-menu_position-right
 	{
@@ -51,26 +46,26 @@
 	//	Slide menu Left
 	.mm-wrapper_opened .mm-menu_fx-menu-slide
 	{
-		//	transform: translate3d( -$mm_subpanelOffset, 0, 0 );
-		@include mm_translate( -$mm_subpanelOffset, 0 );
+		transform: translate3d( -$mm_subpanelOffset, 0, 0 );
+//		@include mm_translate( -$mm_subpanelOffset, 0 );
 	}
 	.mm-wrapper_opening .mm-menu_fx-menu-slide
 	{
-		//	transform: translate3d( 0%, 0, 0 );
-		@include mm_translate( 0%, 0 );
+		transform: translate3d( 0%, 0, 0 );
+//		@include mm_translate( 0%, 0 );
 	}
 
 // TODO position
 	//	Slide menu Right
 	.mm-wrapper_opened .mm-menu_fx-menu-slide.mm-menu_position-right
 	{
-		//	transform: translate3d( $mm_subpanelOffset, 0, 0 );
-		@include mm_translate( $mm_subpanelOffset, 0 );
+		transform: translate3d( $mm_subpanelOffset, 0, 0 );
+//		@include mm_translate( $mm_subpanelOffset, 0 );
 	}
 	.mm-wrapper_opening .mm-menu_fx-menu-slide.mm-menu_position-right
 	{
-		//	transform: translate3d( 0%, 0, 0 );
-		@include mm_translate( 0%, 0 );
+		transform: translate3d( 0%, 0, 0 );
+//		@include mm_translate( 0%, 0 );
 	}
 }
 
@@ -100,7 +95,8 @@
 		
 		&.mm-panel_opened-parent
 		{
-			@include mm_translate( 0, 0 );
+//			@include mm_translate( 0, 0 );
+			transform: translate3d( 0, 0, 0 );
 		}
 	}
 }
@@ -133,39 +129,45 @@
 	.mm-menu_fx-panels-slide-0 .mm-panel_opened-parent,
 	.mm-panel_fx-slide-0.mm-panel_opened-parent
 	{
-		@include mm_translate( 0, 0 );
+//		@include mm_translate( 0, 0 );
+		transform: translate3d( 0, 0, 0);
 	}
 
 	.mm-menu_fx-panels-slide-100 .mm-panel_opened-parent,
 	.mm-panel_fx-slide-100.mm-panel_opened-parent
 	{
-		@include mm_translate( -100%, 0 );
+//		@include mm_translate( -100%, 0 );
+		transform: translate3d( -100%, 0, 0 );
 	}
 
 	//	Slide panels Up
 	.mm-panel_fx-slide-up,
 	.mm-menu_fx-panels-slide-up .mm-panel
 	{
-		@include mm_translate( 0, 100% );
+//		@include mm_translate( 0, 100% );
+		transform: translate3d( 0, 100%, 0 );
 	}
 	.mm-panel_fx-slide-up.mm-panel_opened,
 	.mm-menu_fx-panels-slide-up .mm-panel_opened,
 	.mm-menu_fx-panels-slide-up .mm-panel_opened-parent
 	{
-		@include mm_translate( 0, 0% );
+//		@include mm_translate( 0, 0% );
+		transform: translate3d( 0, 0%, 0 );
 	}
 
 	//	Slide panels Right
 	.mm-panel_fx-slide-right,
 	.mm-menu_fx-panels-slide-right .mm-panel
 	{
-		@include mm_translate( -100%, 0 );
+//		@include mm_translate( -100%, 0 );
+		transform: translate3d( -100%, 0, 0 )
 	}
 	.mm-panel_fx-slide-right.mm-panel_opened,
 	.mm-menu_fx-panels-slide-right .mm-panel_opened,
 	.mm-menu_fx-panels-slide-right .mm-panel_opened-parent
 	{
-		@include mm_translate( 0, 0% );
+//		@include mm_translate( 0, 0% );
+		transform: translate3d( 0, 0%, 0 );
 	}
 }
 
@@ -202,12 +204,14 @@
 	.mm-menu_fx-listitems-slide .mm-listitem
 	{
 		transition-property: transform, opacity;
-		@include mm_translate( 50%, 0 );
+//		@include mm_translate( 50%, 0 );
+		transform: translate3d( 50%, 0, 0 );
 		opacity: 0;
 	}
 	.mm-wrapper_opening .mm-menu_fx-listitems-slide .mm-panel_opened .mm-listitem
 	{
-		@include mm_translate( 0, 0 );
+//		@include mm_translate( 0, 0 );
+		transform: translate3d( 0, 0, 0 );
 		opacity: 1;
 	}
 }

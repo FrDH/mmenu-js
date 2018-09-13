@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu Bootstrap 4 wrapper
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
@@ -109,7 +104,7 @@
 	function cloneDropdown( $d )
 	{
 		var $ul = $('<ul />');
-		$d.find( '.dropdown-item, .dropdown-divider' )
+		$d.children()
 			.each(function() {
 				var $di = $(this),
 					$li = $('<li />');
@@ -118,7 +113,7 @@
 				{
 					$li.addClass( 'Divider' );
 				}
-				else
+				else if ( $di.hasClass( 'dropdown-item' ) )
 				{
 					$li.append( cloneLink( $di ) );
 				}

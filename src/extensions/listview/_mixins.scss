@@ -1,24 +1,18 @@
+//	deprecated
 @mixin mm_listviewSize( $size )
 {
-	$pad: (($size - $mm_btnSize) / 2) + $mm_listitemPadding;
-
 	.mm-menu_listview-#{$size}
 	{
-		.mm-listitem
+		.mm-listitem__text
 		{
-			> a:not( .mm-btn_next ),
-			> span
-			{
-				padding-top: $pad;
-				padding-bottom: $pad;
-			}
+			padding-top: ($size - $mm_lineHeight) * .5;;
+			padding-bottom: ($size - $mm_lineHeight) * .5;;
 		}
-		@if ( $mm_opt_buttons )
+
+		.mm-listitem_vertical > .mm-listitem__btn
 		{
-			.mm-listitem_vertical > .mm-btn_next
-			{
-				height: $size;
-			}
+			height: $size;
 		}
 	}
 }
+//	/deprecated

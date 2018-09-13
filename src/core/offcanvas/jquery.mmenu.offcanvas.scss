@@ -1,10 +1,6 @@
-/*	
- * jQuery mmenu offCanvas add-on
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import 
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_offcanvas )
@@ -33,7 +29,6 @@
 		background: inherit;
 	}
 
-
 	//	Menu
 	.mm-menu_offcanvas
 	{
@@ -56,9 +51,10 @@
 
 @if ( $mm_opt_offcanvas_blocker )
 {
-	.mm-page__blocker
+	.mm-wrapper__blocker
 	{
 		background: rgba( 3, 2, 1, 0 );
+		overflow: hidden;
 		display: none;
 		width: 100%;
 		height: 100%;
@@ -75,9 +71,11 @@
 		{
 			overflow: hidden;
 		}
-		.mm-page__blocker
+		.mm-wrapper__blocker
 		{
 			display: block;
 		}
 	}
 }
+
+@import 'offcanvas.rtl';

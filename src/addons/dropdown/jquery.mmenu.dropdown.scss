@@ -1,10 +1,6 @@
-/*	
- * jQuery mmenu dropdown add-on
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_dropdown )
@@ -25,7 +21,7 @@
 
 		@if ( $mm_opt_offcanvas_blocker )
 		{
-			.mm-page__blocker
+			.mm-wrapper__blocker
 			{
 				transition-delay: 0s !important;
 				z-index: 1;

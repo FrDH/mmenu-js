@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu sidebar add-on
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
@@ -84,9 +79,20 @@
 			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
 
 
-			//	Store classnames
-			var clsclpsd = _c.wrapper + '_sidebar-collapsed-' + opts.collapsed.size,
-				clsxpndd = _c.wrapper + '_sidebar-expanded-'  + opts.expanded.size;
+			var clsclpsd = _c.wrapper + '_sidebar-collapsed';
+
+			//	deprecated
+			if ( opts.collapsed.size )
+			{
+				clsclpsd += ' ' + _c.wrapper + '_sidebar-collapsed-' + opts.collapsed.size;
+			}
+			//	/deprecated
+
+			var clsxpndd = _c.wrapper + '_sidebar-expanded';
+			if ( opts.expanded.size )
+			{
+				clsxpndd += ' ' + _c.wrapper + '_sidebar-expanded-' + opts.expanded.size;
+			}
 
 
 			//	Collapsed
@@ -208,7 +214,7 @@
 		//	clickAnchor: prevents default behavior when clicking an anchor
 		clickAnchor: function( $a, inMenu, inListview ) {
 			if ( this.opts[ _ADDON_ ].expanded.use && 
-				glbl.$html.is( '[class*="' + _c.wrapper + '_sidebar-expanded-"]' )
+				glbl.$html.is( '.' + _c.wrapper + '_sidebar-expanded' )
 			) {
 				if ( inMenu && inListview )
 				{
@@ -225,14 +231,14 @@
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		collapsed 	: {
 			use 		: false,
-			size 		: 40,
+//			size 		: null, 	// deprecated
 			blockMenu	: true,
 			hideDivider	: false,
 			hideNavbar	: true
 		},
 		expanded 	: {
 			use			: false,
-			size 		: 30
+//			size 		: null		// deprecated
 		}
 	};
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {};

@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu navbar add-on tabs content
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ 	= 'mmenu';

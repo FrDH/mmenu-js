@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu counters add-on
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
@@ -71,9 +66,9 @@
 									var $parent = $(this).data( _d.parent );
 									if ( $parent )
 									{
-										if ( !$parent.children( '.' + _c.counter ).length )
+										if ( !$parent.find( '.' + _c.counter ).length )
 										{
-											$parent.prepend( $( '<em class="' + _c.counter + '" />' ) );
+											$parent.children( '.' + _c.btn ).prepend( $( '<span class="' + _c.counter + '" />' ) );
 										}
 									}
 								}
@@ -99,7 +94,7 @@
 								return;
 							}
 
-							var $counter = $parent.children( 'em.' + _c.counter );
+							var $counter = $parent.find( '.' + _c.counter );
 							if ( !$counter.length )
 							{
 								return;

@@ -1,0 +1,20 @@
+@if ( $mm_opt_counters && $mm_opt_iconpanels )
+{
+	[dir="rtl"] .mm-menu_iconpanel .mm-panels 
+	{
+		> .mm-panel,
+		> .mm-listview_fixeddivider
+		{
+			left: 0;
+			right: auto;
+			transition-property: transform, width;
+		}
+
+		> .mm-panel:not( .mm-panel_iconpanel-first ):not( .mm-panel_iconpanel-0 ),
+		{
+			border-left: none;
+			border-right: 1px solid;
+			border-color: inherit;
+		}
+	}
+}

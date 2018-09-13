@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu jQuery Mobile wrapper
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
@@ -14,7 +9,7 @@
 		var that = this;
 
 		this.opts.onClick.close = false;
-		this.conf.offCanvas.pageSelector = 'div.ui-page-active';
+		this.conf.offCanvas.page.selector = 'div.ui-page-active';
 
 		//	When changing pages
 		$('body').on(

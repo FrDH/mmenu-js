@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu fixedElements add-on
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';

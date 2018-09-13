@@ -1,3 +1,4 @@
+//	deprecated
 @mixin mm_iconbar_size( $width: $mm_btnSize )
 {
 	.mm-menu_iconbar-#{$width}
@@ -14,6 +15,7 @@
 		}
 	}
 }
+//	/deprecated
 
 @mixin mm_iconbar_colors( $cls: "",
 	$dimmedColor: $mm_dimmedTextColor

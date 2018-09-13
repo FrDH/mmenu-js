@@ -1,0 +1,14 @@
+@if ( $mm_opt_rtl )
+{
+	[dir="rtl"] .mm-panel
+	{
+		&:not( .mm-panel_opened )
+		{
+			transform: translate3d( -100%, 0, 0 );
+		}
+		&.mm-panel_opened-parent
+		{
+			transform: translate3d( 30%, 0, 0 );
+		}
+	}
+}

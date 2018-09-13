@@ -1,13 +1,10 @@
-/*
- * jQuery mmenu listview extension
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import
+	'../../mixins',
+	'../../variables';
 
 
 //	Sizing listviews
+//	deprecated in favor of using scc var --mm-listitem-size
 @if ( $mm_opt_listview_sizes )
 {
 	@each $size in $mm_listitemSizes
@@ -48,15 +45,13 @@
 				display: flex;
 				flex-direction: column;
 			}
-
-			> a:not( .mm-btn_next ),
-			> span
-			{
-				box-sizing: border-box;
-				flex: 1 0 auto;
-				display: flex;
-				align-items: center;
-			}
+		}
+		.mm-listitem__text
+		{
+			box-sizing: border-box;
+			flex: 1 0 auto;
+			display: flex;
+			align-items: center;
 		}
 	}
 }
@@ -67,12 +62,13 @@
 	.mm-listview_inset
 	{
 		list-style: inside disc;
-		padding: 0 $mm_listitemPadding ( $mm_listitemPadding * 1.5 ) ( $mm_listitemIndent * 2 );
+		width: 100%;
+		padding: 0 ( $mm_padding + $mm_listitemIndent ) ( $mm_padding * 1.5 ) ( $mm_padding + $mm_listitemIndent );
 		margin: 0;
 
-		> li
+		.mm-listitem
 		{
-			padding: ( $mm_listitemPadding / 2 ) 0;
+			padding: ( $mm_padding * .5 ) 0;
 		}
 	}
 }

@@ -4,7 +4,8 @@
 	{
 		.mm-panels
 		{
-			#{$pos}: $mm_navbarHeight * $nr;
+			#{$pos}: $mm_navbarSize * $nr; //	IE11 fallback
+			#{$pos}: calc( var( --mm-navbar-size ) * #{$nr} );
 		}
 	}
 }
@@ -12,7 +13,8 @@
 {
 	.mm-navbar_size-#{$nr}
 	{
-		height: $mm_navbarHeight * $nr;
+		height: $mm_navbarSize * $nr; //	IE11 fallback
+		height: calc( var( --mm-navbar-size ) * #{$nr} );
 	}
 }
 @mixin mm_navbar_tabs_borders( $top, $bottom, $last, $first )

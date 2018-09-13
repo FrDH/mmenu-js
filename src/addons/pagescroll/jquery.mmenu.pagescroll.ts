@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu pageScroll add-on
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
@@ -130,8 +125,8 @@
 			if ( anchorInPage( href ) )
 			{
 				$section = $(href);
-				if ( this.$menu.hasClass( _c.mm( 'sidebar-expanded' ) ) && 
-					glbl.$html.is( '[class*="' + _c.mm( 'sidebar-expanded' ) + '"]' )
+				if ( this.$menu.is( '.' + _c.menu + '_sidebar-expanded' ) && 
+					glbl.$html.is( '.' + _c.wrapper + '_sidebar-expanded' )
 				) {
 					scrollTo( this.conf[ _ADDON_ ].scrollOffset );
 				}

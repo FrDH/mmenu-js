@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu toggles add-on
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
@@ -47,7 +42,7 @@
 									$prnt.prepend( $inpt );
 
 									$('<label for="' + id + '" class="' + _c[ cl ] + '"></label>')
-										.insertBefore( $prnt.children( 'a, span' ).last() );
+										.insertAfter( $prnt.children( '.' + _c.listitem + '__text' ).last() );
 								}
 							}
 						);

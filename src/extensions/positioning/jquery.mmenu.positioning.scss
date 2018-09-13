@@ -1,10 +1,6 @@
-/*
- * jQuery mmenu positioning extension
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import 
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_positioning_right )
@@ -35,7 +31,7 @@
 				transform: none !important;
 				z-index: 0;
 			}
-			~ .mm-page__blocker
+			~ .mm-wrapper__blocker
 			{
 				z-index: 1;
 			}
@@ -46,13 +42,15 @@
 	{
 		.mm-menu_position-front
 		{
-			@include mm_translate( -100%, 0 );
+//			@include mm_translate( -100%, 0 );
+			transform: translate3d( -100%, 0, 0 );
 
 			@if ( $mm_opt_positioning_right )
 			{
 				&.mm-menu_position-right
 				{
-					@include mm_translate( 100%, 0 );
+//					@include mm_translate( 100%, 0 );
+					transform: translate3d( 100%, 0, 0 );
 				}
 			}
 		}
@@ -71,7 +69,8 @@
 	{
 		.mm-menu_position-top
 		{
-			@include mm_translate( 0, -100% );
+//			@include mm_translate( 0, -100% );
+			transform: translate3d( 0, -100%, 0 );
 		}
 		@include mm_position_top;
 	}
@@ -79,7 +78,8 @@
 	{
 		.mm-menu_position-bottom
 		{
-			@include mm_translate( 0, 100% );
+//			@include mm_translate( 0, 100% );
+			transform: translate3d( 0, 100%, 0 );
 			top: auto;
 		}
 		@include mm_position_bottom;
@@ -91,7 +91,8 @@
 		.mm-menu_position-top,
 		.mm-menu_position-bottom
 		{
-			@include mm_translate( 0, 0 );
+//			@include mm_translate( 0, 0 );
+			transform: translate3d( 0, 0, 0 );
 		}
 	}
 

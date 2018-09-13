@@ -4,7 +4,8 @@
 	{
 		.mm-sectionindexer
 		{
-			#{$pos}: ($mm_navbarHeight * $nr) + 2;
+			#{$pos}: ($mm_navbarSize * $nr) + 2;	//	IE11 fallback
+			#{$pos}: calc( ( var( --mm-navbar-size ) * #{$nr} ) + 2px );
 		}
 	}
 }

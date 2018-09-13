@@ -1,22 +1,17 @@
-/*	
- * jQuery mmenu setSelected add-on
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import 
+	'../../mixins',
+	'../../variables';
 
 
-@if ( $mm_opt_setselected and $mm_opt_listviews )
+@if ( $mm_opt_setselected )
 {
 	.mm-menu_selected-hover,
 	.mm-menu_selected-parent
 	{
 		.mm-listitem
 		{
-			> a:not( .mm-btn_fullwidth ),
-			> a.mm-btn_fullwidth + span,
-			> a.mm-btn_fullwidth + a
+			> .mm-listitem__text,
+			> .mm-listitem__btn
 			{
 				transition: background $mm_transitionDuration $mm_transitionFunction;
 			}

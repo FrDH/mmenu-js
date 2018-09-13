@@ -52,6 +52,6 @@
 			"turbolinks",
 			"wordpress"
 		],
-		"translations" : [ "de", "nl" ]
+		"translations" : [ "de", "nl", "ru" ]
 	}
 }

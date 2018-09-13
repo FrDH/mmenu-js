@@ -1,10 +1,6 @@
-/*	
- * jQuery mmenu drag add-on
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_drag )

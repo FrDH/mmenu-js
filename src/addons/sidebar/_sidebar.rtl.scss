@@ -1,0 +1,36 @@
+@if ( $mm_opt_rtl )
+{
+	@if ( $mm_opt_sidebar_collapsed )
+	{
+		[dir="rtl"]
+		{
+			&.mm-wrapper_sidebar-collapsed 
+			{
+				.mm-slideout
+				{
+					transform: translate3d( 0, 0, 0 );
+				}
+			}
+		}
+	}
+	@if ( $mm_opt_sidebar_expanded )
+	{
+		[dir="rtl"]
+		{
+			&.mm-wrapper_sidebar-expanded .mm-slideout
+			{
+				transform: translate3d( 0, 0, 0 );
+			}
+			&.mm-wrapper_sidebar-expanded:not( .mm-wrapper_sidebar-closed )
+			{
+				.mm-menu_sidebar-expanded.mm-menu_opened
+				{
+					~ .mm-slideout
+					{
+						transform: translate3d( 0, 0, 0 );
+					}
+				}
+			}
+		}
+	}
+}

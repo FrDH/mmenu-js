@@ -1,10 +1,6 @@
-/*
- * jQuery mmenu multiline extension
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import 
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_multiline )
@@ -12,14 +8,10 @@
 	.mm-menu_multiline,
 	.mm-panel_multiline
 	{
-		.mm-listitem
+		.mm-listitem__text
 		{
-			> a,
-			> span
-			{
-				text-overflow: clip;
-				white-space: normal;
-			}
+			text-overflow: clip;
+			white-space: normal;
 		}
 	}
 }

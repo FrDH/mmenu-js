@@ -14,33 +14,22 @@
 
 		.mm-navbar
 		{
-			> *,
-			a
-			{
-				color: $navbarColor;
-			}
+			color: $navbarColor;
 		}
 
-		@if ( $mm_opt_buttons )
+		.mm-btn_next:after,
+		.mm-btn_prev:before,
+		.mm-btn_close:before,
+		.mm-btn_close:after
 		{
-			.mm-btn
-			{
-				&:before,
-				&:after
-				{
-					border-color: $navbarColor;
-				}
-			}
+			border-color: $navbarColor;
 		}
 
 		.mm-listview
 		{
-			@if ( $mm_opt_buttons )
+			.mm-btn_next:after
 			{
-				.mm-btn_next:after
-				{
-					border-color: $dimmedColor;
-				}
+				border-color: $dimmedColor;
 			}
 
 			a:not( .mm-btn_next )
@@ -52,8 +41,7 @@
 
 		.mm-listitem_selected
 		{
-			> a:not( .mm-btn_next ),
-			> span
+			> .mm-listitem__text
 			{
 				background: $emphasizedBg;
 			}
@@ -61,7 +49,7 @@
 
 		.mm-listitem_opened
 		{
-			> .mm-btn_next,
+			> .mm-listitem__btn,
 			> .mm-panel
 			{
 				background: $highlightedBg;
@@ -76,55 +64,7 @@
 }
 
 
-
-//	Close / clear button
-@mixin mm_btn_cross
-{
-	&:before,
-	&:after
-	{
-		content: '';
-		border: 2px solid transparent;
-		box-sizing: content-box;
-		display: block;
-		width: 5px;
-		height: 5px;
-		margin: auto;
-		position: absolute;
-		top: 0;
-		bottom: 0;
-
-		transform: rotate( -45deg );
-	}
-	&:before
-	{
-		border-right: none;
-		border-bottom: none;
-		right: $mm_listitemIndent - 2;
-	}
-	&:after
-	{
-		border-left: none;
-		border-top: none;
-		right: $mm_listitemIndent + 5;
-	}
-}
-
 // Arrow buttons
-@mixin mm_btn_arrow
-{
-	content: '';
-	border-top: 2px solid transparent;
-	border-left: 2px solid transparent;
-	box-sizing: content-box;
-	display: block;
-	width: 8px;
-	height: 8px;
-	margin: auto;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-}
 @mixin mm_btn_arrow_prev
 {
 	transform: rotate( -45deg );
@@ -140,46 +80,7 @@
 
 
 
-//	Borders
-@mixin mm_border( $border, $pseudo, $pos1, $pos2, $pos3 )
-{
-	&:#{$pseudo}
-	{
-		content: '';
-		border-#{$border}-width: 1px;
-		border-#{$border}-style: solid;
-		display: block;
-		position: absolute;
-		#{$pos1}: 0;
-		#{$pos2}: 0;
-		#{$pos3}: 0;
-	}
-}
-@mixin mm_border_top
-{
-	@include mm_border( "top", "before", "left", "right", "top" );
-}
-@mixin mm_border_right
-{
-	@include mm_border( "right", "after", "top", "bottom", "right" );
-}
-@mixin mm_border_bottom
-{
-	@include mm_border( "bottom", "after", "left", "right", "bottom" );
-}
-@mixin mm_border_left
-{
-	@include mm_border( "left", "before", "top", "bottom", "left" );
-}
-
-
-
 //	Misc
-@mixin mm_translate( $x: 0, $y: 0, $z: 0 )
-{
-	transform: translate( $x, $y );
-	transform: translate3d( $x, $y, $z );
-}
 @mixin mm_ellipsis()
 {
 	text-overflow: ellipsis;

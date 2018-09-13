@@ -1,17 +1,13 @@
-/*
- * jQuery mmenu pageDim extension
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import 
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_pagedim_default or $mm_opt_pagedim_black or $mm_opt_pagedim_white )
 {
 	[class*="mm-menu_pagedim"].mm-menu_opened
 	{
-		~ .mm-page__blocker
+		~ .mm-wrapper__blocker
 		{
 			opacity: 0;
 		}
@@ -19,7 +15,7 @@
 
 	.mm-wrapper_opening [class*="mm-menu_pagedim"].mm-menu_opened
 	{
-		~ .mm-page__blocker
+		~ .mm-wrapper__blocker
 		{
 			opacity: $mm_pagedimOpacity;
 			transition: opacity $mm_transitionDuration $mm_transitionFunction $mm_transitionDuration;
@@ -30,21 +26,21 @@
 	{
 		@if ( $mm_opt_pagedim_default )
 		{
-			&.mm-menu_pagedim ~ .mm-page__blocker
+			&.mm-menu_pagedim ~ .mm-wrapper__blocker
 			{
 				background: inherit;
 			}
 		}
 		@if ( $mm_opt_pagedim_black )
 		{
-			&.mm-menu_pagedim-black ~ .mm-page__blocker
+			&.mm-menu_pagedim-black ~ .mm-wrapper__blocker
 			{
 				background: #000;
 			}
 		}
 		@if ( $mm_opt_pagedim_white )
 		{
-			&.mm-menu_pagedim-white ~ .mm-page__blocker
+			&.mm-menu_pagedim-white ~ .mm-wrapper__blocker
 			{
 				background: #fff;
 			}

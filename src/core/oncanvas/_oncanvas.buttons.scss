@@ -1,0 +1,62 @@
+.mm-btn
+{
+	box-sizing: border-box;
+	width: $mm_btnSize;
+	padding: 0;
+}
+
+.mm-btn_close
+{
+	&:before,
+	&:after
+	{
+		content: '';
+		border: 2px solid transparent;
+		box-sizing: content-box;
+		display: block;
+		width: 5px;
+		height: 5px;
+		margin: auto;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+
+		transform: rotate( -45deg );
+	}
+	&:before
+	{
+		border-right: none;
+		border-bottom: none;
+		right: $mm_listitemIndent - 2;
+	}
+	&:after
+	{
+		border-left: none;
+		border-top: none;
+		right: $mm_listitemIndent + 5;
+	}
+}
+
+.mm-btn_prev:before,
+.mm-btn_next:after
+{
+	content: '';
+	border-top: 2px solid transparent;
+	border-left: 2px solid transparent;
+	box-sizing: content-box;
+	display: block;
+	width: 8px;
+	height: 8px;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+}
+.mm-btn_prev:before
+{
+	@include mm_btn_arrow_prev;
+}
+.mm-btn_next:after
+{
+	@include mm_btn_arrow_next;
+}

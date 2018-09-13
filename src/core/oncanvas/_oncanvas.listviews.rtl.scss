@@ -1,0 +1,33 @@
+@if ( $mm_opt_rtl )
+{
+	[dir="rtl"] 
+	{
+		//	invert the indent on the border
+		.mm-listitem:after
+		{
+			left: 0;
+			right: $mm_listitemIndent;
+		}
+		.mm-listitem__text
+		{
+			padding-left: $mm_padding;
+			padding-right: $mm_listitemIndent;
+		}
+		.mm-listitem__btn
+		{
+			padding-left: $mm_subopenWidth;
+
+			border-left-width: 0;
+			border-left-style: none;
+
+			&:not( .mm-listitem__text )
+			{
+				padding-right: 0;
+
+				border-right-width: 1px;
+				border-right-style: solid;
+			}
+		}
+	}
+}
+

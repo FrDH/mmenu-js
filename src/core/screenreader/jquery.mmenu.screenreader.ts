@@ -1,8 +1,3 @@
-/*
- * jQuery mmenu screenReader add-on
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
@@ -133,19 +128,19 @@
 				if ( opts.text )
 				{
 					//	Add aria-hidden to item text if the full-width next button has screen reader text
-					this.bind( 'initlistview:after',
-						function( $panel )
-						{
+					// this.bind( 'initlistview:after',
+					// 	function( $panel )
+					// 	{
 						
-							var $span = $panel
-								.find( '.' + _c.listview )
-								.find( '.' + _c.btn + '_fullwidth' )
-								.parent()
-								.children( 'span' );
+					// 		var $span = $panel
+					// 			.find( '.' + _c.listview )
+					// 			.find( '.' + _c.btn + '_fullwidth' )
+					// 			.parent()
+					// 			.children( 'span' );
 
-							this.__sr_aria( $span, 'hidden', true );
-						}
-					);
+					// 		this.__sr_aria( $span, 'hidden', true );
+					// 	}
+					// );
 
 
 					//	Add aria-hidden to titles in navbars
@@ -174,7 +169,8 @@
 				this.bind( 'initAddons:after',
 					function()
 					{
-						this.bind( 'setPage:after' 	, function() { this.trigger( 'setPage:after:sr-text' 	, arguments[ 0 ]	) });
+						this.bind( 'setPage:after' 		, function() { this.trigger( 'setPage:after:sr-text' 	, arguments[ 0 ]	) });
+						this.bind( 'initBlocker:after'	, function() { this.trigger( 'initBlocker:after:sr-text' 					) });
 					}
 				);
 
@@ -184,16 +180,9 @@
 					function( $panel )
 					{
 						var $navbar = $panel.children( '.' + _c.navbar ),
-							_text 	= $navbar.children( '.' + _c.title ).text();
+							_text = this.i18n( conf.text.closeSubmenu );
 
-						var txt = $[ _PLUGIN_ ].i18n( conf.text.closeSubmenu );
-
-						if ( _text )
-						{
-							txt += ' (' + _text + ')';
-						}
-
-						$navbar.children( '.' + _c.btn + '_prev' ).html( this.__sr_text( txt ) );
+						$navbar.children( '.' + _c.btn + '_prev' ).html( this.__sr_text( _text ) );
 					}
 				);
 
@@ -206,16 +195,9 @@
 						if ( $parent && $parent.length )
 						{
 							var $next = $parent.children( '.' + _c.btn + '_next' ),
-								_text = $next.nextAll( 'span, a' ).first().text();
+								_text = this.i18n( conf.text[ $next.parent().is( '.' + _c.listitem + '_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
 
-							var txt = $[ _PLUGIN_ ].i18n( conf.text[ $next.parent().is( '.' + _c.listitem + '_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
-
-							if ( _text )
-							{
-								txt += ' (' + _text + ')';
-							}
-
-							$next.html( that.__sr_text( txt ) );
+							$next.append( that.__sr_text( _text ) );
 						}			
 					}
 				);

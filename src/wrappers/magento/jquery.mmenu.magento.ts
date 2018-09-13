@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu Magento wrapper
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';

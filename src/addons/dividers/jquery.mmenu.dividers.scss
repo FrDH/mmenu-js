@@ -1,10 +1,6 @@
-/*	
- * jQuery mmenu dividers add-on
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import 
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_dividers )
@@ -22,8 +18,12 @@
 			background: inherit;
 			font-size: inherit;
 			color: $mm_dimmedTextColor;
-			padding-top: $mm_listitemPadding * 1.5;
-			padding-bottom: $mm_listitemPadding / 2;
+
+			padding-top: ($mm_listitemSize - $mm_lineHeight) * .75; //	IE11 fallback
+			padding-top: calc( (var( --mm-listitem-size ) - var( --mm-line-height )) * .75 );
+
+			padding-bottom: ($mm_listitemSize - $mm_lineHeight) * .25; //	IE11 fallback
+			padding-bottom: calc( (var( --mm-listitem-size ) - var( --mm-line-height )) * .25 );
 		}
 	}
 
@@ -44,14 +44,15 @@
 		{
 			background: inherit;
 			display: none;
+			width: 100%;
 			position: absolute;
 			top: 0;
 			left: 0;
 			right: 0;
 			z-index: 10;
 			
-			//	Bugfix
-			@include mm_translate( 0, 0 );
+			//	Bugfix IE9
+//			@include mm_translate( 0, 0 );
 			
 			&:after
 			{

@@ -1,4 +1,3 @@
-//	Sizing left (default)
 @mixin mm_offcanvas_size( $cls: ".mm-menu_offcanvas",
 	$width: $mm_menuWidth, $minWidth: $mm_menuMinWidth, $maxWidth: $mm_menuMaxWidth
 ) {
@@ -12,26 +11,26 @@
 	{
 		#{$cls}.mm-menu_opened ~ .mm-slideout
 		{
-			@include mm_translate( #{$width * 100}vw, 0 );
+			transform: translate3d( #{$width * 100}vw, 0, 0 );
 		}
 	}
 
 	//	adjust for min- and max-width
-	@media all and (max-width: $minWidth / $width ) {
+	@media all and ( max-width: $minWidth / $width ) {
 		.mm-wrapper_opening
 		{
 			#{$cls}.mm-menu_opened ~ .mm-slideout
 			{
-				@include mm_translate( $minWidth, 0 );
+				transform: translate3d( $minWidth, 0, 0 );
 			}
 		}
 	}
-	@media all and (min-width: $maxWidth / $width ) {
+	@media all and ( min-width: $maxWidth / $width ) {
 		.mm-wrapper_opening
 		{
 			#{$cls}.mm-menu_opened ~ .mm-slideout
 			{
-				@include mm_translate( $maxWidth, 0 );
+				transform: translate3d( $maxWidth, 0, 0 );
 			}
 		}
 	}
@@ -53,33 +52,22 @@
 
 		.mm-navbar
 		{
-			> *,
-			a
-			{
-				color: $navbarColor;
-			}
+			color: $navbarColor;
 		}
 
-		@if ( $mm_opt_buttons )
+		.mm-btn_next:after,
+		.mm-btn_prev:before,
+		.mm-btn_close:before,
+		.mm-btn_close:after
 		{
-			.mm-btn
-			{
-				&:before,
-				&:after
-				{
-					border-color: $navbarColor;
-				}
-			}
+			border-color: $navbarColor;
 		}
 
 		.mm-listview
 		{
-			@if ( $mm_opt_buttons )
+			.mm-btn_next:after
 			{
-				.mm-btn_next:after
-				{
-					border-color: $dimmedColor;
-				}
+				border-color: $dimmedColor;
 			}
 
 			a:not( .mm-btn_next )
@@ -91,8 +79,7 @@
 
 		.mm-listitem_selected
 		{
-			> a:not( .mm-btn_next ),
-			> span
+			> .mm-listitem__text
 			{
 				background: $emphasizedBg;
 			}
@@ -100,7 +87,7 @@
 
 		.mm-listitem_opened
 		{
-			> .mm-btn_next,
+			> .mm-listitem__btn,
 			> .mm-panel
 			{
 				background: $highlightedBg;
@@ -115,55 +102,7 @@
 }
 
 
-
-//	Close / clear button
-@mixin mm_btn_cross
-{
-	&:before,
-	&:after
-	{
-		content: '';
-		border: 2px solid transparent;
-		box-sizing: content-box;
-		display: block;
-		width: 5px;
-		height: 5px;
-		margin: auto;
-		position: absolute;
-		top: 0;
-		bottom: 0;
-
-		transform: rotate( -45deg );
-	}
-	&:before
-	{
-		border-right: none;
-		border-bottom: none;
-		right: $mm_listitemIndent - 2;
-	}
-	&:after
-	{
-		border-left: none;
-		border-top: none;
-		right: $mm_listitemIndent + 5;
-	}
-}
-
 // Arrow buttons
-@mixin mm_btn_arrow
-{
-	content: '';
-	border-top: 2px solid transparent;
-	border-left: 2px solid transparent;
-	box-sizing: content-box;
-	display: block;
-	width: 8px;
-	height: 8px;
-	margin: auto;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-}
 @mixin mm_btn_arrow_prev
 {
 	transform: rotate( -45deg );
@@ -179,46 +118,7 @@
 
 
 
-//	Borders
-@mixin mm_border( $border, $pseudo, $pos1, $pos2, $pos3 )
-{
-	&:#{$pseudo}
-	{
-		content: '';
-		border-#{$border}-width: 1px;
-		border-#{$border}-style: solid;
-		display: block;
-		position: absolute;
-		#{$pos1}: 0;
-		#{$pos2}: 0;
-		#{$pos3}: 0;
-	}
-}
-@mixin mm_border_top
-{
-	@include mm_border( "top", "before", "left", "right", "top" );
-}
-@mixin mm_border_right
-{
-	@include mm_border( "right", "after", "top", "bottom", "right" );
-}
-@mixin mm_border_bottom
-{
-	@include mm_border( "bottom", "after", "left", "right", "bottom" );
-}
-@mixin mm_border_left
-{
-	@include mm_border( "left", "before", "top", "bottom", "left" );
-}
-
-
-
 //	Misc
-@mixin mm_translate( $x: 0, $y: 0, $z: 0 )
-{
-	transform: translate( $x, $y );
-	transform: translate3d( $x, $y, $z );
-}
 @mixin mm_ellipsis()
 {
 	text-overflow: ellipsis;
@@ -238,7 +138,8 @@
 {
 	[class*="mm-menu_columns-"] .mm-panels > .mm-panel_columns-#{$nr}
 	{
-		@include mm_translate( $nr * 100%, 0 );
+		transform: translate3d( $nr * 100%, 0, 0 );
+//		@include mm_translate( $nr * 100%, 0 );
 	}
 
 	.mm-menu_columns-#{$nr} .mm-panels > .mm-panel
@@ -255,7 +156,8 @@
 
 		&:not( .mm-panel_opened ):not( .mm-panel_opened-parent )
 		{
-			@include mm_translate( ($nr + 1) * 100%, 0 );
+			transform: translate3d( ($nr + 1) * 100%, 0, 0 );
+//			@include mm_translate( ($nr + 1) * 100%, 0 );
 		}
 	}
 
@@ -270,6 +172,7 @@
 		color: $dimmedColor;
 	}
 }
+//	deprecated
 @mixin mm_iconbar_size( $width: $mm_btnSize )
 {
 	.mm-menu_iconbar-#{$width}
@@ -286,6 +189,7 @@
 		}
 	}
 }
+//	/deprecated
 
 @mixin mm_iconbar_colors( $cls: "",
 	$dimmedColor: $mm_dimmedTextColor
@@ -309,51 +213,42 @@
 	}
 }
 
-@mixin mm_iconpanel_size( $width: 40, $dir: 'left' )
-{
-	.mm-menu_iconpanel-#{$width}
-	{
-		@include mm_iconpanel_position( 0, $width, $dir );
-		@include mm_iconpanel_position( 1, $width, $dir );
-		@include mm_iconpanel_position( 2, $width, $dir );
-		@include mm_iconpanel_position( 3, $width, $dir );
-
-		.mm-panel_iconpanel-first
-		{
-			~ .mm-panel,
-			~ .mm-panel_opened ~ .mm-listview_fixeddivider
-			{
-				#{$dir}: $width + px;
-			}
-		}
-	}
-}
-@mixin mm_iconpanel_position( $nr, $width, $dir )
+@mixin mm_iconpanel_size( $nr )
 {
 	.mm-panel_iconpanel-#{$nr}
 	{
 		&,
 		&.mm-panel_opened ~ .mm-listview_fixeddivider
 		{
-			#{$dir}: ($width * $nr) + px;
+			width: calc( 100% - ( #{$mm_iconpanelSize} * #{$nr} ) );	//	IE11 fallback
+			width: calc( 100% - ( var( --mm-iconpanel-size ) * #{$nr} ) );
 		}
 	}
 }
 @mixin mm_keyboardnavigation_colors( $cls: "",
 	$emphasizedBg: $mm_emphasizedBackgroundColor
 ) {
-	#{$cls}.mm-menu_keyboardfocus a:focus
+	#{$cls}.mm-menu_keyboardfocus 
 	{
-		background: $emphasizedBg;
+		&,
+		&.mm-menu_opened ~ .mm-wrapper__blocker
+		{
+			a:focus
+			{
+				background: $emphasizedBg;
+			}
+		}
 	}
 }
+
 @mixin mm_navbar_position( $pos, $nr )
 {
 	.mm-menu_navbar_#{$pos}-#{$nr}
 	{
 		.mm-panels
 		{
-			#{$pos}: $mm_navbarHeight * $nr;
+			#{$pos}: $mm_navbarSize * $nr; //	IE11 fallback
+			#{$pos}: calc( var( --mm-navbar-size ) * #{$nr} );
 		}
 	}
 }
@@ -361,7 +256,8 @@
 {
 	.mm-navbar_size-#{$nr}
 	{
-		height: $mm_navbarHeight * $nr;
+		height: $mm_navbarSize * $nr; //	IE11 fallback
+		height: calc( var( --mm-navbar-size ) * #{$nr} );
 	}
 }
 @mixin mm_navbar_tabs_borders( $top, $bottom, $last, $first )
@@ -415,7 +311,8 @@
 	{
 		.mm-sectionindexer
 		{
-			#{$pos}: ($mm_navbarHeight * $nr) + 2;
+			#{$pos}: ($mm_navbarSize * $nr) + 2;	//	IE11 fallback
+			#{$pos}: calc( ( var( --mm-navbar-size ) * #{$nr} ) + 2px );
 		}
 	}
 }
@@ -434,16 +331,15 @@
 	{
 		.mm-listview:hover > .mm-listitem_selected
 		{
-			> a,
-			> span
+			.mm-listitem__text
 			{
 				background: none;
 			}
 		}
-		.mm-listitem
+		.mm-listitem__text,
+		.mm-listitem__btn
 		{
-			> a:not( .mm-btn_fullwidth ):hover,
-			> a.mm-btn_fullwidth:hover + span
+			&:hover
 			{
 				background: $emphasizedBg;
 			}
@@ -454,58 +350,56 @@
 	{
 		.mm-panel_opened-parent .mm-listitem:not( .mm-listitem_selected-parent )
 		{
-			> a,
-			> span
+			.mm-listitem__text
 			{
 				background: none;
 			}
 		}
 		.mm-listitem_selected-parent
 		{
-			> a.mm-btn_next:not( .mm-btn_fullwidth ),
-			> a.mm-btn_fullwidth + span
+			> .mm-listitem__text,
+			> .mm-listitem__btn
 			{
 				background: $emphasizedBg;
 			}
 		}
 	}
 }
+//	deprecated
 @mixin mm_sidebar_collapsed_size( $width )
 {
-	.mm-wrapper_sidebar-collapsed-#{$width},
-	[class*="mm-wrapper_sidebar-expanded-"].mm-menu_sidebar-closed.mm-menu_sidebar-collapsed-#{$width}
+	.mm-wrapper_sidebar-collapsed-#{$width}
 	{
 		.mm-slideout
 		{
 			width: calc( 100% - #{$width}px );
-			@include mm_translate( #{$width}px, 0 );
+			transform: translate3d( #{$width}px, 0, 0 );
+//			@include mm_translate( #{$width}px, 0 );
 		}
 	}
 }
 
+//	deprecated
 @mixin mm_sidebar_expanded_size( $width )
 {
-	$menuWidth: $width / 100;
-	$pageWidth: 1 - $menuWidth;
-
 	.mm-wrapper_sidebar-expanded-#{$width}
 	{
 		&:not( .mm-wrapper_sidebar-closed )
 		{
 			.mm-slideout
 			{
-				width: percentage( $pageWidth );
-				//	Can't use mm_translate with !important :/
-				transform: translate( percentage( $menuWidth / $pageWidth ), 0 ) !important;
-				transform: translate3d( percentage( $menuWidth / $pageWidth ), 0, 0 ) !important;
+				width: calc( 100% - #{$width}px );
+//				transform: translate( $width, 0 ) !important;
+				transform: translate3d( $width, 0, 0 ) !important;
 			}
 		}
 		.mm-menu_sidebar-expanded
 		{
-			width: percentage( $menuWidth ) !important;
+			width: $width !important;
 		}
 	}
 }
+
 @mixin mm_checks_colors( $cls: "",
 	$color: $mm_textColor
 ) {
@@ -539,31 +433,24 @@
 		transition-delay: ( $i * 50ms );
 	}
 }
+//	deprecated
 @mixin mm_listviewSize( $size )
 {
-	$pad: (($size - $mm_btnSize) / 2) + $mm_listitemPadding;
-
 	.mm-menu_listview-#{$size}
 	{
-		.mm-listitem
+		.mm-listitem__text
 		{
-			> a:not( .mm-btn_next ),
-			> span
-			{
-				padding-top: $pad;
-				padding-bottom: $pad;
-			}
+			padding-top: ($size - $mm_lineHeight) * .5;;
+			padding-bottom: ($size - $mm_lineHeight) * .5;;
 		}
-		@if ( $mm_opt_buttons )
+
+		.mm-listitem_vertical > .mm-listitem__btn
 		{
-			.mm-listitem_vertical > .mm-btn_next
-			{
-				height: $size;
-			}
+			height: $size;
 		}
 	}
 }
-
+//	/deprecated
 //	Position right
 @mixin mm_position_right( $cls: "",
 	$width: $mm_menuWidth, $minWidth: $mm_menuMinWidth, $maxWidth: $mm_menuMaxWidth
@@ -572,7 +459,8 @@
 	{
 		#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
 		{
-			@include mm_translate( -( #{$width * 100}vw ), 0 );
+//			@include mm_translate( -( #{$width * 100}vw ), 0 );
+			transform: translate3d( -( #{$width * 100}vw ), 0, 0 );
 		}
 	}
 
@@ -582,7 +470,8 @@
 		{
 			#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
 			{
-				@include mm_translate( -$minWidth, 0 );
+//				@include mm_translate( -$minWidth, 0 );
+				transform: translate3d( -$minWidth, 0, 0 );
 			}
 		}
 	}
@@ -591,7 +480,8 @@
 		{
 			#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
 			{
-				@include mm_translate( -$maxWidth, 0 );
+//				@include mm_translate( -$maxWidth, 0 );
+				transform: translate3d( -$maxWidth, 0, 0 );
 			}
 		}
 	}

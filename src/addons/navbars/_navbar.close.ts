@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu navbar add-on close content
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ 	= 'mmenu';
@@ -36,7 +31,7 @@
 		this.bind( 'setPage:after:sr-text',
 			function( $page )
 			{
-				$close.html( this.__sr_text( $[ _PLUGIN_ ].i18n( this.conf.screenReader.text.closeMenu ) ) );
+				$close.html( this.__sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) ) );
 				this.__sr_aria( $close, 'owns', $close.attr( 'href' ).slice( 1 ) );
 			}
 		);

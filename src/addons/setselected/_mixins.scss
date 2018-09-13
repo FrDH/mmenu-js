@@ -5,16 +5,15 @@
 	{
 		.mm-listview:hover > .mm-listitem_selected
 		{
-			> a,
-			> span
+			.mm-listitem__text
 			{
 				background: none;
 			}
 		}
-		.mm-listitem
+		.mm-listitem__text,
+		.mm-listitem__btn
 		{
-			> a:not( .mm-btn_fullwidth ):hover,
-			> a.mm-btn_fullwidth:hover + span
+			&:hover
 			{
 				background: $emphasizedBg;
 			}
@@ -25,16 +24,15 @@
 	{
 		.mm-panel_opened-parent .mm-listitem:not( .mm-listitem_selected-parent )
 		{
-			> a,
-			> span
+			.mm-listitem__text
 			{
 				background: none;
 			}
 		}
 		.mm-listitem_selected-parent
 		{
-			> a.mm-btn_next:not( .mm-btn_fullwidth ),
-			> a.mm-btn_fullwidth + span
+			> .mm-listitem__text,
+			> .mm-listitem__btn
 			{
 				background: $emphasizedBg;
 			}

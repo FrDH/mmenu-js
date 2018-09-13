@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu iconbar add-on
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
@@ -95,8 +90,17 @@
 				this.bind( 'initMenu:after',
 					function()
 					{
+						var cls: string = _c.menu + '_iconbar';
+
+						//	deprecated
+						if ( opts.size )
+						{
+							cls += ' ' + _c.menu + '_iconbar-' + opts.size;
+						}
+						//	/deprecated
+
 						this.$menu
-							.addClass( _c.menu + '_iconbar-' + opts.size )
+							.addClass( cls )
 							.prepend( $iconbar );
 					}
 				);
@@ -157,7 +161,7 @@
 	//	Default options and configuration
 	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
 		add 	: false,
-		size	: 40,
+//		size	: null,
 		top 	: [],
 		bottom 	: []
 	};

@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu iconPanels add-on
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
@@ -55,13 +50,9 @@
 			opts.visible = Math.min( 3, Math.max( 1, opts.visible ) );
 			opts.visible++;
 
-
-			//	Add the iconbars
-			if ( opts.add )
+			var cls: string = '';
+			if ( !keepFirst )
 			{
-
-				var cls: string = '';
-
 				for ( var i = 0; i <= opts.visible; i++ )
 				{
 					cls += ' ' + _c.panel + '_iconpanel-' + i;
@@ -70,7 +61,11 @@
 				{
 					cls = cls.slice( 1 );
 				}
+			}
 
+			//	Add the iconpanels
+			if ( opts.add )
+			{
 				var setPanels = function( $panel )
 				{
 					if ( $panel.parent( '.' + _c.listitem + '_vertical' ).length )
@@ -79,8 +74,7 @@
 					}
 
 					var $panls = that.$pnls
-						.children( '.' + _c.panel )
-						.removeClass( cls );
+						.children( '.' + _c.panel );
 
 					if ( keepFirst )
 					{
@@ -89,32 +83,40 @@
 							.first()
 							.addClass( _c.panel + '_iconpanel-first' );
 					}
-
-					$panls
-						.filter( '.' + _c.panel + '_opened-parent' )
-						.removeClass( _c.hidden )
-						//	TOOD: search for parent listitem_vertical
-						//.not( '.' + _c.panel + '_vertical' )
-						.not(
-							function()
-							{
-								return $(this).parent( '.' + _c.listitem + '_vertical' ).length
-							}
-						)
-						.add( $panel )
-						.slice( -opts.visible )
-						.each(
-							function( i )
-							{
-								$(this).addClass( _c.panel + '_iconpanel-' + i );
-							}
-						);
+					else
+					{
+						$panls
+							.removeClass( cls )
+							.filter( '.' + _c.panel + '_opened-parent' )
+							.removeClass( _c.hidden )
+							.not(
+								function()
+								{
+									return $(this).parent( '.' + _c.listitem + '_vertical' ).length
+								}
+							)
+							.add( $panel )
+							.slice( -opts.visible )
+							.each(
+								function( i )
+								{
+									$(this).addClass( _c.panel + '_iconpanel-' + i );
+								}
+							);
+					}
 				};
 
 				this.bind( 'initMenu:after',
 					function()
 					{
-						var cls = [ _c.menu + '_iconpanel-' + opts.size ];
+						var cls = [ _c.menu + '_iconpanel' ];
+
+						//	deprecated
+						if ( opts.size )
+						{
+							cls.push( _c.menu + '_iconpanel-' + opts.size );
+						}
+						//	/deprecated
 
 						if ( opts.hideNavbar )
 						{
@@ -170,7 +172,7 @@
 		blockPanel	: true,
 		hideDivider	: false,
 		hideNavbar	: true,
-		size 		: 40,
+//		size 		: 40,
 		visible		: 3
 	};
 

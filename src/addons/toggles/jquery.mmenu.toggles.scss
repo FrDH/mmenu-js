@@ -1,53 +1,34 @@
-/*	
- * jQuery mmenu toggles add-on
- * mmenu.frebsite.nl
- */
+@import 
+	'../../mixins',
+	'../../variables';
 
-@import "../../mixins";
-@import "../../variables";
-
-
-@if ( $mm_opt_toggles or $mm_opt_checks )
-{
-	input.mm-toggle,
-	input.mm-check
-	{
-		position: absolute;
-		left: -10000px;
-	}
-
-	label.mm-toggle,
-	label.mm-check
-	{
-		margin: 0;
-		position: absolute;
-		top: 50%;
-		z-index: 2;
-		
-		&:before
-		{
-			content: '';
-			display: block;
-		}
-	}
-}
 
 @if ( $mm_opt_toggles )
 {
 	label.mm-toggle
 	{
 		border-radius: $mm_toggleHeight;
+		min-width: $mm_toggleWidth;
 		width: $mm_toggleWidth;
 		height: $mm_toggleHeight;
-		margin-top: -( $mm_toggleHeight / 2 );
+		margin: 0 $mm_padding;
+		margin-top: ($mm_btnSize - $mm_toggleHeight) / 2;
+		margin-top: calc( ( var( --mm-listitem-size ) - #{$mm_toggleHeight} ) / 2 );
 
 		&:before
 		{
+			content: '';
+			display: block;
 			border-radius: $mm_toggleHeight;
 			width: $mm_toggleHeight - 2;
 			height: $mm_toggleHeight - 2;
 			margin: 1px;
 		}
+	}
+	input.mm-toggle
+	{
+		position: absolute;
+		left: -10000px;
 	}
 	input.mm-toggle:checked ~ label.mm-toggle:before
 	{
@@ -61,10 +42,11 @@
 	{
 		width: $mm_checkWidth;
 		height: $mm_checkHeight;
-		margin-top: -( $mm_checkHeight / 2 );
 
 		&:before
 		{
+			content: '';
+			display: block;
 			border-left: 3px solid;
 			border-bottom: 3px solid;
 			width: 40%;
@@ -75,139 +57,17 @@
 			transform: rotate( -45deg );
 		}
 	}
+	input.mm-check
+	{
+		position: absolute;
+		left: -10000px;
+	}
 	input.mm-check:checked ~ label.mm-check:before
 	{
 		opacity: 1;
 	}
 }
 
-@if ( $mm_opt_toggles or $mm_opt_checks )
-{
-	@if ( $mm_opt_vertical )
-	{
-		.mm-listitem_vertical label
-		{
-
-			@if ( $mm_opt_toggles )
-			{
-				&.mm-toggle
-				{
-					top: ( $mm_btnSize - $mm_toggleHeight ) / 2;
-					bottom: auto;
-					margin-top: 0;
-				}
-			}
-			@if ( $mm_opt_checks )
-			{
-				&.mm-check
-				{
-					top: ( $mm_btnSize - $mm_checkHeight ) / 2;
-					bottom: auto;
-					margin-top: 0;
-				}
-			}
-		}
-	}
-}
-
-
-// positioning
-@if ( $mm_opt_toggles or $mm_opt_checks )
-{
-	label
-	{
-		@if ( $mm_opt_toggles )
-		{
-			&.mm-toggle
-			{
-				right: $mm_padding * 2;
-				+ a,
-				+ span
-				{
-					padding-right: $mm_toggleWidth + ( $mm_padding * 3 );
-				}
-			}
-		}
-		@if ( $mm_opt_checks )
-		{
-			&.mm-check
-			{
-				right: $mm_padding * 2;
-				+ a,
-				+ span
-				{
-					padding-right: $mm_checkWidth + ( $mm_padding * 3 );
-				}
-			}
-		}
-	}
-}
-
-// positioning with subopen
-@if ( $mm_opt_toggles or $mm_opt_checks )
-{
-	@if ( $mm_opt_buttons )
-	{
-		.mm-btn_next + label
-		{
-			&.mm-toggle,
-			&.mm-check
-			{
-				right: $mm_subopenWidth + $mm_padding;
-				
-				+ a,
-				+ span
-				{
-					margin-right: $mm_subopenWidth;
-				}
-			}
-			@if ( $mm_opt_toggles )
-			{
-				&.mm-toggle
-				{
-					+ a,
-					+ span
-					{
-						padding-right: $mm_toggleWidth + ( $mm_padding * 2 );
-					}
-				}
-			}
-			@if ( $mm_opt_checks )
-			{
-				&.mm-check
-				{
-					+ a,
-					+ span
-					{
-						padding-right: $mm_checkWidth + ( $mm_padding * 2 );
-					}
-				}
-			}
-		}
-	}
-}
-
-// positioning with counter
-@if ( $mm_opt_toggles or $mm_opt_checks )
-{
-	@if ( $mm_opt_counters and $mm_opt_buttons )
-	{
-		.mm-counter + .mm-btn_next + label
-		{
-			&.mm-toggle,
-			&.mm-check
-			{
-				right: $mm_counterWidth + $mm_subopenWidth + $mm_padding;
-
-				+ a,
-				+ span
-				{
-					margin-right: $mm_counterWidth + $mm_subopenWidth;
-				}
-			}
-		}
-	}
-}
 
 @if ( $mm_opt_toggles )
 {
@@ -217,3 +77,6 @@
 {
 	@include mm_checks_colors;
 }
+
+@import 'toggles.rtl';
+

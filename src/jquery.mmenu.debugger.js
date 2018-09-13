@@ -62,6 +62,52 @@
 		var arr, a, b, l;
 
 
+
+		//	Core 7.1
+		var srch = [ 'pageNodetype', 'pageSelector', 'noPageSelector', 'wrapPageIfNeeded', 'menuInsertMethod', 'menuInsertSelector' ],
+			repl = [ 'page.nodetype', 'page.selector', 'page.noSelector', 'page.wrapIfNeeded', 'menu.insertMethod', 'menu.insertSelector' ];
+		for ( var s = 0; s < srch.length; s++ )
+		{
+			if ( typeof this.conf.offCanvas[ srch[ s ] ] != 'undefined' )
+			{
+				deprc( 'The "offCanvas.' + srch[ s ] + '" configuration option', '"offCanvas.' + repl[ s ] + '"', '7.1' );
+			}
+		}
+
+
+		//	Extensions 7.1
+		if ( extensions.indexOf( 'listview-' ) > -1 &&
+			extensions.indexOf( 'listview-justify' ) == -1
+		) {
+			deprc( 'The "listview" sizes', 'the CSS variable "--mm-listitem-size"', '7.1' );
+		}
+
+		//	Addons 7.1
+		if ( this.opts.iconbar &&
+			this.opts.iconbar.size
+		) {
+			deprc( 'The option "iconbar.size"', 'the CSS variable "--mm-iconbar-size"', '7.1' );
+		}
+		if ( this.opts.iconPanels &&
+			this.opts.iconPanels.size
+		) {
+			deprc( 'The option "iconbar.size"', 'the CSS variable "--mm-iconpanel-size"', '7.1' );
+		}
+		if ( this.opts.sidebar &&
+			this.opts.sidebar.collapsed &&
+			this.opts.sidebar.collapsed.size
+		) {
+			deprc( 'The option "sidebar.collapsed.size"', 'the CSS variable "--mm-sidebar-collapsed-size"', '7.1' );
+		}
+		if ( this.opts.sidebar &&
+			this.opts.sidebar.expanded &&
+			this.opts.sidebar.expanded.size
+		) {
+			deprc( 'The option "sidebar.expanded.size"', 'the CSS variable "--mm-sidebar-expanded-size"', '7.1' );
+		}
+
+
+
 		//	Opties 7.0
 		if ( typeof this.opts.initMenu == 'function' )
 		{

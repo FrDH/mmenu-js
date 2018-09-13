@@ -6,7 +6,8 @@
 	{
 		#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
 		{
-			@include mm_translate( -( #{$width * 100}vw ), 0 );
+//			@include mm_translate( -( #{$width * 100}vw ), 0 );
+			transform: translate3d( -( #{$width * 100}vw ), 0, 0 );
 		}
 	}
 
@@ -16,7 +17,8 @@
 		{
 			#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
 			{
-				@include mm_translate( -$minWidth, 0 );
+//				@include mm_translate( -$minWidth, 0 );
+				transform: translate3d( -$minWidth, 0, 0 );
 			}
 		}
 	}
@@ -25,7 +27,8 @@
 		{
 			#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
 			{
-				@include mm_translate( -$maxWidth, 0 );
+//				@include mm_translate( -$maxWidth, 0 );
+				transform: translate3d( -$maxWidth, 0, 0 );
 			}
 		}
 	}

@@ -1,0 +1,28 @@
+@import "../../mixins";
+@import "../../variables";
+
+
+
+@if ( $mm_opt_rtl )
+{
+
+	/*//	Sidebar add-on
+	@if ( $mm_opt_sidebar )
+	{
+		.mm-wrapper_sidebar-collapsed .mm-menu_rtl:not( .mm-menu_opened ) ~ .mm-slideout
+		{
+			transform: translate( 0, 0 ) !important;
+			right: 0;
+		}
+		.mm-wrapper_sidebar-collapsed .mm-menu_rtl.mm-menu_opened ~ .mm-slideout
+		{
+			width: 100%;
+		}
+		.mm-wrapper_sidebar-expanded:not( .mm-wrapper_sidebar-closed ) .mm-menu_rtl ~ .mm-slideout
+		{
+			transform: translate( 0, 0 ) !important;
+			right: 0;
+		}
+	}*/
+
+}

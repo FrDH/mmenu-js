@@ -1,16 +1,19 @@
-/*	
- * jQuery mmenu sidebar add-on
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_sidebar_collapsed or $mm_opt_sidebar_expanded )
 {
-	[class*="mm-wrapper_sidebar-collapsed-"],
-	[class*="mm-wrapper_sidebar-expanded-"]
+	.mm-menu,
+	.mm-slideout
+	{
+		--mm-sidebar-collapsed-size: $mm_sidebarCollapsedSize;
+		--mm-sidebar-expanded-size: $mm_sidebarExpandedSize;
+	}
+
+	.mm-wrapper_sidebar-collapsed,
+	.mm-wrapper_sidebar-expanded
 	{
 		body
 		{
@@ -28,8 +31,8 @@
 		}
 	}
 
-	[class*="mm-wrapper_sidebar-collapsed-"] .mm-menu_sidebar-collapsed,
-	[class*="mm-wrapper_sidebar-expanded-"] .mm-menu_sidebar-expanded
+	.mm-wrapper_sidebar-collapsed .mm-menu_sidebar-collapsed,
+	.mm-wrapper_sidebar-expanded .mm-menu_sidebar-expanded
 	{
 		display: block !important;
 		top: 0 !important;
@@ -41,7 +44,7 @@
 
 @if ( $mm_opt_sidebar_collapsed )
 {
-	[class*="mm-wrapper_sidebar-collapsed-"]:not( .mm-wrapper_opening ) 
+	.mm-wrapper_sidebar-collapsed:not( .mm-wrapper_opening ) 
 	{
 		.mm-menu_hidenavbar .mm-navbar,
 		.mm-menu_hidedivider .mm-listitem_divider
@@ -50,15 +53,29 @@
 		}
 	}
 
+	.mm-wrapper_sidebar-collapsed
+	{
+		.mm-slideout
+		{
+			width: calc( 100% - #{$mm_sidebarCollapsedSize} );	//	IE11 fallback
+			width: calc( 100% - var( --mm-sidebar-collapsed-size ) );
+
+			transform: translate3d( $mm_sidebarCollapsedSize, 0, 0 );	//	IE11 fallback
+			transform: translate3d( var( --mm-sidebar-collapsed-size ), 0, 0 );
+		}
+	}
+
+	//	deprecated
 	@each $size in $mm_sidebarCollapsedSizes
 	{
 		@include mm_sidebar_collapsed_size( $size );
 	}
+	//	/deprecated
 }
 
 @if ( $mm_opt_sidebar_expanded )
 {
-	[class*="mm-wrapper_sidebar-expanded-"]
+	.mm-wrapper_sidebar-expanded
 	{
 		.mm-menu_sidebar-expanded
 		{
@@ -87,17 +104,40 @@
 					overflow: visible;
 				}
 			}
-			.mm-page__blocker
+			.mm-wrapper__blocker
 			{
 				display: none !important;
 			}
 		}
+
+		&:not( .mm-wrapper_sidebar-closed )
+		{
+			.mm-menu_sidebar-expanded.mm-menu_opened
+			{
+				~ .mm-slideout
+				{
+					width: calc( 100% - #{mm_sidebarExpandedSize} ); //	IE11 fallback
+					width: calc( 100% - var( --mm-sidebar-expanded-size ) );
+
+					transform: translate3d( $mm_sidebarExpandedSize, 0, 0 ); //	IE11 fallback
+					transform: translate3d( var( --mm-sidebar-expanded-size ), 0, 0 );
+				}
+			}
+		}
+		.mm-menu_sidebar-expanded
+		{
+			width: $mm_sidebarExpandedSize; //	IE11 fallback
+			width: var( --mm-sidebar-expanded-size );
+		}
 	}
 
+
+	//	deprecated
 	@each $size in $mm_sidebarExpandedSizes
 	{
 		@include mm_sidebar_expanded_size( $size );
 	}
+	//	/deprecated
 }
 
 @if ( $mm_opt_sidebar_blocker )
@@ -118,3 +158,5 @@
 		display: none;
 	}
 }
+
+@import 'sidebar.rtl';

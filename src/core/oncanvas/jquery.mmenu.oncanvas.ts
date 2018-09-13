@@ -1,5 +1,5 @@
 /*!
- * jQuery mmenu v7.0.6
+ * jQuery mmenu v7.1.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -14,7 +14,7 @@
 (function( $ ) {
 
 	const _PLUGIN_  = 'mmenu';
-	const _VERSION_	= '7.0.6';
+	const _VERSION_	= '7.1.0';
 
 
 	//	Newer version of the plugin already excists
@@ -36,7 +36,6 @@
 		this.vars	= {};
 		this.cbck	= {};
 		this.mtch 	= {};
-
 
 		if ( typeof this.___deprecated == 'function' )
 		{
@@ -97,6 +96,7 @@
 			vertical	: 'Vertical'
 		},
 		clone				: false,
+		language			: null,
 		openingInterval		: 25,
 		panelNodetype		: 'ul, ol, div',
 		transitionDuration	: 400
@@ -254,6 +254,7 @@
 				if ( animation && !$panel.hasClass( _c.panel + '_noanimation' ) )
 				{
 					//	Without the timeout the animation will not work because the element had display: none;
+					//	RequestAnimationFrame would be nice here.
 					setTimeout(
 						function()
 						{
@@ -372,7 +373,7 @@
 			}
 		},
 
-		matchMedia: function( mdia, yes, no )
+		matchMedia: function( media, yes, no )
 		{
 			var that = this,
 				func = {
@@ -381,8 +382,13 @@
 				};
 
 			//	Bind to windowResize
-			this.mtch[ mdia ] = this.mtch[ mdia ] || [];
-			this.mtch[ mdia ].push( func );
+			this.mtch[ media ] = this.mtch[ media ] || [];
+			this.mtch[ media ].push( func );
+		},
+
+		i18n: function( text )
+		{
+			return $[ _PLUGIN_ ].i18n( text, this.conf.language );
 		},
 
 		_initHooks: function()
@@ -711,19 +717,24 @@
 			this.__refactorClass( $li, this.conf.classNames.divider 	, _c.listitem + '_divider'	);
 			this.__refactorClass( $li, this.conf.classNames.spacer 		, _c.listitem + '_spacer'	);
 
+			$li.children( 'a, span' )
+				.not( '.' + _c.btn )
+				.addClass( _c.listitem + '__text' );
 
 			//	Add open link to parent listitem
 			var $parent = $panel.data( _d.parent );
 			if ( $parent && $parent.is( '.' + _c.listitem ) )
 			{
-				if ( !$parent.children( '.' + _c.btn + '_next' ).length )
+				if ( !$parent.children( '.' + _c.btn ).length )
 				{
 					var $a = $parent.children( 'a, span' ).first(),
-						$b = $( '<a class="' + _c.btn + '_next' + '" href="#' + $panel.attr( 'id' ) + '" />' ).insertBefore( $a );
+						$b = $( '<a class="' + _c.btn + ' ' + _c.btn + '_next ' + _c.listitem + '__btn" href="#' + $panel.attr( 'id' ) + '" />' );
 
+					$b.insertAfter( $a );
 					if ( $a.is( 'span' ) )
 					{
-						$b.addClass( _c.btn + '_fullwidth' );
+						$b.addClass( _c.listitem + '__text' ).html( $a.html() );
+						$a.remove();
 					}
 				}
 			}
@@ -947,11 +958,11 @@
 			//	Fallback
 			if ( typeof d == 'string' )
 			{
-				return $[ _PLUGIN_ ].i18n( d );
+				return this.i18n( d );
 			}
 
 			//	Default
-			return $[ _PLUGIN_ ].i18n( $[ _PLUGIN_ ].defaults.navbar.title );
+			return this.i18n( $[ _PLUGIN_ ].defaults.navbar.title );
 		},
 
 		__refactorClass: function( $e, o, c )
@@ -1028,6 +1039,13 @@
 		__getUniqueId: function()
 		{
 			return _c.mm( $[ _PLUGIN_ ].uniqueId++ );
+		},
+
+		__hasClass: function( e, c )
+		{
+			//	Typescript should do this
+			// return e.classList.contains( c );
+			return (' ' + e.className + ' ').indexOf( ' ' + c + ' ' ) > -1;
 		}
 	};
 
@@ -1070,22 +1088,34 @@
 	*/
 	$[ _PLUGIN_ ].i18n = (function() {
 
-		var trns = {};
+		var translations = {};
 
-		return function( t )
+		return function( text, language )
 		{
-			switch( typeof t )
+			switch( typeof text )
 			{
 				case 'object':
-					$.extend( trns, t );
-					return trns;
+					if ( typeof language == 'string' )
+					{
+						if ( typeof translations[ language ] == 'undefined' )
+						{
+							translations[ language ] = {};
+						}
+						$.extend( translations[ language ], text );
+					}
+					return translations;
 
 				case 'string':
-					return trns[ t ] || t;
+					if ( typeof language == 'string' &&
+						typeof translations[ language ] != 'undefined'
+					) {
+						return translations[ language ][ text ] || text;
+					}
+					return text;
 
 				case 'undefined':
 				default:
-					return trns;
+					return translations;
 			}
 		};
 	})();

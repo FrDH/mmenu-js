@@ -1,8 +1,3 @@
-/*	
- * jQuery mmenu offCanvas add-on
- * mmenu.frebsite.nl
- */
-
 (function( $ ) {
 
 	const _PLUGIN_ = 'mmenu';
@@ -40,9 +35,9 @@
 
 
 			//	Extend configuration
-			if ( typeof conf.pageSelector != 'string' )
+			if ( typeof conf.page.selector != 'string' )
 			{
-				conf.pageSelector = '> ' + conf.pageNodetype;
+				conf.page.selector = '> ' + conf.page.nodetype;
 			}
 
 
@@ -69,11 +64,13 @@
 				{
 					var that = this;
 
+					//	Setup the UI blocker
+					this._initBlocker();
+
 					//	Setup the page
 					this.setPage( glbl.$page );
 
-					//	Setup the UI blocker and the window
-					this._initBlocker();
+					//	Setup window events
 					this[ '_initWindow_' + _ADDON_ ]();
 
 					//	Setup the menu
@@ -83,7 +80,7 @@
 						.removeClass( _c.wrapper );
 
 					//	Append to the <body>
-					this.$menu[ conf.menuInsertMethod ]( conf.menuInsertSelector );
+					this.$menu[ conf.menu.insertMethod ]( conf.menu.insertSelector );
 
 					//	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
 					var hash = window.location.hash;
@@ -100,6 +97,15 @@
 							);
 						}
 					}
+				}
+			);
+
+			this.bind( 'setPage:after',
+				function( $page )
+				{
+					glbl.$blck
+						.children( 'a' )
+						.attr( 'href', '#' + $page.attr( 'id' ) );
 				}
 			);
 
@@ -121,6 +127,16 @@
 				function()
 				{
 					this.__sr_aria( this.$menu, 'hidden', true );
+				}
+			);
+
+			//	Add screenreader / text support
+			this.bind( 'initBlocker:after:sr-text',
+				function()
+				{
+					glbl.$blck
+						.children( 'a' )
+						.html( this.__sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) ) );
 				}
 			);
 
@@ -215,12 +231,22 @@
 		moveBackground	: true
 	};
 	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
-		pageNodetype		: 'div',
-		pageSelector		: null,
-		noPageSelector		: [],
-		wrapPageIfNeeded	: true,
-		menuInsertMethod	: 'prependTo',
-		menuInsertSelector	: 'body'
+		menu 	: {
+			insertMethod	: 'prependTo',
+			insertSelector	: 'body'
+		},
+		page 	: {
+			nodetype		: 'div',
+			selector		: null,
+			noSelector		: [],
+			wrapIfNeeded	: true,
+		}
+		// pageNodetype		: 'div',
+		// pageSelector		: null,
+		// noPageSelector		: [],
+		// wrapPageIfNeeded	: true,
+		// menuInsertMethod	: 'prependTo',
+		// menuInsertSelector	: 'body'
 	};
 
 
@@ -389,27 +415,31 @@
 
 		if ( !$page || !$page.length )
 		{
-			$page = glbl.$body.find( conf.pageSelector );
+			$page = glbl.$body
+				.find( conf.page.selector )
+				.not( '.' + _c.menu )
+				.not( '.' + _c.wrapper + '__blocker' );
 
-			if ( conf.noPageSelector.length )
+			if ( conf.page.noSelector.length )
 			{
-				$page = $page.not( conf.noPageSelector.join( ', ' ) );
+				$page = $page.not( conf.page.noSelector.join( ', ' ) );
 			}
-			if ( $page.length > 1 && conf.wrapPageIfNeeded )
+			if ( $page.length > 1 && conf.page.wrapIfNeeded )
 			{
 				$page = $page
-					.wrapAll( '<' + this.conf[ _ADDON_ ].pageNodetype + ' />' )
+					.wrapAll( '<' + this.conf[ _ADDON_ ].page.nodetype + ' />' )
 					.parent();
 			}
 		}
 
-		$page.each(
-			function()
-			{
-				$(this).attr( 'id', $(this).attr( 'id' ) || that.__getUniqueId() );		
-			}
-		);
-		$page.addClass( _c.page + ' ' + _c.slideout );
+		$page.addClass( _c.page + ' ' + _c.slideout )
+			.each(
+				function()
+				{
+					$(this).attr( 'id', $(this).attr( 'id' ) || that.__getUniqueId() );		
+				}
+			);
+
 		glbl.$page = $page;
 
 		this.trigger( 'setPage:after', $page );
@@ -459,20 +489,25 @@
 
 	$[ _PLUGIN_ ].prototype._initBlocker = function()
 	{
-		var that = this;
+		var that = this,
+			opts = this.opts[ _ADDON_ ],
+			conf = this.conf[ _ADDON_ ];
 
-		if ( !this.opts[ _ADDON_ ].blockUI )
+		this.trigger( 'initBlocker:before' );
+
+		if ( !opts.blockUI )
 		{
 			return;
 		}
 
 		if ( !glbl.$blck )
 		{
-			glbl.$blck = $( '<div class="' + _c.page + '__blocker ' + _c.slideout + '" />' );
+			glbl.$blck = $( '<div class="' + _c.wrapper + '__blocker ' + _c.slideout + '" />' )
+				.append( '<a />' );
 		}
 
 		glbl.$blck
-			.appendTo( glbl.$body )
+			.appendTo( conf.menu.insertSelector )
 			.off( _e.touchstart + '-' + _ADDON_ + ' ' + _e.touchmove + '-' + _ADDON_ )
 			.on(  _e.touchstart + '-' + _ADDON_ + ' ' + _e.touchmove + '-' + _ADDON_,
 				function( e )
@@ -494,6 +529,8 @@
 					}
 				}
 			);
+
+		this.trigger( 'initBlocker:after' );
 	};
 
 

@@ -1,56 +1,60 @@
-/*	
- * jQuery mmenu iconPanels add-on
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_iconpanels )
 {
-	[class*="mm-menu_iconpanel-"] .mm-panels 
+	.mm-menu
 	{
-		> .mm-panel
+		--mm-iconpanel-size: $mm_iconpanelSize;
+	}
+
+	@include mm_iconpanel_size( 1 );
+	@include mm_iconpanel_size( 2 );
+	@include mm_iconpanel_size( 3 );
+
+	.mm-panel_iconpanel-first
+	{
+		~ .mm-panel,
+		~ .mm-panel_opened ~ .mm-listview_fixeddivider
 		{
-			transition-property: transform, left;
+			width: calc( 100% - $mm_iconpanelSize ); //	IE11 fallback
+			width: calc( 100% - var( --mm-iconpanel-size ) );
+		}
+	}
+
+	.mm-menu_iconpanel .mm-panels 
+	{
+		> .mm-panel,
+		> .mm-listview_fixeddivider
+		{
+			left: auto;
+			transition-property: transform, width;
 		}
 
-		> .mm-panel_iconpanel-first,
-		> .mm-panel_iconpanel-first.mm-panel_opened ~ .mm-listview_fixeddivider
+		> .mm-panel:not( .mm-panel_iconpanel-first ):not( .mm-panel_iconpanel-0 ),
 		{
-			left: 0;
+			border-left: 1px solid;
+			border-color: inherit;
 		}
 
 		> .mm-panel_opened,
 		> .mm-panel_opened-parent
 		{
 			display: block !important;
-
-			&[class*="mm-panel_iconpanel-"]:not( .mm-panel_iconpanel-first ):not( .mm-panel_iconpanel-0 ),
-			{
-				border-left: 1px solid;
-				border-color: inherit;
-			}
 		}
 		> .mm-panel_opened-parent
 		{
 			overflow-y: hidden;
-			@include mm_translate( 0, 0 );
-		}
-	}
-	[class*="mm-menu_iconpanel-"]
-	{
-		&.mm-menu_hidenavbar .mm-panel_opened-parent .mm-navbar,
-		&.mm-menu_hidedivider .mm-panel_opened-parent .mm-listitem_divider
-		{
-			opacity: 0;
+			transform: unset;
 		}
 	}
 
-	@each $size in $mm_iconpanelSizes
+	.mm-menu_hidenavbar .mm-panel_opened-parent .mm-navbar,
+	.mm-menu_hidedivider .mm-panel_opened-parent .mm-listitem_divider
 	{
-		@include mm_iconpanel_size( $size );
+		opacity: 0;
 	}
 }
 
@@ -77,3 +81,5 @@
 		bottom: -100000px;
 	}
 }
+
+@import 'iconpanels.rtl';

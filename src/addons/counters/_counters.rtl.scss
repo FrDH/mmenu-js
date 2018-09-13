@@ -1,0 +1,8 @@
+@if ( $mm_opt_counters && $mm_opt_rtl )
+{
+	[dir="rtl"] .mm-counter
+	{
+		text-align: left;
+		float: left;
+	}
+}

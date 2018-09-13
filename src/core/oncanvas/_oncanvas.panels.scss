@@ -27,17 +27,17 @@
 	overflow-x: hidden;
 	overflow-y: auto;
 
+	width: 100%;
 	padding: 0 $mm_panelPadding;
 
-	//	Fixes css from other scripts/styles hiding submenus
+	//	Fixes css from other styles hiding submenus
 	&:not( .mm-hidden )
 	{
 		display: block;
 	}
 
-	@include mm_translate( 100%, 0 );
+	transform: translate3d( 100%, 0, 0 );
 	transition: transform $mm_transitionDuration $mm_transitionFunction;
-	transform-origin: top left;
 
 	//	Because padding-top/-bottom is ignored when a DIV is scrollable
 	&:before,
@@ -50,16 +50,19 @@
 }
 .mm-panel_has-navbar
 {
-	padding-top: $mm_navbarHeight;
+	padding-top: $mm_navbarSize; //	IE11 fallback
+	padding-top: var( --mm-navbar-size );
 }
 .mm-panel_opened
 {
 	z-index: 1;
-	@include mm_translate( 0%, 0 );
+//	@include mm_translate( 0%, 0 );
+	transform: translate3d( 0%, 0, 0 );
 }
 .mm-panel_opened-parent
 {
-	@include mm_translate( -$mm_subpanelOffset, 0 );
+//	@include mm_translate( -$mm_subpanelOffset, 0 );
+	transform: translate3d( -$mm_subpanelOffset, 0, 0 );
 }
 .mm-panel_highest
 {
@@ -71,8 +74,7 @@
 
 	&.mm-panel_opened-parent
 	{
-		@include mm_translate( 0, 0 );
+//		@include mm_translate( 0, 0 );
+		transform: translate3d( 0, 0, 0 );
 	}
 }
-
-

@@ -1,0 +1,132 @@
+.mm-listview,
+.mm-listitem
+{
+	list-style: none;
+	display: block;
+	padding: 0;
+	margin: 0;
+}
+.mm-listview,
+.mm-listitem,
+.mm-listitem:after,
+.mm-listitem__btn
+{
+	border-color: inherit;
+}
+
+.mm-panels > .mm-panel 
+{
+	> .mm-listview
+	{
+		margin: $mm_panelPadding ( -$mm_panelPadding );
+	}
+	> .mm-listview:first-child,
+	> .mm-navbar + .mm-listview
+	{
+		margin-top: -$mm_panelPadding;
+	}
+}
+
+
+//	Listitems
+.mm-listitem
+{
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+
+	&:after
+	{
+		content: '';
+		border-bottom-width: 1px;
+		border-bottom-style: solid;
+		display: block;
+		position: absolute;
+		left: $mm_listitemIndent;
+		right: 0;
+		bottom: 0;
+	}
+
+	a,
+	a:hover
+	{
+		text-decoration: none;
+	}
+}
+
+.mm-listitem__text,
+.mm-listitem__btn
+{
+	color: inherit;
+	display: block;
+
+	padding-top: ($mm_listitemSize - $mm_lineHeight) / 2; //	IE11 fallback
+	padding-top: calc( (var( --mm-listitem-size ) - var( --mm-line-height )) / 2 );
+
+	padding-bottom: ($mm_listitemSize - $mm_lineHeight) / 2; //	IE11 fallback
+	padding-bottom: calc( (var( --mm-listitem-size ) - var( --mm-line-height )) / 2 );
+}
+
+.mm-listitem__text
+{
+	@include mm_ellipsis;
+
+	padding-left: $mm_listitemIndent;
+	padding-right: $mm_padding;
+	flex-grow: 1;
+	flex-basis: 10%;
+}
+
+.mm-listitem__btn
+{
+	background: rgba( 3, 2, 1, 0 );
+	width: auto;
+	padding-right: $mm_subopenWidth;
+	position: relative;
+
+	&:not( .mm-listitem__text )
+	{
+		border-left-width: 1px;
+		border-left-style: solid;
+	}
+}
+
+//	Dividers
+@if ( $mm_opt_listviews_divider )
+{
+	.mm-listitem_divider
+	{
+		@include mm_ellipsis;
+
+		font-size: 75%;
+		text-transform: uppercase;
+
+		min-height: $mm_lineHeight;	//	IE11 fallback
+		min-height: var( --mm-line-height );
+
+		padding: $mm_padding;
+		padding-left: $mm_listitemIndent;
+		
+		padding-top: (($mm_listitemSize * .75) - $mm_lineHeight) / 2; //	IE11 fallback
+		padding-top: calc( ((var( --mm-listitem-size ) * .75) - var( --mm-line-height )) * .5 );
+
+		padding-bottom: (($mm_listitemSize * .75) - $mm_lineHeight) / 2; //	IE11 fallback
+		padding-bottom: calc( ((var( --mm-listitem-size ) * .75) - var( --mm-line-height )) * .5 );
+	}
+}
+
+//	Spacers
+@if ( $mm_opt_listviews_spacer )
+{
+	.mm-listitem_spacer
+	{
+		padding-top: $mm_listitemSize;
+		padding-top: var( --mm-listitem-size );
+
+		> .mm-btn_next
+		{
+			top: $mm_listitemSize;
+			top: var( --mm-listitem-size );
+		}
+	}
+}

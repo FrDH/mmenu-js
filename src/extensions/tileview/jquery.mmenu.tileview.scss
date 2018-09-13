@@ -1,10 +1,6 @@
-/*
- * jQuery mmenu tileview extension
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import 
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_tileview_xs or $mm_opt_tileview_s or $mm_opt_tileview_m or $mm_opt_tileview_l or $mm_opt_tileview_xl )
@@ -72,36 +68,32 @@
 					padding-top: 100%;
 				}
 			}
+		}
 
-			> a,
-			> span
+		.mm-listitem__text
+		{
+			line-height: 1px;
+			text-align: center;
+			padding: 50% $mm_padding 0 $mm_padding;
+			margin: 0;
+			position: absolute;
+			top: 0;
+			right: 1px;
+			bottom: 1px;
+			left: 0;
+		}
+		.mm-listitem__btn
+		{
+			width: auto;
+
+			&:before,
+			&:after
 			{
-				line-height: 1px;
-				text-align: center;
-				padding: 50% $mm_padding 0 $mm_padding;
-				margin: 0;
-				position: absolute;
-				top: 0;
-				right: 1px;
-				bottom: 1px;
-				left: 0;
-			}
-
-			@if ( $mm_opt_buttons )
-			{
-				> .mm-btn_next
-				{
-					width: auto;
-
-					&:before,
-					&:after
-					{
-						content: none;
-						display: none;
-					}
-				}
+				content: none;
+				display: none;
 			}
 		}
+
 		.mm-listitem_divider
 		{
 			display: none;

@@ -1,10 +1,6 @@
-/*
- * jQuery mmenu popup extension
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import 
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_popup )
@@ -25,8 +21,8 @@
 		right: auto;
 		z-index: 2;
 		
-		//	transform: translate3d( -50%, -50%, 0 );
-		@include mm_translate( -50%, -50% );
+		transform: translate3d( -50%, -50%, 0 );
+//		@include mm_translate( -50%, -50% );
 
 		&.mm-menu_opened
 		{
@@ -35,7 +31,7 @@
 				transform: none !important;
 				z-index: 0;
 			}
-			~ .mm-page__blocker
+			~ .mm-wrapper__blocker
 			{
 				transition-delay: 0s !important;
 				z-index: 1;

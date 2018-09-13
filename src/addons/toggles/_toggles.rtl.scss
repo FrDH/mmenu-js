@@ -1,0 +1,10 @@
+@if ( $mm_opt_rtl )
+{
+	@if ( $mm_opt_toggles )
+	{
+		[dir="rtl"] input.mm-toggle:checked ~ label.mm-toggle:before
+		{
+			float: left;
+		}
+	}
+}

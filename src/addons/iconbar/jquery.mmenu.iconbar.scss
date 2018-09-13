@@ -1,14 +1,15 @@
-/*	
- * jQuery mmenu iconbar add-on
- * mmenu.frebsite.nl
- */
-
-@import "../../mixins";
-@import "../../variables";
+@import 
+	'../../mixins',
+	'../../variables';
 
 
 @if ( $mm_opt_iconbar )
 {
+	.mm-menu
+	{
+		--mm-iconbar-size: $mm_iconbarSize;
+	}
+
 	.mm-iconbar
 	{
 		border-color: inherit;
@@ -17,10 +18,12 @@
 		border-right-width: 1px;
 
 		text-align: center;
-		line-height: $mm_btnSize / 2;
 
 		overflow: hidden;
 		box-sizing: border-box;
+
+		width: $mm_iconbarSize; //	IE11 fallback
+		width: var( --mm-iconbar-size );
 
 		position: absolute;
 		top: 0;
@@ -29,14 +32,25 @@
 		z-index: 2;
 	}
 
+	.mm-menu_iconbar
+	{
+		.mm-panels,
+		.mm-navbars_top,
+		.mm-navbars_bottom
+		{
+			left: $mm_iconbarSize; //	IE11 fallback
+			left: var( --mm-iconbar-size );
+		}
+	}
+
 	.mm-iconbar__top,
 	.mm-iconbar__bottom
 	{
 		width: inherit;
 		position: absolute;
 
-		//	Bugfix
-		@include mm_translate( 0, 0 );
+		//	Bugfix IE9
+//		@include mm_translate( 0, 0 );
 
 		> *
 		{
@@ -59,10 +73,15 @@
 		bottom: 0;
 	}
 
-	@each $size in $mm_iconbarSizes
+	//	deprecated
+	@if ( $mm_opt_iconbar_sizes )
 	{
-		@include mm_iconbar_size( $size );	
+		@each $size in $mm_iconbarSizes
+		{
+			@include mm_iconbar_size( $size );	
+		}
 	}
+	//	/deprecated
 
 	@include mm_iconbar_colors;
 }
