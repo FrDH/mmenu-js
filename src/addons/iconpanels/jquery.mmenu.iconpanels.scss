@@ -19,12 +19,12 @@
 		~ .mm-panel,
 		~ .mm-panel_opened ~ .mm-listview_fixeddivider
 		{
-			width: calc( 100% - $mm_iconpanelSize ); //	IE11 fallback
+			width: calc( 100% - #{$mm_iconpanelSize} ); //	IE11 fallback
 			width: calc( 100% - var( --mm-iconpanel-size ) );
 		}
 	}
 
-	.mm-menu_iconpanel .mm-panels 
+	.mm-menu_iconpanel .mm-panels
 	{
 		> .mm-panel,
 		> .mm-listview_fixeddivider
