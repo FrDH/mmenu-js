@@ -44,7 +44,7 @@
 
 @if ( $mm_opt_sidebar_collapsed )
 {
-	.mm-wrapper_sidebar-collapsed:not( .mm-wrapper_opening )
+	.mm-wrapper_sidebar-collapsed:not( .mm-wrapper_opening ) 
 	{
 		.mm-menu_hidenavbar .mm-navbar,
 		.mm-menu_hidedivider .mm-listitem_divider
@@ -116,7 +116,7 @@
 			{
 				~ .mm-slideout
 				{
-					width: calc( 100% - #{$mm_sidebarExpandedSize} ); //	IE11 fallback
+					width: calc( 100% - #{mm_sidebarExpandedSize} ); //	IE11 fallback
 					width: calc( 100% - var( --mm-sidebar-expanded-size ) );
 
 					transform: translate3d( $mm_sidebarExpandedSize, 0, 0 ); //	IE11 fallback
