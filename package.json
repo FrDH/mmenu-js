@@ -1,15 +1,15 @@
 {
-	"name"      	: "jquery.mmenu",
-	"version"   	: "7.1.0",
-	"main"      	: "dist/jquery.mmenu.all.js",
-	"author"    	: "Fred Heusschen <info@frebsite.nl>",
-	"license"   	: "CC-BY-NC-4.0",
-	"repository"	: {
-		"type"			: "git",
-		"url"			: "https://github.com/FrDH/jQuery.mmenu.git"
+	"name": "jquery.mmenu",
+	"version": "7.2.0",
+	"main": "dist/jquery.mmenu.all.js",
+	"author": "Fred Heusschen <info@frebsite.nl>",
+	"license": "CC-BY-NC-4.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/FrDH/jQuery.mmenu.git"
 	},
-	"description"	: "The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
-	"keywords"		: [
+	"description": "The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
+	"keywords": [
 		"app",
 		"list",
 		"listview",
@@ -24,23 +24,25 @@
 		"panels",
 		"submenu"
 	],
-	"scripts"		: {
-		"build"			: "gulp default"
+	"scripts": {
+		"build": "gulp default"
 	},
 	"devDependencies": {
-		"@types/hammerjs"	: "^2.0.34",
-		"@types/jquery"		: "^2.0.41",
-		"@types/modernizr"	: "^3.3.0",
-		"gulp"				: "^3.9.0",
-		"gulp-autoprefixer"	: "^3.1.0",
-		"gulp-clean-css"	: "^2.0.13",
-		"gulp-concat"		: "^2.6.0",
-		"gulp-rename"		: "^1.2.2",
-		"gulp-sass"			: "^3.1.0",
-		"gulp-typescript"	: "^3.1.6",
-		"gulp-uglify"		: "^1.5.1",
-		"gulp-umd"			: "^0.2.0",
-		"merge-stream"		: "^1.0.1",
-		"typescript"		: "^2.2.2"
-	}
+		"@types/hammerjs": "*",
+		"@types/jquery": "*",
+		"@types/modernizr": "*",
+		"gulp": "*",
+		"gulp-autoprefixer": "*",
+		"gulp-clean-css": "*",
+		"gulp-concat": "*",
+		"gulp-rename": "*",
+		"gulp-sass": "*",
+		"gulp-typescript": "*",
+		"gulp-uglify": "*",
+		"gulp-umd": "*",
+		"merge-stream": "*",
+		"typescript": "*"
+	},
+	"types": "./index.d.ts"
+
 }

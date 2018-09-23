@@ -25,7 +25,6 @@
 		{
 			border-#{$bottom}-width: 1px;
 			border-#{$bottom}-style: solid;
-			border-#{$bottom}-color: inherit;
 		}
 		.mm-navbar__tab_selected
 		{
@@ -36,15 +35,5 @@
 		{
 			border-#{$top}: none;
 		}
-	}
-}
-@mixin mm_navbar_colors_tabs( $cls: "",
-	$emphasizedBg: $mm_navbartabsBackgroundColor
-) {
-	#{$cls} .mm-navbars_top.mm-navbars_has-tabs > .mm-navbar:not( .mm-navbar_tabs ),
-	#{$cls} .mm-navbars_bottom.mm-navbars_has-tabs .mm-navbar_tabs ~ .mm-navbar,
-	#{$cls} .mm-navbar_tabs > :not( .mm-navbar__tab_selected )
-	{
-		background: $emphasizedBg;
 	}
 }

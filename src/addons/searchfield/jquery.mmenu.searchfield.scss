@@ -19,6 +19,10 @@
 			outline: none !important;
 			box-shadow: none !important;
 			border-radius: 4px;
+			background: $mm_highlightedBackgroundColor;	//	IE11 fallback
+			background: var( --mm-color-background-highlight );
+			color: $mm_textColor;	//	IE11 fallback
+			color: var( --mm-color-text );
 			font: inherit;
 			font-size: inherit;
 			line-height: $mm_navbarSize * 0.8; //	IE11 fallback
@@ -48,6 +52,8 @@
 
 	.mm-panel__noresultsmsg
 	{
+		color: $mm_dimmedTextColor;	//	IE11 fallback
+		color: var( --mm-color-text-dimmed );
 		text-align: center;
 		font-size: 150%;
 		padding: $mm_btnSize 0;
@@ -57,13 +63,22 @@
 	{
 		.mm-searchfield__btn
 		{
+			position: absolute;
 			right: 0;
 			top: 0;
+			bottom: 0;
 		}
 	}
 
 	@if ( $mm_opt_searchfield_searchpanel )
 	{
+		.mm-panel_search
+		{
+			left: 0 !important;
+			right: 0 !important;
+			width: 100% !important;
+			border-left: none !important;
+		}
 		.mm-searchfield__input
 		{
 			flex: 1;
@@ -129,7 +144,4 @@
 			padding-right: $mm_padding;
 		}
 	}
-
-
-	@include mm_searchfield_colors;
 }

@@ -2,10 +2,3 @@ $mm_opt_iconpanels			: true !default;
 $mm_opt_iconpanels_blocker	: $mm_opt_iconpanels !default;
 
 $mm_iconpanelSize 			: $mm_btnSize !default;
-
-
-//	deprecated
-$mm_opt_iconpael_sizes		: $mm_opt_iconpanels !default;
-
-//	deprecated in favor of using css var --mm-iconpanel-size
-$mm_iconpanelSizes			: [ 60, 80 ] !default;

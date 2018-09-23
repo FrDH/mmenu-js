@@ -17,7 +17,9 @@
 		{
 			background: inherit;
 			font-size: inherit;
-			color: $mm_dimmedTextColor;
+
+			color: $mm_dimmedTextColor;	//	IE11 fallback
+			color: var( --mm-color-text-dimmed );
 
 			padding-top: ($mm_listitemSize - $mm_lineHeight) * .75; //	IE11 fallback
 			padding-top: calc( (var( --mm-listitem-size ) - var( --mm-line-height )) * .75 );
@@ -29,7 +31,7 @@
 
 	@if ( $mm_opt_borderstyle_none )
 	{
-		.mm-border-none .mm-listitem_divider
+		.mm-menu_border-none .mm-listitem_divider
 		{
 			border-top-width: 1px;
 			border-top-style: solid;
@@ -50,9 +52,6 @@
 			left: 0;
 			right: 0;
 			z-index: 10;
-			
-			//	Bugfix IE9
-//			@include mm_translate( 0, 0 );
 			
 			&:after
 			{

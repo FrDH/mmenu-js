@@ -34,6 +34,22 @@
 	{
 		float: right;
 	}
+
+	label.mm-toggle
+	{
+		background: $mm_borderColor;	//	IE11 fallback
+		background: var( --mm-color-border );
+	
+		&:before
+		{
+			background: $mm_backgroundColor;	//	IE11 fallback
+			background: var( --mm-color-background );
+		}
+	}
+	input.mm-toggle:checked ~ label.mm-toggle
+	{
+		background: $mm_toggleCheckedColor;
+	}
 }
 
 @if ( $mm_opt_checks )
@@ -45,6 +61,8 @@
 
 		&:before
 		{
+			border-color: $mm_textColor;	//	IE11 fallback
+			border-color: var( --mm-color-text );
 			content: '';
 			display: block;
 			border-left: 3px solid;
@@ -69,14 +87,4 @@
 }
 
 
-@if ( $mm_opt_toggles )
-{
-	@include mm_toggles_colors;
-}
-@if ( $mm_opt_checks )
-{
-	@include mm_checks_colors;
-}
-
 @import 'toggles.rtl';
-

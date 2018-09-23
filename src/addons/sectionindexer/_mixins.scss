@@ -9,11 +9,3 @@
 		}
 	}
 }
-@mixin mm_sectionindexer_colors( $cls: "",
-	$color: $mm_dimmedTextColor
-) {
-	#{$cls} .mm-sectionindexer a
-	{
-		color: $color;
-	}
-}

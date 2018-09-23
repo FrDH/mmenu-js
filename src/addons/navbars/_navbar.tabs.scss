@@ -1,24 +1,9 @@
 @if ( $mm_opt_navbars_tabs )
 {
-	.mm-navbars_top
-	{
-		.mm-navbar_tabs,
-		.mm-navbar_tabs ~ .mm-navbar
-		{
-			background: inherit !important;
-		}
-	}
-	.mm-navbars_bottom
-	{
-		.mm-navbar_tabs
-		{
-			background: inherit !important;
-		}
-	}
-
 	.mm-navbar__tab_selected
 	{
 		background: inherit !important;
+		color: inherit !important;
 		border-width: 1px;
 		border-style: solid;
 		border-color: inherit;
@@ -35,12 +20,38 @@
 
 	@if ( $mm_opt_navbars_top )
 	{
+		.mm-navbars_top.mm-navbars_has-tabs
+		{
+			.mm-navbar_tabs,
+			.mm-navbar_tabs ~ .mm-navbar
+			{
+				background: inherit !important;
+				color: inherit !important;
+			}
+		}
 		@include mm_navbar_tabs_borders( 'top', 'bottom', 'last', 'first' );
 	}
 	@if ( $mm_opt_navbars_bottom )
 	{
+		.mm-navbars_bottom.mm-navbars_has-tabs
+		{
+			.mm-navbar
+			{
+				background: inherit;
+				color: inherit;
+			}
+		}
 		@include mm_navbar_tabs_borders( 'bottom', 'top', 'first', 'last' );
 	}
 
-	@include mm_navbar_colors_tabs;
+	.mm-navbars_top.mm-navbars_has-tabs > .mm-navbar:not( .mm-navbar_tabs ),
+	.mm-navbars_bottom.mm-navbars_has-tabs .mm-navbar_tabs ~ .mm-navbar,
+	.mm-navbar_tabs > a:not( .mm-navbar__tab_selected )
+	{
+		background: $mm_emphasizedBackgroundColor;	//	IE11 fallback
+		background: var( --mm-color-background-emphasis );
+
+		color: $mm_dimmedTextColor;	//	IE11 fallback
+		color: var( --mm-color-text-dimmed );
+	}
 }

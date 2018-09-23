@@ -1,4 +1,4 @@
-@if ( $mm_opt_offcanvas && $mm_opt_rtl )
+@if ( $mm_opt_offcanvas and $mm_opt_rtl )
 {
 	[dir="rtl"] .mm-menu_offcanvas
 	{

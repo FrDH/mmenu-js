@@ -37,7 +37,7 @@
 					//	Set the panel(s)
 					if ( opts.add )
 					{
-						var $wrapper;
+						var $wrapper: any;
 						switch( opts.addTo )
 						{
 							case 'panels':
@@ -45,7 +45,8 @@
 								break;
 
 							default:
-								$wrapper = $(opts.addTo, this.$menu).filter( '.' + _c.panel );
+								$wrapper = $(opts.addTo, this.$menu);
+								$wrapper = $wrapper.filter( '.' + _c.panel );
 								break;
 						}
 

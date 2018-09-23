@@ -13,6 +13,8 @@
 			a:focus
 			{
 				outline: none;
+				background: $mm_emphasizedBackgroundColor;	//	IE11 fallback
+				background: var( --mm-color-background-emphasis );
 			}
 		}
 	}
@@ -33,6 +35,4 @@
 			bottom: 0;
 		}
 	}
-
-	@include mm_keyboardnavigation_colors;
 }

@@ -18,6 +18,43 @@
 		}
 	}
 
+	.mm-menu_selected-hover
+	{
+		.mm-listview:hover > .mm-listitem_selected
+		{
+			.mm-listitem__text
+			{
+				background: none;
+			}
+		}
+		.mm-listitem__text,
+		.mm-listitem__btn
+		{
+			&:hover
+			{
+				background: $mm_emphasizedBackgroundColor;	//	IE11 fallback
+				background: var( --mm-color-background-emphasis	);
+			}
+		}
+	}
 
-	@include mm_setselected_colors;
+	.mm-menu_selected-parent
+	{
+		.mm-panel_opened-parent .mm-listitem:not( .mm-listitem_selected-parent )
+		{
+			.mm-listitem__text
+			{
+				background: none;
+			}
+		}
+		.mm-listitem_selected-parent
+		{
+			> .mm-listitem__text,
+			> .mm-listitem__btn
+			{
+				background: $mm_emphasizedBackgroundColor;	//	IE11 fallback
+				background: var( --mm-color-background-emphasis	);
+			}
+		}
+	}
 }

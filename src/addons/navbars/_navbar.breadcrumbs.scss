@@ -8,12 +8,12 @@
 		overflow-x: auto;
 
 		text-align: left;
-		padding: 0 0 0 $mm_panelPadding - $mm_breadcrumbPadding;
+		padding: 0 0 0 $mm_panelPadding;
 
 		> *
 		{
 			display: inline-block;
-			padding: $mm_breadcrumbPadding;
+			padding-right: 6px;
 
 			padding-top: ($mm_navbarSize - $mm_lineHeight) * .5; //	IE11 fallback
 			padding-top: calc( (var( --mm-navbar-size ) - var( --mm-line-height )) * .5 );

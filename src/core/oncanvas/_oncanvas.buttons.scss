@@ -3,6 +3,15 @@
 	box-sizing: border-box;
 	width: $mm_btnSize;
 	padding: 0;
+
+	&:before,
+	&:after
+	{
+		border-color: $mm_borderColor;	//	IE11 fallback
+		border-color: var( --mm-color-button );
+		border-width: 2px;
+		border-style: solid;
+	}
 }
 
 .mm-btn_close
@@ -11,7 +20,6 @@
 	&:after
 	{
 		content: '';
-		border: 2px solid transparent;
 		box-sizing: content-box;
 		display: block;
 		width: 5px;
@@ -41,8 +49,8 @@
 .mm-btn_next:after
 {
 	content: '';
-	border-top: 2px solid transparent;
-	border-left: 2px solid transparent;
+	border-bottom: none;
+	border-right: none;
 	box-sizing: content-box;
 	display: block;
 	width: 8px;

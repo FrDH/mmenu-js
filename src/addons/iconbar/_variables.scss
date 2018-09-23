@@ -2,10 +2,3 @@ $mm_opt_iconbar			: true !default;
 $mm_opt_iconbar_tabs	: $mm_opt_iconbar !default;
 
 $mm_iconbarSize			: $mm_btnSize !default;
-
-
-//	deprecated
-$mm_opt_iconbar_sizes	: $mm_opt_iconbar !default;
-
-//	deprecated in favor of using scc var --mm-iconbar-size
-$mm_iconbarSizes		: [ 60, 80 ] !default;

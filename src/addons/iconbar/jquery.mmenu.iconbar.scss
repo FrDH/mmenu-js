@@ -7,14 +7,16 @@
 {
 	.mm-menu
 	{
-		--mm-iconbar-size: $mm_iconbarSize;
+		--mm-iconbar-size: #{$mm_iconbarSize};
 	}
 
 	.mm-iconbar
 	{
-		border-color: inherit;
-		border-style: solid;
-		border-width: 0;
+		color: $mm_dimmedTextColor;	//	IE11 fallback
+		color: var( --mm-color-text-dimmed );
+
+		border: 0 solid $mm_borderColor;
+		border-color: var( --mm-color-border );
 		border-right-width: 1px;
 
 		text-align: center;
@@ -49,9 +51,6 @@
 		width: inherit;
 		position: absolute;
 
-		//	Bugfix IE9
-//		@include mm_translate( 0, 0 );
-
 		> *
 		{
 			box-sizing: border-box;
@@ -72,21 +71,13 @@
 	{
 		bottom: 0;
 	}
-
-	//	deprecated
-	@if ( $mm_opt_iconbar_sizes )
-	{
-		@each $size in $mm_iconbarSizes
-		{
-			@include mm_iconbar_size( $size );	
-		}
-	}
-	//	/deprecated
-
-	@include mm_iconbar_colors;
 }
 
 @if ( $mm_opt_iconbar_tabs )
 {
-	@include mm_iconbar_colors_tabs;
+	.mm-iconbar__tab_selected
+	{
+		background: $mm_emphasizedBackgroundColor; //	IE11 fallback
+		background: var( --mm-color-background-emphasis	); 
+	}
 }

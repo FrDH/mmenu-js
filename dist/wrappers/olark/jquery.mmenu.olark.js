@@ -1,1 +1,1 @@
-!function(n){var o="mmenu",a="olark";n[o].wrappers[a]=function(){this.conf.offCanvas.page.noSelector.push("#olark")}}(jQuery);
+jQuery.mmenu.wrappers.olark=function(){this.conf.offCanvas.page.noSelector.push("#olark")};

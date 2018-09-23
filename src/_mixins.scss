@@ -36,72 +36,6 @@
 	}
 }
 
-//	Colors
-@mixin mm_colors( $cls: ".mm-menu",
-	$baseBg: $mm_backgroundColor,
-	$color: $mm_textColor, $dimmedColor: $mm_dimmedTextColor,
-	$emphasizedBg: $mm_emphasizedBackgroundColor, $highlightedBg: $mm_highlightedBackgroundColor,
-	$borderColor: $mm_borderColor,
-	$navbarColor: $mm_navbarColor
-) {
-	#{$cls}
-	{
-		background: $baseBg;
-		border-color: $borderColor;
-		color: $color;
-
-		.mm-navbar
-		{
-			color: $navbarColor;
-		}
-
-		.mm-btn_next:after,
-		.mm-btn_prev:before,
-		.mm-btn_close:before,
-		.mm-btn_close:after
-		{
-			border-color: $navbarColor;
-		}
-
-		.mm-listview
-		{
-			.mm-btn_next:after
-			{
-				border-color: $dimmedColor;
-			}
-
-			a:not( .mm-btn_next )
-			{
-				-webkit-tap-highlight-color: $emphasizedBg;
-				tap-highlight-color: $emphasizedBg;
-			}
-		}
-
-		.mm-listitem_selected
-		{
-			> .mm-listitem__text
-			{
-				background: $emphasizedBg;
-			}
-		}
-
-		.mm-listitem_opened
-		{
-			> .mm-listitem__btn,
-			> .mm-panel
-			{
-				background: $highlightedBg;
-			}
-		}
-
-		.mm-listitem_divider 
-		{
-			background: $highlightedBg;
-		}
-	}
-}
-
-
 // Arrow buttons
 @mixin mm_btn_arrow_prev
 {
@@ -115,7 +49,6 @@
 	right: $mm_listitemIndent + 3;
 	left: auto;
 }
-
 
 
 //	Misc
@@ -164,55 +97,6 @@
 	@include mm_offcanvas_size( ".mm-menu_columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr );
 	@include mm_position_right( ".mm-menu_columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr );
 }
-@mixin mm_counters_colors( $cls: "",
-	$dimmedColor: $mm_dimmedTextColor
-) {
-	#{$cls} .mm-counter
-	{
-		color: $dimmedColor;
-	}
-}
-//	deprecated
-@mixin mm_iconbar_size( $width: $mm_btnSize )
-{
-	.mm-menu_iconbar-#{$width}
-	{
-		.mm-panels,
-		.mm-navbars_top,
-		.mm-navbars_bottom
-		{
-			left: $width + px;
-		}
-		.mm-iconbar
-		{
-			width: $width + px;
-		}
-	}
-}
-//	/deprecated
-
-@mixin mm_iconbar_colors( $cls: "",
-	$dimmedColor: $mm_dimmedTextColor
-) {
-	#{$cls} .mm-iconbar
-	{
-		&,
-		a
-		{
-			color: $dimmedColor;
-		}
-	}
-}
-
-@mixin mm_iconbar_colors_tabs( $cls: "",
-	$emphasizedBg: $mm_navbartabsBackgroundColor
-) {
-	#{$cls} .mm-iconbar__tab_selected
-	{
-		background: $emphasizedBg;
-	}
-}
-
 @mixin mm_iconpanel_size( $nr )
 {
 	.mm-panel_iconpanel-#{$nr}
@@ -225,22 +109,6 @@
 		}
 	}
 }
-@mixin mm_keyboardnavigation_colors( $cls: "",
-	$emphasizedBg: $mm_emphasizedBackgroundColor
-) {
-	#{$cls}.mm-menu_keyboardfocus 
-	{
-		&,
-		&.mm-menu_opened ~ .mm-wrapper__blocker
-		{
-			a:focus
-			{
-				background: $emphasizedBg;
-			}
-		}
-	}
-}
-
 @mixin mm_navbar_position( $pos, $nr )
 {
 	.mm-menu_navbar_#{$pos}-#{$nr}
@@ -268,7 +136,6 @@
 		{
 			border-#{$bottom}-width: 1px;
 			border-#{$bottom}-style: solid;
-			border-#{$bottom}-color: inherit;
 		}
 		.mm-navbar__tab_selected
 		{
@@ -281,30 +148,7 @@
 		}
 	}
 }
-@mixin mm_navbar_colors_tabs( $cls: "",
-	$emphasizedBg: $mm_navbartabsBackgroundColor
-) {
-	#{$cls} .mm-navbars_top.mm-navbars_has-tabs > .mm-navbar:not( .mm-navbar_tabs ),
-	#{$cls} .mm-navbars_bottom.mm-navbars_has-tabs .mm-navbar_tabs ~ .mm-navbar,
-	#{$cls} .mm-navbar_tabs > :not( .mm-navbar__tab_selected )
-	{
-		background: $emphasizedBg;
-	}
-}
-@mixin mm_searchfield_colors( $cls: "",
-	$inputBg: $mm_inputBackgroundColor, $color: $mm_textColor,
-	$dimmedColor: $mm_dimmedTextColor
-) {
-	#{$cls} .mm-searchfield input
-	{
-		background: $inputBg;
-		color: $color;
-	}
-	#{$cls} .mm-panel__noresultsmsg
-	{
-		color: $dimmedColor;
-	}
-}
+
 @mixin mm_sectionindexer_position( $pos, $nr )
 {
 	.mm-menu_navbar_#{$pos}-#{$nr}
@@ -316,115 +160,11 @@
 		}
 	}
 }
-@mixin mm_sectionindexer_colors( $cls: "",
-	$color: $mm_dimmedTextColor
-) {
-	#{$cls} .mm-sectionindexer a
-	{
-		color: $color;
-	}
-}
+
 @mixin mm_setselected_colors( $cls: "",
 	$emphasizedBg: $mm_emphasizedBackgroundColor
 ) {
-	#{$cls}.mm-menu_selected-hover
-	{
-		.mm-listview:hover > .mm-listitem_selected
-		{
-			.mm-listitem__text
-			{
-				background: none;
-			}
-		}
-		.mm-listitem__text,
-		.mm-listitem__btn
-		{
-			&:hover
-			{
-				background: $emphasizedBg;
-			}
-		}
-	}
-
-	#{$cls}.mm-menu_selected-parent
-	{
-		.mm-panel_opened-parent .mm-listitem:not( .mm-listitem_selected-parent )
-		{
-			.mm-listitem__text
-			{
-				background: none;
-			}
-		}
-		.mm-listitem_selected-parent
-		{
-			> .mm-listitem__text,
-			> .mm-listitem__btn
-			{
-				background: $emphasizedBg;
-			}
-		}
-	}
-}
-//	deprecated
-@mixin mm_sidebar_collapsed_size( $width )
-{
-	.mm-wrapper_sidebar-collapsed-#{$width}
-	{
-		.mm-slideout
-		{
-			width: calc( 100% - #{$width}px );
-			transform: translate3d( #{$width}px, 0, 0 );
-//			@include mm_translate( #{$width}px, 0 );
-		}
-	}
-}
-
-//	deprecated
-@mixin mm_sidebar_expanded_size( $width )
-{
-	.mm-wrapper_sidebar-expanded-#{$width}
-	{
-		&:not( .mm-wrapper_sidebar-closed )
-		{
-			.mm-slideout
-			{
-				width: calc( 100% - #{$width}px );
-//				transform: translate( $width, 0 ) !important;
-				transform: translate3d( $width, 0, 0 ) !important;
-			}
-		}
-		.mm-menu_sidebar-expanded
-		{
-			width: $width !important;
-		}
-	}
-}
-
-@mixin mm_checks_colors( $cls: "",
-	$color: $mm_textColor
-) {
-	#{$cls} label.mm-check:before
-	{
-		border-color: $color;
-	}
-}
-@mixin mm_toggles_colors( $cls: "",
-	$buttonBg: $mm_backgroundColor,
-	$offBg: $mm_borderColor, $onBg: $mm_toggleCheckedColor
-) {
-	#{$cls} label.mm-toggle
-	{
-		background: $offBg;
 	
-		&:before
-		{
-			background: $buttonBg;
-		}
-	}
-	#{$cls}input.mm-toggle:checked ~ label.mm-toggle
-	{
-		background: $onBg;
-	}
 }
 @mixin mm_effect_listitem_delay( $i )
 {
@@ -433,24 +173,7 @@
 		transition-delay: ( $i * 50ms );
 	}
 }
-//	deprecated
-@mixin mm_listviewSize( $size )
-{
-	.mm-menu_listview-#{$size}
-	{
-		.mm-listitem__text
-		{
-			padding-top: ($size - $mm_lineHeight) * .5;;
-			padding-bottom: ($size - $mm_lineHeight) * .5;;
-		}
 
-		.mm-listitem_vertical > .mm-listitem__btn
-		{
-			height: $size;
-		}
-	}
-}
-//	/deprecated
 //	Position right
 @mixin mm_position_right( $cls: "",
 	$width: $mm_menuWidth, $minWidth: $mm_menuMinWidth, $maxWidth: $mm_menuMaxWidth
@@ -459,7 +182,6 @@
 	{
 		#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
 		{
-//			@include mm_translate( -( #{$width * 100}vw ), 0 );
 			transform: translate3d( -( #{$width * 100}vw ), 0, 0 );
 		}
 	}
@@ -470,7 +192,6 @@
 		{
 			#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
 			{
-//				@include mm_translate( -$minWidth, 0 );
 				transform: translate3d( -$minWidth, 0, 0 );
 			}
 		}
@@ -480,7 +201,6 @@
 		{
 			#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
 			{
-//				@include mm_translate( -$maxWidth, 0 );
 				transform: translate3d( -$maxWidth, 0, 0 );
 			}
 		}
@@ -508,102 +228,5 @@
 		height: #{$height * 100}vh;
 		min-height: $minHeight;
 		max-height: $maxHeight;
-	}
-}
-
-@mixin mm_pageshadow_colors( $cls: "",
-	$pageShadow: $mm_pageShadow
-) {
-	#{$cls}.mm-menu_shadow-page
-	{
-		&:after
-		{
-			box-shadow: $pageShadow;
-		}
-	}
-}
-@mixin mm_panelshadow_colors( $cls: "",
-	$panelShadow: $mm_panelShadow
-) {
-	#{$cls}.mm-menu_shadow-panels .mm-panel
-	{
-		box-shadow: $panelShadow;
-	}
-}
-@mixin mm_theme_colors()
-{
-	@include mm_colors( $mm_t_cls,
-		$mm_t_backgroundColor,
-		$mm_t_textColor, $mm_t_dimmedTextColor,
-		$mm_t_emphasizedBackgroundColor, $mm_t_highlightedBackgroundColor,
-		$mm_t_borderColor,
-		$mm_t_navbarColor );
-
-	@if ( $mm_opt_counters )
-	{
-		@include mm_counters_colors( $mm_t_cls,
-			$mm_t_dimmedTextColor );
-	}
-
-	@if ( $mm_opt_iconbar )
-	{
-		@include mm_iconbar_colors( $mm_t_cls,
-			$mm_t_dimmedTextColor );
-	}
-
-	@if ( $mm_opt_keyboardnavigation )
-	{
-		@include mm_keyboardnavigation_colors( $mm_t_cls,
-			$mm_t_emphasizedBackgroundColor );
-	}
-
-	@if ( $mm_opt_navbars_tabs )
-	{
-		@include mm_navbar_colors_tabs( $mm_t_cls,
-			$mm_t_emphasizedBackgroundColor );
-	}
-
-	@if ( $mm_opt_shadows_page )
-	{
-		@include mm_pageshadow_colors( $mm_t_cls,
-			$mm_t_pageShadow );
-	}
-
-	@if ( $mm_opt_shadows_panels )
-	{
-		@include mm_panelshadow_colors( $mm_t_cls,
-			$mm_t_panelShadow );
-	}
-
-	@if ( $mm_opt_searchfield )
-	{
-		@include mm_searchfield_colors( $mm_t_cls,
-			$mm_t_inputBackgroundColor, $mm_t_textColor,
-			$mm_t_dimmedTextColor );
-	}
-	
-	@if ( $mm_opt_sectionindexer )
-	{
-		@include mm_sectionindexer_colors( $mm_t_cls,
-			$mm_t_dimmedTextColor );
-	}
-	
-	@if ( $mm_opt_setselected )
-	{
-		@include mm_setselected_colors( $mm_t_cls,
-			$mm_t_emphasizedBackgroundColor );
-	}
-	
-	@if ( $mm_opt_checks )
-	{
-		@include mm_checks_colors( $mm_t_cls,
-			$mm_t_textColor );
-	}
-
-	@if ( $mm_opt_toggles )
-	{
-		@include mm_toggles_colors( $mm_t_cls,
-			$mm_t_backgroundColor,
-			$mm_t_borderColor );
 	}
 }

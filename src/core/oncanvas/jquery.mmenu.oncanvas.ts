@@ -1,5 +1,5 @@
 /*!
- * jQuery mmenu v7.1.0
+ * jQuery mmenu v7.2.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -11,10 +11,11 @@
  * http://creativecommons.org/licenses/by-nc/4.0/
  */
 
+
 (function( $ ) {
 
 	const _PLUGIN_  = 'mmenu';
-	const _VERSION_	= '7.1.0';
+	const _VERSION_	= '7.2.0';
 
 
 	//	Newer version of the plugin already excists
@@ -22,7 +23,6 @@
 	{
 		return;
 	}
-
 
 	/*
 		Class
@@ -67,7 +67,7 @@
 	$[ _PLUGIN_ ].addons  	= {};
 
 
-	$[ _PLUGIN_ ].defaults  = {
+	$[ _PLUGIN_ ].defaults = {
 		hooks 			: {},
 		extensions		: [],
 		wrappers		: [],
@@ -1041,12 +1041,11 @@
 			return _c.mm( $[ _PLUGIN_ ].uniqueId++ );
 		},
 
-		__hasClass: function( e, c )
-		{
-			//	Typescript should do this
-			// return e.classList.contains( c );
-			return (' ' + e.className + ' ').indexOf( ' ' + c + ' ' ) > -1;
-		}
+		// __hasClass: function( e, c )
+		// {
+		// 	// return e.classList.contains( c );
+		// 	return (' ' + e.className + ' ').indexOf( ' ' + c + ' ' ) > -1;
+		// }
 	};
 
 

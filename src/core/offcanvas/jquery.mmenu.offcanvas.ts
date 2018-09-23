@@ -103,9 +103,12 @@
 			this.bind( 'setPage:after',
 				function( $page )
 				{
-					glbl.$blck
-						.children( 'a' )
-						.attr( 'href', '#' + $page.attr( 'id' ) );
+					if ( glbl.$blck )
+					{
+						glbl.$blck
+							.children( 'a' )
+							.attr( 'href', '#' + $page.attr( 'id' ) );
+					}
 				}
 			);
 
@@ -371,7 +374,8 @@
 				glbl.$page.each(
 					function()
 					{
-						$(this).attr( 'style', $(this).data( _d.style ) );
+						var _data: any = $(this).data( _d.style );
+						$(this).attr( 'style', _data );
 					}
 				);
 

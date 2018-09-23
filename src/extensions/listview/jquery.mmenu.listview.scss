@@ -3,16 +3,6 @@
 	'../../variables';
 
 
-//	Sizing listviews
-//	deprecated in favor of using scc var --mm-listitem-size
-@if ( $mm_opt_listview_sizes )
-{
-	@each $size in $mm_listitemSizes
-	{
-		@include mm_listviewSize( $size );
-	}
-}
-
 //	Justified listviews
 @if ( $mm_opt_listview_justify )
 {

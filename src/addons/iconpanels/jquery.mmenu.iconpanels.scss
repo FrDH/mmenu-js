@@ -7,7 +7,7 @@
 {
 	.mm-menu
 	{
-		--mm-iconpanel-size: $mm_iconpanelSize;
+		--mm-iconpanel-size: #{$mm_iconpanelSize};
 	}
 
 	@include mm_iconpanel_size( 1 );
@@ -24,7 +24,7 @@
 		}
 	}
 
-	.mm-menu_iconpanel .mm-panels
+	.mm-menu_iconpanel .mm-panels 
 	{
 		> .mm-panel,
 		> .mm-listview_fixeddivider
@@ -35,8 +35,8 @@
 
 		> .mm-panel:not( .mm-panel_iconpanel-first ):not( .mm-panel_iconpanel-0 ),
 		{
-			border-left: 1px solid;
-			border-color: inherit;
+			border-left-width: 1px;
+			border-left-style: solid;
 		}
 
 		> .mm-panel_opened,

@@ -1,9 +1,18 @@
 .mm-navbar
 {
-	border-bottom: 1px solid;
-	border-color: inherit;
-	text-align: center;
+	//	IE11 fallback
+	background: $mm_backgroundColor;
+	border-color: $mm_borderColor;
+	color: $mm_dimmedTextColor;
 
+	background: var( --mm-color-background );
+	border-color: var( --mm-color-border );
+	color: var( --mm-color-text-dimmed );
+
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+
+	text-align: center;
 	display: none;
 
 	height: $mm_navbarSize; //	IE11 fallback

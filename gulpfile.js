@@ -28,7 +28,6 @@ var gulp 			= require( 'gulp' ),
 	autoprefixer 	= require( 'gulp-autoprefixer' ),
 	cleancss		= require( 'gulp-clean-css' ),
 	uglify 			= require( 'gulp-uglify' ),
-	rename 			= require( 'gulp-rename' ),
 	concat 			= require( 'gulp-concat' ),
 	umd				= require( 'gulp-umd' ),
 	typescript		= require( 'gulp-typescript' ),
@@ -147,7 +146,7 @@ gulp.task( 'watch', function() {
 gulp.task( 'css', [ 'css-concat' ] );
 
 
-//	1)	Concatenate variables
+//	1)	Concatenate variables and mixins
 gulp.task( 'css-variables', function() {
 
 	var files  	= {
@@ -248,11 +247,11 @@ gulp.task( 'js-compile', function() {
 	return gulp.src( files )
 		.pipe( typescript() )
 		.pipe( uglify({ 
-			preserveComments: 'license',
 			output: {
 				comments: "/^!/"
 			}
 		}) )
+		.on('error', function (err) { console.log(err) } )
 		.pipe( gulp.dest( outputDir ) );
 });
 
@@ -273,7 +272,6 @@ gulp.task( 'js-translations', [ 'js-compile' ], function() {
 		stream = gulp.src( files )
 			.pipe( typescript() )
 			.pipe( uglify({
-				preserveComments: 'license',
 				output: {
 					comments: "/^!/"
 				}

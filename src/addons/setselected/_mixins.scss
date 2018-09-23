@@ -1,41 +1,5 @@
 @mixin mm_setselected_colors( $cls: "",
 	$emphasizedBg: $mm_emphasizedBackgroundColor
 ) {
-	#{$cls}.mm-menu_selected-hover
-	{
-		.mm-listview:hover > .mm-listitem_selected
-		{
-			.mm-listitem__text
-			{
-				background: none;
-			}
-		}
-		.mm-listitem__text,
-		.mm-listitem__btn
-		{
-			&:hover
-			{
-				background: $emphasizedBg;
-			}
-		}
-	}
-
-	#{$cls}.mm-menu_selected-parent
-	{
-		.mm-panel_opened-parent .mm-listitem:not( .mm-listitem_selected-parent )
-		{
-			.mm-listitem__text
-			{
-				background: none;
-			}
-		}
-		.mm-listitem_selected-parent
-		{
-			> .mm-listitem__text,
-			> .mm-listitem__btn
-			{
-				background: $emphasizedBg;
-			}
-		}
-	}
+	
 }

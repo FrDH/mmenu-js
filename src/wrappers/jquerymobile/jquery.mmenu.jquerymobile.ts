@@ -36,7 +36,7 @@
 						if ( !e.isDefaultPrevented() )
 						{
 							e.preventDefault();
-							$( 'body' )[ 'pagecontainer' ]( 'change', this.href );
+							$( 'body' )[ 'pagecontainer' ]( 'change', $(this).attr( 'href' ) );
 						}
 					}
 				);

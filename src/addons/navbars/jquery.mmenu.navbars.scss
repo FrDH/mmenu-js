@@ -21,12 +21,8 @@
 			> .mm-navbar
 			{
 				border-width: 0;
-				border-color: inherit;
 				display: flex;
 				position: relative;
-
-				//	Bugfix IE9
-//				@include mm_translate( 0, 0 );
 
 				&:not( .mm-navbar_has-btns )
 				{
@@ -72,8 +68,6 @@
 		@include mm_navbar_position( 'bottom', 3 );
 		@include mm_navbar_position( 'bottom', 4 );
 	}
-
-
 
 	@include mm_navbar_size( 2 );
 	@include mm_navbar_size( 3 );

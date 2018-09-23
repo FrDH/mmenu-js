@@ -1,1 +1,1 @@
-!function(s){var e="mmenu",a="navbars",d="searchfield";s[e].addons[a][d]=function(a,d){var i=s[e]._c,t=s('<div class="'+i.searchfield+'" />').appendTo(a);"object"!=typeof this.opts.searchfield&&(this.opts.searchfield={}),this.opts.searchfield.add=!0,this.opts.searchfield.addTo=t}}(jQuery);
+!function(i){var t="mmenu";i[t].addons.navbars.searchfield=function(s,e){var a=i[t]._c,d=i('<div class="'+a.searchfield+'" />').appendTo(s);"object"!=typeof this.opts.searchfield&&(this.opts.searchfield={}),this.opts.searchfield.add=!0,this.opts.searchfield.addTo=d}}(jQuery);
