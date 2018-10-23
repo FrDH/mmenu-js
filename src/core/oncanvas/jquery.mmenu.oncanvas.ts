@@ -1,5 +1,5 @@
 /*!
- * jQuery mmenu v7.2.0
+ * jQuery mmenu v7.2.1
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	const _PLUGIN_  = 'mmenu';
-	const _VERSION_	= '7.2.0';
+	const _VERSION_	= '7.2.1';
 
 
 	//	Newer version of the plugin already excists
@@ -1133,28 +1133,6 @@
 				 typeof Modernizr.csstransitions !== 'undefined'
 			) {
 				return Modernizr.csstransitions;
-			}
-
-			//	w/o Modernizr, we'll assume you only support modern browsers :/
-			return true;
-		})(),
-
-		csstransforms: (function() {
-			if ( typeof Modernizr !== 'undefined' &&
-				 typeof Modernizr.csstransforms !== 'undefined'
-			) {
-				return Modernizr.csstransforms;
-			}
-
-			//	w/o Modernizr, we'll assume you only support modern browsers :/
-			return true;
-		})(),
-
-		csstransforms3d: (function() {
-			if ( typeof Modernizr !== 'undefined' &&
-				 typeof Modernizr.csstransforms3d !== 'undefined'
-			) {
-				return Modernizr.csstransforms3d;
 			}
 
 			//	w/o Modernizr, we'll assume you only support modern browsers :/

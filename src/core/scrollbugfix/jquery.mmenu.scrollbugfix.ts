@@ -79,7 +79,7 @@
 		var that = this;
 
 	    //	Prevent body scroll
-	    glbl.$docu
+	    $(document)
 	    	.off( _e.touchmove + '-' + _ADDON_ )
 	    	.on( _e.touchmove + '-' + _ADDON_,
 		    	function( e )

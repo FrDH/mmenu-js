@@ -131,7 +131,8 @@
 										e.preventDefault();
 										e.stopImmediatePropagation();
 
-										that.__openPanelWoAnimation( $targ );
+										// that.__openPanelWoAnimation( $targ );
+										that.openPanel( $targ, false );
 									}
 								}
 								catch( err ) {}

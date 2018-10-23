@@ -43,9 +43,6 @@
 		}
 	}
 
-	//	IE9 hack
-	.mm-menu_offcanvas.mm-menu_opened.mm-no-csstransforms { z-index: 10; } 
-
 	@include mm_offcanvas_size;
 }
 

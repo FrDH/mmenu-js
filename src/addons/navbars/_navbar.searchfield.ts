@@ -8,15 +8,15 @@
 	{
 		var _c = $[ _PLUGIN_ ]._c;
 
-		var $srch = $('<div class="' + _c.searchfield + '" />')
-			.appendTo( $navbar );
+		// var $srch = $('<div class="' + _c.searchfield + '" />')
+		// 	.appendTo( $navbar );
 
 		if ( typeof this.opts.searchfield != 'object' )
 		{
 			this.opts.searchfield = {};
 		}
 		this.opts.searchfield.add = true;
-		this.opts.searchfield.addTo = $srch;
+		this.opts.searchfield.addTo = $navbar;
 	};
 
 })( jQuery );

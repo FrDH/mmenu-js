@@ -76,10 +76,12 @@
 						.blur();
 				}
 			);
-			
+
+
 			this.bind( 'initPanels:after',
 				function( $pnls )
 				{
+
 					var $spnl = $();
 
 					//	Add the search panel
@@ -110,7 +112,6 @@
 							function()
 							{
 								var $srch = that._initSearchfield( $(this) );
-
 								if ( opts.search && $srch.length )
 								{
 									that._initSearching( $srch );
@@ -271,7 +272,7 @@
 		//	Only one searchfield per panel
 		if (  $wrpr.find( '.' + _c.searchfield ).length )
 		{
-			return $();
+			return $wrpr.find( '.' + _c.searchfield );
 		}
 
 
@@ -282,21 +283,10 @@
 		$inpd.append( $inpt ).appendTo( $srch );
 
 
-		//	Wrapper already is a searchfield: Replace wrapper with newly build searchfield.
-		//		A bit unusual, but the navbar searchfield content uses this
-		if ( $wrpr.hasClass( _c.searchfield ) )
+		$wrpr.prepend( $srch );
+		if ( $wrpr.hasClass( _c.panel ) )
 		{
-			$wrpr.replaceWith( $srch );
-		}
-
-		//	Default: in Panel
-		else
-		{
-			$wrpr.prepend( $srch );
-			if ( $wrpr.hasClass( _c.panel ) )
-			{
-				$wrpr.addClass( _c.panel + '_has-searchfield' );
-			}
+			$wrpr.addClass( _c.panel + '_has-searchfield' );
 		}
 
 
@@ -351,7 +341,7 @@
 			data.$nrsp = data.$pnls;
 		}
 
-		//	Not in a panel
+		//	Not in a panel, global
 		else
 		{
 			data.$pnls = this.$pnls.find( '.' + _c.panel );

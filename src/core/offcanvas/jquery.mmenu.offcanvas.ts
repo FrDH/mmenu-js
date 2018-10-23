@@ -47,17 +47,6 @@
 			var clsn = [ _c.menu + '_offcanvas' ];
 
 
-			//	support classes
-			if ( !$[ _PLUGIN_ ].support.csstransforms )
-			{
-				clsn.push( _c[ 'no-csstransforms' ] );
-			}
-			if ( !$[ _PLUGIN_ ].support.csstransforms3d )
-			{
-				clsn.push( _c[ 'no-csstransforms3d' ] );
-			}
-
-
 			//	Add off-canvas behavior
 			this.bind( 'initMenu:after',
 				function()

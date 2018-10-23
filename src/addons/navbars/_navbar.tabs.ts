@@ -34,7 +34,8 @@
 
 					try
 					{
-						that.__openPanelWoAnimation( $( $tab.attr( 'href' ) ) );
+						// that.__openPanelWoAnimation( $( $tab.attr( 'href' ) ) );
+						that.openPanel( $( $tab.attr( 'href' ) ), false );
 						e.stopImmediatePropagation();
 					}
 					catch( err ) {}
