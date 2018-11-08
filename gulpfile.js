@@ -256,7 +256,7 @@ gulp.task( 'js-compile', function() {
 });
 
 //	2)	Compile translations
-gulp.task( 'js-translations', [ 'js-compile' ], function(cb) {
+gulp.task( 'js-translations', [ 'js-compile' ], function() {
 
 	var streams = [],
 		stream;
@@ -282,11 +282,9 @@ gulp.task( 'js-translations', [ 'js-compile' ], function(cb) {
 		streams.push( stream );
 	}
 
-	if(build.files.translations.length > 0){
-		return merge.apply( this, streams );
-	} else {
-		cb();
-	}
+	return ( build.files.translations.length > 0 )
+		? merge.apply( this, streams )
+		: gulp.src([]); 
 });
 
 //	3) 	Concatenate JS
