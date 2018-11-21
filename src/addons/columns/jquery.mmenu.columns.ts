@@ -1,173 +1,152 @@
-(function( $ ) {
+Mmenu.addons.columns = function(
+	this : Mmenu
+) {
+	var opts = this.opts.columns,
+		conf = this.conf.columns;
 
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'columns';
 
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
+	//	Extend shorthand options
+	if ( typeof opts == 'boolean' )
+	{
+		opts = {
+			add 	: opts
+		};
+	}
+	if ( typeof opts == 'number' )
+	{
+		opts = {
+			add 	: true,
+			visible : opts
+		};
+	}
 
-		//	setup: fired once per menu
-		setup: function()
+	if ( typeof opts != 'object' )
+	{
+		opts = {};
+	}
+	if ( typeof opts.visible == 'number' )
+	{
+		opts.visible = {
+			min 	: opts.visible,
+			max 	: opts.visible
+		};
+	}
+	opts = this.opts.columns = jQuery.extend( true, {}, Mmenu.options.columns, opts );
+
+
+	//	Add the columns
+	if ( opts.add )
+	{
+		opts.visible.min = Math.max( 1, Math.min( 6, opts.visible.min ) );
+		opts.visible.max = Math.max( opts.visible.min, Math.min( 6, opts.visible.max ) );
+
+
+		var colm = '',
+			colp = '';
+
+		for ( var i = 0; i <= opts.visible.max; i++ )
 		{
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
-
-			glbl = $[ _PLUGIN_ ].glbl;
-
-
-			//	Extend shorthand options
-			if ( typeof opts == 'boolean' )
-			{
-				opts = {
-					add 	: opts
-				};
-			}
-			if ( typeof opts == 'number' )
-			{
-				opts = {
-					add 	: true,
-					visible : opts
-				};
-			}
-
-			if ( typeof opts != 'object' )
-			{
-				opts = {};
-			}
-			if ( typeof opts.visible == 'number' )
-			{
-				opts.visible = {
-					min 	: opts.visible,
-					max 	: opts.visible
-				};
-			}
-			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
-
-
-			//	Add the columns
-			if ( opts.add )
-			{
-				opts.visible.min = Math.max( 1, Math.min( 6, opts.visible.min ) );
-				opts.visible.max = Math.max( opts.visible.min, Math.min( 6, opts.visible.max ) );
-
-
-				var colm = '',
-					colp = '';
-
-				for ( var i = 0; i <= opts.visible.max; i++ )
-				{
-					colm += ' ' + _c.menu  + '_columns-' + i;
-					colp += ' ' + _c.panel + '_columns-' + i;
-				}
-				if ( colm.length )
-				{
-					colm = colm.slice( 1 );
-					colp = colp.slice( 1 );
-				}
-
-				var rmvc = colp + ' ' + _c.panel + '_opened ' + _c.panel + '_opened-parent ' + _c.panel + '_highest';
-
-
-				//	Close all later opened panels
-				function closeLaterPanels( $panel )
-				{
-					var $prnt = $panel.data( _d.parent );
-					if ( !$prnt )
-					{
-						return;
-					}
-
-					$prnt = $prnt.closest( '.' + _c.panel );
-					if ( !$prnt.length )
-					{
-						return;
-					}
-
-					var colnr = $prnt.attr( 'class' );
-					if ( !colnr )
-					{
-						return;
-					}
-
-					colnr = colnr.split( _c.panel + '_columns-' )[ 1 ];
-					if ( !colnr )
-					{
-						return;
-					}
-
-					colnr = parseInt( colnr.split( ' ' )[ 0 ], 10 ) + 1;
-					while( colnr > 0 )
-					{
-						var $panl = this.$pnls.children( '.' + _c.panel + '_columns-' + colnr );
-						if ( $panl.length )
-						{
-							colnr++;
-							$panl.removeClass( rmvc )
-								.addClass( _c.hidden );
-						}
-						else
-						{
-							colnr = -1;
-							break;
-						}
-					}
-				}
-				var setupPanels = function( $panel )
-				{
-					var _num = this.$pnls.children( '.' + _c.panel + '_opened-parent' ).length;
-					if ( !$panel.hasClass( _c.panel + '_opened-parent' ) )
-					{
-						_num++;
-					}
-					_num = Math.min( opts.visible.max, Math.max( opts.visible.min, _num ) );
-
-					this.$menu
-						.removeClass( colm )
-						.addClass( _c.menu + '_columns-' + _num );
-
-					this.$pnls
-						.children( '.' + _c.panel )
-						.removeClass( colp )
-						.filter( '.' + _c.panel + '_opened-parent' )
-						.add( $panel )
-						.slice( -opts.visible.max )
-						.each(
-							function( i )
-							{
-								$(this).addClass( _c.panel + '_columns-' + i );
-							}
-						);
-				};
-
-				this.bind( 'openPanel:before', closeLaterPanels );
-				this.bind( 'openPanel:start', setupPanels );
-			}
-		},
-
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
-		},
-
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
-
-
-	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		add 		: false,
-		visible		: {
-			min			: 1,
-			max			: 3
+			colm += ' mm-menu_columns-' + i;
+			colp += ' mm-panel_columns-' + i;
 		}
-	};
+		if ( colm.length )
+		{
+			colm = colm.slice( 1 );
+			colp = colp.slice( 1 );
+		}
+
+		var rmvc = colp + ' mm-panel_opened mm-panel_opened-parent mm-panel_highest';
 
 
-	var _c, _d, _e, glbl;
+		//	Close all later opened panels
+		this.bind( 'openPanel:before',
+			function( 
+				this 	: Mmenu,
+				$panel	: JQuery
+			) {
+				var $parent = $panel.data( 'mm-parent' );
+				if ( !$parent )
+				{
+					return;
+				}
 
-})( jQuery );
+				$parent = $parent.closest( '.mm-panel' );
+				if ( !$parent.length )
+				{
+					return;
+				}
+
+				var colnr = $parent.attr( 'class' );
+				if ( !colnr )
+				{
+					return;
+				}
+
+				colnr = colnr.split( 'mm-panel_columns-' )[ 1 ];
+				if ( !colnr )
+				{
+					return;
+				}
+
+				colnr = parseInt( colnr.split( ' ' )[ 0 ], 10 ) + 1;
+				while( colnr > 0 )
+				{
+					$panel = this.node.$pnls.children( '.mm-panel_columns-' + colnr );
+					if ( $panel.length )
+					{
+						colnr++;
+						$panel.removeClass( rmvc )
+							.addClass( 'mm-hidden' );
+					}
+					else
+					{
+						colnr = -1;
+						break;
+					}
+				}
+			}
+		);
+
+		this.bind( 'openPanel:start', 
+			function( 
+				this 	: Mmenu,
+				$panel	: JQuery
+			) {
+				var _num = this.node.$pnls.children( '.mm-panel_opened-parent' ).length;
+				if ( !$panel.hasClass( 'mm-panel_opened-parent' ) )
+				{
+					_num++;
+				}
+				_num = Math.min( opts.visible.max, Math.max( opts.visible.min, _num ) );
+
+				this.node.$menu
+					.removeClass( colm )
+					.addClass( 'mm-menu_columns-' + _num );
+
+				this.node.$pnls
+					.children( '.mm-panel' )
+					.removeClass( colp )
+					.filter( '.mm-panel_opened-parent' )
+					.add( $panel )
+					.slice( -opts.visible.max )
+					.each(
+						function( i )
+						{
+							jQuery(this).addClass( 'mm-panel_columns-' + i );
+						}
+					);
+			}
+		);
+	}
+};
+
+
+//	Default options and configuration
+Mmenu.options.columns = {
+	add 		: false,
+	visible		: {
+		min			: 1,
+		max			: 3
+	}
+};

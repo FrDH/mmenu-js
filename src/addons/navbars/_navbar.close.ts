@@ -1,40 +1,33 @@
-(function( $ ) {
-
-	const _PLUGIN_ 	= 'mmenu';
-	const _ADDON_  	= 'navbars';
-	const _CONTENT_	= 'close';
-
-	$[ _PLUGIN_ ].addons[ _ADDON_ ][ _CONTENT_ ] = function( $navbar, opts )
-	{
-		//	Get vars
-		var _c = $[ _PLUGIN_ ]._c,
-			glbl = $[ _PLUGIN_ ].glbl;
-
-		_c.add( 'close' );
+Mmenu.addons.navbars.close = function( 
+	this	: Mmenu,
+	$navbar	: JQuery, 
+	opts	: iLooseObject, 
+	conf	: iLooseObject
+) {
+	//	Add content
+	var $close = jQuery('<a class="mm-btn mm-btn_close mm-navbar__btn" href="#" />')
+		.appendTo( $navbar );
 
 
-		//	Add content
-		var $close = $('<a class="' + _c.btn + ' ' + _c.btn + '_close ' + _c.navbar + '__btn" href="#" />')
-			.appendTo( $navbar );
+	//	Update to page node
+	this.bind( 'setPage:after',
+		function( 
+			this	: Mmenu,
+			$page	: JQuery
+		) {
+			$close.attr( 'href', '#' + $page.attr( 'id' ) );
+		}
+	);
 
 
-		//	Update to page node
-		this.bind( 'setPage:after',
-			function( $page )
-			{
-				$close.attr( 'href', '#' + $page.attr( 'id' ) );
-			}
-		);
-
-
-		//	Add screenreader / text support
-		this.bind( 'setPage:after:sr-text',
-			function( $page )
-			{
-				$close.html( this.__sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) ) );
-				this.__sr_aria( $close, 'owns', $close.attr( 'href' ).slice( 1 ) );
-			}
-		);
-	};
-
-})( jQuery );
+	//	Add screenreader / text support
+	this.bind( 'setPage:after:sr-text',
+		function( 
+			this	: Mmenu,
+			$page	: JQuery
+		) {
+			$close.html( Mmenu.sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) ) );
+			Mmenu.sr_aria( $close, 'owns', $close.attr( 'href' ).slice( 1 ) );
+		}
+	);
+};

@@ -1,327 +1,289 @@
-(function( $ ) {
+Mmenu.addons.keyboardNavigation = function(
+	this : Mmenu
+) {
+	//	Keyboard navigation on touchscreens opens the virtual keyboard :/
+	if ( Mmenu.support.touch )
+	{
+		return;
+	}
 
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'keyboardNavigation';
+
+	var opts = this.opts.keyboardNavigation,
+		conf = this.conf.keyboardNavigation;
 
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
+	//	Extend shorthand options
+	if ( typeof opts == 'boolean' || typeof opts == 'string' )
+	{
+		opts = {
+			enable: opts
+		};
+	}
+	if ( typeof opts != 'object' )
+	{
+		opts = {};
+	}
+	opts = this.opts.keyboardNavigation = jQuery.extend( true, {}, Mmenu.options.keyboardNavigation, opts );
 
-		//	setup: fired once per menu
-		setup: function()
-		{
-			//	Keyboard navigation on touchscreens opens the virtual keyboard :/
-			if ( $[ _PLUGIN_ ].support.touch )
+
+	//	Enable keyboard navigation
+	if ( opts.enable )
+	{
+
+		var $menuStart 	= jQuery('<button class="mm-tabstart" />'),
+			$menuEnd   	= jQuery('<button class="mm-tabend" />'),
+			$blckEnd 	= jQuery('<button class="mm-tabend" />');
+
+		this.bind( 'initMenu:after',
+			function(
+				this : Mmenu
+			) {
+				if ( opts.enhance )
+				{
+					this.node.$menu.addClass( 'mm-menu_keyboardfocus' );
+				}
+
+				this._initWindow_keyboardNavigation( opts.enhance );
+			}
+		);
+		this.bind( 'initOpened:before',
+			function(
+				this : Mmenu
+			) {
+				this.node.$menu
+					.prepend( $menuStart )
+					.append( $menuEnd )
+					.children( '.mm-navbars-top, .mm-navbars-bottom' )
+					.children( '.mm-navbar' )
+					.children( 'a.mm-title' )
+					.attr( 'tabindex', -1 );
+			}
+		);
+		this.bind( 'initBlocker:after',
+			function(
+				this : Mmenu
+			) {
+				Mmenu.node.$blck
+					.append( $blckEnd )
+					.children( 'a' )
+					.addClass( 'mm-tabstart' );
+			}
+		);
+
+
+		var focs = 'input, select, textarea, button, label, a[href]';
+		function focus( 
+			this 	: Mmenu,
+			$panl	: JQuery
+		) {
+			$panl = $panl || this.node.$pnls.children( '.' + _c.panel + '_opened' );
+
+			var $focs = jQuery(),
+				$navb = this.node.$menu
+					.children( '.mm-navbars_top, .mm-navbars_bottom'  )
+					.children( '.mm-navbar' );
+
+			//	already focus in navbar
+			if ( $navb.find( focs ).filter( ':focus' ).length )
 			{
 				return;
 			}
 
-
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
-
-			glbl = $[ _PLUGIN_ ].glbl;
-
-
-			//	Extend shorthand options
-			if ( typeof opts == 'boolean' || typeof opts == 'string' )
+			if ( opts.enable == 'default' )
 			{
-				opts = {
-					enable: opts
-				};
+				//	first anchor in listview
+				$focs = $panl.children( '.mm-listview' ).find( 'a[href]' ).not( '.mm-hidden' );
+
+				//	first element in panel
+				if ( !$focs.length )
+				{
+					$focs = $panl.find( focs ).not( '.mm-hidden' );
+				}
+
+				//	first element in navbar
+				if ( !$focs.length )
+				{
+					$focs = $navb
+						.find( focs )
+						.not( '.mm-hidden' );
+				}
 			}
-			if ( typeof opts != 'object' )
+
+			//	default
+			if ( !$focs.length )
 			{
-				opts = {};
+				$focs = this.node.$menu.children( '.mm-tabstart' );
 			}
-			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+
+			$focs.first().focus();
+		}
+		this.bind( 'open:finish'		, focus );
+		this.bind( 'openPanel:finish'	, focus );
 
 
-			//	Enable keyboard navigation
-			if ( opts.enable )
-			{
+		//	Add screenreader / aria support
+		this.bind( 'initOpened:after:sr-aria',
+			function(
+				this : Mmenu
+			) {
+				var $btns = this.node.$menu.add( Mmenu.node.$blck )
+					.children( '.mm-tabstart, .mm-tabend' );
 
-				var $menuStart 	= $('<button class="' + _c.tabstart + '" />'),
-					$menuEnd   	= $('<button class="' + _c.tabend   + '" />');
+				Mmenu.sr_aria( $btns, 'hidden', true );
+				Mmenu.sr_role( $btns, 'presentation' );
+			}
+		);
+	}
+};
 
-				var $blckEnd 	= $('<button class="' + _c.tabend   + '" />');
+//	Default options and configuration
+Mmenu.options.keyboardNavigation = {
+	enable 	: false,
+	enhance	: false
+};
 
-				this.bind( 'initMenu:after',
-					function()
+
+//	Methods
+Mmenu.prototype._initWindow_keyboardNavigation = function( 
+	this	: Mmenu,
+	enhance	: boolean
+) {
+
+	//	Re-enable tabbing in general
+	jQuery(window)
+		.off( 'keydown.mm-offCanvas' );
+
+	//	Prevent tabbing outside an offcanvas menu
+	jQuery(window)
+		.off( 'focusin.mm-keyboardNavigation' )
+		.on( 'focusin.mm-keyboardNavigation',
+			( e ) => {
+				if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
+				{
+					var $t = jQuery(e.target);
+
+					if ( $t.is( '.mm-tabend' ) )
 					{
-						if ( opts.enhance )
+						var $target : any = jQuery();	//	Should be type JQuery, but Typescript does not understand
+
+						//	Jump from menu to blocker
+						if ( $t.parent().is( '.mm-menu' ) )
 						{
-							this.$menu.addClass( _c.menu + '_keyboardfocus' );
+							if ( Mmenu.node.$blck )
+							{
+								$target = Mmenu.node.$blck;
+							}
+						}
+						if ( $t.parent().is( '.mm-wrapper__blocker' ) )
+						{
+							$target = jQuery('body')
+								.find( '.mm-menu_offcanvas' )
+								.filter( '.mm-menu_opened' );
+						}
+						if ( !$target.length )
+						{
+							$target = $t.parent();
 						}
 
-						this[ '_initWindow_' + _ADDON_ ]( opts.enhance );
+						$target.children( '.mm-tabstart' ).focus();
 					}
-				);
-				this.bind( 'initOpened:before',
-					function()
-					{
-						this.$menu
-							.prepend( $menuStart )
-							.append( $menuEnd )
-							.children( '.' + _c.mm( 'navbars-top' ) + ', .' + _c.mm( 'navbars-bottom' )  )
-							.children( '.' + _c.navbar )
-							.children( 'a.' + _c.title )
-							.attr( 'tabindex', -1 );
-					}
-				);
-				this.bind( 'initBlocker:after',
-					function()
-					{
-						glbl.$blck
-							.append( $blckEnd )
-							.children( 'a' )
-							.addClass( _c.tabstart );
-					}
-				);
-
-				this.bind( 'open:finish',
-					function()
-					{
-						focus.call( this, null, opts.enable );
-					}
-				);
-				this.bind( 'openPanel:finish',
-					function( $panl )
-					{
-						focus.call( this, $panl, opts.enable );
-					}
-				);
-
-
-				//	Add screenreader / aria support
-				this.bind( 'initOpened:after:sr-aria',
-					function()
-					{
-						var $btns = this.$menu.add( glbl.$blck )
-							.children( '.' + _c.tabstart + ', .' + _c.tabend );
-
-						this.__sr_aria( $btns, 'hidden', true );
-						this.__sr_role( $btns, 'presentation' );
-					}
-				);
+				}
 			}
-		},
+		);
 
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
+	//	Default keyboard navigation
+	jQuery(window)
+		.off( 'keydown.mm-keyboardNavigation' )
+		.on( 'keydown.mm-keyboardNavigation',
+			( e ) => {
+				var $t = jQuery(e.target),
+					$m = $t.closest( '.mm-menu' );
 
-			_c.add( 'tabstart tabend' );
-			_e.add( 'focusin keydown' );
-		},
-
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
-
-
-	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		enable: false,
-		enhance: false
-	};
-	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {};
-
-
-	//	Methods
-	$[ _PLUGIN_ ].prototype[ '_initWindow_' + _ADDON_ ] = function( enhance )
-	{
-
-		//	Re-enable tabbing in general
-		glbl.$wndw
-			.off( _e.keydown + '-offCanvas' );
-
-		//	Prevent tabbing outside an offcanvas menu
-		glbl.$wndw
-			.off( _e.focusin + '-' + _ADDON_ )
-			.on( _e.focusin + '-' + _ADDON_,
-				function( e ) 
+				if ( $m.length )
 				{
-					if ( glbl.$html.hasClass( _c.wrapper + '_opened' ) )
+					var api = $m.data( 'mmenu' );
+
+					//	special case for input and textarea
+					if ( $t.is( 'input, textarea' ) )
 					{
-						var $t = $(e.target);
-
-						if ( $t.is( '.' + _c.tabend ) )
+					}
+					else
+					{
+						switch( e.keyCode )
 						{
-							var $target = $();
-
-							//	Jump from menu to blocker
-							if ( $t.parent().is( '.' + _c.menu ) )
-							{
-								if ( glbl.$blck )
-								{
-									$target = glbl.$blck;
+							//	press enter to toggle and check
+							case 13: 
+								if ( $t.is( '.mm-toggle' ) || 
+									 $t.is( '.mm-check' )
+								) {
+									$t.trigger( 'click.mm' );
 								}
-							}
-							if ( $t.parent().is( '.' + _c.wrapper + '__blocker' ) )
-							{
-								$target = glbl.$body
-									.find( '.' + _c.menu + '_offcanvas' )
-									.filter( '.' + _c.menu + '_opened' );
-							}
-							if ( !$target.length )
-							{
-								$target = $t.parent();
-							}
+								break;
 
-							$target.children( '.' + _c.tabstart ).focus();
+							//	prevent spacebar or arrows from scrolling the page
+							case 32: 	//	space
+							case 37: 	//	left
+							case 38: 	//	top
+							case 39: 	//	right
+							case 40: 	//	bottom
+								e.preventDefault();
+								break;
 						}
 					}
 				}
-			);
+			}
+		);
 
-		//	Default keyboard navigation
-		glbl.$wndw
-			.off( _e.keydown + '-' + _ADDON_ )
-			.on( _e.keydown + '-' + _ADDON_,
-				function( e )
-				{
-					var $t = $(e.target),
-						$m = $t.closest( '.' + _c.menu );
+	//	Enhanced keyboard navigation
+	if ( enhance )
+	{
+		jQuery(window)
+			.off( 'keydown.mm-keyboardNavigation' )
+			.on( 'keydown.mm-keyboardNavigation',
+				( e ) => {
+					var $t = jQuery(e.target),
+						$m = $t.closest( '.mm-menu' );
 
 					if ( $m.length )
 					{
 						var api = $m.data( 'mmenu' );
 
 						//	special case for input and textarea
-						if ( $t.is( 'input, textarea' ) )
+						if ( $t.is( 'input' ) )
 						{
+							switch( e.keyCode )
+							{
+								//	empty searchfield with esc
+								case 27:
+									$t.val( '' );
+									break;
+							}
 						}
 						else
 						{
 							switch( e.keyCode )
 							{
-								//	press enter to toggle and check
-								case 13: 
-									if ( $t.is( '.mm-toggle' ) || 
-										 $t.is( '.mm-check' )
-									) {
-										$t.trigger( _e.click );
+								//	close submenu with backspace
+								case 8: 
+									var $p = $m.find( '.mm-panel_opened' ).data( 'mm-parent' );
+									if ( $p && $p.length )
+									{
+										api.openPanel( $p.closest( '.mm-panel' ) );
 									}
 									break;
 
-								//	prevent spacebar or arrows from scrolling the page
-								case 32: 	//	space
-								case 37: 	//	left
-								case 38: 	//	top
-								case 39: 	//	right
-								case 40: 	//	bottom
-									e.preventDefault();
+								//	close menu with esc
+								case 27:
+									if ( $m.hasClass( 'mm-menu_offcanvas' ) )
+									{
+										api.close();
+									}
 									break;
 							}
 						}
 					}
 				}
 			);
-
-		//	Enhanced keyboard navigation
-		if ( enhance )
-		{
-			glbl.$wndw
-				.off( _e.keydown + '-' + _ADDON_ )
-				.on( _e.keydown + '-' + _ADDON_,
-					function( e )
-					{
-						var $t = $(e.target),
-							$m = $t.closest( '.' + _c.menu );
-
-						if ( $m.length )
-						{
-							var api = $m.data( 'mmenu' );
-
-							//	special case for input and textarea
-							if ( $t.is( 'input' ) )
-							{
-								switch( e.keyCode )
-								{
-									//	empty searchfield with esc
-									case 27:
-										$t.val( '' );
-										break;
-								}
-							}
-							else
-							{
-								switch( e.keyCode )
-								{
-									//	close submenu with backspace
-									case 8: 
-										var $p = $m.find( '.' + _c.panel + '_opened' ).data( _d.parent );
-										if ( $p && $p.length )
-										{
-											api.openPanel( $p.closest( '.' + _c.panel ) );
-										}
-										break;
-
-									//	close menu with esc
-									case 27:
-										if ( $m.hasClass( _c.menu + '_offcanvas' ) )
-										{
-											api.close();
-										}
-										break;
-								}
-							}
-						}
-					}
-				);
-		}
-	};
-
-	var _c, _d, _e, glbl;
-	var focs = 'input, select, textarea, button, label, a[href]';
-
-
-	function focus( $panl, enable )
-	{
-		$panl = $panl || this.$pnls.children( '.' + _c.panel + '_opened' );
-
-		var $focs = $(),
-			$navb = this.$menu
-				.children( '.' + _c.mm( 'navbars_top' ) + ', .' + _c.mm( 'navbars_bottom' )  )
-				.children( '.' + _c.navbar );
-
-		//	already focus in navbar
-		if ( $navb.find( focs ).filter( ':focus' ).length )
-		{
-			return;
-		}
-
-		if ( enable == 'default' )
-		{
-			//	first anchor in listview
-			$focs = $panl.children( '.' + _c.listview ).find( 'a[href]' ).not( '.' + _c.hidden );
-
-			//	first element in panel
-			if ( !$focs.length )
-			{
-				$focs = $panl.find( focs ).not( '.' + _c.hidden );
-			}
-
-			//	first element in navbar
-			if ( !$focs.length )
-			{
-				$focs = $navb
-					.find( focs )
-					.not( '.' + _c.hidden );
-			}
-		}
-
-		//	default
-		if ( !$focs.length )
-		{
-			$focs = this.$menu.children( '.' + _c.tabstart );
-		}
-
-		$focs.first().focus();
 	}
+};
 
-})( jQuery );

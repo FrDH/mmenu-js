@@ -61,6 +61,8 @@ $output .= '
 }
 ';
 
-
-file_put_contents( getDist() . '/_build.json' , $output );
-
+$result = file_put_contents( getDist() . '/_build.json' , $output );
+if ( $result )
+{
+	echo '_build.json created.';
+}

@@ -40,6 +40,8 @@ var inputDir 		= 'src',
 	customDir 		= null,
 	build 			='./' + inputDir + '/_build.json';
 
+var jsExt = 'ts';
+
 
 function sanitizeNamespaceForUmd( file )
 {
@@ -60,7 +62,7 @@ function concatUmdJS( files, name )
 				global 	: 'jQuery',
 				param 	: 'jQuery'
 			} ]; },
-			exports: function() { return true; },
+			exports: function() { return 'Mmenu'; },
 			namespace: sanitizeNamespaceForUmd
 		}));
 	}
@@ -131,8 +133,8 @@ gulp.task( 'default', function() {
 
 gulp.task( 'watch', function() {
 	start(function() {
-		gulp.watch( inputDir + '/**/*.scss'	, [ 'css' ] );
-		gulp.watch( inputDir + '/**/*.ts'	, [ 'js'  ] );
+		gulp.watch( inputDir + '/**/*.scss'		, [ 'css' ] );
+		gulp.watch( inputDir + '/**/*.' + jsExt	, [ 'js'  ] );
 	});
 });
 
@@ -234,18 +236,19 @@ gulp.task( 'css-concat', [ 'css-compile' ], function() {
 
 gulp.task( 'js', [ 'js-concat' ] );
 
-
 //	1) 	Compile core + add-ons
 gulp.task( 'js-compile', function() {
 
 	var files = [	//	Without the globstar, all files would be put directly in the outputDir
-		inputDir + '/**/core/@(' + build.files.core.join( '|' ) + ')/*.ts',
-		inputDir + '/**/addons/@(' + build.files.addons.join( '|' ) + ')/*.ts',
-		inputDir + '/**/wrappers/@(' + build.files.wrappers.join( '|' ) + ')/*.ts'
+		inputDir + '/**/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/**/*.' + jsExt,
+		inputDir + '/**/addons/@(' 		+ build.files.addons.join( '|' ) 	+ ')/*.' + jsExt,
+		inputDir + '/**/wrappers/@(' 	+ build.files.wrappers.join( '|' ) 	+ ')/*.' + jsExt
 	];
 
 	return gulp.src( files )
-		.pipe( typescript() )
+  		.pipe( typescript({
+			"target": "es5"
+  		}) )
 		.pipe( uglify({ 
 			output: {
 				comments: "/^!/"
@@ -258,31 +261,29 @@ gulp.task( 'js-compile', function() {
 //	2)	Compile translations
 gulp.task( 'js-translations', [ 'js-compile' ], function() {
 
-	var streams = [],
-		stream;
+	var streams = [];
+
+	if ( build.files.translations.length < 1 )
+	{
+		return gulp.src([]);
+	}
 
 	for ( var t = 0; t < build.files.translations.length; t++ )
 	{
 		var lang = build.files.translations[ t ];
 		var files = [
-			inputDir + '/core/@(' + build.files.core.join( '|' ) + ')/translations/jquery.mmenu.' + lang + '.ts',
-			inputDir + '/addons/@(' + build.files.addons.join( '|' ) + ')/translations/jquery.mmenu.' + lang + '.ts'
+			outputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/translations/' + lang + '.js',
+			outputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/translations/' + lang + '.js'
 		];
 
-		stream = gulp.src( files )
-			.pipe( typescript() )
-			.pipe( uglify({
-				output: {
-					comments: "/^!/"
-				}
-			}) )
+		var stream = gulp.src( files )
 			.pipe( concat( 'jquery.mmenu.' + lang + '.js' ) )
-			.pipe( gulp.dest( outputDir + '/translations/' + lang ) );
+			.pipe( gulp.dest( outputDir + '/translations' ) );
 
 		streams.push( stream );
 	}
 
-	return merge.apply( this, streams );
+	return merge.apply( this, streams ); 
 });
 
 //	3) 	Concatenate JS
@@ -297,7 +298,7 @@ gulp.task( 'js-concat', [ 'js-translations' ], function() {
 
 	//	Add addons, wrappers and translations
 	files.push( outputDir + '/addons/**/[!_]*.js' );	//	Files that are NOT prefixed with an underscore need to be added first.
-	files.push( outputDir + '/addons/**/[_]*.js' );		//	Files that are prefixed with an underscore can be added later.
+	files.push( outputDir + '/addons/**/[_]*.js' );		//	Files that ARE prefixed with an underscore can be added later.
 	files.push( outputDir + '/wrappers/**/*.js' );
 	files.push( outputDir + '/translations/**/*.js' );
 

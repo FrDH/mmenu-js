@@ -1,158 +1,132 @@
-(function( $ ) {
+Mmenu.addons.autoHeight = function(
+	this : Mmenu
+) {
 
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'autoHeight';
+	var opts = this.opts.autoHeight,
+		conf = this.conf.autoHeight;
 
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
+	//	Extend shorthand options
+	if ( typeof opts == 'boolean' && opts )
+	{
+		opts = {
+			height: 'auto'
+		};
+	}
+	if ( typeof opts == 'string' )
+	{
+		opts = {
+			height: opts
+		};
+	}
+	if ( typeof opts != 'object' )
+	{
+		opts = {};
+	}
+	opts = this.opts.autoHeight = jQuery.extend( true, {}, Mmenu.options.autoHeight, opts );
 
-		//	setup: fired once per menu
-		setup: function()
+
+	if ( opts.height != 'auto' && opts.height != 'highest' )
+	{
+		return;
+	}
+
+
+	this.bind( 'initMenu:after',
+		function(
+			this : Mmenu
+		) {
+			this.node.$menu.addClass( 'mm-menu_autoheight' );
+		}
+	);
+
+
+	//	Set the height
+	function setHeight(
+		 this	: Mmenu,
+		 $panel	: JQuery
+	) {
+		if ( this.opts.offCanvas && !this.vars.opened )
 		{
+			return;
+		}
 
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
+		var _top = Math.max( parseInt( this.node.$pnls.css( 'top' )		, 10 ), 0 ) || 0,
+			_bot = Math.max( parseInt( this.node.$pnls.css( 'bottom' )	, 10 ), 0 ) || 0,
+			_hgh = 0;
 
-			glbl = $[ _PLUGIN_ ].glbl;
+		this.node.$menu.addClass( 'mm-menu_autoheight-measuring' );
 
-
-			//	Extend shorthand options
-			if ( typeof opts == 'boolean' && opts )
-			{
-				opts = {
-					height: 'auto'
-				};
-			}
-			if ( typeof opts == 'string' )
-			{
-				opts = {
-					height: opts
-				};
-			}
-			if ( typeof opts != 'object' )
-			{
-				opts = {};
-			}
-			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
-
-
-			if ( opts.height != 'auto' && opts.height != 'highest' )
-			{
-				return;
-			}
-
-
-			this.bind( 'initMenu:after',
-				function()
-				{
-					this.$menu.addClass( _c.menu + '_autoheight' );
-				}
-			);
-
-
-			//	Set the height
-			var setHeight = function( $panel )
-			{
-				if ( this.opts.offCanvas && !this.vars.opened )
-				{
-					return;
-				}
-
-				var _top = Math.max( parseInt( this.$pnls.css( 'top' )		, 10 ), 0 ) || 0,
-					_bot = Math.max( parseInt( this.$pnls.css( 'bottom' )	, 10 ), 0 ) || 0,
-					_hgh = 0;
-
-				this.$menu.addClass( _c.menu + '_autoheight-measuring' );
-
-				if ( opts.height == 'auto' )
-				{
-					$panel = $panel || this.$pnls.children( '.' + _c.panel + '_opened' );
-					if ( $panel.parent( '.' + _c.listitem + '_vertical' ).length )
-					{
-						$panel = $panel
-							.parents( '.' + _c.panel )
-							.not(
-								function()
-								{
-									return $(this).parent( '.' + _c.listitem + '_vertical' ).length
-								}
-							);
-					}
-					if ( !$panel.length )
-					{
-						$panel = this.$pnls.children( '.' + _c.panel );
-					}
-
-					_hgh = $panel.first().outerHeight();
-				}
-				else if ( opts.height == 'highest' )
-				{
-					this.$pnls
-						.children('.' + _c.panel )
-						.each(
-							function()
-							{
-								var $panel: any = $(this);
-								if ( $panel.parent( '.' + _c.listitem + '_vertical' ).length )
-								{
-									$panel = $panel
-										.parents( '.' + _c.panel )
-										.not(
-											function()
-											{
-												return $(this).parent( '.' + _c.listitem + '_vertical' ).length
-											}
-										);
-								}
-								_hgh = Math.max( _hgh, $panel.first().outerHeight() );
-							}
-						);
-				}
-
-				this.$menu
-					.height( _hgh + _top + _bot )
-					.removeClass( _c.menu + '_autoheight-measuring' );
-			};
-
-			if ( this.opts.offCanvas )
-			{
-				this.bind( 'open:start'			, setHeight );
-			}
-
-			if ( opts.height == 'highest' )
-			{
-				this.bind( 'initPanels:after' 	, setHeight );
-			}
-			if ( opts.height == 'auto' )
-			{
-				this.bind( 'updateListview'		, setHeight );
-				this.bind( 'openPanel:start'	, setHeight );
-				this.bind( 'closePanel'			, setHeight );
-			}
-		},
-
-		//	add: fired once per page load
-		add: function()
+		if ( opts.height == 'auto' )
 		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
+			$panel = $panel || this.node.$pnls.children( '.mm-panel_opened' );
+			if ( $panel.parent( '.mm-listitem_vertical' ).length )
+			{
+				$panel = $panel
+					.parents( '.mm-panel' )
+					.not(
+						function()
+						{
+							return jQuery(this).parent( '.mm-listitem_vertical' ).length ? true : false;
+						}
+					);
+			}
+			if ( !$panel.length )
+			{
+				$panel = this.node.$pnls.children( '.mm-panel' );
+			}
 
-			_e.add( 'resize' );
-		},
+			_hgh = $panel.first().outerHeight();
+		}
+		else if ( opts.height == 'highest' )
+		{
+			this.node.$pnls
+				.children('.mm-panel' )
+				.each(
+					function()
+					{
+						var $panel = jQuery(this);
+						if ( $panel.parent( '.mm-listitem_vertical' ).length )
+						{
+							$panel = $panel
+								.parents( '.mm-panel' )
+								.not(
+									function()
+									{
+										return jQuery(this).parent( '.mm-listitem_vertical' ).length ? true : false
+									}
+								);
+						}
+						_hgh = Math.max( _hgh, $panel.first().outerHeight() );
+					}
+				);
+		}
 
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
+		this.node.$menu
+			.height( _hgh + _top + _bot )
+			.removeClass( 'mm-menu_autoheight-measuring' );
 	};
 
+	if ( this.opts.offCanvas )
+	{
+		this.bind( 'open:start'			, setHeight );
+	}
 
-	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		height: 'default' // 'default/highest/auto'
-	};
+	if ( opts.height == 'highest' )
+	{
+		this.bind( 'initPanels:after' 	, setHeight );
+	}
+
+	if ( opts.height == 'auto' )
+	{
+		this.bind( 'updateListview'		, setHeight );
+		this.bind( 'openPanel:start'	, setHeight );
+		this.bind( 'closePanel'			, setHeight );
+	}
+};
 
 
-	var _c, _d, _e, glbl;
-
-})( jQuery );
+//	Default options and configuration
+Mmenu.options.autoHeight = {
+	height: 'default' // 'default/highest/auto'
+};

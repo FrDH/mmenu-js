@@ -1,147 +1,122 @@
-(function( $ ) {
-
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'counters';
-
-
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-
-		//	setup: fired once per menu
-		setup: function()
-		{
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
-
-			glbl = $[ _PLUGIN_ ].glbl;
+Mmenu.addons.counters = function()
+{
+	var opts = this.opts.counters,
+		conf = this.conf.counters;
 
 
-			//	Extend shorthand options
-			if ( typeof opts == 'boolean' )
-			{
-				opts = {
-					add		: opts,
-					update	: opts
-				};
-			}
-			if ( typeof opts != 'object' )
-			{
-				opts = {};
-			}
-			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+	//	Extend shorthand options
+	if ( typeof opts == 'boolean' )
+	{
+		opts = {
+			add		: opts,
+			update	: opts
+		};
+	}
+	if ( typeof opts != 'object' )
+	{
+		opts = {};
+	}
+	opts = this.opts.counters = jQuery.extend( true, {}, Mmenu.options.counters, opts );
 
 
-			//	Refactor counter class
-			this.bind( 'initListview:after',
-				function( $panel )
+	//	Refactor counter class
+	this.bind( 'initListview:after',
+		function( 
+			this	: Mmenu,
+			$panel	: JQuery
+		) {
+			var cntrclss = this.conf.classNames.counters.counter;
+			Mmenu.refactorClass( $panel.find( '.' + cntrclss ), cntrclss, 'mm-counter' );
+		}
+	);
+
+
+	//	Add the counters
+	if ( opts.add )
+	{
+		this.bind( 'initListview:after',
+			function( 
+				this	: Mmenu,
+				$panel	: JQuery
+			) {
+				var $wrapper;
+				switch( opts.addTo )
 				{
-					var cntrclss = this.conf.classNames[ _ADDON_ ].counter;
-					this.__refactorClass( $panel.find( '.' + cntrclss ), cntrclss, _c.counter );
+					case 'panels':
+						$wrapper = $panel;
+						break;
+	
+					default:
+						$wrapper = $panel.filter( opts.addTo );
+						break;
 				}
-			);
 
-
-			//	Add the counters
-			if ( opts.add )
-			{
-				this.bind( 'initListview:after',
-					function( $panel )
-					{
-						var $wrapper;
-						switch( opts.addTo )
-						{
-							case 'panels':
-								$wrapper = $panel;
-								break;
-			
-							default:
-								$wrapper = $panel.filter( opts.addTo );
-								break;
-						}
-
-						$wrapper
-							.each(
-								function()
-								{
-									var $parent = $(this).data( _d.parent );
-									if ( $parent )
-									{
-										if ( !$parent.find( '.' + _c.counter ).length )
-										{
-											$parent.children( '.' + _c.btn ).prepend( $( '<span class="' + _c.counter + '" />' ) );
-										}
-									}
-								}
-							);
-					}
-				);
-			}
-
-			if ( opts.update )
-			{
-				var count = function( $panels )
-				{
-					$panels = $panels || this.$pnls.children( '.' + _c.panel );
-
-					$panels.each(
+				$wrapper
+					.each(
 						function()
 						{
-							var $panel 	= $(this),
-								$parent = $panel.data( _d.parent );
-
-							if ( !$parent )
+							var $parent = jQuery(this).data( 'mm-parent' );
+							if ( $parent )
 							{
-								return;
+								if ( !$parent.find( '.mm-counter' ).length )
+								{
+									$parent.children( '.mm-btn' ).prepend( jQuery( '<span class="mm-counter" />' ) );
+								}
 							}
-
-							var $counter = $parent.find( '.' + _c.counter );
-							if ( !$counter.length )
-							{
-								return;
-							}
-
-							$panel = $panel.children( '.' + _c.listview );
-							if ( !$panel.length )
-							{
-								return;
-							}
-
-							$counter.html( that.__filterListItems( $panel.children() ).length );
 						}
 					);
-				};
-
-				this.bind( 'initListview:after'	, count );
-				this.bind( 'updateListview'		, count );
 			}
-		},
+		);
+	}
 
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
-	
-			_c.add( 'counter' );
-		},
+	if ( opts.update )
+	{
+		function count(
+			this 	: Mmenu,
+			$panels	: JQuery
+		) {
+			$panels = $panels || this.node.$pnls.children( '.mm-panel' );
 
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
+			$panels.each(
+				function()
+				{
+					var $panel 	= jQuery(this),
+						$parent = $panel.data( 'mm-parent' );
+
+					if ( !$parent )
+					{
+						return;
+					}
+
+					var $counter = $parent.find( '.mm-counter' );
+					if ( !$counter.length )
+					{
+						return;
+					}
+
+					$panel = $panel.children( '.mm-listview' );
+					if ( !$panel.length )
+					{
+						return;
+					}
+
+					$counter.html( Mmenu.filterListItems( $panel.children() ).length );
+				}
+			);
+		};
+
+		this.bind( 'initListview:after'	, count );
+		this.bind( 'updateListview'		, count );
+	}
+};
 
 
-	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		add		: false,
-		addTo	: 'panels',
-		count	: false
-	};
-	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
-		counter: 'Counter'
-	};
-
-
-	var _c, _d, _e, glbl;
-
-})( jQuery );
+//	Default options and configuration
+Mmenu.options.counters = {
+	add		: false,
+	addTo	: 'panels',
+	count	: false
+};
+Mmenu.configs.classNames.counters = {
+	counter: 'Counter'
+};

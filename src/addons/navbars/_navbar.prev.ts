@@ -1,81 +1,81 @@
-(function( $ ) {
+Mmenu.addons.navbars.prev = function( 
+	this	: Mmenu,
+	$navbar	: JQuery, 
+	opts	: iLooseObject, 
+	conf	: iLooseObject
+) {
+	//	Add content
+	var $prev = $('<a class="mm-btn mm-btn_prev mm-navbar__btn" href="#" />')
+		.appendTo( $navbar );
 
-	const _PLUGIN_ 	= 'mmenu';
-	const _ADDON_  	= 'navbars';
-	const _CONTENT_	= 'prev';
+	
+	this.bind( 'initNavbar:after',
+		function( 
+			this	: Mmenu,
+			$panel	: JQuery
+		) {
+			$panel.removeClass( 'mm-panel_has-navbar' );
+		}
+	);
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ][ _CONTENT_ ] = function( $navbar, opts )
-	{
-		//	Get vars
-		var _c = $[ _PLUGIN_ ]._c;
 
+	//	Update to opened panel
+	var $org;
+	var _url, _txt;
 
-		//	Add content
-		var $prev = $('<a class="' + _c.btn + ' ' + _c.btn + '_prev ' + _c.navbar + '__btn" href="#" />')
-			.appendTo( $navbar );
-
-		
-		this.bind( 'initNavbar:after',
-			function( $panel )
+	this.bind( 'openPanel:start', 
+		function( 
+			this	: Mmenu,
+			$panel	: JQuery
+		) {
+			if ( $panel.parent( '.mm-listitem_vertical' ).length )
 			{
-				$panel.removeClass( _c.panel + '_has-navbar' );
+				return;
 			}
-		);
 
-
-		//	Update to opened panel
-		var $org;
-		var _url, _txt;
-
-		this.bind( 'openPanel:start', 
-			function( $panel )
+			$org = $panel.find( '.' + this.conf.classNames.navbars.panelPrev );
+			if ( !$org.length )
 			{
-				if ( $panel.parent( '.' + _c.listitem + '_vertical' ).length )
-				{
-					return;
-				}
-
-				$org = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelPrev );
-				if ( !$org.length )
-				{
-					$org = $panel.children( '.' + _c.navbar ).children( '.' + _c.btn + '_prev' );
-				}
-
-				_url = $org.attr( 'href' );
-				_txt = $org.html();
-
-				if ( _url )
-				{
-					$prev.attr( 'href', _url );
-				}
-				else
-				{
-					$prev.removeAttr( 'href' );
-				}
-
-				$prev[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
-				$prev.html( _txt );
+				$org = $panel.children( '.mm-navbar' ).children( '.mm-btn_prev' );
 			}
-		);
 
+			_url = $org.attr( 'href' );
+			_txt = $org.html();
 
-		//	Add screenreader / aria support
-		this.bind( 'initNavbar:after:sr-aria',
-			function( $panel )
+			if ( _url )
 			{
-				var $navbar = $panel.children( '.' + _c.navbar );
-				this.__sr_aria( $navbar, 'hidden', true );
+				$prev.attr( 'href', _url );
 			}
-		);
-		this.bind( 'openPanel:start:sr-aria',
-			function( $panel )
+			else
 			{
-				this.__sr_aria( $prev, 'hidden', $prev.hasClass( _c.hidden ) );
-				this.__sr_aria( $prev, 'owns', ( $prev.attr( 'href' ) || '' ).slice( 1 ) );
+				$prev.removeAttr( 'href' );
 			}
-		);
-	};
 
-	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ].panelPrev = 'Prev';
+			$prev[ _url || _txt ? 'removeClass' : 'addClass' ]( 'mm-hidden' );
+			$prev.html( _txt );
+		}
+	);
 
-})( jQuery );
+
+	//	Add screenreader / aria support
+	this.bind( 'initNavbar:after:sr-aria',
+		function( 
+			this	: Mmenu,
+			$panel	: JQuery
+		) {
+			var $navbar = $panel.children( '.mm-navbar' );
+			Mmenu.sr_aria( $navbar, 'hidden', true );
+		}
+	);
+	this.bind( 'openPanel:start:sr-aria',
+		function( 
+			this	: Mmenu,
+			$panel	: JQuery
+		) {
+			Mmenu.sr_aria( $prev, 'hidden', $prev.hasClass( 'mm-hidden' ) );
+			Mmenu.sr_aria( $prev, 'owns', ( $prev.attr( 'href' ) || '' ).slice( 1 ) );
+		}
+	);
+};
+
+Mmenu.configs.classNames.navbars.panelPrev = 'Prev';

@@ -1,5 +1,5 @@
 /*!
- * jQuery mmenu v7.2.1
+ * jQuery mmenu v8.0.0
  * @requires jQuery 1.7.0 or later
  *
  * mmenu.frebsite.nl
@@ -12,35 +12,182 @@
  */
 
 
-(function( $ ) {
+/*
+	jQuery plugin
+*/
+jQuery.fn[ 'mmenu' ] = function( opts, conf )
+{
+	var $result = jQuery();
+	this.each(
+		function()
+		{
+			var $menu = jQuery(this);
+			if ( $menu.data( 'mmenu' ) )
+			{
+				return;
+			}
 
-	const _PLUGIN_  = 'mmenu';
-	const _VERSION_	= '7.2.1';
+			//	Create the menu
+			var _menu = new Mmenu( $menu, opts, conf );
+
+			//	Store the API
+			_menu.node.$menu.data( 'mmenu', _menu.API );
+
+			$result = $result.add( _menu.node.$menu );
+		}
+	);
+
+	return $result;
+};
 
 
-	//	Newer version of the plugin already excists
-	if ( $[ _PLUGIN_ ] && $[ _PLUGIN_ ].version > _VERSION_ )
-	{
-		return;
+/*
+	Class
+*/
+class Mmenu {
+
+	//	Plugin version
+	static version : string = '8.0.0'
+
+	//	Default options for the plugin
+	static options : iLooseObject = {
+		hooks 				: {},
+		extensions			: [],
+		wrappers			: [],
+		navbar 				: {
+			add 				: true,
+			title				: 'Menu',
+			titleLink			: 'parent'
+		},
+		onClick				: {
+			close				: null,
+			preventDefault		: null,
+			setSelected			: true
+		},
+		slidingSubmenus		: true
 	}
 
-	/*
-		Class
-	*/
-	$[ _PLUGIN_ ] = function( $menu, opts, conf )
-	{
-		this.$menu	= $menu;
-		this._api	= [ 'bind', 'getInstance', 'initPanels', 'openPanel', 'closePanel', 'closeAllPanels', 'setSelected' ];
-		this.opts	= opts;
-		this.conf	= conf;
-		this.vars	= {};
-		this.cbck	= {};
-		this.mtch 	= {};
+	//	Default configuration for the plugin
+	static configs : iLooseObject = {
+		classNames			: {
+			divider				: 'Divider',
+			inset 				: 'Inset',
+			nolistview 			: 'NoListview',
+			nopanel				: 'NoPanel',
+			panel				: 'Panel',
+			selected			: 'Selected',
+			spacer				: 'Spacer',
+			vertical			: 'Vertical'
+		},
+		clone				: false,
+		language			: null,
+		openingInterval		: 25,
+		panelNodetype		: 'ul, ol, div',
+		transitionDuration	: 400
+	}
 
-		if ( typeof this.___deprecated == 'function' )
+	//	Add-ons and wrappers
+	static addons  	: iLooseObject	= {}
+	static wrappers : iLooseObject	= {}
+
+	//	Storage object for nodes
+	static node 	: iLooseObject = {}
+
+	//	Supported features
+	static support 	: iLooseObject = {
+		touch: 'ontouchstart' in window || navigator.msMaxTouchPoints || false,
+	}
+
+	//	Options and configuration
+	opts 	: iLooseObject
+	conf 	: iLooseObject
+
+	//	Array of methods to expose in the API
+	_api	: string[]
+
+	//	Storage objects / arrays for nodes, variables, click handlers, callbacks and matchmedia calls
+	node 	: iLooseObject
+	vars	: iLooseObject
+	hook	: iLooseObject
+	mtch	: iLooseObject
+	clck	: Function[]
+
+
+	//	offCanvas add-on
+	open 					: Function
+	_openSetup 				: Function
+	_openFinish 			: Function
+	close 					: Function
+	closeAllOthers 			: Function
+	setPage 				: Function
+	_initBlocker 			: Function
+	_initWindow_offCanvas 	: Function
+
+
+	//	TODO: what of the below can be replaced with local functions?
+
+	//	screenReader add-on
+	static sr_aria	: Function
+	static sr_role	: Function
+	static sr_text	: Function
+
+
+	//	scrollBugFix add-on
+	_initWindow_scrollBugFix	: Function
+
+
+	//	keyboardNavigation add-on
+	_initWindow_keyboardNavigation	: Function
+
+
+	//	searchfield add-on
+	search				: Function
+	_initSearchPanel	: Function
+	_initNoResultsMsg	: Function
+	_initSearchfield	: Function
+	_initSearching		: Function
+
+
+
+	/**
+	  * Initialize the plugin.
+	  *
+	  * @param {JQuery|String} 	$menu						Menu node.
+	  * @param {object} 		[options=Mmenu.options]		Options for the menu.
+	  * @param {object} 		[configs=Mmenu.configs]		Configuration options for the menu.
+	  */
+	constructor(
+		$menu 		 : JQuery | String,
+		options 	?: iLooseObject,
+		configs		?: iLooseObject
+	) {
+
+		//	Get menu node from string
+		if ( typeof $menu == 'string' )
 		{
-			this.___deprecated();
+			$menu = jQuery( $menu );
 		}
+
+		//	Store menu node
+		this.node 	= {
+			$menu : $menu
+		};
+
+		//	Extend options and configuration from defaults
+		this.opts 	= jQuery.extend( true, {}, Mmenu.options, options );
+		this.conf 	= jQuery.extend( true, {}, Mmenu.configs, configs );
+
+		this._api	= [ 'bind', 'initPanels', 'openPanel', 'closePanel', 'closeAllPanels', 'setSelected' ];
+
+		this.vars	= {};
+		this.hook 	= {};
+		this.mtch 	= {};
+		this.clck 	= [];
+
+		// if ( typeof this.___deprecated == 'function' )
+		// {
+		// 	this.___deprecated();
+		// }
 
 		this._initWrappers();
 		this._initAddons();
@@ -53,1044 +200,959 @@
 		this._initAnchors();
 		this._initMatchMedia();
 
-		if ( typeof this.___debug == 'function' )
-		{
-			this.___debug();
-		}
+		// if ( typeof this.___debug == 'function' )
+		// {
+		// 	this.___debug();
+		// }
 
 		return this;
-	};
-
-	$[ _PLUGIN_ ].version 	= _VERSION_;
-	$[ _PLUGIN_ ].uniqueId 	= 0;
-	$[ _PLUGIN_ ].wrappers 	= {};
-	$[ _PLUGIN_ ].addons  	= {};
+	}
 
 
-	$[ _PLUGIN_ ].defaults = {
-		hooks 			: {},
-		extensions		: [],
-		wrappers		: [],
-		navbar 			: {
-			add 			: true,
-			title			: 'Menu',
-			titleLink		: 'parent'
-		},
-		onClick			: {
-//			close			: true,
-//			preventDefault	: null,
-			setSelected		: true
-		},
-		slidingSubmenus	: true
-	};
+	/**
+	  * Get the API.
+	  *
+	  * @return {object} The API.
+	  */
+	get API()
+	{
+		var that = this,
+			api = {};
 
-	$[ _PLUGIN_ ].configuration = {
-		classNames			: {
-			divider		: 'Divider',
-			inset 		: 'Inset',
-			nolistview 	: 'NoListview',
-			nopanel		: 'NoPanel',
-			panel		: 'Panel',
-			selected	: 'Selected',
-			spacer		: 'Spacer',
-			vertical	: 'Vertical'
-		},
-		clone				: false,
-		language			: null,
-		openingInterval		: 25,
-		panelNodetype		: 'ul, ol, div',
-		transitionDuration	: 400
-	};
-
-	$[ _PLUGIN_ ].prototype = {
-
-		getInstance: function()
-		{
-			return this;
-		},
-
-		initPanels: function( $panels )
-		{
-			this._initPanels( $panels );
-		},
-
-		openPanel: function( $panel, animation )
-		{
-			this.trigger( 'openPanel:before', $panel );
-
-			if ( !$panel || !$panel.length )
+		jQuery.each( this._api, 
+			function( i )
 			{
-				return;
-			}
-			if ( !$panel.is( '.' + _c.panel ) )
-			{
-				$panel = $panel.closest( '.' + _c.panel )
-			}
-			if ( !$panel.is( '.' + _c.panel ) )
-			{
-				return;
-			}
-
-
-			var that = this;
-
-			if ( typeof animation != 'boolean' )
-			{
-				animation = true;
-			}
-
-
-			//	vertical
-			if ( $panel.parent( '.' + _c.listitem + '_vertical' ).length )
-			{
-
-				//	Open current and all vertical parent panels
-				$panel
-					.parents( '.' + _c.listitem + '_vertical' )
-					.addClass( _c.listitem + '_opened' )
-					.children( '.' + _c.panel )
-					.removeClass( _c.hidden );
-
-				//	Open first non-vertical parent panel
-				this.openPanel( 
-					$panel
-						.parents( '.' + _c.panel )
-						.not(
-							function()
-							{
-								return $(this).parent( '.' + _c.listitem + '_vertical' ).length
-							}
-						)
-						.first()
-				);
-
-				this.trigger( 'openPanel:start' , $panel );
-				this.trigger( 'openPanel:finish', $panel );
-			}
-
-			//	Horizontal
-			else
-			{
-				if ( $panel.hasClass( _c.panel + '_opened' ) )
+				let fn = this;
+				api[ fn ] = function()
 				{
-					return;
-				}
-
-				var $panels 	= this.$pnls.children( '.' + _c.panel ),
-					$current 	= this.$pnls.children( '.' + _c.panel + '_opened' );
-
-				//	old browser support
-				if ( !$[ _PLUGIN_ ].support.csstransitions )
-				{
-					$current
-						.addClass( _c.hidden )
-						.removeClass( _c.panel + '_opened' );
-
-					$panel
-						.removeClass( _c.hidden )
-						.addClass( _c.panel + '_opened' );
-
-					this.trigger( 'openPanel:start' , $panel );
-					this.trigger( 'openPanel:finish', $panel );
-					return;
-				}
-				//	/old browser support
-
-				//	'Close' all children
-				$panels
-					.not( $panel )
-					.removeClass( _c.panel + '_opened-parent' );
-
-				//	'Open' all parents
-				var $parent = $panel.data( _d.parent );
-				while( $parent )
-				{
-					$parent = $parent.closest( '.' + _c.panel );
-					if ( !$parent.parent( '.' + _c.listitem + '_vertical' ).length )
-					{
-						$parent.addClass( _c.panel + '_opened-parent' );
-					}
-					$parent = $parent.data( _d.parent );
-				}
-
-				//	Add classes for animation
-				$panels
-					.removeClass( _c.panel + '_highest' )
-					.not( $current )
-					.not( $panel )
-					.addClass( _c.hidden );
-
-				$panel
-					.removeClass( _c.hidden );
-
-				var openPanelStart = function()
-				{
-					$current.removeClass( _c.panel + '_opened' );
-					$panel.addClass( _c.panel + '_opened' );
-
-					if ( $panel.hasClass( _c.panel + '_opened-parent' ) )
-					{
-						$current.addClass( _c.panel + '_highest' );
-						$panel.removeClass( _c.panel + '_opened-parent' );
-					}
-					else
-					{
-						$current.addClass( _c.panel + '_opened-parent' );
-						$panel.addClass( _c.panel + '_highest' );
-					}
-
-					that.trigger( 'openPanel:start', $panel );
+					var re = that[ fn ].apply( that, arguments );
+					return ( typeof re == 'undefined' ) ? api : re;
 				};
+			}
+		);
+		return api;
+	}
 
 
-				var openPanelFinish = function()
-				{
-					$current.removeClass( _c.panel + '_highest' ).addClass( _c.hidden );
-					$panel.removeClass( _c.panel + '_highest' );
+	/**
+	  * Open a panel.
+	  *
+	  * @param {JQuery}		$panel				Panel to open.
+	  * @param {boolean}	[animation=true]	Whether or not to use an animation.
+	  */
+	openPanel( 
+		$panel 		 : JQuery,
+		animation	?: boolean
+	) {
+		this.trigger( 'openPanel:before', [ $panel ] );
 
-					that.trigger( 'openPanel:finish', $panel );
-				}
+		if ( !$panel || !$panel.length )
+		{
+			return;
+		}
+		if ( !$panel.hasClass( 'mm-panel' ) )
+		{
+			$panel = $panel.closest( '.mm-panel' );
+		}
+		if ( !$panel.hasClass( 'mm-panel' ) )
+		{
+			return;
+		}
 
-				if ( animation && !$panel.hasClass( _c.panel + '_noanimation' ) )
-				{
-					//	Without the timeout the animation will not work because the element had display: none;
-					//	RequestAnimationFrame would be nice here.
-					setTimeout(
+
+		if ( typeof animation != 'boolean' )
+		{
+			animation = true;
+		}
+
+
+		//	Open a "vertical" panel
+		if ( $panel.parent( '.mm-listitem_vertical' ).length )
+		{
+
+			//	Open current and all vertical parent panels
+			$panel
+				.parents( '.mm-listitem_vertical' )
+				.addClass( 'mm-listitem_opened' )
+				.children( '.mm-panel' )
+				.removeClass( 'mm-hidden' );
+
+			//	Open first non-vertical parent panel
+			this.openPanel( 
+				$panel
+					.parents( '.mm-panel' )
+					.not(
 						function()
 						{
-							//	Callback
-							that.__transitionend( $panel,
-								function()
-								{
-									openPanelFinish();
-								}, that.conf.transitionDuration
-							);
+							return jQuery(this).parent( '.mm-listitem_vertical' ).length ? true : false
+						}
+					)
+					.first()
+			);
 
-							openPanelStart();
+			this.trigger( 'openPanel:start' , [ $panel ] );
+			this.trigger( 'openPanel:finish', [ $panel ] );
+		}
 
-						}, that.conf.openingInterval
-					);
+		//	Open a "horizontal" panel
+		else
+		{
+			if ( $panel.hasClass( 'mm-panel_opened' ) )
+			{
+				return;
+			}
+
+			var $panels 	= this.node.$pnls.children( '.mm-panel' ),
+				$current 	= this.node.$pnls.children( '.mm-panel_opened' );
+
+
+			//	Close all child panels
+			$panels
+				.not( $panel )
+				.removeClass( 'mm-panel_opened-parent' );
+
+			//	Open all parent panels
+			var $parent = $panel.data( 'mm-parent' );
+			while( $parent )
+			{
+				$parent = $parent.closest( '.mm-panel' );
+				if ( !$parent.parent( '.mm-listitem_vertical' ).length )
+				{
+					$parent.addClass( 'mm-panel_opened-parent' );
+				}
+				$parent = $parent.data( 'mm-parent' );
+			}
+
+			//	Add classes for animation
+			$panels
+				.removeClass( 'mm-panel_highest' )
+				.not( $current )
+				.not( $panel )
+				.addClass( 'mm-hidden' );
+
+			$panel
+				.removeClass( 'mm-hidden' );
+
+			//	Start opening the panel
+			var openPanelStart = () => {
+				$current.removeClass( 'mm-panel_opened' );
+				$panel.addClass( 'mm-panel_opened' );
+
+				if ( $panel.hasClass( 'mm-panel_opened-parent' ) )
+				{
+					$current.addClass( 'mm-panel_highest' );
+					$panel.removeClass( 'mm-panel_opened-parent' );
 				}
 				else
 				{
-					openPanelStart();
-					openPanelFinish();
+					$current.addClass( 'mm-.panel_opened-parent' );
+					$panel.addClass( 'mm-panel_highest' );
 				}
-			}
 
-			this.trigger( 'openPanel:after', $panel );
-		},
-
-		closePanel: function( $panel )
-		{
-			this.trigger( 'closePanel:before', $panel );
-
-			var $li = $panel.parent();
-
-			//	Vertical
-			if ( $li.hasClass( _c.listitem + '_vertical' ) )
-			{
-				$li.removeClass( _c.listitem + '_opened' );
-				$panel.addClass( _c.hidden );
-
-				this.trigger( 'closePanel', $panel );
-			}
-
-			this.trigger( 'closePanel:after', $panel );
-		},
-
-		closeAllPanels: function( $panel )
-		{
-			this.trigger( 'closeAllPanels:before' );
-
-			//	Vertical
-			this.$pnls
-				.find( '.' + _c.listview )
-				.children()
-				.removeClass(  _c.listitem + '_selected' )
-				.filter( '.' + _c.listitem + '_vertical' )
-				.removeClass(  _c.listitem + '_opened' );
-
-			//	Horizontal
-			var $pnls = this.$pnls.children( '.' + _c.panel ),
-				$frst = ( $panel && $panel.length ) ? $panel : $pnls.first();
-
-			this.$pnls
-				.children( '.' + _c.panel )
-				.not( $frst )
-				.removeClass( _c.panel + '_opened' )
-				.removeClass( _c.panel + '_opened-parent' )
-				.removeClass( _c.panel + '_highest' )
-				.addClass( _c.hidden );
-
-			this.openPanel( $frst, false );
-
-			this.trigger( 'closeAllPanels:after' );
-		},
-		
-		togglePanel: function( $panel )
-		{
-			var $li = $panel.parent();
-
-			//	Vertical only
-			if ( $li.hasClass( _c.listitem + '_vertical' ) )
-			{
-				this[ $li.hasClass( _c.listitem + '_opened' ) ? 'closePanel' : 'openPanel' ]( $panel );
-			}
-		},
-
-		setSelected: function( $li )
-		{
-			this.trigger( 'setSelected:before', $li );
-
-			this.$menu
-				.find( '.' + _c.listitem + '_selected' )
-				.removeClass( _c.listitem + '_selected' );
-
-			$li.addClass( _c.listitem + '_selected' );
-
-			this.trigger( 'setSelected:after', $li );
-		},
-
-		bind: function( evnt, fn )
-		{
-			this.cbck[ evnt ] = this.cbck[ evnt ] || [];
-			this.cbck[ evnt ].push( fn );
-		},
-
-		trigger: function()
-		{
-			var that = this,
-				args = Array.prototype.slice.call( arguments ),
-				evnt = args.shift();
-
-			if ( this.cbck[ evnt ] )
-			{
-				for ( var e = 0, l = this.cbck[ evnt ].length; e < l; e++ )
-                {
-                    this.cbck[ evnt ][ e ].apply( that, args );
-                }
-			}
-		},
-
-		matchMedia: function( media, yes, no )
-		{
-			var that = this,
-				func = {
-					'yes': yes,
-					'no' : no
-				};
-
-			//	Bind to windowResize
-			this.mtch[ media ] = this.mtch[ media ] || [];
-			this.mtch[ media ].push( func );
-		},
-
-		i18n: function( text )
-		{
-			return $[ _PLUGIN_ ].i18n( text, this.conf.language );
-		},
-
-		_initHooks: function()
-		{
-			for ( var h in this.opts.hooks )
-			{
-				this.bind( h, this.opts.hooks[ h ] );
-			}
-		},
-
-		_initWrappers: function()
-		{
-			this.trigger( 'initWrappers:before' );
-
-			for ( var w = 0; w < this.opts.wrappers.length; w++ )
-			{
-				var wrapper = $[ _PLUGIN_ ].wrappers[ this.opts.wrappers[ w ] ];
-				if ( typeof wrapper == 'function' )
-				{
-					wrapper.call( this );
-				}
-			}
-
-			this.trigger( 'initWrappers:after' );
-		},
-
-		_initAddons: function()
-		{
-			this.trigger( 'initAddons:before' );
-
-			var a;
-			for ( a in $[ _PLUGIN_ ].addons )
-			{
-				$[ _PLUGIN_ ].addons[ a ].add.call( this );
-				$[ _PLUGIN_ ].addons[ a ].add = function() {};
-			}
-			for ( a in $[ _PLUGIN_ ].addons )
-			{
-				$[ _PLUGIN_ ].addons[ a ].setup.call( this );
-			}
-
-			this.trigger( 'initAddons:after' );
-		},
-
-		_initExtensions: function()
-		{
-			this.trigger( 'initExtensions:before' );
-
-			var that = this;
-
-			//	Convert array to object with array
-			if ( this.opts.extensions.constructor === Array )
-			{
-				this.opts.extensions = {
-					'all': this.opts.extensions
-				};
-			}
-
-			//	Loop over object
-			for ( var mdia in this.opts.extensions )
-			{
-				this.opts.extensions[ mdia ] = this.opts.extensions[ mdia ].length ? _c.menu + '_' + this.opts.extensions[ mdia ].join( ' ' + _c.menu + '_' ) : '';
-				if ( this.opts.extensions[ mdia ] )
-				{
-					(function( mdia ) {
-						that.matchMedia( mdia,
-							function()
-							{
-								this.$menu.addClass( this.opts.extensions[ mdia ] );
-							},
-							function()
-							{
-								this.$menu.removeClass( this.opts.extensions[ mdia ] );
-							}
-						);
-					})( mdia );
-				}
-			}
-			this.trigger( 'initExtensions:after' );
-		},
-
-		_initMenu: function()
-		{
-			this.trigger( 'initMenu:before' );
-
-			var that = this;
-
-			//	Clone if needed
-			if ( this.conf.clone )
-			{
-				this.$orig = this.$menu;
-				this.$menu = this.$orig.clone();
-				this.$menu.add( this.$menu.find( '[id]' ) )
-					.filter( '[id]' )
-					.each(
-						function()
-						{
-							$(this).attr( 'id', _c.mm( $(this).attr( 'id' ) ) );
-						}
-					);
-			}
-
-			//	Add ID
-			this.$menu.attr( 'id', this.$menu.attr( 'id' ) || this.__getUniqueId() );
-
-			//	Add markup
-			this.$pnls = $( '<div class="' + _c.panels + '" />' )
-				.append( this.$menu.children( this.conf.panelNodetype ) )
-				.prependTo( this.$menu );
-
-			//	Add classes
-			this.$menu
-				.addClass( _c.menu )
-				.parent()
-				.addClass( _c.wrapper );
-
-			this.trigger( 'initMenu:after' );
-		},
-
-		_initPanels: function( $panels )
-		{
-			this.trigger( 'initPanels:before', $panels );
-
-			$panels = $panels || this.$pnls.children( this.conf.panelNodetype );
-
-			var $newpanels = $();
-
-			var that = this;
-			var init = function( $panels )
-			{
-				$panels
-					.filter( that.conf.panelNodetype )
-					.each(
-						function( x )
-						{
-
-							var $panel = that._initPanel( $(this) );
-							if ( $panel )
-							{
-
-								that._initNavbar( $panel );
-								that._initListview( $panel );
-
-								$newpanels = $newpanels.add( $panel );
-
-								//	init child panels
-								var $child = $panel
-									.children( '.' + _c.listview )
-									.children( 'li' )
-									.children( that.conf.panelNodetype )
-									.add( $panel.children( '.' + that.conf.classNames.panel ) );
-
-								if ( $child.length )
-								{
-									init( $child );
-								}
-							}
-						}
-					);
+				this.trigger( 'openPanel:start', [ $panel ] );
 			};
 
-			init( $panels );
+			//	Finish opening the panel
+			var openPanelFinish = () => {
+				$current.removeClass( 'mm-panel_highest' ).addClass( 'mm-hidden' );
+				$panel.removeClass( 'mm-panel_highest' );
 
-			this.trigger( 'initPanels:after', $newpanels );
-		},
-
-		_initPanel: function( $panel )
-		{
-			this.trigger( 'initPanel:before', $panel );
-
-			var that = this;
-
-			//	Stop if already a panel
-			if ( $panel.hasClass( _c.panel ) )
-			{
-				return $panel;
+				this.trigger( 'openPanel:finish', [ $panel ] );
 			}
 
-			//	Refactor panel classnames
-			this.__refactorClass( $panel, this.conf.classNames.panel 	, _c.panel 		);
-			this.__refactorClass( $panel, this.conf.classNames.nopanel 	, _c.nopanel 	);
-			this.__refactorClass( $panel, this.conf.classNames.inset 	, _c.listview + '_inset'	);
-
-			$panel.filter( '.' + _c.listview + '_inset' )
-				.addClass( _c.nopanel );
-
-
-			//	Stop if not supposed to be a panel
-			if ( $panel.hasClass( _c.nopanel ) )
+			if ( animation && !$panel.hasClass( 'mm-panel_noanimation' ) )
 			{
-				return false;
-			}
+				//	Without the timeout the animation will not work because the element had display: none;
+				//	RequestAnimationFrame would be nice here.
+				setTimeout(
+					() => {
+						//	Callback
+						Mmenu.transitionend( $panel,
+							() => {
+								openPanelFinish();
+							}, this.conf[ 'transitionDuration' ]
+						);
 
+						openPanelStart();
 
-			//	Wrap UL/OL in DIV
-			var vertical = ( $panel.hasClass( this.conf.classNames.vertical ) || !this.opts.slidingSubmenus );
-			$panel.removeClass( this.conf.classNames.vertical );
-
-			var id = $panel.attr( 'id' ) || this.__getUniqueId();
-
-			if ( $panel.is( 'ul, ol' ) )
-			{
-				$panel.removeAttr( 'id' );
-
-				$panel.wrap( '<div />' );
-				$panel = $panel.parent();
-			}
-
-			$panel.attr( 'id', id );
-			$panel.addClass( _c.panel + ' ' + _c.hidden );
-
-			var $parent = $panel.parent( 'li' );
-
-			if ( vertical )
-			{
-				$parent.addClass( _c.listitem + '_vertical' );
+					}, this.conf[ 'openingInterval' ]
+				);
 			}
 			else
 			{
-				$panel.appendTo( this.$pnls );
+				openPanelStart();
+				openPanelFinish();
 			}
+		}
 
-			//	Store parent/child relation
-			if ( $parent.length )
-			{
-				$parent.data( _d.child, $panel );
-				$panel.data( _d.parent, $parent );
-			}
+		this.trigger( 'openPanel:after', [ $panel ] );
+	}
 
-			this.trigger( 'initPanel:after', $panel );
 
-			return $panel;
-		},
+	/**
+	  * Close a panel.
+	  *
+	  * @param {JQuery} $panel Panel to close.
+	  */
+	closePanel( 
+		$panel : JQuery
+	) {
+		this.trigger( 'closePanel:before', [ $panel ] );
 
-		_initNavbar: function( $panel )
+		var $li = $panel.parent();
+
+		//	Only works for "vertical" panels
+		if ( $li.hasClass( 'mm-listitem_vertical' ) )
 		{
-			this.trigger( 'initNavbar:before', $panel );
+			$li.removeClass( 'mm-listitem_opened' );
+			$panel.addClass( 'mm-hidden' );
 
-			if ( $panel.children( '.' + _c.navbar ).length )
-			{
-				return;
-			}
+			this.trigger( 'closePanel', [ $panel ] );
+		}
 
-			var $parent = $panel.data( _d.parent ),
-				$navbar = $( '<div class="' + _c.navbar + '" />' );
+		this.trigger( 'closePanel:after', [ $panel ] );
+	}
 
-			var title: string = this.__getPanelTitle( $panel, this.opts.navbar.title );
-			var href : string = '';
 
-			if ( $parent && $parent.length )
-			{
-				if ( $parent.hasClass( _c.listitem + '_vertical' ) )
-				{
-					return;
-				}
+	/**
+	  * Close all opened panels.
+	  *
+	  * @param {JQuery} [$panel] Panel to open after closing all other panels.
+	  */
+	closeAllPanels( 
+		$panel ?: JQuery
+	) {
+		this.trigger( 'closeAllPanels:before' );
 
-				//	Listview, the panel wrapping this panel
-				if ( $parent.parent().is( '.' + _c.listview ) )
-				{
-					var $a = $parent
-						.children( 'a, span' )
-						.not( '.' + _c.btn + '_next' );
-				}
+		//	Close all "vertical" panels
+		this.node.$pnls
+			.find( '.mm-listview' )
+			.children()
+			.removeClass( 'mm-listitem_selected' )
+			.filter( '.mm-listitem_vertical' )
+			.removeClass( 'mm-listitem_opened' );
 
-				//	Non-listview, the first anchor in the parent panel that links to this panel
-				else
-				{
-					var $a = $parent
-						.closest( '.' + _c.panel )
-						.find( 'a[href="#' + $panel.attr( 'id' ) + '"]' );
-				}
+		//	Close all "horizontal" panels
+		var $pnls = this.node.$pnls.children( '.mm-panel' ),
+			$frst = ( $panel && $panel.length ) ? $panel : $pnls.first();
 
-				$a = $a.first();
-				$parent = $a.closest( '.' + _c.panel );
+		this.node.$pnls
+			.children( '.mm-panel' )
+			.not( $frst )
+			.removeClass( 'mm-panel_opened' )
+			.removeClass( 'mm-panel_opened-parent' )
+			.removeClass( 'mm-panel_highest' )
+			.addClass( 'mm-hidden' );
 
-				var id = $parent.attr( 'id' );
-				title = this.__getPanelTitle( $panel, $('<span>' + $a.text() + '</span>').text() );
+		//	Open first panel
+		this.openPanel( $frst, false );
 
-				switch ( this.opts.navbar.titleLink )
-				{
-					case 'anchor':
-						href = $a.attr( 'href' );
-						break;
+		this.trigger( 'closeAllPanels:after' );
+	}
 
-					case 'parent':
-						href = '#' + id;
-						break;
-				}
 
-				$navbar.append( '<a class="' + _c.btn + ' ' + _c.btn + '_prev ' + _c.navbar + '__btn" href="#' + id + '" />' );
-			}
-			else if ( !this.opts.navbar.title )
-			{
-				return;
-			}
+	/**
+	  * Toggle a panel opened/closed.
+	  *
+	  * @param {JQuery} $panel Panel to open or close.
+	  */
+	togglePanel(
+		$panel : JQuery
+	) {
+		var $li = $panel.parent();
 
-			if ( this.opts.navbar.add )
-			{
-				$panel.addClass( _c.panel + '_has-navbar' );
-			}
-
-			$navbar.append( '<a class="' + _c.navbar + '__title"' + ( href.length ? ' href="' + href + '"' : '' ) + '>' + title + '</a>' )
-				.prependTo( $panel );
-
-			this.trigger( 'initNavbar:after', $panel );
-		},
-
-		_initListview: function( $panel )
+		//	Only works for "vertical" panels
+		if ( $li.hasClass( 'mm-listitem_vertical' ) )
 		{
-			this.trigger( 'initListview:before', $panel );
-
-			//	Refactor listviews classnames
-			var $ul = this.__childAddBack( $panel, 'ul, ol' );
-
-			this.__refactorClass( $ul, this.conf.classNames.nolistview 	, _c.nolistview );
+			this[ $li.hasClass( 'mm-listitem_opened' ) ? 'closePanel' : 'openPanel' ]( $panel );
+		}
+	}
 
 
-			//	Refactor listitems classnames
-			var $li = $ul
-				.not( '.' + _c.nolistview )
-				.addClass( _c.listview )
-				.children()
-				.addClass( _c.listitem );
+	/**
+	  * Mark a listitem as being "selected".
+	  *
+	  * @param {JQuery} $listitem Listitem to mark.
+	  */
+	setSelected(
+		$listitem : JQuery
+	) {
+		this.trigger( 'setSelected:before', [ $listitem ] );
 
-			this.__refactorClass( $li, this.conf.classNames.selected 	, _c.listitem + '_selected' );
-			this.__refactorClass( $li, this.conf.classNames.divider 	, _c.listitem + '_divider'	);
-			this.__refactorClass( $li, this.conf.classNames.spacer 		, _c.listitem + '_spacer'	);
+		this.node.$menu
+			.find( '.mm-listitem_selected' )
+			.removeClass( 'mm-listitem_selected' );
 
-			$li.children( 'a, span' )
-				.not( '.' + _c.btn )
-				.addClass( _c.listitem + '__text' );
+		$listitem.addClass( 'mm-listitem_selected' );
 
-			//	Add open link to parent listitem
-			var $parent = $panel.data( _d.parent );
-			if ( $parent && $parent.is( '.' + _c.listitem ) )
-			{
-				if ( !$parent.children( '.' + _c.btn ).length )
-				{
-					var $a = $parent.children( 'a, span' ).first(),
-						$b = $( '<a class="' + _c.btn + ' ' + _c.btn + '_next ' + _c.listitem + '__btn" href="#' + $panel.attr( 'id' ) + '" />' );
+		this.trigger( 'setSelected:after', [ $listitem ] );
+	}
 
-					$b.insertAfter( $a );
-					if ( $a.is( 'span' ) )
-					{
-						$b.addClass( _c.listitem + '__text' ).html( $a.html() );
-						$a.remove();
-					}
-				}
-			}
 
-			this.trigger( 'initListview:after', $panel );
-		},
+	/**
+	  * Bind a function to a hook.
+	  *
+	  * @param {string} 	hook The hook.
+	  * @param {function} 	func The function.
+	  */
+	bind( 
+		hook : string,
+		func : Function
+	) {
+		this.hook[ hook ] = this.hook[ hook ] || [];
+		this.hook[ hook ].push( func );
+	}
 
-		_initOpened: function()
+
+	/**
+	  * Invoke the functions bound to a hook.
+	  *
+	  * @param {string} hook  	The hook.
+	  * @param {array}	[args] 	Arguments for the function.
+	  */
+	trigger(
+		hook  : string,
+		args ?: any[]
+	) {
+		if ( this.hook[ hook ] )
 		{
-			this.trigger( 'initOpened:before' );
+			for ( var h = 0, l = this.hook[ hook ].length; h < l; h++ )
+            {
+                this.hook[ hook ][ h ].apply( this, args );
+            }
+		}
+	}
 
-			var $selected = this.$pnls
-				.find( '.' + _c.listitem + '_selected' )
-				.removeClass( _c.listitem + '_selected' )
-				.last()
-				.addClass( _c.listitem + '_selected' );
 
-			var $current = ( $selected.length ) 
-				? $selected.closest( '.' + _c.panel )
-				: this.$pnls.children( '.' + _c.panel ).first();
+	/**
+	  * Bind functions to the match-media listener.
+	  *
+	  * @param {string} 	mediaquery 	Media query to match.
+	  * @param {function} 	yes 		Function to invoke when the media query matches.
+	  * @param {function} 	no 			Function to invoke when the media query doesn't match.
+	  */
+	matchMedia( 
+		mediaquery	 : string,
+		yes			?: Function,
+		no			?: Function
+	) {
+		this.mtch[ mediaquery ] = this.mtch[ mediaquery ] || [];
+		this.mtch[ mediaquery ].push({
+			'yes': yes,
+			'no' : no
+		});
+	}
 
-			this.openPanel( $current, false );
 
-			this.trigger( 'initOpened:after' );
-		},
-
-		_initAnchors: function()
+	/**
+	  * Initialize the match-media listener.
+	  */
+	_initMatchMedia()
+	{
+		for ( var mediaquery in this.mtch )
 		{
-			this.trigger( 'initAnchors:before' );
+			(() => {
+				var mqstring = mediaquery,
+					mqlist   = window.matchMedia( mqstring );
 
-			var that = this;
-
-			glbl.$body
-				.on( _e.click + '-oncanvas',
-					'a[href]',
-					function( e )
-					{
-						var $t = $(this),
-							_h = $t.attr( 'href' );
-
-						var inMenu 		= that.$menu.find( $t ).length, 
-							inListview 	= $t.is( '.' + _c.listitem + ' > a' ),
-							toExternal 	= $t.is( '[rel="external"]' ) || $t.is( '[target="_blank"]' );
-
-
-						//	Open/Close panel
-						if ( inMenu )
-						{
-							if ( _h.length > 1 && _h.slice( 0, 1 ) == '#' )
-							{
-								try
-								{
-									var $h = that.$menu.find( _h );
-									if ( $h.is( '.' + _c.panel ) )
-									{
-										that[ $t.parent().hasClass( _c.listitem + '_vertical' ) ? 'togglePanel' : 'openPanel' ]( $h );
-
-										e.preventDefault();
-										return;
-									}
-								}
-								catch( err ) {}
-							}
-						}
-
-
-						var onClick = {
-							close 			: null,
-							setSelected 	: null,
-							preventDefault	: _h.slice( 0, 1 ) == '#'
-						};
-
-						//	Find behavior for addons
-						for ( var a in $[ _PLUGIN_ ].addons )
-						{
-							var addonClick = $[ _PLUGIN_ ].addons[ a ].clickAnchor.call( that, $t, inMenu, inListview, toExternal );
-							if ( addonClick )
-							{
-								if ( typeof addonClick == 'boolean' )
-								{
-									e.preventDefault();
-									return;
-								}
-								if ( typeof addonClick == 'object' )
-								{
-									onClick = $.extend( {}, onClick, addonClick );
-								}
-							}
-						}
-
-
-						//	All other anchors in lists
-						if ( inMenu && inListview && !toExternal )
-						{
-
-							//	Set selected item, Default: true
-							if ( that.__valueOrFn( $t, that.opts.onClick.setSelected, onClick.setSelected ) )
-							{
-								that.setSelected( $(e.target).parent() );
-							}
-
-							//	Prevent default / don't follow link. Default: false
-							if ( that.__valueOrFn( $t, that.opts.onClick.preventDefault, onClick.preventDefault ) )
-							{
-								e.preventDefault();
-							}
-
-							//	Close menu. Default: false
-							if ( that.__valueOrFn( $t, that.opts.onClick.close, onClick.close ) )
-							{
-								if ( that.opts.offCanvas && typeof that.close == 'function' )
-								{
-									that.close();
-								}
-							}
-						}
-
+				this._fireMatchMedia( mqstring, mqlist );
+				mqlist.addListener(
+					( mqlist ) => {
+						this._fireMatchMedia( mqstring, mqlist );
 					}
 				);
+			})();
+		}
+	}
 
-			this.trigger( 'initAnchors:after' );
-		},
 
-		_initMatchMedia: function()
+	/**
+	  * Fire the "yes" or "no" function for a media query.
+	  *
+	  * @param {string} 			mqstring 	Media query to check for.
+	  * @param {MediaQueryList} 	mqlist 		Media query list to check with.
+	  */
+	_fireMatchMedia(
+		mqstring : string,
+		mqlist	 : any // Typescript "Cannot find name 'MediaQueryListEvent'."
+	) {
+		var fn = mqlist.matches ? 'yes' : 'no';
+		for ( var i = 0; i < this.mtch[ mqstring ].length; i++ )
 		{
-			var that = this;
-			
-			for ( var mdia in this.mtch )
-			{
-				(function() {
-					var mdi = mdia,
-						mql = window.matchMedia( mdi );
+			this.mtch[ mqstring ][ i ][ fn ].call( this );
+		}
+	}
 
-					that._fireMatchMedia( mdi, mql );
-					mql.addListener(
-						function( mql )
+
+	/**
+	  * Bind the hooks specified in the options.
+	  */
+	_initHooks()
+	{
+		for ( var hook in this.opts[ 'hooks' ] )
+		{
+			this.bind( hook, this.opts[ 'hooks' ][ hook ] );
+		}
+	}
+
+
+	/**
+	  * Initialize the wrappers specified in the options.
+	  */
+	_initWrappers()
+	{
+		this.trigger( 'initWrappers:before' );
+
+		for ( var w = 0; w < this.opts[ 'wrappers' ].length; w++ )
+		{
+			var wrapper = Mmenu.wrappers[ this.opts[ 'wrappers' ][ w ] ];
+			if ( typeof wrapper == 'function' )
+			{
+				wrapper.call( this );
+			}
+		}
+
+		this.trigger( 'initWrappers:after' );
+	}
+
+
+	/**
+	  * Initialize all available add-ons.
+	  */
+	_initAddons()
+	{
+		this.trigger( 'initAddons:before' );
+
+		for ( var a in Mmenu.addons )
+		{
+			// Mmenu.addons[ a ].setup.call( this, this );
+			Mmenu.addons[ a ].call( this, this );
+		}
+
+		this.trigger( 'initAddons:after' );
+	}
+
+
+	/**
+	  * Initialize the extensions specified in the options.
+	  */
+	_initExtensions()
+	{
+		this.trigger( 'initExtensions:before' );
+
+		//	Convert array to object with array
+		if ( this.opts[ 'extensions' ].constructor === Array )
+		{
+			this.opts[ 'extensions' ] = {
+				'all': this.opts[ 'extensions' ]
+			};
+		}
+
+		//	Loop over object
+		for ( var mediaquery in this.opts[ 'extensions' ] )
+		{
+			// this.opts[ 'extensions' ][ mediaquery ] = this.opts[ 'extensions' ][ mediaquery ].length ? _c.menu + '_' + this.opts[ 'extensions' ][ mediaquery ].join( ' ' + _c.menu + '_' ) : '';
+			if ( this.opts[ 'extensions' ][ mediaquery ] )
+			{
+				(( mediaquery ) => {
+					this.matchMedia( mediaquery,
+						function()
 						{
-							that._fireMatchMedia( mdi, mql );
+							this.node.$menu.addClass( this.opts.extensions[ mediaquery ] );
+						},
+						function()
+						{
+							this.node.$menu.removeClass( this.opts.extensions[ mediaquery ] );
 						}
 					);
-				})();
+				})( mediaquery );
 			}
-		},
-
-		_fireMatchMedia: function( mdia, m )
-		{
-			var fn = m.matches ? 'yes' : 'no';
-			for ( var i = 0; i < this.mtch[ mdia ].length; i++ )
-			{
-				this.mtch[ mdia ][ i ][ fn ].call( this );
-			}
-		},
-
-		_getOriginalMenuId: function()
-		{
-			var id = this.$menu.attr( 'id' );
-			if ( this.conf.clone && id && id.length )
-			{
-				id = _c.umm( id );
-			}
-			return id;
-		},
-
-		__api: function()
-		{
-			var that = this,
-				api = {};
-
-			$.each( this._api, 
-				function( i )
-				{
-					var fn = this;
-					api[ fn ] = function()
-					{
-						var re = that[ fn ].apply( that, arguments );
-						return ( typeof re == 'undefined' ) ? api : re;
-					};
-				}
-			);
-			return api;
-		},
-
-		__valueOrFn: function( $e, o, d )
-		{
-			if ( typeof o == 'function' )
-			{
-				var v = o.call( $e[ 0 ] );
-				if ( typeof v != 'undefined' )
-				{
-					return v;
-				}
-			}
-			if ( ( typeof o == 'function' || typeof o == 'undefined' ) && typeof d != 'undefined' )
-			{
-				return d;
-			}
-			return o;
-		},
-
-		__getPanelTitle: function( $p, d )
-		{
-			var title: string;
-
-			//	Function
-			if ( typeof this.opts.navbar.title == 'function' )
-			{
-				title = this.opts.navbar.title.call( $p[ 0 ] );
-			}
-
-			//	Data attr
-			if ( typeof title == 'undefined' )
-			{
-				title = $p.data( _d.title );
-			}
-
-			if ( typeof title != 'undefined' )
-			{
-				return title;
-			}
-
-			//	Fallback
-			if ( typeof d == 'string' )
-			{
-				return this.i18n( d );
-			}
-
-			//	Default
-			return this.i18n( $[ _PLUGIN_ ].defaults.navbar.title );
-		},
-
-		__refactorClass: function( $e, o, c )
-		{
-			return $e.filter( '.' + o ).removeClass( o ).addClass( c );
-		},
-
-		__findAddBack: function( $e, s )
-		{
-			return $e.find( s ).add( $e.filter( s ) );
-		},
-		__childAddBack: function( $e, s )
-		{
-			return $e.children( s ).add( $e.filter( s ) );
-		},
-
-		__filterListItems: function( $li )
-		{
-			return $li
-				.not( '.' + _c.listitem + '_divider' )
-				.not( '.' + _c.hidden );
-		},
-		__filterListItemAnchors: function( $li )
-		{
-			return this.__filterListItems( $li )
-				.children( 'a' )
-				.not( '.' + _c.btn + '_next' );
-		},
-
-		__openPanelWoAnimation( $panel )
-		{
-			if ( $panel.hasClass( _c.panel + '_noanimation' ) )
-			{
-				return;
-			}
-
-			$panel.addClass( _c.panel + '_noanimation' );
-			this.__transitionend( $panel,
-				function()
-				{
-					$panel.removeClass( _c.panel + '_noanimation' );
-				}, this.conf.openingInterval
-			);
-			this.openPanel( $panel );
-		},
-
-		__transitionend: function( $e, fn, duration )
-		{
-			var _ended = false,
-				_fn = function( e )
-				{
-					if ( typeof e !== 'undefined' )
-					{
-						if ( e.target != $e[ 0 ] )
-						{
-							return;
-						}
-					}
-
-					if ( !_ended )
-					{
-						$e.off( _e.transitionend );
-						$e.off( _e.webkitTransitionEnd );
-						fn.call( $e[ 0 ] );
-					}
-					_ended = true;
-				};
-
-			$e.on( _e.transitionend, _fn );
-			$e.on( _e.webkitTransitionEnd, _fn );
-			setTimeout( _fn, duration * 1.1 );
-		},
-		
-		__getUniqueId: function()
-		{
-			return _c.mm( $[ _PLUGIN_ ].uniqueId++ );
-		},
-
-		// __hasClass: function( e, c )
-		// {
-		// 	// return e.classList.contains( c );
-		// 	return (' ' + e.className + ' ').indexOf( ' ' + c + ' ' ) > -1;
-		// }
-	};
+		}
+		this.trigger( 'initExtensions:after' );
+	}
 
 
-	/*
-		jQuery plugin
-	*/
-	$.fn[ _PLUGIN_ ] = function( opts, conf )
+	/**
+	  * Initialize the menu.
+	  */
+	_initMenu()
 	{
-		//	First time plugin is fired
-		initPlugin();
+		this.trigger( 'initMenu:before' );
 
-		//	Extend options
-		opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults, opts );
-		conf = $.extend( true, {}, $[ _PLUGIN_ ].configuration, conf );
+		//	Clone if needed
+		if ( this.conf.clone )
+		{
+			this.node.$orig = this.node.$menu;
+			this.node.$menu = this.node.$orig.clone();
+			this.node.$menu
+				.filter( '[id]' )
+				.add( this.node.$menu.find( '[id]' ) )
+				.each(
+					function()
+					{
+						jQuery(this).attr( 'id', 'mm-' + jQuery(this).attr( 'id' ) );
+					}
+				);
+		}
 
-		var $result = $();
-		this.each(
-			function()
-			{
-				var $menu = $(this);
-				if ( $menu.data( _PLUGIN_ ) )
+		//	Add ID
+		this.node.$menu.attr( 'id', this.node.$menu.attr( 'id' ) || Mmenu.__getUniqueId() );
+
+		//	Add markup
+		this.node.$pnls = jQuery( '<div class="mm-panels" />' )
+			.append( this.node.$menu.children( this.conf.panelNodetype ) )
+			.prependTo( this.node.$menu );
+
+		//	Add classes
+		this.node.$menu
+			.addClass( 'mm-menu' )
+			.parent()
+			.addClass( 'mm-wrapper' );
+
+		this.trigger( 'initMenu:after' );
+	}
+
+
+	/**
+	  * Initialize panels.
+	  *
+	  * @param {JQuery} [$panels] Panels to initialize.
+	  */
+	_initPanels(
+		$panels ?: JQuery
+	) {
+
+		//	Open / close panels
+		this.clck.push(
+			function(
+				this : Mmenu,
+				$a	 : JQuery,
+				args : iLooseObject
+			) {
+				if ( args.inMenu )
 				{
-					return;
+					var href = $a.attr( 'href' )
+					if ( href.length > 1 && href.slice( 0, 1 ) == '#' )
+					{
+						try
+						{
+							var $panel = this.node.$menu.find( href );
+							if ( $panel.is( '.mm-panel' ) )
+							{
+								this[ $a.parent().hasClass( 'mm-listitem_vertical' ) ? 'togglePanel' : 'openPanel' ]( $panel );
+								return true;
+							}
+						}
+						catch( err ) {}
+					}
 				}
-
-				var _menu = new $[ _PLUGIN_ ]( $menu, opts, conf );
-				_menu.$menu.data( _PLUGIN_, _menu.__api() );
-
-				$result = $result.add( _menu.$menu );
 			}
 		);
 
-		return $result;
-	};
+		//	Actually initialise the panels
+		this.initPanels( $panels );
+	}
 
 
-	/*
-		I18N
-	*/
-	$[ _PLUGIN_ ].i18n = (function() {
+	/**
+	  * Initialize panels.
+	  *
+	  * @param {JQuery} [$panels] The panels to initialize.
+	  */
+	initPanels( 
+		$panels ?: JQuery
+	) {
+		this.trigger( 'initPanels:before', [ $panels ] );
+
+		$panels = $panels || this.node.$pnls.children( this.conf.panelNodetype );
+
+		var $newpanels = jQuery();
+
+		var that = this;
+		var init = ( $panels ) => {
+			$panels
+				.filter( this.conf[ 'panelNodetype' ] )
+				.each(
+					function( x )
+					{
+
+						var $panel = that._initPanel( jQuery(this) );
+						if ( $panel )
+						{
+
+							that._initNavbar( $panel );
+							that._initListview( $panel );
+
+							$newpanels = $newpanels.add( $panel );
+
+							//	init child panels
+							var $child = $panel
+								.children( '.mm-listview' )
+								.children( 'li' )
+								.children( that.conf[ 'panelNodetype' ] )
+								.add( $panel.children( '.' + that.conf[ 'classNames' ].panel ) );
+
+							if ( $child.length )
+							{
+								init( $child );
+							}
+						}
+					}
+				);
+		};
+
+		init( $panels );
+
+		this.trigger( 'initPanels:after', [ $newpanels ] );
+	}
+
+
+	/**
+	  * Initialize a single panel.
+	  *
+	  * @param  {JQuery} $panel 	Panel to initialize.
+	  * @return {JQuery} 			Initialized panel.
+	  */
+	_initPanel(
+		$panel : JQuery
+	) {
+		this.trigger( 'initPanel:before', [ $panel ] );
+
+		//	Stop if already a panel
+		if ( $panel.hasClass( 'mm-panel' ) )
+		{
+			return $panel;
+		}
+
+		//	Refactor panel classnames
+		Mmenu.refactorClass( $panel, this.conf.classNames.panel 	, 'mm-panel' 			);
+		Mmenu.refactorClass( $panel, this.conf.classNames.nopanel , 'mm-nopanel' 			);
+		Mmenu.refactorClass( $panel, this.conf.classNames.inset 	, 'mm-listview_inset'	);
+
+		$panel.filter( '.mm-listview_inset' )
+			.addClass( 'mm-nopanel' );
+
+
+		//	Stop if not supposed to be a panel
+		if ( $panel.hasClass( 'mm-nopanel' ) )
+		{
+			return false;
+		}
+
+
+		//	Wrap UL/OL in DIV
+		var vertical = ( $panel.hasClass( this.conf.classNames.vertical ) || !this.opts[ 'slidingSubmenus' ] );
+		$panel.removeClass( this.conf.classNames.vertical );
+
+		var id = $panel.attr( 'id' ) || Mmenu.__getUniqueId();
+
+		if ( $panel.is( 'ul, ol' ) )
+		{
+			$panel.removeAttr( 'id' );
+
+			$panel.wrap( '<div />' );
+			$panel = $panel.parent();
+		}
+
+		$panel.attr( 'id', id );
+		$panel.addClass( 'mm-panel mm-hidden' );
+
+		var $parent = $panel.parent( 'li' );
+
+		if ( vertical )
+		{
+			$parent.addClass( 'mm-listitem_vertical' );
+		}
+		else
+		{
+			$panel.appendTo( this.node.$pnls );
+		}
+
+		//	Store parent/child relation
+		if ( $parent.length )
+		{
+			$parent.data( 'mm-child', $panel );
+			$panel.data( 'mm-parent', $parent );
+		}
+
+		this.trigger( 'initPanel:after', [ $panel ] );
+
+		return $panel;
+	}
+
+
+	/**
+	  * Initialize a navbar.
+	  *
+	  * @param {JQuery} $panel Panel for the navbar.
+	  */
+	_initNavbar(
+		$panel : JQuery
+	) {
+		this.trigger( 'initNavbar:before', [ $panel ] );
+
+		if ( $panel.children( '.mm-navbar' ).length )
+		{
+			return;
+		}
+
+		var $parent = $panel.data( 'mm-parent' ),
+			$navbar = jQuery( '<div class="mm-navbar" />' );
+
+		var title: string = this.__getPanelTitle( $panel, this.opts[ 'navbar' ].title ),
+			href : string = '';
+
+		if ( $parent && $parent.length )
+		{
+			if ( $parent.hasClass( 'mm-listitem_vertical' ) )
+			{
+				return;
+			}
+
+			//	Listview, the panel wrapping this panel
+			if ( $parent.parent().hasClass( 'mm-listview' ) )
+			{
+				var $a = $parent
+					.children( 'a, span' )
+					.not( '.mm-btn_next' );
+			}
+
+			//	Non-listview, the first anchor in the parent panel that links to this panel
+			else
+			{
+				var $a = $parent
+					.closest( '.mm-panel' )
+					.find( 'a[href="#' + $panel.attr( 'id' ) + '"]' );
+			}
+
+			$a = $a.first();
+			$parent = $a.closest( '.mm-panel' );
+
+			var id = $parent.attr( 'id' );
+			title = this.__getPanelTitle( $panel, jQuery('<span>' + $a.text() + '</span>').text() );
+
+			switch ( this.opts[ 'navbar' ].titleLink )
+			{
+				case 'anchor':
+					href = $a.attr( 'href' );
+					break;
+
+				case 'parent':
+					href = '#' + id;
+					break;
+			}
+
+			$navbar.append( '<a class="mm-btn mm-btn_prev mm-navbar__btn" href="#' + id + '" />' );
+		}
+		else if ( !this.opts[ 'navbar' ].title )
+		{
+			return;
+		}
+
+		if ( this.opts[ 'navbar' ].add )
+		{
+			$panel.addClass( 'mm-panel_has-navbar' );
+		}
+
+		$navbar.append( '<a class="mm-navbar__title"' + ( href.length ? ' href="' + href + '"' : '' ) + '>' + title + '</a>' )
+			.prependTo( $panel );
+
+		this.trigger( 'initNavbar:after', [ $panel ] );
+	}
+
+
+	/**
+	  * Initialize a listview.
+	  *
+	  * @param {JQuery} $panel Panel for the listview(s).
+	  */
+	_initListview(
+		$panel : JQuery
+	) {
+		this.trigger( 'initListview:before', [ $panel ] );
+
+		//	Refactor listviews classnames
+		var $ul = Mmenu.childAddBack( $panel, 'ul, ol' );
+
+		Mmenu.refactorClass( $ul, this.conf.classNames.nolistview, 'mm-nolistview' );
+
+
+		//	Refactor listitems classnames
+		var $li = $ul
+			.not( '.mm-nolistview' )
+			.addClass( 'mm-listview' )
+			.children()
+			.addClass( 'mm-listitem' );
+
+		Mmenu.refactorClass( $li, this.conf.classNames.selected , 'mm-listitem_selected' 	);
+		Mmenu.refactorClass( $li, this.conf.classNames.divider 	, 'mm-listitem_divider'		);
+		Mmenu.refactorClass( $li, this.conf.classNames.spacer 	, 'mm-listitem_spacer'		);
+
+		$li.children( 'a, span' )
+			.not( '.mm-btn' )
+			.addClass( 'mm-listitem__text' );
+
+		//	Add open link to parent listitem
+		var $parent = $panel.data( 'mm-parent' );
+		if ( $parent && $parent.hasClass( 'mm-listitem' ) )
+		{
+			if ( !$parent.children( '.mm-btn' ).length )
+			{
+				var $a = $parent.children( 'a, span' ).first(),
+					$b = jQuery( '<a class="mm-btn mm-btn_next mm-listitem__btn" href="#' + $panel.attr( 'id' ) + '" />' );
+
+				$b.insertAfter( $a );
+				if ( $a.is( 'span' ) )
+				{
+					$b.addClass( 'mm-listitem__text' ).html( $a.html() );
+					$a.remove();
+				}
+			}
+		}
+
+		this.trigger( 'initListview:after', [ $panel ] );
+	}
+
+
+	/**
+	  * Find and open the correct panel after creating the menu.
+	  */
+	_initOpened()
+	{
+		this.trigger( 'initOpened:before' );
+
+		//	Find the selected listitem
+		var $selected = this.node.$pnls
+			.find( '.mm-listitem_selected' )
+			.removeClass( 'mm-listitem_selected' )
+			.last()
+			.addClass( 'mm-listitem_selected' );
+
+		//	Find the current opened panel
+		var $current = ( $selected.length ) 
+			? $selected.closest( '.mm-panel' )
+			: this.node.$pnls.children( '.mm-panel' ).first();
+
+		//	Open the current opened panel
+		this.openPanel( $current, false );
+
+		this.trigger( 'initOpened:after' );
+	}
+
+
+	/**
+	  * Initialize anchors in / for the menu.
+	  */
+	_initAnchors()
+	{
+		this.trigger( 'initAnchors:before' );
+
+		var that = this;
+
+
+		//	Bind to clicking on the <body>
+		jQuery('body')
+			.on( 'click.mm',
+				'a[href]',
+				function( e )
+				{
+					var $t = jQuery(this),
+						_h = $t.attr( 'href' );
+
+					var args = {
+						inMenu 		: that.node.$menu.find( $t ).length, 
+						inListview 	: $t.is( '.mm-listitem > a' ),
+						toExternal 	: $t.is( '[rel="external"]' ) || $t.is( '[target="_blank"]' )
+					};
+
+					var onClick = {
+						close 			: null,
+						setSelected 	: null,
+						preventDefault	: _h.slice( 0, 1 ) == '#'
+					};
+
+					//	Find behavior for addons
+					//for ( var a in Mmenu.addons )
+					for ( var c = 0; c < that.clck.length; c++ )
+					{
+						var click = that.clck[ c ].call( that, $t, args );
+						if ( click )
+						{
+							if ( typeof click == 'boolean' )
+							{
+								e.preventDefault();
+								return;
+							}
+							if ( typeof click == 'object' )
+							{
+								onClick = jQuery.extend( {}, onClick, click );
+							}
+						}
+					}
+
+
+					//	All other anchors in lists
+					if ( args.inMenu && args.inListview && !args.toExternal )
+					{
+
+						//	Set selected item, Default: true
+						if ( Mmenu.__valueOrFn( $t, that.opts.onClick.setSelected, onClick.setSelected ) )
+						{
+							that.setSelected( jQuery( e.target ).parent() );
+						}
+
+						//	Prevent default / don't follow link. Default: false
+						if ( Mmenu.__valueOrFn( $t, that.opts.onClick.preventDefault, onClick.preventDefault ) )
+						{
+							e.preventDefault();
+						}
+
+						//	Close menu. Default: false
+						//		TODO: option + code should be in offcanvas add-on
+						if ( Mmenu.__valueOrFn( $t, that.opts.onClick.close, onClick.close ) )
+						{
+							if ( that.opts.offCanvas && typeof that.close == 'function' )
+							{
+								that.close();
+							}
+						}
+					}
+
+				}
+			);
+
+		this.trigger( 'initAnchors:after' );
+	}
+
+
+	/**
+	  * Get the translation for a text.
+	  *
+	  * @param  {string} text 	Text to translate.
+	  * @return {string}		The translated text.
+	  */
+	i18n(
+		text : string
+	) {
+		return Mmenu.i18n( text, this.conf.language );
+	}
+
+
+	/**
+	  * Add or get a translated text.
+	  *
+	  * @param  {string|object} 	[text] 		The translated text to add or get.
+	  * @param  {string} 			[language] 	The language for the translated text.
+	  * @return {string|object}					The translated text.
+	  */
+	static i18n : Function = (function() {
 
 		var translations = {};
 
-		return function( text, language )
-		{
+		return function( 
+			text		?: any, // Actually a string or object, but Typescript does not understand the typeof condition :/
+			language	?: string
+		) {
 			switch( typeof text )
 			{
 				case 'object':
@@ -1100,7 +1162,7 @@
 						{
 							translations[ language ] = {};
 						}
-						$.extend( translations[ language ], text );
+						jQuery.extend( translations[ language ], text );
 					}
 					return translations;
 
@@ -1120,91 +1182,215 @@
 	})();
 
 
-	/*
-		SUPPORT
-	*/
-	$[ _PLUGIN_ ].support = {
-
-		touch: 'ontouchstart' in window || navigator.msMaxTouchPoints || false,
-
-		csstransitions: (function()
-		{
-			if ( typeof Modernizr !== 'undefined' &&
-				 typeof Modernizr.csstransitions !== 'undefined'
-			) {
-				return Modernizr.csstransitions;
-			}
-
-			//	w/o Modernizr, we'll assume you only support modern browsers :/
-			return true;
-		})()
-	};
-
-
-	//	Global variables
-	var _c, _d, _e, glbl;
-
-	function initPlugin()
+	/**
+	  * Get the original menu ID (in case it was changed after cloning).
+	  *
+	  * @return {string} The original ID.
+	  */
+	_getOriginalMenuId()
 	{
-		if ( $[ _PLUGIN_ ].glbl )
+		var id = this.node.$menu.attr( 'id' );
+		if ( this.conf.clone && id && id.length )
 		{
-			return;
+			id = id.substr( 3 );
 		}
-
-		glbl = {
-			$wndw : $(window),
-			$docu : $(document),
-			$html : $('html'),
-			$body : $('body')
-		};
-
-
-		//	Classnames, Datanames, Eventnames
-		_c = {};
-		_d = {};
-		_e = {};
-
-		$.each( [ _c, _d, _e ],
-			function( i, o )
-			{
-				o.add = function( a )
-				{
-					a = a.split( ' ' );
-					for ( var b = 0, l = a.length; b < l; b++ )
-					{
-						o[ a[ b ] ] = o.mm( a[ b ] );
-					}
-				};
-			}
-		);
-
-		//	Classnames
-		_c.mm = function( c ) { return 'mm-' + c; };
-		_c.add( 'wrapper menu panels panel nopanel navbar listview nolistview listitem btn hidden' );
-		_c.umm = function( c )
-		{
-			if ( c.slice( 0, 3 ) == 'mm-' )
-			{
-				c = c.slice( 3 );
-			}
-			return c;
-		};
-
-		//	Datanames
-		_d.mm = function( d ) { return 'mm-' + d; };
-		_d.add( 'parent child title' );
-
-		//	Eventnames
-		_e.mm = function( e ) { return e + '.mm'; };
-		_e.add( 'transitionend webkitTransitionEnd click scroll resize keydown mousedown mouseup touchstart touchmove touchend orientationchange' );
-
-
-		$[ _PLUGIN_ ]._c = _c;
-		$[ _PLUGIN_ ]._d = _d;
-		$[ _PLUGIN_ ]._e = _e;
-
-		$[ _PLUGIN_ ].glbl = glbl;
+		return id;
 	}
 
 
-})( jQuery );
+	/**
+	  * Find the title for a panel.
+	  *
+	  * @param {JQuery} $panel 		Panel to search in.
+	  * @param {string} [dfault] 	Fallback/default title.
+	  */
+	__getPanelTitle( 
+		$panel  : JQuery, 
+		dfault ?: string
+	) {
+		var title: string;
+
+		//	Function
+		if ( typeof this.opts[ 'navbar' ].title == 'function' )
+		{
+			title = this.opts[ 'navbar' ].title.call( $panel[ 0 ] );
+		}
+
+		//	Data attr
+		if ( typeof title == 'undefined' )
+		{
+			title = $panel.data( 'mm-title' );
+		}
+
+		if ( typeof title != 'undefined' )
+		{
+			return title;
+		}
+
+		//	Fallback
+		if ( typeof dfault == 'string' )
+		{
+			return this.i18n( dfault );
+		}
+
+		//	Default
+		return this.i18n( Mmenu.options[ 'navbar' ].title );
+	}
+
+
+	/**
+	  * Find the value from an option or function.
+	  *
+	  * @param {JQuery} 	$elem 		Scope for the function.
+	  * @param {any} 		[option] 	Value or function.
+	  * @param {any} 		[dfault] 	Fallback/default value.
+	  */
+	static __valueOrFn( 
+		$elem	 : JQuery,
+		option	?: any,
+		dfault 	?: any
+	) {
+		if ( typeof option == 'function' )
+		{
+			var value = option.call( $elem[ 0 ] );
+			if ( typeof value != 'undefined' )
+			{
+				return value;
+			}
+		}
+		if ( ( typeof option == 'function' || typeof option == 'undefined' ) && typeof dfault != 'undefined' )
+		{
+			return dfault;
+		}
+		return option;
+	}
+
+
+	/**
+	  * Refactor a classname on multiple elements.
+	  *
+	  * @param {JQuery} $elements 	Elements to refactor.
+	  * @param {string}	oldClass 	Classname to remove.
+	  * @param {string}	newClass 	Classname to add.
+	  */
+	static refactorClass( 
+		$elements 	: JQuery,
+		oldClass	: string,
+		newClass	: string
+	) {
+		return $elements.filter( '.' + oldClass ).removeClass( oldClass ).addClass( newClass );
+	}
+
+
+	/**
+	  * Find and filter child nodes including the node itself.
+	  *
+	  * @param  {JQuery} 	$elements 	Elements to refactor.
+	  * @param  {string}	selector 	Selector to filter the elements against.
+	  * @return {JQuery}				The expanded and filtered set of nodes.
+	  */
+	static findAddBack( 
+		$element : JQuery,
+		selector : string
+	) {
+		return $element.find( selector ).add( $element.filter( selector ) );
+	}
+
+
+	/**
+	  * Find and filter direct child nodes including the node itself.
+	  *
+	  * @param  {JQuery} 	$elements 	Elements to refactor.
+	  * @param  {string}	selector 	Selector to filter the elements against.
+	  * @return {JQuery}				The expanded and filtered set of nodes.
+	  */
+	static childAddBack( 
+		$element : JQuery,
+		selector : string
+	) {
+		return $element.children( selector ).add( $element.filter( selector ) );
+	}
+
+
+	/**
+	  * Filter out non-listitem listitems.
+	  *
+	  * @param  {JQuery} 	$listitems 	Elements to filter.
+	  * @return {JQuery}				The filtered set of listitems.
+	  */
+	static filterListItems(
+		$listitems : JQuery
+	) {
+		return $listitems
+			.not( '.mm-listitem_divider' )
+			.not( '.mm-hidden' );
+	}
+
+
+	/**
+	  * Find anchors in listitems.
+	  *
+	  * @param  {JQuery} 	$listitems 	Elements to filter.
+	  * @return {JQuery}				The filtered set of listitems.
+	  */
+	static filterListItemAnchors(
+		$listitems : JQuery
+	) {
+		return Mmenu.filterListItems( $listitems )
+			.children( 'a' )
+			.not( '.mm-btn_next' );
+	}
+
+
+	/**
+	  * Set and invoke a (single) transition-end function with fallback.
+	  *		Should be replaced as supported browsers all support object.addEventListener("transitionend", myScript);
+	  *
+	  * @param {JQuery} 	$element 	Scope for the function.
+	  * @param {function}	func		Function to invoke.
+	  * @param {number}		duration	The duration of the animation (for the fallback).
+	  */
+	static transitionend( 
+		$element 	: JQuery, 
+		func 		: Function,
+		duration	: number
+	) {
+		var guid = Mmenu.__getUniqueId();
+
+		var _ended = false,
+			_fn = function( e )
+			{
+				if ( typeof e !== 'undefined' )
+				{
+					if ( e.target != $element[ 0 ] )
+					{
+						return;
+					}
+				}
+
+				if ( !_ended )
+				{
+					$element.off( 	    'transitionend.' + guid );
+					$element.off( 'webkitTransitionEnd.' + guid );
+					func.call( $element[ 0 ] );
+				}
+				_ended = true;
+			};
+
+		$element.on( 	   'transitionend.' + guid, _fn );
+		$element.on( 'webkitTransitionEnd.' + guid, _fn );
+		setTimeout( _fn, duration * 1.1 );
+	}
+
+
+	/**
+	  * Get an unique ID.
+	  *
+	  * @return {string} An unique ID.
+	  */
+	static __getUniqueId()
+	{
+		return 'mm-guid-' + Mmenu.uniqueId++;
+	}
+	static uniqueId	: number = 0
+}

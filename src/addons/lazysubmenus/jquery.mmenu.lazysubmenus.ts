@@ -1,118 +1,94 @@
-(function( $ ) {
-
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'lazySubmenus';
-
-
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-
-		//	setup: fired once per menu
-		setup: function()
-		{
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
-
-			glbl = $[ _PLUGIN_ ].glbl;
+Mmenu.addons.lazySubmenus = function(
+	this : Mmenu
+) {
+	var opts = this.opts.lazySubmenus,
+		conf = this.conf.lazySubmenus;
 
 
-			//	Extend shorthand options
-			if ( typeof opts == 'boolean' )
-			{
-				opts = {
-					load: opts
-				};
+	//	Extend shorthand options
+	if ( typeof opts == 'boolean' )
+	{
+		opts = {
+			load: opts
+		};
+	}
+	if ( typeof opts != 'object' )
+	{
+		opts = {};
+	}
+	opts = this.opts.lazySubmenus = jQuery.extend( true, {}, Mmenu.options.lazySubmenus, opts );
+
+
+	//	Sliding submenus
+	if ( opts.load )
+	{
+
+		//	prevent all sub panels from initPanels
+		this.bind( 'initMenu:after',
+			function(
+				this : Mmenu
+			) {
+				this.node.$pnls
+					.find( 'li' )
+					.children( this.conf.panelNodetype )
+					.not( '.mm-listview_inset' )
+					.not( '.mm-nolistview' )
+					.not( '.mm-nopanel' )
+					.addClass( 'mm-panel_lazysubmenu mm-nolistview mm-nopanel' );
 			}
-			if ( typeof opts != 'object' )
-			{
-				opts = {};
+		);
+
+		//	prepare current and one level sub panels for initPanels
+		this.bind( 'initPanels:before',
+			function( 
+				this	 : Mmenu,
+				$panels	?: JQuery
+			) {
+				$panels = $panels || this.node.$pnls.children( this.conf.panelNodetype );
+
+				Mmenu.findAddBack( $panels, '.mm-panel_lazysubmenu' )
+					.not( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' )
+					.removeClass( 'mm-panel_lazysubmenu mm-nolistview  mm-nopanel' );
 			}
-			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+		);
 
+		//	initPanels for the default opened panel
+		this.bind( 'initOpened:before',
+			function(
+				this : Mmenu
+			) {
+				var $selected = this.node.$pnls
+					.find( '.' + this.conf.classNames.selected )
+					.parents( '.mm-panel_lazysubmenu' );
 
-			//	Sliding submenus
-			if ( opts.load )
-			{
-
-				//	prevent all sub panels from initPanels
-				this.bind( 'initMenu:after',
-					function()
-					{
-						this.$pnls
-							.find( 'li' )
-							.children( this.conf.panelNodetype )
-							.not( '.' + _c.inset )
-							.not( '.' + _c.nolistview )
-							.not( '.' + _c.nopanel )
-							.addClass( _c.panel + '_lazysubmenu ' + _c.nolistview + ' ' + _c.nopanel );
-					}
-				);
-
-				//	prepare current and one level sub panels for initPanels
-				this.bind( 'initPanels:before',
-					function( $panels )
-					{
-						$panels = $panels || this.$pnls.children( this.conf.panelNodetype );
-
-						this.__findAddBack( $panels, '.' + _c.panel + '_lazysubmenu' )
-							.not( '.' + _c.panel + '_lazysubmenu .' + _c.panel + '_lazysubmenu' )
-							.removeClass( _c.panel + '_lazysubmenu ' + _c.nolistview + ' ' + _c.nopanel );
-					}
-				);
-
-				//	initPanels for the default opened panel
-				this.bind( 'initOpened:before',
-					function()
-					{
-						var $selected = this.$pnls
-							.find( '.' + this.conf.classNames.selected )
-							.parents( '.' + _c.panel + '_lazysubmenu' );
-
-						if ( $selected.length )
-						{
-							$selected.removeClass( _c.panel + '_lazysubmenu ' + _c.nolistview + ' ' + _c.nopanel );
-							this.initPanels( $selected.last() );
-						}
-					}
-				);
-
-				//	initPanels for current- and sub panels before openPanel
-				this.bind( 'openPanel:before',
-					function( $panel )
-					{
-						var $panels = this.__findAddBack( $panel, '.' + _c.panel + '_lazysubmenu' )
-							.not( '.' + _c.panel + '_lazysubmenu .' + _c.panel + '_lazysubmenu' );
-
-						if ( $panels.length )
-						{
-							this.initPanels( $panels );
-						}
-					}
-				);
+				if ( $selected.length )
+				{
+					$selected.removeClass( 'mm-panel_lazysubmenu mm-nolistview mm-nopanel' );
+					this.initPanels( $selected.last() );
+				}
 			}
-		},
+		);
 
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
-		},
+		//	initPanels for current- and sub panels before openPanel
+		this.bind( 'openPanel:before',
+			function( 
+				this	: Mmenu,
+				$panel	: JQuery
+			) {
+				var $panels = Mmenu.findAddBack( $panel, '.mm-panel_lazysubmenu' )
+					.not( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' );
 
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
-
-
-	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		load: false
-	};
-	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {};
-
-
-	var _c, _d, _e, glbl;
+				if ( $panels.length )
+				{
+					this.initPanels( $panels );
+				}
+			}
+		);
+	}
+};
 
 
-})( jQuery );
+//	Default options and configuration
+Mmenu.options.lazySubmenus = {
+	load: false
+};

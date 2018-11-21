@@ -1,82 +1,68 @@
-/*	
- * jQuery mmenu {ADDON} add-on
- * mmenu.frebsite.nl
- *
- * Copyright (c) Fred Heusschen
- */
-
-(function( $ ) {
-
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = '{ADDON}';
+Mmenu.addons.ADDON = function( 
+	this: Mmenu
+) {
+	var opts = this.opts.ADDON,
+		conf = this.conf.ADDON;
 
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
+	//	Extend shorthand options
+	if ( typeof opts != 'object' )
+	{
+		opts = {};
+	}
+	opts = this.opts.ADDON = jQuery.extend( true, {}, Mmenu.options.ADDON, opts );
 
-		//	setup: fired once per menu
-		setup: function()
-		{
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
+	//	Extend shorthand configuration
+	if ( typeof conf != 'object' )
+	{
+		conf = {};
+	}
+	conf = this.conf.ADDON = jQuery.extend( true, {}, Mmenu.configs.ADDON, conf );
 
-			glbl = $[ _PLUGIN_ ].glbl;
+	//	Add methods to api
+	this._api.push( 'fn1', 'fn2' );
 
-			//	Extend shorthand options
-			if ( typeof opts != 'object' )
-			{
-				opts = {};
-			}
-			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
-
-			//	Extend shorthand configuration
-			if ( typeof conf != 'object' )
-			{
-				conf = {};
-			}
-			conf = this.conf[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].configuration[ _ADDON_ ], conf );
-
-			//	Add methods to api
-//			this._api = $.merge( this._api, [ 'fn1', 'fn2' ] );
-
-			//	Bind functions to update
-//			this.bind( 'updateListview', function() {} );
-//			this.bind( 'initPanels', function() {} );
-//			this.bind( 'initPage', function() {} );
-
-		},
-
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
-	
-			//	...Add classnames, data and events
-		},
-
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu )
-		{
-//			if ( $a.is( '.CLASSNAME' ) )
-//			{
-//				return true;
-//			}
-//			return false;
+	//	Bind functions to update
+	this.bind( 'updateListview', 
+		function(
+			this : Mmenu
+		) {
+			console.log( 'The listviews were updated.' );
 		}
-	};
+	);
 
 
-	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		//	...
-	};
-	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
-		//	...
-	};
+	//	Add click behavior.
+	//	Prevents default behavior when clicking an anchor
+	this.clck.push(
+		function(
+			this : Mmenu,
+			$a	 : JQuery,
+			args : iLooseObject
+		) {
+
+			//	Return undefined if the add-on does not need to add behavior for the clicked anchor.
+			return;
+
+			//	Return true if the add-on added behavior and no other behavior should be added.
+			return true;
+
+			//	Return an object if the add-on only alters the default behavior for the clicked anchor.
+			return {
+				setSelected 	: true,
+				preventDefault	: true,
+				close 			: true
+			};
+		}
+	);
+
+};
 
 
-	var _c, _d, _e, glbl;
-
-})( jQuery );
+//	Default options and configuration
+Mmenu.options.ADDON = {
+	//	...
+};
+Mmenu.configs.ADDON = {
+	//	...
+};

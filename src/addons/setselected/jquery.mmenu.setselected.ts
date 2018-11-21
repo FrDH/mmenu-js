@@ -1,151 +1,130 @@
-(function( $ ) {
-
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'setSelected';
-
-
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-
-		//	setup: fired once per menu
-		setup: function()
-		{
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
-
-			glbl = $[ _PLUGIN_ ].glbl;
+Mmenu.addons.setSelected = function(
+	this : Mmenu
+) {
+	var opts = this.opts.setSelected,
+		conf = this.conf.setSelected;
 
 
-			//	Extend shorthand options
-			if ( typeof opts == 'boolean' )
+	//	Extend shorthand options
+	if ( typeof opts == 'boolean' )
+	{
+		opts = {
+			hover	: opts,
+			parent	: opts
+		};
+	}
+	if ( typeof opts != 'object' )
+	{
+		opts = {};
+	}
+	opts = this.opts.setSelected = $.extend( true, {}, Mmenu.options.setSelected, opts );
+
+
+	//	Find current by URL
+	if ( opts.current == 'detect' )
+	{
+		function findCurrent( 
+			this : Mmenu,
+			url  : string
+		) {
+			url = url.split( "?" )[ 0 ].split( "#" )[ 0 ];
+
+			var $a = this.node.$menu.find( 'a[href="'+ url +'"], a[href="'+ url +'/"]' );
+			if ( $a.length )
 			{
-				opts = {
-					hover	: opts,
-					parent	: opts
-				};
+				this.setSelected( $a.parent() );
 			}
-			if ( typeof opts != 'object' )
+			else
 			{
-				opts = {};
-			}
-			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
-
-
-			//	Find current by URL
-			if ( opts.current == 'detect' )
-			{
-				var findCurrent = function( url )
+				var arr = url.split( '/' ).slice( 0, -1 );
+				if ( arr.length )
 				{
-					url = url.split( "?" )[ 0 ].split( "#" )[ 0 ];
-
-					var $a = that.$menu.find( 'a[href="'+ url +'"], a[href="'+ url +'/"]' );
-					if ( $a.length )
-					{
-						that.setSelected( $a.parent(), true );
-					}
-					else
-					{
-						url = url.split( '/' ).slice( 0, -1 );
-						if ( url.length )
-						{
-							findCurrent( url.join( '/' ) );
-						}
-					}
-				};
-				this.bind( 'initMenu:after',
-					function()
-					{
-						findCurrent( window.location.href );
-					}
-				);
-
+					findCurrent.call( this, arr.join( '/' ) );
+				}
 			}
-
-			//	Remove current selected item
-			else if ( !opts.current )
-			{
-				this.bind( 'initListview:after',
-					function( $panel )
-					{
-						$panel
-							.find( '.' + _c.listview )
-							.children( '.' + _c.listitem + '_selected' )
-							.removeClass( _c.listitem + '_selected' );
-					}
-				);
+		};
+		this.bind( 'initMenu:after',
+			function(
+				this : Mmenu
+			) {
+				findCurrent.call( this, window.location.href );
 			}
+		);
 
+	}
 
-			//	Add :hover effect on items
-			if ( opts.hover )
-			{
-				this.bind( 'initMenu:after',
-					function()
-					{
-						this.$menu.addClass( _c.menu + '_selected-hover' );
-					}
-				);
+	//	Remove current selected item
+	else if ( !opts.current )
+	{
+		this.bind( 'initListview:after',
+			function( 
+				this	: Mmenu,
+				$panel	: JQuery
+			) {
+				$panel
+					.find( '.mm-listview' )
+					.children( '.mm-listitem_selected' )
+					.removeClass( 'mm-listitem_selected' );
 			}
+		);
+	}
 
 
-			//	Set parent item selected for submenus
-			if ( opts.parent )
-			{
-				this.bind( 'openPanel:finish',
-					function( $panel )
-					{
-						//	Remove all
-						this.$pnls
-							.find( '.' + _c.listview )
-							.find( '.' + _c.listitem + '_selected-parent' )
-							.removeClass( _c.listitem + '_selected-parent' );
-
-						//	Move up the DOM tree
-						var $parent = $panel.data( _d.parent );
-						while ( $parent )
-						{
-							$parent
-								.not( '.' + _c.listitem + '_vertical' )
-								.addClass( _c.listitem + '_selected-parent' );
-						
-							$parent = $parent		
-								.closest( '.' + _c.panel )
-								.data( _d.parent );
-						}
-					}
-				);
-
-				this.bind( 'initMenu:after',
-					function()
-					{
-						this.$menu.addClass( _c.menu + '_selected-parent' );
-					}
-				);
+	//	Add :hover effect on items
+	if ( opts.hover )
+	{
+		this.bind( 'initMenu:after',
+			function(
+				this : Mmenu
+			) {
+				this.node.$menu.addClass( 'mm-menu_selected-hover' );
 			}
-		},
-
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
-		},
-
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
+		);
+	}
 
 
-	//	Default options
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		current : true,
-		hover	: false,
-		parent	: false
-	};
+	//	Set parent item selected for submenus
+	if ( opts.parent )
+	{
+		this.bind( 'openPanel:finish',
+			function( 
+				this	: Mmenu,
+				$panel	: JQuery
+			) {
+				//	Remove all
+				this.node.$pnls
+					.find( '.mm-listitem_selected-parent' )
+					.removeClass( 'mm-listitem_selected-parent' );
+
+				//	Move up the DOM tree
+				var $parent = $panel.data( 'mm-parent' );
+				while ( $parent )
+				{
+					$parent
+						.not( '.mm-listitem_vertical' )
+						.addClass( 'mm-listitem_selected-parent' );
+				
+					$parent = $parent		
+						.closest( '.mm-panel' )
+						.data( 'mm-parent' );
+				}
+			}
+		);
+
+		this.bind( 'initMenu:after',
+			function(
+				this : Mmenu
+			) {
+				this.node.$menu.addClass( 'mm-menu_selected-parent' );
+			}
+		);
+	}
+};
 
 
-	var _c, _d, _e, glbl;
-
-
-})( jQuery );
+//	Default options
+Mmenu.options.setSelected = {
+	current : true,
+	hover	: false,
+	parent	: false
+};

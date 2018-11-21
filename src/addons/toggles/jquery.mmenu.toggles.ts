@@ -1,77 +1,47 @@
-(function( $ ) {
-
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'toggles';
-
-
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-
-		//	setup: fired once per menu
-		setup: function()
-		{
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
-
-			glbl = $[ _PLUGIN_ ].glbl;
+Mmenu.addons.toggles = function()
+{
+	var opts = this.opts.toggles,
+		conf = this.conf.toggles;
 
 
-			this.bind( 'initPanels:after',
-				function( $panels )
-				{
+	this.bind( 'initPanels:after',
+		function( 
+			this	: Mmenu,
+			$panels	: JQuery
+		) {
 
-					//	Refactor toggle classes
-					this.__refactorClass( $panels.find( 'input' ), this.conf.classNames[ _ADDON_ ].toggle 	, _c.toggle );
-					this.__refactorClass( $panels.find( 'input' ), this.conf.classNames[ _ADDON_ ].check 	, _c.check  );
-			
-
-					//	Add markup
-					$panels
-						.find( 'input.' + _c.toggle + ', input.' + _c.check )
-						.each(
-							function()
-							{
-								var $inpt = $(this),
-									$prnt = $inpt.closest( 'li' ),
-									cl = $inpt.hasClass( _c.toggle ) ? 'toggle' : 'check',
-									id = $inpt.attr( 'id' ) || that.__getUniqueId();
-
-								if ( !$prnt.children( 'label[for="' + id + '"]' ).length )
-								{
-									$inpt.attr( 'id', id );
-									$prnt.prepend( $inpt );
-
-									$('<label for="' + id + '" class="' + _c[ cl ] + '"></label>')
-										.insertAfter( $prnt.children( '.' + _c.listitem + '__text' ).last() );
-								}
-							}
-						);
-				}
-			);
-		},
-
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
+			//	Refactor toggle classes
+			Mmenu.refactorClass( $panels.find( 'input' ), this.conf.classNames.toggles.toggle , 'mm-toggle' );
+			Mmenu.refactorClass( $panels.find( 'input' ), this.conf.classNames.toggles.check 	, 'mm-check'  );
 	
-			_c.add( 'toggle check' );
-		},
 
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
+			//	Add markup
+			$panels
+				.find( 'input.mm-toggle, input.mm-check' )
+				.each(
+					( i, elem ) => {
+						var $inpt = jQuery(elem),
+							$prnt = $inpt.closest( 'li' ),
+							cl = $inpt.hasClass( 'mm-toggle' ) ? 'toggle' : 'check',
+							id = $inpt.attr( 'id' ) || Mmenu.__getUniqueId();
+
+						if ( !$prnt.children( 'label[for="' + id + '"]' ).length )
+						{
+							$inpt.attr( 'id', id );
+							$prnt.prepend( $inpt );
+
+							jQuery('<label for="' + id + '" class="mm-' + cl + '"></label>')
+								.insertAfter( $prnt.children( '.mm-listitem__text' ).last() );
+						}
+					}
+				);
+		}
+	);
+};
 
 
-	//	Default options and configuration
-	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
-		toggle	: 'Toggle',
-		check	: 'Check'
-	};
-
-
-	var _c, _d, _e, glbl;
-
-})( jQuery );
+//	Default options and configuration
+Mmenu.configs.classNames.toggles = {
+	toggle	: 'Toggle',
+	check	: 'Check'
+};

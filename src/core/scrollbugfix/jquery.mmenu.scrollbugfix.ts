@@ -1,154 +1,123 @@
-(function( $ ) {
-
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'scrollBugFix';
-
-
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-
-		//	setup: fired once per menu
-		setup: function()
-		{
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
-
-			glbl = $[ _PLUGIN_ ].glbl;
+Mmenu.addons.scrollBugFix = function( 
+	this: Mmenu
+) {
+	//	The scrollBugFix add-on fixes a scrolling bug
+	//		1) in an off-canvas menu 
+	//		2) that -when opened- blocks the UI from interaction 
+	//		3) on touch devices
+	if ( !Mmenu.support.touch || 		// 3
+		!this.opts.offCanvas  || 		// 1
+		!this.opts.offCanvas.blockUI	// 2
+	) {
+		return;
+	}
 
 
-			if ( !$[ _PLUGIN_ ].support.touch || !this.opts.offCanvas || !this.opts.offCanvas.blockUI )
-			{
-				return;
-			}
+	var opts = this.opts.scrollBugFix,
+		conf = this.conf.scrollBugFix;
 
 
-			//	Extend shorthand options
-			if ( typeof opts == 'boolean' )
-			{
-				opts = {
-					fix: opts
-				};
-			}
-			if ( typeof opts != 'object' )
-			{
-				opts = {};
-			}
-			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
-
-			if ( !opts.fix )
-			{
-				return;
-			}
-
-			this.bind( 'open:start',
-				function()
-				{
-					this.$pnls.children( '.' + _c.panel + '_opened' ).scrollTop( 0 );
-				}
-			);
-			this.bind( 'initMenu:after',
-				function()
-				{
-					this[ '_initWindow_' + _ADDON_ ]();
-				}
-			);
-  
-		},
-
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
-		},
-
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
-
-
-	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		fix: true
-	};
-
-
-	$[ _PLUGIN_ ].prototype[ '_initWindow_' + _ADDON_ ] = function()
+	//	Extend shorthand options
+	if ( typeof opts == 'boolean' )
 	{
-		var that = this;
+		opts = {
+			fix: opts
+		};
+	}
+	if ( typeof opts != 'object' )
+	{
+		opts = {};
+	}
+	opts = this.opts.scrollBugFix = jQuery.extend( true, {}, Mmenu.options.scrollBugFix, opts );
 
-	    //	Prevent body scroll
-	    $(document)
-	    	.off( _e.touchmove + '-' + _ADDON_ )
-	    	.on( _e.touchmove + '-' + _ADDON_,
-		    	function( e )
-		    	{
-					if ( glbl.$html.hasClass( _c.wrapper + '_opened' ) )
-					{
-						e.preventDefault();
-					}
-		    	}
-		    );
+	if ( !opts.fix )
+	{
+		return;
+	}
 
-	    var scrolling = false;
-	    glbl.$body
-	    	.off( _e.touchstart + '-' + _ADDON_ )
-	    	.on( _e.touchstart + '-' + _ADDON_,
-		    	'.' + _c.panels + '> .' + _c.panel,
-		    	function( e )
-		    	{
-			        if ( glbl.$html.hasClass( _c.wrapper + '_opened' ) )
-			        {
-			        	if ( !scrolling )
+
+	this.bind( 'open:start',
+		function(
+			this : Mmenu
+		) {
+			this.node.$pnls.children( '.mm-panel_opened' ).scrollTop( 0 );
+		}
+	);
+	this.bind( 'initMenu:after',
+		function(
+			this : Mmenu
+		) {
+
+		    //	Prevent the body from scrolling
+		    jQuery(document)
+		    	.off( 'touchmove.mm-scrollBugFix' )
+		    	.on( 'touchmove.mm-scrollBugFix',
+			    	( e ) => {
+						if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
 						{
-						    scrolling = true;   
-    
-					        if ( e.currentTarget.scrollTop === 0 )
-					        {
-					            e.currentTarget.scrollTop = 1;
-					        }
-					        else if ( e.currentTarget.scrollHeight === e.currentTarget.scrollTop + e.currentTarget.offsetHeight )
-					        {
-					            e.currentTarget.scrollTop -= 1;
-					        }
-
-						    scrolling = false;
+							e.preventDefault();
 						}
-			        }
-		    	}
-		    )
-	 		.off( _e.touchmove + '-' + _ADDON_ )
-	 		.on( _e.touchmove + '-' + _ADDON_,
-		 		'.' + _c.panels + '> .' + _c.panel,
-		 		function( e )
-		 		{
-			        if ( glbl.$html.hasClass( _c.wrapper + '_opened' ) )
-			        {
-				        if ( $(this)[ 0 ].scrollHeight > $(this).innerHeight() )
+			    	}
+			    );
+
+		    var scrolling = false;
+		    jQuery('body')
+		    	.off( 'touchstart.mm-scrollBugFix' )
+		    	.on( 'touchstart.mm-scrollBugFix',
+			    	'.mm-panels > .mm-panel',
+			    	( e ) => {
+				        if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
 				        {
-				        	e.stopPropagation();
+				        	if ( !scrolling )
+							{
+							    scrolling = true;   
+
+						        if ( e.currentTarget.scrollTop === 0 )
+						        {
+						            e.currentTarget.scrollTop = 1;
+						        }
+						        else if ( e.currentTarget.scrollHeight === e.currentTarget.scrollTop + e.currentTarget.offsetHeight )
+						        {
+						            e.currentTarget.scrollTop -= 1;
+						        }
+
+							    scrolling = false;
+							}
 				        }
-			        }
-		    	}
-	    	);
+			    	}
+			    )
+		 		.off( 'touchmove.mm-scrollBugFix' )
+		 		.on( 'touchmove.mm-scrollBugFix',
+			 		'.mm-panels > .mm-panel',
+			 		( e ) => {
+				        if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
+				        {
+					        if ( jQuery(e.target)[ 0 ].scrollHeight > jQuery(e.target).innerHeight() )
+					        {
+					        	e.stopPropagation();
+					        }
+				        }
+			    	}
+		    	);
 
-		//	Fix issue after device rotation change
-		glbl.$wndw
-	    	.off( _e.orientationchange + '-' + _ADDON_ )
-	    	.on( _e.orientationchange + '-' + _ADDON_,
-	    		function()
-	    		{
-	    			that.$pnls
-	    				.children( '.' + _c.panel + '_opened' )
-			        	.scrollTop( 0 )
-			        	.css({ '-webkit-overflow-scrolling': 'auto' })
-			        	.css({ '-webkit-overflow-scrolling': 'touch' });
-				}
-	    	);
-	};
+			//	Fix issue after device rotation change
+			jQuery('window')
+		    	.off( 'orientationchange.mm-scrollBugFix' )
+		    	.on( 'orientationchange.mm-scrollBugFix',
+		    		() => {
+		    			this.node.$pnls
+		    				.children( '.mm-panel_opened' )
+				        	.scrollTop( 0 )
+				        	.css({ '-webkit-overflow-scrolling': 'auto' })
+				        	.css({ '-webkit-overflow-scrolling': 'touch' });
+					}
+		    	);
+		}
+	);
+};
 
 
-	var _c, _d, _e, glbl;
-
-})( jQuery );
+//	Default options and configuration
+Mmenu.options.scrollBugFix = {
+	fix: true
+};

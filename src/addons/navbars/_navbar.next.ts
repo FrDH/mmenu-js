@@ -1,58 +1,54 @@
-(function( $ ) {
-
-	const _PLUGIN_ 	= 'mmenu';
-	const _ADDON_  	= 'navbars';
-	const _CONTENT_	= 'next';
-
-	$[ _PLUGIN_ ].addons[ _ADDON_ ][ _CONTENT_ ] = function( $navbar, opts )
-	{
-		//	Get vars
-		var _c = $[ _PLUGIN_ ]._c;
-
-
-		//	Add content
-		var $next = $('<a class="' + _c.btn + ' ' + _c.btn + '_next ' + _c.navbar + '__btn" href="#" />')
-			.appendTo( $navbar );
+Mmenu.addons.navbars.next = function( 
+	this	: Mmenu,
+	$navbar	: JQuery, 
+	opts	: iLooseObject, 
+	conf	: iLooseObject
+) {
+	//	Add content
+	var $next = jQuery('<a class="mm-btn mm-btn_next mm-navbar__btn" href="#" />')
+		.appendTo( $navbar );
 
 
-		//	Update to opened panel
-		var $org;
-		var _url, _txt;
+	//	Update to opened panel
+	var $org;
+	var _url, _txt;
 
 
-		this.bind( 'openPanel:start',
-			function( $panel )
+	this.bind( 'openPanel:start',
+		function( 
+			this	: Mmenu,
+			$panel	: JQuery
+		) {
+			$org = $panel.find( '.' + this.conf.classNames.navbars.panelNext );
+
+			_url = $org.attr( 'href' );
+			_txt = $org.html();
+
+			if ( _url )
 			{
-				$org = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelNext );
-
-				_url = $org.attr( 'href' );
-				_txt = $org.html();
-
-				if ( _url )
-				{
-					$next.attr( 'href', _url );
-				}
-				else
-				{
-					$next.removeAttr( 'href' );
-				}
-				
-				$next[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
-				$next.html( _txt );
+				$next.attr( 'href', _url );
 			}
-		);
-
-
-		//	Add screenreader / aria support
-		this.bind( 'openPanel:start:sr-aria',
-			function( $panel )
+			else
 			{
-				this.__sr_aria( $next, 'hidden', $next.hasClass( _c.hidden ) );
-				this.__sr_aria( $next, 'owns', ( $next.attr( 'href' ) || '' ).slice( 1 ) );
+				$next.removeAttr( 'href' );
 			}
-		);
-	};
+			
+			$next[ _url || _txt ? 'removeClass' : 'addClass' ]( 'mm-hidden' );
+			$next.html( _txt );
+		}
+	);
 
-	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ].panelNext	= 'Next';
 
-})( jQuery );
+	//	Add screenreader / aria support
+	this.bind( 'openPanel:start:sr-aria',
+		function( 
+			this	: Mmenu,
+			$panel	: JQuery
+		) {
+			Mmenu.sr_aria( $next, 'hidden', $next.hasClass( 'mm-hidden' ) );
+			Mmenu.sr_aria( $next, 'owns', ( $next.attr( 'href' ) || '' ).slice( 1 ) );
+		}
+	);
+};
+
+Mmenu.configs.classNames.navbars.panelNext = 'Next';

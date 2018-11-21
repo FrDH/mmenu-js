@@ -1,96 +1,89 @@
-(function( $ ) {
+Mmenu.wrappers.bootstrap4 = function(
+	this : Mmenu
+) {
 
-	const _PLUGIN_ = 'mmenu';
-	const _WRAPPR_ = 'bootstrap4';
-
-
-	$[ _PLUGIN_ ].wrappers[ _WRAPPR_ ] = function()
+	//	Create the menu
+	if ( this.node.$menu.hasClass( 'navbar-collapse' ) )
 	{
-		var that = this;
+
+		//	No need for cloning the menu...
+		this.conf.clone = false;
 
 
-		//	Create the menu
-		if ( this.$menu.hasClass( 'navbar-collapse' ) )
-		{
+		//	... We'll create a new menu
+		var $nav = jQuery('<nav />'),
+			$pnl = jQuery('<div />');
 
-			//	No need for cloning the menu...
-			this.conf.clone = false;
+		$nav.append( $pnl );
 
-
-			//	... We'll create a new menu
-			var $nav = $('<nav />'),
-				$pnl = $('<div />');
-
-			$nav.append( $pnl );
-
-			this.$menu
-				.children()
-				.each(
-					function()
+		this.node.$menu
+			.children()
+			.each(
+				( i, elem ) => {
+					var $t = jQuery(elem);
+					switch( true )
 					{
-						var $t = $(this);
-						switch( true )
-						{
-							case $t.hasClass( 'navbar-nav' ):
-								$pnl.append( cloneNav( $t ) );
-								break;
+						case $t.hasClass( 'navbar-nav' ):
+							$pnl.append( cloneNav( $t ) );
+							break;
 
-							case $t.hasClass( 'dropdown-menu' ):
-								$pnl.append( cloneDropdown( $t ) );
-								break;
+						case $t.hasClass( 'dropdown-menu' ):
+							$pnl.append( cloneDropdown( $t ) );
+							break;
 
-							case $t.hasClass( 'form-inline' ):
-								that.conf.searchfield.form = {
-									action	: $t.attr( 'action' ) 	|| null,
-									method	: $t.attr( 'method' ) 	|| null
-								};
-								that.conf.searchfield.input = {
-									name	: $t.find( 'input' ).attr( 'name' ) || null
-								};
-								that.conf.searchfield.clear 	= false;
-								that.conf.searchfield.submit	= true;
-								break;
+						case $t.hasClass( 'form-inline' ):
+							this.conf.searchfield.form = {
+								action	: $t.attr( 'action' ) 	|| null,
+								method	: $t.attr( 'method' ) 	|| null
+							};
+							this.conf.searchfield.input = {
+								name	: $t.find( 'input' ).attr( 'name' ) || null
+							};
+							this.conf.searchfield.clear 	= false;
+							this.conf.searchfield.submit	= true;
+							break;
 
-							default:
-								$pnl.append( $t.clone( true ) )
-								break;
-						}
+						default:
+							$pnl.append( $t.clone( true ) );
+							break;
 					}
-				);
-
-			//	Set the menu
-			this.bind( 'initMenu:before',
-				function()
-				{
-					$nav.prependTo( 'body' );
-					this.$menu = $nav;
 				}
 			);
 
-			//	Hijack the toggler
-			this.$menu
-				.parent()
-				.find( '.navbar-toggler' )
-				.removeAttr( 'data-target' )
-				.removeAttr( 'aria-controls' )
-				.off( 'click' )
-				.on( 'click',
-					function( e )
-					{
-						e.preventDefault();
-						e.stopImmediatePropagation();
-						that[ that.vars.opened ? 'close' : 'open' ]();
-					}
-				);
-		}
-	};
+		//	Set the menu
+		this.bind( 'initMenu:before',
+			function(
+				this : Mmenu
+			) {
+				$nav.prependTo( 'body' );
+				this.node.$menu = $nav;
+			}
+		);
+
+		//	Hijack the toggler
+		this.node.$menu
+			.parent()
+			.find( '.navbar-toggler' )
+			.removeAttr( 'data-target' )
+			.removeAttr( 'aria-controls' )
+			.off( 'click' )
+			.on( 'click',
+				( e ) => {
+					e.preventDefault();
+					e.stopImmediatePropagation();
+					this[ this.vars.opened ? 'close' : 'open' ]();
+				}
+			);
+	}
 
 
-	function cloneLink( $a )
-	{
-		var $i = $('<a />');
+
+	function cloneLink( 
+		$a : JQuery
+	) {
+		var $i = jQuery('<a />');
 		var attr = ['href', 'title', 'target'];
-		for ( var a= 0; a < attr.length; a++ )
+		for ( var a = 0; a < attr.length; a++ )
 		{
 			if ( typeof $a.attr( attr[ a ] ) != 'undefined' )
 			{
@@ -101,13 +94,14 @@
 		$i.find( '.sr-only' ).remove();
 		return $i;
 	}
-	function cloneDropdown( $d )
-	{
-		var $ul = $('<ul />');
+	function cloneDropdown( 
+		$d : JQuery
+	) {
+		var $ul = jQuery('<ul />');
 		$d.children()
 			.each(function() {
-				var $di = $(this),
-					$li = $('<li />');
+				var $di = jQuery(this),
+					$li = jQuery('<li />');
 
 				if ( $di.hasClass( 'dropdown-divider' ) )
 				{
@@ -122,13 +116,14 @@
 		);
 		return $ul;
 	}
-	function cloneNav( $n )
-	{
-		var $ul = $('<ul />');
+	function cloneNav( 
+		$n : JQuery
+	) {
+		var $ul = jQuery('<ul />');
 		$n.find( '.nav-item' )
 			.each(function() {
-				var $ni = $(this),
-					$li = $('<li />');
+				var $ni = jQuery(this),
+					$li = jQuery('<li />');
 
 				if ( $ni.hasClass( 'active' ) )
 				{
@@ -150,5 +145,4 @@
 		);
 		return $ul;
 	}
-
-})( jQuery );
+};

@@ -1,159 +1,140 @@
-(function( $ ) {
+Mmenu.addons.offCanvas = function( 
+	this : Mmenu
+) {
 
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'offCanvas';
+	if ( !this.opts.offCanvas )
+	{
+		return;
+	}
 
-
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-
-		//	setup: fired once per menu
-		setup: function()
-		{
-			if ( !this.opts[ _ADDON_ ] )
-			{
-				return;
-			}
-
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
-
-			glbl = $[ _PLUGIN_ ].glbl;
+	var opts = this.opts.offCanvas,
+		conf = this.conf.offCanvas;
 
 
-			//	Add methods to api
-			this._api = $.merge( this._api, [ 'open', 'close', 'setPage' ] );
+	//	Add methods to the API
+	this._api.push( 'open', 'close', 'setPage' );
 
 
-			//	Extend shorthand options
-			if ( typeof opts != 'object' )
-			{
-				opts = {};
-			}
+	//	Extend shorthand options
+	if ( typeof opts != 'object' )
+	{
+		opts = {};
+	}
 
-			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+	opts = this.opts.offCanvas = jQuery.extend( true, {}, Mmenu.options.offCanvas, opts );
+
+	//	Extend configuration
+	if ( typeof conf.page.selector != 'string' )
+	{
+		conf.page.selector = '> ' + conf.page.nodetype;
+	}
+
+	conf = this.conf.offCanvas = jQuery.extend( true, {}, Mmenu.configs.offCanvas, conf );
 
 
-			//	Extend configuration
-			if ( typeof conf.page.selector != 'string' )
-			{
-				conf.page.selector = '> ' + conf.page.nodetype;
-			}
+	//	Setup the menu
+	this.vars.opened = false;
 
+
+	//	Add off-canvas behavior
+	this.bind( 'initMenu:after',
+		function(
+			this : Mmenu
+		) {
+
+			//	Setup the UI blocker
+			this._initBlocker();
+
+			//	Setup the page
+			this.setPage( Mmenu.node.$page );
+
+			//	Setup window events
+			this._initWindow_offCanvas();
 
 			//	Setup the menu
-			this.vars.opened = false;
-			
-			var clsn = [ _c.menu + '_offcanvas' ];
+			this.node.$menu
+				.addClass( 'mm-menu_offcanvas' )
+				.parent( '.mm-wrapper' )
+				.removeClass( 'mm-wrapper' );
 
+			//	Append to the <body>
+			this.node.$menu[ conf.menu.insertMethod ]( conf.menu.insertSelector );
 
-			//	Add off-canvas behavior
-			this.bind( 'initMenu:after',
-				function()
-				{
-					var that = this;
-
-					//	Setup the UI blocker
-					this._initBlocker();
-
-					//	Setup the page
-					this.setPage( glbl.$page );
-
-					//	Setup window events
-					this[ '_initWindow_' + _ADDON_ ]();
-
-					//	Setup the menu
-					this.$menu
-						.addClass( clsn.join( ' ' ) )
-						.parent( '.' + _c.wrapper )
-						.removeClass( _c.wrapper );
-
-					//	Append to the <body>
-					this.$menu[ conf.menu.insertMethod ]( conf.menu.insertSelector );
-
-					//	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
-					var hash = window.location.hash;
-					if ( hash )
-					{
-						var id = this._getOriginalMenuId();
-						if ( id && id == hash.slice( 1 ) )
-						{
-							setTimeout(
-								function()
-								{
-									that.open();
-								}, 1000
-							);
-						}
-					}
-				}
-			);
-
-			this.bind( 'setPage:after',
-				function( $page )
-				{
-					if ( glbl.$blck )
-					{
-						glbl.$blck
-							.children( 'a' )
-							.attr( 'href', '#' + $page.attr( 'id' ) );
-					}
-				}
-			);
-
-
-			//	Add screenreader / aria support
-			this.bind( 'open:start:sr-aria',
-				function()
-				{
-					this.__sr_aria( this.$menu, 'hidden', false );
-				}
-			);
-			this.bind( 'close:finish:sr-aria',
-				function()
-				{
-					this.__sr_aria( this.$menu, 'hidden', true );
-				}
-			);
-			this.bind( 'initMenu:after:sr-aria',
-				function()
-				{
-					this.__sr_aria( this.$menu, 'hidden', true );
-				}
-			);
-
-			//	Add screenreader / text support
-			this.bind( 'initBlocker:after:sr-text',
-				function()
-				{
-					glbl.$blck
-						.children( 'a' )
-						.html( this.__sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) ) );
-				}
-			);
-
-		},
-
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
-
-			_c.add( 'slideout page no-csstransforms3d' );
-			_d.add( 'style' );
-		},
-
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu )
-		{
-			var that = this;
-
-			if ( !this.opts[ _ADDON_ ] )
+			//	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
+			var hash = window.location.hash;
+			if ( hash )
 			{
-				return;
+				var id = this._getOriginalMenuId();
+				if ( id && id == hash.slice( 1 ) )
+				{
+					setTimeout(
+						() => {
+							this.open();
+						}, 1000
+					);
+				}
 			}
+		}
+	);
+
+	this.bind( 'setPage:after',
+		function( 
+			this 	: Mmenu,
+			$page 	: JQuery
+		) {
+			if ( Mmenu.node.$blck )
+			{
+				Mmenu.node.$blck
+					.children( 'a' )
+					.attr( 'href', '#' + $page.attr( 'id' ) );
+			}
+		}
+	);
+
+
+	//	Add screenreader / aria support
+	this.bind( 'open:start:sr-aria',
+		function( 
+			this : Mmenu
+		) {
+			Mmenu.sr_aria( this.node.$menu, 'hidden', false );
+		}
+	);
+	this.bind( 'close:finish:sr-aria',
+		function(
+			this : Mmenu
+		) {
+			Mmenu.sr_aria( this.node.$menu, 'hidden', true );
+		}
+	);
+	this.bind( 'initMenu:after:sr-aria',
+		function(
+			this : Mmenu
+		) {
+			Mmenu.sr_aria( this.node.$menu, 'hidden', true );
+		}
+	);
+
+	//	Add screenreader / text support
+	this.bind( 'initBlocker:after:sr-text',
+		function( 
+			this : Mmenu
+		) {
+			Mmenu.node.$blck
+				.children( 'a' )
+				.html( Mmenu.sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) ) );
+		}
+	);
+
+
+	//	Add click behavior.
+	//	Prevents default behavior when clicking an anchor
+	this.clck.push(
+		function(
+			this : Mmenu,
+			$a	 : JQuery,
+			args : iLooseObject
+		) {
 
 			//	Open menu
 			var id = this._getOriginalMenuId();
@@ -163,7 +144,7 @@
 				{
 					//	Opening this menu from within this menu
 					//		-> Open menu
-					if ( inMenu )
+					if ( args.inMenu )
 					{
 						this.open();
 						return true;
@@ -171,18 +152,17 @@
 
 					//	Opening this menu from within a second menu
 					//		-> Close the second menu before opening this menu
-					var $m = $a.closest( '.' + _c.menu );
-					if ( $m.length )
+					var $menu = $a.closest( '.mm-menu' );
+					if ( $menu.length )
 					{
-						var _m = $m.data( 'mmenu' );
-						if ( _m && _m.close )
+						var api = $menu.data( 'mmenu' );
+						if ( api && api.close )
 						{
-							_m.close();
-							that.__transitionend( $m,
-								function()
-								{
-									that.open();
-								}, that.conf.transitionDuration
+							api.close();
+							Mmenu.transitionend( $menu,
+								() => {
+									this.open();
+								}, this.conf.transitionDuration
 							);
 							return true;
 						}
@@ -195,12 +175,7 @@
 			}
 
 			//	Close menu
-			if ( !glbl.$page )
-			{
-				return;
-			}
-
-			id = glbl.$page.first().attr( 'id' );
+			id = Mmenu.node.$page.first().attr( 'id' );
 			if ( id )
 			{
 				if ( $a.is( '[href="#' + id + '"]' ) )
@@ -212,321 +187,331 @@
 
 			return;
 		}
-	};
+	);
+
+}
 
 
-	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		// position		: 'left',
-		// zposition		: 'back',
-		blockUI			: true,
-		moveBackground	: true
-	};
-	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
-		menu 	: {
-			insertMethod	: 'prependTo',
-			insertSelector	: 'body'
-		},
-		page 	: {
-			nodetype		: 'div',
-			selector		: null,
-			noSelector		: [],
-			wrapIfNeeded	: true,
-		}
-		// pageNodetype		: 'div',
-		// pageSelector		: null,
-		// noPageSelector		: [],
-		// wrapPageIfNeeded	: true,
-		// menuInsertMethod	: 'prependTo',
-		// menuInsertSelector	: 'body'
-	};
+
+//	Default options and configuration
+Mmenu.options.offCanvas = {
+	blockUI			: true,
+	moveBackground	: true
+};
+Mmenu.configs.offCanvas = {
+	menu 	: {
+		insertMethod	: 'prependTo',
+		insertSelector	: 'body'
+	},
+	page 	: {
+		nodetype		: 'div',
+		selector		: null,
+		noSelector		: [],
+		wrapIfNeeded	: true,
+	}
+};
 
 
-	//	Methods
-	$[ _PLUGIN_ ].prototype.open = function()
+/**
+  *	Open the menu.
+  */
+Mmenu.prototype.open = function( 
+	this : Mmenu
+) {
+	this.trigger( 'open:before' );
+
+	if ( this.vars.opened )
 	{
-		this.trigger( 'open:before' );
+		return;
+	}
 
-		if ( this.vars.opened )
+	this._openSetup();
+
+	//	Without the timeout, the animation won't work because the menu had display: none;
+	setTimeout(
+		() => {
+			this._openFinish();
+		}, this.conf.openingInterval
+	);
+
+	this.trigger( 'open:after' );
+};
+
+/**
+  *	Setup the menu so it can be opened.
+  */
+Mmenu.prototype._openSetup = function(
+	this : Mmenu
+) {
+	var opts = this.opts.offCanvas;
+
+	//	Close other menus
+	this.closeAllOthers();
+
+	//	Store style and position
+	Mmenu.node.$page.each(
+		function()
 		{
-			return;
+			jQuery(this).data( 'mm-style', jQuery(this).attr( 'style' ) || '' );
 		}
+	);
 
-		var that = this;
+	//	Trigger window-resize to measure height
+	jQuery(window).trigger( 'resize.mm-offCanvas', [ true ] );
 
-		this._openSetup();
+	var clsn = [ 'mm-wrapper_opened' ];
 
-		//	Without the timeout, the animation won't work because the menu had display: none;
-		setTimeout(
-			function()
-			{
-				that._openFinish();
-			}, this.conf.openingInterval
-		);
-
-		this.trigger( 'open:after' );
-	};
-
-	$[ _PLUGIN_ ].prototype._openSetup = function()
+	//	Add options
+	if ( opts.blockUI )
 	{
-		var that = this,
-			opts = this.opts[ _ADDON_ ];
-
-		//	Close other menus
-		this.closeAllOthers();
-
-		//	Store style and position
-		glbl.$page.each(
-			function()
-			{
-				$(this).data( _d.style, $(this).attr( 'style' ) || '' );
-			}
-		);
-
-		//	Trigger window-resize to measure height
-		glbl.$wndw.trigger( _e.resize + '-' + _ADDON_, [ true ] );
-
-		var clsn = [ _c.wrapper + '_opened' ];
-
-		//	Add options
-		if ( opts.blockUI )
-		{
-			clsn.push( _c.wrapper + '_blocking' );
-		}
-		if ( opts.blockUI == 'modal' )
-		{
-			clsn.push( _c.wrapper + '_modal' );
-		}
-		if ( opts.moveBackground )
-		{
-			clsn.push( _c.wrapper + '_background' );
-		}
-
-		glbl.$html.addClass( clsn.join( ' ' ) );
-
-		//	Open
-		//	Without the timeout, the animation won't work because the menu had display: none;
-		setTimeout(
-			function()
-			{
-            	that.vars.opened = true;
-        	}, this.conf.openingInterval
-        );
-
-		this.$menu.addClass( _c.menu + '_opened' );
-	};
-
-	$[ _PLUGIN_ ].prototype._openFinish = function()
+		clsn.push( 'mm-wrapper_blocking' );
+	}
+	if ( opts.blockUI == 'modal' )
 	{
-		var that = this;
-
-		//	Callback
-		this.__transitionend( glbl.$page.first(),
-			function()
-			{
-				that.trigger( 'open:finish' );
-			}, this.conf.transitionDuration
-		);
-
-		//	Opening
-		this.trigger( 'open:start' );
-		glbl.$html.addClass( _c.wrapper + '_opening' );
-	};
-
-	$[ _PLUGIN_ ].prototype.close = function()
+		clsn.push( 'mm-wrapper_modal' );
+	}
+	if ( opts.moveBackground )
 	{
-		this.trigger( 'close:before' );
+		clsn.push( 'mm-wrapper_background' );
+	}
 
-		if ( !this.vars.opened )
-		{
-			return;
-		}
+	jQuery('html').addClass( clsn.join( ' ' ) );
 
-		var that = this;
+	//	Open
+	//	Without the timeout, the animation won't work because the menu had display: none;
+	setTimeout(
+		() => {
+        	this.vars.opened = true;
+    	}, this.conf.openingInterval
+    );
 
-		//	Callback
-		this.__transitionend( glbl.$page.first(),
-			function()
-			{
-				that.$menu.removeClass( _c.menu + '_opened' );
+	this.node.$menu.addClass( 'mm-menu_opened' );
+};
 
-				var clsn = [
-					_c.wrapper + '_opened',
-					_c.wrapper + '_blocking',
-					_c.wrapper + '_modal',
-					_c.wrapper + '_background'
-				];
+/**
+  *	Finish opening the menu.
+  */
+Mmenu.prototype._openFinish = function(
+	this : Mmenu
+) {
+	//	Callback
+	Mmenu.transitionend( Mmenu.node.$page.first(),
+		() => {
+			this.trigger( 'open:finish' );
+		}, this.conf.transitionDuration
+	);
 
-				glbl.$html.removeClass( clsn.join( ' ' ) );
+	//	Opening
+	this.trigger( 'open:start' );
+	jQuery('html').addClass( 'mm-wrapper_opening' );
+};
 
-				//	Restore style and position
-				glbl.$page.each(
-					function()
-					{
-						var _data: any = $(this).data( _d.style );
-						$(this).attr( 'style', _data );
-					}
-				);
+/**
+  *	Close the menu.
+  */
+Mmenu.prototype.close = function(
+	this : Mmenu
+) {
+	this.trigger( 'close:before' );
 
-				that.vars.opened = false;
-				that.trigger( 'close:finish' );
-
-			}, this.conf.transitionDuration
-		);
-
-		//	Closing
-		this.trigger( 'close:start' );
-
-		glbl.$html.removeClass( _c.wrapper + '_opening' );
-
-		this.trigger( 'close:after' );
-	};
-
-	$[ _PLUGIN_ ].prototype.closeAllOthers = function()
+	if ( !this.vars.opened )
 	{
-		glbl.$body
-			.find( '.' + _c.menu + '_offcanvas' )
-			.not( this.$menu )
-			.each(
+		return;
+	}
+
+
+	//	Callback
+	Mmenu.transitionend( Mmenu.node.$page.first(),
+		() => {
+			this.node.$menu.removeClass( 'mm-menu_opened' );
+
+			var clsn = [
+				'mm-wrapper_opened',
+				'mm-wrapper_blocking',
+				'mm-wrapper_modal',
+				'mm-wrapper_background'
+			];
+
+			jQuery('html').removeClass( clsn.join( ' ' ) );
+
+			//	Restore style and position
+			Mmenu.node.$page.each(
 				function()
 				{
-					var api = $(this).data( _PLUGIN_ );
-					if ( api && api.close )
-					{
-						api.close();
-					}
-				}
-			);
-	};
-
-	$[ _PLUGIN_ ].prototype.setPage = function( $page )
-	{
-		this.trigger( 'setPage:before', $page );
-
-		var that = this,
-			conf = this.conf[ _ADDON_ ];
-
-		if ( !$page || !$page.length )
-		{
-			$page = glbl.$body
-				.find( conf.page.selector )
-				.not( '.' + _c.menu )
-				.not( '.' + _c.wrapper + '__blocker' );
-
-			if ( conf.page.noSelector.length )
-			{
-				$page = $page.not( conf.page.noSelector.join( ', ' ) );
-			}
-			if ( $page.length > 1 && conf.page.wrapIfNeeded )
-			{
-				$page = $page
-					.wrapAll( '<' + this.conf[ _ADDON_ ].page.nodetype + ' />' )
-					.parent();
-			}
-		}
-
-		$page.addClass( _c.page + ' ' + _c.slideout )
-			.each(
-				function()
-				{
-					$(this).attr( 'id', $(this).attr( 'id' ) || that.__getUniqueId() );		
+					var _data: any = jQuery(this).data( 'mm-style' );
+					jQuery(this).attr( 'style', _data );
 				}
 			);
 
-		glbl.$page = $page;
+			this.vars.opened = false;
+			this.trigger( 'close:finish' );
 
-		this.trigger( 'setPage:after', $page );
-	};
+		}, this.conf.transitionDuration
+	);
 
-	$[ _PLUGIN_ ].prototype[ '_initWindow_' + _ADDON_ ] = function()
-	{
-		//	Prevent tabbing
-		glbl.$wndw
-			.off( _e.keydown + '-' + _ADDON_ )
-			.on(  _e.keydown + '-' + _ADDON_,
-				function( e )
+	//	Closing
+	this.trigger( 'close:start' );
+
+	jQuery('html').removeClass( 'mm-wrapper_opening' );
+
+	this.trigger( 'close:after' );
+};
+
+/**
+  *	Close all other menus.
+  */
+Mmenu.prototype.closeAllOthers = function(
+	this : Mmenu
+) {
+	jQuery('body')
+		.find( '.mm-menu_offcanvas' )
+		.not( this.node.$menu )
+		.each(
+			function()
+			{
+				var api = jQuery(this).data( 'mmenu' );
+				if ( api && api.close )
 				{
-					if ( glbl.$html.hasClass( _c.wrapper + '_opened' ) )
+					api.close();
+				}
+			}
+		);
+};
+
+/**
+  *	Set the "Page" node.
+  */
+Mmenu.prototype.setPage = function( 
+	this : Mmenu,
+	$page: JQuery
+) {
+
+	this.trigger( 'setPage:before', [ $page ] );
+
+	var conf = this.conf.offCanvas;
+
+	if ( !$page || !$page.length )
+	{
+		$page = jQuery('body')
+			.find( conf.page.selector )
+			.not( '.mm-menu' )
+			.not( '.mm-wrapper__blocker' );
+
+		if ( conf.page.noSelector.length )
+		{
+			$page = $page.not( conf.page.noSelector.join( ', ' ) );
+		}
+		if ( $page.length > 1 && conf.page.wrapIfNeeded )
+		{
+			$page = $page
+				.wrapAll( '<' + conf.page.nodetype + ' />' )
+				.parent();
+		}
+	}
+	$page.addClass( 'mm-page mm-slideout' )
+		.each(
+			function()
+			{
+				jQuery(this).attr( 'id', jQuery(this).attr( 'id' ) || Mmenu.__getUniqueId() );		
+			}
+		);
+
+
+	Mmenu.node.$page = $page;
+
+	this.trigger( 'setPage:after', [ $page ] );
+};
+
+/**
+  *	Initialize the <window>
+  */
+Mmenu.prototype._initWindow_offCanvas = function(
+	this : Mmenu
+) {
+
+	//	Prevent tabbing
+	jQuery(window)
+		.off( 'keydown.mm-offCanvas' )
+		.on(  'keydown.mm--offCanvas',
+			function( e )
+			{
+				if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
+				{
+					if ( e.keyCode == 9 )
 					{
-						if ( e.keyCode == 9 )
+						e.preventDefault();
+						return false;
+					}
+				}
+			}
+		);
+
+	//	Set page min-height to window height
+	var oldHeight, newHeight;
+	jQuery(window)
+		.off( 'resize.mm-offCanvas' )
+		.on(  'resize.mm-offCanvas',
+			function( e, force )
+			{
+				if ( Mmenu.node.$page.length == 1 )
+				{
+					if ( force || jQuery('html').hasClass( 'mm-wrapper_opened' ) )
+					{
+						newHeight = jQuery(window).height();
+						if ( force || newHeight != oldHeight )
 						{
-							e.preventDefault();
-							return false;
+							oldHeight = newHeight;
+							Mmenu.node.$page.css( 'minHeight', newHeight );
 						}
 					}
 				}
-			);
+			}
+		);
+};
 
-		//	Set page min-height to window height
-		var _h = 0;
-		glbl.$wndw
-			.off( _e.resize + '-' + _ADDON_ )
-			.on(  _e.resize + '-' + _ADDON_,
-				function( e, force )
-				{
-					if ( glbl.$page.length == 1 )
-					{
-						if ( force || glbl.$html.hasClass( _c.wrapper + '_opened' ) )
-						{
-							var nh = glbl.$wndw.height();
-							if ( force || nh != _h )
-							{
-								_h = nh;
-								glbl.$page.css( 'minHeight', nh );
-							}
-						}
-					}
-				}
-			);
-	};
+/**
+  *	Initialize the "Blocker" node
+  */
+Mmenu.prototype._initBlocker = function(
+	this : Mmenu
+) {
+	var opts = this.opts.offCanvas,
+		conf = this.conf.offCanvas;
 
-	$[ _PLUGIN_ ].prototype._initBlocker = function()
+	this.trigger( 'initBlocker:before' );
+
+	if ( !opts.blockUI )
 	{
-		var that = this,
-			opts = this.opts[ _ADDON_ ],
-			conf = this.conf[ _ADDON_ ];
+		return;
+	}
 
-		this.trigger( 'initBlocker:before' );
+	if ( !Mmenu.node.$blck )
+	{
+		Mmenu.node.$blck = jQuery( '<div class="mm-wrapper__blocker mm-slideout" />' )
+			.append( '<a />' );
+	}
 
-		if ( !opts.blockUI )
-		{
-			return;
-		}
-
-		if ( !glbl.$blck )
-		{
-			glbl.$blck = $( '<div class="' + _c.wrapper + '__blocker ' + _c.slideout + '" />' )
-				.append( '<a />' );
-		}
-
-		glbl.$blck
-			.appendTo( conf.menu.insertSelector )
-			.off( _e.touchstart + '-' + _ADDON_ + ' ' + _e.touchmove + '-' + _ADDON_ )
-			.on(  _e.touchstart + '-' + _ADDON_ + ' ' + _e.touchmove + '-' + _ADDON_,
-				function( e )
+	Mmenu.node.$blck
+		.appendTo( conf.menu.insertSelector )
+		.off( 'touchstart.mm-offCanvas touchmove.mm-offCanvas' )
+		.on(  'touchstart.mm-offCanvas touchmove.mm-offCanvas',
+			( e ) => {
+				e.preventDefault();
+				e.stopPropagation();
+				Mmenu.node.$blck.trigger( 'mousedown.mm-offCanvas' );
+			}
+		)
+		.off( 'mousedown.mm-offCanvas' )
+		.on(  'mousedown.mm-offCanvas',
+			( e ) => {
+				e.preventDefault();
+				if ( !jQuery('html').hasClass( 'mm-wrapper_modal' ) )
 				{
-					e.preventDefault();
-					e.stopPropagation();
-					glbl.$blck.trigger( _e.mousedown + '-' + _ADDON_ );
+					this.closeAllOthers();
+					this.close();
 				}
-			)
-			.off( _e.mousedown + '-' + _ADDON_ )
-			.on(  _e.mousedown + '-' + _ADDON_,
-				function( e )
-				{
-					e.preventDefault();
-					if ( !glbl.$html.hasClass( _c.wrapper + '_modal' ) )
-					{
-						that.closeAllOthers();
-						that.close();
-					}
-				}
-			);
+			}
+		);
 
-		this.trigger( 'initBlocker:after' );
-	};
-
-
-	var _c, _d, _e, glbl;
-
-})( jQuery );
+	this.trigger( 'initBlocker:after' );
+};

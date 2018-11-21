@@ -1,198 +1,173 @@
-(function( $ ) {
-
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'dividers';
-
-
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-
-		//	setup: fired once per menu
-		setup: function()
-		{
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
-
-			glbl = $[ _PLUGIN_ ].glbl;
+Mmenu.addons.dividers = function(
+	this : Mmenu
+) {
+	var opts = this.opts.dividers,
+		conf = this.conf.dividers;
 
 
-			//	Extend shorthand options
-			if ( typeof opts == 'boolean' )
-			{
-				opts = {
-					add		: opts,
-					fixed	: opts
-				};
+
+	//	Extend shorthand options
+	if ( typeof opts == 'boolean' )
+	{
+		opts = {
+			add		: opts,
+			fixed	: opts
+		};
+	}
+	if ( typeof opts != 'object' )
+	{
+		opts = {};
+	}
+	opts = this.opts.dividers = jQuery.extend( true, {}, Mmenu.options.dividers, opts );
+
+
+	//	Type dividers
+	if ( opts.type )
+	{
+		this.bind( 'initMenu:after',
+			function(
+				this : Mmenu
+			) {
+				this.node.$menu.addClass( 'mm-menu_dividers-' + opts.type );
 			}
-			if ( typeof opts != 'object' )
-			{
-				opts = {};
-			}
-			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+		);
+	}
 
-
-			//	Type dividers
-			if ( opts.type )
-			{
-				this.bind( 'initMenu:after',
-					function()
-					{
-						this.$menu.addClass( _c.menu + '_' + _ADDON_ + '-' + opts.type );
-					}
-				);
-			}
-
-			//	Add dividers
-			if ( opts.add )
-			{
-				this.bind( 'initListview:after',
-					function( $panel )
-					{
-						var $wrapper;
-						switch( opts.addTo )
-						{
-							case 'panels':
-								$wrapper = $panel;
-								break;
-
-							default:
-								$wrapper = $panel.filter( opts.addTo );
-								break;
-						}
-
-						if ( !$wrapper.length )
-						{
-							return;
-						}
-
-						$wrapper
-							.children( '.' + _c.listitem + '_divider' )
-							.remove();
-							
-						$wrapper
-							.find( '.' + _c.listview )
-							.each(
-								function()
-								{
-									var last = '';
-									that.__filterListItems( $(this).children() )
-										.each(
-											function()
-											{
-												var letter = $.trim( $(this).children( 'a, span' ).text() ).slice( 0, 1 ).toLowerCase();
-												if ( letter != last && letter.length )
-												{
-													last = letter;
-													$( '<li class="' + _c.listitem + ' ' + _c.listitem + '_divider' + '">' + letter + '</li>' ).insertBefore( this );
-												}
-											}
-										);
-								}
-							);
-					}
-				);
-			}
-			
-
-			//	Fixed dividers
-			if ( opts.fixed )
-			{
-				//	Add the fixed divider
-				this.bind( 'initPanels:after',
-					function()
-					{
-						if ( typeof this.$fixeddivider == 'undefined' )
-						{
-							this.$fixeddivider = $('<ul class="' + _c.listview + ' ' + _c.listview + '_fixeddivider"><li class="' + _c.listitem + ' ' + _c.listitem + '_divider' + '"></li></ul>')
-								.appendTo( this.$pnls )
-								.children();
-						}
-					}
-				);
-
-				var setValue = function( $panel )
+	//	Add dividers
+	if ( opts.add )
+	{
+		this.bind( 'initListview:after',
+			function( 
+				this	: Mmenu,
+				$panel	: JQuery
+			) {
+				var $wrapper;
+				switch( opts.addTo )
 				{
-					$panel = $panel || this.$pnls.children( '.' + _c.panel + '_opened' );
-					if ( $panel.is( ':hidden' ) )
-					{
-						return;
-					}
+					case 'panels':
+						$wrapper = $panel;
+						break;
 
-					var $dvdr = $panel
-						.find( '.' + _c.listitem + '_divider' )
-						.not( '.' + _c.hidden );
+					default:
+						$wrapper = $panel.filter( opts.addTo );
+						break;
+				}
 
-					var scrl = $panel.scrollTop() || 0,
-						text = '';
+				if ( !$wrapper.length )
+				{
+					return;
+				}
 
-					$dvdr.each(
+				$wrapper
+					.find( '.mm-listitem_divider' )
+					.remove();
+					
+				$wrapper
+					.find( '.mm-listview' )
+					.each(
 						function()
 						{
-							if ( $(this).position().top + scrl < scrl + 1 )
+							var last = '';
+							Mmenu.filterListItems( jQuery(this).children() )
+								.each(
+									function()
+									{
+										var letter = jQuery.trim( jQuery(this).children( '.mm-listitem__text' ).text() ).slice( 0, 1 ).toLowerCase();
+										if ( letter != last && letter.length )
+										{
+											last = letter;
+											$( '<li class="mm-listitem mm-listitem_divider">' + letter + '</li>' ).insertBefore( this );
+										}
+									}
+								);
+						}
+					);
+			}
+		);
+	}
+	
+
+	//	Fixed dividers
+	if ( opts.fixed )
+	{
+		//	Add the fixed divider
+		this.bind( 'initPanels:after',
+			function(
+				this : Mmenu
+			) {
+				if ( typeof this.node.$fixeddivider == 'undefined' )
+				{
+					this.node.$fixeddivider = jQuery('<ul class="mm-listview mm-listview_fixeddivider"><li class="mm-listitem mm-listitem_divider"></li></ul>')
+						.appendTo( this.node.$pnls )
+						.children();
+				}
+			}
+		);
+
+		function setValue( 
+			this	: Mmenu,
+			$panel	: JQuery
+		) {
+			$panel = $panel || this.node.$pnls.children( '.mm-panel_opened' );
+			if ( $panel.is( ':hidden' ) )
+			{
+				return;
+			}
+
+			var $dvdr = $panel
+				.find( '.mm-listitem_divider' )
+				.not( '.mm-hidden' );
+
+			var scrl = $panel.scrollTop() || 0,
+				text = '';
+
+			$dvdr.each(
+				function()
+				{
+					if ( $(this).position().top + scrl < scrl + 1 )
+					{
+						text = $(this).text();
+					}
+				}
+			);
+
+			this.node.$fixeddivider.text( text );
+			this.node.$pnls[ text.length ? 'addClass' : 'removeClass' ]( 'mm-panel_dividers' );
+		};
+
+		//	Set correct value when 
+		//		1) opening the menu,
+		//		2) opening a panel,
+		//		3) after updating listviews and
+		//		4) after scrolling a panel
+		this.bind( 'open:start'			, setValue );	// 1
+		this.bind( 'openPanel:start'	, setValue );	// 2
+		this.bind( 'updateListview'		, setValue );	// 3
+		this.bind( 'initPanel:after',					// 4
+			function( 
+				this	: Mmenu,
+				$panel	: JQuery
+			) {
+				$panel.off( 'scroll.mm-dividers touchmove.mm-dividers' )
+					.on( 'scroll.mm-dividers touchmove.mm-dividers',
+						( e ) => {
+							if ( $panel.hasClass( 'mm-.panel_opened' ) )
 							{
-								text = $(this).text();
+								setValue.call( this, $panel );
 							}
 						}
 					);
-
-					this.$fixeddivider.text( text );
-					this.$pnls[ text.length ? 'addClass' : 'removeClass' ]( _c.panel + '_dividers' );
-				};
-
-				//	Set correct value when opening menu
-				this.bind( 'open:start', setValue );
-
-				//	Set correct value when opening a panel
-				this.bind( 'openPanel:start', setValue );
-
-				//	Set correct value after updating listviews
-				this.bind( 'updateListview', setValue );
-
-				//	Set correct value after scrolling
-				this.bind( 'initPanel:after',
-					function( $panel )
-					{
-						$panel
-							.off( _e.scroll + '-' + _ADDON_ + ' ' + _e.touchmove + '-' + _ADDON_ )
-							.on(  _e.scroll + '-' + _ADDON_ + ' ' + _e.touchmove + '-' + _ADDON_,
-								function( e )
-								{
-									if ( $panel.hasClass( _c.panel + '_opened' ) )
-									{
-										setValue.call( that, $panel );
-									}
-								}
-							);
-					}
-				);
-
 			}
-		},
+		);
 
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
-
-			_e.add( 'scroll' );
-		},
-
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
+	}
+};
 
 
-	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		add			: false,
-		addTo		: 'panels',
-		fixed		: false,
-		type		: null
-	};
-
-
-	var _c, _d, _e, glbl;
-
-})( jQuery );
+//	Default options and configuration
+Mmenu.options.dividers = {
+	add			: false,
+	addTo		: 'panels',
+	fixed		: false,
+	type		: null
+};

@@ -1,22 +1,13 @@
-(function( $ ) {
-
-	const _PLUGIN_ 	= 'mmenu';
-	const _ADDON_  	= 'navbars';
-	const _CONTENT_	= 'searchfield';
-
-	$[ _PLUGIN_ ].addons[ _ADDON_ ][ _CONTENT_ ] = function( $navbar, opts )
+Mmenu.addons.navbars.searchfield = function( 
+	this	: Mmenu,
+	$navbar	: JQuery, 
+	opts	: iLooseObject, 
+	conf	: iLooseObject
+) {
+	if ( typeof this.opts.searchfield != 'object' )
 	{
-		var _c = $[ _PLUGIN_ ]._c;
-
-		// var $srch = $('<div class="' + _c.searchfield + '" />')
-		// 	.appendTo( $navbar );
-
-		if ( typeof this.opts.searchfield != 'object' )
-		{
-			this.opts.searchfield = {};
-		}
-		this.opts.searchfield.add = true;
-		this.opts.searchfield.addTo = $navbar;
-	};
-
-})( jQuery );
+		this.opts.searchfield = {};
+	}
+	this.opts.searchfield.add = true;
+	this.opts.searchfield.addTo = $navbar;
+};

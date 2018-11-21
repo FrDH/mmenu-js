@@ -1,174 +1,140 @@
-(function( $ ) {
+Mmenu.addons.iconbar = function(
+	this : Mmenu
+) {
 
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'iconbar';
+	var opts = this.opts.iconbar,
+		conf = this.conf.iconbar;
 
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
+	//	Extend shorthand options
+	if ( opts instanceof Array )
+	{
+		opts = {
+			add: true,
+			top: opts
+		};
+	}
 
-		//	setup: fired once per menu
-		setup: function()
+	if ( !opts.add )
+	{
+		return;
+	}
+
+
+	var $iconbar : JQuery = null;
+
+	//	Fill with content
+	$.each(
+		[ 'top', 'bottom' ],
+		function( n, poss )
 		{
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
 
-			glbl = $[ _PLUGIN_ ].glbl;
+			var ctnt = opts[ poss ];
 
-			if ( opts instanceof Array )
+			//	Extend shorthand options
+			if ( !( ctnt instanceof Array ) )
 			{
-				opts = {
-					add: true,
-					top: opts
-				};
+				ctnt = [ ctnt ];
 			}
 
-			if ( !opts.add )
+			//	Create node
+			var $ibar = jQuery( '<div class="mm-iconbar__' + poss + '" />' );
+
+
+			//	Add content
+			for ( var c = 0, l = ctnt.length; c < l; c++ )
 			{
-				return;
+				$ibar.append( ctnt[ c ] );
 			}
 
-			var $iconbar = null;
-
-			$.each(
-				[ 'top', 'bottom' ],
-				function( n, poss )
+			if ( $ibar.children().length )
+			{
+				if ( !$iconbar )
 				{
+					$iconbar = jQuery('<div class="mm-iconbar" />');
+				}
+				$iconbar.append( $ibar );
+			}
+		}
+	);
 
-					var ctnt = opts[ poss ];
 
-					//	Extend shorthand options
-					if ( !( ctnt instanceof Array ) )
+	//	Add to menu
+	if ( $iconbar )
+	{
+		this.bind( 'initMenu:after',
+			function(
+				this : Mmenu
+			) {
+				this.node.$menu
+					.addClass( 'mm-menu_iconbar' )
+					.prepend( $iconbar );
+			}
+		);
+
+		//	Tabs
+		if ( opts.type == 'tabs' )
+		{
+			var that = this;
+
+			$iconbar.addClass( 'mm-iconbar_tabs' );
+
+			$iconbar.on( 'click.mm-iconbar',
+				'.mm-iconbar a',
+				( e ) => {
+					var $tab = jQuery(e.target);
+					if ( $tab.hasClass( 'mm-iconbar__tab_selected' ) )
 					{
-						ctnt = [ ctnt ];
+						e.stopImmediatePropagation();
+						return;
 					}
 
-					//	Create node
-					var $ibar = $( '<div class="' + _c.iconbar + '__' + poss + '" />' );
-
-
-					//	Add content
-					for ( var c = 0, l = ctnt.length; c < l; c++ )
+					try
 					{
-						$ibar.append( ctnt[ c ] );
-					}
-
-					if ( $ibar.children().length )
-					{
-						if ( !$iconbar )
+						var $target = jQuery( $tab.attr( 'href' ) );
+						if ( $target.hasClass( 'mm-panel' ) )
 						{
-							$iconbar = $('<div class="' + _c.iconbar + '" />');
+							e.preventDefault();
+							e.stopImmediatePropagation();
+
+							this.openPanel( $target, false );
 						}
-						$iconbar.append( $ibar );
 					}
+					catch( err ) {}
 				}
 			);
 
-
-			function selectTab( $panel )
-			{
-				$tabs.removeClass( _c.iconbar + '__tab_selected' );
+			function selectTab( 
+				this	: Mmenu,
+				$panel	: JQuery
+			) {
+				var $tabs = $iconbar.find( 'a' );
+				$tabs.removeClass( 'mm-iconbar__tab_selected' );
 
 				var $tab = $tabs.filter( '[href="#' + $panel.attr( 'id' ) + '"]' );
 				if ( $tab.length )
 				{
-					$tab.addClass( _c.iconbar + '__tab_selected' );
+					$tab.addClass( 'mm-iconbar__tab_selected' );
 				}
 				else
 				{
-					var $parent = $panel.data( _d.parent );
+					var $parent = $panel.data( 'mm-parent' );
 					if ( $parent && $parent.length )
 					{
-						selectTab( $parent.closest( '.' + _c.panel ) );
+						selectTab.call( this, $parent.closest( '.mm-panel' ) );
 					}
 				}
 			}
-
-			//	Add to menu
-			if ( $iconbar )
-			{
-				this.bind( 'initMenu:after',
-					function()
-					{
-						var cls: string = _c.menu + '_iconbar';
-
-						//	deprecated
-						if ( opts.size )
-						{
-							cls += ' ' + _c.menu + '_iconbar-' + opts.size;
-						}
-						//	/deprecated
-
-						this.$menu
-							.addClass( cls )
-							.prepend( $iconbar );
-					}
-				);
-
-				//	Tabs
-				if ( opts.type == 'tabs' )
-				{
-					$iconbar.addClass( _c.iconbar + '_tabs' );
-					var $tabs = $iconbar.find( 'a' );
-
-					//	TODO: better via clickAnchor
-					$tabs
-						.on( _e.click + '-' + _ADDON_,
-							function( e )
-							{
-								var $tab = $(this);
-								if ( $tab.hasClass( _c.iconbar + '__tab_selected' ) )
-								{
-									e.stopImmediatePropagation();
-									return;
-								}
-
-								try
-								{
-									var $targ = $( $tab.attr( 'href' ) );
-									if ( $targ.hasClass( _c.panel ) )
-									{
-										e.preventDefault();
-										e.stopImmediatePropagation();
-
-										// that.__openPanelWoAnimation( $targ );
-										that.openPanel( $targ, false );
-									}
-								}
-								catch( err ) {}
-							}
-						);
-
-					this.bind( 'openPanel:start', selectTab );
-				}
-			}
-		},
-
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
-
-			_c.add( _ADDON_ );
-		},
-
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
+			this.bind( 'openPanel:start', selectTab );
+		}
+	}
+};
 
 
-	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		add 	: false,
-//		size	: null,
-		top 	: [],
-		bottom 	: []
-	};
-	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {};
-
-
-	var _c, _d, _e, glbl;
-
-})( jQuery );
+//	Default options and configuration
+Mmenu.options.iconbar = {
+	add 	: false,
+//	size	: null,
+	top 	: [],
+	bottom 	: []
+};

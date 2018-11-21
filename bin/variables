@@ -48,4 +48,8 @@ $output .= '
 
 ';
 
-file_put_contents( getDist() . '/_variables.custom.scss' , $output );
+$result = file_put_contents( getDist() . '/_variables.custom.scss' , $output );
+if ( $result )
+{
+	echo '_variables.custom.scss created.';
+}

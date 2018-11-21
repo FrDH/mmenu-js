@@ -1,181 +1,152 @@
-(function( $ ) {
+Mmenu.addons.navbars = function(
+	this : Mmenu
+) {
+	var navs = this.opts.navbars,
+		conf = this.conf.navbars;
 
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'navbars';
 
+	if ( typeof navs == 'undefined' )
+	{
+		return;
+	}
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
+	if ( !( navs instanceof Array ) )
+	{
+		navs = [ navs ];
+	}
 
-		//	setup: fired once per menu
-		setup: function()
-		{
-			var that = this,
-				navs = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
+	var _pos = {},
+		$pos = {};
 
-			glbl = $[ _PLUGIN_ ].glbl;
+	if ( !navs.length )
+	{
+		return;
+	}
 
-			if ( typeof navs == 'undefined' )
+	jQuery.each(
+		navs,
+		( n ) => {
+		
+			var opts = navs[ n ];
+
+			//	Extend shorthand options
+			if ( typeof opts == 'boolean' && opts )
 			{
-				return;
+				opts = {};
 			}
-
-			if ( !( navs instanceof Array ) )
+			if ( typeof opts != 'object' )
 			{
-				navs = [ navs ];
+				opts = {};
 			}
-
-			var _pos = {},
-				$pos = {};
-
-			if ( !navs.length )
+			if ( typeof opts.content == 'undefined' )
 			{
-				return;
+				opts.content = [ 'prev', 'title' ];
 			}
+			if ( !( opts.content instanceof Array ) )
+			{
+				opts.content = [ opts.content ];
+			}
+			opts = jQuery.extend( true, {}, this.opts.navbar, opts );
 
-			$.each(
-				navs,
-				function( n )
-				{
+			//	Create node
+			var $navbar = jQuery( '<div class="mm-navbar" />' );
 				
-					var opts = navs[ n ];
 
-					//	Extend shorthand options
-					if ( typeof opts == 'boolean' && opts )
-					{
-						opts = {};
-					}
-					if ( typeof opts != 'object' )
-					{
-						opts = {};
-					}
-					if ( typeof opts.content == 'undefined' )
-					{
-						opts.content = [ 'prev', 'title' ];
-					}
-					if ( !( opts.content instanceof Array ) )
-					{
-						opts.content = [ opts.content ];
-					}
-					opts = $.extend( true, {}, that.opts.navbar, opts );
+			//	Get height
+			var hght = opts.height;
 
-					//	Create node
-					var $navbar = $( '<div class="' + _c.navbar + '" />' );
-						
-
-					//	Get height
-					var hght = opts.height;
-
-					if ( typeof hght != 'number' )
-					{
-						hght = 1;
-					}
-					else
-					{
-						hght = Math.min( 4, Math.max( 1, hght ) );
-						if ( hght > 1 )
-						{
-							$navbar.addClass( _c.navbar + '_size-' + hght );
-						}
-					}
-
-					//	Get position
-					var poss = opts.position;
-
-					switch( poss )
-					{
-						case 'bottom':
-							break;
-
-						default:
-							poss = 'top';
-							break;
-					}
-
-					if ( !_pos[ poss ] )
-					{
-						_pos[ poss ] = 0;
-					}
-					_pos[ poss ] += hght;
-
-					if ( !$pos[ poss ] )
-					{
-						$pos[ poss ] = $( '<div class="' + _c.navbars + '_' + poss + '" />' );
-					}
-					$pos[ poss ].append( $navbar );
-
-
-					//	Add content
-					for ( var c = 0, l = opts.content.length; c < l; c++ )
-					{
-						var ctnt = $[ _PLUGIN_ ].addons[ _ADDON_ ][ opts.content[ c ] ] || null;
-						if ( ctnt )
-						{
-							ctnt.call( that, $navbar, opts, conf );
-						}
-						else
-						{
-							ctnt = opts.content[ c ];
-							if ( !( ctnt instanceof $ ) )
-							{
-								ctnt = $( opts.content[ c ] );
-							}
-							$navbar.append( ctnt );
-						}
-					}
-
-					//	Call type
-					var type = $[ _PLUGIN_ ].addons[ _ADDON_ ][ opts.type ] || null;
-					if ( type )
-					{
-						type.call( that, $navbar, opts, conf );
-					}
-
-					if ( $navbar.children( '.' + _c.btn ).length )
-					{
-						$navbar.addClass( _c.navbar + '_has-btns' );
-					}
-				}
-			);
-
-			//	Add to menu
-			this.bind( 'initMenu:after',
-				function()
+			if ( typeof hght != 'number' )
+			{
+				hght = 1;
+			}
+			else
+			{
+				hght = Math.min( 4, Math.max( 1, hght ) );
+				if ( hght > 1 )
 				{
-					for ( var poss in _pos )
-					{
-						this.$menu.addClass( _c.menu + '_navbar_' + poss + '-' + _pos[ poss ] );
-						this.$menu[ poss == 'bottom' ? 'append' : 'prepend' ]( $pos[ poss ] );
-					}
+					$navbar.addClass( 'mm-navbar_size-' + hght );
 				}
-			);
-		},
+			}
 
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
+			//	Get position
+			var poss = opts.position;
 
-			_c.add( _ADDON_ );
-		},
+			switch( poss )
+			{
+				case 'bottom':
+					break;
 
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
+				default:
+					poss = 'top';
+					break;
+			}
+
+			if ( !_pos[ poss ] )
+			{
+				_pos[ poss ] = 0;
+			}
+			_pos[ poss ] += hght;
+
+			if ( !$pos[ poss ] )
+			{
+				$pos[ poss ] = jQuery( '<div class="mm-navbars_' + poss + '" />' );
+			}
+			$pos[ poss ].append( $navbar );
 
 
-	//	Default options and configuration
-	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
-		breadcrumbs: {
-			separator 		: '/',
-			removeFirst 	: false
+			//	Add content
+			for ( var c = 0, l = opts.content.length; c < l; c++ )
+			{
+				var ctnt = Mmenu.addons.navbars[ opts.content[ c ] ] || null;
+				if ( ctnt )
+				{
+					ctnt.call( this, $navbar, opts, conf );
+				}
+				else
+				{
+					ctnt = opts.content[ c ];
+					if ( !( ctnt instanceof jQuery ) )
+					{
+						ctnt = jQuery( opts.content[ c ] );
+					}
+					$navbar.append( ctnt );
+				}
+			}
+
+			//	Call type
+			var type = Mmenu.addons.navbars[ opts.type ] || null;
+			if ( type )
+			{
+				type.call( this, $navbar, opts, conf );
+			}
+
+			if ( $navbar.children( '.mm-btn' ).length )
+			{
+				$navbar.addClass( 'mm-navbar_has-btns' );
+			}
 		}
-	};
-	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {};
+	);
+
+	//	Add to menu
+	this.bind( 'initMenu:after',
+		function(
+			this : Mmenu
+		) {
+			for ( var poss in _pos )
+			{
+				this.node.$menu.addClass( 'mm-menu_navbar_' + poss + '-' + _pos[ poss ] );
+				this.node.$menu[ poss == 'bottom' ? 'append' : 'prepend' ]( $pos[ poss ] );
+			}
+		}
+	);
+};
 
 
-	var _c, _d, _e, glbl;
-
-})( jQuery );
+//	Default options and configuration
+Mmenu.configs.navbars = {
+	breadcrumbs: {
+		separator 		: '/',
+		removeFirst 	: false
+	}
+};
+Mmenu.configs.classNames.navbars = {};

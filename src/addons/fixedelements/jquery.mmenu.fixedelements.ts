@@ -1,103 +1,85 @@
-(function( $ ) {
+Mmenu.addons.fixedElements = function(
+	this : Mmenu
+) {
+	if ( !this.opts.offCanvas )
+	{
+		return;
+	}
 
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'fixedElements';
+
+	var opts = this.opts.fixedElements,
+		conf = this.conf.fixedElements;
+
+	var _fixd 	: string,
+		_stck 	: string, 
+		$fixd	: any,		//	1) Should be type JQuery, but Typescript doesn't understand
+		$stck 	: JQuery;
 
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
+	this.bind( 'setPage:after',
+		function( 
+			this	: Mmenu,
+			$page	: JQuery
+		) {
+			//	Fixed elements
+			_fixd = this.conf.classNames.fixedElements.fixed;
+			$fixd = $page.find( '.' + _fixd );
 
-		//	setup: fired once per menu
-		setup: function()
-		{
-			if ( !this.opts.offCanvas )
+			Mmenu.refactorClass( $fixd, _fixd, 'mm-slideout' );
+
+			$fixd[ conf.elemInsertMethod ]( conf.elemInsertSelector );	//	1
+
+			//	Sticky elements
+			_stck = this.conf.classNames.fixedElements.sticky;
+			$stck = $page.find( '.' + _stck );
+
+			Mmenu.refactorClass( $stck, _stck, 'mm-sticky' );
+
+			$stck = $page.find( '.mm-sticky' );
+		}
+	);
+	
+	this.bind( 'open:start',
+		function(
+			this : Mmenu
+		) {
+			if ( $stck.length )
 			{
-				return;
-			}
-
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
-
-			glbl = $[ _PLUGIN_ ].glbl;
-
-
-			var setPage = function( $page )
-			{
-				//	Fixed elements
-				var _fixd = this.conf.classNames[ _ADDON_ ].fixed,
-					$fixd = $page.find( '.' + _fixd );
-
-				this.__refactorClass( $fixd, _fixd, _c.slideout );
-				$fixd[ conf.elemInsertMethod ]( conf.elemInsertSelector );
-
-				//	Sticky elements
-				var _stck = this.conf.classNames[ _ADDON_ ].sticky,
-					$stck = $page.find( '.' + _stck );
-
-				this.__refactorClass( $stck, _stck, _c.sticky );
-
-				$stck = $page.find( '.' + _c.sticky );
-
-				if ( $stck.length )
+				if ( jQuery('html').css( 'overflow' ) == 'hidden' )
 				{
-					this.bind( 
-						'open:start',
+					var _s = jQuery(window).scrollTop() + conf.sticky.offset;
+					$stck.each(
 						function()
 						{
-							if ( glbl.$html.css( 'overflow' ) == 'hidden' )
-							{
-								var _s = glbl.$wndw.scrollTop() + conf.sticky.offset;
-								$stck.each(
-									function()
-									{
-										$(this).css( 'top', parseInt( $(this).css( 'top' ), 10 ) + _s );
-									}
-								);
-							}
-						}
-					);
-					this.bind(
-						'close:finish',
-						function()
-						{
-							$stck.css( 'top', '' );
+							jQuery(this).css( 'top', parseInt( jQuery(this).css( 'top' ), 10 ) + _s );
 						}
 					);
 				}
-			};
-
-			this.bind( 'setPage:after', setPage );
-		},
-
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
-
-			_c.add( 'sticky' );
-		},
-
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
+			}
+		}
+	);
+	this.bind( 'close:finish',
+		function(
+			this : Mmenu
+		) {
+			if ( $stck.length )
+			{
+				$stck.css( 'top', '' );
+			}
+		}
+	);
+};
 
 
-	//	Default options and configuration
-	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
-		sticky 	: {
-			offset: 0
-		},
-		elemInsertMethod	: 'appendTo',
-		elemInsertSelector	: 'body'
-	};
-	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ] = {
-		fixed 	: 'Fixed',
-		sticky	: 'Sticky'
-	};
-
-
-	var _c, _d, _e, glbl;
-
-})( jQuery );
+//	Default options and configuration
+Mmenu.configs.fixedElements = {
+	sticky 	: {
+		offset: 0
+	},
+	elemInsertMethod	: 'appendTo',
+	elemInsertSelector	: 'body'
+};
+Mmenu.configs.classNames.fixedElements = {
+	fixed 	: 'Fixed',
+	sticky	: 'Sticky'
+};

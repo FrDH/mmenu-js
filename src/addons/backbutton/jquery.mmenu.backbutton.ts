@@ -1,139 +1,105 @@
-(function( $ ) {
+Mmenu.addons.backButton = function(
+	this : Mmenu
+) {
+	if ( !this.opts.offCanvas )
+	{
+		return;
+	}
 
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'backButton';
-
-
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-
-		//	setup: fired once per menu
-		setup: function()
-		{
-			if ( !this.opts.offCanvas )
-			{
-				return;
-			}
-
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
-
-			glbl = $[ _PLUGIN_ ].glbl;
+	var opts = this.opts.backButton,
+		conf = this.conf.backButton;
 
 
-			//	Extend shorthand options
-			if ( typeof opts == 'boolean' )
-			{
-				opts = {
-					close: opts
-				};
-			}
-			if ( typeof opts != 'object' )
-			{
-				opts = {};
-			}
-			opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
-			
-			var _menu  = '#' + this.$menu.attr( 'id' );
 
-			//	Close menu
-			if ( opts.close )
-			{
+	//	Extend shorthand options
+	if ( typeof opts == 'boolean' )
+	{
+		opts = {
+			close: opts
+		};
+	}
+	if ( typeof opts != 'object' )
+	{
+		opts = {};
+	}
+	opts = jQuery.extend( true, {}, Mmenu.options.backButton, opts );
+	
+	var _menu  = '#' + this.node.$menu.attr( 'id' );
 
-				var states = [];
+	//	Close menu
+	if ( opts.close )
+	{
 
-				function setStates()
-				{
-					states = [ _menu ];
-					this.$pnls.children( '.' + _c.panel + '_opened-parent' )
-						.add( that.$pnls.children( '.' + _c.panel + '_opened' ) )
-						.each(
-							function()
-							{
-								states.push( '#' + $(this).attr( 'id' ) );
-							}
-						);
-				}
+		var states = [];
 
-				this.bind( 'open:finish', function() {
-					history.pushState( null, document.title, _menu );
-				});
-				this.bind( 'open:finish', setStates );
-				this.bind( 'openPanel:finish', setStates );
-				this.bind( 'close:finish',
+		function setStates(
+			this : Mmenu
+		) {
+			states = [ _menu ];
+			this.node.$pnls.children( '.mm-panel_opened-parent' )
+				.add( this.node.$pnls.children( '.mm-panel_opened' ) )
+				.each(
 					function()
 					{
-						states = [];
-						history.back();
-						history.pushState( null, document.title, location.pathname + location.search );
+						states.push( '#' + $(this).attr( 'id' ) );
 					}
 				);
+		}
 
-				$(window).on( 'popstate',
-					function( e )
+		this.bind( 'open:finish', function() {
+			history.pushState( null, document.title, _menu );
+		});
+		this.bind( 'open:finish'		, setStates );
+		this.bind( 'openPanel:finish'	, setStates );
+		this.bind( 'close:finish',
+			function()
+			{
+				states = [];
+				history.back();
+				history.pushState( null, document.title, location.pathname + location.search );
+			}
+		);
+
+		jQuery(window).on( 'popstate',
+			( e ) => {
+				if ( this.vars.opened )
+				{
+					if ( states.length )
 					{
-						if ( that.vars.opened )
-						{
-							if ( states.length )
-							{
-								states = states.slice( 0, -1 );
-								var hash = states[ states.length - 1 ];
+						states = states.slice( 0, -1 );
+						var hash = states[ states.length - 1 ];
 
-								if ( hash == _menu )
-								{
-									that.close();
-								}
-								else
-								{
-									that.openPanel( $( hash ) );
-									history.pushState( null, document.title, _menu );
-								}
-							}
+						if ( hash == _menu )
+						{
+							this.close();
+						}
+						else
+						{
+							this.openPanel( $( hash ) );
+							history.pushState( null, document.title, _menu );
 						}
 					}
-				);
+				}
 			}
+		);
+	}
 
-			if ( opts.open )
-			{
-				$(window).on( 'popstate',
-					function( e )
-					{
-						if ( !that.vars.opened && location.hash == _menu )
-						{
-							that.open();
-						}
-					}
-				);
+	if ( opts.open )
+	{
+		jQuery(window).on( 'popstate',
+			( e ) => {
+				if ( !this.vars.opened && location.hash == _menu )
+				{
+					this.open();
+				}
 			}
-		},
-
-		//	add: fired once per page load
-		add: function()
-		{
-			if ( !window.history || !window.history.pushState )
-			{
-				$[ _PLUGIN_ ].addons[ _ADDON_ ].setup = function() {};
-				return;
-			}
-
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
-		},
-
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
+		);
+	}
+};
 
 
-	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		close 	: false,
-		open 	: false
-	};
-
-
-	var _c, _d, _e, glbl;
-
-})( jQuery );
+//	Default options and configuration
+Mmenu.options.backButton = {
+	close 	: false,
+	open 	: false
+};

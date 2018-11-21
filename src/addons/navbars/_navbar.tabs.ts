@@ -1,68 +1,60 @@
-(function( $ ) {
+Mmenu.addons.navbars.tabs = function( 
+	this	: Mmenu,
+	$navbar	: JQuery, 
+	opts	: iLooseObject, 
+	conf	: iLooseObject
+) {
 
-	const _PLUGIN_ 	= 'mmenu';
-	const _ADDON_  	= 'navbars';
-	const _CONTENT_	= 'tabs';
+	var $tabs = $navbar.children( 'a' );
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ][ _CONTENT_ ] = function( $navbar, opts, conf )
-	{
-		var _c = $[ _PLUGIN_ ]._c,
-			_d = $[ _PLUGIN_ ]._d,
-			_e = $[ _PLUGIN_ ]._e;
+	$navbar
+		.addClass( 'mm-navbar_tabs' )
+		.parent()
+		.addClass( 'mm-navbars_has-tabs' );
 
-		var that = this;
-		var $tabs = $navbar.children( 'a' );
+	//	TODO: push to this.clck ?
+	$tabs
+		.on( 'click.mm-navbars',
+			( e ) => {
+				e.preventDefault();
 
-		$navbar
-			.addClass( _c.navbar + '_tabs' )
-			.parent()
-			.addClass( _c.navbars + '_has-tabs' );
-
-		//	TODO: better via clickAnchor?
-		$tabs
-			.on( _e.click + '-' + _ADDON_,
-				function( e )
+				var $tab = jQuery(e.target);
+				if ( $tab.hasClass( 'mm-navbar__tab_selected' ) )
 				{
-					e.preventDefault();
-
-					var $tab = $(this);
-					if ( $tab.hasClass( _c.navbar + '__tab_selected' ) )
-					{
-						e.stopImmediatePropagation();
-						return;
-					}
-
-					try
-					{
-						// that.__openPanelWoAnimation( $( $tab.attr( 'href' ) ) );
-						that.openPanel( $( $tab.attr( 'href' ) ), false );
-						e.stopImmediatePropagation();
-					}
-					catch( err ) {}
+					e.stopImmediatePropagation();
+					return;
 				}
-			);
 
-		function selectTab( $panel )
-		{
-			$tabs.removeClass( _c.navbar + '__tab_selected' );
-
-			var $tab = $tabs.filter( '[href="#' + $panel.attr( 'id' ) + '"]' );
-			if ( $tab.length )
-			{
-				$tab.addClass( _c.navbar + '__tab_selected' );
+				try
+				{
+					this.openPanel( jQuery( $tab.attr( 'href' ) ), false );
+					e.stopImmediatePropagation();
+				}
+				catch( err ) {}
 			}
-			else
+		);
+
+	function selectTab( 
+		this	: Mmenu,
+		$panel	: JQuery
+	) {
+		$tabs.removeClass( 'mm-navbar__tab_selected' );
+
+		var $tab = $tabs.filter( '[href="#' + $panel.attr( 'id' ) + '"]' );
+		if ( $tab.length )
+		{
+			$tab.addClass( 'mm-navbar__tab_selected' );
+		}
+		else
+		{
+			var $parent = $panel.data( 'mm-parent' );
+			if ( $parent && $parent.length )
 			{
-				var $parent = $panel.data( _d.parent );
-				if ( $parent && $parent.length )
-				{
-					selectTab( $parent.closest( '.' + _c.panel ) );
-				}
+				selectTab.call( this, $parent.closest( '.mm-panel' ) );
 			}
 		}
+	}
 
-		this.bind( 'openPanel:start', selectTab );
-			
-	};
-
-})( jQuery );
+	this.bind( 'openPanel:start', selectTab );
+		
+};

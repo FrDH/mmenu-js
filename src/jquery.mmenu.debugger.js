@@ -10,9 +10,9 @@
 	
 	if ( typeof console == 'undefined' )
 	{
-		return false;
+		return;
 	}
-
+return;
 	var _cns = document[ _PLUGIN_ + '_console' ] || console || { info: function() {}, log: function() {}, warn: function() {} };
 
 	var glbl = $[ _PLUGIN_ ].glbl,

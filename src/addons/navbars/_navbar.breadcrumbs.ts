@@ -1,99 +1,92 @@
-(function( $ ) {
+Mmenu.addons.navbars.breadcrumbs = function( 
+	this	: Mmenu,
+	$navbar	: JQuery, 
+	opts	: iLooseObject, 
+	conf	: iLooseObject
+) {
 
-	const _PLUGIN_ 	= 'mmenu';
-	const _ADDON_  	= 'navbars';
-	const _CONTENT_	= 'breadcrumbs';
+	//	Add content
+	var $crumbs = jQuery('<span class="mm-navbar__breadcrumbs" />').appendTo( $navbar );
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ][ _CONTENT_ ] = function( $navbar, opts, conf )
-	{
-		var that = this;
-
-
-		//	Get vars
-		var _c = $[ _PLUGIN_ ]._c,
-			_d = $[ _PLUGIN_ ]._d;
-
-		_c.add( 'separator' );
-
-
-		//	Add content
-		var $crumbs = $('<span class="' + _c.navbar + '__breadcrumbs" />').appendTo( $navbar );
-
-		this.bind( 'initNavbar:after',
-			function( $panel )
+	this.bind( 'initNavbar:after',
+		function( 
+			this	: Mmenu,
+			$panel	: JQuery
+		) {
+			if ( $panel.children( '.mm-navbar' ).children( '.mm-navbar__breadcrumbs' ).length )
 			{
-				if ( $panel.children( '.' + _c.navbar ).children( '.' + _c.navbar + '__breadcrumbs' ).length )
+				return;
+			}
+
+			$panel.removeClass( 'mm-panel_has-navbar' );
+				
+			var crumbs = [],
+				$bcrb = jQuery( '<span class="mm-navbar__breadcrumbs"></span>' ),
+				$crnt = $panel,
+				first = true;
+
+			while ( $crnt && $crnt.length )
+			{
+				if ( !$crnt.is( '.mm-panel' ) )
 				{
-					return;
+					$crnt = $crnt.closest( '.mm-panel' );
 				}
 
-				$panel.removeClass( _c.panel + '_has-navbar' );
-					
-				var crumbs = [],
-					$bcrb = $( '<span class="' + _c.navbar + '__breadcrumbs"></span>' ),
-					$crnt = $panel,
-					first = true;
-
-				while ( $crnt && $crnt.length )
+				if ( !$crnt.parent( '.mm-listitem_vertical' ).length )
 				{
-					if ( !$crnt.is( '.' + _c.panel ) )
+					var text = $crnt.children( '.mm-navbar' ).children( '.mm-navbar__title' ).text();
+					if ( text.length )
 					{
-						$crnt = $crnt.closest( '.' + _c.panel );
+						crumbs.unshift( first ? '<span>' + text + '</span>' : '<a href="#' + $crnt.attr( 'id' ) + '">' + text + '</a>' );
 					}
 
-					if ( !$crnt.parent( '.' + _c.listitem + '_vertical' ).length )
+					first = false;
+				}
+				$crnt = $crnt.data( 'mm-parent' );
+			}
+			if ( conf.breadcrumbs.removeFirst )
+			{
+				crumbs.shift();
+			}
+
+			$bcrb
+				.append( crumbs.join( '<span class="mm-separator">' + conf.breadcrumbs.separator + '</span>' ) )
+				.appendTo( $panel.children( '.mm-navbar' ) );
+
+		}
+	);
+
+	//	Update for to opened panel
+	this.bind( 'openPanel:start',
+		function( 
+			this	: Mmenu,
+			$panel	: JQuery
+		) {
+			var $bcrb = $panel.find( '.mm-navbar__breadcrumbs' );
+			if ( $bcrb.length )
+			{
+				$crumbs.html( $bcrb.html() || '' );
+			}
+		}
+	);
+
+
+	//	Add screenreader / aria support
+	this.bind( 'initNavbar:after:sr-aria',
+		function( 
+			this	: Mmenu,
+			$panel	: JQuery
+		) {
+			$panel
+				.children( '.mm-navbar' )
+				.children( '.mm-breadcrumbs' )
+				.children( 'a' )
+				.each(
+					function()
 					{
-						var text = $crnt.children( '.' + _c.navbar ).children( '.' + _c.navbar + '__title' ).text();
-						if ( text.length )
-						{
-							crumbs.unshift( first ? '<span>' + text + '</span>' : '<a href="#' + $crnt.attr( 'id' ) + '">' + text + '</a>' );
-						}
-
-						first = false;
+						Mmenu.sr_aria( jQuery(this), 'owns', jQuery(this).attr( 'href' ).slice( 1 ) );
 					}
-					$crnt = $crnt.data( _d.parent );
-				}
-				if ( conf.breadcrumbs.removeFirst )
-				{
-					crumbs.shift();
-				}
-
-				$bcrb
-					.append( crumbs.join( '<span class="' + _c.separator + '">' + conf.breadcrumbs.separator + '</span>' ) )
-					.appendTo( $panel.children( '.' + _c.navbar ) );
-
-			}
-		);
-
-		//	Update for to opened panel
-		this.bind( 'openPanel:start',
-			function( $panel )
-			{
-				var $bcrb = $panel.find( '.' + _c.navbar + '__breadcrumbs' );
-				if ( $bcrb.length )
-				{
-					$crumbs.html( $bcrb.html() || '' );
-				}
-			}
-		);
-
-
-		//	Add screenreader / aria support
-		this.bind( 'initNavbar:after:sr-aria',
-			function( $panel )
-			{
-				$panel
-					.children( '.' + _c.navbar )
-					.children( '.' + _c.breadcrumbs )
-					.children( 'a' )
-					.each(
-						function()
-						{
-							that.__sr_aria( $(this), 'owns', $(this).attr( 'href' ).slice( 1 ) );
-						}
-					);
-			}
-		);
-	};
-
-})( jQuery );
+				);
+		}
+	);
+};

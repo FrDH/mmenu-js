@@ -1,259 +1,265 @@
-(function( $ ) {
-
-	const _PLUGIN_ = 'mmenu';
-	const _ADDON_  = 'screenReader';
-
-
-	$[ _PLUGIN_ ].addons[ _ADDON_ ] = {
-
-		//	setup: fired once per menu
-		setup: function()
-		{
-			var that = this,
-				opts = this.opts[ _ADDON_ ],
-				conf = this.conf[ _ADDON_ ];
-
-			glbl = $[ _PLUGIN_ ].glbl;
+Mmenu.addons.screenReader = function( 
+	this : Mmenu
+) {
+	var opts = this.opts.screenReader,
+		conf = this.conf.screenReader;
 
 
-			//	Extend shorthand options
-			if ( typeof opts == 'boolean' )
-			{
-				opts = {
-					aria: opts,
-					text: opts
-				};
+	//	Extend shorthand options
+	if ( typeof opts == 'boolean' )
+	{
+		opts = {
+			aria: opts,
+			text: opts
+		};
+	}
+	if ( typeof opts != 'object' )
+	{
+		opts = {};
+	}
+	opts = this.opts.screenReader = jQuery.extend( true, {}, Mmenu.options.screenReader, opts );
+
+
+
+	//	Aria
+	if ( opts.aria )
+	{
+
+		//	Add screenreader / aria hooks for add-ons
+		//	In orde to keep this list short, only extend hooks that are actually used by other add-ons
+		//	TODO: move to the specific add-on
+		this.bind( 'initAddons:after',
+			function(
+				this : Mmenu
+			) {
+				this.bind( 'initMenu:after' 	, function() { this.trigger( 'initMenu:after:sr-aria' 	) });
+				this.bind( 'initNavbar:after'	, function() { this.trigger( 'initNavbar:after:sr-aria'	, arguments[ 0 ]	) });
+				this.bind( 'openPanel:start'	, function() { this.trigger( 'openPanel:start:sr-aria'	, arguments[ 0 ]	) });
+				this.bind( 'close:start'		, function() { this.trigger( 'close:start:sr-aria' 		) });
+				this.bind( 'close:finish'		, function() { this.trigger( 'close:finish:sr-aria' 	) });
+				this.bind( 'open:start'			, function() { this.trigger( 'open:start:sr-aria' 		) });
+				this.bind( 'initOpened:after'	, function() { this.trigger( 'initOpened:after:sr-aria'	) });
 			}
-			if ( typeof opts != 'object' )
-			{
-				opts = {};
-			}
-			opts = this.opts[ _ADDON_ ] = $.extend( true, {}, $[ _PLUGIN_ ].defaults[ _ADDON_ ], opts );
+		);
 
 
-
-			//	Aria
-			if ( opts.aria )
-			{
-
-				//	Add screenreader / aria hooks for add-ons
-				//	In orde to keep this list short, only extend hooks that are actually used by other add-ons
-				this.bind( 'initAddons:after',
-					function()
-					{
-						this.bind( 'initMenu:after' 	, function() { this.trigger( 'initMenu:after:sr-aria' 	) });
-						this.bind( 'initNavbar:after'	, function() { this.trigger( 'initNavbar:after:sr-aria'	, arguments[ 0 ]	) });
-						this.bind( 'openPanel:start'	, function() { this.trigger( 'openPanel:start:sr-aria'	, arguments[ 0 ]	) });
-						this.bind( 'close:start'		, function() { this.trigger( 'close:start:sr-aria' 		) });
-						this.bind( 'close:finish'		, function() { this.trigger( 'close:finish:sr-aria' 	) });
-						this.bind( 'open:start'			, function() { this.trigger( 'open:start:sr-aria' 		) });
-						this.bind( 'initOpened:after'	, function() { this.trigger( 'initOpened:after:sr-aria'	) });
-					}
-				);
-
-
-				//	Update aria-hidden for hidden / visible listitems
-				this.bind( 'updateListview',
-					function()
-					{
-						this.$pnls
-							.find( '.' + _c.listview )
-							.children()
-							.each(
-								function()
-								{
-									that.__sr_aria( $(this), 'hidden', $(this).is( '.' + _c.hidden ) );
-								}
-							);
-					}
-				);
-
-
-				//	Update aria-hidden for the panels when opening a panel
-				this.bind( 'openPanel:start',
-					function( $panel )
-					{
-						var $hidden = this.$menu
-							.find( '.' + _c.panel )
-							.not( $panel )
-							.not( $panel.parents( '.' + _c.panel ) );
-
-						var $shown = $panel.add(
-							$panel
-								.find( '.' + _c.listitem + '_vertical .' + _c.listitem + '_opened' )
-								.children( '.' + _c.panel )
-						);
-
-						this.__sr_aria( $hidden, 'hidden', true );
-						this.__sr_aria( $shown, 'hidden', false );
-					}
-				);
-				this.bind( 'closePanel',
-					function( $panel )
-					{
-						this.__sr_aria( $panel, 'hidden', true );
-					}
-				);
-
-
-				//	Add aria-haspopup and aria-owns to prev- and next buttons
-				this.bind( 'initPanels:after',
-					function( $panels )
-					{
-						var $btns = $panels
-							.find( '.' + _c.btn )
-							.each(
-								function()
-								{
-									that.__sr_aria( $(this), 'owns', $(this).attr( 'href' ).replace( '#', '' ) );
-								}
-							);
-
-						this.__sr_aria( $btns, 'haspopup', true );
-					}
-				);
-
-
-				//	Add aria-hidden for navbars in panels
-				this.bind( 'initNavbar:after',
-					function( $panel )
-					{
-						var $navbar = $panel.children( '.' + _c.navbar );
-						this.__sr_aria( $navbar, 'hidden', !$panel.hasClass( _c.panel + '_has-navbar' ) );
-					}
-				);
-
-
-				//	Text
-				if ( opts.text )
-				{
-					//	Add aria-hidden to item text if the full-width next button has screen reader text
-					// this.bind( 'initlistview:after',
-					// 	function( $panel )
-					// 	{
-						
-					// 		var $span = $panel
-					// 			.find( '.' + _c.listview )
-					// 			.find( '.' + _c.btn + '_fullwidth' )
-					// 			.parent()
-					// 			.children( 'span' );
-
-					// 		this.__sr_aria( $span, 'hidden', true );
-					// 	}
-					// );
-
-
-					//	Add aria-hidden to titles in navbars
-					if ( this.opts.navbar.titleLink == 'parent' )
-					{
-						this.bind( 'initNavbar:after',
-							function( $panel )
-							{
-								var $navbar = $panel.children( '.' + _c.navbar ),
-									hidden  = ( $navbar.children( '.' + _c.btn + '_prev' ).length ) ? true : false;
-
-								this.__sr_aria( $navbar.children( '.' + _c.title ), 'hidden', hidden );
-							}
-						);
-					}
-				}
-			}
-
-
-			//	Text
-			if ( opts.text )
-			{
-
-				//	Add screenreader / text hooks for add-ons
-				//	In orde to keep this list short, only extend hooks that are actually used by other add-ons
-				this.bind( 'initAddons:after',
-					function()
-					{
-						this.bind( 'setPage:after' 		, function() { this.trigger( 'setPage:after:sr-text' 	, arguments[ 0 ]	) });
-						this.bind( 'initBlocker:after'	, function() { this.trigger( 'initBlocker:after:sr-text' 					) });
-					}
-				);
-
-
-				//	Add text to the prev-buttons
-				this.bind( 'initNavbar:after',
-					function( $panel )
-					{
-						var $navbar = $panel.children( '.' + _c.navbar ),
-							_text = this.i18n( conf.text.closeSubmenu );
-
-						$navbar.children( '.' + _c.btn + '_prev' ).html( this.__sr_text( _text ) );
-					}
-				);
-
-
-				//	Add text to the next-buttons
-				this.bind( 'initListview:after',
-					function( $panel )
-					{
-						var $parent = $panel.data( _d.parent );
-						if ( $parent && $parent.length )
+		//	Update aria-hidden for hidden / visible listitems
+		this.bind( 'updateListview',
+			function(
+				this : Mmenu
+			) {
+				var that = this;
+				this.node.$pnls
+					.find( '.mm-listview' )
+					.children()
+					.each(
+						function()
 						{
-							var $next = $parent.children( '.' + _c.btn + '_next' ),
-								_text = this.i18n( conf.text[ $next.parent().is( '.' + _c.listitem + '_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
+							Mmenu.sr_aria( jQuery(this), 'hidden', jQuery(this).is( '.mm-hidden' ) );
+						}
+					);
+			}
+		);
 
-							$next.append( that.__sr_text( _text ) );
-						}			
+
+		//	Update aria-hidden for the panels when opening a panel
+		this.bind( 'openPanel:start',
+			function( 
+				this 	: Mmenu,
+				$panel 	: JQuery
+			) {
+				var $hidden = this.node.$menu
+					.find( '.mm-panel' )
+					.not( $panel )
+					.not( $panel.parents( '.mm-panel' ) );
+
+				var $shown = $panel.add(
+					$panel
+						.find( '.mm-listitem_vertical .mm-listitem_opened' )
+						.children( '.mm-panel' )
+				);
+
+				Mmenu.sr_aria( $hidden, 'hidden', true );
+				Mmenu.sr_aria( $shown, 'hidden', false );
+			}
+		);
+		this.bind( 'closePanel',
+			function( 
+				this 	: Mmenu,
+				$panel	: JQuery
+			) {
+				Mmenu.sr_aria( $panel, 'hidden', true );
+			}
+		);
+
+
+		//	Add aria-haspopup and aria-owns to prev- and next buttons
+		this.bind( 'initPanels:after',
+			function( 
+				this 	: Mmenu,
+				$panels : JQuery
+			) {
+				var that = this;
+				var $btns = $panels
+					.find( '.mm-btn' )
+					.each(
+						function()
+						{
+							Mmenu.sr_aria( jQuery(this), 'owns', jQuery(this).attr( 'href' ).replace( '#', '' ) );
+						}
+					);
+
+				Mmenu.sr_aria( $btns, 'haspopup', true );
+			}
+		);
+
+
+		//	Add aria-hidden for navbars in panels
+		this.bind( 'initNavbar:after',
+			function( 
+				this 	: Mmenu,
+				$panel	: JQuery
+			) {
+				var $navbar = $panel.children( '.mm-navbar' );
+				Mmenu.sr_aria( $navbar, 'hidden', !$panel.hasClass( 'mm-panel_has-navbar' ) );
+			}
+		);
+
+
+		//	Text
+		if ( opts.text )
+		{
+			//	Add aria-hidden to titles in navbars
+			if ( this.opts.navbar.titleLink == 'parent' )
+			{
+				this.bind( 'initNavbar:after',
+					function(
+						this 	: Mmenu, 
+						$panel	: JQuery
+					) {
+						var $navbar = $panel.children( '.mm-navbar' ),
+							hidden  = ( $navbar.children( '.mm-btn_prev' ).length ) ? true : false;
+
+						Mmenu.sr_aria( $navbar.children( '.mm-title' ), 'hidden', hidden );
 					}
 				);
 			}
-		},
-
-		//	add: fired once per page load
-		add: function()
-		{
-			_c = $[ _PLUGIN_ ]._c;
-			_d = $[ _PLUGIN_ ]._d;
-			_e = $[ _PLUGIN_ ]._e;
-
-			_c.add( 'sronly' );
-		},
-
-		//	clickAnchor: prevents default behavior when clicking an anchor
-		clickAnchor: function( $a, inMenu ) {}
-	};
-
-
-	//	Default options and configuration
-	$[ _PLUGIN_ ].defaults[ _ADDON_ ] = {
-		aria: true,
-		text: true
-	};
-	$[ _PLUGIN_ ].configuration[ _ADDON_ ] = {
-		text: {
-			closeMenu       : 'Close menu',
-			closeSubmenu    : 'Close submenu',
-			openSubmenu     : 'Open submenu',
-			toggleSubmenu   : 'Toggle submenu'
 		}
-	};
+	}
 
 
-	//	Methods
-	$[ _PLUGIN_ ].prototype.__sr_aria = function( $elem, attr, value )
+	//	Text
+	if ( opts.text )
 	{
-		$elem
-			.prop( 'aria-' + attr, value )
-			[ value ? 'attr' : 'removeAttr' ]( 'aria-' + attr, value );
-	};
-	$[ _PLUGIN_ ].prototype.__sr_role = function( $elem, value )
+
+		//	Add screenreader / text hooks for add-ons
+		//	In orde to keep this list short, only extend hooks that are actually used by other add-ons
+		//	TODO: move to specific add-on
+		this.bind( 'initAddons:after',
+			function(
+				this : Mmenu
+			) {
+				this.bind( 'setPage:after' 		, function() { this.trigger( 'setPage:after:sr-text' 	, arguments[ 0 ]	) });
+				this.bind( 'initBlocker:after'	, function() { this.trigger( 'initBlocker:after:sr-text' 					) });
+			}
+		);
+
+
+		//	Add text to the prev-buttons
+		this.bind( 'initNavbar:after',
+			function( 
+				this 	: Mmenu,
+				$panel	: JQuery
+			) {
+				var $navbar = $panel.children( '.mm-navbar' ),
+					text = this.i18n( conf.text.closeSubmenu );
+
+				$navbar.children( '.mm-btn_prev' ).html( Mmenu.sr_text( text ) );
+			}
+		);
+
+
+		//	Add text to the next-buttons
+		this.bind( 'initListview:after',
+			function( 
+				this 	: Mmenu,
+				$panel	: JQuery
+			) {
+				var $parent = $panel.data( 'mm-parent' );
+				if ( $parent && $parent.length )
+				{
+					var $next = $parent.children( '.mm-btn_next' ),
+						text = this.i18n( conf.text[ $next.parent().is( '.mm-listitem_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
+
+					$next.append( Mmenu.sr_text( text ) );
+				}			
+			}
+		);
+	}
+};
+
+
+//	Default options and configuration
+Mmenu.options.screenReader = {
+	aria: true,
+	text: true
+};
+Mmenu.configs.screenReader = {
+	text: {
+		closeMenu       : 'Close menu',
+		closeSubmenu    : 'Close submenu',
+		openSubmenu     : 'Open submenu',
+		toggleSubmenu   : 'Toggle submenu'
+	}
+};
+
+
+//	Methods
+(function() {
+	var attr = function( $elem, attr, value)
 	{
-		$elem
-			.prop( 'role', value )
-			[ value ? 'attr' : 'removeAttr' ]( 'role', value );
-	};
-	$[ _PLUGIN_ ].prototype.__sr_text = function( text )
+		$elem.prop( attr, value );
+		if ( value )
+		{
+			$elem.attr( attr, value );
+		}
+		else
+		{
+			$elem.removeAttr( attr );
+		}
+	}
+
+	/**
+	  * Add aria (property and) attribute to a HTML element.
+	  *
+	  * @param {JQuery} $elem 	The node to add the attribute to.
+	  * @param {string}	name	The (non-aria-prefixed) attribute name.
+	  * @param {string} value	The attribute value.
+	  */
+	Mmenu.sr_aria = function( $elem, name, value )
 	{
-		return '<span class="' + _c.sronly + '">' + text + '</span>';
+		attr( $elem, 'aria-' + name, value );
 	};
 
+	/**
+	  * Add role attribute to a HTML element.
+	  *
+	  * @param {JQuery} $elem 	The node to add the attribute to.
+	  * @param {string} value	The attribute value.
+	  */
+	Mmenu.sr_role = function( $elem, value )
+	{
+		attr( $elem, 'role', value );
+	};
 
-	var _c, _d, _e, glbl;
-
-
-})( jQuery );
+	/**
+	  * Wrap a text in a screen-reader-only node.
+	  *
+	  * @param 	{string} text	The text to wrap.
+	  * @return	{string}		The wrapped text.
+	  */
+	Mmenu.sr_text = function( text )
+	{
+		return '<span class="mm-sronly">' + text + '</span>';
+	};
+})();
