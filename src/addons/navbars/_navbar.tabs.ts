@@ -1,8 +1,8 @@
 Mmenu.addons.navbars.tabs = function( 
 	this	: Mmenu,
 	$navbar	: JQuery, 
-	opts	: iLooseObject, 
-	conf	: iLooseObject
+	opts	: mmLooseObject, 
+	conf	: mmLooseObject
 ) {
 
 	var $tabs = $navbar.children( 'a' );
@@ -12,13 +12,12 @@ Mmenu.addons.navbars.tabs = function(
 		.parent()
 		.addClass( 'mm-navbars_has-tabs' );
 
-	//	TODO: push to this.clck ?
 	$tabs
 		.on( 'click.mm-navbars',
 			( e ) => {
 				e.preventDefault();
 
-				var $tab = jQuery(e.target);
+				var $tab = jQuery(e.currentTarget);
 				if ( $tab.hasClass( 'mm-navbar__tab_selected' ) )
 				{
 					e.stopImmediatePropagation();

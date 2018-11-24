@@ -1,8 +1,8 @@
 Mmenu.addons.navbars.breadcrumbs = function( 
 	this	: Mmenu,
 	$navbar	: JQuery, 
-	opts	: iLooseObject, 
-	conf	: iLooseObject
+	opts	: mmLooseObject, 
+	conf	: mmLooseObject
 ) {
 
 	//	Add content

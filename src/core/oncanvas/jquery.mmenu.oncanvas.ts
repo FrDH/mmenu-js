@@ -12,9 +12,9 @@
  */
 
 
-/*
-	jQuery plugin
-*/
+/**
+ * jQuery plugin mmenu.
+ */
 jQuery.fn[ 'mmenu' ] = function( opts, conf )
 {
 	var $result = jQuery();
@@ -28,12 +28,12 @@ jQuery.fn[ 'mmenu' ] = function( opts, conf )
 			}
 
 			//	Create the menu
-			var _menu = new Mmenu( $menu, opts, conf );
+			var menu = new Mmenu( $menu, opts, conf );
 
 			//	Store the API
-			_menu.node.$menu.data( 'mmenu', _menu.API );
+			menu.node.$menu.data( 'mmenu', menu.API );
 
-			$result = $result.add( _menu.node.$menu );
+			$result = $result.add( menu.node.$menu );
 		}
 	);
 
@@ -41,16 +41,16 @@ jQuery.fn[ 'mmenu' ] = function( opts, conf )
 };
 
 
-/*
-	Class
-*/
+/**
+ * Class for a mobile menu.
+ */
 class Mmenu {
 
 	//	Plugin version
 	static version : string = '8.0.0'
 
 	//	Default options for the plugin
-	static options : iLooseObject = {
+	static options : mmOptions = {
 		hooks 				: {},
 		extensions			: [],
 		wrappers			: [],
@@ -68,7 +68,7 @@ class Mmenu {
 	}
 
 	//	Default configuration for the plugin
-	static configs : iLooseObject = {
+	static configs : mmConfigs = {
 		classNames			: {
 			divider				: 'Divider',
 			inset 				: 'Inset',
@@ -87,29 +87,30 @@ class Mmenu {
 	}
 
 	//	Add-ons and wrappers
-	static addons  	: iLooseObject	= {}
-	static wrappers : iLooseObject	= {}
+	static addons  	: mmLooseObject	= {}
+	static wrappers : mmLooseObject	= {}
 
 	//	Storage object for nodes
-	static node 	: iLooseObject = {}
+	static node 	: mmLooseObject = {}
 
 	//	Supported features
-	static support 	: iLooseObject = {
+	static support 	: mmLooseObject = {
 		touch: 'ontouchstart' in window || navigator.msMaxTouchPoints || false,
 	}
 
 	//	Options and configuration
-	opts 	: iLooseObject
-	conf 	: iLooseObject
+	opts 	: mmOptions
+	conf 	: mmConfigs
 
 	//	Array of methods to expose in the API
 	_api	: string[]
+	API		: mmLooseObject
 
-	//	Storage objects / arrays for nodes, variables, click handlers, callbacks and matchmedia calls
-	node 	: iLooseObject
-	vars	: iLooseObject
-	hook	: iLooseObject
-	mtch	: iLooseObject
+	//	Storage objects / arrays for nodes, variables, callbacks, matchmedia calls and click handlers.
+	node 	: mmLooseObject
+	vars	: mmLooseObject
+	hook	: mmLooseObject
+	mtch	: mmLooseObject
 	clck	: Function[]
 
 
@@ -124,16 +125,13 @@ class Mmenu {
 	_initWindow_offCanvas 	: Function
 
 
-	//	TODO: what of the below can be replaced with local functions?
-
 	//	screenReader add-on
 	static sr_aria	: Function
 	static sr_role	: Function
 	static sr_text	: Function
 
 
-	//	scrollBugFix add-on
-	_initWindow_scrollBugFix	: Function
+	//	TODO: what of the below can be replaced with local functions?
 
 
 	//	keyboardNavigation add-on
@@ -150,16 +148,16 @@ class Mmenu {
 
 
 	/**
-	  * Initialize the plugin.
-	  *
-	  * @param {JQuery|String} 	$menu						Menu node.
-	  * @param {object} 		[options=Mmenu.options]		Options for the menu.
-	  * @param {object} 		[configs=Mmenu.configs]		Configuration options for the menu.
-	  */
+	 * Create a mobile menu.
+	 *
+	 * @param {JQuery|string} 	$menu						Menu node.
+	 * @param {object} 			[options=Mmenu.options]		Options for the menu.
+	 * @param {object} 			[configs=Mmenu.configs]		Configuration options for the menu.
+	 */
 	constructor(
-		$menu 		 : JQuery | String,
-		options 	?: iLooseObject,
-		configs		?: iLooseObject
+		$menu 		 : JQuery | string,
+		options 	?: mmOptions,
+		configs		?: mmConfigs
 	) {
 
 		//	Get menu node from string
@@ -178,6 +176,7 @@ class Mmenu {
 		this.conf 	= jQuery.extend( true, {}, Mmenu.configs, configs );
 
 		this._api	= [ 'bind', 'initPanels', 'openPanel', 'closePanel', 'closeAllPanels', 'setSelected' ];
+		this.API	= {};
 
 		this.vars	= {};
 		this.hook 	= {};
@@ -193,6 +192,7 @@ class Mmenu {
 		this._initAddons();
 		this._initExtensions();
 		this._initHooks();
+		this._initAPI();
 
 		this._initMenu();
 		this._initPanels();
@@ -210,36 +210,32 @@ class Mmenu {
 
 
 	/**
-	  * Get the API.
-	  *
-	  * @return {object} The API.
-	  */
-	get API()
+	 * Get the API.
+	 *
+	 * @return {object} The API.
+	 */
+	_initAPI()
 	{
-		var that = this,
-			api = {};
+		var that = this;
 
 		jQuery.each( this._api, 
-			function( i )
-			{
-				let fn = this;
-				api[ fn ] = function()
+			( i, fn ) => {
+				this.API[ fn ] = function()
 				{
 					var re = that[ fn ].apply( that, arguments );
-					return ( typeof re == 'undefined' ) ? api : re;
+					return ( typeof re == 'undefined' ) ? that.API : re;
 				};
 			}
 		);
-		return api;
 	}
 
 
 	/**
-	  * Open a panel.
-	  *
-	  * @param {JQuery}		$panel				Panel to open.
-	  * @param {boolean}	[animation=true]	Whether or not to use an animation.
-	  */
+	 * Open a panel.
+	 *
+	 * @param {JQuery}	$panel				Panel to open.
+	 * @param {boolean}	[animation=true]	Whether or not to use an animation.
+	 */
 	openPanel( 
 		$panel 		 : JQuery,
 		animation	?: boolean
@@ -370,12 +366,12 @@ class Mmenu {
 						Mmenu.transitionend( $panel,
 							() => {
 								openPanelFinish();
-							}, this.conf[ 'transitionDuration' ]
+							}, this.conf.transitionDuration
 						);
 
 						openPanelStart();
 
-					}, this.conf[ 'openingInterval' ]
+					}, this.conf.openingInterval
 				);
 			}
 			else
@@ -390,10 +386,10 @@ class Mmenu {
 
 
 	/**
-	  * Close a panel.
-	  *
-	  * @param {JQuery} $panel Panel to close.
-	  */
+	 * Close a panel.
+	 *
+	 * @param {JQuery} $panel Panel to close.
+	 */
 	closePanel( 
 		$panel : JQuery
 	) {
@@ -415,16 +411,16 @@ class Mmenu {
 
 
 	/**
-	  * Close all opened panels.
-	  *
-	  * @param {JQuery} [$panel] Panel to open after closing all other panels.
-	  */
+	 * Close all opened panels.
+	 *
+	 * @param {JQuery} [$panel] Panel to open after closing all other panels.
+	 */
 	closeAllPanels( 
 		$panel ?: JQuery
 	) {
 		this.trigger( 'closeAllPanels:before' );
 
-		//	Close all "vertical" panels
+		//	Close all "vertical" panels.
 		this.node.$pnls
 			.find( '.mm-listview' )
 			.children()
@@ -432,7 +428,7 @@ class Mmenu {
 			.filter( '.mm-listitem_vertical' )
 			.removeClass( 'mm-listitem_opened' );
 
-		//	Close all "horizontal" panels
+		//	Close all "horizontal" panels.
 		var $pnls = this.node.$pnls.children( '.mm-panel' ),
 			$frst = ( $panel && $panel.length ) ? $panel : $pnls.first();
 
@@ -444,7 +440,7 @@ class Mmenu {
 			.removeClass( 'mm-panel_highest' )
 			.addClass( 'mm-hidden' );
 
-		//	Open first panel
+		//	Open first panel.
 		this.openPanel( $frst, false );
 
 		this.trigger( 'closeAllPanels:after' );
@@ -452,16 +448,16 @@ class Mmenu {
 
 
 	/**
-	  * Toggle a panel opened/closed.
-	  *
-	  * @param {JQuery} $panel Panel to open or close.
-	  */
+	 * Toggle a panel opened/closed.
+	 *
+	 * @param {JQuery} $panel Panel to open or close.
+	 */
 	togglePanel(
 		$panel : JQuery
 	) {
 		var $li = $panel.parent();
 
-		//	Only works for "vertical" panels
+		//	Only works for "vertical" panels.
 		if ( $li.hasClass( 'mm-listitem_vertical' ) )
 		{
 			this[ $li.hasClass( 'mm-listitem_opened' ) ? 'closePanel' : 'openPanel' ]( $panel );
@@ -470,19 +466,21 @@ class Mmenu {
 
 
 	/**
-	  * Mark a listitem as being "selected".
-	  *
-	  * @param {JQuery} $listitem Listitem to mark.
-	  */
+	 * Mark a listitem as being "selected".
+	 *
+	 * @param {JQuery} $listitem Listitem to mark.
+	 */
 	setSelected(
 		$listitem : JQuery
 	) {
 		this.trigger( 'setSelected:before', [ $listitem ] );
 
+		//	First, remove the selected class from all listitems.
 		this.node.$menu
 			.find( '.mm-listitem_selected' )
 			.removeClass( 'mm-listitem_selected' );
 
+		//	Next, add the selected class to the provided listitem.
 		$listitem.addClass( 'mm-listitem_selected' );
 
 		this.trigger( 'setSelected:after', [ $listitem ] );
@@ -490,26 +488,29 @@ class Mmenu {
 
 
 	/**
-	  * Bind a function to a hook.
-	  *
-	  * @param {string} 	hook The hook.
-	  * @param {function} 	func The function.
-	  */
+	 * Bind a function to a hook.
+	 *
+	 * @param {string} 		hook The hook.
+	 * @param {function} 	func The function.
+	 */
 	bind( 
 		hook : string,
 		func : Function
 	) {
+		//	Create an array for the hook if it does not yet excist.
 		this.hook[ hook ] = this.hook[ hook ] || [];
+
+		//	Push the function to the array.
 		this.hook[ hook ].push( func );
 	}
 
 
 	/**
-	  * Invoke the functions bound to a hook.
-	  *
-	  * @param {string} hook  	The hook.
-	  * @param {array}	[args] 	Arguments for the function.
-	  */
+	 * Invoke the functions bound to a hook.
+	 *
+	 * @param {string} 	hook  	The hook.
+	 * @param {array}	[args] 	Arguments for the function.
+	 */
 	trigger(
 		hook  : string,
 		args ?: any[]
@@ -525,12 +526,12 @@ class Mmenu {
 
 
 	/**
-	  * Bind functions to the match-media listener.
-	  *
-	  * @param {string} 	mediaquery 	Media query to match.
-	  * @param {function} 	yes 		Function to invoke when the media query matches.
-	  * @param {function} 	no 			Function to invoke when the media query doesn't match.
-	  */
+	 * Bind functions to the match-media listener.
+	 *
+	 * @param {string} 		mediaquery 	Media query to match.
+	 * @param {function} 	yes 		Function to invoke when the media query matches.
+	 * @param {function} 	no 			Function to invoke when the media query doesn't match.
+	 */
 	matchMedia( 
 		mediaquery	 : string,
 		yes			?: Function,
@@ -545,8 +546,8 @@ class Mmenu {
 
 
 	/**
-	  * Initialize the match-media listener.
-	  */
+	 * Initialize the match-media listener.
+	 */
 	_initMatchMedia()
 	{
 		for ( var mediaquery in this.mtch )
@@ -567,49 +568,45 @@ class Mmenu {
 
 
 	/**
-	  * Fire the "yes" or "no" function for a media query.
-	  *
-	  * @param {string} 			mqstring 	Media query to check for.
-	  * @param {MediaQueryList} 	mqlist 		Media query list to check with.
-	  */
+	 * Fire the "yes" or "no" function for a media query.
+	 *
+	 * @param {string} 			mqstring 	Media query to check for.
+	 * @param {MediaQueryList} 	mqlist 		Media query list to check with.
+	 */
 	_fireMatchMedia(
 		mqstring : string,
 		mqlist	 : any // Typescript "Cannot find name 'MediaQueryListEvent'."
 	) {
 		var fn = mqlist.matches ? 'yes' : 'no';
-		for ( var i = 0; i < this.mtch[ mqstring ].length; i++ )
+		for ( let m = 0; m < this.mtch[ mqstring ].length; m++ )
 		{
-			this.mtch[ mqstring ][ i ][ fn ].call( this );
+			this.mtch[ mqstring ][ m ][ fn ].call( this );
 		}
 	}
 
 
 	/**
-	  * Bind the hooks specified in the options.
-	  */
+	 * Bind the hooks specified in the options.
+	 */
 	_initHooks()
 	{
-		for ( var hook in this.opts[ 'hooks' ] )
+		for ( let hook in this.opts.hooks )
 		{
-			this.bind( hook, this.opts[ 'hooks' ][ hook ] );
+			this.bind( hook, this.opts.hooks[ hook ] );
 		}
 	}
 
 
 	/**
-	  * Initialize the wrappers specified in the options.
-	  */
+	 * Initialize the wrappers specified in the options.
+	 */
 	_initWrappers()
 	{
 		this.trigger( 'initWrappers:before' );
 
-		for ( var w = 0; w < this.opts[ 'wrappers' ].length; w++ )
+		for ( let w = 0; w < this.opts.wrappers.length; w++ )
 		{
-			var wrapper = Mmenu.wrappers[ this.opts[ 'wrappers' ][ w ] ];
-			if ( typeof wrapper == 'function' )
-			{
-				wrapper.call( this );
-			}
+			Mmenu.wrappers[ this.opts.wrappers[ w ] ].call( this );
 		}
 
 		this.trigger( 'initWrappers:after' );
@@ -617,16 +614,15 @@ class Mmenu {
 
 
 	/**
-	  * Initialize all available add-ons.
-	  */
+	 * Initialize all available add-ons.
+	 */
 	_initAddons()
 	{
 		this.trigger( 'initAddons:before' );
 
-		for ( var a in Mmenu.addons )
+		for ( let addon in Mmenu.addons )
 		{
-			// Mmenu.addons[ a ].setup.call( this, this );
-			Mmenu.addons[ a ].call( this, this );
+			Mmenu.addons[ addon ].call( this );
 		}
 
 		this.trigger( 'initAddons:after' );
@@ -634,25 +630,25 @@ class Mmenu {
 
 
 	/**
-	  * Initialize the extensions specified in the options.
-	  */
+	 * Initialize the extensions specified in the options.
+	 */
 	_initExtensions()
 	{
 		this.trigger( 'initExtensions:before' );
 
 		//	Convert array to object with array
-		if ( this.opts[ 'extensions' ].constructor === Array )
+		if ( this.opts.extensions.constructor === Array )
 		{
-			this.opts[ 'extensions' ] = {
-				'all': this.opts[ 'extensions' ]
+			this.opts.extensions = {
+				'all': this.opts.extensions
 			};
 		}
 
 		//	Loop over object
-		for ( var mediaquery in this.opts[ 'extensions' ] )
+		for ( let mediaquery in this.opts.extensions )
 		{
 			// this.opts[ 'extensions' ][ mediaquery ] = this.opts[ 'extensions' ][ mediaquery ].length ? _c.menu + '_' + this.opts[ 'extensions' ][ mediaquery ].join( ' ' + _c.menu + '_' ) : '';
-			if ( this.opts[ 'extensions' ][ mediaquery ] )
+			if ( this.opts.extensions[ mediaquery ] )
 			{
 				(( mediaquery ) => {
 					this.matchMedia( mediaquery,
@@ -668,42 +664,47 @@ class Mmenu {
 				})( mediaquery );
 			}
 		}
+
 		this.trigger( 'initExtensions:after' );
 	}
 
 
 	/**
-	  * Initialize the menu.
-	  */
+	 * Initialize the menu.
+	 */
 	_initMenu()
 	{
 		this.trigger( 'initMenu:before' );
 
-		//	Clone if needed
+		//	Clone if needed.
 		if ( this.conf.clone )
 		{
+			//	Store the original menu.
 			this.node.$orig = this.node.$menu;
+
+			//	Clone the original menu and store it.
 			this.node.$menu = this.node.$orig.clone();
+
+			//	Prefix all ID's in the cloned menu.
 			this.node.$menu
 				.filter( '[id]' )
 				.add( this.node.$menu.find( '[id]' ) )
 				.each(
-					function()
-					{
-						jQuery(this).attr( 'id', 'mm-' + jQuery(this).attr( 'id' ) );
+					( i, elem ) => {
+						jQuery(elem).attr( 'id', 'mm-' + jQuery(elem).attr( 'id' ) );
 					}
 				);
 		}
 
-		//	Add ID
-		this.node.$menu.attr( 'id', this.node.$menu.attr( 'id' ) || Mmenu.__getUniqueId() );
+		//	Add an ID to the menu if it does not yet have one.
+		this.node.$menu.attr( 'id', this.node.$menu.attr( 'id' ) || Mmenu.getUniqueId() );
 
-		//	Add markup
+		//	Wrap the panels in a node.
 		this.node.$pnls = jQuery( '<div class="mm-panels" />' )
 			.append( this.node.$menu.children( this.conf.panelNodetype ) )
 			.prependTo( this.node.$menu );
 
-		//	Add classes
+		//	Add classes to the menu.
 		this.node.$menu
 			.addClass( 'mm-menu' )
 			.parent()
@@ -714,20 +715,20 @@ class Mmenu {
 
 
 	/**
-	  * Initialize panels.
-	  *
-	  * @param {JQuery} [$panels] Panels to initialize.
-	  */
+	 * Initialize panels.
+	 *
+	 * @param {JQuery} [$panels] Panels to initialize.
+	 */
 	_initPanels(
 		$panels ?: JQuery
 	) {
 
-		//	Open / close panels
+		//	Open / close panels.
 		this.clck.push(
 			function(
 				this : Mmenu,
 				$a	 : JQuery,
-				args : iLooseObject
+				args : mmClickArguments
 			) {
 				if ( args.inMenu )
 				{
@@ -739,7 +740,14 @@ class Mmenu {
 							var $panel = this.node.$menu.find( href );
 							if ( $panel.is( '.mm-panel' ) )
 							{
-								this[ $a.parent().hasClass( 'mm-listitem_vertical' ) ? 'togglePanel' : 'openPanel' ]( $panel );
+								if ( $a.parent().hasClass( 'mm-listitem_vertical' ) )
+								{
+									this.togglePanel( $panel );
+								}
+								else
+								{
+									this.openPanel( $panel );
+								}
 								return true;
 							}
 						}
@@ -755,33 +763,31 @@ class Mmenu {
 
 
 	/**
-	  * Initialize panels.
-	  *
-	  * @param {JQuery} [$panels] The panels to initialize.
-	  */
+	 * Initialize panels.
+	 *
+	 * @param {JQuery} [$panels] The panels to initialize.
+	 */
 	initPanels( 
 		$panels ?: JQuery
 	) {
 		this.trigger( 'initPanels:before', [ $panels ] );
 
+		//	If no panels provided, use all panels.
 		$panels = $panels || this.node.$pnls.children( this.conf.panelNodetype );
 
 		var $newpanels = jQuery();
 
-		var that = this;
 		var init = ( $panels ) => {
 			$panels
-				.filter( this.conf[ 'panelNodetype' ] )
+				.filter( this.conf.panelNodetype )
 				.each(
-					function( x )
-					{
-
-						var $panel = that._initPanel( jQuery(this) );
+					( i, elem ) => {
+						var $panel = this._initPanel( jQuery(elem) );
 						if ( $panel )
 						{
 
-							that._initNavbar( $panel );
-							that._initListview( $panel );
+							this._initNavbar( $panel );
+							this._initListview( $panel );
 
 							$newpanels = $newpanels.add( $panel );
 
@@ -789,8 +795,8 @@ class Mmenu {
 							var $child = $panel
 								.children( '.mm-listview' )
 								.children( 'li' )
-								.children( that.conf[ 'panelNodetype' ] )
-								.add( $panel.children( '.' + that.conf[ 'classNames' ].panel ) );
+								.children( this.conf.panelNodetype )
+								.add( $panel.children( '.' + this.conf.classNames.panel ) );
 
 							if ( $child.length )
 							{
@@ -808,11 +814,11 @@ class Mmenu {
 
 
 	/**
-	  * Initialize a single panel.
-	  *
-	  * @param  {JQuery} $panel 	Panel to initialize.
-	  * @return {JQuery} 			Initialized panel.
-	  */
+	 * Initialize a single panel.
+	 *
+	 * @param  {JQuery} $panel 	Panel to initialize.
+	 * @return {JQuery} 		Initialized panel.
+	 */
 	_initPanel(
 		$panel : JQuery
 	) {
@@ -826,7 +832,7 @@ class Mmenu {
 
 		//	Refactor panel classnames
 		Mmenu.refactorClass( $panel, this.conf.classNames.panel 	, 'mm-panel' 			);
-		Mmenu.refactorClass( $panel, this.conf.classNames.nopanel , 'mm-nopanel' 			);
+		Mmenu.refactorClass( $panel, this.conf.classNames.nopanel 	, 'mm-nopanel' 			);
 		Mmenu.refactorClass( $panel, this.conf.classNames.inset 	, 'mm-listview_inset'	);
 
 		$panel.filter( '.mm-listview_inset' )
@@ -841,10 +847,10 @@ class Mmenu {
 
 
 		//	Wrap UL/OL in DIV
-		var vertical = ( $panel.hasClass( this.conf.classNames.vertical ) || !this.opts[ 'slidingSubmenus' ] );
+		var vertical = ( $panel.hasClass( this.conf.classNames.vertical ) || !this.opts.slidingSubmenus );
 		$panel.removeClass( this.conf.classNames.vertical );
 
-		var id = $panel.attr( 'id' ) || Mmenu.__getUniqueId();
+		var id = $panel.attr( 'id' ) || Mmenu.getUniqueId();
 
 		if ( $panel.is( 'ul, ol' ) )
 		{
@@ -882,10 +888,10 @@ class Mmenu {
 
 
 	/**
-	  * Initialize a navbar.
-	  *
-	  * @param {JQuery} $panel Panel for the navbar.
-	  */
+	 * Initialize a navbar.
+	 *
+	 * @param {JQuery} $panel Panel for the navbar.
+	 */
 	_initNavbar(
 		$panel : JQuery
 	) {
@@ -899,7 +905,7 @@ class Mmenu {
 		var $parent = $panel.data( 'mm-parent' ),
 			$navbar = jQuery( '<div class="mm-navbar" />' );
 
-		var title: string = this.__getPanelTitle( $panel, this.opts[ 'navbar' ].title ),
+		var title: string = this._getPanelTitle( $panel, this.opts.navbar.title ),
 			href : string = '';
 
 		if ( $parent && $parent.length )
@@ -929,9 +935,9 @@ class Mmenu {
 			$parent = $a.closest( '.mm-panel' );
 
 			var id = $parent.attr( 'id' );
-			title = this.__getPanelTitle( $panel, jQuery('<span>' + $a.text() + '</span>').text() );
+			title = this._getPanelTitle( $panel, jQuery('<span>' + $a.text() + '</span>').text() );
 
-			switch ( this.opts[ 'navbar' ].titleLink )
+			switch ( this.opts.navbar.titleLink )
 			{
 				case 'anchor':
 					href = $a.attr( 'href' );
@@ -944,12 +950,12 @@ class Mmenu {
 
 			$navbar.append( '<a class="mm-btn mm-btn_prev mm-navbar__btn" href="#' + id + '" />' );
 		}
-		else if ( !this.opts[ 'navbar' ].title )
+		else if ( !this.opts.navbar.title )
 		{
 			return;
 		}
 
-		if ( this.opts[ 'navbar' ].add )
+		if ( this.opts.navbar.add )
 		{
 			$panel.addClass( 'mm-panel_has-navbar' );
 		}
@@ -962,17 +968,17 @@ class Mmenu {
 
 
 	/**
-	  * Initialize a listview.
-	  *
-	  * @param {JQuery} $panel Panel for the listview(s).
-	  */
+	 * Initialize a listview.
+	 *
+	 * @param {JQuery} $panel Panel for the listview(s).
+	 */
 	_initListview(
 		$panel : JQuery
 	) {
 		this.trigger( 'initListview:before', [ $panel ] );
 
 		//	Refactor listviews classnames
-		var $ul = Mmenu.childAddBack( $panel, 'ul, ol' );
+		var $ul = Mmenu.childAddSelf( $panel, 'ul, ol' );
 
 		Mmenu.refactorClass( $ul, this.conf.classNames.nolistview, 'mm-nolistview' );
 
@@ -1015,8 +1021,8 @@ class Mmenu {
 
 
 	/**
-	  * Find and open the correct panel after creating the menu.
-	  */
+	 * Find and open the correct panel after creating the menu.
+	 */
 	_initOpened()
 	{
 		this.trigger( 'initOpened:before' );
@@ -1041,26 +1047,22 @@ class Mmenu {
 
 
 	/**
-	  * Initialize anchors in / for the menu.
-	  */
+	 * Initialize anchors in / for the menu.
+	 */
 	_initAnchors()
 	{
 		this.trigger( 'initAnchors:before' );
 
-		var that = this;
 
-
-		//	Bind to clicking on the <body>
 		jQuery('body')
 			.on( 'click.mm',
 				'a[href]',
-				function( e )
-				{
-					var $t = jQuery(this),
+				( e ) => {
+					var $t = jQuery(e.currentTarget),
 						_h = $t.attr( 'href' );
 
-					var args = {
-						inMenu 		: that.node.$menu.find( $t ).length, 
+					var args : mmClickArguments = {
+						inMenu 		: this.node.$menu.find( $t ).length, 
 						inListview 	: $t.is( '.mm-listitem > a' ),
 						toExternal 	: $t.is( '[rel="external"]' ) || $t.is( '[target="_blank"]' )
 					};
@@ -1073,9 +1075,9 @@ class Mmenu {
 
 					//	Find behavior for addons
 					//for ( var a in Mmenu.addons )
-					for ( var c = 0; c < that.clck.length; c++ )
+					for ( var c = 0; c < this.clck.length; c++ )
 					{
-						var click = that.clck[ c ].call( that, $t, args );
+						var click = this.clck[ c ].call( this, $t, args );
 						if ( click )
 						{
 							if ( typeof click == 'boolean' )
@@ -1096,24 +1098,24 @@ class Mmenu {
 					{
 
 						//	Set selected item, Default: true
-						if ( Mmenu.__valueOrFn( $t, that.opts.onClick.setSelected, onClick.setSelected ) )
+						if ( Mmenu.valueOrFn( $t, this.opts.onClick.setSelected, onClick.setSelected ) )
 						{
-							that.setSelected( jQuery( e.target ).parent() );
+							this.setSelected( $t.parent() );
 						}
 
 						//	Prevent default / don't follow link. Default: false
-						if ( Mmenu.__valueOrFn( $t, that.opts.onClick.preventDefault, onClick.preventDefault ) )
+						if ( Mmenu.valueOrFn( $t, this.opts.onClick.preventDefault, onClick.preventDefault ) )
 						{
 							e.preventDefault();
 						}
 
 						//	Close menu. Default: false
 						//		TODO: option + code should be in offcanvas add-on
-						if ( Mmenu.__valueOrFn( $t, that.opts.onClick.close, onClick.close ) )
+						if ( Mmenu.valueOrFn( $t, this.opts.onClick.close, onClick.close ) )
 						{
-							if ( that.opts.offCanvas && typeof that.close == 'function' )
+							if ( this.opts.offCanvas && typeof this.close == 'function' )
 							{
-								that.close();
+								this.close();
 							}
 						}
 					}
@@ -1126,25 +1128,25 @@ class Mmenu {
 
 
 	/**
-	  * Get the translation for a text.
-	  *
-	  * @param  {string} text 	Text to translate.
-	  * @return {string}		The translated text.
-	  */
+	 * Get the translation for a text.
+	 *
+	 * @param  {string} text 	Text to translate.
+	 * @return {string}		The translated text.
+	 */
 	i18n(
-		text : string
+		text : any
 	) {
 		return Mmenu.i18n( text, this.conf.language );
 	}
 
 
 	/**
-	  * Add or get a translated text.
-	  *
-	  * @param  {string|object} 	[text] 		The translated text to add or get.
-	  * @param  {string} 			[language] 	The language for the translated text.
-	  * @return {string|object}					The translated text.
-	  */
+	 * Add or get a translated text.
+	 *
+	 * @param  {string|object} 	[text] 		The translated text to add or get.
+	 * @param  {string} 			[language] 	The language for the translated text.
+	 * @return {string|object}					The translated text.
+	 */
 	static i18n : Function = (function() {
 
 		var translations = {};
@@ -1183,10 +1185,10 @@ class Mmenu {
 
 
 	/**
-	  * Get the original menu ID (in case it was changed after cloning).
-	  *
-	  * @return {string} The original ID.
-	  */
+	 * Get the original menu ID (in case it was changed after cloning).
+	 *
+	 * @return {string} The original ID.
+	 */
 	_getOriginalMenuId()
 	{
 		var id = this.node.$menu.attr( 'id' );
@@ -1199,21 +1201,21 @@ class Mmenu {
 
 
 	/**
-	  * Find the title for a panel.
-	  *
-	  * @param {JQuery} $panel 		Panel to search in.
-	  * @param {string} [dfault] 	Fallback/default title.
-	  */
-	__getPanelTitle( 
+	 * Find the title for a panel.
+	 *
+	 * @param {JQuery} $panel 		Panel to search in.
+	 * @param {string} [dfault] 	Fallback/default title.
+	 */
+	_getPanelTitle( 
 		$panel  : JQuery, 
-		dfault ?: string
+		dfault ?: string | Function
 	) {
 		var title: string;
 
 		//	Function
-		if ( typeof this.opts[ 'navbar' ].title == 'function' )
+		if ( typeof this.opts.navbar.title == 'function' )
 		{
-			title = this.opts[ 'navbar' ].title.call( $panel[ 0 ] );
+			title = this.opts.navbar.title.call( $panel[ 0 ] );
 		}
 
 		//	Data attr
@@ -1232,20 +1234,24 @@ class Mmenu {
 		{
 			return this.i18n( dfault );
 		}
+		else if ( typeof dfault == 'function' )
+		{
+			return this.i18n( dfault.call( $panel[ 0 ] ) );
+		}
 
 		//	Default
-		return this.i18n( Mmenu.options[ 'navbar' ].title );
+		return this.i18n( Mmenu.options.navbar.title );
 	}
 
 
 	/**
-	  * Find the value from an option or function.
-	  *
-	  * @param {JQuery} 	$elem 		Scope for the function.
-	  * @param {any} 		[option] 	Value or function.
-	  * @param {any} 		[dfault] 	Fallback/default value.
-	  */
-	static __valueOrFn( 
+	 * Find the value from an option or function.
+	 *
+	 * @param {JQuery} 	$elem 		Scope for the function.
+	 * @param {any} 	[option] 	Value or function.
+	 * @param {any} 	[dfault] 	Fallback/default value.
+	 */
+	static valueOrFn( 
 		$elem	 : JQuery,
 		option	?: any,
 		dfault 	?: any
@@ -1267,12 +1273,12 @@ class Mmenu {
 
 
 	/**
-	  * Refactor a classname on multiple elements.
-	  *
-	  * @param {JQuery} $elements 	Elements to refactor.
-	  * @param {string}	oldClass 	Classname to remove.
-	  * @param {string}	newClass 	Classname to add.
-	  */
+	 * Refactor a classname on multiple elements.
+	 *
+	 * @param {JQuery} $elements 	Elements to refactor.
+	 * @param {string}	oldClass 	Classname to remove.
+	 * @param {string}	newClass 	Classname to add.
+	 */
 	static refactorClass( 
 		$elements 	: JQuery,
 		oldClass	: string,
@@ -1283,13 +1289,13 @@ class Mmenu {
 
 
 	/**
-	  * Find and filter child nodes including the node itself.
-	  *
-	  * @param  {JQuery} 	$elements 	Elements to refactor.
-	  * @param  {string}	selector 	Selector to filter the elements against.
-	  * @return {JQuery}				The expanded and filtered set of nodes.
-	  */
-	static findAddBack( 
+	 * Find and filter child nodes including the node itself.
+	 *
+	 * @param  {JQuery} $elements 	Elements to refactor.
+	 * @param  {string}	selector 	Selector to filter the elements against.
+	 * @return {JQuery}				The expanded and filtered set of nodes.
+	 */
+	static findAddSelf( 
 		$element : JQuery,
 		selector : string
 	) {
@@ -1298,13 +1304,13 @@ class Mmenu {
 
 
 	/**
-	  * Find and filter direct child nodes including the node itself.
-	  *
-	  * @param  {JQuery} 	$elements 	Elements to refactor.
-	  * @param  {string}	selector 	Selector to filter the elements against.
-	  * @return {JQuery}				The expanded and filtered set of nodes.
-	  */
-	static childAddBack( 
+	 * Find and filter direct child nodes including the node itself.
+	 *
+	 * @param  {JQuery} $elements 	Elements to refactor.
+	 * @param  {string}	selector 	Selector to filter the elements against.
+	 * @return {JQuery}				The expanded and filtered set of nodes.
+	 */
+	static childAddSelf( 
 		$element : JQuery,
 		selector : string
 	) {
@@ -1313,11 +1319,11 @@ class Mmenu {
 
 
 	/**
-	  * Filter out non-listitem listitems.
-	  *
-	  * @param  {JQuery} 	$listitems 	Elements to filter.
-	  * @return {JQuery}				The filtered set of listitems.
-	  */
+	 * Filter out non-listitem listitems.
+	 *
+	 * @param  {JQuery} $listitems 	Elements to filter.
+	 * @return {JQuery}				The filtered set of listitems.
+	 */
 	static filterListItems(
 		$listitems : JQuery
 	) {
@@ -1328,11 +1334,11 @@ class Mmenu {
 
 
 	/**
-	  * Find anchors in listitems.
-	  *
-	  * @param  {JQuery} 	$listitems 	Elements to filter.
-	  * @return {JQuery}				The filtered set of listitems.
-	  */
+	 * Find anchors in listitems.
+	 *
+	 * @param  {JQuery} $listitems 	Elements to filter.
+	 * @return {JQuery}				The filtered set of listitems.
+	 */
 	static filterListItemAnchors(
 		$listitems : JQuery
 	) {
@@ -1343,19 +1349,18 @@ class Mmenu {
 
 
 	/**
-	  * Set and invoke a (single) transition-end function with fallback.
-	  *		Should be replaced as supported browsers all support object.addEventListener("transitionend", myScript);
-	  *
-	  * @param {JQuery} 	$element 	Scope for the function.
-	  * @param {function}	func		Function to invoke.
-	  * @param {number}		duration	The duration of the animation (for the fallback).
-	  */
+	 * Set and invoke a (single) transition-end function with fallback.
+	 *
+	 * @param {JQuery} 		$element 	Scope for the function.
+	 * @param {function}	func		Function to invoke.
+	 * @param {number}		duration	The duration of the animation (for the fallback).
+	 */
 	static transitionend( 
 		$element 	: JQuery, 
 		func 		: Function,
 		duration	: number
 	) {
-		var guid = Mmenu.__getUniqueId();
+		var guid = Mmenu.getUniqueId();
 
 		var _ended = false,
 			_fn = function( e )
@@ -1384,11 +1389,11 @@ class Mmenu {
 
 
 	/**
-	  * Get an unique ID.
-	  *
-	  * @return {string} An unique ID.
-	  */
-	static __getUniqueId()
+	 * Get an unique ID.
+	 *
+	 * @return {string} An unique ID.
+	 */
+	static getUniqueId()
 	{
 		return 'mm-guid-' + Mmenu.uniqueId++;
 	}

@@ -23,7 +23,7 @@ Mmenu.addons.toggles = function()
 						var $inpt = jQuery(elem),
 							$prnt = $inpt.closest( 'li' ),
 							cl = $inpt.hasClass( 'mm-toggle' ) ? 'toggle' : 'check',
-							id = $inpt.attr( 'id' ) || Mmenu.__getUniqueId();
+							id = $inpt.attr( 'id' ) || Mmenu.getUniqueId();
 
 						if ( !$prnt.children( 'label[for="' + id + '"]' ).length )
 						{

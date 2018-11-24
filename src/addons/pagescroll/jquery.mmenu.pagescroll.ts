@@ -66,7 +66,7 @@ Mmenu.addons.pageScroll = function(
 			function(
 				this : Mmenu,
 				$a	 : JQuery,
-				args : iLooseObject
+				args : mmClickArguments
 			) {
 		
 				$section = jQuery();
@@ -81,7 +81,7 @@ Mmenu.addons.pageScroll = function(
 
 				if ( anchorInPage( href ) )
 				{
-					$section = $(href);
+					$section = jQuery(href);
 					if ( this.node.$menu.is( '.mm-menu_sidebar-expanded' ) && 
 						jQuery('html').is( '.mm-wrapper_sidebar-expanded' )
 					) {

@@ -1,8 +1,8 @@
 Mmenu.addons.navbars.next = function( 
 	this	: Mmenu,
 	$navbar	: JQuery, 
-	opts	: iLooseObject, 
-	conf	: iLooseObject
+	opts	: mmLooseObject, 
+	conf	: mmLooseObject
 ) {
 	//	Add content
 	var $next = jQuery('<a class="mm-btn mm-btn_next mm-navbar__btn" href="#" />')

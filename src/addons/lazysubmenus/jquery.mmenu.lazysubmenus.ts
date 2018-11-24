@@ -46,7 +46,7 @@ Mmenu.addons.lazySubmenus = function(
 			) {
 				$panels = $panels || this.node.$pnls.children( this.conf.panelNodetype );
 
-				Mmenu.findAddBack( $panels, '.mm-panel_lazysubmenu' )
+				Mmenu.findAddSelf( $panels, '.mm-panel_lazysubmenu' )
 					.not( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' )
 					.removeClass( 'mm-panel_lazysubmenu mm-nolistview  mm-nopanel' );
 			}
@@ -75,7 +75,7 @@ Mmenu.addons.lazySubmenus = function(
 				this	: Mmenu,
 				$panel	: JQuery
 			) {
-				var $panels = Mmenu.findAddBack( $panel, '.mm-panel_lazysubmenu' )
+				var $panels = Mmenu.findAddSelf( $panel, '.mm-panel_lazysubmenu' )
 					.not( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' );
 
 				if ( $panels.length )

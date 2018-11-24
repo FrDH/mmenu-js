@@ -94,7 +94,7 @@ Mmenu.addons.sectionIndexer = function(
 					.on( 'mouseover.mm-sectionIndexer touchstart.mm-sectionIndexer',
 						'a',
 						( e ) => {
-							var lttr = jQuery(e.target).html(),
+							var lttr = jQuery(e.currentTarget).html(),
 								$panl = this.node.$pnls.children( '.mm-panel_opened' ),
 								$list = $panl.find( '.mm-listview' );
 
@@ -134,7 +134,7 @@ Mmenu.addons.sectionIndexer = function(
 			this.bind( 'initPanels:after',	update );
 		}
 	);
-};s
+};
 
 //	Default options and configuration
 Mmenu.options.sectionIndexer = {

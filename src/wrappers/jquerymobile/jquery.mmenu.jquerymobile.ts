@@ -1,47 +1,45 @@
-(function( $ ) {
+Mmenu.wrappers.jqueryMobile = function(
+	this : Mmenu
+) {
 
-	const _PLUGIN_ = 'mmenu';
-	const _WRAPPR_ = 'jqueryMobile';
+	this.opts.onClick.close = false;
+	this.conf.offCanvas.page.selector = 'div.ui-page-active';
 
-
-	$[ _PLUGIN_ ].wrappers[ _WRAPPR_ ] = function()
-	{
-		var that = this;
-
-		this.opts.onClick.close = false;
-		this.conf.offCanvas.page.selector = 'div.ui-page-active';
-
-		//	When changing pages
-		$('body').on(
-			'pagecontainerchange',
-			function( e, args )
+	//	When changing pages
+	jQuery('body').on(
+		'pagecontainerchange',
+		( e, args ) => {
+			if ( this.opts.offCanvas )
 			{
-				if ( typeof that.close == 'function' )
+				if ( typeof this.close == 'function' )
 				{
-					that.close();
-					that.setPage( args.toPage );
+					this.close();
+				}
+				if ( typeof this.close == 'function' )
+				{
+					this.setPage( args.toPage );
 				}
 			}
-		);
+		}
+	);
 
-		//	Change pages
-		this.bind( 'initAnchors:after',
-			function()
-			{
-				$('body').on(
-					'click',
-					'.mm-listview a',
-					function( e )
+	//	Change pages
+	this.bind( 'initAnchors:after',
+		function(
+			this : Mmenu
+		) {
+			jQuery('body').on(
+				'click',
+				'.mm-listview a',
+				function( e )
+				{
+					if ( !e.isDefaultPrevented() )
 					{
-						if ( !e.isDefaultPrevented() )
-						{
-							e.preventDefault();
-							$( 'body' )[ 'pagecontainer' ]( 'change', $(this).attr( 'href' ) );
-						}
+						e.preventDefault();
+						jQuery( 'body' )[ 'pagecontainer' ]( 'change', jQuery(this).attr( 'href' ) );
 					}
-				);
-			}
-		);
-	};
-
-})( jQuery );
+				}
+			);
+		}
+	);
+};

@@ -17,7 +17,7 @@ Mmenu.addons.setSelected = function(
 	{
 		opts = {};
 	}
-	opts = this.opts.setSelected = $.extend( true, {}, Mmenu.options.setSelected, opts );
+	opts = this.opts.setSelected = jQuery.extend( true, {}, Mmenu.options.setSelected, opts );
 
 
 	//	Find current by URL

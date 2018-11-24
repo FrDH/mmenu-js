@@ -126,7 +126,7 @@ Mmenu.addons.searchfield = function(
 		function(
 			this : Mmenu,
 			$a	 : JQuery,
-			args : iLooseObject
+			args : mmClickArguments
 		) {
 			if ( args.inMenu )
 			{
@@ -197,11 +197,11 @@ Mmenu.prototype._initSearchPanel = function(
 	//	Only once
 	if ( this.node.$pnls.children( '.mm-panel_search' ).length )
 	{
-		return $();
+		return jQuery();
 	}
 
 
-	var $spnl = $( '<div class="mm-panel_search " />' )
+	var $spnl = jQuery( '<div class="mm-panel_search " />' )
 		.append( '<ul />' )
 		.appendTo( this.node.$pnls );
 
@@ -293,7 +293,7 @@ Mmenu.prototype._initSearchfield = function(
 	//	Add the clear button
 	if ( conf.clear )
 	{
-		$('<a class="mm-btn mm-btn_close mm-searchfield__btn" href="#" />')
+		jQuery('<a class="mm-btn mm-btn_close mm-searchfield__btn" href="#" />')
 			.appendTo( $inpd );
 	}
 
@@ -302,13 +302,13 @@ Mmenu.prototype._initSearchfield = function(
 	addAttributes( $srch, conf.form );
 	if ( conf.form && conf.submit && !conf.clear )
 	{
-		$('<a class="mm-btn mm-btn_next mm-searchfield__btn" href="#" />')
+		jQuery('<a class="mm-btn mm-btn_next mm-searchfield__btn" href="#" />')
 			.appendTo( $inpd );
 	}
 
 	if ( opts.cancel )
 	{
-		$('<a href="#" class="mm-searchfield__cancel">' + this.i18n( 'cancel' ) + '</a>')
+		jQuery('<a href="#" class="mm-searchfield__cancel">' + this.i18n( 'cancel' ) + '</a>')
 			.appendTo( $srch );
 	}
 
@@ -322,7 +322,7 @@ Mmenu.prototype._initSearching = function(
 	var opts = this.opts.searchfield,
 		conf = this.conf.searchfield;
 
-	var data: iLooseObject = {};
+	var data: mmLooseObject = {};
 
 	//	In searchpanel
 	if ( $srch.closest( '.mm-panel_search' ).length )
@@ -385,7 +385,7 @@ Mmenu.prototype._initSearching = function(
 			.off( 'focus.mm-searchfield-cancel' )
 			.on(  'focus.mm-searchfield-cancel',
 				( e ) => {
-					$cncl.addClass(  'mm-searchfield__cancel-active' );
+					$cncl.addClass( 'mm-searchfield__cancel-active' );
 				}
 			);
 
@@ -395,7 +395,7 @@ Mmenu.prototype._initSearching = function(
 			.on(  'click.mm-searchfield-splash',
 				( e ) => {
 					e.preventDefault();
-					jQuery(e.target).removeClass( 'mm-searchfield__cancel-active' );
+					$cncl.removeClass( 'mm-searchfield__cancel-active' );
 
 					if ( $spnl.hasClass( 'mm-panel_opened' ) )
 					{
@@ -471,7 +471,7 @@ Mmenu.prototype._initNoResultsMsg = function(
 
 	//	Add no-results message
 	var $lst = $wrpr.children( '.mm-listview' ).first(),
-		$msg = $( '<div class="mm-panel__noresultsmsg mm-hidden" />' )
+		$msg = jQuery( '<div class="mm-panel__noresultsmsg mm-hidden" />' )
 			.append(this.i18n( opts.noResults ) );
 
 	if ( $lst.length )
@@ -536,9 +536,8 @@ Mmenu.prototype.search = function(
 		//	Re-show only listitems that match
 		$itms
 			.each(
-				function()
-				{
-					var $item = $(this),
+				( i, elem ) => {
+					var $item = jQuery(elem),
 						_search = _anchor;
 
 					if ( opts.showTextItems || ( opts.showSubPanels && $item.find( '.mm-btn_next' ) ) )
@@ -557,16 +556,17 @@ Mmenu.prototype.search = function(
 		if ( opts.panel.add )
 		{
 			//	Clone all matched listitems into the search panel
-			var $lis = $();
+			var $lis = jQuery();
 			$pnls
 				.each(
 					( i, elem ) => {
-						var $li = Mmenu.filterListItems( jQuery(elem).find( '.mm-listitem' ) ).clone( true );
+						let $panel = jQuery(elem),
+							$li = Mmenu.filterListItems( $panel.find( '.mm-listitem' ) ).clone( true );
 						if ( $li.length )
 						{
 							if ( opts.panel.dividers )
 							{
-								$lis = $lis.add( '<li class="mm-listitem mm-listitem_divider">' + jQuery(elem).find( '.mm-navbar__title' ).text() + '</li>' );
+								$lis = $lis.add( '<li class="mm-listitem mm-listitem_divider">' + $panel.find( '.mm-navbar__title' ).text() + '</li>' );
 							}
 							$lis = $lis.add( $li );
 						}
@@ -681,7 +681,7 @@ Mmenu.prototype.search = function(
 			//	Hide splash
 			if ( opts.panel.splash )
 			{
-				$spnl.find( '.mm-panel__searchsplash' ).addClass( _c.hidden );
+				$spnl.find( '.mm-panel__searchsplash' ).addClass( 'mm-hidden' );
 			}
 
 			//	Re-show original listitems when in search panel

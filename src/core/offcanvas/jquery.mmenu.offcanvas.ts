@@ -77,6 +77,8 @@ Mmenu.addons.offCanvas = function(
 		}
 	);
 
+
+	//	Sync the blocker to target the page.
 	this.bind( 'setPage:after',
 		function( 
 			this 	: Mmenu,
@@ -115,6 +117,7 @@ Mmenu.addons.offCanvas = function(
 		}
 	);
 
+
 	//	Add screenreader / text support
 	this.bind( 'initBlocker:after:sr-text',
 		function( 
@@ -133,10 +136,10 @@ Mmenu.addons.offCanvas = function(
 		function(
 			this : Mmenu,
 			$a	 : JQuery,
-			args : iLooseObject
+			args : mmClickArguments
 		) {
 
-			//	Open menu
+			//	Open menu if the clicked anchor links to the menu
 			var id = this._getOriginalMenuId();
 			if ( id )
 			{
@@ -192,7 +195,6 @@ Mmenu.addons.offCanvas = function(
 }
 
 
-
 //	Default options and configuration
 Mmenu.options.offCanvas = {
 	blockUI			: true,
@@ -213,8 +215,8 @@ Mmenu.configs.offCanvas = {
 
 
 /**
-  *	Open the menu.
-  */
+ * Open the menu.
+ */
 Mmenu.prototype.open = function( 
 	this : Mmenu
 ) {
@@ -238,8 +240,8 @@ Mmenu.prototype.open = function(
 };
 
 /**
-  *	Setup the menu so it can be opened.
-  */
+ * Setup the menu so it can be opened.
+ */
 Mmenu.prototype._openSetup = function(
 	this : Mmenu
 ) {
@@ -250,9 +252,9 @@ Mmenu.prototype._openSetup = function(
 
 	//	Store style and position
 	Mmenu.node.$page.each(
-		function()
-		{
-			jQuery(this).data( 'mm-style', jQuery(this).attr( 'style' ) || '' );
+		( i, elem ) => {
+			let $page = jQuery(elem);
+			$page.data( 'mm-style', $page.attr( 'style' ) || '' );
 		}
 	);
 
@@ -289,12 +291,12 @@ Mmenu.prototype._openSetup = function(
 };
 
 /**
-  *	Finish opening the menu.
-  */
+ * Finish opening the menu.
+ */
 Mmenu.prototype._openFinish = function(
 	this : Mmenu
 ) {
-	//	Callback
+	//	Callback when the page finishes opening.
 	Mmenu.transitionend( Mmenu.node.$page.first(),
 		() => {
 			this.trigger( 'open:finish' );
@@ -307,8 +309,8 @@ Mmenu.prototype._openFinish = function(
 };
 
 /**
-  *	Close the menu.
-  */
+ * Close the menu.
+ */
 Mmenu.prototype.close = function(
 	this : Mmenu
 ) {
@@ -320,7 +322,7 @@ Mmenu.prototype.close = function(
 	}
 
 
-	//	Callback
+	//	Callback when the page finishes closing.
 	Mmenu.transitionend( Mmenu.node.$page.first(),
 		() => {
 			this.node.$menu.removeClass( 'mm-menu_opened' );
@@ -336,10 +338,9 @@ Mmenu.prototype.close = function(
 
 			//	Restore style and position
 			Mmenu.node.$page.each(
-				function()
-				{
-					var _data: any = jQuery(this).data( 'mm-style' );
-					jQuery(this).attr( 'style', _data );
+				( i, elem ) => {
+					let $page = jQuery(elem);
+					$page.attr( 'style', $page.data( 'mm-style' ) );
 				}
 			);
 
@@ -358,8 +359,8 @@ Mmenu.prototype.close = function(
 };
 
 /**
-  *	Close all other menus.
-  */
+ * Close all other menus.
+ */
 Mmenu.prototype.closeAllOthers = function(
 	this : Mmenu
 ) {
@@ -367,9 +368,8 @@ Mmenu.prototype.closeAllOthers = function(
 		.find( '.mm-menu_offcanvas' )
 		.not( this.node.$menu )
 		.each(
-			function()
-			{
-				var api = jQuery(this).data( 'mmenu' );
+			( i, elem ) => {
+				var api = jQuery(elem).data( 'mmenu' );
 				if ( api && api.close )
 				{
 					api.close();
@@ -379,8 +379,8 @@ Mmenu.prototype.closeAllOthers = function(
 };
 
 /**
-  *	Set the "Page" node.
-  */
+ * Set "page" node.
+ */
 Mmenu.prototype.setPage = function( 
 	this : Mmenu,
 	$page: JQuery
@@ -410,9 +410,10 @@ Mmenu.prototype.setPage = function(
 	}
 	$page.addClass( 'mm-page mm-slideout' )
 		.each(
-			function()
+			function( i, elem )
 			{
-				jQuery(this).attr( 'id', jQuery(this).attr( 'id' ) || Mmenu.__getUniqueId() );		
+				let $page = jQuery(elem);
+				$page.attr( 'id', $page.attr( 'id' ) || Mmenu.getUniqueId() );		
 			}
 		);
 
@@ -423,18 +424,19 @@ Mmenu.prototype.setPage = function(
 };
 
 /**
-  *	Initialize the <window>
-  */
+ * Initialize the <window>
+ */
 Mmenu.prototype._initWindow_offCanvas = function(
 	this : Mmenu
 ) {
 
 	//	Prevent tabbing
+	//	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
+	//	In other words: The menu would move out of view.
 	jQuery(window)
 		.off( 'keydown.mm-offCanvas' )
 		.on(  'keydown.mm--offCanvas',
-			function( e )
-			{
+			( e ) => {
 				if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
 				{
 					if ( e.keyCode == 9 )
@@ -446,13 +448,12 @@ Mmenu.prototype._initWindow_offCanvas = function(
 			}
 		);
 
-	//	Set page min-height to window height
+	//	Set "page" node min-height to window height
 	var oldHeight, newHeight;
 	jQuery(window)
 		.off( 'resize.mm-offCanvas' )
-		.on(  'resize.mm-offCanvas',
-			function( e, force )
-			{
+		.on( 'resize.mm-offCanvas',
+			( e, force ) => {
 				if ( Mmenu.node.$page.length == 1 )
 				{
 					if ( force || jQuery('html').hasClass( 'mm-wrapper_opened' ) )
@@ -470,8 +471,8 @@ Mmenu.prototype._initWindow_offCanvas = function(
 };
 
 /**
-  *	Initialize the "Blocker" node
-  */
+ * Initialize "blocker" node
+ */
 Mmenu.prototype._initBlocker = function(
 	this : Mmenu
 ) {
@@ -494,7 +495,7 @@ Mmenu.prototype._initBlocker = function(
 	Mmenu.node.$blck
 		.appendTo( conf.menu.insertSelector )
 		.off( 'touchstart.mm-offCanvas touchmove.mm-offCanvas' )
-		.on(  'touchstart.mm-offCanvas touchmove.mm-offCanvas',
+		.on( 'touchstart.mm-offCanvas touchmove.mm-offCanvas',
 			( e ) => {
 				e.preventDefault();
 				e.stopPropagation();
@@ -502,7 +503,7 @@ Mmenu.prototype._initBlocker = function(
 			}
 		)
 		.off( 'mousedown.mm-offCanvas' )
-		.on(  'mousedown.mm-offCanvas',
+		.on( 'mousedown.mm-offCanvas',
 			( e ) => {
 				e.preventDefault();
 				if ( !jQuery('html').hasClass( 'mm-wrapper_modal' ) )

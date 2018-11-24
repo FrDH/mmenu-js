@@ -199,7 +199,7 @@ Mmenu.addons.dropdown = function(
 
 		this.node.$menu.attr( 'style', this.node.$menu.data( 'mm-style' ) );
 
-		var obj: [ iLooseObject, string[] ] = [{}, []];
+		var obj: [ mmLooseObject, string[] ] = [{}, []];
 		obj = getPosition.call( this, 'y', obj );
 		obj = getPosition.call( this, 'x', obj );
 

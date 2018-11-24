@@ -21,7 +21,7 @@ Mmenu.addons.screenReader = function(
 
 
 
-	//	Aria
+	//	Add Aria-* attributes
 	if ( opts.aria )
 	{
 
@@ -48,21 +48,19 @@ Mmenu.addons.screenReader = function(
 			function(
 				this : Mmenu
 			) {
-				var that = this;
 				this.node.$pnls
-					.find( '.mm-listview' )
-					.children()
+					.find( '.mm-listitem' )
 					.each(
-						function()
-						{
-							Mmenu.sr_aria( jQuery(this), 'hidden', jQuery(this).is( '.mm-hidden' ) );
+						( i, elem ) => {
+							var $li = jQuery(elem);
+							Mmenu.sr_aria( $li, 'hidden', $li.is( '.mm-hidden' ) );
 						}
 					);
 			}
 		);
 
 
-		//	Update aria-hidden for the panels when opening a panel
+		//	Update aria-hidden for the panels when opening and closing a panel.
 		this.bind( 'openPanel:start',
 			function( 
 				this 	: Mmenu,
@@ -93,19 +91,19 @@ Mmenu.addons.screenReader = function(
 		);
 
 
-		//	Add aria-haspopup and aria-owns to prev- and next buttons
+		//	Add aria-haspopup and aria-owns to prev- and next buttons.
 		this.bind( 'initPanels:after',
 			function( 
 				this 	: Mmenu,
 				$panels : JQuery
 			) {
-				var that = this;
 				var $btns = $panels
 					.find( '.mm-btn' )
 					.each(
-						function()
+						function( i, elem )
 						{
-							Mmenu.sr_aria( jQuery(this), 'owns', jQuery(this).attr( 'href' ).replace( '#', '' ) );
+							let $btn = jQuery(elem);
+							Mmenu.sr_aria( $btn, 'owns', $btn.attr( 'href' ).replace( '#', '' ) );
 						}
 					);
 
@@ -114,7 +112,7 @@ Mmenu.addons.screenReader = function(
 		);
 
 
-		//	Add aria-hidden for navbars in panels
+		//	Add aria-hidden for navbars in panels.
 		this.bind( 'initNavbar:after',
 			function( 
 				this 	: Mmenu,
@@ -148,7 +146,7 @@ Mmenu.addons.screenReader = function(
 	}
 
 
-	//	Text
+	//	Add screenreader text
 	if ( opts.text )
 	{
 
@@ -165,7 +163,7 @@ Mmenu.addons.screenReader = function(
 		);
 
 
-		//	Add text to the prev-buttons
+		//	Add text to the prev-buttons.
 		this.bind( 'initNavbar:after',
 			function( 
 				this 	: Mmenu,
@@ -179,7 +177,7 @@ Mmenu.addons.screenReader = function(
 		);
 
 
-		//	Add text to the next-buttons
+		//	Add text to the next-buttons.
 		this.bind( 'initListview:after',
 			function( 
 				this 	: Mmenu,
@@ -216,12 +214,15 @@ Mmenu.configs.screenReader = {
 
 //	Methods
 (function() {
-	var attr = function( $elem, attr, value)
-	{
+	var attr = function( 
+		$elem	: JQuery, 
+		attr	: string, 
+		value	: string | boolean
+	) {
 		$elem.prop( attr, value );
 		if ( value )
 		{
-			$elem.attr( attr, value );
+			$elem.attr( attr, value.toString() );
 		}
 		else
 		{
@@ -230,36 +231,42 @@ Mmenu.configs.screenReader = {
 	}
 
 	/**
-	  * Add aria (property and) attribute to a HTML element.
-	  *
-	  * @param {JQuery} $elem 	The node to add the attribute to.
-	  * @param {string}	name	The (non-aria-prefixed) attribute name.
-	  * @param {string} value	The attribute value.
-	  */
-	Mmenu.sr_aria = function( $elem, name, value )
-	{
+	 * Add aria (property and) attribute to a HTML element.
+	 *
+	 * @param {JQuery} 			$elem 	The node to add the attribute to.
+	 * @param {string}			name	The (non-aria-prefixed) attribute name.
+	 * @param {string|boolean}	value	The attribute value.
+	 */
+	Mmenu.sr_aria = function( 
+		$elem	: JQuery, 
+		name	: string, 
+		value	: string | boolean
+	) {
 		attr( $elem, 'aria-' + name, value );
 	};
 
 	/**
-	  * Add role attribute to a HTML element.
-	  *
-	  * @param {JQuery} $elem 	The node to add the attribute to.
-	  * @param {string} value	The attribute value.
-	  */
-	Mmenu.sr_role = function( $elem, value )
-	{
+	 * Add role attribute to a HTML element.
+	 *
+	 * @param {JQuery} 			$elem 	The node to add the attribute to.
+	 * @param {string|boolean}	value	The attribute value.
+	 */
+	Mmenu.sr_role = function( 
+		$elem	: JQuery, 
+		value	: string | boolean
+	) {
 		attr( $elem, 'role', value );
 	};
 
 	/**
-	  * Wrap a text in a screen-reader-only node.
-	  *
-	  * @param 	{string} text	The text to wrap.
-	  * @return	{string}		The wrapped text.
-	  */
-	Mmenu.sr_text = function( text )
-	{
+	 * Wrap a text in a screen-reader-only node.
+	 *
+	 * @param 	{string} text	The text to wrap.
+	 * @return	{string}		The wrapped text.
+	 */
+	Mmenu.sr_text = function( 
+		text : string
+	) {
 		return '<span class="mm-sronly">' + text + '</span>';
 	};
 })();

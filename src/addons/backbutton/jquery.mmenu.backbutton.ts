@@ -41,7 +41,7 @@ Mmenu.addons.backButton = function(
 				.each(
 					function()
 					{
-						states.push( '#' + $(this).attr( 'id' ) );
+						states.push( '#' + jQuery(this).attr( 'id' ) );
 					}
 				);
 		}
@@ -75,7 +75,7 @@ Mmenu.addons.backButton = function(
 						}
 						else
 						{
-							this.openPanel( $( hash ) );
+							this.openPanel( jQuery( hash ) );
 							history.pushState( null, document.title, _menu );
 						}
 					}

@@ -1,8 +1,8 @@
 Mmenu.addons.navbars.close = function( 
 	this	: Mmenu,
 	$navbar	: JQuery, 
-	opts	: iLooseObject, 
-	conf	: iLooseObject
+	opts	: mmLooseObject, 
+	conf	: mmLooseObject
 ) {
 	//	Add content
 	var $close = jQuery('<a class="mm-btn mm-btn_close mm-navbar__btn" href="#" />')

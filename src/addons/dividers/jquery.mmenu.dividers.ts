@@ -76,7 +76,7 @@ Mmenu.addons.dividers = function(
 										if ( letter != last && letter.length )
 										{
 											last = letter;
-											$( '<li class="mm-listitem mm-listitem_divider">' + letter + '</li>' ).insertBefore( this );
+											jQuery( '<li class="mm-listitem mm-listitem_divider">' + letter + '</li>' ).insertBefore( this );
 										}
 									}
 								);
@@ -114,19 +114,20 @@ Mmenu.addons.dividers = function(
 				return;
 			}
 
-			var $dvdr = $panel
+			var $dividers = $panel
 				.find( '.mm-listitem_divider' )
 				.not( '.mm-hidden' );
 
 			var scrl = $panel.scrollTop() || 0,
 				text = '';
 
-			$dvdr.each(
-				function()
+			$dividers.each(
+				function( i, elem )
 				{
-					if ( $(this).position().top + scrl < scrl + 1 )
+					let $divider = jQuery(elem);
+					if ( $divider.position().top + scrl < scrl + 1 )
 					{
-						text = $(this).text();
+						text = $divider.text();
 					}
 				}
 			);

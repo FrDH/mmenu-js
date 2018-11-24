@@ -36,6 +36,7 @@ Mmenu.addons.scrollBugFix = function(
 	}
 
 
+	//	When opening the menu, scroll to the top of the current opened panel.
 	this.bind( 'open:start',
 		function(
 			this : Mmenu
@@ -43,6 +44,7 @@ Mmenu.addons.scrollBugFix = function(
 			this.node.$pnls.children( '.mm-panel_opened' ).scrollTop( 0 );
 		}
 	);
+
 	this.bind( 'initMenu:after',
 		function(
 			this : Mmenu
@@ -92,7 +94,8 @@ Mmenu.addons.scrollBugFix = function(
 			 		( e ) => {
 				        if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
 				        {
-					        if ( jQuery(e.target)[ 0 ].scrollHeight > jQuery(e.target).innerHeight() )
+				        	var $panel = jQuery(e.currentTarget);
+					        if ( $panel[ 0 ].scrollHeight > $panel.innerHeight() )
 					        {
 					        	e.stopPropagation();
 					        }

@@ -1,8 +1,8 @@
 Mmenu.addons.navbars.title = function( 
 	this	: Mmenu,
 	$navbar	: JQuery, 
-	opts	: iLooseObject, 
-	conf	: iLooseObject
+	opts	: mmLooseObject, 
+	conf	: mmLooseObject
 ) {
 	//	Add content
 	var $title = jQuery('<a class="mm-navbar__title" />')

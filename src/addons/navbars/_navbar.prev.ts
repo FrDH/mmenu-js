@@ -1,11 +1,11 @@
 Mmenu.addons.navbars.prev = function( 
 	this	: Mmenu,
 	$navbar	: JQuery, 
-	opts	: iLooseObject, 
-	conf	: iLooseObject
+	opts	: mmLooseObject, 
+	conf	: mmLooseObject
 ) {
 	//	Add content
-	var $prev = $('<a class="mm-btn mm-btn_prev mm-navbar__btn" href="#" />')
+	var $prev = jQuery('<a class="mm-btn mm-btn_prev mm-navbar__btn" href="#" />')
 		.appendTo( $navbar );
 
 	

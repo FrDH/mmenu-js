@@ -76,7 +76,7 @@ Mmenu.addons.keyboardNavigation = function(
 			this 	: Mmenu,
 			$panl	: JQuery
 		) {
-			$panl = $panl || this.node.$pnls.children( '.' + _c.panel + '_opened' );
+			$panl = $panl || this.node.$pnls.children( '.mm-panel_opened' );
 
 			var $focs = jQuery(),
 				$navb = this.node.$menu
@@ -143,7 +143,10 @@ Mmenu.options.keyboardNavigation = {
 };
 
 
-//	Methods
+/**
+ * Initialize the window.
+ * @param {boolean} enhance - Whether or not to also rich enhance the keyboard behavior.
+ **/
 Mmenu.prototype._initWindow_keyboardNavigation = function( 
 	this	: Mmenu,
 	enhance	: boolean

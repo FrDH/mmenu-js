@@ -1,0 +1,1 @@
+Mmenu.addons.navbars.close=function(t,e,n){var a=jQuery('<a class="mm-btn mm-btn_close mm-navbar__btn" href="#" />').appendTo(t);this.bind("setPage:after",function(t){a.attr("href","#"+t.attr("id"))}),this.bind("setPage:after:sr-text",function(t){a.html(Mmenu.sr_text(this.i18n(this.conf.screenReader.text.closeMenu))),Mmenu.sr_aria(a,"owns",a.attr("href").slice(1))})};

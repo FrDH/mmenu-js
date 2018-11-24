@@ -207,7 +207,7 @@ Mmenu.addons.sidebar = function(
 			function(
 				this : Mmenu,
 				$a	 : JQuery,
-				args : iLooseObject
+				args : mmClickArguments
 			) {
 
 				if ( args.inMenu && args.inListview )

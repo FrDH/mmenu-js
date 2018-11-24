@@ -1,12 +1,5 @@
-(function( $ ) {
-
-	const _PLUGIN_ = 'mmenu';
-	const _WRAPPR_ = 'magento';
-
-
-	$[ _PLUGIN_ ].wrappers[ _WRAPPR_ ] = function()
-	{
-		this.conf.classNames.selected = 'active';
-	};
-
-})( jQuery );
+Mmenu.wrappers.magento = function(
+	this : Mmenu
+) {
+	this.conf.classNames.selected = 'active';
+};

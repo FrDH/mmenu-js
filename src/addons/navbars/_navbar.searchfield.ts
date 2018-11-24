@@ -1,8 +1,8 @@
 Mmenu.addons.navbars.searchfield = function( 
 	this	: Mmenu,
 	$navbar	: JQuery, 
-	opts	: iLooseObject, 
-	conf	: iLooseObject
+	opts	: mmLooseObject, 
+	conf	: mmLooseObject
 ) {
 	if ( typeof this.opts.searchfield != 'object' )
 	{

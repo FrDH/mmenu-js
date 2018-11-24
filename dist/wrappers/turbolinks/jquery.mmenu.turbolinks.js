@@ -1,0 +1,1 @@
+Mmenu.wrappers.turbolinks=function(){var t,n;jQuery(document).on("turbolinks:before-visit",function(){n=jQuery("html"),t=n.attr("class"),t=jQuery.grep(t.split(/\s+/),function(t){return!/mm-/.test(t)}).join(" ")}).on("turbolinks:load",function(){void 0!==n&&n.attr("class",t)})};

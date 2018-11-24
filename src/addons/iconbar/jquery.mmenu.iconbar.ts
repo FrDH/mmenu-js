@@ -24,7 +24,7 @@ Mmenu.addons.iconbar = function(
 	var $iconbar : JQuery = null;
 
 	//	Fill with content
-	$.each(
+	jQuery.each(
 		[ 'top', 'bottom' ],
 		function( n, poss )
 		{
@@ -75,14 +75,13 @@ Mmenu.addons.iconbar = function(
 		//	Tabs
 		if ( opts.type == 'tabs' )
 		{
-			var that = this;
 
 			$iconbar.addClass( 'mm-iconbar_tabs' );
 
 			$iconbar.on( 'click.mm-iconbar',
-				'.mm-iconbar a',
+				'a',
 				( e ) => {
-					var $tab = jQuery(e.target);
+					var $tab = jQuery(e.currentTarget);
 					if ( $tab.hasClass( 'mm-iconbar__tab_selected' ) )
 					{
 						e.stopImmediatePropagation();

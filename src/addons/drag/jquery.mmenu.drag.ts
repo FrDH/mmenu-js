@@ -65,8 +65,8 @@ Mmenu.addons.drag = function(
 
 	function dragOpenMenu( 
 		this : Mmenu,
-		opts : iLooseObject,
-		conf : iLooseObject
+		opts : mmLooseObject,
+		conf : mmLooseObject
 	) {
 		
 	}
@@ -116,7 +116,7 @@ Mmenu.addons.drag = function(
 
 
 				//	Find menu position from Positioning extension
-				var x = this.opts.extensions.all;
+				var x = this.opts.extensions[ 'all' ];
 
 				var position = ( typeof x == 'undefined' )
 					? 'left'
@@ -196,11 +196,11 @@ Mmenu.addons.drag = function(
 				}
 
 				var $slideOutNodes 	: JQuery,
-					$dragNode 		: JQuery = Mmenu.__valueOrFn( this.node.$menu, opts.menu.node, Mmenu.node.$page );
+					$dragNode 		: JQuery = Mmenu.valueOrFn( this.node.$menu, opts.menu.node, Mmenu.node.$page );
 
 				if ( typeof $dragNode == 'string' )
 				{
-					$dragNode = $($dragNode);
+					$dragNode = jQuery($dragNode);
 				}
 
 
