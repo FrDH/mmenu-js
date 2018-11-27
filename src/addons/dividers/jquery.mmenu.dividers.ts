@@ -1,27 +1,26 @@
 Mmenu.addons.dividers = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.dividers,
-		conf = this.conf.dividers;
-
+	var opts : mmOptionsDividers = this.opts.dividers;
 
 
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			add		: opts,
 			fixed	: opts
 		};
 	}
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
 	opts = this.opts.dividers = jQuery.extend( true, {}, Mmenu.options.dividers, opts );
+	//	/Extend shorthand options
 
 
-	//	Type dividers
+	//	Add classname to the menu to specify the type of the dividers
 	if ( opts.type )
 	{
 		this.bind( 'initMenu:after',
@@ -32,6 +31,7 @@ Mmenu.addons.dividers = function(
 			}
 		);
 	}
+
 
 	//	Add dividers
 	if ( opts.add )
@@ -105,8 +105,8 @@ Mmenu.addons.dividers = function(
 		);
 
 		function setValue( 
-			this	: Mmenu,
-			$panel	: JQuery
+			this	 : Mmenu,
+			$panel	?: JQuery
 		) {
 			$panel = $panel || this.node.$pnls.children( '.mm-panel_opened' );
 			if ( $panel.is( ':hidden' ) )
@@ -165,10 +165,10 @@ Mmenu.addons.dividers = function(
 };
 
 
-//	Default options and configuration
-Mmenu.options.dividers = {
-	add			: false,
-	addTo		: 'panels',
-	fixed		: false,
-	type		: null
+//	Default options and configuration.
+(Mmenu.options.dividers as mmOptionsDividers) = {
+	add		: false,
+	addTo	: 'panels',
+	fixed	: false,
+	type	: null
 };

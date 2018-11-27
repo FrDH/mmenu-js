@@ -10,14 +10,14 @@ interface mmFunctionsObject {
 }
 
 
-//	Class options interface.
+//	Class options interfaces.
 interface mmOptions {
-	hooks 			: mmFunctionsObject,
-	extensions		: string[] | mmOptionsExensions,
-	wrappers		: string[],
-	navbar 			: mmOptionsNavbar,
-	onClick			: mmOptionsOnclick,
-	slidingSubmenus	: boolean,
+	hooks 			: mmFunctionsObject
+	extensions		: string[] | mmOptionsExensions
+	wrappers		: string[]
+	navbar 			: mmOptionsNavbar
+	onClick			: mmOptionsOnclick
+	slidingSubmenus	: boolean
 
 	//	Make it "loose" so add-ons and wrappers can extend it.
 	[key: string] 	: any
@@ -26,25 +26,25 @@ interface mmOptionsExensions {
 	[key: string] 	: string[] | mmOptionsExensions
 }
 interface mmOptionsNavbar {
-	add 			: boolean,
-	title			: string | Function,
+	add 			: boolean
+	title			: string | Function
 	titleLink		: string
 }
 interface mmOptionsOnclick {
-	close			: boolean,
-	preventDefault	: boolean,
+	close			: boolean
+	preventDefault	: boolean
 	setSelected		: boolean
 }
 
 
 //	Class configs interface.
 interface mmConfigs {
-	classNames			: mmLooseObject,
-	clone				: boolean,
-	language			: string,
-	openingInterval		: number,
-	panelNodetype		: string,
-	transitionDuration	: number,
+	classNames			: mmLooseObject
+	clone				: boolean
+	language			: string
+	openingInterval		: number
+	panelNodetype		: string
+	transitionDuration	: number
 
 	//	Make it "loose" so add-ons and wrappers can extend it.
 	[key: string] 	: any
@@ -53,7 +53,7 @@ interface mmConfigs {
 
 //	Click arguments interface.
 interface mmClickArguments {
-	inMenu 			: boolean,
-	inListview 		: boolean,
+	inMenu 			: boolean
+	inListview 		: boolean
 	toExternal		: boolean
 }

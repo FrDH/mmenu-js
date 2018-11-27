@@ -32,13 +32,13 @@ Mmenu.addons.screenReader = function(
 			function(
 				this : Mmenu
 			) {
-				this.bind( 'initMenu:after' 	, function() { this.trigger( 'initMenu:after:sr-aria' 	) });
-				this.bind( 'initNavbar:after'	, function() { this.trigger( 'initNavbar:after:sr-aria'	, arguments[ 0 ]	) });
-				this.bind( 'openPanel:start'	, function() { this.trigger( 'openPanel:start:sr-aria'	, arguments[ 0 ]	) });
-				this.bind( 'close:start'		, function() { this.trigger( 'close:start:sr-aria' 		) });
-				this.bind( 'close:finish'		, function() { this.trigger( 'close:finish:sr-aria' 	) });
-				this.bind( 'open:start'			, function() { this.trigger( 'open:start:sr-aria' 		) });
-				this.bind( 'initOpened:after'	, function() { this.trigger( 'initOpened:after:sr-aria'	) });
+				this.bind( 'initMenu:after' 	, function( this : Mmenu ) { this.trigger( 'initMenu:after:sr-aria' 	, [].slice.call( arguments )	) });
+				this.bind( 'initNavbar:after'	, function( this : Mmenu ) { this.trigger( 'initNavbar:after:sr-aria'	, [].slice.call( arguments )	) });
+				this.bind( 'openPanel:start'	, function( this : Mmenu ) { this.trigger( 'openPanel:start:sr-aria'	, [].slice.call( arguments )	) });
+				this.bind( 'close:start'		, function( this : Mmenu ) { this.trigger( 'close:start:sr-aria' 		, [].slice.call( arguments )	) });
+				this.bind( 'close:finish'		, function( this : Mmenu ) { this.trigger( 'close:finish:sr-aria' 		, [].slice.call( arguments )	) });
+				this.bind( 'open:start'			, function( this : Mmenu ) { this.trigger( 'open:start:sr-aria' 		, [].slice.call( arguments )	) });
+				this.bind( 'initOpened:after'	, function( this : Mmenu ) { this.trigger( 'initOpened:after:sr-aria'	, [].slice.call( arguments )	) });
 			}
 		);
 

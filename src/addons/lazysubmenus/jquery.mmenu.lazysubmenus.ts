@@ -1,22 +1,22 @@
 Mmenu.addons.lazySubmenus = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.lazySubmenus,
-		conf = this.conf.lazySubmenus;
+	var opts : mmOptionsLazysubmenus = this.opts.lazySubmenus;
 
 
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' )
 	{
 		opts = {
-			load: opts
+			load : opts
 		};
 	}
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
 	opts = this.opts.lazySubmenus = jQuery.extend( true, {}, Mmenu.options.lazySubmenus, opts );
+	//	/Extend shorthand options
 
 
 	//	Sliding submenus
@@ -88,7 +88,7 @@ Mmenu.addons.lazySubmenus = function(
 };
 
 
-//	Default options and configuration
-Mmenu.options.lazySubmenus = {
+//	Default options and configuration.
+(Mmenu.options.lazySubmenus as mmOptionsLazysubmenus) = {
 	load: false
 };

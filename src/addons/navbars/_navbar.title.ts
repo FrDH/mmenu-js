@@ -1,8 +1,6 @@
 Mmenu.addons.navbars.title = function( 
 	this	: Mmenu,
-	$navbar	: JQuery, 
-	opts	: mmLooseObject, 
-	conf	: mmLooseObject
+	$navbar	: JQuery
 ) {
 	//	Add content
 	var $title = jQuery('<a class="mm-navbar__title" />')
@@ -30,7 +28,7 @@ Mmenu.addons.navbars.title = function(
 			}
 
 			_url = $org.attr( 'href' );
-			_txt = $org.html() || opts.title;
+			_txt = $org.html();
 
 			if ( _url )
 			{

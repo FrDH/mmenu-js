@@ -1,8 +1,7 @@
 Mmenu.addons.iconPanels = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.iconPanels,
-		conf = this.conf.iconPanels;
+	var opts : mmOptionsIconpanels = this.opts.iconPanels;
 
 	var keepFirst = false;
 
@@ -10,14 +9,14 @@ Mmenu.addons.iconPanels = function(
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			add : opts
 		};
 	}
 	if ( typeof opts == 'number' ||
 		 typeof opts == 'string'
 	) {
-		opts = {
+		(opts as mmLooseObject) = {
 			add 	: true,
 			visible : opts
 		};
@@ -25,7 +24,7 @@ Mmenu.addons.iconPanels = function(
 
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
 
 	if ( opts.visible == 'first' )
@@ -36,7 +35,7 @@ Mmenu.addons.iconPanels = function(
 
 	opts = this.opts.iconPanels = jQuery.extend( true, {}, Mmenu.options.iconPanels, opts );
 
-	opts.visible = Math.min( 3, Math.max( 1, opts.visible ) );
+	opts.visible = Math.min( 3, Math.max( 1, (opts.visible as number) ) );
 	opts.visible++;
 
 
@@ -47,13 +46,6 @@ Mmenu.addons.iconPanels = function(
 			function()
 			{
 				var cls = [ 'mm-menu_iconpanel' ];
-
-				//	deprecated
-				if ( opts.size )
-				{
-					cls.push( 'mm-menu_iconpanel-' + opts.size );
-				}
-				//	/deprecated
 
 				if ( opts.hideNavbar )
 				{
@@ -113,9 +105,8 @@ Mmenu.addons.iconPanels = function(
 					)
 					.slice( -opts.visible )
 					.each(
-						function( i )
-						{
-							jQuery(this).addClass( 'mm-panel_iconpanel-' + i );
+						( i, elem ) => {
+							jQuery(elem).addClass( 'mm-panel_iconpanel-' + i );
 						}
 					);
 			}
@@ -148,12 +139,11 @@ Mmenu.addons.iconPanels = function(
 };
 
 
-//	Default options and configuration
-Mmenu.options.iconPanels = {
+//	Default options and configuration.
+(Mmenu.options.iconPanels as mmOptionsIconpanels) = {
 	add 		: false,
 	blockPanel	: true,
 	hideDivider	: false,
 	hideNavbar	: true,
-//	size 		: 40,
 	visible		: 3
 };

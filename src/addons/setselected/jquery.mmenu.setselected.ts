@@ -1,22 +1,24 @@
 Mmenu.addons.setSelected = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.setSelected,
-		conf = this.conf.setSelected;
+	var opts : mmOptionsSetselected = this.opts.setSelected;
 
 
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			hover	: opts,
 			parent	: opts
 		};
 	}
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
+	//	Extend shorthand options
+
+
 	opts = this.opts.setSelected = jQuery.extend( true, {}, Mmenu.options.setSelected, opts );
 
 
@@ -122,8 +124,8 @@ Mmenu.addons.setSelected = function(
 };
 
 
-//	Default options
-Mmenu.options.setSelected = {
+//	Default options and configuration.
+(Mmenu.options.setSelected as mmOptionsSetselected) = {
 	current : true,
 	hover	: false,
 	parent	: false

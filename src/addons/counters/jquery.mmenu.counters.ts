@@ -1,22 +1,23 @@
-Mmenu.addons.counters = function()
-{
-	var opts = this.opts.counters,
-		conf = this.conf.counters;
+Mmenu.addons.counters = function(
+	this : Mmenu
+) {
+	var opts : mmOptionsCounters = this.opts.counters;
 
 
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			add		: opts,
-			update	: opts
+			count	: opts
 		};
 	}
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
 	opts = this.opts.counters = jQuery.extend( true, {}, Mmenu.options.counters, opts );
+	//	/Extend shorthand options
 
 
 	//	Refactor counter class
@@ -69,11 +70,11 @@ Mmenu.addons.counters = function()
 		);
 	}
 
-	if ( opts.update )
+	if ( opts.count )
 	{
 		function count(
-			this 	: Mmenu,
-			$panels	: JQuery
+			this 	 : Mmenu,
+			$panels	?: JQuery
 		) {
 			$panels = $panels || this.node.$pnls.children( '.mm-panel' );
 
@@ -94,13 +95,13 @@ Mmenu.addons.counters = function()
 						return;
 					}
 
-					$panel = $panel.children( '.mm-listview' );
-					if ( !$panel.length )
+					var $listview = $panel.children( '.mm-listview' );
+					if ( !$listview.length )
 					{
 						return;
 					}
 
-					$counter.html( Mmenu.filterListItems( $panel.children() ).length );
+					$counter.html( Mmenu.filterListItems( $listview.children() ).length );
 				}
 			);
 		};
@@ -111,12 +112,13 @@ Mmenu.addons.counters = function()
 };
 
 
-//	Default options and configuration
-Mmenu.options.counters = {
+//	Default options and configuration.
+(Mmenu.options.counters as mmOptionsCounters) = {
 	add		: false,
 	addTo	: 'panels',
 	count	: false
 };
+
 Mmenu.configs.classNames.counters = {
 	counter: 'Counter'
 };

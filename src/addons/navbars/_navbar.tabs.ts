@@ -1,8 +1,6 @@
 Mmenu.addons.navbars.tabs = function( 
 	this	: Mmenu,
-	$navbar	: JQuery, 
-	opts	: mmLooseObject, 
-	conf	: mmLooseObject
+	$navbar	: JQuery
 ) {
 
 	var $tabs = $navbar.children( 'a' );
@@ -55,5 +53,4 @@ Mmenu.addons.navbars.tabs = function(
 	}
 
 	this.bind( 'openPanel:start', selectTab );
-		
 };

@@ -1,19 +1,23 @@
 Mmenu.addons.pageScroll = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.pageScroll,
-		conf = this.conf.pageScroll;
+
+	var opts : mmOptionsPagescroll = this.opts.pageScroll,
+		conf : mmConfigsPagescroll = this.conf.pageScroll;
+
 
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			scroll: opts
 		};
 	}
 	opts = this.opts.pageScroll = jQuery.extend( true, {}, Mmenu.options.pageScroll, opts );
+	//	/Extend shorthand options
 
-	var $section: JQuery;
+
+	var $section : JQuery;
 
 	function scrollTo(
 		offset : number
@@ -161,12 +165,12 @@ Mmenu.addons.pageScroll = function(
 };
 
 
-//	Default options and configuration
-Mmenu.options.pageScroll = {
+//	Default options and configuration.
+(Mmenu.options.pageScroll as mmOptionsPagescroll) = {
 	scroll: false,
 	update: false
 };
-Mmenu.configs.pageScroll = {
+(Mmenu.configs.pageScroll as mmConfigsPagescroll) = {
 	scrollOffset: 0,
 	updateOffset: 50
 };

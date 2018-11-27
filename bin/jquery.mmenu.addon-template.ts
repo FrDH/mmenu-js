@@ -59,7 +59,7 @@ Mmenu.addons.ADDON = function(
 };
 
 
-//	Default options and configuration
+//	Default options and configuration.
 Mmenu.options.ADDON = {
 	//	...
 };

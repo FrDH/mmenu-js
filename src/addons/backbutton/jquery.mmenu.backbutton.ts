@@ -6,24 +6,24 @@ Mmenu.addons.backButton = function(
 		return;
 	}
 
-	var opts = this.opts.backButton,
-		conf = this.conf.backButton;
-
+	var opts : mmOptionsBackbutton = this.opts.backButton;
 
 
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			close: opts
 		};
 	}
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
-	opts = jQuery.extend( true, {}, Mmenu.options.backButton, opts );
-	
+	opts = this.opts.backButton = jQuery.extend( true, {}, Mmenu.options.backButton, opts );
+	//	/Extend shorthand options
+
+
 	var _menu  = '#' + this.node.$menu.attr( 'id' );
 
 	//	Close menu
@@ -98,8 +98,8 @@ Mmenu.addons.backButton = function(
 };
 
 
-//	Default options and configuration
-Mmenu.options.backButton = {
+//	Default options and configuration.
+(Mmenu.options.backButton as mmOptionsBackbutton) = {
 	close 	: false,
 	open 	: false
 };

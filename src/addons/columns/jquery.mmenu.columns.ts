@@ -1,15 +1,13 @@
 Mmenu.addons.columns = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.columns,
-		conf = this.conf.columns;
-
+	var opts : mmOptionsColumns = this.opts.columns;
 
 
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			add 	: opts
 		};
 	}
@@ -23,7 +21,7 @@ Mmenu.addons.columns = function(
 
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
 	if ( typeof opts.visible == 'number' )
 	{
@@ -33,6 +31,7 @@ Mmenu.addons.columns = function(
 		};
 	}
 	opts = this.opts.columns = jQuery.extend( true, {}, Mmenu.options.columns, opts );
+	//	/Extend shorthand options
 
 
 	//	Add the columns
@@ -142,8 +141,8 @@ Mmenu.addons.columns = function(
 };
 
 
-//	Default options and configuration
-Mmenu.options.columns = {
+//	Default options and configuration.
+(Mmenu.options.columns as mmOptionsColumns) = {
 	add 		: false,
 	visible		: {
 		min			: 1,

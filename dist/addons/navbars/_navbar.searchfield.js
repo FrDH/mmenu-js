@@ -1,1 +1,1 @@
-Mmenu.addons.navbars.searchfield=function(s,e,d){"object"!=typeof this.opts.searchfield&&(this.opts.searchfield={}),this.opts.searchfield.add=!0,this.opts.searchfield.addTo=s};
+Mmenu.addons.navbars.searchfield=function(s){"object"!=typeof this.opts.searchfield&&(this.opts.searchfield={}),this.opts.searchfield.add=!0,this.opts.searchfield.addTo=s};

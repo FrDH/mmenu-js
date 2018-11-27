@@ -2,28 +2,29 @@ Mmenu.addons.keyboardNavigation = function(
 	this : Mmenu
 ) {
 	//	Keyboard navigation on touchscreens opens the virtual keyboard :/
+	//	Lets prevent that.
 	if ( Mmenu.support.touch )
 	{
 		return;
 	}
 
 
-	var opts = this.opts.keyboardNavigation,
-		conf = this.conf.keyboardNavigation;
+	var opts : mmOptionsKeyboardnavigation = this.opts.keyboardNavigation;
 
 
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' || typeof opts == 'string' )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			enable: opts
 		};
 	}
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
 	opts = this.opts.keyboardNavigation = jQuery.extend( true, {}, Mmenu.options.keyboardNavigation, opts );
+	//	/Extend shorthand options
 
 
 	//	Enable keyboard navigation
@@ -136,8 +137,8 @@ Mmenu.addons.keyboardNavigation = function(
 	}
 };
 
-//	Default options and configuration
-Mmenu.options.keyboardNavigation = {
+//	Default options and configuration.
+(Mmenu.options.keyboardNavigation as mmOptionsKeyboardnavigation) = {
 	enable 	: false,
 	enhance	: false
 };

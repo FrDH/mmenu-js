@@ -12,7 +12,7 @@
 	{
 		return;
 	}
-
+return; // debugger is not yet ready for 8.0.0
 	var _cns = document[ _PLUGIN_ + '_console' ] || console || { info: function() {}, log: function() {}, warn: function() {} };
 
 	var glbl = $[ _PLUGIN_ ].glbl,

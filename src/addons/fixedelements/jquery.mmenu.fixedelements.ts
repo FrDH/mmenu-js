@@ -7,12 +7,11 @@ Mmenu.addons.fixedElements = function(
 	}
 
 
-	var opts = this.opts.fixedElements,
-		conf = this.conf.fixedElements;
+	var conf : mmConfigsFixedelements = this.conf.fixedElements;
 
 	var _fixd 	: string,
 		_stck 	: string, 
-		$fixd	: any,		//	1) Should be type JQuery, but Typescript doesn't understand
+		$fixd	: JQuery,
 		$stck 	: JQuery;
 
 
@@ -27,7 +26,7 @@ Mmenu.addons.fixedElements = function(
 
 			Mmenu.refactorClass( $fixd, _fixd, 'mm-slideout' );
 
-			$fixd[ conf.elemInsertMethod ]( conf.elemInsertSelector );	//	1
+			$fixd[ conf.fixed.insertMethod ]( conf.fixed.insertSelector );
 
 			//	Sticky elements
 			_stck = this.conf.classNames.fixedElements.sticky;
@@ -71,14 +70,17 @@ Mmenu.addons.fixedElements = function(
 };
 
 
-//	Default options and configuration
-Mmenu.configs.fixedElements = {
-	sticky 	: {
-		offset: 0
+//	Default options and configuration.
+(Mmenu.configs.fixedElements as mmConfigsFixedelements) = {
+	fixed	: {
+		insertMethod	: 'appendTo',
+		insertSelector	: 'body'
 	},
-	elemInsertMethod	: 'appendTo',
-	elemInsertSelector	: 'body'
+	sticky 	: {
+		offset : 0
+	}
 };
+
 Mmenu.configs.classNames.fixedElements = {
 	fixed 	: 'Fixed',
 	sticky	: 'Sticky'

@@ -6,20 +6,20 @@ Mmenu.addons.dropdown = function(
 		return;
 	}
 
-	var opts = this.opts.dropdown,
-		conf = this.conf.dropdown;
+	var opts : mmOptionsDropdown = this.opts.dropdown,
+		conf : mmConfigsDropdown = this.conf.dropdown;
 
 
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' && opts )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			drop: opts
 		};
 	}
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
 	if ( typeof opts.position == 'string' )
 	{
@@ -28,6 +28,7 @@ Mmenu.addons.dropdown = function(
 		};
 	}
 	opts = this.opts.dropdown = jQuery.extend( true, {}, Mmenu.options.dropdown, opts );
+	//	/Extend shorthand options
 
 
 	if ( !opts.drop )
@@ -35,7 +36,7 @@ Mmenu.addons.dropdown = function(
 		return;
 	}
 
-	var $bttn;
+	var $bttn : JQuery;
 
 	this.bind( 'initMenu:after',
 		function(
@@ -61,12 +62,12 @@ Mmenu.addons.dropdown = function(
 			$bttn = jQuery(opts.position.of);
 
 			//	Emulate hover effect
-			opts.event = opts.event.split( ' ' );
-			if ( opts.event.length == 1 )
+			var events = opts.event.split( ' ' );
+			if ( events.length == 1 )
 			{
-				opts.event[ 1 ] = opts.event[ 0 ];
+				events[ 1 ] = events[ 0 ];
 			}
-			if ( opts.event[ 0 ] == 'hover' )
+			if ( events[ 0 ] == 'hover' )
 			{
 				$bttn.on( 'mouseenter.mm-dropdown',
 					() => {
@@ -74,7 +75,7 @@ Mmenu.addons.dropdown = function(
 					}
 				);
 			}
-			if ( opts.event[ 1 ] == 'hover' )
+			if ( events[ 1 ] == 'hover' )
 			{
 				this.node.$menu.on( 'mouseleave.mm-dropdown',
 					() => {
@@ -110,7 +111,7 @@ Mmenu.addons.dropdown = function(
 	var getPosition = function( 
 		this	: Mmenu,
 		dir		: string,
-		obj		: any
+		obj		: mmLooseObject
 	) {
 		var css = obj[ 0 ],
 			cls = obj[ 1 ];
@@ -189,7 +190,7 @@ Mmenu.addons.dropdown = function(
 
 		return [ css, cls ];
 	};
-	var position = function( 
+	function position( 
 		this : Mmenu
 	) {
 		if ( !this.vars.opened )
@@ -235,15 +236,16 @@ Mmenu.addons.dropdown = function(
 };
 
 
-//	Default options and configuration
-Mmenu.options.dropdown = {
+//	Default options and configuration.
+(Mmenu.options.dropdown as mmOptionsDropdown) = {
 	drop 		: false,
 	fitViewport	: true,
 	event		: 'click',
 	position	: {},
 	tip			: true
 };
-Mmenu.configs.dropdown = {
+
+(Mmenu.configs.dropdown as mmConfigsDropdown) = {
 	offset: {
 		button	: {
 			x 		: -5,

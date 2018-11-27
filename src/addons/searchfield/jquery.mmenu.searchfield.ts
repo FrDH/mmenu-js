@@ -1,31 +1,32 @@
 Mmenu.addons.searchfield = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.searchfield,
-		conf = this.conf.searchfield;
+	var opts : mmOptionsSearchfield = this.opts.searchfield,
+		conf : mmConfigsSearchfield = this.conf.searchfield;
 
 
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			add: opts
 		};
 	}
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
 	if ( typeof opts.panel == 'boolean' )
 	{
-		opts.panel = {
+		(opts.panel as mmLooseObject) = {
 			add: opts.panel
 		};
 	}
 	if ( typeof opts.panel != 'object' )
 	{
-		opts.panel = {};
+		(opts.panel as mmLooseObject) = {};
 	}
+	//	/Extend shorthand options
 
 
 	if ( !opts.add )
@@ -48,6 +49,8 @@ Mmenu.addons.searchfield = function(
 			opts.cancel = true;
 		}
 	}
+	//	/Extend logical options
+
 
 	opts = this.opts.searchfield = jQuery.extend( true, {}, Mmenu.options.searchfield, opts );
 
@@ -159,10 +162,11 @@ Mmenu.addons.searchfield = function(
 
 
 
-	//	Default options and configuration
-Mmenu.options.searchfield = {
+	//	Default options and configuration.
+(Mmenu.options.searchfield as mmOptionsSearchfield) = {
 	add 			: false,
 	addTo			: 'panels',
+	cancel 			: false,
 	noResults		: 'No results found.',
 	placeholder		: 'Search',
 	panel 			: {
@@ -177,7 +181,7 @@ Mmenu.options.searchfield = {
 	showTextItems	: false,
 	showSubPanels	: true
 };
-Mmenu.configs.searchfield = {
+(Mmenu.configs.searchfield as mmConfigsSearchfield) = {
 	clear			: false,
 	form			: false,
 	input			: false,
@@ -190,8 +194,8 @@ Mmenu.prototype._initSearchPanel = function(
 	this	: Mmenu,
 	$panels	: JQuery
 ) {
-	var opts = this.opts.searchfield,
-		conf = this.conf.searchfield;
+	var opts : mmOptionsSearchfield = this.opts.searchfield,
+		conf : mmConfigsSearchfield = this.conf.searchfield;
 
 
 	//	Only once
@@ -243,8 +247,8 @@ Mmenu.prototype._initSearchfield = function(
 	this	: Mmenu,
 	$wrpr	: JQuery
 ) {
-	var opts = this.opts.searchfield,
-		conf = this.conf.searchfield;
+	var opts : mmOptionsSearchfield = this.opts.searchfield,
+		conf : mmConfigsSearchfield = this.conf.searchfield;
 
 
 	//	No searchfield in vertical submenus	
@@ -319,8 +323,8 @@ Mmenu.prototype._initSearching = function(
 	this	: Mmenu,
 	$srch	: JQuery
 ) {
-	var opts = this.opts.searchfield,
-		conf = this.conf.searchfield;
+	var opts : mmOptionsSearchfield = this.opts.searchfield,
+		conf : mmConfigsSearchfield = this.conf.searchfield;
 
 	var data: mmLooseObject = {};
 
@@ -454,8 +458,8 @@ Mmenu.prototype._initNoResultsMsg = function(
 	this	: Mmenu,
 	$wrpr	: JQuery
 ) {
-	var opts = this.opts.searchfield,
-		conf = this.conf.searchfield;
+	var opts : mmOptionsSearchfield = this.opts.searchfield,
+		conf : mmConfigsSearchfield = this.conf.searchfield;
 
 	//	Not in a panel
 	if ( !$wrpr.closest( '.mm-panel' ).length )
@@ -489,8 +493,8 @@ Mmenu.prototype.search = function(
 	$inpt	: JQuery,
 	query	: string
 ) {
-	var opts = this.opts.searchfield,
-		conf = this.conf.searchfield;
+	var opts : mmOptionsSearchfield = this.opts.searchfield,
+		conf : mmConfigsSearchfield = this.conf.searchfield;
 
 
 	$inpt = $inpt || this.node.$menu.find( '.mm-searchfield' ).chidren( 'input' ).first();

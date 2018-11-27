@@ -1,10 +1,7 @@
 Mmenu.addons.navbars.breadcrumbs = function( 
 	this	: Mmenu,
-	$navbar	: JQuery, 
-	opts	: mmLooseObject, 
-	conf	: mmLooseObject
+	$navbar	: JQuery
 ) {
-
 	//	Add content
 	var $crumbs = jQuery('<span class="mm-navbar__breadcrumbs" />').appendTo( $navbar );
 
@@ -44,13 +41,13 @@ Mmenu.addons.navbars.breadcrumbs = function(
 				}
 				$crnt = $crnt.data( 'mm-parent' );
 			}
-			if ( conf.breadcrumbs.removeFirst )
+			if ( this.conf.navbars.breadcrumbs.removeFirst )
 			{
 				crumbs.shift();
 			}
 
 			$bcrb
-				.append( crumbs.join( '<span class="mm-separator">' + conf.breadcrumbs.separator + '</span>' ) )
+				.append( crumbs.join( '<span class="mm-separator">' + this.conf.navbars.breadcrumbs.separator + '</span>' ) )
 				.appendTo( $panel.children( '.mm-navbar' ) );
 
 		}

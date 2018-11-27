@@ -1,9 +1,5 @@
 Mmenu.addons.toggles = function()
 {
-	var opts = this.opts.toggles,
-		conf = this.conf.toggles;
-
-
 	this.bind( 'initPanels:after',
 		function( 
 			this	: Mmenu,
@@ -12,7 +8,7 @@ Mmenu.addons.toggles = function()
 
 			//	Refactor toggle classes
 			Mmenu.refactorClass( $panels.find( 'input' ), this.conf.classNames.toggles.toggle , 'mm-toggle' );
-			Mmenu.refactorClass( $panels.find( 'input' ), this.conf.classNames.toggles.check 	, 'mm-check'  );
+			Mmenu.refactorClass( $panels.find( 'input' ), this.conf.classNames.toggles.check  , 'mm-check'  );
 	
 
 			//	Add markup
@@ -40,7 +36,7 @@ Mmenu.addons.toggles = function()
 };
 
 
-//	Default options and configuration
+//	Default options and configuration.
 Mmenu.configs.classNames.toggles = {
 	toggle	: 'Toggle',
 	check	: 'Check'

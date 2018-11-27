@@ -11,31 +11,31 @@ Mmenu.addons.drag = function(
 	}
 
 
-	var opts = this.opts.drag,
-		conf = this.conf.drag;
+	var opts : mmOptionsDrag = this.opts.drag,
+		conf : mmConfigsDrag = this.conf.drag;
 
 
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			menu 	: opts,
 			panels 	: opts
 		};
 	}
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
 	if ( typeof opts.menu == 'boolean' )
 	{
-		opts.menu = {
+		(opts as mmLooseObject) = {
 			open 	: opts.menu
 		};
 	}
 	if ( typeof opts.menu != 'object' )
 	{
-		opts.menu = {};
+		(opts.menu as mmLooseObject) = {};
 	}
 	if ( typeof opts.panels == 'boolean' )
 	{
@@ -45,9 +45,10 @@ Mmenu.addons.drag = function(
 	}
 	if ( typeof opts.panels != 'object' )
 	{
-		opts.panels = {};
+		(opts.panels as mmLooseObject) = {};
 	}
 	opts = this.opts.drag = jQuery.extend( true, {}, Mmenu.options.drag, opts );
+	//	/Extend shorthand options
 
 
 	function minMax( val, min, max )
@@ -63,16 +64,6 @@ Mmenu.addons.drag = function(
 		return val;
 	}
 
-	function dragOpenMenu( 
-		this : Mmenu,
-		opts : mmLooseObject,
-		conf : mmLooseObject
-	) {
-		
-	}
-
-
-	
 
 	//	Drag open the menu
 	if ( opts.menu.open )
@@ -196,7 +187,7 @@ Mmenu.addons.drag = function(
 				}
 
 				var $slideOutNodes 	: JQuery,
-					$dragNode 		: JQuery = Mmenu.valueOrFn( this.node.$menu, opts.menu.node, Mmenu.node.$page );
+					$dragNode 		: JQuery | string = Mmenu.valueOrFn( this.node.$menu, opts.menu.node, Mmenu.node.$page );
 
 				if ( typeof $dragNode == 'string' )
 				{
@@ -338,11 +329,11 @@ Mmenu.addons.drag = function(
 };
 
 
-//	Default options and configuration
-Mmenu.options.drag = {
+//	Default options and configuration.
+(Mmenu.options.drag as mmOptionsDrag) = {
 	menu 	: {
-		open 	: false,
-//		node	: null,
+		open 		: false,
+		node		: null,
 		maxStartPos	: 100,
 		threshold	: 50
 	},
@@ -353,7 +344,8 @@ Mmenu.options.drag = {
 		hammer	: {}
 	}
 };
-Mmenu.configs.drag = {
+
+(Mmenu.configs.drag as mmConfigsDrag) = {
 	menu : {
 		width	: {
 			perc	: 0.8,
@@ -365,6 +357,5 @@ Mmenu.configs.drag = {
 			min		: 140,
 			max		: 880
 		}
-	},
-	panels : {}
+	}
 };

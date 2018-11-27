@@ -1,10 +1,8 @@
 Mmenu.addons.navbars.prev = function( 
 	this	: Mmenu,
-	$navbar	: JQuery, 
-	opts	: mmLooseObject, 
-	conf	: mmLooseObject
+	$navbar	: JQuery
 ) {
-	//	Add content
+	//	Add content.
 	var $prev = jQuery('<a class="mm-btn mm-btn_prev mm-navbar__btn" href="#" />')
 		.appendTo( $navbar );
 
@@ -19,7 +17,7 @@ Mmenu.addons.navbars.prev = function(
 	);
 
 
-	//	Update to opened panel
+	//	Update to opened panel.
 	var $org;
 	var _url, _txt;
 

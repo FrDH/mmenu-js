@@ -1,22 +1,25 @@
 Mmenu.addons.sectionIndexer = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.sectionIndexer,
-		conf = this.conf.sectionIndexer;
+	var opts : mmOptionsSectionindexer = this.opts.sectionIndexer;
 
 
 	//	Extend shorthand options
 	if ( typeof opts == 'boolean' )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			add: opts
 		};
 	}
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
+	//	/Extend shorthand options
+
+
 	opts = this.opts.sectionIndexer = jQuery.extend( true, {}, Mmenu.options.sectionIndexer, opts );
+
 
 	if ( !opts.add )
 	{
@@ -136,8 +139,9 @@ Mmenu.addons.sectionIndexer = function(
 	);
 };
 
-//	Default options and configuration
-Mmenu.options.sectionIndexer = {
+
+//	Default options and configuration.
+(Mmenu.options.sectionIndexer as mmOptionsSectionindexer) = {
 	add		: false,
 	addTo	: 'panels'
 };

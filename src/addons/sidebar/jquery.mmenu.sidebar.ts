@@ -6,8 +6,7 @@ Mmenu.addons.sidebar = function(
 		return;
 	}
 
-	var opts = this.opts.sidebar,
-		conf = this.conf.sidebar;
+	var opts : mmOptionsSidebar = this.opts.sidebar;
 
 
 	//	Extend shorthand options
@@ -15,39 +14,45 @@ Mmenu.addons.sidebar = function(
 	   ( typeof opts == 'boolean' && opts ) ||
 		 typeof opts == 'number'
 	) {
-		opts = {
+		(opts as mmLooseObject) = {
 			expanded: opts
 		};
 	}
 
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
 
+	//	Extend collapsed shorthand options.
 	if ( typeof opts.collapsed == 'boolean' && opts.collapsed )
 	{
-		opts.collapsed = 'all';
+		(opts.collapsed as mmLooseObject) = {
+			use: 'all'
+		};
 	}
 	if ( typeof opts.collapsed == 'string' ||
 		 typeof opts.collapsed == 'number'
 	) {
-		opts.collapsed = {
+		(opts.collapsed as mmLooseObject) = {
 			use: opts.collapsed
 		};
 	}
 	if ( typeof opts.collapsed != 'object' )
 	{
-		opts.collapsed = {};
+		(opts.collapsed as mmLooseObject) = {};
 	}
 	if ( typeof opts.collapsed.use == 'number' )
 	{
 		opts.collapsed.use = '(min-width: ' + opts.collapsed.use + 'px)';
 	}
 
+	//	Extend expanded shorthand options.
 	if ( typeof opts.expanded == 'boolean' && opts.expanded )
 	{
-		opts.expanded = 'all';
+		opts.expanded = {
+			use: 'all'
+		};
 	}
 	if ( typeof opts.expanded == 'string' ||
 		 typeof opts.expanded == 'number'
@@ -58,30 +63,20 @@ Mmenu.addons.sidebar = function(
 	}
 	if ( typeof opts.expanded != 'object' )
 	{
-		opts.expanded = {};
+		(opts.expanded as mmLooseObject) = {};
 	}
 	if ( typeof opts.expanded.use == 'number' )
 	{
 		opts.expanded.use = '(min-width: ' + opts.expanded.use + 'px)';
 	}
+	//	/Extend shorthand options
+
 
 	opts = this.opts.sidebar = jQuery.extend( true, {}, Mmenu.options.sidebar, opts );
 
 
-	var clsclpsd = 'mm-wrapper_sidebar-collapsed';
-
-	//	deprecated
-	if ( opts.collapsed.size )
-	{
-		clsclpsd += ' mm-wrapper_sidebar-collapsed-' + opts.collapsed.size;
-	}
-	//	/deprecated
-
-	var clsxpndd = 'mm-wrapper_sidebar-expanded';
-	if ( opts.expanded.size )
-	{
-		clsxpndd += ' mm-wrapper_sidebar-expanded-' + opts.expanded.size;
-	}
+	var clsclpsd = 'mm-wrapper_sidebar-collapsed',
+		clsxpndd = 'mm-wrapper_sidebar-expanded';
 
 
 	//	Collapsed
@@ -226,8 +221,8 @@ Mmenu.addons.sidebar = function(
 };
 
 
-//	Default options and configuration
-Mmenu.options.sidebar = {
+//	Default options and configuration.
+(Mmenu.options.sidebar as mmOptionsSidebar) = {
 	collapsed 	: {
 		use 		: false,
 		blockMenu	: true,

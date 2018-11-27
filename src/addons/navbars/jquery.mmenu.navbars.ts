@@ -1,8 +1,7 @@
 Mmenu.addons.navbars = function(
 	this : Mmenu
 ) {
-	var navs = this.opts.navbars,
-		conf = this.conf.navbars;
+	var navs : mmOptionsNavbarsNavbar[] = this.opts.navbars;
 
 
 	if ( typeof navs == 'undefined' )
@@ -32,11 +31,11 @@ Mmenu.addons.navbars = function(
 			//	Extend shorthand options
 			if ( typeof opts == 'boolean' && opts )
 			{
-				opts = {};
+				(opts as mmLooseObject) = {};
 			}
 			if ( typeof opts != 'object' )
 			{
-				opts = {};
+				(opts as mmLooseObject) = {};
 			}
 			if ( typeof opts.content == 'undefined' )
 			{
@@ -46,7 +45,8 @@ Mmenu.addons.navbars = function(
 			{
 				opts.content = [ opts.content ];
 			}
-			opts = jQuery.extend( true, {}, this.opts.navbar, opts );
+			//	/Extend shorthand options
+
 
 			//	Create node
 			var $navbar = jQuery( '<div class="mm-navbar" />' );
@@ -97,32 +97,34 @@ Mmenu.addons.navbars = function(
 			//	Add content
 			for ( var c = 0, l = opts.content.length; c < l; c++ )
 			{
-				var ctnt = Mmenu.addons.navbars[ opts.content[ c ] ] || null;
+				//	Content from
+				var ctnt = ( typeof opts.content[ c ] == 'string' && Mmenu.addons.navbars[ (opts.content[ c ] as string) ] ) || null;
 				if ( ctnt )
 				{
-					ctnt.call( this, $navbar, opts, conf );
+					ctnt.call( this, $navbar );
 				}
 				else
 				{
 					ctnt = opts.content[ c ];
 					if ( !( ctnt instanceof jQuery ) )
 					{
-						ctnt = jQuery( opts.content[ c ] );
+						ctnt = jQuery( (opts.content[ c ] as string) );
 					}
 					$navbar.append( ctnt );
 				}
 			}
 
-			//	Call type
-			var type = Mmenu.addons.navbars[ opts.type ] || null;
-			if ( type )
-			{
-				type.call( this, $navbar, opts, conf );
-			}
-
+			//	Added buttons
 			if ( $navbar.children( '.mm-btn' ).length )
 			{
 				$navbar.addClass( 'mm-navbar_has-btns' );
+			}
+
+			//	Call type
+			var type = ( typeof opts.type == 'string' && Mmenu.addons.navbars[ opts.type ] ) || null;
+			if ( type )
+			{
+				type.call( this, $navbar );
 			}
 		}
 	);
@@ -142,11 +144,14 @@ Mmenu.addons.navbars = function(
 };
 
 
-//	Default options and configuration
-Mmenu.configs.navbars = {
+//	Default options and configuration.
+(Mmenu.options.navbars as mmOptionsNavbarsNavbar[]) = [];
+
+(Mmenu.configs.navbars as mmConfigsNavbars) = {
 	breadcrumbs: {
-		separator 		: '/',
-		removeFirst 	: false
+		separator 	: '/',
+		removeFirst : false
 	}
 };
+
 Mmenu.configs.classNames.navbars = {};

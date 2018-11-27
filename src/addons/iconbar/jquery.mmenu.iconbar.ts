@@ -2,18 +2,19 @@ Mmenu.addons.iconbar = function(
 	this : Mmenu
 ) {
 
-	var opts = this.opts.iconbar,
-		conf = this.conf.iconbar;
+	var opts : mmOptionsIconbar = this.opts.iconbar;
 
 
 	//	Extend shorthand options
 	if ( opts instanceof Array )
 	{
-		opts = {
+		(opts as mmLooseObject) = {
 			add: true,
 			top: opts
 		};
 	}
+	//	/Extend shorthand options
+
 
 	if ( !opts.add )
 	{
@@ -130,10 +131,10 @@ Mmenu.addons.iconbar = function(
 };
 
 
-//	Default options and configuration
-Mmenu.options.iconbar = {
+//	Default options and configuration.
+(Mmenu.options.iconbar as mmOptionsIconbar) = {
 	add 	: false,
-//	size	: null,
 	top 	: [],
-	bottom 	: []
+	bottom 	: [],
+	type	: 'default'
 };
