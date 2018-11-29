@@ -1,7 +1,7 @@
 Mmenu.addons.iconPanels = function(
 	this : Mmenu
 ) {
-	var opts : mmOptionsIconpanels = this.opts.iconPanels;
+	var opts = this.opts.iconPanels;
 
 	var keepFirst = false;
 
@@ -140,7 +140,7 @@ Mmenu.addons.iconPanels = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.iconPanels as mmOptionsIconpanels) = {
+Mmenu.options.iconPanels = {
 	add 		: false,
 	blockPanel	: true,
 	hideDivider	: false,

@@ -15,10 +15,12 @@ Mmenu.addons.screenReader = function(
 	}
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
-	opts = this.opts.screenReader = jQuery.extend( true, {}, Mmenu.options.screenReader, opts );
+	//	/Extend shorthand options
 
+
+	opts = this.opts.screenReader = jQuery.extend( true, {}, Mmenu.options.screenReader, opts );
 
 
 	//	Add Aria-* attributes
@@ -197,11 +199,12 @@ Mmenu.addons.screenReader = function(
 };
 
 
-//	Default options and configuration
+//	Default options and configuration.
 Mmenu.options.screenReader = {
 	aria: true,
 	text: true
 };
+
 Mmenu.configs.screenReader = {
 	text: {
 		closeMenu       : 'Close menu',

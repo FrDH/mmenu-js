@@ -1,7 +1,7 @@
 Mmenu.addons.sectionIndexer = function(
 	this : Mmenu
 ) {
-	var opts : mmOptionsSectionindexer = this.opts.sectionIndexer;
+	var opts = this.opts.sectionIndexer;
 
 
 	//	Extend shorthand options
@@ -141,7 +141,7 @@ Mmenu.addons.sectionIndexer = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.sectionIndexer as mmOptionsSectionindexer) = {
+Mmenu.options.sectionIndexer = {
 	add		: false,
 	addTo	: 'panels'
 };

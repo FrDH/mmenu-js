@@ -7,7 +7,7 @@ Mmenu.addons.fixedElements = function(
 	}
 
 
-	var conf : mmConfigsFixedelements = this.conf.fixedElements;
+	var conf = this.conf.fixedElements;
 
 	var _fixd 	: string,
 		_stck 	: string, 
@@ -71,7 +71,7 @@ Mmenu.addons.fixedElements = function(
 
 
 //	Default options and configuration.
-(Mmenu.configs.fixedElements as mmConfigsFixedelements) = {
+Mmenu.configs.fixedElements = {
 	fixed	: {
 		insertMethod	: 'appendTo',
 		insertSelector	: 'body'

@@ -1,8 +1,8 @@
 Mmenu.addons.searchfield = function(
 	this : Mmenu
 ) {
-	var opts : mmOptionsSearchfield = this.opts.searchfield,
-		conf : mmConfigsSearchfield = this.conf.searchfield;
+	var opts = this.opts.searchfield,
+		conf = this.conf.searchfield;
 
 
 	//	Extend shorthand options
@@ -162,8 +162,8 @@ Mmenu.addons.searchfield = function(
 
 
 
-	//	Default options and configuration.
-(Mmenu.options.searchfield as mmOptionsSearchfield) = {
+//	Default options and configuration.
+Mmenu.options.searchfield = {
 	add 			: false,
 	addTo			: 'panels',
 	cancel 			: false,
@@ -181,7 +181,8 @@ Mmenu.addons.searchfield = function(
 	showTextItems	: false,
 	showSubPanels	: true
 };
-(Mmenu.configs.searchfield as mmConfigsSearchfield) = {
+
+Mmenu.configs.searchfield = {
 	clear			: false,
 	form			: false,
 	input			: false,

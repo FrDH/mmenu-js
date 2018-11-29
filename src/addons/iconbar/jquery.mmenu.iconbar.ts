@@ -2,7 +2,7 @@ Mmenu.addons.iconbar = function(
 	this : Mmenu
 ) {
 
-	var opts : mmOptionsIconbar = this.opts.iconbar;
+	var opts = this.opts.iconbar;
 
 
 	//	Extend shorthand options
@@ -132,7 +132,7 @@ Mmenu.addons.iconbar = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.iconbar as mmOptionsIconbar) = {
+Mmenu.options.iconbar = {
 	add 	: false,
 	top 	: [],
 	bottom 	: [],

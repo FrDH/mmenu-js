@@ -6,7 +6,7 @@ Mmenu.addons.sidebar = function(
 		return;
 	}
 
-	var opts : mmOptionsSidebar = this.opts.sidebar;
+	var opts = this.opts.sidebar;
 
 
 	//	Extend shorthand options
@@ -222,7 +222,7 @@ Mmenu.addons.sidebar = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.sidebar as mmOptionsSidebar) = {
+Mmenu.options.sidebar = {
 	collapsed 	: {
 		use 		: false,
 		blockMenu	: true,

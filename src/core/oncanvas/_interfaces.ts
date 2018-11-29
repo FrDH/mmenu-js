@@ -12,28 +12,52 @@ interface mmFunctionsObject {
 
 //	Class options interfaces.
 interface mmOptions {
-	hooks 			: mmFunctionsObject
-	extensions		: string[] | mmOptionsExensions
-	wrappers		: string[]
-	navbar 			: mmOptionsNavbar
-	onClick			: mmOptionsOnclick
-	slidingSubmenus	: boolean
+	hooks 				: mmFunctionsObject
+	extensions			: string[] | mmOptionsExensions
+	wrappers			: string[]
+	navbar 				: mmOptionsNavbar
+	onClick				: mmOptionsOnclick
+	slidingSubmenus		: boolean
 
-	//	Make it "loose" so add-ons and wrappers can extend it.
-	[key: string] 	: any
+	//	Core add-ons
+	offCanvas			?: mmOptionsOffcanvas
+	screenReader		?: mmOptionsScreenreader
+	scrollBugFix		?: mmOptionsScrollbugfix
+
+	//	Add-ons
+	autoHeight			?: mmOptionsAutoheight
+	backButton			?: mmOptionsBackbutton
+	columns				?: mmOptionsColumns
+	counters			?: mmOptionsCounters
+	dividers 			?: mmOptionsDividers
+	drag 				?: mmOptionsDrag
+	dropdown			?: mmOptionsDropdown
+	iconbar 			?: mmOptionsIconbar
+	iconPanels			?: mmOptionsIconpanels
+	keyboardNavigation	?: mmOptionsKeyboardnavigation
+	lazySubmenus		?: mmOptionsLazysubmenus
+	navbars				?: mmOptionsNavbarsNavbar[]
+	pageScroll			?: mmOptionsPagescroll
+	searchfield			?: mmOptionsSearchfield
+	sectionIndexer		?: mmOptionsSectionindexer
+	setSelected			?: mmOptionsSetselected
+	sidebar				?: mmOptionsSidebar
+
+	//	Make it "loose" so add-ons can extend it.
+	[key: string] 		: any
 }
 interface mmOptionsExensions {
-	[key: string] 	: string[] | mmOptionsExensions
+	[key: string] 		: string[] | mmOptionsExensions
 }
 interface mmOptionsNavbar {
-	add 			: boolean
-	title			: string | Function
-	titleLink		: string
+	add 				: boolean
+	title				: string | Function
+	titleLink			: string
 }
 interface mmOptionsOnclick {
-	close			: boolean
-	preventDefault	: boolean
-	setSelected		: boolean
+	close				: boolean
+	preventDefault		: boolean
+	setSelected			: boolean
 }
 
 
@@ -46,14 +70,26 @@ interface mmConfigs {
 	panelNodetype		: string
 	transitionDuration	: number
 
-	//	Make it "loose" so add-ons and wrappers can extend it.
-	[key: string] 	: any
+	//	Core add-ons
+	offCanvas 			?: mmConfigsOffcanvas
+	screenReader		?: mmConfigsScreenreader
+
+	//	Add-ons
+	drag 				?: mmConfigsDrag
+	dropdown			?: mmConfigsDropdown
+	fixedElements		?: mmConfigsFixedelements
+	navbars				?: mmConfigsNavbars
+	pageScroll			?: mmConfigsPagescroll
+	searchfield			?: mmConfigsSearchfield
+
+	//	Make it "loose" so add-ons can extend it.
+	[key: string] 		: any
 }
 
 
 //	Click arguments interface.
 interface mmClickArguments {
-	inMenu 			: boolean
-	inListview 		: boolean
-	toExternal		: boolean
+	inMenu 				: boolean
+	inListview 			: boolean
+	toExternal			: boolean
 }

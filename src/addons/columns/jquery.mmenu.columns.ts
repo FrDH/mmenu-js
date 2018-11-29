@@ -1,7 +1,7 @@
 Mmenu.addons.columns = function(
 	this : Mmenu
 ) {
-	var opts : mmOptionsColumns = this.opts.columns;
+	var opts = this.opts.columns;
 
 
 	//	Extend shorthand options
@@ -142,7 +142,7 @@ Mmenu.addons.columns = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.columns as mmOptionsColumns) = {
+Mmenu.options.columns = {
 	add 		: false,
 	visible		: {
 		min			: 1,

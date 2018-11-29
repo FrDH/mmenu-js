@@ -13,8 +13,7 @@ Mmenu.addons.scrollBugFix = function(
 	}
 
 
-	var opts = this.opts.scrollBugFix,
-		conf = this.conf.scrollBugFix;
+	var opts = this.opts.scrollBugFix;
 
 
 	//	Extend shorthand options
@@ -26,9 +25,13 @@ Mmenu.addons.scrollBugFix = function(
 	}
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
+	//	Extend shorthand options
+
+
 	opts = this.opts.scrollBugFix = jQuery.extend( true, {}, Mmenu.options.scrollBugFix, opts );
+
 
 	if ( !opts.fix )
 	{
@@ -120,7 +123,7 @@ Mmenu.addons.scrollBugFix = function(
 };
 
 
-//	Default options and configuration
+//	Default options and configuration.
 Mmenu.options.scrollBugFix = {
 	fix: true
 };

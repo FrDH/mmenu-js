@@ -6,8 +6,8 @@ Mmenu.addons.dropdown = function(
 		return;
 	}
 
-	var opts : mmOptionsDropdown = this.opts.dropdown,
-		conf : mmConfigsDropdown = this.conf.dropdown;
+	var opts = this.opts.dropdown,
+		conf = this.conf.dropdown;
 
 
 	//	Extend shorthand options
@@ -237,7 +237,7 @@ Mmenu.addons.dropdown = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.dropdown as mmOptionsDropdown) = {
+Mmenu.options.dropdown = {
 	drop 		: false,
 	fitViewport	: true,
 	event		: 'click',
@@ -245,7 +245,7 @@ Mmenu.addons.dropdown = function(
 	tip			: true
 };
 
-(Mmenu.configs.dropdown as mmConfigsDropdown) = {
+Mmenu.configs.dropdown = {
 	offset: {
 		button	: {
 			x 		: -5,

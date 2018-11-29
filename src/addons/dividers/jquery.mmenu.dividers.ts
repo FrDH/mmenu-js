@@ -1,7 +1,7 @@
 Mmenu.addons.dividers = function(
 	this : Mmenu
 ) {
-	var opts : mmOptionsDividers = this.opts.dividers;
+	var opts = this.opts.dividers;
 
 
 	//	Extend shorthand options
@@ -166,7 +166,7 @@ Mmenu.addons.dividers = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.dividers as mmOptionsDividers) = {
+Mmenu.options.dividers = {
 	add		: false,
 	addTo	: 'panels',
 	fixed	: false,

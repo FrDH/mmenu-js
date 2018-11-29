@@ -6,7 +6,7 @@ Mmenu.addons.backButton = function(
 		return;
 	}
 
-	var opts : mmOptionsBackbutton = this.opts.backButton;
+	var opts = this.opts.backButton;
 
 
 	//	Extend shorthand options
@@ -24,7 +24,7 @@ Mmenu.addons.backButton = function(
 	//	/Extend shorthand options
 
 
-	var _menu  = '#' + this.node.$menu.attr( 'id' );
+	var _menu = '#' + this.node.$menu.attr( 'id' );
 
 	//	Close menu
 	if ( opts.close )
@@ -99,7 +99,7 @@ Mmenu.addons.backButton = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.backButton as mmOptionsBackbutton) = {
+Mmenu.options.backButton = {
 	close 	: false,
 	open 	: false
 };

@@ -1,7 +1,7 @@
 Mmenu.addons.lazySubmenus = function(
 	this : Mmenu
 ) {
-	var opts : mmOptionsLazysubmenus = this.opts.lazySubmenus;
+	var opts = this.opts.lazySubmenus;
 
 
 	//	Extend shorthand options
@@ -89,6 +89,6 @@ Mmenu.addons.lazySubmenus = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.lazySubmenus as mmOptionsLazysubmenus) = {
+Mmenu.options.lazySubmenus = {
 	load: false
 };

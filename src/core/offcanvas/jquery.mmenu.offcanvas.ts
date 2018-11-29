@@ -18,17 +18,18 @@ Mmenu.addons.offCanvas = function(
 	//	Extend shorthand options
 	if ( typeof opts != 'object' )
 	{
-		opts = {};
+		(opts as mmLooseObject) = {};
 	}
-
-	opts = this.opts.offCanvas = jQuery.extend( true, {}, Mmenu.options.offCanvas, opts );
+	//	/Extend shorthand options
 
 	//	Extend configuration
 	if ( typeof conf.page.selector != 'string' )
 	{
 		conf.page.selector = '> ' + conf.page.nodetype;
 	}
+	//	/Extend configuration
 
+	opts = this.opts.offCanvas = jQuery.extend( true, {}, Mmenu.options.offCanvas, opts );
 	conf = this.conf.offCanvas = jQuery.extend( true, {}, Mmenu.configs.offCanvas, conf );
 
 
@@ -192,7 +193,7 @@ Mmenu.addons.offCanvas = function(
 		}
 	);
 
-}
+};
 
 
 //	Default options and configuration.
@@ -200,6 +201,7 @@ Mmenu.options.offCanvas = {
 	blockUI			: true,
 	moveBackground	: true
 };
+
 Mmenu.configs.offCanvas = {
 	menu 	: {
 		insertMethod	: 'prependTo',

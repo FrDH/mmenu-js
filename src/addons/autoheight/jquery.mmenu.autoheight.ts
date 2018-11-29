@@ -2,7 +2,7 @@ Mmenu.addons.autoHeight = function(
 	this : Mmenu
 ) {
 
-	var opts : mmOptionsAutoheight = this.opts.autoHeight;
+	var opts = this.opts.autoHeight;
 
 
 	//	Extend shorthand options
@@ -127,6 +127,6 @@ Mmenu.addons.autoHeight = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.autoHeight as mmOptionsAutoheight) = {
+Mmenu.options.autoHeight = {
 	height: 'default' // 'default/highest/auto'
 };

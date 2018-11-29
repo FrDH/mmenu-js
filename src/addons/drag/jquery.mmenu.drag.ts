@@ -11,8 +11,8 @@ Mmenu.addons.drag = function(
 	}
 
 
-	var opts : mmOptionsDrag = this.opts.drag,
-		conf : mmConfigsDrag = this.conf.drag;
+	var opts = this.opts.drag,
+		conf = this.conf.drag;
 
 
 	//	Extend shorthand options
@@ -330,7 +330,7 @@ Mmenu.addons.drag = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.drag as mmOptionsDrag) = {
+Mmenu.options.drag = {
 	menu 	: {
 		open 		: false,
 		node		: null,
@@ -345,7 +345,7 @@ Mmenu.addons.drag = function(
 	}
 };
 
-(Mmenu.configs.drag as mmConfigsDrag) = {
+Mmenu.configs.drag = {
 	menu : {
 		width	: {
 			perc	: 0.8,

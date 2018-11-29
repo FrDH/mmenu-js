@@ -1,7 +1,7 @@
 Mmenu.addons.counters = function(
 	this : Mmenu
 ) {
-	var opts : mmOptionsCounters = this.opts.counters;
+	var opts = this.opts.counters;
 
 
 	//	Extend shorthand options
@@ -113,7 +113,7 @@ Mmenu.addons.counters = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.counters as mmOptionsCounters) = {
+Mmenu.options.counters = {
 	add		: false,
 	addTo	: 'panels',
 	count	: false

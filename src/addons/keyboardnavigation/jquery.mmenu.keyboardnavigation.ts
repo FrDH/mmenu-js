@@ -9,7 +9,7 @@ Mmenu.addons.keyboardNavigation = function(
 	}
 
 
-	var opts : mmOptionsKeyboardnavigation = this.opts.keyboardNavigation;
+	var opts = this.opts.keyboardNavigation;
 
 
 	//	Extend shorthand options
@@ -138,7 +138,7 @@ Mmenu.addons.keyboardNavigation = function(
 };
 
 //	Default options and configuration.
-(Mmenu.options.keyboardNavigation as mmOptionsKeyboardnavigation) = {
+Mmenu.options.keyboardNavigation = {
 	enable 	: false,
 	enhance	: false
 };

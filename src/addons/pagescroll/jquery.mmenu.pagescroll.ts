@@ -2,8 +2,8 @@ Mmenu.addons.pageScroll = function(
 	this : Mmenu
 ) {
 
-	var opts : mmOptionsPagescroll = this.opts.pageScroll,
-		conf : mmConfigsPagescroll = this.conf.pageScroll;
+	var opts = this.opts.pageScroll,
+		conf = this.conf.pageScroll;
 
 
 	//	Extend shorthand options
@@ -166,11 +166,12 @@ Mmenu.addons.pageScroll = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.pageScroll as mmOptionsPagescroll) = {
+Mmenu.options.pageScroll = {
 	scroll: false,
 	update: false
 };
-(Mmenu.configs.pageScroll as mmConfigsPagescroll) = {
+
+Mmenu.configs.pageScroll = {
 	scrollOffset: 0,
 	updateOffset: 50
 };

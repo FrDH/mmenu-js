@@ -1,7 +1,7 @@
 Mmenu.addons.setSelected = function(
 	this : Mmenu
 ) {
-	var opts : mmOptionsSetselected = this.opts.setSelected;
+	var opts = this.opts.setSelected;
 
 
 	//	Extend shorthand options
@@ -125,7 +125,7 @@ Mmenu.addons.setSelected = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.setSelected as mmOptionsSetselected) = {
+Mmenu.options.setSelected = {
 	current : true,
 	hover	: false,
 	parent	: false

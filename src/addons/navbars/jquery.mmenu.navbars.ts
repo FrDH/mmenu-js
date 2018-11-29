@@ -1,7 +1,7 @@
 Mmenu.addons.navbars = function(
 	this : Mmenu
 ) {
-	var navs : mmOptionsNavbarsNavbar[] = this.opts.navbars;
+	var navs = this.opts.navbars;
 
 
 	if ( typeof navs == 'undefined' )
@@ -145,9 +145,9 @@ Mmenu.addons.navbars = function(
 
 
 //	Default options and configuration.
-(Mmenu.options.navbars as mmOptionsNavbarsNavbar[]) = [];
+Mmenu.options.navbars = [];
 
-(Mmenu.configs.navbars as mmConfigsNavbars) = {
+Mmenu.configs.navbars = {
 	breadcrumbs: {
 		separator 	: '/',
 		removeFirst : false
