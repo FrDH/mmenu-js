@@ -5,14 +5,29 @@ interface mmLooseObject {
 interface mmStringObject {
 	[key: string] 	: string
 }
-interface mmFunctionsObject {
+interface mmFunctionObject {
 	[key: string] 	: Function
+}
+interface mmJqueryObject {
+	[key: string] 	: JQuery
+}
+
+
+//	Class methods interfaces.
+interface mmMethodUniqueid {
+	 () : string
+}
+interface mmMethodI18n {
+	(
+		text		?: string | object,
+		language	?: string
+	) : string | object
 }
 
 
 //	Class options interfaces.
 interface mmOptions {
-	hooks 				: mmFunctionsObject
+	hooks 				: mmFunctionObject
 	extensions			: string[] | mmOptionsExensions
 	wrappers			: string[]
 	navbar 				: mmOptionsNavbar

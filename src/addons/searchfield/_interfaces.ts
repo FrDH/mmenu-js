@@ -1,7 +1,7 @@
 //	Add-on options interfaces.
 interface mmOptionsSearchfield {
 	add 			: boolean
-	addTo			: string
+	addTo			: string | JQuery
 	cancel			: boolean
 	noResults		: string
 	placeholder		: string
@@ -13,7 +13,7 @@ interface mmOptionsSearchfield {
 interface mmOptionsSearchfieldPanel {
 	add 			: boolean
 	dividers		: boolean
-	fx 				: string
+	fx 				: string | boolean
 	id				: string
 	splash			: string
 	title			: string
@@ -21,8 +21,8 @@ interface mmOptionsSearchfieldPanel {
 
 //	Add-on configs interface.
 interface mmConfigsSearchfield {
+	form			: mmLooseObject | boolean
+	input			: mmLooseObject | boolean
 	clear			: boolean
-	form			: boolean
-	input			: boolean
 	submit			: boolean
 }
