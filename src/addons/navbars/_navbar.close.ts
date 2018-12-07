@@ -13,7 +13,7 @@ Mmenu.addons.navbars.close = function(
 			this	: Mmenu,
 			$page	: JQuery
 		) {
-			$close.attr( 'href', '#' + $page.attr( 'id' ) );
+			$close[ 0 ].setAttribute( 'href', '#' + $page[ 0 ].id );
 		}
 	);
 
@@ -25,7 +25,7 @@ Mmenu.addons.navbars.close = function(
 			$page	: JQuery
 		) {
 			$close.html( Mmenu.sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) ) );
-			Mmenu.sr_aria( $close, 'owns', $close.attr( 'href' ).slice( 1 ) );
+			Mmenu.sr_aria( $close, 'owns', $close[ 0 ].getAttribute( 'href' ).slice( 1 ) );
 		}
 	);
 };

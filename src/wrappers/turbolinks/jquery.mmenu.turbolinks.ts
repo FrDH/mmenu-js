@@ -9,7 +9,7 @@ Mmenu.wrappers.turbolinks = function(
 		.on( 'turbolinks:before-visit',
 			() => {
 				$html = jQuery('html');
-				classnames = $html.attr( 'class' );
+				classnames = $html[ 0 ].getAttribute( 'class' );
 				classnames = jQuery.grep(
 					classnames.split( /\s+/ ),
 					function( name: string )
@@ -28,7 +28,7 @@ Mmenu.wrappers.turbolinks = function(
 					return;
 				}
 
-				$html.attr( 'class', classnames );
+				$html[ 0 ].setAttribute( 'class', classnames );
 			}
 		);
 };

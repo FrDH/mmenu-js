@@ -298,7 +298,7 @@ Mmenu.addons.drag = function(
 				this 	: Mmenu,
 				$panel	: JQuery
 			) {
-				var $parent = $panel.data( 'mm-parent' );
+				var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
 
 				if ( $parent )
 				{

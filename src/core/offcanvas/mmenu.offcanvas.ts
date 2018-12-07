@@ -90,7 +90,7 @@ Mmenu.addons.offCanvas = function(
 			{
 				Mmenu.node.$blck
 					.children( 'a' )
-					.attr( 'href', '#' + $page.attr( 'id' ) );
+					.attr( 'href', '#' + $page[ 0 ].id );
 			}
 		}
 	);
@@ -160,7 +160,7 @@ Mmenu.addons.offCanvas = function(
 					var $menu = $a.closest( '.mm-menu' );
 					if ( $menu.length )
 					{
-						var api = $menu.data( 'mmenu' );
+						var api : mmApi = ($menu as any).mmenu;
 						if ( api && api.close )
 						{
 							api.close();
@@ -180,7 +180,7 @@ Mmenu.addons.offCanvas = function(
 			}
 
 			//	Close menu
-			id = Mmenu.node.$page.first().attr( 'id' );
+			id = Mmenu.node.$page[ 0 ].id;
 			if ( id )
 			{
 				if ( $a.is( '[href="#' + id + '"]' ) )
@@ -257,7 +257,7 @@ Mmenu.prototype._openSetup = function(
 	Mmenu.node.$page.each(
 		( i, elem ) => {
 			let $page = jQuery(elem);
-			$page.data( 'mm-style', $page.attr( 'style' ) || '' );
+			($page[ 0 ] as any).mmStyle = $page[ 0 ].getAttribute( 'style' ) || '';
 		}
 	);
 
@@ -343,7 +343,7 @@ Mmenu.prototype.close = function(
 			Mmenu.node.$page.each(
 				( i, elem ) => {
 					let $page = jQuery(elem);
-					$page.attr( 'style', $page.data( 'mm-style' ) );
+					$page[ 0 ].setAttribute( 'style', ($page[ 0 ] as any).mmStyle );
 				}
 			);
 
@@ -372,7 +372,7 @@ Mmenu.prototype.closeAllOthers = function(
 		.not( this.node.$menu )
 		.each(
 			( i, elem ) => {
-				var api = jQuery(elem).data( 'mmenu' );
+				var api : mmApi = (elem as any).mmenu;
 				if ( api && api.close )
 				{
 					api.close();
@@ -415,8 +415,7 @@ Mmenu.prototype.setPage = function(
 		.each(
 			function( i, elem )
 			{
-				let $page = jQuery(elem);
-				$page.attr( 'id', $page.attr( 'id' ) || Mmenu.getUniqueId() );		
+				elem.id = elem.id || Mmenu.getUniqueId();
 			}
 		);
 

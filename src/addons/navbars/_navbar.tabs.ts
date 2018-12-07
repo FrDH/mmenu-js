@@ -24,7 +24,7 @@ Mmenu.addons.navbars.tabs = function(
 
 				try
 				{
-					this.openPanel( jQuery( $tab.attr( 'href' ) ), false );
+					this.openPanel( jQuery( $tab[ 0 ].getAttribute( 'href' ) ), false );
 					e.stopImmediatePropagation();
 				}
 				catch( err ) {}
@@ -37,14 +37,14 @@ Mmenu.addons.navbars.tabs = function(
 	) {
 		$tabs.removeClass( 'mm-navbar__tab_selected' );
 
-		var $tab = $tabs.filter( '[href="#' + $panel.attr( 'id' ) + '"]' );
+		var $tab = $tabs.filter( '[href="#' + $panel[ 0 ].id + '"]' );
 		if ( $tab.length )
 		{
 			$tab.addClass( 'mm-navbar__tab_selected' );
 		}
 		else
 		{
-			var $parent = $panel.data( 'mm-parent' );
+			var $parent = ($panel[ 0 ] as any).mmParent;
 			if ( $parent && $parent.length )
 			{
 				selectTab.call( this, $parent.closest( '.mm-panel' ) );

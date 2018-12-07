@@ -96,7 +96,7 @@ Mmenu.addons.dropdown = function(
 		function(
 			this : Mmenu
 		) {
-			this.node.$menu.data( 'mm-style', this.node.$menu.attr( 'style' ) || '' );
+			(this.node.$menu[ 0 ] as any).mmStyle = this.node.$menu[ 0 ].getAttribute( 'style' ) || '';
 			jQuery('html').addClass( 'mm-wrapper_dropdown' );
 		}
 	);
@@ -105,7 +105,7 @@ Mmenu.addons.dropdown = function(
 		function(
 			this : Mmenu
 		) {
-			this.node.$menu.attr( 'style', this.node.$menu.data( 'mm-style' ) );
+			this.node.$menu[ 0 ].setAttribute( 'style', (this.node.$menu[ 0 ] as any).mmStyle );
 			jQuery('html').removeClass( 'mm-wrapper_dropdown' );
 		}
 	);
@@ -202,11 +202,11 @@ Mmenu.addons.dropdown = function(
 			return;
 		}
 
-		this.node.$menu.attr( 'style', this.node.$menu.data( 'mm-style' ) );
+		this.node.$menu[ 0 ].setAttribute( 'style', (this.node.$menu[ 0 ] as any).mmStyle );
 
-		var obj: [ mmLooseObject, string[] ] = [{}, []];
-		obj = getPosition.call( this, 'y', obj );
-		obj = getPosition.call( this, 'x', obj );
+		var obj : [ mmLooseObject, string[] ] = [{}, []];
+			obj = getPosition.call( this, 'y', obj );
+			obj = getPosition.call( this, 'x', obj );
 
 		this.node.$menu.css( obj[ 0 ] );
 

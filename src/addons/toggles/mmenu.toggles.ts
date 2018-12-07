@@ -19,11 +19,11 @@ Mmenu.addons.toggles = function()
 						var $inpt = jQuery(elem),
 							$prnt = $inpt.closest( 'li' ),
 							cl = $inpt.hasClass( 'mm-toggle' ) ? 'toggle' : 'check',
-							id = $inpt.attr( 'id' ) || Mmenu.getUniqueId();
+							id = $inpt[ 0 ].id || Mmenu.getUniqueId();
 
 						if ( !$prnt.children( 'label[for="' + id + '"]' ).length )
 						{
-							$inpt.attr( 'id', id );
+							$inpt[ 0 ].id = id;
 							$prnt.prepend( $inpt );
 
 							jQuery('<label for="' + id + '" class="mm-' + cl + '"></label>')

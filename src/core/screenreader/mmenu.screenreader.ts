@@ -105,8 +105,7 @@ Mmenu.addons.screenReader = function(
 					.each(
 						function( i, elem )
 						{
-							let $btn = jQuery(elem);
-							Mmenu.sr_aria( $btn, 'owns', $btn.attr( 'href' ).replace( '#', '' ) );
+							Mmenu.sr_aria( jQuery(elem), 'owns', elem.getAttribute( 'href' ).replace( '#', '' ) );
 						}
 					);
 
@@ -186,7 +185,7 @@ Mmenu.addons.screenReader = function(
 				this 	: Mmenu,
 				$panel	: JQuery
 			) {
-				var $parent = $panel.data( 'mm-parent' );
+				var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
 				if ( $parent && $parent.length )
 				{
 					var $next = $parent.children( '.mm-btn_next' ),

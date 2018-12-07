@@ -31,12 +31,11 @@ Mmenu.wrappers.jqueryMobile = function(
 			jQuery('body').on(
 				'click',
 				'.mm-listview a',
-				function( e )
-				{
+				( e ) => {
 					if ( !e.isDefaultPrevented() )
 					{
 						e.preventDefault();
-						jQuery( 'body' )[ 'pagecontainer' ]( 'change', jQuery(this).attr( 'href' ) );
+						jQuery( 'body' )[ 'pagecontainer' ]( 'change', e.currentTarget.getAttribute( 'href' ) );
 					}
 				}
 			);

@@ -66,7 +66,7 @@ Mmenu.addons.columns = function(
 				this 	: Mmenu,
 				$panel	: JQuery
 			) {
-				var $parent = $panel.data( 'mm-parent' );
+				var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
 				if ( !$parent )
 				{
 					return;
@@ -78,19 +78,19 @@ Mmenu.addons.columns = function(
 					return;
 				}
 
-				var colnr = $parent.attr( 'class' );
-				if ( !colnr )
+				var classname = $parent[ 0 ].className;
+				if ( !classname )
 				{
 					return;
 				}
 
-				colnr = colnr.split( 'mm-panel_columns-' )[ 1 ];
-				if ( !colnr )
+				classname = classname.split( 'mm-panel_columns-' )[ 1 ];
+				if ( !classname )
 				{
 					return;
 				}
 
-				colnr = parseInt( colnr.split( ' ' )[ 0 ], 10 ) + 1;
+				var colnr = parseInt( classname.split( ' ' )[ 0 ], 10 ) + 1;
 				while( colnr > 0 )
 				{
 					$panel = this.node.$pnls.children( '.mm-panel_columns-' + colnr );

@@ -45,7 +45,7 @@ Mmenu.addons.counters = function(
 				this	: Mmenu,
 				$panel	: JQuery
 			) {
-				var $wrapper;
+				var $wrapper : JQuery;
 				switch( opts.addTo )
 				{
 					case 'panels':
@@ -59,7 +59,7 @@ Mmenu.addons.counters = function(
 
 				$wrapper.each(
 					( i, elem ) => {
-						var $parent = $(elem).data( 'mm-parent' );
+						var $parent : JQuery = (elem as any).mmParent;
 						if ( $parent )
 						{
 							if ( !$parent.find( '.mm-counter' ).length )
@@ -83,8 +83,8 @@ Mmenu.addons.counters = function(
 
 			$panels.each(
 				( i, elem ) => {
-					var $panel 	= $(elem),
-						$parent = $panel.data( 'mm-parent' );
+					var $panel 	: JQuery = $(elem),
+						$parent : JQuery = (elem as any).mmParent;
 
 					if ( !$parent )
 					{
@@ -103,7 +103,7 @@ Mmenu.addons.counters = function(
 						return;
 					}
 
-					$counter.html( Mmenu.filterListItems( $listview.children() ).length );
+					$counter.html( Mmenu.filterListItems( $listview.children() ).length.toString() );
 				}
 			);
 		};

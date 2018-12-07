@@ -84,7 +84,7 @@ Mmenu.addons.pageScroll = function(
 					return;
 				}
 
-				var href = $a.attr( 'href' );
+				var href = $a[ 0 ].getAttribute( 'href' );
 
 				if ( anchorInPage( href ) )
 				{
@@ -122,7 +122,7 @@ Mmenu.addons.pageScroll = function(
 				Mmenu.filterListItemAnchors( $panel.find( '.mm-listview' ).children( 'li' ) )
 					.each(
 						( i, elem ) => {
-							var href = jQuery(elem).attr( 'href' );
+							var href = elem.getAttribute( 'href' );
 
 							if ( anchorInPage( href ) )
 							{

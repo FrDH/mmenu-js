@@ -33,11 +33,11 @@ Mmenu.wrappers.bootstrap4 = function(
 
 						case $t.hasClass( 'form-inline' ):
 							this.conf.searchfield.form = {
-								action	: $t.attr( 'action' ) 	|| null,
-								method	: $t.attr( 'method' ) 	|| null
+								action	: $t[ 0 ].getAttribute( 'action' ) 	|| null,
+								method	: $t[ 0 ].getAttribute( 'method' ) 	|| null
 							};
 							this.conf.searchfield.input = {
-								name	: $t.find( 'input' ).attr( 'name' ) || null
+								name	: $t.find( 'input' )[ 0 ].getAttribute( 'name' ) || null
 							};
 							this.conf.searchfield.clear 	= false;
 							this.conf.searchfield.submit	= true;
@@ -87,7 +87,7 @@ Mmenu.wrappers.bootstrap4 = function(
 		{
 			if ( typeof $a.attr( attr[ a ] ) != 'undefined' )
 			{
-				$i.attr( attr[ a ], $a.attr( attr[ a ] ) );
+				$i[ 0 ].setAttribute(  attr[ a ], $a[ 0 ].getAttribute(  attr[ a ] ) );
 			}
 		}
 		$i.html( $a.html() );

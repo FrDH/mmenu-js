@@ -100,16 +100,15 @@ Mmenu.addons.setSelected = function(
 					.removeClass( 'mm-listitem_selected-parent' );
 
 				//	Move up the DOM tree
-				var $parent = $panel.data( 'mm-parent' );
+				var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
 				while ( $parent )
 				{
 					$parent
 						.not( '.mm-listitem_vertical' )
 						.addClass( 'mm-listitem_selected-parent' );
 				
-					$parent = $parent		
-						.closest( '.mm-panel' )
-						.data( 'mm-parent' );
+					$parent = $parent.closest( '.mm-panel' );
+					$parent = ($parent[ 0 ] as any).mmParent;
 				}
 			}
 		);

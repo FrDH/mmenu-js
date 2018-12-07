@@ -1,24 +1,13 @@
 /*	
- * Debugger for jQuery mmenu
+ * Debugger for mmenu
  * Include this file after including the jquery.mmenu plugin to debug your menu.
  */
 
 
 (function( $ ) {
 
-	var _PLUGIN_ = 'mmenu';
-	
-	if ( typeof console == 'undefined' )
-	{
-		return;
-	}
-return; // debugger is not yet ready for 8.0.0
-	var _cns = document[ _PLUGIN_ + '_console' ] || console || { info: function() {}, log: function() {}, warn: function() {} };
 
-	var glbl = $[ _PLUGIN_ ].glbl,
-		_c = $[ _PLUGIN_ ]._c,
-		_d = $[ _PLUGIN_ ]._d,
-		_e = $[ _PLUGIN_ ]._e;
+	var _cns = Mmenu.console || console || { info: function() {}, log: function() {}, warn: function() {} };
 
 
 	function debug( msg )
@@ -43,7 +32,7 @@ return; // debugger is not yet ready for 8.0.0
 	}
 
 
-	$[ _PLUGIN_ ].prototype.___deprecated = function()
+	Mmenu.prototype._deprecated = function()
 	{
 		var ext = this.opts.extensions,
 			extensions = '';
@@ -146,8 +135,7 @@ return; // debugger is not yet ready for 8.0.0
 		{
 			deprc( 'The "iconbar" extension', 'the "sidebar" add-on', '7.0' );
 		}
-
-
+ 
 
 		//	Options 6.0
 		if ( this.opts.counters )
@@ -338,61 +326,11 @@ return; // debugger is not yet ready for 8.0.0
 			}
 		);
 
-
-		//	Vendors 4.4
-		if ( typeof 'Hammer' == 'function' && Hammer.VERSION < 2 )
-		{
-			deprc( 'Older version of the Hammer library', 'version 2 or newer', '4.4' );
-			return;
-		}
-
-
-		//	Options 4.3
-		for ( a = [ 'position', 'zposition', 'modal', 'moveBackground' ], b = 0, l = a.length; b < l; b++ )
-		{
-			if ( typeof this.opts[ a[ b ] ] != 'undefined' )
-			{
-				deprc( 'The option "' + a[ b ] + '"', 'offCanvas.' + a[ b ], '4.3' );
-			}
-		}
-
-		//	Configuration 4.3
-		for ( a = [ 'panel', 'list', 'selected', 'label', 'spacer' ], b = 0, l = a.length; b < l; b++ )
-		{
-			if ( typeof this.conf[ a[ b ] + 'Class' ] != 'undefined' )
-			{
-				deprc( 'The configuration option "' + a[ b ] + 'Class"', 'classNames.' + a[ b ], '4.3' );
-			}
-		}
-		if ( typeof this.conf.counterClass != 'undefined' )
-		{
-			deprc( 'The configuration option "counterClass"', 'classNames.counters.counter', '4.3' );
-		}
-		for ( a = [ 'pageNodetype', 'pageSelector', 'menuWrapperSelector', 'menuInjectMethod' ], b = 0, l = a.length; b < l; b++ )
-		{
-			if ( typeof this.conf[ a[ b ] ] != 'undefined' )
-			{
-				deprc( 'The configuration option "' + a[ b ] + '"', 'offCanvas.' + a[ b ], '4.3' );
-			}
-		}
-
-
-		//	Options 4.1
-		if ( this.opts.onClick && typeof this.opts.onClick.setLocationHref != 'undefined' )
-		{
-			deprc( 'The option "onClick.setLocationHref"', '!onClick.preventDefault', '4.1' );
-		}
-
-		//	Configuration 4.1
-		if ( typeof this.conf.panelNodeType != 'undefined' )
-		{
-			deprc( 'The configuration option "panelNodeType"', 'panelNodetype', '4.1' );
-		}
 	};
 
 
 
-	$[ _PLUGIN_ ].prototype.___debug = function()
+	Mmenu.prototype._debug = function()
 	{
 		//	non-available add-ons
 		for ( var a = [

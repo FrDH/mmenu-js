@@ -13,6 +13,21 @@ interface mmJqueryObject {
 }
 
 
+//	Class API interface.
+//	TODO	add description for each method
+interface mmApi {
+	bind 			: Function
+	initPanels		: Function
+	openPanel 		: Function
+	closePanel		: Function
+	closeAllPanels	: Function
+	setSelected		: Function
+
+	//	TODO: add add-on methods
+	[key: string]	: Function
+}
+
+
 //	Class methods interfaces.
 interface mmMethodUniqueid {
 	 () : string

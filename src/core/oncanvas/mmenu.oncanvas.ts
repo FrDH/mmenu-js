@@ -19,16 +19,14 @@ jQuery.fn[ 'mmenu' ] = function( opts, conf )
 {
 	var $result = jQuery();
 	this.each(
-		function()
-		{
-			var $menu = jQuery(this);
-			if ( $menu.data( 'mmenu' ) )
+		( i, elem ) => {
+			if ( (elem as any).mmenu )
 			{
 				return;
 			}
 
-			//	Create the menu
-			var menu = new Mmenu( $menu, opts, conf );
+			var $menu = jQuery(elem),
+				menu  = new Mmenu( $menu, opts, conf );
 
 			//	Store the API
 			menu.node.$menu.data( 'mmenu', menu.API );
@@ -46,10 +44,11 @@ jQuery.fn[ 'mmenu' ] = function( opts, conf )
  */
 class Mmenu {
 
-	//	Plugin version
+	/**	Plugin version. */
 	static version : string = '8.0.0'
 
-	//	Default options for the plugin
+
+	/**	Default options for menus. */
 	static options : mmOptions = {
 		hooks 				: {},
 		extensions			: [],
@@ -67,7 +66,7 @@ class Mmenu {
 		slidingSubmenus		: true
 	}
 
-	//	Default configuration for the plugin
+	/**	Default configuration for menus. */
 	static configs : mmConfigs = {
 		classNames			: {
 			divider				: 'Divider',
@@ -86,32 +85,65 @@ class Mmenu {
 		transitionDuration	: 400
 	}
 
-	//	Add-ons and wrappers
+
+	/**	Available add-ons for the plugin. */
 	static addons  	: mmLooseObject	= {}
+
+	/** Available wrappers for the plugin. */
 	static wrappers : mmLooseObject	= {}
 
-	//	Storage object for nodes
-	static node 	: mmLooseObject = {}
+	/**	Globally used HTML nodes. */
+	static node 	: mmJqueryObject = {}
 
-	//	Supported features
+	/**	Features supported by the browser. */
 	static support 	: mmLooseObject = {
 		touch: 'ontouchstart' in window || navigator.msMaxTouchPoints || false,
 	}
 
-	//	Options and configuration
+
+	/**	Options for the menu. */
 	opts 	: mmOptions
+
+	/** Configuration for the menu. */
 	conf 	: mmConfigs
 
-	//	Array of methods to expose in the API
+	/**	Mmethods to expose in the API. */
 	_api	: string[]
-	API		: mmFunctionObject
 
-	//	Storage objects / arrays for nodes, variables, callbacks, matchmedia calls and click handlers.
+	/* The menu API. */
+	API		: mmApi
+
+
+	/** HTML nodes used for the menu. */
 	node 	: mmJqueryObject
+
+	/** Variables used for the menu. */
 	vars	: mmLooseObject
+	
+	/** Callback hooks used for the menu. */
 	hook	: mmLooseObject
+
+	/** MatchMedia hooks used for the menu. */
 	mtch	: mmLooseObject
+
+	/** Click handlers used for the menu. */
 	clck	: Function[]
+
+
+	/** Log deprecated warnings when using the debugger. */
+	_deprecated : Function
+
+	/** Log debug messages when using the debugger. */
+	_debug : Function
+
+
+	//	screenReader add-on
+	static sr_aria	: Function
+	static sr_role	: Function
+	static sr_text	: Function
+
+
+	//	TODO: what of the below can be replaced with local functions?
 
 
 	//	offCanvas add-on
@@ -123,15 +155,6 @@ class Mmenu {
 	setPage 				: Function
 	_initBlocker 			: Function
 	_initWindow_offCanvas 	: Function
-
-
-	//	screenReader add-on
-	static sr_aria	: Function
-	static sr_role	: Function
-	static sr_text	: Function
-
-
-	//	TODO: what of the below can be replaced with local functions?
 
 
 	//	keyboardNavigation add-on
@@ -160,35 +183,35 @@ class Mmenu {
 		configs		?: mmConfigs
 	) {
 
-		//	Get menu node from string
+		//	Get menu node from string.
 		if ( Mmenu.typeof( $menu ) == 'string' )
 		{
 			$menu = jQuery( ($menu as string) );
 		}
 
-		//	Store menu node
+		//	Store menu node.
 		this.node 	= {
 			$menu : ($menu as JQuery)
 		};
 
-		//	Extend options and configuration from defaults
+		//	Extend options and configuration from defaults.
 		this.opts 	= Mmenu.extend( options, Mmenu.options );
 		this.conf 	= Mmenu.extend( configs, Mmenu.configs );
 
-
+		//	Core methods to expose to the API
 		this._api	= [ 'bind', 'initPanels', 'openPanel', 'closePanel', 'closeAllPanels', 'setSelected' ];
-		this.API	= {};
 
+		//	Storage objects for variables, hooks, matchmedia and click handlers.
 		this.vars	= {};
 		this.hook 	= {};
 		this.mtch 	= {};
 		this.clck 	= [];
 
 
-		// if ( typeof this.___deprecated == 'function' )
-		// {
-		// 	this.___deprecated();
-		// }
+		if ( typeof this._deprecated == 'function' )
+		{
+			this._deprecated();
+		}
 
 		this._initWrappers();
 		this._initAddons();
@@ -202,10 +225,10 @@ class Mmenu {
 		this._initAnchors();
 		this._initMatchMedia();
 
-		// if ( typeof this.___debug == 'function' )
-		// {
-		// 	this.___debug();
-		// }
+		if ( typeof this._debug == 'function' )
+		{
+			this._debug();
+		}
 
 
 		return this;
@@ -213,33 +236,10 @@ class Mmenu {
 
 
 	/**
-	 * Get the API.
-	 *
-	 * @return {object} The API.
-	 */
-	_initAPI()
-	{
-		//	We need this/that because:
-		//	1) the "arguments" object can not be referenced in an arrow function in ES3 and ES5.
-		var that = this;
-
-		this._api.forEach(
-			( fn ) => {
-				this.API[ fn ] = function()
-				{
-					var re = that[ fn ].apply( that, arguments ); // 1)
-					return ( Mmenu.typeof( re ) == 'undefined' ) ? that.API : re;
-				};
-			}
-		);
-	}
-
-
-	/**
 	 * Open a panel.
 	 *
 	 * @param {JQuery}	$panel				Panel to open.
-	 * @param {boolean}	[animation=true]	Whether or not to use an animation.
+	 * @param {boolean}	[animation=true]	Whether or not to open the panel with an animation.
 	 */
 	openPanel( 
 		$panel 		 : JQuery,
@@ -313,7 +313,7 @@ class Mmenu {
 				.removeClass( 'mm-panel_opened-parent' );
 
 			//	Open all parent panels
-			var $parent = $panel.data( 'mm-parent' );
+			var $parent = ($panel[ 0 ] as any).mmParent;
 			while( $parent )
 			{
 				$parent = $parent.closest( '.mm-panel' );
@@ -321,7 +321,7 @@ class Mmenu {
 				{
 					$parent.addClass( 'mm-panel_opened-parent' );
 				}
-				$parent = $parent.data( 'mm-parent' );
+				$parent = ($parent[ 0 ] as any).mmParent;
 			}
 
 			//	Add classes for animation
@@ -591,6 +591,32 @@ class Mmenu {
 
 
 	/**
+	 * Create the API.
+	 */
+	_initAPI()
+	{
+		//	We need this/that because:
+		//	1) the "arguments" object can not be referenced in an arrow function in ES3 and ES5.
+		var that = this;
+
+		(this.API as mmLooseObject) = {};
+
+		this._api.forEach(
+			( fn ) => {
+				this.API[ fn ] = function()
+				{
+					var re = that[ fn ].apply( that, arguments ); // 1)
+					return ( Mmenu.typeof( re ) == 'undefined' ) ? that.API : re;
+				};
+			}
+		);
+
+		//	Store the API in the HTML node for external useage.
+		(this.node.$menu[ 0 ] as any).mmenu = this.API;
+	}
+
+
+	/**
 	 * Bind the hooks specified in the options.
 	 */
 	_initHooks()
@@ -681,7 +707,7 @@ class Mmenu {
 	{
 		this.trigger( 'initMenu:before' );
 
-		this.vars.orgMenuId = this.node.$menu.attr( 'id' );
+		this.vars.orgMenuId = this.node.$menu[ 0 ].id;
 
 		//	Clone if needed.
 		if ( this.conf.clone )
@@ -698,14 +724,13 @@ class Mmenu {
 				.add( this.node.$menu.find( '[id]' ) )
 				.each(
 					( i, elem ) => {
-						//jQuery(elem).attr( 'id', 'mm-' + jQuery(elem).attr( 'id' ) );
 						elem.id = 'mm-' + elem.id;
 					}
 				);
 		}
 
 		//	Add an ID to the menu if it does not yet have one.
-		this.node.$menu.attr( 'id', this.node.$menu.attr( 'id' ) || Mmenu.getUniqueId() );
+		this.node.$menu[ 0 ].id = this.node.$menu[ 0 ].id || Mmenu.getUniqueId();
 
 		//	Wrap the panels in a node.
 		this.node.$pnls = jQuery( '<div class="mm-panels" />' )
@@ -740,7 +765,7 @@ class Mmenu {
 			) {
 				if ( args.inMenu )
 				{
-					var href = $a.attr( 'href' )
+					var href = $a[ 0 ].getAttribute( 'href' )
 					if ( href.length > 1 && href.slice( 0, 1 ) == '#' )
 					{
 						try
@@ -858,17 +883,17 @@ class Mmenu {
 		var vertical = ( $panel.hasClass( this.conf.classNames.vertical ) || !this.opts.slidingSubmenus );
 		$panel.removeClass( this.conf.classNames.vertical );
 
-		var id = $panel.attr( 'id' ) || Mmenu.getUniqueId();
+		var id = $panel[ 0 ].id || Mmenu.getUniqueId();
 
 		if ( $panel.is( 'ul, ol' ) )
 		{
-			$panel.removeAttr( 'id' );
+			$panel[ 0 ].removeAttribute( 'id' );
 
 			$panel.wrap( '<div />' );
 			$panel = $panel.parent();
 		}
 
-		$panel.attr( 'id', id );
+		$panel[ 0 ].id = id;
 		$panel.addClass( 'mm-panel mm-hidden' );
 
 		var $parent = $panel.parent( 'li' );
@@ -885,8 +910,8 @@ class Mmenu {
 		//	Store parent/child relation
 		if ( $parent.length )
 		{
-			$parent.data( 'mm-child', $panel );
-			$panel.data( 'mm-parent', $parent );
+			($parent[ 0 ] as any).mmChild = $panel;
+			($panel[ 0 ] as any).mmParent = $parent;
 		}
 
 		this.trigger( 'initPanel:after', [ $panel ] );
@@ -910,8 +935,8 @@ class Mmenu {
 			return;
 		}
 
-		var $parent = $panel.data( 'mm-parent' ),
-			$navbar = jQuery( '<div class="mm-navbar" />' );
+		var $parent : JQuery = ($panel[ 0 ] as any).mmParent,
+			$navbar : JQuery = jQuery( '<div class="mm-navbar" />' );
 
 		var title = this._getPanelTitle( $panel, this.opts.navbar.title ),
 			href  = '';
@@ -942,13 +967,13 @@ class Mmenu {
 			$a = $a.first();
 			$parent = $a.closest( '.mm-panel' );
 
-			var id = $parent.attr( 'id' );
+			var id = $parent[ 0 ].id;
 			title = this._getPanelTitle( $panel, jQuery('<span>' + $a.text() + '</span>').text() );
 
 			switch ( this.opts.navbar.titleLink )
 			{
 				case 'anchor':
-					href = $a.attr( 'href' );
+					href = $a[ 0 ].getAttribute( 'href' );
 					break;
 
 				case 'parent':
@@ -1007,13 +1032,13 @@ class Mmenu {
 			.addClass( 'mm-listitem__text' );
 
 		//	Add open link to parent listitem
-		var $parent = $panel.data( 'mm-parent' );
+		var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
 		if ( $parent && $parent.hasClass( 'mm-listitem' ) )
 		{
 			if ( !$parent.children( '.mm-btn' ).length )
 			{
 				var $a = $parent.children( 'a, span' ).first(),
-					$b = jQuery( '<a class="mm-btn mm-btn_next mm-listitem__btn" href="#' + $panel.attr( 'id' ) + '" />' );
+					$b = jQuery( '<a class="mm-btn mm-btn_next mm-listitem__btn" href="#' + $panel[ 0 ].id + '" />' );
 
 				$b.insertAfter( $a );
 				if ( $a.is( 'span' ) )
@@ -1067,7 +1092,7 @@ class Mmenu {
 				'a[href]',
 				( e ) => {
 					var $t = jQuery(e.currentTarget),
-						_h = $t.attr( 'href' );
+						_h = e.currentTarget.getAttribute( 'href' );
 
 					var args : mmClickArguments = {
 						inMenu 		: this.node.$menu.find( $t ).length ? true : false, 
@@ -1081,7 +1106,8 @@ class Mmenu {
 						preventDefault	: _h.slice( 0, 1 ) == '#'
 					};
 
-					//	Find behavior for addons
+
+					//	Find hooked behavior.
 					for ( var c = 0; c < this.clck.length; c++ )
 					{
 						var click = this.clck[ c ].call( this, $t, args );
@@ -1094,14 +1120,13 @@ class Mmenu {
 							}
 							if ( Mmenu.typeof( click ) == 'object' )
 							{
-								//	onClick = jQuery.extend( {}, onClick, click );
 								onClick = Mmenu.extend( click, onClick );
 							}
 						}
 					}
 
 
-					//	All other anchors in lists
+					//	Default behavior for anchors in lists.
 					if ( args.inMenu && args.inListview && !args.toExternal )
 					{
 
@@ -1111,7 +1136,7 @@ class Mmenu {
 							this.setSelected( $t.parent() );
 						}
 
-						//	Prevent default / don't follow link. Default: false
+						//	Prevent default / don't follow link. Default: false.
 						if ( Mmenu.valueOrFn( $t, this.opts.onClick.preventDefault, onClick.preventDefault ) )
 						{
 							e.preventDefault();
@@ -1149,7 +1174,7 @@ class Mmenu {
 
 
 	/**
-	 * Add or get a translated text.
+	 * get or set a translated / translatable text.
 	 *
 	 * @param  {string|object} 	[text] 		The translated text to add or get.
 	 * @param  {string} 		[language] 	The language for the translated text.
@@ -1173,7 +1198,7 @@ class Mmenu {
 							translations[ language ] = {};
 						}
 						//jQuery.extend( translations[ language ], text );
-						Mmenu.extend( translations[ language ], text );
+						Mmenu.extend( translations[ language ], (text as object) );
 					}
 					return translations;
 
@@ -1196,15 +1221,15 @@ class Mmenu {
 	/**
 	 * Find the title for a panel.
 	 *
-	 * @param 	{JQuery} $panel 	Panel to search in.
-	 * @param 	{string} [dfault] 	Fallback/default title.
-	 * @return	{string}			The title for the panel.
+	 * @param 	{JQuery} 			$panel 		Panel to search in.
+	 * @param 	{string|Function} 	[dfault] 	Fallback/default title.
+	 * @return	{string}						The title for the panel.
 	 */
 	_getPanelTitle( 
 		$panel  : JQuery, 
 		dfault ?: string | Function
 	) {
-		var title: string;
+		var title : string;
 
 		//	Function
 		if ( typeof this.opts.navbar.title == 'function' )
@@ -1215,10 +1240,10 @@ class Mmenu {
 		//	Data attr
 		if ( typeof title == 'undefined' )
 		{
-			title = $panel.data( 'mm-title' );
+			title = $panel[ 0 ].getAttribute( 'mm-data-title' );
 		}
 
-		if ( typeof title != 'undefined' )
+		if ( typeof title == 'string' && title.length )
 		{
 			return title;
 		}
@@ -1426,8 +1451,8 @@ class Mmenu {
 	 * @return	{object}			The extended "orignl" object.
 	 */
 	static extend (
-		orignl	: any,	//	Unfortunately, Typescript doesn't understand "object", "mmLooseObject" or anything other than "any"
-		dfault	: any	//	""
+		orignl	: any,	//	Unfortunately, Typescript doesn't allow "object", "mmLooseObject" or anything other than "any".
+		dfault	: mmLooseObject
 	) {
 		for ( let k in dfault )
 		{

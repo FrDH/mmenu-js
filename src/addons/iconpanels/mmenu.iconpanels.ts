@@ -135,7 +135,7 @@ Mmenu.addons.iconPanels = function(
 					!$panel.parent( '.mm-listitem_vertical' ).length &&
 					!$panel.children( '.mm-panel__blocker' ).length
 				) {
-					$panel.prepend( '<a href="#' + $panel.closest( '.mm-panel' ).attr( 'id' ) + '" class="mm-panel__blocker" />' );
+					$panel.prepend( '<a href="#' + $panel.closest( '.mm-panel' )[ 0 ].id + '" class="mm-panel__blocker" />' );
 				}	
 			}
 		);

@@ -8,7 +8,7 @@ Mmenu.addons.navbars.next = function(
 
 
 	//	Update to opened panel
-	var $org;
+	var $org : JQuery;
 	var _url, _txt;
 
 
@@ -19,16 +19,16 @@ Mmenu.addons.navbars.next = function(
 		) {
 			$org = $panel.find( '.' + this.conf.classNames.navbars.panelNext );
 
-			_url = $org.attr( 'href' );
+			_url = $org.length ? $org[ 0 ].getAttribute( 'href' ) : '';
 			_txt = $org.html();
 
 			if ( _url )
 			{
-				$next.attr( 'href', _url );
+				$next[ 0 ].setAttribute( 'href', _url );
 			}
 			else
 			{
-				$next.removeAttr( 'href' );
+				$next[ 0 ].removeAttribute( 'href' );
 			}
 			
 			$next[ _url || _txt ? 'removeClass' : 'addClass' ]( 'mm-hidden' );
@@ -44,7 +44,7 @@ Mmenu.addons.navbars.next = function(
 			$panel	: JQuery
 		) {
 			Mmenu.sr_aria( $next, 'hidden', $next.hasClass( 'mm-hidden' ) );
-			Mmenu.sr_aria( $next, 'owns', ( $next.attr( 'href' ) || '' ).slice( 1 ) );
+			Mmenu.sr_aria( $next, 'owns', ( $next[ 0 ].getAttribute( 'href' ) || '' ).slice( 1 ) );
 		}
 	);
 };

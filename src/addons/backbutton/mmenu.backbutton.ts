@@ -27,7 +27,7 @@ Mmenu.addons.backButton = function(
 	this.opts.backButton = Mmenu.extend( opts, Mmenu.options.backButton );
 
 
-	var _menu = '#' + this.node.$menu.attr( 'id' );
+	var _menu = '#' + this.node.$menu[ 0 ].id;
 
 	//	Close menu
 	if ( opts.close )
@@ -43,7 +43,7 @@ Mmenu.addons.backButton = function(
 				.add( this.node.$pnls.children( '.mm-panel_opened' ) )
 				.each(
 					( i, elem ) => {
-						states.push( '#' + jQuery(elem).attr( 'id' ) );
+						states.push( '#' + elem.id );
 					}
 				);
 		}

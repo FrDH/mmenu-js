@@ -109,11 +109,11 @@ Mmenu.wrappers.bootstrap3 = function(
 			var $form = this.node.$menu.find( '.navbar-form' );
 			this.conf.searchform = {
 				form 	: {
-					action 	: $form.attr( 'action' ),
-					method 	: $form.attr( 'method' )
+					action 	: $form[ 0 ].getAttribute( 'action' ),
+					method 	: $form[ 0 ].getAttribute( 'method' )
 				},
 				input 	: {
-					name 	: $form.find( 'input' ).attr( 'name' )
+					name 	: $form.find( 'input' )[ 0 ].getAttribute( 'name' )
 				},
 				submit 	: true
 			};

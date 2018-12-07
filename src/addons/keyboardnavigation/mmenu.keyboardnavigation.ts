@@ -208,7 +208,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 
 				if ( $m.length )
 				{
-					var api = $m.data( 'mmenu' );
+					var api : mmApi = ($m[ 0 ] as any).mmenu;
 
 					//	special case for input and textarea
 					if ( $t.is( 'input, textarea' ) )
@@ -253,7 +253,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 
 					if ( $m.length )
 					{
-						var api = $m.data( 'mmenu' );
+						var api : mmApi = ($m[ 0 ] as any).mmenu;
 
 						//	special case for input and textarea
 						if ( $t.is( 'input' ) )
@@ -272,7 +272,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 							{
 								//	close submenu with backspace
 								case 8: 
-									var $p = $m.find( '.mm-panel_opened' ).data( 'mm-parent' );
+									var $p : JQuery = ($m.find( '.mm-panel_opened' )[ 0 ] as any).mmParent;
 									if ( $p && $p.length )
 									{
 										api.openPanel( $p.closest( '.mm-panel' ) );

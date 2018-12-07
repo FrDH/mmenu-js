@@ -93,7 +93,7 @@ Mmenu.addons.sidebar = function(
 					 this.opts.offCanvas &&
 					!this.node.$menu.children( '.mm-menu__blocker' ).length
 				) {
-					this.node.$menu.prepend( '<a class="mm-menu__blocker" href="#' + this.node.$menu.attr( 'id' ) + '" />' );
+					this.node.$menu.prepend( '<a class="mm-menu__blocker" href="#' + this.node.$menu[ 0 ].id + '" />' );
 				}
 				if ( opts.collapsed.hideNavbar )
 				{

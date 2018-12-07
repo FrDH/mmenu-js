@@ -34,12 +34,12 @@ Mmenu.addons.navbars.breadcrumbs = function(
 					var text = $crnt.children( '.mm-navbar' ).children( '.mm-navbar__title' ).text();
 					if ( text.length )
 					{
-						crumbs.unshift( first ? '<span>' + text + '</span>' : '<a href="#' + $crnt.attr( 'id' ) + '">' + text + '</a>' );
+						crumbs.unshift( first ? '<span>' + text + '</span>' : '<a href="#' + $crnt[ 0 ].id + '">' + text + '</a>' );
 					}
 
 					first = false;
 				}
-				$crnt = $crnt.data( 'mm-parent' );
+				$crnt = ($crnt[ 0 ] as any).mmParent;
 			}
 			if ( this.conf.navbars.breadcrumbs.removeFirst )
 			{
@@ -79,9 +79,8 @@ Mmenu.addons.navbars.breadcrumbs = function(
 				.children( '.mm-breadcrumbs' )
 				.children( 'a' )
 				.each(
-					function()
-					{
-						Mmenu.sr_aria( jQuery(this), 'owns', jQuery(this).attr( 'href' ).slice( 1 ) );
+					( i, elem ) => {
+						Mmenu.sr_aria( jQuery(elem), 'owns', elem.getAttribute( 'href' ).slice( 1 ) );
 					}
 				);
 		}

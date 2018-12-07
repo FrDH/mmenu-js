@@ -213,11 +213,11 @@ Mmenu.prototype._initSearchPanel = function(
 
 	if ( opts.panel.id )
 	{
-		$spnl.attr( 'id', opts.panel.id );
+		$spnl[ 0 ].id = opts.panel.id;
 	}
 	if ( opts.panel.title )
 	{
-		$spnl.attr( 'data-mm-title', opts.panel.title );
+		$spnl[ 0 ].setAttribute( 'data-mm-title', opts.panel.title );
 	}
 
 	switch ( opts.panel.fx )
@@ -280,13 +280,15 @@ Mmenu.prototype._initSearchfield = function(
 	}
 
 
-	function addAttributes( $el, attr )
-	{
+	function addAttributes( 
+		$el		: JQuery,
+		attr	: mmLooseObject | boolean
+	) {
 		if ( attr )
 		{
-			for ( var a in attr )
+			for ( var a in (attr as mmLooseObject) )
 			{
-				$el.attr( a, attr[ a ] );
+				$el[ 0 ].setAttribute( a, attr[ a ] );
 			}
 		}
 	}
@@ -328,7 +330,7 @@ Mmenu.prototype._initSearching = function(
 	var opts : mmOptionsSearchfield = this.opts.searchfield,
 		conf : mmConfigsSearchfield = this.conf.searchfield;
 
-	var data: mmLooseObject = {};
+	var data : mmLooseObject = {};
 
 	//	In searchpanel
 	if ( $srch.closest( '.mm-panel_search' ).length )
@@ -426,9 +428,8 @@ Mmenu.prototype._initSearching = function(
 		);
 	}
 
-	$inpt
-		.data( 'mm-searchfield', data )
-		.off( 'input.mm-searchfield' )
+	($inpt[ 0 ] as any).mmSearchfield = data;
+	$inpt.off( 'input.mm-searchfield' )
 		.on(  'input.mm-searchfield',
 			( e ) => {
 				switch( e.keyCode )
@@ -506,7 +507,7 @@ Mmenu.prototype.search = function(
 	var _anchor = 'a',
 		_both   = 'a, span';
 
-	var data  = $inpt.data( 'mm-searchfield' );
+	var data  = ($inpt[ 0 ] as any).mmSearchfield;
 
 	var $srch = $inpt.closest( '.mm-searchfield' ),
 		$btns = $srch.find( '.mm-btn' ),
@@ -605,7 +606,7 @@ Mmenu.prototype.search = function(
 							.each(
 								( i, elem ) => {
 									var $li = jQuery(elem),
-										$su = $li.data( 'mm-child' );
+										$su = ($li[ 0 ] as any).mmChild;
 
 									if ( $su )
 									{
@@ -623,7 +624,7 @@ Mmenu.prototype.search = function(
 				.each(
 					( i, elem ) => {
 						var $panl = jQuery(elem),
-							$prnt = $panl.data( 'mm-parent' );
+							$prnt = (elem as any).mmParent;
 
 						if ( $prnt )
 						{

@@ -9,7 +9,7 @@ Mmenu.addons.navbars.title = function(
 
 	//	Update to opened panel
 	var _url, _txt;
-	var $org;
+	var $org : JQuery;
 
 	this.bind( 'openPanel:start',
 		function( 
@@ -27,16 +27,16 @@ Mmenu.addons.navbars.title = function(
 				$org = $panel.children( '.mm-navbar' ).children( '.mm-navbar__title' );
 			}
 
-			_url = $org.attr( 'href' );
+			_url = $org[ 0 ].getAttribute( 'href' );
 			_txt = $org.html();
 
 			if ( _url )
 			{
-				$title.attr( 'href', _url );
+				$title[ 0 ].setAttribute( 'href', _url );
 			}
 			else
 			{
-				$title.removeAttr( 'href' );
+				$title[ 0 ].removeAttribute( 'href' );
 			}
 
 			$title[ _url || _txt ? 'removeClass' : 'addClass' ]( 'mm-hidden' );
