@@ -102,15 +102,14 @@ Mmenu.addons.iconPanels = function(
 					.add( $panel )
 					.removeClass( 'mm-hidden' )
 					.not(
-						function()
-						{
-							return jQuery(this).parent( '.mm-listitem_vertical' ).length ? true : false
+						( i, elem ) => {
+							return Mmenu.$(elem).parent( '.mm-listitem_vertical' ).length ? true : false
 						}
 					)
 					.slice( -opts.visible )
 					.each(
 						( i, elem ) => {
-							jQuery(elem).addClass( 'mm-panel_iconpanel-' + i );
+							Mmenu.$(elem).addClass( 'mm-panel_iconpanel-' + i );
 						}
 					);
 			}

@@ -67,9 +67,8 @@ Mmenu.addons.autoHeight = function(
 				$panel = $panel
 					.parents( '.mm-panel' )
 					.not(
-						function()
-						{
-							return jQuery(this).parent( '.mm-listitem_vertical' ).length ? true : false;
+						( i, elem ) => {
+							return Mmenu.$(elem).parent( '.mm-listitem_vertical' ).length ? true : false;
 						}
 					);
 			}
@@ -86,15 +85,14 @@ Mmenu.addons.autoHeight = function(
 				.children('.mm-panel' )
 				.each(
 					( i, elem ) => {
-						var $panel = jQuery(elem);
+						var $panel = Mmenu.$(elem);
 						if ( $panel.parent( '.mm-listitem_vertical' ).length )
 						{
 							$panel = $panel
 								.parents( '.mm-panel' )
 								.not(
-									function()
-									{
-										return jQuery(this).parent( '.mm-listitem_vertical' ).length ? true : false
+									( i, elem ) => {
+										return Mmenu.$(elem).parent( '.mm-listitem_vertical' ).length ? true : false
 									}
 								);
 						}

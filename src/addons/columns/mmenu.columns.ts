@@ -133,7 +133,7 @@ Mmenu.addons.columns = function(
 					.slice( -opts.visible.max )
 					.each(
 						( i, elem ) => {
-							jQuery(elem).addClass( 'mm-panel_columns-' + i );
+							Mmenu.$(elem).addClass( 'mm-panel_columns-' + i );
 						}
 					);
 			}

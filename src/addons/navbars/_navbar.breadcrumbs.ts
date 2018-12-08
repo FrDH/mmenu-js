@@ -3,7 +3,7 @@ Mmenu.addons.navbars.breadcrumbs = function(
 	$navbar	: JQuery
 ) {
 	//	Add content
-	var $crumbs = jQuery('<span class="mm-navbar__breadcrumbs" />').appendTo( $navbar );
+	var $crumbs = Mmenu.$('<span class="mm-navbar__breadcrumbs" />').appendTo( $navbar );
 
 	this.bind( 'initNavbar:after',
 		function( 
@@ -18,7 +18,7 @@ Mmenu.addons.navbars.breadcrumbs = function(
 			$panel.removeClass( 'mm-panel_has-navbar' );
 				
 			var crumbs = [],
-				$bcrb = jQuery( '<span class="mm-navbar__breadcrumbs"></span>' ),
+				$bcrb = Mmenu.$( '<span class="mm-navbar__breadcrumbs"></span>' ),
 				$crnt = $panel,
 				first = true;
 
@@ -80,7 +80,7 @@ Mmenu.addons.navbars.breadcrumbs = function(
 				.children( 'a' )
 				.each(
 					( i, elem ) => {
-						Mmenu.sr_aria( jQuery(elem), 'owns', elem.getAttribute( 'href' ).slice( 1 ) );
+						Mmenu.sr_aria( Mmenu.$(elem), 'owns', elem.getAttribute( 'href' ).slice( 1 ) );
 					}
 				);
 		}

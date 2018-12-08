@@ -3,7 +3,7 @@ Mmenu.addons.navbars.next = function(
 	$navbar	: JQuery
 ) {
 	//	Add content
-	var $next = jQuery('<a class="mm-btn mm-btn_next mm-navbar__btn" href="#" />')
+	var $next = Mmenu.$('<a class="mm-btn mm-btn_next mm-navbar__btn" href="#" />')
 		.appendTo( $navbar );
 
 

@@ -3,7 +3,7 @@ Mmenu.addons.navbars.close = function(
 	$navbar	: JQuery
 ) {
 	//	Add content
-	var $close = jQuery('<a class="mm-btn mm-btn_close mm-navbar__btn" href="#" />')
+	var $close = Mmenu.$('<a class="mm-btn mm-btn_close mm-navbar__btn" href="#" />')
 		.appendTo( $navbar );
 
 

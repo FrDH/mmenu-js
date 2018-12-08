@@ -38,7 +38,7 @@ Mmenu.addons.iconbar = function(
 			}
 
 			//	Create node
-			var $ibar = jQuery( '<div class="mm-iconbar__' + poss + '" />' );
+			var $ibar = Mmenu.$( '<div class="mm-iconbar__' + poss + '" />' );
 
 
 			//	Add content
@@ -51,7 +51,7 @@ Mmenu.addons.iconbar = function(
 			{
 				if ( !$iconbar )
 				{
-					$iconbar = jQuery('<div class="mm-iconbar" />');
+					$iconbar = Mmenu.$('<div class="mm-iconbar" />');
 				}
 				$iconbar.append( $ibar );
 			}
@@ -81,7 +81,7 @@ Mmenu.addons.iconbar = function(
 			$iconbar.on( 'click.mm-iconbar',
 				'a',
 				( e ) => {
-					var $tab = jQuery(e.currentTarget);
+					var $tab = Mmenu.$(e.currentTarget);
 					if ( $tab.hasClass( 'mm-iconbar__tab_selected' ) )
 					{
 						e.stopImmediatePropagation();
@@ -90,7 +90,7 @@ Mmenu.addons.iconbar = function(
 
 					try
 					{
-						var $target = jQuery( e.currentTarget.getAttribute( 'href' ) );
+						var $target = Mmenu.$( e.currentTarget.getAttribute( 'href' ) );
 						if ( $target.hasClass( 'mm-panel' ) )
 						{
 							e.preventDefault();
@@ -117,7 +117,7 @@ Mmenu.addons.iconbar = function(
 				}
 				else
 				{
-					var $parent = ($panel[ 0 ] as any).mmParent;
+					var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
 					if ( $parent && $parent.length )
 					{
 						selectTab.call( this, $parent.closest( '.mm-panel' ) );

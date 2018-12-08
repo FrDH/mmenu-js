@@ -30,7 +30,6 @@ Mmenu.addons.dropdown = function(
 	//	/Extend shorthand options
 
 
-	//opts = this.opts.dropdown = jQuery.extend( true, {}, Mmenu.options.dropdown, opts );
 	this.opts.dropdown = Mmenu.extend( opts, Mmenu.options.dropdown );
 
 
@@ -40,7 +39,7 @@ Mmenu.addons.dropdown = function(
 	}
 
 
-	var $bttn : JQuery;
+	var $button : JQuery;
 
 	this.bind( 'initMenu:after',
 		function(
@@ -63,7 +62,7 @@ Mmenu.addons.dropdown = function(
 
 
 			//	Get the button to put the menu next to
-			$bttn = jQuery(opts.position.of);
+			$button = Mmenu.$(opts.position.of);
 
 			//	Emulate hover effect
 			var events = opts.event.split( ' ' );
@@ -73,7 +72,7 @@ Mmenu.addons.dropdown = function(
 			}
 			if ( events[ 0 ] == 'hover' )
 			{
-				$bttn.on( 'mouseenter.mm-dropdown',
+				$button.on( 'mouseenter.mm-dropdown',
 					() => {
 						this.open();
 					}
@@ -97,7 +96,7 @@ Mmenu.addons.dropdown = function(
 			this : Mmenu
 		) {
 			(this.node.$menu[ 0 ] as any).mmStyle = this.node.$menu[ 0 ].getAttribute( 'style' ) || '';
-			jQuery('html').addClass( 'mm-wrapper_dropdown' );
+			Mmenu.$('html').addClass( 'mm-wrapper_dropdown' );
 		}
 	);
 
@@ -106,7 +105,7 @@ Mmenu.addons.dropdown = function(
 			this : Mmenu
 		) {
 			this.node.$menu[ 0 ].setAttribute( 'style', (this.node.$menu[ 0 ] as any).mmStyle );
-			jQuery('html').removeClass( 'mm-wrapper_dropdown' );
+			Mmenu.$('html').removeClass( 'mm-wrapper_dropdown' );
 		}
 	);
 
@@ -128,10 +127,10 @@ Mmenu.addons.dropdown = function(
 			_max = dir == 'x' ? 'maxWidth' 		: 'maxHeight',
 			_pos = null;
 
-		var scrl = jQuery(window)[ _scr ](),
-			strt = $bttn.offset()[ _str ] -= scrl,
-			stop = strt + $bttn[ _out ](),
-			wndw = jQuery(window)[ _siz ]();
+		var scrl = Mmenu.$(window)[ _scr ](),
+			strt = $button.offset()[ _str ] -= scrl,
+			stop = strt + $button[ _out ](),
+			wndw = Mmenu.$(window)[ _siz ]();
 
 		var offs = conf.offset.button[ dir ] + conf.offset.viewport[ dir ];
 
@@ -220,7 +219,7 @@ Mmenu.addons.dropdown = function(
 
 	this.bind( 'open:start', position );
 
-	jQuery(window)
+	Mmenu.$(window)
 		.on( 'resize.mm-dropdown',
 			( e ) => {
 				position.call( this );
@@ -229,7 +228,7 @@ Mmenu.addons.dropdown = function(
 
 	if ( !this.opts.offCanvas.blockUI )
 	{
-		jQuery(window)
+		Mmenu.$(window)
 			.on( 'scroll.mm-dropdown',
 				( e ) => {
 					position.call( this );

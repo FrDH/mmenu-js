@@ -46,7 +46,7 @@ Mmenu.addons.navbars = function(
 
 
 			//	Create node
-			var $navbar = jQuery( '<div class="mm-navbar" />' );
+			var $navbar = Mmenu.$( '<div class="mm-navbar" />' );
 				
 
 			//	Get height
@@ -86,7 +86,7 @@ Mmenu.addons.navbars = function(
 
 			if ( !$pos[ poss ] )
 			{
-				$pos[ poss ] = jQuery( '<div class="mm-navbars_' + poss + '" />' );
+				$pos[ poss ] = Mmenu.$( '<div class="mm-navbars_' + poss + '" />' );
 			}
 			$pos[ poss ].append( $navbar );
 
@@ -103,9 +103,9 @@ Mmenu.addons.navbars = function(
 				else
 				{
 					ctnt = opts.content[ c ];
-					if ( !( ctnt instanceof jQuery ) )
+					if ( !( ctnt instanceof Mmenu.$ ) )
 					{
-						ctnt = jQuery( (opts.content[ c ] as string) );
+						ctnt = Mmenu.$( (opts.content[ c ] as string) );
 					}
 					$navbar.append( ctnt );
 				}

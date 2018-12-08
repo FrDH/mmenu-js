@@ -3,7 +3,7 @@ Mmenu.addons.navbars.prev = function(
 	$navbar	: JQuery
 ) {
 	//	Add content.
-	var $prev = jQuery('<a class="mm-btn mm-btn_prev mm-navbar__btn" href="#" />')
+	var $prev = Mmenu.$('<a class="mm-btn mm-btn_prev mm-navbar__btn" href="#" />')
 		.appendTo( $navbar );
 
 	

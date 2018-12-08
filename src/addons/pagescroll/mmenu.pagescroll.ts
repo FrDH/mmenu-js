@@ -16,7 +16,6 @@ Mmenu.addons.pageScroll = function(
 	//	/Extend shorthand options
 
 
-	// opts = this.opts.pageScroll = jQuery.extend( true, {}, Mmenu.options.pageScroll, opts );
 	this.opts.pageScroll = Mmenu.extend( opts, Mmenu.options.pageScroll );
 
 
@@ -27,11 +26,11 @@ Mmenu.addons.pageScroll = function(
 	) {
 		if ( $section && $section.length && $section.is( ':visible' ) )
 		{
-			jQuery('html, body').animate({
+			Mmenu.$('html, body').animate({
 				scrollTop: $section.offset().top + offset
 			});
 		}
-		$section = jQuery();
+		$section = Mmenu.$();
 	}
 	function anchorInPage( 
 		href : string
@@ -76,7 +75,7 @@ Mmenu.addons.pageScroll = function(
 				args : mmClickArguments
 			) {
 		
-				$section = jQuery();
+				$section = Mmenu.$();
 
 				if ( !args.inMenu ||
 					!args.inListview
@@ -88,9 +87,9 @@ Mmenu.addons.pageScroll = function(
 
 				if ( anchorInPage( href ) )
 				{
-					$section = jQuery(href);
+					$section = Mmenu.$(href);
 					if ( this.node.$menu.is( '.mm-menu_sidebar-expanded' ) && 
-						jQuery('html').is( '.mm-wrapper_sidebar-expanded' )
+						Mmenu.$('html').is( '.mm-wrapper_sidebar-expanded' )
 					) {
 						scrollTo( this.conf.pageScroll.scrollOffset );
 					}
@@ -137,14 +136,14 @@ Mmenu.addons.pageScroll = function(
 
 		let _selected = -1;
 
-		jQuery(window)
+		Mmenu.$(window)
 			.on( 'scroll.mm-pageScroll',
 				( e ) => {
-					var ofst = jQuery(window).scrollTop();
+					var ofst = Mmenu.$(window).scrollTop();
 
 					for ( var s = 0; s < scts.length; s++ )
 					{
-						if ( jQuery(scts[ s ]).offset().top < ofst + conf.updateOffset )
+						if ( Mmenu.$(scts[ s ]).offset().top < ofst + conf.updateOffset )
 						{
 							if ( _selected !== s )
 							{

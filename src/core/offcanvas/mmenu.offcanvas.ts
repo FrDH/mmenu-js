@@ -256,13 +256,13 @@ Mmenu.prototype._openSetup = function(
 	//	Store style and position
 	Mmenu.node.$page.each(
 		( i, elem ) => {
-			let $page = jQuery(elem);
+			let $page = Mmenu.$(elem);
 			($page[ 0 ] as any).mmStyle = $page[ 0 ].getAttribute( 'style' ) || '';
 		}
 	);
 
 	//	Trigger window-resize to measure height
-	jQuery(window).trigger( 'resize.mm-offCanvas', [ true ] );
+	Mmenu.$(window).trigger( 'resize.mm-offCanvas', [ true ] );
 
 	var clsn = [ 'mm-wrapper_opened' ];
 
@@ -280,7 +280,7 @@ Mmenu.prototype._openSetup = function(
 		clsn.push( 'mm-wrapper_background' );
 	}
 
-	jQuery('html').addClass( clsn.join( ' ' ) );
+	Mmenu.$('html').addClass( clsn.join( ' ' ) );
 
 	//	Open
 	//	Without the timeout, the animation won't work because the menu had display: none;
@@ -308,7 +308,7 @@ Mmenu.prototype._openFinish = function(
 
 	//	Opening
 	this.trigger( 'open:start' );
-	jQuery('html').addClass( 'mm-wrapper_opening' );
+	Mmenu.$('html').addClass( 'mm-wrapper_opening' );
 };
 
 /**
@@ -337,12 +337,12 @@ Mmenu.prototype.close = function(
 				'mm-wrapper_background'
 			];
 
-			jQuery('html').removeClass( clsn.join( ' ' ) );
+			Mmenu.$('html').removeClass( clsn.join( ' ' ) );
 
 			//	Restore style and position
 			Mmenu.node.$page.each(
 				( i, elem ) => {
-					let $page = jQuery(elem);
+					let $page = Mmenu.$(elem);
 					$page[ 0 ].setAttribute( 'style', ($page[ 0 ] as any).mmStyle );
 				}
 			);
@@ -356,7 +356,7 @@ Mmenu.prototype.close = function(
 	//	Closing
 	this.trigger( 'close:start' );
 
-	jQuery('html').removeClass( 'mm-wrapper_opening' );
+	Mmenu.$('html').removeClass( 'mm-wrapper_opening' );
 
 	this.trigger( 'close:after' );
 };
@@ -367,7 +367,7 @@ Mmenu.prototype.close = function(
 Mmenu.prototype.closeAllOthers = function(
 	this : Mmenu
 ) {
-	jQuery('body')
+	Mmenu.$('body')
 		.find( '.mm-menu_offcanvas' )
 		.not( this.node.$menu )
 		.each(
@@ -395,7 +395,7 @@ Mmenu.prototype.setPage = function(
 
 	if ( !$page || !$page.length )
 	{
-		$page = jQuery('body')
+		$page = Mmenu.$('body')
 			.find( conf.page.selector )
 			.not( '.mm-menu' )
 			.not( '.mm-wrapper__blocker' );
@@ -435,11 +435,11 @@ Mmenu.prototype._initWindow_offCanvas = function(
 	//	Prevent tabbing
 	//	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
 	//	In other words: The menu would move out of view.
-	jQuery(window)
+	Mmenu.$(window)
 		.off( 'keydown.mm-offCanvas' )
 		.on(  'keydown.mm--offCanvas',
 			( e ) => {
-				if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
+				if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
 				{
 					if ( e.keyCode == 9 )
 					{
@@ -452,15 +452,15 @@ Mmenu.prototype._initWindow_offCanvas = function(
 
 	//	Set "page" node min-height to window height
 	var oldHeight, newHeight;
-	jQuery(window)
+	Mmenu.$(window)
 		.off( 'resize.mm-offCanvas' )
 		.on( 'resize.mm-offCanvas',
 			( e, force ) => {
 				if ( Mmenu.node.$page.length == 1 )
 				{
-					if ( force || jQuery('html').hasClass( 'mm-wrapper_opened' ) )
+					if ( force || Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
 					{
-						newHeight = jQuery(window).height();
+						newHeight = Mmenu.$(window).height();
 						if ( force || newHeight != oldHeight )
 						{
 							oldHeight = newHeight;
@@ -490,7 +490,7 @@ Mmenu.prototype._initBlocker = function(
 
 	if ( !Mmenu.node.$blck )
 	{
-		Mmenu.node.$blck = jQuery( '<div class="mm-wrapper__blocker mm-slideout" />' )
+		Mmenu.node.$blck = Mmenu.$( '<div class="mm-wrapper__blocker mm-slideout" />' )
 			.append( '<a />' );
 	}
 
@@ -508,7 +508,7 @@ Mmenu.prototype._initBlocker = function(
 		.on( 'mousedown.mm-offCanvas',
 			( e ) => {
 				e.preventDefault();
-				if ( !jQuery('html').hasClass( 'mm-wrapper_modal' ) )
+				if ( !Mmenu.$('html').hasClass( 'mm-wrapper_modal' ) )
 				{
 					this.closeAllOthers();
 					this.close();

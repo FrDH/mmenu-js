@@ -52,7 +52,6 @@ Mmenu.addons.searchfield = function(
 	//	/Extend logical options
 
 
-	//opts = this.opts.searchfield = jQuery.extend( true, {}, Mmenu.options.searchfield, opts );
 	this.opts.searchfield = Mmenu.extend( opts, Mmenu.options.searchfield );
 
 
@@ -75,7 +74,7 @@ Mmenu.addons.searchfield = function(
 			$pnls	: JQuery
 		) {
 
-			var $spnl = jQuery();
+			var $spnl = Mmenu.$();
 
 			//	Add the search panel
 			if ( opts.panel.add )
@@ -102,7 +101,7 @@ Mmenu.addons.searchfield = function(
 
 			$field.each(
 				( e, elem ) => {
-					var $srch = this._initSearchfield( jQuery(elem) );
+					var $srch = this._initSearchfield( Mmenu.$(elem) );
 					if ( opts.search && $srch.length )
 					{
 						this._initSearching( $srch );
@@ -117,7 +116,7 @@ Mmenu.addons.searchfield = function(
 				var $results = ( opts.panel.add ) ? $spnl : $pnls;
 				$results.each(
 					( i, elem ) => {
-						this._initNoResultsMsg( jQuery(elem) );
+						this._initNoResultsMsg( Mmenu.$(elem) );
 					}
 				);
 			}
@@ -203,11 +202,11 @@ Mmenu.prototype._initSearchPanel = function(
 	//	Only once
 	if ( this.node.$pnls.children( '.mm-panel_search' ).length )
 	{
-		return jQuery();
+		return Mmenu.$();
 	}
 
 
-	var $spnl = jQuery( '<div class="mm-panel_search " />' )
+	var $spnl = Mmenu.$( '<div class="mm-panel_search " />' )
 		.append( '<ul />' )
 		.appendTo( this.node.$pnls );
 
@@ -256,7 +255,7 @@ Mmenu.prototype._initSearchfield = function(
 	//	No searchfield in vertical submenus	
 	if ( $wrpr.parent( '.mm-listitem_vertical' ).length )
 	{
-		return jQuery();
+		return Mmenu.$();
 	}
 
 	//	Only one searchfield per panel
@@ -266,9 +265,9 @@ Mmenu.prototype._initSearchfield = function(
 	}
 
 
-	var $srch = jQuery( '<' + ( conf.form ? 'form' : 'div' ) + ' class="mm-searchfield" />' ),
-		$inpd = jQuery( '<div class="mm-searchfield__input" />' ),
-		$inpt = jQuery( '<input placeholder="' + this.i18n( opts.placeholder ) + '" type="text" autocomplete="off" />' );
+	var $srch = Mmenu.$( '<' + ( conf.form ? 'form' : 'div' ) + ' class="mm-searchfield" />' ),
+		$inpd = Mmenu.$( '<div class="mm-searchfield__input" />' ),
+		$inpt = Mmenu.$( '<input placeholder="' + this.i18n( opts.placeholder ) + '" type="text" autocomplete="off" />' );
 
 	$inpd.append( $inpt ).appendTo( $srch );
 
@@ -301,7 +300,7 @@ Mmenu.prototype._initSearchfield = function(
 	//	Add the clear button
 	if ( conf.clear )
 	{
-		jQuery('<a class="mm-btn mm-btn_close mm-searchfield__btn" href="#" />')
+		Mmenu.$('<a class="mm-btn mm-btn_close mm-searchfield__btn" href="#" />')
 			.appendTo( $inpd );
 	}
 
@@ -310,13 +309,13 @@ Mmenu.prototype._initSearchfield = function(
 	addAttributes( $srch, conf.form );
 	if ( conf.form && conf.submit && !conf.clear )
 	{
-		jQuery('<a class="mm-btn mm-btn_next mm-searchfield__btn" href="#" />')
+		Mmenu.$('<a class="mm-btn mm-btn_next mm-searchfield__btn" href="#" />')
 			.appendTo( $inpd );
 	}
 
 	if ( opts.cancel )
 	{
-		jQuery('<a href="#" class="mm-searchfield__cancel">' + this.i18n( 'cancel' ) + '</a>')
+		Mmenu.$('<a href="#" class="mm-searchfield__cancel">' + this.i18n( 'cancel' ) + '</a>')
 			.appendTo( $srch );
 	}
 
@@ -355,9 +354,8 @@ Mmenu.prototype._initSearching = function(
 
 	//	Filter out vertical submenus
 	data.$pnls = data.$pnls.not(
-		function()
-		{
-			return jQuery(this).parent( '.mm-listitem_vertical' ).length;
+		( i, elem ) => {
+			return Mmenu.$(elem).parent( '.mm-listitem_vertical' ).length;
 		}
 	);
 
@@ -478,7 +476,7 @@ Mmenu.prototype._initNoResultsMsg = function(
 
 	//	Add no-results message
 	var $lst = $wrpr.children( '.mm-listview' ).first(),
-		$msg = jQuery( '<div class="mm-panel__noresultsmsg mm-hidden" />' )
+		$msg = Mmenu.$( '<div class="mm-panel__noresultsmsg mm-hidden" />' )
 			.append( (this.i18n( opts.noResults ) as string) );
 
 	if ( $lst.length )
@@ -544,7 +542,7 @@ Mmenu.prototype.search = function(
 		$itms
 			.each(
 				( i, elem ) => {
-					var $item = jQuery(elem),
+					var $item = Mmenu.$(elem),
 						_search = _anchor;
 
 					if ( opts.showTextItems || ( opts.showSubPanels && $item.find( '.mm-btn_next' ) ) )
@@ -563,12 +561,13 @@ Mmenu.prototype.search = function(
 		if ( opts.panel.add )
 		{
 			//	Clone all matched listitems into the search panel
-			var $lis = jQuery();
+			var $lis = Mmenu.$();
 			$pnls
 				.each(
 					( i, elem ) => {
-						let $panel = jQuery(elem),
+						let $panel = Mmenu.$(elem),
 							$li = Mmenu.filterListItems( $panel.find( '.mm-listitem' ) ).clone( true );
+
 						if ( $li.length )
 						{
 							if ( opts.panel.dividers )
@@ -601,16 +600,14 @@ Mmenu.prototype.search = function(
 			{
 				$pnls.each(
 					( i, elem ) => {
-						var $panl = jQuery(elem);
-						Mmenu.filterListItems( $panl.find( '.mm-listitem' ) )
+						let $panel = Mmenu.$(elem);
+						Mmenu.filterListItems( $panel.find( '.mm-listitem' ) )
 							.each(
 								( i, elem ) => {
-									var $li = jQuery(elem),
-										$su = ($li[ 0 ] as any).mmChild;
-
-									if ( $su )
+									let $child : JQuery = (elem as any).mmChild;
+									if ( $child )
 									{
-										$su.find( '.mm-listview' ).children().removeClass( 'mm-hidden' );
+										$child.find( '.mm-listview' ).children().removeClass( 'mm-hidden' );
 									}
 								}
 							);
@@ -620,21 +617,21 @@ Mmenu.prototype.search = function(
 
 
 			//	Update parent for sub-panel
-			jQuery( $pnls.get().reverse() )
+			Mmenu.$( $pnls.get().reverse() )
 				.each(
 					( i, elem ) => {
-						var $panl = jQuery(elem),
-							$prnt = (elem as any).mmParent;
+						let $panel  : JQuery = Mmenu.$(elem),
+							$parent : JQuery = (elem as any).mmParent;
 
-						if ( $prnt )
+						if ( $parent )
 						{
 							//	The current panel has mached listitems
-							if ( Mmenu.filterListItems( $panl.find( '.mm-listitem' ) ).length )
+							if ( Mmenu.filterListItems( $panel.find( '.mm-listitem' ) ).length )
 							{
 								//	Show parent
-								if ( $prnt.hasClass( 'mm-hidden' ) )
+								if ( $parent.hasClass( 'mm-hidden' ) )
 								{
-									$prnt
+									$parent
 										.removeClass( 'mm-hidden' )
 										.children( '.mm-btn_next' )
 										.not( '.mm-btn_fullwidth' )
@@ -645,17 +642,17 @@ Mmenu.prototype.search = function(
 
 							else if ( !$inpt.closest( '.mm-panel' ).length )
 							{
-								if ( $panl.hasClass( 'mm-panel_opened' ) || 
-									$panl.hasClass( 'mm-panel_opened-parent' )
+								if ( $panel.hasClass( 'mm-panel_opened' ) || 
+									$panel.hasClass( 'mm-panel_opened-parent' )
 								) {
 									//	Compensate the timeout for the opening animation
 									setTimeout(
 										() => {
-											this.openPanel( $prnt.closest( '.mm-panel' ) );
+											this.openPanel( $parent.closest( '.mm-panel' ) );
 										}, ( i + 1 ) * ( this.conf.openingInterval * 1.5 )
 									);
 								}
-								$prnt.addClass( 'mm-listitem_nosubitems' );
+								$parent.addClass( 'mm-listitem_nosubitems' );
 							}
 						}
 					}
@@ -666,7 +663,7 @@ Mmenu.prototype.search = function(
 			Mmenu.filterListItems( $pnls.find( '.mm-listitem' ) )
 				.each(
 					( i, elem ) => {
-						jQuery(elem).prevAll( '.mm-listitem_divider' )
+						Mmenu.$(elem).prevAll( '.mm-listitem_divider' )
 							.first()
 							.removeClass( 'mm-hidden' );
 					}

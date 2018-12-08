@@ -62,7 +62,7 @@ Mmenu.addons.backButton = function(
 			}
 		);
 
-		jQuery(window).on( 'popstate',
+		Mmenu.$(window).on( 'popstate',
 			( e ) => {
 				if ( this.vars.opened )
 				{
@@ -77,7 +77,7 @@ Mmenu.addons.backButton = function(
 						}
 						else
 						{
-							this.openPanel( jQuery( hash ) );
+							this.openPanel( Mmenu.$( hash ) );
 							history.pushState( null, document.title, _menu );
 						}
 					}
@@ -88,7 +88,7 @@ Mmenu.addons.backButton = function(
 
 	if ( opts.open )
 	{
-		jQuery(window).on( 'popstate',
+		Mmenu.$(window).on( 'popstate',
 			( e ) => {
 				if ( !this.vars.opened && location.hash == _menu )
 				{

@@ -3,12 +3,12 @@ Mmenu.wrappers.turbolinks = function(
 ) {
 	var classnames, $html;
 
-	jQuery(document)
+	Mmenu.$(document)
 
 		//	Store the HTML classnames onDocumentReady
 		.on( 'turbolinks:before-visit',
 			() => {
-				$html = jQuery('html');
+				$html = Mmenu.$('html');
 				classnames = $html[ 0 ].getAttribute( 'class' );
 				classnames = jQuery.grep(
 					classnames.split( /\s+/ ),

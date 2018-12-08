@@ -99,7 +99,7 @@ Mmenu.addons.drag = function(
 				var getSlideNodes = function(
 					this : Mmenu
 				) {
-					return jQuery('.mm-slideout');
+					return Mmenu.$('.mm-slideout');
 				};
 
 				var _stage 			= 0,
@@ -152,7 +152,7 @@ Mmenu.addons.drag = function(
 							this	: Mmenu,
 							pos 	: number
 						) {
-							if ( pos >= jQuery(window)[ _dimension ]() - opts.menu.maxStartPos )
+							if ( pos >= Mmenu.$(window)[ _dimension ]() - opts.menu.maxStartPos )
 							{
 								_stage = 1;
 							}
@@ -190,11 +190,11 @@ Mmenu.addons.drag = function(
 				}
 
 				var $slideOutNodes 	: JQuery,
-					$dragNode 		: JQuery | string = Mmenu.valueOrFn( this.node.$menu, opts.menu.node, Mmenu.node.$page );
+					$dragNode 		: JQuery = Mmenu.valueOrFn( this.node.$menu, opts.menu.node, Mmenu.node.$page );
 
 				if ( typeof $dragNode == 'string' )
 				{
-					$dragNode = jQuery($dragNode);
+					$dragNode = Mmenu.$($dragNode);
 				}
 
 
@@ -240,7 +240,7 @@ Mmenu.addons.drag = function(
 							{
 								if ( _stage == 1 )
 								{
-									if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
+									if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
 									{
 										return;
 									}
@@ -248,10 +248,10 @@ Mmenu.addons.drag = function(
 
 									this._openSetup();
 									this.trigger( 'open:start' );
-									jQuery('html').addClass( 'mm-wrapper_dragging' );
+									Mmenu.$('html').addClass( 'mm-wrapper_dragging' );
 
 									_maxDistance = minMax( 
-										jQuery(window)[ _dimension ]() * conf.menu[ _dimension ].perc, 
+										Mmenu.$(window)[ _dimension ]() * conf.menu[ _dimension ].perc, 
 										conf.menu[ _dimension ].min, 
 										conf.menu[ _dimension ].max
 									);
@@ -279,7 +279,7 @@ Mmenu.addons.drag = function(
 						( e ) => {
 							if ( _stage == 2 )
 							{
-								jQuery('html').removeClass( 'mm-wrapper_dragging' );
+								Mmenu.$('html').removeClass( 'mm-wrapper_dragging' );
 								$slideOutNodes.css( 'transform', '' );
 								this[ _direction == drag.open_dir ? '_openFinish' : 'close' ]();
 							}

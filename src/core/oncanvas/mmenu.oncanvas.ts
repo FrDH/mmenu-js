@@ -101,6 +101,10 @@ class Mmenu {
 	}
 
 
+	/** Library for DOM traversal and DOM manipulations. */
+	static $ : JQueryStatic = jQuery || window[ 'u' ] || window[ 'cash' ];
+
+
 	/**	Options for the menu. */
 	opts 	: mmOptions
 
@@ -186,7 +190,7 @@ class Mmenu {
 		//	Get menu node from string.
 		if ( Mmenu.typeof( $menu ) == 'string' )
 		{
-			$menu = jQuery( ($menu as string) );
+			$menu = Mmenu.$( ($menu as string) );
 		}
 
 		//	Store menu node.
@@ -283,9 +287,8 @@ class Mmenu {
 				$panel
 					.parents( '.mm-panel' )
 					.not(
-						function()
-						{
-							return jQuery(this).parent( '.mm-listitem_vertical' ).length ? true : false
+						( i, elem ) => {
+							return Mmenu.$(elem).parent( '.mm-listitem_vertical' ).length ? true : false
 						}
 					)
 					.first()
@@ -313,7 +316,7 @@ class Mmenu {
 				.removeClass( 'mm-panel_opened-parent' );
 
 			//	Open all parent panels
-			var $parent = ($panel[ 0 ] as any).mmParent;
+			var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
 			while( $parent )
 			{
 				$parent = $parent.closest( '.mm-panel' );
@@ -733,7 +736,7 @@ class Mmenu {
 		this.node.$menu[ 0 ].id = this.node.$menu[ 0 ].id || Mmenu.getUniqueId();
 
 		//	Wrap the panels in a node.
-		this.node.$pnls = jQuery( '<div class="mm-panels" />' )
+		this.node.$pnls = Mmenu.$( '<div class="mm-panels" />' )
 			.append( this.node.$menu.children( this.conf.panelNodetype ) )
 			.prependTo( this.node.$menu );
 
@@ -808,14 +811,14 @@ class Mmenu {
 		//	If no panels provided, use all panels.
 		$panels = $panels || this.node.$pnls.children( this.conf.panelNodetype );
 
-		var $newpanels = jQuery();
+		var $newpanels = Mmenu.$();
 
 		var init = ( $panels ) => {
 			$panels
 				.filter( this.conf.panelNodetype )
 				.each(
 					( i, elem ) => {
-						var $panel = this._initPanel( jQuery(elem) );
+						var $panel = this._initPanel( Mmenu.$(elem) );
 						if ( $panel )
 						{
 
@@ -936,7 +939,7 @@ class Mmenu {
 		}
 
 		var $parent : JQuery = ($panel[ 0 ] as any).mmParent,
-			$navbar : JQuery = jQuery( '<div class="mm-navbar" />' );
+			$navbar : JQuery = Mmenu.$( '<div class="mm-navbar" />' );
 
 		var title = this._getPanelTitle( $panel, this.opts.navbar.title ),
 			href  = '';
@@ -968,7 +971,7 @@ class Mmenu {
 			$parent = $a.closest( '.mm-panel' );
 
 			var id = $parent[ 0 ].id;
-			title = this._getPanelTitle( $panel, jQuery('<span>' + $a.text() + '</span>').text() );
+			title = this._getPanelTitle( $panel, Mmenu.$('<span>' + $a.text() + '</span>').text() );
 
 			switch ( this.opts.navbar.titleLink )
 			{
@@ -1038,7 +1041,7 @@ class Mmenu {
 			if ( !$parent.children( '.mm-btn' ).length )
 			{
 				var $a = $parent.children( 'a, span' ).first(),
-					$b = jQuery( '<a class="mm-btn mm-btn_next mm-listitem__btn" href="#' + $panel[ 0 ].id + '" />' );
+					$b = Mmenu.$( '<a class="mm-btn mm-btn_next mm-listitem__btn" href="#' + $panel[ 0 ].id + '" />' );
 
 				$b.insertAfter( $a );
 				if ( $a.is( 'span' ) )
@@ -1087,11 +1090,11 @@ class Mmenu {
 		this.trigger( 'initAnchors:before' );
 
 
-		jQuery('body')
+		Mmenu.$('body')
 			.on( 'click.mm',
 				'a[href]',
 				( e ) => {
-					var $t = jQuery(e.currentTarget),
+					var $t = Mmenu.$(e.currentTarget),
 						_h = e.currentTarget.getAttribute( 'href' );
 
 					var args : mmClickArguments = {
@@ -1454,6 +1457,14 @@ class Mmenu {
 		orignl	: any,	//	Unfortunately, Typescript doesn't allow "object", "mmLooseObject" or anything other than "any".
 		dfault	: mmLooseObject
 	) {
+		if ( Mmenu.typeof( orignl ) != 'object' )
+		{
+			orignl = {};
+		}
+		if ( Mmenu.typeof( dfault ) != 'object' )
+		{
+			dfault = {};
+		}
 		for ( let k in dfault )
 		{
 			if ( !dfault.hasOwnProperty( k ) )

@@ -26,7 +26,6 @@ Mmenu.addons.keyboardNavigation = function(
 	//	/Extend shorthand options
 
 
-	//opts = this.opts.keyboardNavigation = jQuery.extend( true, {}, Mmenu.options.keyboardNavigation, opts );
 	this.opts.keyboardNavigation = Mmenu.extend( opts, Mmenu.options.keyboardNavigation );
 
 
@@ -34,9 +33,9 @@ Mmenu.addons.keyboardNavigation = function(
 	if ( opts.enable )
 	{
 
-		var $menuStart 	= jQuery('<button class="mm-tabstart" />'),
-			$menuEnd   	= jQuery('<button class="mm-tabend" />'),
-			$blckEnd 	= jQuery('<button class="mm-tabend" />');
+		var $menuStart 	= Mmenu.$('<button class="mm-tabstart" />'),
+			$menuEnd   	= Mmenu.$('<button class="mm-tabend" />'),
+			$blckEnd 	= Mmenu.$('<button class="mm-tabend" />');
 
 		this.bind( 'initMenu:after',
 			function(
@@ -82,7 +81,7 @@ Mmenu.addons.keyboardNavigation = function(
 		) {
 			$panl = $panl || this.node.$pnls.children( '.mm-panel_opened' );
 
-			var $focs = jQuery(),
+			var $focs = Mmenu.$(),
 				$navb = this.node.$menu
 					.children( '.mm-navbars_top, .mm-navbars_bottom'  )
 					.children( '.mm-navbar' );
@@ -156,62 +155,61 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 	enhance	: boolean
 ) {
 
-	//	Re-enable tabbing in general
-	jQuery(window)
-		.off( 'keydown.mm-offCanvas' );
+	Mmenu.$(window)
 
-	//	Prevent tabbing outside an offcanvas menu
-	jQuery(window)
+		//	Re-enable tabbing in general
+		.off( 'keydown.mm-offCanvas' )
+
+		//	Prevent tabbing outside an offcanvas menu
 		.off( 'focusin.mm-keyboardNavigation' )
 		.on( 'focusin.mm-keyboardNavigation',
 			( e ) => {
-				if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
+				if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
 				{
-					var $t = jQuery(e.target);
+					var $target = Mmenu.$(e.target);
 
-					if ( $t.is( '.mm-tabend' ) )
+					if ( $target.is( '.mm-tabend' ) )
 					{
-						var $target : any = jQuery();	//	Should be type JQuery, but Typescript does not understand
+						var $next = Mmenu.$();
 
 						//	Jump from menu to blocker
-						if ( $t.parent().is( '.mm-menu' ) )
+						if ( $target.parent().is( '.mm-menu' ) )
 						{
 							if ( Mmenu.node.$blck )
 							{
-								$target = Mmenu.node.$blck;
+								$next = Mmenu.node.$blck;
 							}
 						}
-						if ( $t.parent().is( '.mm-wrapper__blocker' ) )
+						if ( $target.parent().is( '.mm-wrapper__blocker' ) )
 						{
-							$target = jQuery('body')
+							$next = Mmenu.$('body')
 								.find( '.mm-menu_offcanvas' )
 								.filter( '.mm-menu_opened' );
 						}
-						if ( !$target.length )
+						if ( !$next.length )
 						{
-							$target = $t.parent();
+							($next as any) = $target.parent();	//	Without the any type, Typescript complains about $target being the window.
 						}
 
-						$target.children( '.mm-tabstart' ).focus();
+						$next.children( '.mm-tabstart' ).focus();
 					}
 				}
 			}
-		);
+		)
 
-	//	Default keyboard navigation
-	jQuery(window)
+		//	Default keyboard navigation
 		.off( 'keydown.mm-keyboardNavigation' )
 		.on( 'keydown.mm-keyboardNavigation',
 			( e ) => {
-				var $t = jQuery(e.target),
-					$m = $t.closest( '.mm-menu' );
+				var $target = Mmenu.$(e.target),
+					$menu 	= $target.closest( '.mm-menu' );
 
-				if ( $m.length )
+				if ( $menu.length )
 				{
-					var api : mmApi = ($m[ 0 ] as any).mmenu;
+					var api : mmApi = ($menu[ 0 ] as any).mmenu;
 
 					//	special case for input and textarea
-					if ( $t.is( 'input, textarea' ) )
+					if ( $target.is( 'input, textarea' ) )
 					{
 					}
 					else
@@ -220,10 +218,10 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 						{
 							//	press enter to toggle and check
 							case 13: 
-								if ( $t.is( '.mm-toggle' ) || 
-									 $t.is( '.mm-check' )
+								if ( $target.is( '.mm-toggle' ) || 
+									 $target.is( '.mm-check' )
 								) {
-									$t.trigger( 'click.mm' );
+									$target.trigger( 'click.mm' );
 								}
 								break;
 
@@ -241,28 +239,29 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 			}
 		);
 
-	//	Enhanced keyboard navigation
 	if ( enhance )
 	{
-		jQuery(window)
+		Mmenu.$(window)
+
+			//	Enhanced keyboard navigation
 			.off( 'keydown.mm-keyboardNavigation' )
 			.on( 'keydown.mm-keyboardNavigation',
 				( e ) => {
-					var $t = jQuery(e.target),
-						$m = $t.closest( '.mm-menu' );
+					var $target = Mmenu.$(e.target),
+						$menu 	= $target.closest( '.mm-menu' );
 
-					if ( $m.length )
+					if ( $menu.length )
 					{
-						var api : mmApi = ($m[ 0 ] as any).mmenu;
+						var api : mmApi = ($menu[ 0 ] as any).mmenu;
 
 						//	special case for input and textarea
-						if ( $t.is( 'input' ) )
+						if ( $target.is( 'input' ) )
 						{
 							switch( e.keyCode )
 							{
 								//	empty searchfield with esc
 								case 27:
-									$t.val( '' );
+									$target.val( '' );
 									break;
 							}
 						}
@@ -272,16 +271,16 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 							{
 								//	close submenu with backspace
 								case 8: 
-									var $p : JQuery = ($m.find( '.mm-panel_opened' )[ 0 ] as any).mmParent;
-									if ( $p && $p.length )
+									var $parent : JQuery = ($menu.find( '.mm-panel_opened' )[ 0 ] as any).mmParent;
+									if ( $parent && $parent.length )
 									{
-										api.openPanel( $p.closest( '.mm-panel' ) );
+										api.openPanel( $parent.closest( '.mm-panel' ) );
 									}
 									break;
 
 								//	close menu with esc
 								case 27:
-									if ( $m.hasClass( 'mm-menu_offcanvas' ) )
+									if ( $menu.hasClass( 'mm-menu_offcanvas' ) )
 									{
 										api.close();
 									}

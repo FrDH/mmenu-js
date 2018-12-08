@@ -6,7 +6,7 @@ Mmenu.wrappers.jqueryMobile = function(
 	this.conf.offCanvas.page.selector = 'div.ui-page-active';
 
 	//	When changing pages
-	jQuery('body').on(
+	Mmenu.$('body').on(
 		'pagecontainerchange',
 		( e, args ) => {
 			if ( this.opts.offCanvas )
@@ -28,14 +28,14 @@ Mmenu.wrappers.jqueryMobile = function(
 		function(
 			this : Mmenu
 		) {
-			jQuery('body').on(
+			Mmenu.$('body').on(
 				'click',
 				'.mm-listview a',
 				( e ) => {
 					if ( !e.isDefaultPrevented() )
 					{
 						e.preventDefault();
-						jQuery( 'body' )[ 'pagecontainer' ]( 'change', e.currentTarget.getAttribute( 'href' ) );
+						Mmenu.$( 'body' )[ 'pagecontainer' ]( 'change', e.currentTarget.getAttribute( 'href' ) );
 					}
 				}
 			);

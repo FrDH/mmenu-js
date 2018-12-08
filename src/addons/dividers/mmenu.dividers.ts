@@ -70,15 +70,14 @@ Mmenu.addons.dividers = function(
 					.each(
 						( i, elem ) => {
 							var last = '';
-							Mmenu.filterListItems( jQuery(elem).children() )
+							Mmenu.filterListItems( Mmenu.$(elem).children() )
 								.each(
-									function( i, elem )
-									{
-										var letter = jQuery(elem).children( '.mm-listitem__text' ).text().trim().slice( 0, 1 ).toLowerCase();
+									( i, elem ) => {
+										var letter = Mmenu.$(elem).children( '.mm-listitem__text' ).text().trim().slice( 0, 1 ).toLowerCase();
 										if ( letter.length && letter != last )
 										{
 											last = letter;
-											jQuery( '<li class="mm-listitem mm-listitem_divider">' + letter + '</li>' ).insertBefore( elem );
+											Mmenu.$( '<li class="mm-listitem mm-listitem_divider">' + letter + '</li>' ).insertBefore( elem );
 										}
 									}
 								);
@@ -99,7 +98,7 @@ Mmenu.addons.dividers = function(
 			) {
 				if ( typeof this.node.$fixeddivider == 'undefined' )
 				{
-					this.node.$fixeddivider = jQuery('<ul class="mm-listview mm-listview_fixeddivider"><li class="mm-listitem mm-listitem_divider"></li></ul>')
+					this.node.$fixeddivider = Mmenu.$('<ul class="mm-listview mm-listview_fixeddivider"><li class="mm-listitem mm-listitem_divider"></li></ul>')
 						.appendTo( this.node.$pnls )
 						.children();
 				}
@@ -125,7 +124,7 @@ Mmenu.addons.dividers = function(
 
 			$dividers.each(
 				( i, elem ) => {
-					let $divider = jQuery(elem);
+					let $divider = Mmenu.$(elem);
 					if ( $divider.position().top + scrl < scrl + 1 )
 					{
 						text = $divider.text();

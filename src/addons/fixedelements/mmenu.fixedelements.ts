@@ -44,12 +44,12 @@ Mmenu.addons.fixedElements = function(
 		) {
 			if ( $stck.length )
 			{
-				if ( jQuery('html').css( 'overflow' ) == 'hidden' )
+				if ( Mmenu.$('html').css( 'overflow' ) == 'hidden' )
 				{
-					var _s = jQuery(window).scrollTop() + conf.sticky.offset;
+					var scrolltop = Mmenu.$(window).scrollTop() + conf.sticky.offset;
 					$stck.each(
 						( i, elem ) => {
-							jQuery(elem).css( 'top', parseInt( jQuery(elem).css( 'top' ), 10 ) + _s );
+							Mmenu.$(elem).css( 'top', parseInt( Mmenu.$(elem).css( 'top' ), 10 ) + scrolltop );
 						}
 					);
 				}

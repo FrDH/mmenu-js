@@ -11,8 +11,8 @@ Mmenu.wrappers.bootstrap4 = function(
 
 
 		//	... We'll create a new menu
-		var $nav = jQuery('<nav />'),
-			$pnl = jQuery('<div />');
+		var $nav = Mmenu.$('<nav />'),
+			$pnl = Mmenu.$('<div />');
 
 		$nav.append( $pnl );
 
@@ -20,7 +20,7 @@ Mmenu.wrappers.bootstrap4 = function(
 			.children()
 			.each(
 				( i, elem ) => {
-					var $t = jQuery(elem);
+					var $t = Mmenu.$(elem);
 					switch( true )
 					{
 						case $t.hasClass( 'navbar-nav' ):
@@ -81,7 +81,7 @@ Mmenu.wrappers.bootstrap4 = function(
 	function cloneLink( 
 		$a : JQuery
 	) {
-		var $i = jQuery('<a />');
+		var $i = Mmenu.$('<a />');
 		var attr = ['href', 'title', 'target'];
 		for ( var a = 0; a < attr.length; a++ )
 		{
@@ -97,11 +97,11 @@ Mmenu.wrappers.bootstrap4 = function(
 	function cloneDropdown( 
 		$d : JQuery
 	) {
-		var $ul = jQuery('<ul />');
+		var $ul = Mmenu.$('<ul />');
 		$d.children()
 			.each(function() {
-				var $di = jQuery(this),
-					$li = jQuery('<li />');
+				var $di = Mmenu.$(this),
+					$li = Mmenu.$('<li />');
 
 				if ( $di.hasClass( 'dropdown-divider' ) )
 				{
@@ -119,11 +119,11 @@ Mmenu.wrappers.bootstrap4 = function(
 	function cloneNav( 
 		$n : JQuery
 	) {
-		var $ul = jQuery('<ul />');
+		var $ul = Mmenu.$('<ul />');
 		$n.find( '.nav-item' )
 			.each(function() {
-				var $ni = jQuery(this),
-					$li = jQuery('<li />');
+				var $ni = Mmenu.$(this),
+					$li = Mmenu.$('<li />');
 
 				if ( $ni.hasClass( 'active' ) )
 				{

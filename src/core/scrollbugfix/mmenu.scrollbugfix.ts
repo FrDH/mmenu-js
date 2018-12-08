@@ -55,11 +55,11 @@ Mmenu.addons.scrollBugFix = function(
 		) {
 
 		    //	Prevent the body from scrolling
-		    jQuery(document)
+		    Mmenu.$(document)
 		    	.off( 'touchmove.mm-scrollBugFix' )
 		    	.on( 'touchmove.mm-scrollBugFix',
 			    	( e ) => {
-						if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
+						if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
 						{
 							e.preventDefault();
 						}
@@ -67,12 +67,12 @@ Mmenu.addons.scrollBugFix = function(
 			    );
 
 		    var scrolling = false;
-		    jQuery('body')
+		    Mmenu.$('body')
 		    	.off( 'touchstart.mm-scrollBugFix' )
 		    	.on( 'touchstart.mm-scrollBugFix',
 			    	'.mm-panels > .mm-panel',
 			    	( e ) => {
-				        if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
+				        if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
 				        {
 				        	if ( !scrolling )
 							{
@@ -96,9 +96,9 @@ Mmenu.addons.scrollBugFix = function(
 		 		.on( 'touchmove.mm-scrollBugFix',
 			 		'.mm-panels > .mm-panel',
 			 		( e ) => {
-				        if ( jQuery('html').hasClass( 'mm-wrapper_opened' ) )
+				        if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
 				        {
-				        	var $panel = jQuery(e.currentTarget);
+				        	var $panel = Mmenu.$(e.currentTarget);
 					        if ( $panel[ 0 ].scrollHeight > $panel.innerHeight() )
 					        {
 					        	e.stopPropagation();
@@ -108,7 +108,7 @@ Mmenu.addons.scrollBugFix = function(
 		    	);
 
 			//	Fix issue after device rotation change
-			jQuery('window')
+			Mmenu.$('window')
 		    	.off( 'orientationchange.mm-scrollBugFix' )
 		    	.on( 'orientationchange.mm-scrollBugFix',
 		    		() => {

@@ -75,7 +75,7 @@ Mmenu.wrappers.bootstrap3 = function(
 				.find( '.caret' ).remove().end()
 				.each(
 					( i, elem ) => {
-						jQuery(elem).replaceWith( '<span>' + jQuery(elem).html() + '</span>' );
+						Mmenu.$(elem).replaceWith( '<span>' + Mmenu.$(elem).html() + '</span>' );
 					}
 				);
 			

@@ -15,7 +15,7 @@ Mmenu.addons.navbars.tabs = function(
 			( e ) => {
 				e.preventDefault();
 
-				var $tab = jQuery(e.currentTarget);
+				var $tab = Mmenu.$(e.currentTarget);
 				if ( $tab.hasClass( 'mm-navbar__tab_selected' ) )
 				{
 					e.stopImmediatePropagation();
@@ -24,7 +24,7 @@ Mmenu.addons.navbars.tabs = function(
 
 				try
 				{
-					this.openPanel( jQuery( $tab[ 0 ].getAttribute( 'href' ) ), false );
+					this.openPanel( Mmenu.$( $tab[ 0 ].getAttribute( 'href' ) ), false );
 					e.stopImmediatePropagation();
 				}
 				catch( err ) {}
@@ -44,7 +44,7 @@ Mmenu.addons.navbars.tabs = function(
 		}
 		else
 		{
-			var $parent = ($panel[ 0 ] as any).mmParent;
+			var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
 			if ( $parent && $parent.length )
 			{
 				selectTab.call( this, $parent.closest( '.mm-panel' ) );

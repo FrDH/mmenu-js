@@ -112,7 +112,7 @@ Mmenu.addons.sidebar = function(
 				function(
 					this : Mmenu
 				) {
-					jQuery('html').addClass( clsclpsd );
+					Mmenu.$('html').addClass( clsclpsd );
 				}
 			);
 		}
@@ -122,12 +122,12 @@ Mmenu.addons.sidebar = function(
 				function(
 					this : Mmenu
 				) {
-					jQuery('html').addClass( clsclpsd );
+					Mmenu.$('html').addClass( clsclpsd );
 				},
 				function(
 					this : Mmenu
 				) {
-					jQuery('html').removeClass( clsclpsd );
+					Mmenu.$('html').removeClass( clsclpsd );
 				}
 			);
 		}
@@ -151,7 +151,7 @@ Mmenu.addons.sidebar = function(
 				function(
 					this : Mmenu
 				) {
-					jQuery('html').addClass( clsxpndd );
+					Mmenu.$('html').addClass( clsxpndd );
 					this.open();
 				}
 			);
@@ -162,8 +162,8 @@ Mmenu.addons.sidebar = function(
 				function(
 					this : Mmenu
 				) {
-					jQuery('html').addClass( clsxpndd );
-					if ( !jQuery('html').hasClass( 'mm-wrapper_sidebar-closed' ) )
+					Mmenu.$('html').addClass( clsxpndd );
+					if ( !Mmenu.$('html').hasClass( 'mm-wrapper_sidebar-closed' ) )
 					{
 						this.open();
 					}
@@ -171,7 +171,7 @@ Mmenu.addons.sidebar = function(
 				function(
 					this : Mmenu
 				) {
-					jQuery('html').removeClass( clsxpndd );
+					Mmenu.$('html').removeClass( clsxpndd );
 					this.close();
 				}
 			);
@@ -181,9 +181,9 @@ Mmenu.addons.sidebar = function(
 			function(
 				this : Mmenu
 			) {
-				if ( jQuery('html').hasClass( clsxpndd ) )
+				if ( Mmenu.$('html').hasClass( clsxpndd ) )
 				{
-					jQuery('html').addClass( 'mm-wrapper_sidebar-closed' );
+					Mmenu.$('html').addClass( 'mm-wrapper_sidebar-closed' );
 				}
 			}
 		);
@@ -192,7 +192,7 @@ Mmenu.addons.sidebar = function(
 			function(
 				this : Mmenu
 			) {
-				jQuery('html').removeClass( 'mm-wrapper_sidebar-closed' );
+				Mmenu.$('html').removeClass( 'mm-wrapper_sidebar-closed' );
 			}
 		);
 
@@ -208,7 +208,7 @@ Mmenu.addons.sidebar = function(
 
 				if ( args.inMenu && args.inListview )
 				{
-					if ( jQuery('html').hasClass( 'mm-wrapper_sidebar-expanded' ) )
+					if ( Mmenu.$('html').hasClass( 'mm-wrapper_sidebar-expanded' ) )
 					{
 						return {
 							close: false

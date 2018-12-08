@@ -3,7 +3,7 @@ Mmenu.addons.navbars.title = function(
 	$navbar	: JQuery
 ) {
 	//	Add content
-	var $title = jQuery('<a class="mm-navbar__title" />')
+	var $title = Mmenu.$('<a class="mm-navbar__title" />')
 		.appendTo( $navbar );
 
 

@@ -55,7 +55,7 @@ Mmenu.addons.screenReader = function(
 					.find( '.mm-listitem' )
 					.each(
 						( i, elem ) => {
-							var $li = jQuery(elem);
+							var $li = Mmenu.$(elem);
 							Mmenu.sr_aria( $li, 'hidden', $li.is( '.mm-hidden' ) );
 						}
 					);
@@ -105,7 +105,7 @@ Mmenu.addons.screenReader = function(
 					.each(
 						function( i, elem )
 						{
-							Mmenu.sr_aria( jQuery(elem), 'owns', elem.getAttribute( 'href' ).replace( '#', '' ) );
+							Mmenu.sr_aria( Mmenu.$(elem), 'owns', elem.getAttribute( 'href' ).replace( '#', '' ) );
 						}
 					);
 

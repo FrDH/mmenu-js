@@ -16,7 +16,7 @@ Mmenu.addons.toggles = function()
 				.find( 'input.mm-toggle, input.mm-check' )
 				.each(
 					( i, elem ) => {
-						var $inpt = jQuery(elem),
+						var $inpt = Mmenu.$(elem),
 							$prnt = $inpt.closest( 'li' ),
 							cl = $inpt.hasClass( 'mm-toggle' ) ? 'toggle' : 'check',
 							id = $inpt[ 0 ].id || Mmenu.getUniqueId();
@@ -26,7 +26,7 @@ Mmenu.addons.toggles = function()
 							$inpt[ 0 ].id = id;
 							$prnt.prepend( $inpt );
 
-							jQuery('<label for="' + id + '" class="mm-' + cl + '"></label>')
+							Mmenu.$('<label for="' + id + '" class="mm-' + cl + '"></label>')
 								.insertAfter( $prnt.children( '.mm-listitem__text' ).last() );
 						}
 					}

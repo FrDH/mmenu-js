@@ -57,7 +57,7 @@ Mmenu.addons.sectionIndexer = function(
 			//	Add the indexer, only if it does not allready excists
 			if ( !this.node.$indx )
 			{
-				this.node.$indx = jQuery( '<div class="mm-sectionindexer" />' )
+				this.node.$indx = Mmenu.$( '<div class="mm-sectionindexer" />' )
 					.prependTo( this.node.$menu )
 					.append( 
 						'<a href="#a">a</a>' +
@@ -98,7 +98,7 @@ Mmenu.addons.sectionIndexer = function(
 					.on( 'mouseover.mm-sectionIndexer touchstart.mm-sectionIndexer',
 						'a',
 						( e ) => {
-							var lttr = jQuery(e.currentTarget).html(),
+							var lttr = Mmenu.$(e.currentTarget).html(),
 								$panl = this.node.$pnls.children( '.mm-panel_opened' ),
 								$list = $panl.find( '.mm-listview' );
 
@@ -112,9 +112,9 @@ Mmenu.addons.sectionIndexer = function(
 								.each(
 									( i, elem ) => {
 										if ( newTop < 0 &&
-											lttr == jQuery(elem).text().slice( 0, 1 ).toLowerCase()
+											lttr == Mmenu.$(elem).text().slice( 0, 1 ).toLowerCase()
 										) {
-											newTop = jQuery(elem).position().top;
+											newTop = Mmenu.$(elem).position().top;
 										}
 									}
 								);
