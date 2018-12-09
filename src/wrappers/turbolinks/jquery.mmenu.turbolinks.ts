@@ -10,7 +10,7 @@ Mmenu.wrappers.turbolinks = function(
 			() => {
 				$html = Mmenu.$('html');
 				classnames = $html[ 0 ].getAttribute( 'class' );
-				classnames = jQuery.grep(
+				classnames = Mmenu.$.grep(
 					classnames.split( /\s+/ ),
 					function( name: string )
 					{

@@ -22,13 +22,6 @@ Mmenu.addons.offCanvas = function(
 	}
 	//	/Extend shorthand options
 
-	//	Extend configuration
-	if ( typeof conf.page.selector != 'string' )
-	{
-		conf.page.selector = '> ' + conf.page.nodetype;
-	}
-	//	/Extend configuration
-
 
 	this.opts.offCanvas = Mmenu.extend( opts, Mmenu.options.offCanvas );
 	this.conf.offCanvas = Mmenu.extend( conf, Mmenu.configs.offCanvas );
@@ -395,8 +388,11 @@ Mmenu.prototype.setPage = function(
 
 	if ( !$page || !$page.length )
 	{
-		$page = Mmenu.$('body')
-			.find( conf.page.selector )
+		$page = ( typeof conf.page.selector == 'string' )
+			? Mmenu.$('body').find( conf.page.selector )
+			: Mmenu.$('body').children( conf.page.nodetype );
+		
+		$page = $page
 			.not( '.mm-menu' )
 			.not( '.mm-wrapper__blocker' );
 

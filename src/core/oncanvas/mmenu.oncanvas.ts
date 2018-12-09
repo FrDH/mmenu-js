@@ -13,33 +13,6 @@
 
 
 /**
- * jQuery plugin mmenu.
- */
-jQuery.fn[ 'mmenu' ] = function( opts, conf )
-{
-	var $result = jQuery();
-	this.each(
-		( i, elem ) => {
-			if ( (elem as any).mmenu )
-			{
-				return;
-			}
-
-			var $menu = jQuery(elem),
-				menu  = new Mmenu( $menu, opts, conf );
-
-			//	Store the API
-			menu.node.$menu.data( 'mmenu', menu.API );
-
-			$result = $result.add( menu.node.$menu );
-		}
-	);
-
-	return $result;
-};
-
-
-/**
  * Class for a mobile menu.
  */
 class Mmenu {
@@ -102,7 +75,7 @@ class Mmenu {
 
 
 	/** Library for DOM traversal and DOM manipulations. */
-	static $ : JQueryStatic = jQuery || window[ 'u' ] || window[ 'cash' ];
+	static $ : JQueryStatic = window[ 'jQuery' ] || window[ 'Zepto' ] || window[ 'cash' ];
 
 
 	/**	Options for the menu. */
@@ -138,7 +111,7 @@ class Mmenu {
 	_deprecated : Function
 
 	/** Log debug messages when using the debugger. */
-	_debug : Function
+	_debug 		: Function
 
 
 	//	screenReader add-on
@@ -177,7 +150,7 @@ class Mmenu {
 	/**
 	 * Create a mobile menu.
 	 *
-	 * @param {JQuery|string} 	$menu						Menu node.
+	 * @param {JQuery|string} 	$menu						The menu node.
 	 * @param {object} 			[options=Mmenu.options]		Options for the menu.
 	 * @param {object} 			[configs=Mmenu.configs]		Configuration options for the menu.
 	 */
@@ -188,21 +161,21 @@ class Mmenu {
 	) {
 
 		//	Get menu node from string.
-		if ( Mmenu.typeof( $menu ) == 'string' )
+		if ( typeof $menu == 'string' )
 		{
-			$menu = Mmenu.$( ($menu as string) );
+			$menu = Mmenu.$($menu);
 		}
 
 		//	Store menu node.
 		this.node 	= {
-			$menu : ($menu as JQuery)
+			$menu : $menu
 		};
 
 		//	Extend options and configuration from defaults.
 		this.opts 	= Mmenu.extend( options, Mmenu.options );
 		this.conf 	= Mmenu.extend( configs, Mmenu.configs );
 
-		//	Core methods to expose to the API
+		//	Methods to expose in the API.
 		this._api	= [ 'bind', 'initPanels', 'openPanel', 'closePanel', 'closeAllPanels', 'setSelected' ];
 
 		//	Storage objects for variables, hooks, matchmedia and click handlers.
@@ -220,6 +193,7 @@ class Mmenu {
 		this._initWrappers();
 		this._initAddons();
 		this._initExtensions();
+
 		this._initHooks();
 		this._initAPI();
 
@@ -349,7 +323,7 @@ class Mmenu {
 				}
 				else
 				{
-					$current.addClass( 'mm-.panel_opened-parent' );
+					$current.addClass( 'mm-panel_opened-parent' );
 					$panel.addClass( 'mm-panel_highest' );
 				}
 
@@ -474,7 +448,7 @@ class Mmenu {
 
 
 	/**
-	 * Mark a listitem as being "selected".
+	 * Display a listitem as being "selected".
 	 *
 	 * @param {JQuery} $listitem Listitem to mark.
 	 */
@@ -576,7 +550,7 @@ class Mmenu {
 
 
 	/**
-	 * Fire the "yes" or "no" function for a media query.
+	 * Fire the "yes" or "no" function for a match-media listener.
 	 *
 	 * @param {string} 			mqstring 	Media query to check for.
 	 * @param {MediaQueryList} 	mqlist 		Media query list to check with.
@@ -681,7 +655,7 @@ class Mmenu {
 		//	Loop over object
 		for ( let mediaquery in this.opts.extensions )
 		{
-			// this.opts[ 'extensions' ][ mediaquery ] = this.opts[ 'extensions' ][ mediaquery ].length ? _c.menu + '_' + this.opts[ 'extensions' ][ mediaquery ].join( ' ' + _c.menu + '_' ) : '';
+			this.opts[ 'extensions' ][ mediaquery ] = this.opts[ 'extensions' ][ mediaquery ].length ? 'mm-menu_' + this.opts[ 'extensions' ][ mediaquery ].join( ' mm-menu_' ) : '';
 			if ( this.opts.extensions[ mediaquery ] )
 			{
 				(( mediaquery ) => {
@@ -1484,4 +1458,33 @@ class Mmenu {
 		return orignl;
 	}
 }
+
+
+
+
+/**
+ * jQuery plugin mmenu.
+ */
+Mmenu.$.fn[ 'mmenu' ] = function( opts, conf )
+{
+	var $result = Mmenu.$();
+	this.each(
+		( i, elem ) => {
+			if ( (elem as any).mmenu )
+			{
+				return;
+			}
+
+			var $menu = Mmenu.$(elem),
+				menu  = new Mmenu( $menu, opts, conf );
+
+			//	Store the API
+			menu.node.$menu.data( 'mmenu', menu.API );
+
+			$result = $result.add( menu.node.$menu );
+		}
+	);
+
+	return $result;
+};
 

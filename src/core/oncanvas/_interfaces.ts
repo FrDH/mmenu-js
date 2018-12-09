@@ -23,8 +23,13 @@ interface mmApi {
 	closeAllPanels	: Function
 	setSelected		: Function
 
-	//	TODO: add add-on methods
-	[key: string]	: Function
+	//	offCanvas add-on
+	open			: Function
+	close			: Function
+	setPage			: Function
+
+	//	searchfield add-on
+	search			: Function
 }
 
 
