@@ -87,7 +87,7 @@ class Mmenu {
 	/**	Mmethods to expose in the API. */
 	_api	: string[]
 
-	/* The menu API. */
+	/** The menu API. */
 	API		: mmApi
 
 

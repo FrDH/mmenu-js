@@ -21,7 +21,6 @@ Mmenu.addons.counters = function(
 	//	/Extend shorthand options
 
 
-	//opts = this.opts.counters = jQuery.extend( true, {}, Mmenu.options.counters, opts );
 	this.opts.counters = Mmenu.extend( opts, Mmenu.options.counters );
 
 

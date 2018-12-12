@@ -73,7 +73,10 @@ Mmenu.addons.dividers = function(
 							Mmenu.filterListItems( Mmenu.$(elem).children() )
 								.each(
 									( i, elem ) => {
-										var letter = Mmenu.$(elem).children( '.mm-listitem__text' ).text().trim().slice( 0, 1 ).toLowerCase();
+										let letter = Mmenu.$(elem)
+											.children( '.mm-listitem__text' )
+											.text().trim().toLowerCase()[ 0 ];
+
 										if ( letter.length && letter != last )
 										{
 											last = letter;
@@ -152,7 +155,7 @@ Mmenu.addons.dividers = function(
 				$panel.off( 'scroll.mm-dividers touchmove.mm-dividers' )
 					.on( 'scroll.mm-dividers touchmove.mm-dividers',
 						( e ) => {
-							if ( $panel.hasClass( 'mm-.panel_opened' ) )
+							if ( $panel.hasClass( 'mm-panel_opened' ) )
 							{
 								setValue.call( this, $panel );
 							}
