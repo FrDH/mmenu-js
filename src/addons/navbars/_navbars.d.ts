@@ -1,4 +1,4 @@
-//	Add-on options interface.
+/**	"navbar" options for the navbars add-on. */
 interface mmOptionsNavbarsNavbar {
 	content : string[] | JQuery[]
 	height	: number
@@ -6,10 +6,13 @@ interface mmOptionsNavbarsNavbar {
 	type 	: string
 }
 
-//	Add0on configs interfaces.
+
+/**	Configuration for the navbars add-on. */
 interface mmConfigsNavbars {
 	breadcrumbs : mmConfigsNavbarsBreadcrumbs
 }
+
+/**	"breadcrumbs" configuration for the navbars add-on. */
 interface mmConfigsNavbarsBreadcrumbs {
 	separator 	: string
 	removeFirst : boolean

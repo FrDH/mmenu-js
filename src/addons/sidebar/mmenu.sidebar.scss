@@ -57,10 +57,7 @@
 	{
 		.mm-slideout
 		{
-			width: calc( 100% - #{$mm_sidebarCollapsedSize} );	//	IE11 fallback
 			width: calc( 100% - var( --mm-sidebar-collapsed-size ) );
-
-			transform: translate3d( $mm_sidebarCollapsedSize, 0, 0 );	//	IE11 fallback
 			transform: translate3d( var( --mm-sidebar-collapsed-size ), 0, 0 );
 		}
 	}
@@ -109,17 +106,13 @@
 			{
 				~ .mm-slideout
 				{
-					width: calc( 100% - #{$mm_sidebarExpandedSize} ); //	IE11 fallback
 					width: calc( 100% - var( --mm-sidebar-expanded-size ) );
-
-					transform: translate3d( $mm_sidebarExpandedSize, 0, 0 ); //	IE11 fallback
 					transform: translate3d( var( --mm-sidebar-expanded-size ), 0, 0 );
 				}
 			}
 		}
 		.mm-menu_sidebar-expanded
 		{
-			width: $mm_sidebarExpandedSize; //	IE11 fallback
 			width: var( --mm-sidebar-expanded-size );
 		}
 	}

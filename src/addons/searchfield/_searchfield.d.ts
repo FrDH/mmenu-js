@@ -1,4 +1,4 @@
-//	Add-on options interfaces.
+/**	Options for the searchfield add-on. */
 interface mmOptionsSearchfield {
 	add 			: boolean
 	addTo			: string | JQuery
@@ -10,6 +10,8 @@ interface mmOptionsSearchfield {
 	showTextItems	: boolean
 	showSubPanels	: boolean
 }
+
+/**	"panel" options for the searchfield add-on. */
 interface mmOptionsSearchfieldPanel {
 	add 			: boolean
 	dividers		: boolean
@@ -19,7 +21,8 @@ interface mmOptionsSearchfieldPanel {
 	title			: string
 }
 
-//	Add-on configs interface.
+
+/**	Configuration for the searchfield add-on. */
 interface mmConfigsSearchfield {
 	form			: mmLooseObject | boolean
 	input			: mmLooseObject | boolean

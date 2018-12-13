@@ -104,7 +104,6 @@
 		&,
 		&.mm-panel_opened ~ .mm-listview_fixeddivider
 		{
-			width: calc( 100% - ( #{$mm_iconpanelSize} * #{$nr} ) );	//	IE11 fallback
 			width: calc( 100% - ( var( --mm-iconpanel-size ) * #{$nr} ) );
 		}
 	}
@@ -115,7 +114,6 @@
 	{
 		.mm-panels
 		{
-			#{$pos}: $mm_navbarSize * $nr; //	IE11 fallback
 			#{$pos}: calc( var( --mm-navbar-size ) * #{$nr} );
 		}
 	}
@@ -124,7 +122,6 @@
 {
 	.mm-navbar_size-#{$nr}
 	{
-		height: $mm_navbarSize * $nr; //	IE11 fallback
 		height: calc( var( --mm-navbar-size ) * #{$nr} );
 	}
 }
@@ -155,7 +152,6 @@
 	{
 		.mm-sectionindexer
 		{
-			#{$pos}: ($mm_navbarSize * $nr) + 2;	//	IE11 fallback
 			#{$pos}: calc( ( var( --mm-navbar-size ) * #{$nr} ) + 2px );
 		}
 	}

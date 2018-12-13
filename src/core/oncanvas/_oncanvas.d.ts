@@ -1,20 +1,31 @@
-//	Generic interfaces.
+//	Declare global variables jQuery alternatives
+declare var Zepto : JQueryStatic
+declare var cash  : JQueryStatic
+
+
+/** An object with any key and any value. */
 interface mmLooseObject {
 	[key: string] 	: any
 }
+
+/** An object with any key and string values. */
 interface mmStringObject {
 	[key: string] 	: string
 }
+
+/** An object with any key and function values. */
 interface mmFunctionObject {
 	[key: string] 	: Function
 }
+
+/** An object with any key and jQuery values. */
 interface mmJqueryObject {
 	[key: string] 	: JQuery
 }
 
 
-//	Class API interface.
 //	TODO	add description for each method
+/** API for the menu. */
 interface mmApi {
 	bind 			: Function
 	initPanels		: Function
@@ -45,10 +56,10 @@ interface mmMethodI18n {
 }
 
 
-//	Class options interfaces.
+/**	Options for the menu. */
 interface mmOptions {
 	hooks 				: mmFunctionObject
-	extensions			: string[] | mmOptionsExensions
+	extensions			: mmOptionsExensions | string[]
 	wrappers			: string[]
 	navbar 				: mmOptionsNavbar
 	onClick				: mmOptionsOnclick
@@ -77,18 +88,21 @@ interface mmOptions {
 	sectionIndexer		?: mmOptionsSectionindexer
 	setSelected			?: mmOptionsSetselected
 	sidebar				?: mmOptionsSidebar
+}
 
-	//	Make it "loose" so add-ons can extend it.
-	[key: string] 		: any
-}
+/**	Extensions for the menu. */
 interface mmOptionsExensions {
-	[key: string] 		: string[] | mmOptionsExensions
+	[key: string] 		: mmOptionsExensions | string[]
 }
+
+/**	Navbar options for the menu. */
 interface mmOptionsNavbar {
 	add 				: boolean
 	title				: string | Function
 	titleLink			: string
 }
+
+/**	onClick options for the menu. */
 interface mmOptionsOnclick {
 	close				: boolean
 	preventDefault		: boolean
@@ -96,7 +110,7 @@ interface mmOptionsOnclick {
 }
 
 
-//	Class configs interface.
+/**	Configuration for the menu. */
 interface mmConfigs {
 	classNames			: mmLooseObject
 	clone				: boolean
@@ -116,13 +130,10 @@ interface mmConfigs {
 	navbars				?: mmConfigsNavbars
 	pageScroll			?: mmConfigsPagescroll
 	searchfield			?: mmConfigsSearchfield
-
-	//	Make it "loose" so add-ons can extend it.
-	[key: string] 		: any
 }
 
 
-//	Click arguments interface.
+/**	Arguments for the onClick handlers. */
 interface mmClickArguments {
 	inMenu 				: boolean
 	inListview 			: boolean

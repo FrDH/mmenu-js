@@ -7,9 +7,7 @@
 {
 	.mm-counter
 	{
-		color: $mm_dimmedTextColor;	//	IE11 fallback
 		color: var( --mm-color-text-dimmed );
-
 		text-align: right;
 		display: block;
 		padding-left: $mm_padding * 2;

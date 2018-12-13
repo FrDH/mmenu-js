@@ -1,15 +1,8 @@
 .mm-menu
 {
-	//	IE11 fallback
-	background: $mm_backgroundColor;
-	border-color: $mm_borderColor;
-	color: $mm_textColor;
-
 	background: var( --mm-color-background );
 	border-color: var( --mm-color-border );
 	color: var( --mm-color-text );
-
-	line-height: $mm_lineHeight; //	IE11 fallback
 	line-height: var( --mm-line-height );
 
 	box-sizing: border-box;
@@ -18,12 +11,6 @@
 	margin: 0;
 	position: absolute;
 	z-index: 0;
-
-	//	IE11 fallback
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
 
 	top: var( --mm-offset-top );
 	right: var( --mm-offset-right );

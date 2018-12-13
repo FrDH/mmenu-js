@@ -48,10 +48,7 @@
 	.mm-navbars_bottom.mm-navbars_has-tabs .mm-navbar_tabs ~ .mm-navbar,
 	.mm-navbar_tabs > a:not( .mm-navbar__tab_selected )
 	{
-		background: $mm_emphasizedBackgroundColor;	//	IE11 fallback
 		background: var( --mm-color-background-emphasis );
-
-		color: $mm_dimmedTextColor;	//	IE11 fallback
 		color: var( --mm-color-text-dimmed );
 	}
 }

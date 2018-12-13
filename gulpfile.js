@@ -40,30 +40,22 @@ var inputDir 		= 'src',
 	customDir 		= null,
 	build 			='./' + inputDir + '/_build.json';
 
-var jsExt = 'ts';
 
 
-function sanitizeNamespaceForUmd( file )
-{
-	path = file.path.split( '\\' ).join( '/' ).split( '/' );
-	path = path[ path.length - 1 ];
-	return path.split( '.' ).join( '_' );
-}
-function concatUmdJS( files, name )
-{
+function concatUmdJS( files, name ) {
 	var stream = gulp.src( files )
 		.pipe( concat( name ) );
 
 	if ( build.umd )
 	{
 		stream = stream.pipe( umd({
-			dependencies: function() { return [ {
+			dependencies: () => [ {
 				name 	: 'jquery',
 				global 	: 'jQuery',
 				param 	: 'jQuery'
-			} ]; },
-			exports: function() { return 'Mmenu'; },
-			namespace: sanitizeNamespaceForUmd
+			} ],
+			exports: () => 'Mmenu',
+			namespace: () => 'Mmenu'
 		}));
 	}
 	return stream.pipe( gulp.dest( outputDir ) );
@@ -99,7 +91,7 @@ function start( callback ) {
 
 		//	Try custom _build.json file
 		var b = './' + c + '/_build.json';
-		fs.stat( b, function( err, stat ) {
+		fs.stat( b, ( err, stat ) => {
 			if ( err == null )
 			{
 				build = require( b );
@@ -134,7 +126,7 @@ gulp.task( 'default', function() {
 gulp.task( 'watch', function() {
 	start(function() {
 		gulp.watch( inputDir + '/**/*.scss'		, [ 'css' ] );
-		gulp.watch( inputDir + '/**/*.' + jsExt	, [ 'js'  ] );
+		gulp.watch( inputDir + '/**/*.ts'		, [ 'js'  ] );
 	});
 });
 
@@ -149,7 +141,7 @@ gulp.task( 'css', [ 'css-concat' ] );
 
 
 //	1)	Concatenate variables and mixins
-gulp.task( 'css-variables', function() {
+gulp.task( 'css-variables', () => {
 
 	var files  	= {
 		variables: [ 
@@ -185,13 +177,13 @@ gulp.task( 'css-variables', function() {
 });
 
 //	2) 	Compile CSS
-gulp.task( 'css-compile', [ 'css-variables' ], function() {
+gulp.task( 'css-compile', [ 'css-variables' ], () => {
 
 	var files = [	//	Without the globstar, all files would be put directly in the outputDir
-		inputDir + '/**/core/@(' + build.files.core.join( '|' ) + ')/*.scss',
-		inputDir + '/**/addons/@(' + build.files.addons.join( '|' ) + ')/*.scss',
-		inputDir + '/**/extensions/@(' + build.files.extensions.join( '|' ) + ')/*.scss',
-		inputDir + '/**/wrappers/@(' + build.files.wrappers.join( '|' ) + ')/*.scss'
+		inputDir + '/**/core/@(' 		+ build.files.core.join( '|' ) 			+ ')/*.scss',
+		inputDir + '/**/addons/@(' 		+ build.files.addons.join( '|' ) 		+ ')/*.scss',
+		inputDir + '/**/extensions/@(' 	+ build.files.extensions.join( '|' ) 	+ ')/*.scss',
+		inputDir + '/**/wrappers/@(' 	+ build.files.wrappers.join( '|' ) 		+ ')/*.scss'
 	];
 
 	return gulp.src( files )
@@ -202,7 +194,7 @@ gulp.task( 'css-compile', [ 'css-variables' ], function() {
 });
 
 //	3) 	Concatenate CSS
-gulp.task( 'css-concat', [ 'css-compile' ], function() {
+gulp.task( 'css-concat', [ 'css-compile' ], () => {
 
 	//	Core
 	var files = [
@@ -237,12 +229,12 @@ gulp.task( 'css-concat', [ 'css-compile' ], function() {
 gulp.task( 'js', [ 'js-concat' ] );
 
 //	1) 	Compile core + add-ons
-gulp.task( 'js-compile', function() {
+gulp.task( 'js-compile', () => {
 
 	var files = [	//	Without the globstar, all files would be put directly in the outputDir
-		inputDir + '/**/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/**/*.' + jsExt,
-		inputDir + '/**/addons/@(' 		+ build.files.addons.join( '|' ) 	+ ')/*.' + jsExt,
-		inputDir + '/**/wrappers/@(' 	+ build.files.wrappers.join( '|' ) 	+ ')/*.' + jsExt
+		inputDir + '/**/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/*.ts',
+		inputDir + '/**/addons/@(' 		+ build.files.addons.join( '|' ) 	+ ')/*.ts',
+		inputDir + '/**/wrappers/@(' 	+ build.files.wrappers.join( '|' ) 	+ ')/*.ts'
 	];
 
 	return gulp.src( files )
@@ -254,12 +246,12 @@ gulp.task( 'js-compile', function() {
 				comments: "/^!/"
 			}
 		}) )
-		.on('error', function (err) { console.log(err) } )
+		.on('error', ( err ) => { console.log( err ) } )
 		.pipe( gulp.dest( outputDir ) );
 });
 
 //	2)	Compile translations
-gulp.task( 'js-translations', [ 'js-compile' ], function() {
+gulp.task( 'js-translations', [ 'js-compile' ], () => {
 
 	var streams = [];
 
@@ -287,7 +279,7 @@ gulp.task( 'js-translations', [ 'js-compile' ], function() {
 });
 
 //	3) 	Concatenate JS
-gulp.task( 'js-concat', [ 'js-translations' ], function() {
+gulp.task( 'js-concat', [ 'js-translations' ], () => {
 
 	//	Core
 	var files = [

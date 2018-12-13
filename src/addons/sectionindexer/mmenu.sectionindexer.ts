@@ -18,7 +18,6 @@ Mmenu.addons.sectionIndexer = function(
 	//	/Extend shorthand options
 
 
-	//opts = this.opts.sectionIndexer = jQuery.extend( true, {}, Mmenu.options.sectionIndexer, opts );
 	this.opts.sectionIndexer = Mmenu.extend( opts, Mmenu.options.sectionIndexer );
 
 

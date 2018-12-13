@@ -28,7 +28,6 @@
 
 		a
 		{
-			color: $mm_dimmedTextColor;	//	IE11 fallback
 			color: var( --mm-color-text-dimmed );
 			line-height: 1;
 			text-decoration: none;

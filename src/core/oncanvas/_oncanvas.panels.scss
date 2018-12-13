@@ -12,11 +12,6 @@
 .mm-panel
 {
 	box-sizing: border-box;
-	
-	//	IE11 fallback
-	background: $mm_backgroundColor;
-	border-color: $mm_borderColor;
-	color: $mm_textColor;
 
 	background: var( --mm-color-background );
 	border-color: var( --mm-color-border );
@@ -56,7 +51,6 @@
 }
 .mm-panel_has-navbar
 {
-	padding-top: $mm_navbarSize; //	IE11 fallback
 	padding-top: var( --mm-navbar-size );
 }
 .mm-panel_opened

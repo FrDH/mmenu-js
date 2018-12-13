@@ -7,7 +7,6 @@
 	&:before,
 	&:after
 	{
-		border-color: $mm_borderColor;	//	IE11 fallback
 		border-color: var( --mm-color-button );
 		border-width: 2px;
 		border-style: solid;

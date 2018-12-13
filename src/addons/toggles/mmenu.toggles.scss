@@ -37,12 +37,10 @@
 
 	label.mm-toggle
 	{
-		background: $mm_borderColor;	//	IE11 fallback
 		background: var( --mm-color-border );
 	
 		&:before
 		{
-			background: $mm_backgroundColor;	//	IE11 fallback
 			background: var( --mm-color-background );
 		}
 	}
@@ -61,7 +59,6 @@
 
 		&:before
 		{
-			border-color: $mm_textColor;	//	IE11 fallback
 			border-color: var( --mm-color-text );
 			content: '';
 			display: block;

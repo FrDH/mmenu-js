@@ -32,7 +32,6 @@
 		{
 			&:hover
 			{
-				background: $mm_emphasizedBackgroundColor;	//	IE11 fallback
 				background: var( --mm-color-background-emphasis	);
 			}
 		}
@@ -52,7 +51,6 @@
 			> .mm-listitem__text,
 			> .mm-listitem__btn
 			{
-				background: $mm_emphasizedBackgroundColor;	//	IE11 fallback
 				background: var( --mm-color-background-emphasis	);
 			}
 		}

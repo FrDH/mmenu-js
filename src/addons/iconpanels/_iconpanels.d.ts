@@ -1,4 +1,4 @@
-//	Add-on options interface.
+/**	Options for the iconPanels add-on. */
 interface mmOptionsIconpanels {
 	add 		: boolean
 	blockPanel	: boolean

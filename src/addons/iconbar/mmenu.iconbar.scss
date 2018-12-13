@@ -12,9 +12,7 @@
 
 	.mm-iconbar
 	{
-		color: $mm_dimmedTextColor;	//	IE11 fallback
 		color: var( --mm-color-text-dimmed );
-
 		border: 0 solid $mm_borderColor;
 		border-color: var( --mm-color-border );
 		border-right-width: 1px;
@@ -23,8 +21,6 @@
 
 		overflow: hidden;
 		box-sizing: border-box;
-
-		width: $mm_iconbarSize; //	IE11 fallback
 		width: var( --mm-iconbar-size );
 
 		position: absolute;
@@ -40,7 +36,6 @@
 		.mm-navbars_top,
 		.mm-navbars_bottom
 		{
-			left: $mm_iconbarSize; //	IE11 fallback
 			left: var( --mm-iconbar-size );
 		}
 	}
@@ -77,7 +72,6 @@
 {
 	.mm-iconbar__tab_selected
 	{
-		background: $mm_emphasizedBackgroundColor; //	IE11 fallback
 		background: var( --mm-color-background-emphasis	); 
 	}
 }

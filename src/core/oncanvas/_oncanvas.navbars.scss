@@ -1,10 +1,5 @@
 .mm-navbar
 {
-	//	IE11 fallback
-	background: $mm_backgroundColor;
-	border-color: $mm_borderColor;
-	color: $mm_dimmedTextColor;
-
 	background: var( --mm-color-background );
 	border-color: var( --mm-color-border );
 	color: var( --mm-color-text-dimmed );
@@ -15,9 +10,7 @@
 	text-align: center;
 	display: none;
 
-	height: $mm_navbarSize; //	IE11 fallback
 	height: var( --mm-navbar-size );
-
 	padding: 0 $mm_btnSize;
 	margin: 0;
 
@@ -34,9 +27,7 @@
 		box-sizing: border-box;
 		display: block;
 
-		padding: ($mm_navbarSize - $mm_lineHeight) * .5; //	IE11 fallback
 		padding: calc( (var( --mm-navbar-size ) - var( --mm-line-height )) * .5 );
-
 		padding-left: 0;
 		padding-right: 0;
 	}

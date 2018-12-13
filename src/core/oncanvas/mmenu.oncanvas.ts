@@ -75,7 +75,7 @@ class Mmenu {
 
 
 	/** Library for DOM traversal and DOM manipulations. */
-	static $ : JQueryStatic = window[ 'jQuery' ] || window[ 'Zepto' ] || window[ 'cash' ];
+	static $ : JQueryStatic = jQuery || Zepto || cash;
 
 
 	/**	Options for the menu. */

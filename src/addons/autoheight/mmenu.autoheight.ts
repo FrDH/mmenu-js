@@ -25,7 +25,7 @@ Mmenu.addons.autoHeight = function(
 	//	/Extend shorthand options
 
 
-	this.opts.autoHeigh = Mmenu.extend( opts, Mmenu.options.autoHeight );
+	this.opts.autoHeight = Mmenu.extend( opts, Mmenu.options.autoHeight );
 
 
 	if ( opts.height != 'auto' && opts.height != 'highest' )

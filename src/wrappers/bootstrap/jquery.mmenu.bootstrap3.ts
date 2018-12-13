@@ -107,7 +107,7 @@ Mmenu.wrappers.bootstrap3 = function(
 				.removeClass( 'navbar-left navbar-right navbar-nav navbar-text navbar-btn' );
 
 			var $form = this.node.$menu.find( '.navbar-form' );
-			this.conf.searchform = {
+			this.conf.searchfield = {
 				form 	: {
 					action 	: $form[ 0 ].getAttribute( 'action' ),
 					method 	: $form[ 0 ].getAttribute( 'method' )
@@ -115,7 +115,8 @@ Mmenu.wrappers.bootstrap3 = function(
 				input 	: {
 					name 	: $form.find( 'input' )[ 0 ].getAttribute( 'name' )
 				},
-				submit 	: true
+				submit 	: true,
+				clear 	: false
 			};
 			$form.remove();
 

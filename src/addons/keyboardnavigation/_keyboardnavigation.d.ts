@@ -1,4 +1,4 @@
-//	Add-on options interface.
+/**	Options for the keyboardNavigation add-on. */
 interface mmOptionsKeyboardnavigation {
 	enable 	: boolean | string
 	enhance	: boolean

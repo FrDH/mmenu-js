@@ -17,14 +17,8 @@
 		{
 			background: inherit;
 			font-size: inherit;
-
-			color: $mm_dimmedTextColor;	//	IE11 fallback
 			color: var( --mm-color-text-dimmed );
-
-			padding-top: ($mm_listitemSize - $mm_lineHeight) * .75; //	IE11 fallback
 			padding-top: calc( (var( --mm-listitem-size ) - var( --mm-line-height )) * .75 );
-
-			padding-bottom: ($mm_listitemSize - $mm_lineHeight) * .25; //	IE11 fallback
 			padding-bottom: calc( (var( --mm-listitem-size ) - var( --mm-line-height )) * .25 );
 		}
 	}

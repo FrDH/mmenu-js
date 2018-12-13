@@ -9,7 +9,6 @@
 	{
 		&:after
 		{
-			box-shadow: 0 0 10px rgba( #000, 0.3 );	//	IE11 fallback
 			box-shadow: var( --mm-shadow );
 			content: "";
 			display: block;
@@ -46,7 +45,6 @@
 {
 	.mm-menu_shadow-menu
 	{
-		box-shadow: 0 0 10px rgba( #000, 0.3 );	//	IE11 fallback
 		box-shadow: var( --mm-shadow );
 	}
 }
@@ -56,7 +54,6 @@
 {
 	.mm-menu_shadow-panels .mm-panels > .mm-panel
 	{
-		box-shadow: 0 0 10px rgba( #000, 0.3 );	//	IE11 fallback
 		box-shadow: var( --mm-shadow );
 	}
 }

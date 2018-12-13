@@ -1,4 +1,4 @@
-//	Add-on options interface.
+/**	Options for the autoHeight add-on. */
 interface mmOptionsAutoheight {
 	height : string
 }

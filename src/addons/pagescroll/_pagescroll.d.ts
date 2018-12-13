@@ -1,11 +1,12 @@
-//	Add-on options interface.
+/**	Options for the pageScroll add-on. */
 interface mmOptionsPagescroll {
 	scroll : boolean
 	update : boolean
 }
 
-//	Add-on configs interface.
+
+/**	Configuration for the pageScroll add-on. */
 interface mmConfigsPagescroll {
 	scrollOffset : number
 	updateOffset : number
-};
+}

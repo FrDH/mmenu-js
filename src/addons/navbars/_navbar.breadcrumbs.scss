@@ -14,11 +14,7 @@
 		{
 			display: inline-block;
 			padding-right: 6px;
-
-			padding-top: ($mm_navbarSize - $mm_lineHeight) * .5; //	IE11 fallback
 			padding-top: calc( (var( --mm-navbar-size ) - var( --mm-line-height )) * .5 );
-
-			padding-bottom: ($mm_navbarSize - $mm_lineHeight) * .5; //	IE11 fallback
 			padding-bottom: calc( (var( --mm-navbar-size ) - var( --mm-line-height )) * .5 );
 		}
 		> a

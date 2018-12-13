@@ -7,9 +7,7 @@
 {
 	.mm-searchfield
 	{
-		height: $mm_navbarSize; //	IE11 fallback
 		height: var( --mm-navbar-size );
-
 		padding: 0;
 		display: flex;
 
@@ -19,19 +17,15 @@
 			outline: none !important;
 			box-shadow: none !important;
 			border-radius: 4px;
-			background: $mm_highlightedBackgroundColor;	//	IE11 fallback
 			background: var( --mm-color-background-highlight );
-			color: $mm_textColor;	//	IE11 fallback
 			color: var( --mm-color-text );
 			font: inherit;
 			font-size: inherit;
-			line-height: $mm_navbarSize * 0.8; //	IE11 fallback
 			line-height: calc( var( --mm-navbar-size ) * 0.7 );
 			display: block;
 			box-sizing: border-box;
 			width: 100%;
 			max-width: 100%;
-			height: $mm_navbarSize - ( $mm_padding * 2 ); //	IE11 fallback
 			height: calc( var( --mm-navbar-size ) * 0.7 );
 			min-height: unset;
 			max-height: unset;
@@ -52,7 +46,6 @@
 
 	.mm-panel__noresultsmsg
 	{
-		color: $mm_dimmedTextColor;	//	IE11 fallback
 		color: var( --mm-color-text-dimmed );
 		text-align: center;
 		font-size: 150%;
@@ -88,9 +81,7 @@
 		}
 		.mm-searchfield__cancel
 		{
-			line-height: $mm_navbarSize; //	IE11 fallback
 			line-height: var( --mm-navbar-size );
-
 			text-decoration: none;
 			display: block;
 			padding-right: $mm_padding;
@@ -116,17 +107,14 @@
 
 		.mm-panel_has-searchfield
 		{
-			padding-top: $mm_navbarSize; //	IE11 fallback
 			padding-top: var( --mm-navbar-size );
 		}
 		.mm-panel_has-navbar.mm-panel_has-searchfield
 		{
-			padding-top: $mm_navbarSize * 2; //	IE11 fallback
 			padding-top: calc( var( --mm-navbar-size ) * 2 );
 			
 			> .mm-searchfield
 			{
-				top: $mm_navbarSize; //	IE11 fallback
 				top: var( --mm-navbar-size );
 			}
 		}

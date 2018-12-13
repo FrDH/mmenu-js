@@ -13,7 +13,6 @@
 			a:focus
 			{
 				outline: none;
-				background: $mm_emphasizedBackgroundColor;	//	IE11 fallback
 				background: var( --mm-color-background-emphasis );
 			}
 		}
