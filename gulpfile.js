@@ -203,7 +203,7 @@ gulp.task( 'css-concat', [ 'css-compile' ], () => {
 	];
 
 	var core = gulp.src( files )
-		.pipe( concat( 'jquery.mmenu.css' ) )
+		.pipe( concat( 'mmenu.css' ) )
 		.pipe( gulp.dest( outputDir ) );
 
 	//	Add addons, extensions and wrappers
@@ -269,7 +269,7 @@ gulp.task( 'js-translations', [ 'js-compile' ], () => {
 		];
 
 		var stream = gulp.src( files )
-			.pipe( concat( 'jquery.mmenu.' + lang + '.js' ) )
+			.pipe( concat( 'mmenu.' + lang + '.js' ) )
 			.pipe( gulp.dest( outputDir + '/translations' ) );
 
 		streams.push( stream );
@@ -286,7 +286,7 @@ gulp.task( 'js-concat', [ 'js-translations' ], () => {
 		outputDir + '/core/oncanvas/*.js',	//	Oncanvas needs to be first
 		outputDir + '/core/**/*.js'
 	];
-	var core = concatUmdJS( files, 'jquery.mmenu.js' );
+	var core = concatUmdJS( files, 'mmenu.js' );
 
 	//	Add addons, wrappers and translations
 	files.push( outputDir + '/addons/**/[!_]*.js' );	//	Files that are NOT prefixed with an underscore need to be added first.

@@ -63,14 +63,14 @@ class Mmenu {
 	static addons  	: mmLooseObject	= {}
 
 	/** Available wrappers for the plugin. */
-	static wrappers : mmLooseObject	= {}
+	static wrappers : mmFunctionObject	= {}
 
 	/**	Globally used HTML nodes. */
 	static node 	: mmJqueryObject = {}
 
 	/**	Features supported by the browser. */
-	static support 	: mmLooseObject = {
-		touch: 'ontouchstart' in window || navigator.msMaxTouchPoints || false,
+	static support 	: mmBooleanObject = {
+		touch: 'ontouchstart' in window || (navigator.msMaxTouchPoints ? true : false) || false
 	}
 
 
@@ -166,6 +166,7 @@ class Mmenu {
 			$menu = Mmenu.$($menu);
 		}
 
+
 		//	Store menu node.
 		this.node 	= {
 			$menu : $menu
@@ -190,18 +191,18 @@ class Mmenu {
 			this._deprecated();
 		}
 
-		this._initWrappers();
-		this._initAddons();
-		this._initExtensions();
+		// this._initWrappers();
+		// this._initAddons();
+		// this._initExtensions();
 
-		this._initHooks();
-		this._initAPI();
+		// this._initHooks();
+		// this._initAPI();
 
-		this._initMenu();
-		this._initPanels();
-		this._initOpened();
-		this._initAnchors();
-		this._initMatchMedia();
+		// this._initMenu();
+		// this._initPanels();
+		// this._initOpened();
+		// this._initAnchors();
+		// this._initMatchMedia();
 
 		if ( typeof this._debug == 'function' )
 		{
@@ -239,7 +240,7 @@ class Mmenu {
 		}
 
 
-		if ( Mmenu.typeof( animation ) != 'boolean' )
+		if ( typeof animation != 'boolean' )
 		{
 			animation = true;
 		}
@@ -336,7 +337,7 @@ class Mmenu {
 				$panel.removeClass( 'mm-panel_highest' );
 
 				this.trigger( 'openPanel:finish', [ $panel ] );
-			}
+			};
 
 			if ( animation && !$panel.hasClass( 'mm-panel_noanimation' ) )
 			{
@@ -508,7 +509,7 @@ class Mmenu {
 
 
 	/**
-	 * Bind functions to the match-media listener.
+	 * Bind functions to a matchMedia listener.
 	 *
 	 * @param {string} 		mediaquery 	Media query to match.
 	 * @param {function} 	yes 		Function to invoke when the media query matches.
@@ -528,7 +529,7 @@ class Mmenu {
 
 
 	/**
-	 * Initialize the match-media listener.
+	 * Initialize the matchMedia listener.
 	 */
 	_initMatchMedia()
 	{
@@ -550,7 +551,7 @@ class Mmenu {
 
 
 	/**
-	 * Fire the "yes" or "no" function for a match-media listener.
+	 * Fire the "yes" or "no" function for a matchMedia listener.
 	 *
 	 * @param {string} 			mqstring 	Media query to check for.
 	 * @param {MediaQueryList} 	mqlist 		Media query list to check with.
@@ -583,12 +584,12 @@ class Mmenu {
 				this.API[ fn ] = function()
 				{
 					var re = that[ fn ].apply( that, arguments ); // 1)
-					return ( Mmenu.typeof( re ) == 'undefined' ) ? that.API : re;
+					return ( typeof re == 'undefined' ) ? that.API : re;
 				};
 			}
 		);
 
-		//	Store the API in the HTML node for external useage.
+		//	Store the API in the HTML node for external usage.
 		(this.node.$menu[ 0 ] as any).mmenu = this.API;
 	}
 
@@ -645,7 +646,7 @@ class Mmenu {
 		this.trigger( 'initExtensions:before' );
 
 		//	Convert array to object with array
-		if ( this.opts.extensions.constructor === Array )
+		if ( Mmenu.typeof( this.opts.extensions ) == 'array' )
 		{
 			this.opts.extensions = {
 				'all': this.opts.extensions
@@ -658,14 +659,13 @@ class Mmenu {
 			this.opts[ 'extensions' ][ mediaquery ] = this.opts[ 'extensions' ][ mediaquery ].length ? 'mm-menu_' + this.opts[ 'extensions' ][ mediaquery ].join( ' mm-menu_' ) : '';
 			if ( this.opts.extensions[ mediaquery ] )
 			{
+				//	TODO: is the closure still needed as it now is a let?
 				(( mediaquery ) => {
 					this.matchMedia( mediaquery,
-						function()
-						{
+						() => {
 							this.node.$menu.addClass( this.opts.extensions[ mediaquery ] );
 						},
-						function()
-						{
+						() => {
 							this.node.$menu.removeClass( this.opts.extensions[ mediaquery ] );
 						}
 					);
@@ -1257,16 +1257,16 @@ class Mmenu {
 		option	?: any,
 		dfault 	?: any
 	) {
-		if ( Mmenu.typeof( option ) == 'function' )
+		if ( typeof option == 'function' )
 		{
 			var value = option.call( $elem[ 0 ] );
-			if ( Mmenu.typeof( value ) != 'undefined' )
+			if ( typeof value != 'undefined' )
 			{
 				return value;
 			}
 		}
-		if ( ( Mmenu.typeof( option ) == 'function' || Mmenu.typeof( option ) == 'undefined' ) 
-			&& Mmenu.typeof( dfault ) != 'undefined'
+		if ( ( typeof option == 'function' || typeof option == 'undefined' ) 
+			&& typeof dfault != 'undefined'
 		) {
 			return dfault;
 		}
@@ -1367,7 +1367,7 @@ class Mmenu {
 		var _ended = false,
 			_fn = function( e )
 			{
-				if ( Mmenu.typeof( e ) !== 'undefined' )
+				if ( typeof e !== 'undefined' )
 				{
 					if ( e.target != $element[ 0 ] )
 					{
@@ -1446,7 +1446,7 @@ class Mmenu {
 				continue;
 			}
 
-			if ( Mmenu.typeof( orignl[ k ] ) == 'undefined' )
+			if ( typeof orignl[ k ] == 'undefined' )
 			{
 				orignl[ k ] = dfault[ k ];
 			}

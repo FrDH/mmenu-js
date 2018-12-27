@@ -1,5 +1,5 @@
 {
-	"name" 	: "jquery.mmenu.all",
+	"name" 	: "mmenu.all",
 	"umd"	: true,
 	"files" : {
 		"core" : [

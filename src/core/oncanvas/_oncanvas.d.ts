@@ -3,22 +3,27 @@ declare var Zepto : JQueryStatic
 declare var cash  : JQueryStatic
 
 
-/** An object with any key and any value. */
+/** An object with any value. */
 interface mmLooseObject {
 	[key: string] 	: any
 }
 
-/** An object with any key and string values. */
+/** An object with string values. */
 interface mmStringObject {
 	[key: string] 	: string
 }
 
-/** An object with any key and function values. */
+/** An object with boolean values. */
+interface mmBooleanObject {
+	[key: string]	: boolean
+}
+
+/** An object with function values. */
 interface mmFunctionObject {
 	[key: string] 	: Function
 }
 
-/** An object with any key and jQuery values. */
+/** An object with jQuery values. */
 interface mmJqueryObject {
 	[key: string] 	: JQuery
 }
