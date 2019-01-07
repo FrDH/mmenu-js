@@ -31,99 +31,80 @@ Mmenu.addons.screenReader = function(
 		//	Add screenreader / aria hooks for add-ons
 		//	In orde to keep this list short, only extend hooks that are actually used by other add-ons
 		//	TODO: move to the specific add-on
-		this.bind( 'initAddons:after',
-			function(
-				this : Mmenu
-			) {
-				this.bind( 'initMenu:after' 	, function( this : Mmenu ) { this.trigger( 'initMenu:after:sr-aria' 	, [].slice.call( arguments )	) });
-				this.bind( 'initNavbar:after'	, function( this : Mmenu ) { this.trigger( 'initNavbar:after:sr-aria'	, [].slice.call( arguments )	) });
-				this.bind( 'openPanel:start'	, function( this : Mmenu ) { this.trigger( 'openPanel:start:sr-aria'	, [].slice.call( arguments )	) });
-				this.bind( 'close:start'		, function( this : Mmenu ) { this.trigger( 'close:start:sr-aria' 		, [].slice.call( arguments )	) });
-				this.bind( 'close:finish'		, function( this : Mmenu ) { this.trigger( 'close:finish:sr-aria' 		, [].slice.call( arguments )	) });
-				this.bind( 'open:start'			, function( this : Mmenu ) { this.trigger( 'open:start:sr-aria' 		, [].slice.call( arguments )	) });
-				this.bind( 'initOpened:after'	, function( this : Mmenu ) { this.trigger( 'initOpened:after:sr-aria'	, [].slice.call( arguments )	) });
-			}
-		);
+		//	TODO arguments[ 0 ]?
+		this.bind( 'initAddons:after', () => {
+			this.bind( 'initMenu:after' 	, function( this : Mmenu ) { this.trigger( 'initMenu:after:sr-aria' 	, [].slice.call( arguments )	) });
+			this.bind( 'initNavbar:after'	, function( this : Mmenu ) { this.trigger( 'initNavbar:after:sr-aria'	, [].slice.call( arguments )	) });
+			this.bind( 'openPanel:start'	, function( this : Mmenu ) { this.trigger( 'openPanel:start:sr-aria'	, [].slice.call( arguments )	) });
+			this.bind( 'close:start'		, function( this : Mmenu ) { this.trigger( 'close:start:sr-aria' 		, [].slice.call( arguments )	) });
+			this.bind( 'close:finish'		, function( this : Mmenu ) { this.trigger( 'close:finish:sr-aria' 		, [].slice.call( arguments )	) });
+			this.bind( 'open:start'			, function( this : Mmenu ) { this.trigger( 'open:start:sr-aria' 		, [].slice.call( arguments )	) });
+			this.bind( 'initOpened:after'	, function( this : Mmenu ) { this.trigger( 'initOpened:after:sr-aria'	, [].slice.call( arguments )	) });
+		});
 
 
 		//	Update aria-hidden for hidden / visible listitems
-		this.bind( 'updateListview',
-			function(
-				this : Mmenu
-			) {
-				this.node.$pnls
-					.find( '.mm-listitem' )
-					.each(
-						( i, elem ) => {
-							var $li = Mmenu.$(elem);
-							Mmenu.sr_aria( $li, 'hidden', $li.is( '.mm-hidden' ) );
-						}
-					);
-			}
-		);
+		this.bind( 'updateListview', () => {
+			this.node.$pnls
+				.find( '.mm-listitem' )
+				.each(
+					( i, elem ) => {
+						var $li = Mmenu.$(elem);
+						Mmenu.sr_aria( $li, 'hidden', $li.is( '.mm-hidden' ) );
+					}
+				);
+		});
 
 
 		//	Update aria-hidden for the panels when opening and closing a panel.
-		this.bind( 'openPanel:start',
-			function( 
-				this 	: Mmenu,
-				$panel 	: JQuery
-			) {
-				var $hidden = this.node.$menu
-					.find( '.mm-panel' )
-					.not( $panel )
-					.not( $panel.parents( '.mm-panel' ) );
+		this.bind( 'openPanel:start', (
+			$panel : JQuery
+		) => {
+			var $hidden = Mmenu.$(this.node.menu)
+				.find( '.mm-panel' )
+				.not( $panel )
+				.not( $panel.parents( '.mm-panel' ) );
 
-				var $shown = $panel.add(
-					$panel
-						.find( '.mm-listitem_vertical .mm-listitem_opened' )
-						.children( '.mm-panel' )
-				);
+			var $shown = $panel.add(
+				$panel
+					.find( '.mm-listitem_vertical .mm-listitem_opened' )
+					.children( '.mm-panel' )
+			);
 
-				Mmenu.sr_aria( $hidden, 'hidden', true );
-				Mmenu.sr_aria( $shown, 'hidden', false );
-			}
-		);
-		this.bind( 'closePanel',
-			function( 
-				this 	: Mmenu,
-				$panel	: JQuery
-			) {
-				Mmenu.sr_aria( $panel, 'hidden', true );
-			}
-		);
+			Mmenu.sr_aria( $hidden, 'hidden', true );
+			Mmenu.sr_aria( $shown, 'hidden', false );
+		});
+		this.bind( 'closePanel', (
+			$panel : JQuery
+		) => {
+			Mmenu.sr_aria( $panel, 'hidden', true );
+		});
 
 
 		//	Add aria-haspopup and aria-owns to prev- and next buttons.
-		this.bind( 'initPanels:after',
-			function( 
-				this 	: Mmenu,
-				$panels : JQuery
-			) {
-				var $btns = $panels
-					.find( '.mm-btn' )
-					.each(
-						function( i, elem )
-						{
-							Mmenu.sr_aria( Mmenu.$(elem), 'owns', elem.getAttribute( 'href' ).replace( '#', '' ) );
-						}
-					);
+		this.bind( 'initPanels:after', ( 
+			$panels : JQuery
+		) => {
+			var $btns = $panels
+				.find( '.mm-btn' )
+				.each(
+					function( i, elem )
+					{
+						Mmenu.sr_aria( Mmenu.$(elem), 'owns', elem.getAttribute( 'href' ).replace( '#', '' ) );
+					}
+				);
 
-				Mmenu.sr_aria( $btns, 'haspopup', true );
-			}
-		);
+			Mmenu.sr_aria( $btns, 'haspopup', true );
+		});
 
 
 		//	Add aria-hidden for navbars in panels.
-		this.bind( 'initNavbar:after',
-			function( 
-				this 	: Mmenu,
-				$panel	: JQuery
-			) {
-				var $navbar = $panel.children( '.mm-navbar' );
-				Mmenu.sr_aria( $navbar, 'hidden', !$panel.hasClass( 'mm-panel_has-navbar' ) );
-			}
-		);
+		this.bind( 'initNavbar:after', (
+			$panel : JQuery
+		) => {
+			var $navbar = $panel.children( '.mm-navbar' );
+			Mmenu.sr_aria( $navbar, 'hidden', !$panel.hasClass( 'mm-panel_has-navbar' ) );
+		});
 
 
 		//	Text
@@ -132,17 +113,14 @@ Mmenu.addons.screenReader = function(
 			//	Add aria-hidden to titles in navbars
 			if ( this.opts.navbar.titleLink == 'parent' )
 			{
-				this.bind( 'initNavbar:after',
-					function(
-						this 	: Mmenu, 
-						$panel	: JQuery
-					) {
-						var $navbar = $panel.children( '.mm-navbar' ),
-							hidden  = ( $navbar.children( '.mm-btn_prev' ).length ) ? true : false;
+				this.bind( 'initNavbar:after', (
+					$panel : JQuery
+				) => {
+					var $navbar = $panel.children( '.mm-navbar' ),
+						hidden  = ( $navbar.children( '.mm-btn_prev' ).length ) ? true : false;
 
-						Mmenu.sr_aria( $navbar.children( '.mm-title' ), 'hidden', hidden );
-					}
-				);
+					Mmenu.sr_aria( $navbar.children( '.mm-title' ), 'hidden', hidden );
+				});
 			}
 		}
 	}
@@ -155,46 +133,36 @@ Mmenu.addons.screenReader = function(
 		//	Add screenreader / text hooks for add-ons
 		//	In orde to keep this list short, only extend hooks that are actually used by other add-ons
 		//	TODO: move to specific add-on
-		this.bind( 'initAddons:after',
-			function(
-				this : Mmenu
-			) {
-				this.bind( 'setPage:after' 		, function() { this.trigger( 'setPage:after:sr-text' 	, arguments[ 0 ]	) });
-				this.bind( 'initBlocker:after'	, function() { this.trigger( 'initBlocker:after:sr-text' 					) });
-			}
-		);
+		this.bind( 'initAddons:after', () => {
+			this.bind( 'setPage:after' 		, function() { this.trigger( 'setPage:after:sr-text' 	, arguments[ 0 ]	) });
+			this.bind( 'initBlocker:after'	, function() { this.trigger( 'initBlocker:after:sr-text' 					) });
+		});
 
 
 		//	Add text to the prev-buttons.
-		this.bind( 'initNavbar:after',
-			function( 
-				this 	: Mmenu,
-				$panel	: JQuery
-			) {
-				var $navbar = $panel.children( '.mm-navbar' ),
-					text = this.i18n( conf.text.closeSubmenu );
+		this.bind( 'initNavbar:after', ( 
+			$panel : JQuery
+		) => {
+			var $navbar = $panel.children( '.mm-navbar' ),
+				text = this.i18n( conf.text.closeSubmenu );
 
-				$navbar.children( '.mm-btn_prev' ).html( Mmenu.sr_text( text ) );
-			}
-		);
+			$navbar.children( '.mm-btn_prev' ).html( Mmenu.sr_text( text ) );
+		});
 
 
 		//	Add text to the next-buttons.
-		this.bind( 'initListview:after',
-			function( 
-				this 	: Mmenu,
-				$panel	: JQuery
-			) {
-				var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
-				if ( $parent && $parent.length )
-				{
-					var $next = $parent.children( '.mm-btn_next' ),
-						text = this.i18n( conf.text[ $next.parent().is( '.mm-listitem_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
+		this.bind( 'initListview:after', (
+			$panel : JQuery
+		) => {
+			var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
+			if ( $parent && $parent.length )
+			{
+				var $next = $parent.children( '.mm-btn_next' ),
+					text = this.i18n( conf.text[ $next.parent().is( '.mm-listitem_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
 
-					$next.append( Mmenu.sr_text( text ) );
-				}			
-			}
-		);
+				$next.append( Mmenu.sr_text( text ) );
+			}			
+		});
 	}
 };
 

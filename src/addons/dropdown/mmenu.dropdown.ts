@@ -41,73 +41,61 @@ Mmenu.addons.dropdown = function(
 
 	var $button : JQuery;
 
-	this.bind( 'initMenu:after',
-		function(
-			this : Mmenu
-		) {
-			this.node.$menu.addClass( 'mm-menu_dropdown' );
+	this.bind( 'initMenu:after', () => {
+		this.node.menu.classList.add( 'mm-menu_dropdown' );
 
-			if ( typeof opts.position.of != 'string' )
+		if ( typeof opts.position.of != 'string' )
+		{
+			let id = this.vars.orgMenuId;
+			if ( id && id.length )
 			{
-				let id = this.vars.orgMenuId;
-				if ( id && id.length )
-				{
-					opts.position.of = '[href="#' + id + '"]';
-				}
-			}
-			if ( typeof opts.position.of != 'string' )
-			{
-				return;
-			}
-
-
-			//	Get the button to put the menu next to
-			$button = Mmenu.$(opts.position.of);
-
-			//	Emulate hover effect
-			var events = opts.event.split( ' ' );
-			if ( events.length == 1 )
-			{
-				events[ 1 ] = events[ 0 ];
-			}
-			if ( events[ 0 ] == 'hover' )
-			{
-				$button.on( 'mouseenter.mm-dropdown',
-					() => {
-						this.open();
-					}
-				);
-			}
-			if ( events[ 1 ] == 'hover' )
-			{
-				this.node.$menu.on( 'mouseleave.mm-dropdown',
-					() => {
-						this.close();
-					}
-				);
+				opts.position.of = '[href="#' + id + '"]';
 			}
 		}
-	);
+		if ( typeof opts.position.of != 'string' )
+		{
+			return;
+		}
+
+
+		//	Get the button to put the menu next to
+		$button = Mmenu.$(opts.position.of);
+
+		//	Emulate hover effect
+		var events = opts.event.split( ' ' );
+		if ( events.length == 1 )
+		{
+			events[ 1 ] = events[ 0 ];
+		}
+		if ( events[ 0 ] == 'hover' )
+		{
+			$button.on( 'mouseenter.mm-dropdown',
+				() => {
+					this.open();
+				}
+			);
+		}
+		if ( events[ 1 ] == 'hover' )
+		{
+			Mmenu.$(this.node.menu).on( 'mouseleave.mm-dropdown',
+				() => {
+					this.close();
+				}
+			);
+		}
+	});
 
 
 	//	Add/remove classname and style when opening/closing the menu
-	this.bind( 'open:start',
-		function(
-			this : Mmenu
-		) {
-			(this.node.$menu[ 0 ] as any).mmStyle = this.node.$menu[ 0 ].getAttribute( 'style' ) || '';
-			Mmenu.$('html').addClass( 'mm-wrapper_dropdown' );
-		}
-	);
+	this.bind( 'open:start', () => {
+		(this.node.menu as any).mmStyle = this.node.menu.getAttribute( 'style' ) || '';
+		Mmenu.$('html').addClass( 'mm-wrapper_dropdown' );
+	});
 
-	this.bind( 'close:finish',
-		function(
-			this : Mmenu
-		) {
-			this.node.$menu[ 0 ].setAttribute( 'style', (this.node.$menu[ 0 ] as any).mmStyle );
-			Mmenu.$('html').removeClass( 'mm-wrapper_dropdown' );
-		}
-	);
+	this.bind( 'close:finish', () => {
+		this.node.menu.setAttribute( 'style', (this.node.menu as any).mmStyle );
+		Mmenu.$('html').removeClass( 'mm-wrapper_dropdown' );
+	});
 
 
 	//	Update the position and sizes
@@ -201,39 +189,34 @@ Mmenu.addons.dropdown = function(
 			return;
 		}
 
-		this.node.$menu[ 0 ].setAttribute( 'style', (this.node.$menu[ 0 ] as any).mmStyle );
+		this.node.menu.setAttribute( 'style', (this.node.menu as any).mmStyle );
 
 		var obj : [ mmLooseObject, string[] ] = [{}, []];
 			obj = getPosition.call( this, 'y', obj );
 			obj = getPosition.call( this, 'x', obj );
 
-		this.node.$menu.css( obj[ 0 ] );
+		Mmenu.$(this.node.menu).css( obj[ 0 ] );
 
 		if ( opts.tip )
 		{
-			this.node.$menu
-				.removeClass( 'mm-menu_tip-left mm-menu_tip-right mm-menu_tip-top mm-menu_tip-bottom' )
-				.addClass( obj[ 1 ].join( ' ' ) );
+			this.node.menu.classList.remove( 'mm-menu_tip-left', 'mm-menu_tip-right', 'mm-menu_tip-top', 'mm-menu_tip-bottom' );
+			this.node.menu.classList.add( obj[ 1 ] );
 		}
 	};
 
 	this.bind( 'open:start', position );
 
 	Mmenu.$(window)
-		.on( 'resize.mm-dropdown',
-			( e ) => {
-				position.call( this );
-			}
-		);
+		.on( 'resize.mm-dropdown', ( evnt ) => {
+			position.call( this );
+		});
 
 	if ( !this.opts.offCanvas.blockUI )
 	{
 		Mmenu.$(window)
-			.on( 'scroll.mm-dropdown',
-				( e ) => {
-					position.call( this );
-				}
-			);
+			.on( 'scroll.mm-dropdown', ( evnt ) => {
+				position.call( this );
+			});
 	}
 
 };

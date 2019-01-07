@@ -7,8 +7,7 @@ Mmenu.wrappers.jqueryMobile = function(
 
 	//	When changing pages
 	Mmenu.$('body').on(
-		'pagecontainerchange',
-		( e, args ) => {
+		'pagecontainerchange', ( evnt, args ) => {
 			if ( this.opts.offCanvas )
 			{
 				if ( typeof this.close == 'function' )
@@ -20,25 +19,17 @@ Mmenu.wrappers.jqueryMobile = function(
 					this.setPage( args.toPage );
 				}
 			}
-		}
-	);
+		});
 
 	//	Change pages
-	this.bind( 'initAnchors:after',
-		function(
-			this : Mmenu
-		) {
-			Mmenu.$('body').on(
-				'click',
-				'.mm-listview a',
-				( e ) => {
-					if ( !e.isDefaultPrevented() )
-					{
-						e.preventDefault();
-						Mmenu.$( 'body' )[ 'pagecontainer' ]( 'change', e.currentTarget.getAttribute( 'href' ) );
-					}
+	this.bind( 'initAnchors:after', () => {
+		Mmenu.$('body').on(
+			'click', '.mm-listview a', ( evnt ) => {
+				if ( !evnt.isDefaultPrevented() )
+				{
+					evnt.preventDefault();
+					Mmenu.$( 'body' )[ 'pagecontainer' ]( 'change', evnt.currentTarget.getAttribute( 'href' ) );
 				}
-			);
-		}
-	);
+			});
+	});
 };

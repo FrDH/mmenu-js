@@ -9,7 +9,7 @@
 	}
 	.mm-wrapper_opening
 	{
-		#{$cls}.mm-menu_opened ~ .mm-slideout
+		#{$cls} ~ .mm-slideout
 		{
 			transform: translate3d( #{$width * 100}vw, 0, 0 );
 		}
@@ -19,7 +19,7 @@
 	@media all and ( max-width: $minWidth / $width ) {
 		.mm-wrapper_opening
 		{
-			#{$cls}.mm-menu_opened ~ .mm-slideout
+			#{$cls} ~ .mm-slideout
 			{
 				transform: translate3d( $minWidth, 0, 0 );
 			}
@@ -28,7 +28,7 @@
 	@media all and ( min-width: $maxWidth / $width ) {
 		.mm-wrapper_opening
 		{
-			#{$cls}.mm-menu_opened ~ .mm-slideout
+			#{$cls} ~ .mm-slideout
 			{
 				transform: translate3d( $maxWidth, 0, 0 );
 			}

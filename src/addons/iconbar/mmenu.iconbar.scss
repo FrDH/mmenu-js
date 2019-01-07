@@ -12,6 +12,7 @@
 
 	.mm-iconbar
 	{
+		background: var( --mm-color-background );
 		color: var( --mm-color-text-dimmed );
 		border: 0 solid $mm_borderColor;
 		border-color: var( --mm-color-border );

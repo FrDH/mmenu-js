@@ -25,51 +25,45 @@ Mmenu.addons.counters = function(
 
 
 	//	Refactor counter class
-	this.bind( 'initListview:after',
-		function( 
-			this	: Mmenu,
-			$panel	: JQuery
-		) {
-			var cntrclss = this.conf.classNames.counters.counter;
-			Mmenu.refactorClass( $panel.find( '.' + cntrclss ), cntrclss, 'mm-counter' );
-		}
-	);
+	this.bind( 'initListview:after', (
+		$panel : JQuery
+	) => {
+		var cntrclss = this.conf.classNames.counters.counter;
+		Mmenu.refactorClass( $panel.find( '.' + cntrclss ), cntrclss, 'mm-counter' );
+	});
 
 
 	//	Add the counters
 	if ( opts.add )
 	{
-		this.bind( 'initListview:after',
-			function( 
-				this	: Mmenu,
-				$panel	: JQuery
-			) {
-				var $wrapper : JQuery;
-				switch( opts.addTo )
-				{
-					case 'panels':
-						$wrapper = $panel;
-						break;
-	
-					default:
-						$wrapper = $panel.filter( opts.addTo );
-						break;
-				}
+		this.bind( 'initListview:after', (
+			$panel : JQuery
+		) => {
+			var $wrapper : JQuery;
+			switch( opts.addTo )
+			{
+				case 'panels':
+					$wrapper = $panel;
+					break;
 
-				$wrapper.each(
-					( i, elem ) => {
-						var $parent : JQuery = (elem as any).mmParent;
-						if ( $parent )
+				default:
+					$wrapper = $panel.filter( opts.addTo );
+					break;
+			}
+
+			$wrapper.each(
+				( i, elem ) => {
+					var $parent : JQuery = (elem as any).mmParent;
+					if ( $parent )
+					{
+						if ( !$parent.find( '.mm-counter' ).length )
 						{
-							if ( !$parent.find( '.mm-counter' ).length )
-							{
-								$parent.children( '.mm-btn' ).prepend( $( '<span class="mm-counter" />' ) );
-							}
+							$parent.children( '.mm-btn' ).prepend( $( '<span class="mm-counter" />' ) );
 						}
 					}
-				);
-			}
-		);
+				}
+			);
+		});
 	}
 
 	if ( opts.count )

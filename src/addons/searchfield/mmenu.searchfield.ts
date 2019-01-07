@@ -56,107 +56,99 @@ Mmenu.addons.searchfield = function(
 
 
 	//	Blur searchfield
-	this.bind( 'close:start',
-		function(
-			this : Mmenu
-		) {
-			this.node.$menu
-				.find( '.mm-searchfield' )
-				.children( 'input' )
-				.blur();
+	this.bind( 'close:start', () => {
+		Mmenu.$(this.node.menu)
+			.find( '.mm-searchfield' )
+			.children( 'input' )
+			.blur();
+	});
+
+
+	this.bind( 'initPanels:after', (
+		$pnls : JQuery
+	) => {
+
+		var $spnl = Mmenu.$();
+
+		//	Add the search panel
+		if ( opts.panel.add )
+		{
+			$spnl = this._initSearchPanel( $pnls );
 		}
-	);
 
+		//	Add the searchfield
+		var $field;
+		switch( opts.addTo )
+		{
+			case 'panels':
+				$field = $pnls;
+				break;
 
-	this.bind( 'initPanels:after',
-		function( 
-			this	: Mmenu,
-			$pnls	: JQuery
-		) {
+			case 'panel':
+				$field = $spnl;
+				break;
 
-			var $spnl = Mmenu.$();
+			default:
+				$field = Mmenu.$(this.node.menu).find( opts.addTo );
+				break;
+		}
 
-			//	Add the search panel
-			if ( opts.panel.add )
-			{
-				$spnl = this._initSearchPanel( $pnls );
+		$field.each(
+			( e, elem ) => {
+				var $srch = this._initSearchfield( Mmenu.$(elem) );
+				if ( opts.search && $srch.length )
+				{
+					this._initSearching( $srch );
+				}
 			}
+		);
 
-			//	Add the searchfield
-			var $field;
-			switch( opts.addTo )
-			{
-				case 'panels':
-					$field = $pnls;
-					break;
 
-				case 'panel':
-					$field = $spnl;
-					break;
-
-				default:
-					$field = this.node.$menu.find( opts.addTo );
-					break;
-			}
-
-			$field.each(
-				( e, elem ) => {
-					var $srch = this._initSearchfield( Mmenu.$(elem) );
-					if ( opts.search && $srch.length )
-					{
-						this._initSearching( $srch );
-					}
+		//	Add the no-results message
+		if ( opts.noResults )
+		{
+			var $results = ( opts.panel.add ) ? $spnl : $pnls;
+			$results.each(
+				( i, elem ) => {
+					this._initNoResultsMsg( Mmenu.$(elem) );
 				}
 			);
-
-
-			//	Add the no-results message
-			if ( opts.noResults )
-			{
-				var $results = ( opts.panel.add ) ? $spnl : $pnls;
-				$results.each(
-					( i, elem ) => {
-						this._initNoResultsMsg( Mmenu.$(elem) );
-					}
-				);
-			}
 		}
-	);
+	});
 
 	//	Add click behavior.
 	//	Prevents default behavior when clicking an anchor
-	this.clck.push(
-		function(
-			this : Mmenu,
-			$a	 : JQuery,
-			args : mmClickArguments
-		) {
-			if ( args.inMenu )
+	this.clck.push((
+		anchor	: HTMLElement,
+		args 	: mmClickArguments
+	) => {
+		if ( args.inMenu )
+		{
+			if ( anchor.classList.contains( 'mm-searchfield__btn' ) )
 			{
-				if ( $a.hasClass( 'mm-searchfield__btn' ) )
+				var $a = Mmenu.$(anchor);
+
+				//	Clicking the clear button
+				if ( anchor.classList.contains( 'mm-btn_close' ) )
 				{
-					//	Clicking the clear button
-					if ( $a.hasClass( 'mm-btn_close' ) )
-					{
-						var $inpt = $a.closest( '.mm-searchfield' ).find( 'input' );
-						$inpt.val( '' );
-						this.search( $inpt );
+					var $inpt = $a.closest( '.mm-searchfield' ).find( 'input' );
+					$inpt.val( '' );
+					this.search( $inpt );
 
-						return true;
-					}
+					return true;
+				}
 
-					//	Clicking the submit button
-					if ( $a.hasClass( 'mm-btn_next' ) )
-					{
-						$a.closest( '.mm-searchfield' )
-							.submit();
+				//	Clicking the submit button
+				if ( anchor.classList.contains( 'mm-btn_next' ) )
+				{
+					$a.closest( '.mm-searchfield' )
+						.submit();
 
-						return true;
-					}
+					return true;
 				}
 			}
 		}
-	);
+	});
 
 };	
 
@@ -349,7 +341,7 @@ Mmenu.prototype._initSearching = function(
 	else
 	{
 		data.$pnls = this.node.$pnls.find( '.mm-panel' );
-		data.$nrsp = this.node.$menu;
+		data.$nrsp = Mmenu.$(this.node.menu);
 	}
 
 	//	Filter out vertical submenus
@@ -413,17 +405,14 @@ Mmenu.prototype._initSearching = function(
 
 	if ( opts.panel.add && opts.addTo == 'panel' )
 	{
-		this.bind( 'openPanel:finish',
-			function( 
-				this	: Mmenu,
-				$panel	: JQuery
-			) {
-				if ( $panel[ 0 ] === $spnl[ 0 ] )
-				{
-					$inpt.focus();
-				}
+		this.bind( 'openPanel:finish', ( 
+			$panel : JQuery
+		) => {
+			if ( $panel[ 0 ] === $spnl[ 0 ] )
+			{
+				$inpt.focus();
 			}
-		);
+		});
 	}
 
 	($inpt[ 0 ] as any).mmSearchfield = data;
@@ -498,7 +487,7 @@ Mmenu.prototype.search = function(
 		conf : mmConfigsSearchfield = this.conf.searchfield;
 
 
-	$inpt = $inpt || this.node.$menu.find( '.mm-searchfield' ).children( 'input' ).first();
+	$inpt = $inpt || Mmenu.$(this.node.menu).find( '.mm-searchfield' ).children( 'input' ).first();
 	query = query || '' + $inpt.val();
 	query = query.toLowerCase().trim();
 

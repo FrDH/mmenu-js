@@ -6,9 +6,9 @@
 
 (function( $ ) {
 
+return;
 
 	var _cns = Mmenu.console || console || { info: function() {}, log: function() {}, warn: function() {} };
-
 
 	function debug( msg )
 	{
@@ -274,7 +274,7 @@
 		}
 
 		//	HTML 5.1
-		if ( this.$menu.find( '.Buttonbar' ).length )
+		if ( this.node.$menu.find( '.Buttonbar' ).length )
 		{
 			deprc( 'The buttonbars add-on', false, '5.1' );
 		}
@@ -304,7 +304,7 @@
 		}
 		
 		//	HTML 5.0
-		if ( this.$menu.find( '.Label' ).length )
+		if ( this.node.$menu.find( '.Label' ).length )
 		{
 			deprc( 'The classname "Label"', '"Divider"', '5.0' );
 		}
@@ -318,7 +318,7 @@
 		}
 
 		//	Custom events 5.0
-		this.$menu.on(
+		this.node.$menu.on(
 			'setPage setPage.mm setSelected setSelected.mm open open.mm opening opening.mm opened opened.mm close close.mm closing closing.mm closed closed.mm toggle toggle.mm',
 			function( e )
 			{
@@ -340,13 +340,13 @@
 		) {
 			if ( typeof this.opts[ a[ b ] ] != 'undefined' )
 			{
-				if ( typeof $[ _PLUGIN_ ].addons[ a[ b ] ] == 'undefined' )
+				if ( typeof Mmenu.addons[ a[ b ] ] == 'undefined' )
 				{
 					debug( 'The "' + a[ b ] + '" add-on is not available.' );
 				}
 			}
 		}
-		if ( typeof $[ _PLUGIN_ ].addons.searchfield == 'undefined' )
+		if ( typeof Mmenu.addons.searchfield == 'undefined' )
 		{
 			if ( typeof this.opts.navbars != 'undefined' )
 			{

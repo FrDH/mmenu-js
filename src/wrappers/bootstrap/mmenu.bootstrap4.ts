@@ -51,14 +51,10 @@ Mmenu.wrappers.bootstrap4 = function(
 			);
 
 		//	Set the menu
-		this.bind( 'initMenu:before',
-			function(
-				this : Mmenu
-			) {
-				$nav.prependTo( 'body' );
-				this.node.$menu = $nav;
-			}
-		);
+		this.bind( 'initMenu:before', () => {
+			$nav.prependTo( 'body' );
+			this.node.$menu = $nav;
+		});
 
 		//	Hijack the toggler
 		this.node.$menu
@@ -67,13 +63,11 @@ Mmenu.wrappers.bootstrap4 = function(
 			.removeAttr( 'data-target' )
 			.removeAttr( 'aria-controls' )
 			.off( 'click' )
-			.on( 'click',
-				( e ) => {
-					e.preventDefault();
-					e.stopImmediatePropagation();
-					this[ this.vars.opened ? 'close' : 'open' ]();
-				}
-			);
+			.on( 'click', ( evnt ) => {
+				evnt.preventDefault();
+				evnt.stopImmediatePropagation();
+				this[ this.vars.opened ? 'close' : 'open' ]();
+			});
 	}
 
 

@@ -37,52 +37,40 @@ Mmenu.addons.keyboardNavigation = function(
 			$menuEnd   	= Mmenu.$('<button class="mm-tabend" />'),
 			$blckEnd 	= Mmenu.$('<button class="mm-tabend" />');
 
-		this.bind( 'initMenu:after',
-			function(
-				this : Mmenu
-			) {
-				if ( opts.enhance )
-				{
-					this.node.$menu.addClass( 'mm-menu_keyboardfocus' );
-				}
+		this.bind( 'initMenu:after', () => {
+			if ( opts.enhance )
+			{
+				this.node.menu.classList.add( 'mm-menu_keyboardfocus' );
+			}
 
-				this._initWindow_keyboardNavigation( opts.enhance );
-			}
-		);
-		this.bind( 'initOpened:before',
-			function(
-				this : Mmenu
-			) {
-				this.node.$menu
-					.prepend( $menuStart )
-					.append( $menuEnd )
-					.children( '.mm-navbars-top, .mm-navbars-bottom' )
-					.children( '.mm-navbar' )
-					.children( 'a.mm-title' )
-					.attr( 'tabindex', -1 );
-			}
-		);
-		this.bind( 'initBlocker:after',
-			function(
-				this : Mmenu
-			) {
-				Mmenu.node.$blck
-					.append( $blckEnd )
-					.children( 'a' )
-					.addClass( 'mm-tabstart' );
-			}
-		);
+			this._initWindow_keyboardNavigation( opts.enhance );
+		});
+		this.bind( 'initOpened:before', () => {
+			Mmenu.$(this.node.menu)
+				.prepend( $menuStart )
+				.append( $menuEnd )
+				.children( '.mm-navbars-top, .mm-navbars-bottom' )
+				.children( '.mm-navbar' )
+				.children( 'a.mm-title' )
+				.attr( 'tabindex', -1 );
+		});
+		this.bind( 'initBlocker:after', () => {
+			Mmenu.node.$blck
+				.append( $blckEnd )
+				.children( 'a' )
+				.addClass( 'mm-tabstart' );
+		});
 
 
 		var focs = 'input, select, textarea, button, label, a[href]';
 		function focus( 
-			this 	: Mmenu,
-			$panl	: JQuery
+			this 	 : Mmenu,
+			$panl	?: JQuery
 		) {
 			$panl = $panl || this.node.$pnls.children( '.mm-panel_opened' );
 
 			var $focs = Mmenu.$(),
-				$navb = this.node.$menu
+				$navb = Mmenu.$(this.node.menu)
 					.children( '.mm-navbars_top, .mm-navbars_bottom'  )
 					.children( '.mm-navbar' );
 
@@ -115,7 +103,7 @@ Mmenu.addons.keyboardNavigation = function(
 			//	default
 			if ( !$focs.length )
 			{
-				$focs = this.node.$menu.children( '.mm-tabstart' );
+				$focs = Mmenu.$(this.node.menu).children( '.mm-tabstart' );
 			}
 
 			$focs.first().focus();
@@ -125,17 +113,13 @@ Mmenu.addons.keyboardNavigation = function(
 
 
 		//	Add screenreader / aria support
-		this.bind( 'initOpened:after:sr-aria',
-			function(
-				this : Mmenu
-			) {
-				var $btns = this.node.$menu.add( Mmenu.node.$blck )
-					.children( '.mm-tabstart, .mm-tabend' );
+		this.bind( 'initOpened:after:sr-aria', () => {
+			var $btns = Mmenu.$(this.node.menu).add( Mmenu.node.$blck )
+				.children( '.mm-tabstart, .mm-tabend' );
 
-				Mmenu.sr_aria( $btns, 'hidden', true );
-				Mmenu.sr_role( $btns, 'presentation' );
-			}
-		);
+			Mmenu.sr_aria( $btns, 'hidden', true );
+			Mmenu.sr_role( $btns, 'presentation' );
+		});
 	}
 };
 
@@ -162,82 +146,78 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 
 		//	Prevent tabbing outside an offcanvas menu
 		.off( 'focusin.mm-keyboardNavigation' )
-		.on( 'focusin.mm-keyboardNavigation',
-			( e ) => {
-				if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
+		.on( 'focusin.mm-keyboardNavigation', ( evnt ) => {
+			if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
+			{
+				var $target = Mmenu.$(evnt.target);
+
+				if ( $target.is( '.mm-tabend' ) )
 				{
-					var $target = Mmenu.$(e.target);
+					var $next = Mmenu.$();
 
-					if ( $target.is( '.mm-tabend' ) )
+					//	Jump from menu to blocker
+					if ( $target.parent().is( '.mm-menu' ) )
 					{
-						var $next = Mmenu.$();
-
-						//	Jump from menu to blocker
-						if ( $target.parent().is( '.mm-menu' ) )
+						if ( Mmenu.node.$blck )
 						{
-							if ( Mmenu.node.$blck )
-							{
-								$next = Mmenu.node.$blck;
-							}
+							$next = Mmenu.node.$blck;
 						}
-						if ( $target.parent().is( '.mm-wrapper__blocker' ) )
-						{
-							$next = Mmenu.$('body')
-								.find( '.mm-menu_offcanvas' )
-								.filter( '.mm-menu_opened' );
-						}
-						if ( !$next.length )
-						{
-							($next as any) = $target.parent();	//	Without the any type, Typescript complains about $target being the window.
-						}
-
-						$next.children( '.mm-tabstart' ).focus();
 					}
+					if ( $target.parent().is( '.mm-wrapper__blocker' ) )
+					{
+						$next = Mmenu.$('body')
+							.find( '.mm-menu_offcanvas' )
+							.filter( '.mm-menu_opened' );
+					}
+					if ( !$next.length )
+					{
+						($next as any) = $target.parent();	//	Without the any type, Typescript complains about $target being the window.
+					}
+
+					$next.children( '.mm-tabstart' ).focus();
 				}
 			}
-		)
+		})
 
 		//	Default keyboard navigation
 		.off( 'keydown.mm-keyboardNavigation' )
-		.on( 'keydown.mm-keyboardNavigation',
-			( e ) => {
-				var $target = Mmenu.$(e.target),
-					$menu 	= $target.closest( '.mm-menu' );
+		.on( 'keydown.mm-keyboardNavigation', ( evnt ) => {
+			var $target = Mmenu.$(evnt.target),
+				$menu 	= $target.closest( '.mm-menu' );
 
-				if ( $menu.length )
+			if ( $menu.length )
+			{
+				var api : mmApi = ($menu[ 0 ] as any).mmenu;
+
+				//	special case for input and textarea
+				if ( $target.is( 'input, textarea' ) )
 				{
-					var api : mmApi = ($menu[ 0 ] as any).mmenu;
-
-					//	special case for input and textarea
-					if ( $target.is( 'input, textarea' ) )
+				}
+				else
+				{
+					switch( evnt.keyCode )
 					{
-					}
-					else
-					{
-						switch( e.keyCode )
-						{
-							//	press enter to toggle and check
-							case 13: 
-								if ( $target.is( '.mm-toggle' ) || 
-									 $target.is( '.mm-check' )
-								) {
-									$target.trigger( 'click.mm' );
-								}
-								break;
+						//	press enter to toggle and check
+						case 13: 
+							if ( $target.is( '.mm-toggle' ) || 
+								 $target.is( '.mm-check' )
+							) {
+								$target.trigger( 'click.mm' );
+							}
+							break;
 
-							//	prevent spacebar or arrows from scrolling the page
-							case 32: 	//	space
-							case 37: 	//	left
-							case 38: 	//	top
-							case 39: 	//	right
-							case 40: 	//	bottom
-								e.preventDefault();
-								break;
-						}
+						//	prevent spacebar or arrows from scrolling the page
+						case 32: 	//	space
+						case 37: 	//	left
+						case 38: 	//	top
+						case 39: 	//	right
+						case 40: 	//	bottom
+							evnt.preventDefault();
+							break;
 					}
 				}
 			}
-		);
+		});
 
 	if ( enhance )
 	{
@@ -245,51 +225,49 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 
 			//	Enhanced keyboard navigation
 			.off( 'keydown.mm-keyboardNavigation' )
-			.on( 'keydown.mm-keyboardNavigation',
-				( e ) => {
-					var $target = Mmenu.$(e.target),
-						$menu 	= $target.closest( '.mm-menu' );
+			.on( 'keydown.mm-keyboardNavigation', ( evnt ) => {
+				var $target = Mmenu.$(evnt.target),
+					$menu 	= $target.closest( '.mm-menu' );
 
-					if ( $menu.length )
+				if ( $menu.length )
+				{
+					var api : mmApi = ($menu[ 0 ] as any).mmenu;
+
+					//	special case for input and textarea
+					if ( $target.is( 'input' ) )
 					{
-						var api : mmApi = ($menu[ 0 ] as any).mmenu;
-
-						//	special case for input and textarea
-						if ( $target.is( 'input' ) )
+						switch( evnt.keyCode )
 						{
-							switch( e.keyCode )
-							{
-								//	empty searchfield with esc
-								case 27:
-									$target.val( '' );
-									break;
-							}
+							//	empty searchfield with esc
+							case 27:
+								$target.val( '' );
+								break;
 						}
-						else
+					}
+					else
+					{
+						switch( evnt.keyCode )
 						{
-							switch( e.keyCode )
-							{
-								//	close submenu with backspace
-								case 8: 
-									var $parent : JQuery = ($menu.find( '.mm-panel_opened' )[ 0 ] as any).mmParent;
-									if ( $parent && $parent.length )
-									{
-										api.openPanel( $parent.closest( '.mm-panel' ) );
-									}
-									break;
+							//	close submenu with backspace
+							case 8: 
+								var $parent : JQuery = ($menu.find( '.mm-panel_opened' )[ 0 ] as any).mmParent;
+								if ( $parent && $parent.length )
+								{
+									api.openPanel( $parent.closest( '.mm-panel' ) );
+								}
+								break;
 
-								//	close menu with esc
-								case 27:
-									if ( $menu.hasClass( 'mm-menu_offcanvas' ) )
-									{
-										api.close();
-									}
-									break;
-							}
+							//	close menu with esc
+							case 27:
+								if ( $menu.hasClass( 'mm-menu_offcanvas' ) )
+								{
+									api.close();
+								}
+								break;
 						}
 					}
 				}
-			);
+			});
 	}
 };
 

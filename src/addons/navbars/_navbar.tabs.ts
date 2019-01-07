@@ -11,25 +11,23 @@ Mmenu.addons.navbars.tabs = function(
 		.addClass( 'mm-navbars_has-tabs' );
 
 	$tabs
-		.on( 'click.mm-navbars',
-			( e ) => {
-				e.preventDefault();
+		.on( 'click.mm-navbars', ( evnt ) => {
+			evnt.preventDefault();
 
-				var $tab = Mmenu.$(e.currentTarget);
-				if ( $tab.hasClass( 'mm-navbar__tab_selected' ) )
-				{
-					e.stopImmediatePropagation();
-					return;
-				}
-
-				try
-				{
-					this.openPanel( Mmenu.$( $tab[ 0 ].getAttribute( 'href' ) ), false );
-					e.stopImmediatePropagation();
-				}
-				catch( err ) {}
+			var $tab = Mmenu.$(evnt.currentTarget);
+			if ( $tab.hasClass( 'mm-navbar__tab_selected' ) )
+			{
+				evnt.stopImmediatePropagation();
+				return;
 			}
-		);
+
+			try
+			{
+				this.openPanel( Mmenu.$( $tab[ 0 ].getAttribute( 'href' ) ), false );
+				evnt.stopImmediatePropagation();
+			}
+			catch( err ) {}
+		});
 
 	function selectTab( 
 		this	: Mmenu,

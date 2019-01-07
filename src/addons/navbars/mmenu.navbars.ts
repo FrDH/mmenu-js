@@ -127,17 +127,13 @@ Mmenu.addons.navbars = function(
 	);
 
 	//	Add to menu
-	this.bind( 'initMenu:after',
-		function(
-			this : Mmenu
-		) {
-			for ( var poss in _pos )
-			{
-				this.node.$menu.addClass( 'mm-menu_navbar_' + poss + '-' + _pos[ poss ] );
-				this.node.$menu[ poss == 'bottom' ? 'append' : 'prepend' ]( $pos[ poss ] );
-			}
+	this.bind( 'initMenu:after', () => {
+		for ( var poss in _pos )
+		{
+			this.node.menu.classList.add( 'mm-menu_navbar_' + poss + '-' + _pos[ poss ] );
+			Mmenu.$(this.node.menu)[ poss == 'bottom' ? 'append' : 'prepend' ]( $pos[ poss ] );
 		}
-	);
+	});
 };
 
 

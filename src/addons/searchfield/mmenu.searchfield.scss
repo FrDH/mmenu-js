@@ -17,8 +17,6 @@
 			outline: none !important;
 			box-shadow: none !important;
 			border-radius: 4px;
-			background: var( --mm-color-background-highlight );
-			color: var( --mm-color-text );
 			font: inherit;
 			font-size: inherit;
 			line-height: calc( var( --mm-navbar-size ) * 0.7 );
@@ -31,6 +29,14 @@
 			max-height: unset;
 			margin: 0;
 			padding: 0 $mm_padding;
+
+			&,
+			&:hover,
+			&:focus
+			{
+				background: var( --mm-color-background-highlight );
+				color: var( --mm-color-text );
+			}
 		}
 		input::-ms-clear
 		{

@@ -28,6 +28,11 @@ interface mmJqueryObject {
 	[key: string] 	: JQuery
 }
 
+/** An object with jQuery values. */
+interface mmHtmlObject {
+	[key: string] 	: HTMLElement | any
+}
+
 
 //	TODO	add description for each method
 /** API for the menu. */
@@ -121,7 +126,7 @@ interface mmConfigs {
 	clone				: boolean
 	language			: string
 	openingInterval		: number
-	panelNodetype		: string
+	panelNodetype		: string[]
 	transitionDuration	: number
 
 	//	Core add-ons

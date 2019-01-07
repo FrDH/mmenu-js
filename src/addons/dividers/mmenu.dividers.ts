@@ -26,68 +26,61 @@ Mmenu.addons.dividers = function(
 	//	Add classname to the menu to specify the type of the dividers
 	if ( opts.type )
 	{
-		this.bind( 'initMenu:after',
-			function(
-				this : Mmenu
-			) {
-				this.node.$menu.addClass( 'mm-menu_dividers-' + opts.type );
-			}
-		);
+		this.bind( 'initMenu:after', () => {
+			this.node.menu.classList.add( 'mm-menu_dividers-' + opts.type );
+		});
 	}
 
 
 	//	Add dividers
 	if ( opts.add )
 	{
-		this.bind( 'initListview:after',
-			function( 
-				this	: Mmenu,
-				$panel	: JQuery
-			) {
-				var $wrapper;
-				switch( opts.addTo )
-				{
-					case 'panels':
-						$wrapper = $panel;
-						break;
+		this.bind( 'initListview:after', ( 
+			$panel : JQuery
+		) => {
+			var $wrapper;
+			switch( opts.addTo )
+			{
+				case 'panels':
+					$wrapper = $panel;
+					break;
 
-					default:
-						$wrapper = $panel.filter( opts.addTo );
-						break;
-				}
-
-				if ( !$wrapper.length )
-				{
-					return;
-				}
-
-				$wrapper
-					.find( '.mm-listitem_divider' )
-					.remove();
-					
-				$wrapper
-					.find( '.mm-listview' )
-					.each(
-						( i, elem ) => {
-							var last = '';
-							Mmenu.filterListItems( Mmenu.$(elem).children() )
-								.each(
-									( i, elem ) => {
-										let letter = Mmenu.$(elem)
-											.children( '.mm-listitem__text' )
-											.text().trim().toLowerCase()[ 0 ];
-
-										if ( letter.length && letter != last )
-										{
-											last = letter;
-											Mmenu.$( '<li class="mm-listitem mm-listitem_divider">' + letter + '</li>' ).insertBefore( elem );
-										}
-									}
-								);
-						}
-					);
+				default:
+					$wrapper = $panel.filter( opts.addTo );
+					break;
 			}
-		);
+
+			if ( !$wrapper.length )
+			{
+				return;
+			}
+
+			$wrapper
+				.find( '.mm-listitem_divider' )
+				.remove();
+				
+			$wrapper
+				.find( '.mm-listview' )
+				.each(
+					( i, elem ) => {
+						var last = '';
+						Mmenu.filterListItems( Mmenu.$(elem).children() )
+							.each(
+								( i, elem ) => {
+									let letter = Mmenu.$(elem)
+										.children( '.mm-listitem__text' )
+										.text().trim().toLowerCase()[ 0 ];
+
+									if ( letter.length && letter != last )
+									{
+										last = letter;
+										Mmenu.$( '<li class="mm-listitem mm-listitem_divider">' + letter + '</li>' ).insertBefore( elem );
+									}
+								}
+							);
+					}
+				);
+		});
 	}
 	
 
@@ -95,18 +88,14 @@ Mmenu.addons.dividers = function(
 	if ( opts.fixed )
 	{
 		//	Add the fixed divider
-		this.bind( 'initPanels:after',
-			function(
-				this : Mmenu
-			) {
-				if ( typeof this.node.$fixeddivider == 'undefined' )
-				{
-					this.node.$fixeddivider = Mmenu.$('<ul class="mm-listview mm-listview_fixeddivider"><li class="mm-listitem mm-listitem_divider"></li></ul>')
-						.appendTo( this.node.$pnls )
-						.children();
-				}
+		this.bind( 'initPanels:after', () => {
+			if ( typeof this.node.$fixeddivider == 'undefined' )
+			{
+				this.node.$fixeddivider = Mmenu.$('<ul class="mm-listview mm-listview_fixeddivider"><li class="mm-listitem mm-listitem_divider"></li></ul>')
+					.appendTo( this.node.$pnls )
+					.children();
 			}
-		);
+		});
 
 		function setValue( 
 			this	 : Mmenu,
@@ -147,22 +136,19 @@ Mmenu.addons.dividers = function(
 		this.bind( 'open:start'			, setValue );	// 1
 		this.bind( 'openPanel:start'	, setValue );	// 2
 		this.bind( 'updateListview'		, setValue );	// 3
-		this.bind( 'initPanel:after',					// 4
-			function( 
-				this	: Mmenu,
-				$panel	: JQuery
-			) {
-				$panel.off( 'scroll.mm-dividers touchmove.mm-dividers' )
-					.on( 'scroll.mm-dividers touchmove.mm-dividers',
-						( e ) => {
-							if ( $panel.hasClass( 'mm-panel_opened' ) )
-							{
-								setValue.call( this, $panel );
-							}
+		this.bind( 'initPanel:after', (	
+			$panel : JQuery
+		) => {
+			$panel.off( 'scroll.mm-dividers touchmove.mm-dividers' )
+				.on( 'scroll.mm-dividers touchmove.mm-dividers',
+					( e ) => {
+						if ( $panel.hasClass( 'mm-panel_opened' ) )
+						{
+							setValue.call( this, $panel );
 						}
-					);
-			}
-		);
+					}
+				);
+		});
 
 	}
 };

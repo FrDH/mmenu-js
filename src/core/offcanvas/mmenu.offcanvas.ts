@@ -32,160 +32,132 @@ Mmenu.addons.offCanvas = function(
 
 
 	//	Add off-canvas behavior
-	this.bind( 'initMenu:after',
-		function(
-			this : Mmenu
-		) {
+	this.bind( 'initMenu:after', () => {
 
-			//	Setup the UI blocker
-			this._initBlocker();
+		//	Setup the UI blocker
+		this._initBlocker();
 
-			//	Setup the page
-			this.setPage( Mmenu.node.$page );
+		//	Setup the page
+		this.setPage( Mmenu.node.$page );
 
-			//	Setup window events
-			this._initWindow_offCanvas();
+		//	Setup window events
+		this._initWindow_offCanvas();
 
-			//	Setup the menu
-			this.node.$menu
-				.addClass( 'mm-menu_offcanvas' )
-				.parent( '.mm-wrapper' )
-				.removeClass( 'mm-wrapper' );
+		//	Setup the menu
+		this.node.menu.classList.add( 'mm-menu_offcanvas' );
+		this.node.menu.parentElement.classList.remove( 'mm-wrapper' );
+		
 
-			//	Append to the <body>
-			this.node.$menu[ conf.menu.insertMethod ]( conf.menu.insertSelector );
+		//	Append to the <body>
+		document.querySelector( conf.menu.insertSelector )[ conf.menu.insertMethod ]( this.node.menu );
 
-			//	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
-			var hash = window.location.hash;
-			if ( hash )
+		//	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
+		let hash = window.location.hash;
+		if ( hash )
+		{
+			let id = this.vars.orgMenuId;
+			if ( id && id == hash.slice( 1 ) )
 			{
-				var id = this.vars.orgMenuId;
-				if ( id && id == hash.slice( 1 ) )
-				{
-					setTimeout(
-						() => {
-							this.open();
-						}, 1000
-					);
-				}
+				setTimeout(() => {
+					this.open();
+				}, 1000 );
 			}
 		}
-	);
+	});
 
 
 	//	Sync the blocker to target the page.
-	this.bind( 'setPage:after',
-		function( 
-			this 	: Mmenu,
-			$page 	: JQuery
-		) {
-			if ( Mmenu.node.$blck )
-			{
-				Mmenu.node.$blck
-					.children( 'a' )
-					.attr( 'href', '#' + $page[ 0 ].id );
-			}
+	this.bind( 'setPage:after', ( 
+		$page : JQuery
+	) => {
+		if ( Mmenu.node.$blck )
+		{
+			Mmenu.node.$blck
+				.children( 'a' )
+				.attr( 'href', '#' + $page[ 0 ].id );
 		}
-	);
+	});
 
 
 	//	Add screenreader / aria support
-	this.bind( 'open:start:sr-aria',
-		function( 
-			this : Mmenu
-		) {
-			Mmenu.sr_aria( this.node.$menu, 'hidden', false );
-		}
-	);
-	this.bind( 'close:finish:sr-aria',
-		function(
-			this : Mmenu
-		) {
-			Mmenu.sr_aria( this.node.$menu, 'hidden', true );
-		}
-	);
-	this.bind( 'initMenu:after:sr-aria',
-		function(
-			this : Mmenu
-		) {
-			Mmenu.sr_aria( this.node.$menu, 'hidden', true );
-		}
-	);
+	this.bind( 'open:start:sr-aria', () => {
+		Mmenu.sr_aria( Mmenu.$(this.node.menu), 'hidden', false );
+	});
+	this.bind( 'close:finish:sr-aria', () => {
+		Mmenu.sr_aria( Mmenu.$(this.node.menu), 'hidden', true );
+	});
+	this.bind( 'initMenu:after:sr-aria', () => {
+		Mmenu.sr_aria( Mmenu.$(this.node.menu), 'hidden', true );
+	});
 
 
 	//	Add screenreader / text support
-	this.bind( 'initBlocker:after:sr-text',
-		function( 
-			this : Mmenu
-		) {
-			Mmenu.node.$blck
-				.children( 'a' )
-				.html( Mmenu.sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) ) );
-		}
-	);
+	this.bind( 'initBlocker:after:sr-text', () => {
+		Mmenu.node.$blck
+			.children( 'a' )
+			.html( Mmenu.sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) ) );
+	});
 
 
 	//	Add click behavior.
 	//	Prevents default behavior when clicking an anchor
-	this.clck.push(
-		function(
-			this : Mmenu,
-			$a	 : JQuery,
-			args : mmClickArguments
-		) {
+	this.clck.push((
+		anchor	: HTMLElement,
+		args 	: mmClickArguments
+	) => {
+		var $a = Mmenu.$(anchor);
 
-			//	Open menu if the clicked anchor links to the menu
-			var id = this.vars.orgMenuId;
-			if ( id )
+		//	Open menu if the clicked anchor links to the menu
+		var id = this.vars.orgMenuId;
+		if ( id )
+		{
+			if ( $a.is( '[href="#' + id + '"]' ) )
 			{
-				if ( $a.is( '[href="#' + id + '"]' ) )
+				//	Opening this menu from within this menu
+				//		-> Open menu
+				if ( args.inMenu )
 				{
-					//	Opening this menu from within this menu
-					//		-> Open menu
-					if ( args.inMenu )
-					{
-						this.open();
-						return true;
-					}
-
-					//	Opening this menu from within a second menu
-					//		-> Close the second menu before opening this menu
-					var $menu = $a.closest( '.mm-menu' );
-					if ( $menu.length )
-					{
-						var api : mmApi = ($menu as any).mmenu;
-						if ( api && api.close )
-						{
-							api.close();
-							Mmenu.transitionend( $menu,
-								() => {
-									this.open();
-								}, this.conf.transitionDuration
-							);
-							return true;
-						}
-					}
-
-					//	Opening this menu
 					this.open();
 					return true;
 				}
-			}
 
-			//	Close menu
-			id = Mmenu.node.$page[ 0 ].id;
-			if ( id )
-			{
-				if ( $a.is( '[href="#' + id + '"]' ) )
+				//	Opening this menu from within a second menu
+				//		-> Close the second menu before opening this menu
+				var $menu = $a.closest( '.mm-menu' );
+				if ( $menu.length )
 				{
-					this.close();
-					return true;
+					var api : mmApi = ($menu as any).mmenu;
+					if ( api && api.close )
+					{
+						api.close();
+						Mmenu.transitionend( $menu,
+							() => {
+								this.open();
+							}, this.conf.transitionDuration
+						);
+						return true;
+					}
 				}
-			}
 
-			return;
+				//	Opening this menu
+				this.open();
+				return true;
+			}
 		}
-	);
+
+		//	Close menu
+		id = Mmenu.node.$page[ 0 ].id;
+		if ( id )
+		{
+			if ( $a.is( '[href="#' + id + '"]' ) )
+			{
+				this.close();
+				return true;
+			}
+		}
+
+		return;
+	});
 
 };
 
@@ -198,7 +170,7 @@ Mmenu.options.offCanvas = {
 
 Mmenu.configs.offCanvas = {
 	menu 	: {
-		insertMethod	: 'prependTo',
+		insertMethod	: 'prepend',
 		insertSelector	: 'body'
 	},
 	page 	: {
@@ -283,7 +255,7 @@ Mmenu.prototype._openSetup = function(
     	}, this.conf.openingInterval
     );
 
-	this.node.$menu.addClass( 'mm-menu_opened' );
+	this.node.menu.classList.add( 'mm-menu_opened' );
 };
 
 /**
@@ -293,11 +265,9 @@ Mmenu.prototype._openFinish = function(
 	this : Mmenu
 ) {
 	//	Callback when the page finishes opening.
-	Mmenu.transitionend( Mmenu.node.$page.first(),
-		() => {
-			this.trigger( 'open:finish' );
-		}, this.conf.transitionDuration
-	);
+	Mmenu.transitionend( Mmenu.node.$page.first(), () => {
+		this.trigger( 'open:finish' );
+	}, this.conf.transitionDuration );
 
 	//	Opening
 	this.trigger( 'open:start' );
@@ -321,7 +291,7 @@ Mmenu.prototype.close = function(
 	//	Callback when the page finishes closing.
 	Mmenu.transitionend( Mmenu.node.$page.first(),
 		() => {
-			this.node.$menu.removeClass( 'mm-menu_opened' );
+			this.node.menu.classList.remove( 'mm-menu_opened' );
 
 			var clsn = [
 				'mm-wrapper_opened',
@@ -333,12 +303,10 @@ Mmenu.prototype.close = function(
 			Mmenu.$('html').removeClass( clsn.join( ' ' ) );
 
 			//	Restore style and position
-			Mmenu.node.$page.each(
-				( i, elem ) => {
-					let $page = Mmenu.$(elem);
-					$page[ 0 ].setAttribute( 'style', ($page[ 0 ] as any).mmStyle );
-				}
-			);
+			Mmenu.node.$page.each( ( i, elem ) => {
+				let $page = Mmenu.$(elem);
+				$page[ 0 ].setAttribute( 'style', ($page[ 0 ] as any).mmStyle );
+			});
 
 			this.vars.opened = false;
 			this.trigger( 'close:finish' );
@@ -362,7 +330,7 @@ Mmenu.prototype.closeAllOthers = function(
 ) {
 	Mmenu.$('body')
 		.find( '.mm-menu_offcanvas' )
-		.not( this.node.$menu )
+		.not( this.node.menu )
 		.each(
 			( i, elem ) => {
 				var api : mmApi = (elem as any).mmenu;

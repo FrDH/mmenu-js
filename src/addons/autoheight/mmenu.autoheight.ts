@@ -34,13 +34,9 @@ Mmenu.addons.autoHeight = function(
 	}
 
 
-	this.bind( 'initMenu:after',
-		function(
-			this : Mmenu
-		) {
-			this.node.$menu.addClass( 'mm-menu_autoheight' );
-		}
-	);
+	this.bind( 'initMenu:after', () => {
+		this.node.menu.classList.add( 'mm-menu_autoheight' );
+	});
 
 
 	//	Set the height
@@ -57,7 +53,7 @@ Mmenu.addons.autoHeight = function(
 			_bot = Math.max( parseInt( this.node.$pnls.css( 'bottom' )	, 10 ), 0 ) || 0,
 			_hgh = 0;
 
-		this.node.$menu.addClass( 'mm-menu_autoheight-measuring' );
+		this.node.menu.classList.add( 'mm-menu_autoheight-measuring' );
 
 		if ( opts.height == 'auto' )
 		{
@@ -101,7 +97,7 @@ Mmenu.addons.autoHeight = function(
 				);
 		}
 
-		this.node.$menu
+		Mmenu.$(this.node.menu)
 			.height( _hgh + _top + _bot )
 			.removeClass( 'mm-menu_autoheight-measuring' );
 	};

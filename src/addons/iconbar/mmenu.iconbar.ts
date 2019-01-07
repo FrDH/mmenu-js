@@ -24,53 +24,45 @@ Mmenu.addons.iconbar = function(
 
 	var $iconbar : JQuery = null;
 
-	[ 'top', 'bottom' ].forEach(
-		function( poss, n )
+	[ 'top', 'bottom' ].forEach(( poss, n ) => {
+
+		var ctnt = opts[ poss ];
+
+		//	Extend shorthand options
+		//if ( !( ctnt instanceof Array ) )
+		if ( Mmenu.typeof( ctnt ) != 'array' )
 		{
-
-			var ctnt = opts[ poss ];
-
-			//	Extend shorthand options
-			//if ( !( ctnt instanceof Array ) )
-			if ( Mmenu.typeof( ctnt ) != 'array' )
-			{
-				ctnt = [ ctnt ];
-			}
-
-			//	Create node
-			var $ibar = Mmenu.$( '<div class="mm-iconbar__' + poss + '" />' );
-
-
-			//	Add content
-			for ( var c = 0, l = ctnt.length; c < l; c++ )
-			{
-				$ibar.append( ctnt[ c ] );
-			}
-
-			if ( $ibar.children().length )
-			{
-				if ( !$iconbar )
-				{
-					$iconbar = Mmenu.$('<div class="mm-iconbar" />');
-				}
-				$iconbar.append( $ibar );
-			}
+			ctnt = [ ctnt ];
 		}
-	);
+
+		//	Create node
+		var $ibar = Mmenu.$( '<div class="mm-iconbar__' + poss + '" />' );
+
+
+		//	Add content
+		for ( var c = 0, l = ctnt.length; c < l; c++ )
+		{
+			$ibar.append( ctnt[ c ] );
+		}
+
+		if ( $ibar.children().length )
+		{
+			if ( !$iconbar )
+			{
+				$iconbar = Mmenu.$('<div class="mm-iconbar" />');
+			}
+			$iconbar.append( $ibar );
+		}
+	});
 
 
 	//	Add to menu
 	if ( $iconbar )
 	{
-		this.bind( 'initMenu:after',
-			function(
-				this : Mmenu
-			) {
-				this.node.$menu
-					.addClass( 'mm-menu_iconbar' )
-					.prepend( $iconbar );
-			}
-		);
+		this.bind( 'initMenu:after', () => {
+			this.node.menu.classList.add( 'mm-menu_iconbar' );
+			Mmenu.$(this.node.menu).prepend( $iconbar );
+		});
 
 		//	Tabs
 		if ( opts.type == 'tabs' )
@@ -78,30 +70,27 @@ Mmenu.addons.iconbar = function(
 
 			$iconbar.addClass( 'mm-iconbar_tabs' );
 
-			$iconbar.on( 'click.mm-iconbar',
-				'a',
-				( e ) => {
-					var $tab = Mmenu.$(e.currentTarget);
-					if ( $tab.hasClass( 'mm-iconbar__tab_selected' ) )
-					{
-						e.stopImmediatePropagation();
-						return;
-					}
-
-					try
-					{
-						var $target = Mmenu.$( e.currentTarget.getAttribute( 'href' ) );
-						if ( $target.hasClass( 'mm-panel' ) )
-						{
-							e.preventDefault();
-							e.stopImmediatePropagation();
-
-							this.openPanel( $target, false );
-						}
-					}
-					catch( err ) {}
+			$iconbar.on( 'click.mm-iconbar', 'a', ( evnt ) => {
+				var $tab = Mmenu.$(evnt.currentTarget);
+				if ( $tab.hasClass( 'mm-iconbar__tab_selected' ) )
+				{
+					evnt.stopImmediatePropagation();
+					return;
 				}
-			);
+
+				try
+				{
+					var $target = Mmenu.$( evnt.currentTarget.getAttribute( 'href' ) );
+					if ( $target.hasClass( 'mm-panel' ) )
+					{
+						evnt.preventDefault();
+						evnt.stopImmediatePropagation();
+
+						this.openPanel( $target, false );
+					}
+				}
+				catch( err ) {}
+			});
 
 			function selectTab( 
 				this	: Mmenu,

@@ -27,17 +27,13 @@ Mmenu.wrappers.bootstrap3 = function(
 		}
 		if ( _type.length )
 		{
-			this.opts.hooks[ 'initMenu:before' ] = function(
-				this : Mmenu
-			) {
+			this.opts.hooks[ 'initMenu:before' ] = () => {
 				if ( _type == 'navbar-nav' )
 				{
 					this.node.$menu.wrapInner( '<div />' );
 				}
 			};
-			this.opts.hooks[ 'initMenu:after' ] = function(
-				this : Mmenu
-			) {
+			this.opts.hooks[ 'initMenu:after' ] = () => {
 				init.menu.call( this );
 				init.dropdown.call( this );
 				init[ _type.split( 'nav-' ).join( '' ).split( '-nav' ).join( '' ) ].call( this );
@@ -46,9 +42,7 @@ Mmenu.wrappers.bootstrap3 = function(
 	}
 
 	var init = {
-		menu: function(
-			this : Mmenu
-		) {
+		menu: () => {
 			this.node.$menu
 				.find( '.nav' )
 				.removeClass( 'nav' )
@@ -62,9 +56,7 @@ Mmenu.wrappers.bootstrap3 = function(
 				this.node.$menu.find( '[' + attrs[ a ] + ']' ).removeAttr( attrs[ a ] );
 			}
 		},
-		dropdown: function(
-			this : Mmenu
-		) {
+		dropdown: () => {
 			var $dropdown = this.node.$menu.find( '.dropdown' );
 
 			$dropdown
@@ -83,23 +75,17 @@ Mmenu.wrappers.bootstrap3 = function(
 				.children( '.dropdown-menu' )
 				.removeClass( 'dropdown-menu' );
 		},
-		tabs: function(
-			this : Mmenu
-		) {
+		tabs: () => {
 			this.node.$menu
 				.find( '.nav-tabs' )
 				.removeClass( 'nav-tabs' );
 		},
-		pills: function(
-			this : Mmenu
-		) {
+		pills: () => {
 			this.node.$menu
 				.find( '.nav-pills' )
 				.removeClass( 'nav-pills' );
 		},
-		navbar: function(
-			this : Mmenu
-		) {
+		navbar: () => {
 
 			this.node.$menu
 				.removeClass( 'collapse navbar-collapse' )

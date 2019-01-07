@@ -55,53 +55,46 @@ Mmenu.addons.pageScroll = function(
 	//	Scroll to section after clicking menu item.
 	if ( opts.scroll )
 	{
-		this.bind( 'close:finish',
-			function(
-				this : Mmenu
-			) {
-				scrollTo( conf.scrollOffset );
-			}
-		);
+		this.bind( 'close:finish', () => {
+			scrollTo( conf.scrollOffset );
+		});
 	}
 
 	//	Add click behavior.
 	//	Prevents default behavior when clicking an anchor
 	if ( this.opts.offCanvas && opts.scroll )
 	{
-		this.clck.push(
-			function(
-				this : Mmenu,
-				$a	 : JQuery,
-				args : mmClickArguments
+		this.clck.push((
+			anchor	: HTMLElement,
+			args 	: mmClickArguments
+		) => {
+	
+			$section = Mmenu.$();
+
+			if ( !args.inMenu ||
+				!args.inListview
 			) {
-		
-				$section = Mmenu.$();
+				return;
+			}
 
-				if ( !args.inMenu ||
-					!args.inListview
+			var href = anchor.getAttribute( 'href' );
+
+			if ( anchorInPage( href ) )
+			{
+				$section = Mmenu.$(href);
+				if ( this.node.menu.classList.contains( 'mm-menu_sidebar-expanded' ) && 
+					Mmenu.$('html').hasClass( 'mm-wrapper_sidebar-expanded' )
 				) {
-					return;
+					scrollTo( this.conf.pageScroll.scrollOffset );
 				}
-
-				var href = $a[ 0 ].getAttribute( 'href' );
-
-				if ( anchorInPage( href ) )
+				else
 				{
-					$section = Mmenu.$(href);
-					if ( this.node.$menu.is( '.mm-menu_sidebar-expanded' ) && 
-						Mmenu.$('html').is( '.mm-wrapper_sidebar-expanded' )
-					) {
-						scrollTo( this.conf.pageScroll.scrollOffset );
-					}
-					else
-					{
-						return {
-							close: true
-						};
-					}
+					return {
+						close: true
+					};
 				}
 			}
-		);
+		});
 	}
 
 
@@ -111,56 +104,52 @@ Mmenu.addons.pageScroll = function(
 		let orgs = [],
 			scts = [];
 
-		this.bind(
-			'initListview:after',
-			function( 
-				this	: Mmenu,
-				$panel	: JQuery
-			) {
+		this.bind( 'initListview:after', (
+			$panel : JQuery
+		) => {
 
-				Mmenu.filterListItemAnchors( $panel.find( '.mm-listview' ).children( 'li' ) )
-					.each(
-						( i, elem ) => {
-							var href = elem.getAttribute( 'href' );
+			Mmenu.filterListItemAnchors( $panel.find( '.mm-listview' ).children( 'li' ) )
+				.each(
+					( i, elem ) => {
+						var href = elem.getAttribute( 'href' );
 
-							if ( anchorInPage( href ) )
-							{
-								orgs.push( href );
-							}
+						if ( anchorInPage( href ) )
+						{
+							orgs.push( href );
 						}
-					);
+					}
+				);
 
-				scts = orgs.reverse();
-			}
-		);
+			scts = orgs.reverse();
+		});
 
 		let _selected = -1;
 
 		Mmenu.$(window)
-			.on( 'scroll.mm-pageScroll',
-				( e ) => {
-					var ofst = Mmenu.$(window).scrollTop();
+			.on( 'scroll.mm-pageScroll', (
+				evnt
+			) => {
+				var ofst = Mmenu.$(window).scrollTop();
 
-					for ( var s = 0; s < scts.length; s++ )
+				for ( var s = 0; s < scts.length; s++ )
+				{
+					if ( Mmenu.$(scts[ s ]).offset().top < ofst + conf.updateOffset )
 					{
-						if ( Mmenu.$(scts[ s ]).offset().top < ofst + conf.updateOffset )
+						if ( _selected !== s )
 						{
-							if ( _selected !== s )
-							{
-								_selected = s;
-								this.setSelected( 
-									Mmenu.filterListItemAnchors( 
-										this.node.$pnls.children( '.mm-panel_opened' ).find( '.mm-listview' ).children( 'li' )
-									)
-									.filter( '[href="' + scts[ s ] + '"]' )
-									.parent()
-								);
-							}
-							break;
+							_selected = s;
+							this.setSelected( 
+								Mmenu.filterListItemAnchors( 
+									this.node.$pnls.children( '.mm-panel_opened' ).find( '.mm-listview' ).children( 'li' )
+								)
+								.filter( '[href="' + scts[ s ] + '"]' )
+								.parent()
+							);
 						}
+						break;
 					}
 				}
-			);
+			});
 	}
 };
 

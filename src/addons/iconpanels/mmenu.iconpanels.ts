@@ -46,23 +46,20 @@ Mmenu.addons.iconPanels = function(
 	//	Add the iconpanels
 	if ( opts.add )
 	{
-		this.bind( 'initMenu:after',
-			function()
+		this.bind( 'initMenu:after', () => {
+			var cls = [ 'mm-menu_iconpanel' ];
+
+			if ( opts.hideNavbar )
 			{
-				var cls = [ 'mm-menu_iconpanel' ];
-
-				if ( opts.hideNavbar )
-				{
-					cls.push( 'mm-menu_hidenavbar' );
-				}
-				if ( opts.hideDivider )
-				{
-					cls.push( 'mm-menu_hidedivider' );
-				}
-
-				this.$menu.addClass( cls.join( ' ' ) );
+				cls.push( 'mm-menu_hidenavbar' );
 			}
-		);
+			if ( opts.hideDivider )
+			{
+				cls.push( 'mm-menu_hidedivider' );
+			}
+
+			this.node.menu.classList.add( cls );
+		});
 
 		var cls = '';
 		if ( !keepFirst )
@@ -101,43 +98,33 @@ Mmenu.addons.iconPanels = function(
 					.filter( '.mm-panel_opened-parent' )
 					.add( $panel )
 					.removeClass( 'mm-hidden' )
-					.not(
-						( i, elem ) => {
-							return Mmenu.$(elem).parent( '.mm-listitem_vertical' ).length ? true : false
-						}
-					)
+					.not(( i, elem ) => {
+						return Mmenu.$(elem).parent( '.mm-listitem_vertical' ).length ? true : false
+					})
 					.slice( -opts.visible )
-					.each(
-						( i, elem ) => {
-							Mmenu.$(elem).addClass( 'mm-panel_iconpanel-' + i );
-						}
-					);
+					.each(( i, elem ) => {
+						Mmenu.$(elem).addClass( 'mm-panel_iconpanel-' + i );
+					});
 			}
 		};
 
 		this.bind( 'openPanel:start', setPanels );
-		this.bind( 'initPanels:after',
-			function( 
-				this 	: Mmenu,
-				$panels	: JQuery
-			) {
-				setPanels.call( this, this.node.$pnls.children( '.mm-panel_opened' ) );
-			}
-		);
+		this.bind( 'initPanels:after', ( 
+			$panels	: JQuery
+		) => {
+			setPanels.call( this, this.node.$pnls.children( '.mm-panel_opened' ) );
+		});
 
-		this.bind( 'initListview:after',
-			function( 
-				this	: Mmenu,
-				$panel	: JQuery
+		this.bind( 'initListview:after', (
+			$panel : JQuery
+		) => {
+			if ( opts.blockPanel &&
+				!$panel.parent( '.mm-listitem_vertical' ).length &&
+				!$panel.children( '.mm-panel__blocker' ).length
 			) {
-				if ( opts.blockPanel &&
-					!$panel.parent( '.mm-listitem_vertical' ).length &&
-					!$panel.children( '.mm-panel__blocker' ).length
-				) {
-					$panel.prepend( '<a href="#' + $panel.closest( '.mm-panel' )[ 0 ].id + '" class="mm-panel__blocker" />' );
-				}	
-			}
-		);
+				$panel.prepend( '<a href="#' + $panel.closest( '.mm-panel' )[ 0 ].id + '" class="mm-panel__blocker" />' );
+			}	
+		});
 	}
 };
 

@@ -83,50 +83,38 @@ Mmenu.addons.sidebar = function(
 	//	Collapsed
 	if ( opts.collapsed.use )
 	{
-		this.bind( 'initMenu:after',
-			function(
-				this : Mmenu
-			) {
-				this.node.$menu.addClass( 'mm-menu_sidebar-collapsed' );
+		this.bind( 'initMenu:after', () => {
+			this.node.menu.classList.add( 'mm-menu_sidebar-collapsed' );
 
-				if ( opts.collapsed.blockMenu &&
-					 this.opts.offCanvas &&
-					!this.node.$menu.children( '.mm-menu__blocker' ).length
-				) {
-					this.node.$menu.prepend( '<a class="mm-menu__blocker" href="#' + this.node.$menu[ 0 ].id + '" />' );
-				}
-				if ( opts.collapsed.hideNavbar )
-				{
-					this.node.$menu.addClass( 'mm-menu_hidenavbar' );
-				}
-				if ( opts.collapsed.hideDivider )
-				{
-					this.node.$menu.addClass( 'mm-menu_hidedivider' );
-				}
+			if ( opts.collapsed.blockMenu &&
+				 this.opts.offCanvas &&
+				!Mmenu.$(this.node.menu).children( '.mm-menu__blocker' ).length
+			) {
+				Mmenu.$(this.node.menu).prepend( '<a class="mm-menu__blocker" href="#' + this.node.$menu[ 0 ].id + '" />' );
 			}
-		);
+			if ( opts.collapsed.hideNavbar )
+			{
+				this.node.menu.classList.add( 'mm-menu_hidenavbar' );
+			}
+			if ( opts.collapsed.hideDivider )
+			{
+				this.node.menu.classList.add( 'mm-menu_hidedivider' );
+			}
+		});
 
 		if ( typeof opts.collapsed.use == 'boolean' )
 		{
-			this.bind( 'initMenu:after',
-				function(
-					this : Mmenu
-				) {
-					Mmenu.$('html').addClass( clsclpsd );
-				}
-			);
+			this.bind( 'initMenu:after', () => {
+				Mmenu.$('html').addClass( clsclpsd );
+			});
 		}
 		else
 		{
 			this.matchMedia( opts.collapsed.use,
-				function(
-					this : Mmenu
-				) {
+				() => {
 					Mmenu.$('html').addClass( clsclpsd );
 				},
-				function(
-					this : Mmenu
-				) {
+				() => {
 					Mmenu.$('html').removeClass( clsclpsd );
 				}
 			);
@@ -137,86 +125,63 @@ Mmenu.addons.sidebar = function(
 	//	Expanded
 	if ( opts.expanded.use )
 	{
-		this.bind( 'initMenu:after',
-			function(
-				this : Mmenu
-			) {
-				this.node.$menu.addClass( 'mm-menu_sidebar-expanded' );
-			}
-		);
+		this.bind( 'initMenu:after', () => {
+			this.node.menu.classList.add( 'mm-menu_sidebar-expanded' );
+		});
 
 		if ( typeof opts.expanded.use == 'boolean' )
 		{
-			this.bind( 'initMenu:after',
-				function(
-					this : Mmenu
-				) {
-					Mmenu.$('html').addClass( clsxpndd );
-					this.open();
-				}
-			);
+			this.bind( 'initMenu:after', () => {
+				Mmenu.$('html').addClass( clsxpndd );
+				this.open();
+			});
 		}
 		else
 		{
 			this.matchMedia( opts.expanded.use,
-				function(
-					this : Mmenu
-				) {
+				() => {
 					Mmenu.$('html').addClass( clsxpndd );
 					if ( !Mmenu.$('html').hasClass( 'mm-wrapper_sidebar-closed' ) )
 					{
 						this.open();
 					}
 				},
-				function(
-					this : Mmenu
-				) {
+				() => {
 					Mmenu.$('html').removeClass( clsxpndd );
 					this.close();
 				}
 			);
 		}
 
-		this.bind( 'close:start',
-			function(
-				this : Mmenu
-			) {
-				if ( Mmenu.$('html').hasClass( clsxpndd ) )
-				{
-					Mmenu.$('html').addClass( 'mm-wrapper_sidebar-closed' );
-				}
+		this.bind( 'close:start', () => {
+			if ( Mmenu.$('html').hasClass( clsxpndd ) )
+			{
+				Mmenu.$('html').addClass( 'mm-wrapper_sidebar-closed' );
 			}
-		);
+		});
 
-		this.bind( 'open:start',
-			function(
-				this : Mmenu
-			) {
-				Mmenu.$('html').removeClass( 'mm-wrapper_sidebar-closed' );
-			}
-		);
+		this.bind( 'open:start', () => {
+			Mmenu.$('html').removeClass( 'mm-wrapper_sidebar-closed' );
+		});
 
 
 		//	Add click behavior.
 		//	Prevents default behavior when clicking an anchor
-		this.clck.push(
-			function(
-				this : Mmenu,
-				$a	 : JQuery,
-				args : mmClickArguments
-			) {
+		this.clck.push((
+			anchor	: HTMLElement,
+			args 	: mmClickArguments
+		) => {
 
-				if ( args.inMenu && args.inListview )
+			if ( args.inMenu && args.inListview )
+			{
+				if ( Mmenu.$('html').hasClass( 'mm-wrapper_sidebar-expanded' ) )
 				{
-					if ( Mmenu.$('html').hasClass( 'mm-wrapper_sidebar-expanded' ) )
-					{
-						return {
-							close: false
-						};
-					}
+					return {
+						close: false
+					};
 				}
 			}
-		);
+		});
 
 	}
 };

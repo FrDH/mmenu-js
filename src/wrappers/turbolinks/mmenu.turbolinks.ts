@@ -12,8 +12,7 @@ Mmenu.wrappers.turbolinks = function(
 				classnames = $html[ 0 ].getAttribute( 'class' );
 				classnames = Mmenu.$.grep(
 					classnames.split( /\s+/ ),
-					function( name: string )
-					{
+					( name: string ) => {
 						return !/mm-/.test( name );
 					}
 				).join( ' ' );
