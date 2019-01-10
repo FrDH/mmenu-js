@@ -30,9 +30,13 @@ interface mmJqueryObject {
 
 /** An object with jQuery values. */
 interface mmHtmlObject {
-	[key: string] 	: HTMLElement | any
+	[key: string] 	: HTMLElement
 }
 
+/** Typescript bugfix */
+interface ArrayConstructor {
+    from(arrayLike: any, mapFn?, thisArg?) : any[];
+}
 
 //	TODO	add description for each method
 /** API for the menu. */
@@ -66,6 +70,7 @@ interface mmMethodI18n {
 }
 
 
+//	TODO	add description for each option
 /**	Options for the menu. */
 interface mmOptions {
 	hooks 				: mmFunctionObject
@@ -120,6 +125,7 @@ interface mmOptionsOnclick {
 }
 
 
+//	TODO	add description for each option
 /**	Configuration for the menu. */
 interface mmConfigs {
 	classNames			: mmLooseObject
@@ -145,7 +151,13 @@ interface mmConfigs {
 
 /**	Arguments for the onClick handlers. */
 interface mmClickArguments {
+
+	/** Whether or not the anchor is inside the menu. */
 	inMenu 				: boolean
+
+	/** Whether or not the anchor is inside a listview. */
 	inListview 			: boolean
+
+	/** Whether or not the anchor references to an external page. */
 	toExternal			: boolean
 }

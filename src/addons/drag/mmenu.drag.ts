@@ -187,7 +187,7 @@ Mmenu.addons.drag = function(
 			}
 
 			var $slideOutNodes 	: JQuery,
-				$dragNode 		: JQuery = Mmenu.valueOrFn( Mmenu.$(this.node.menu), opts.menu.node, Mmenu.node.$page );
+				$dragNode 		: JQuery = Mmenu.valueOrFn( Mmenu.$(this.node.menu), opts.menu.node, Mmenu.$(Mmenu.node.page) );
 
 			if ( typeof $dragNode == 'string' )
 			{

@@ -39,8 +39,8 @@ Mmenu.addons.backButton = function(
 			this : Mmenu
 		) {
 			states = [ _menu ];
-			this.node.$pnls.children( '.mm-panel_opened-parent' )
-				.add( this.node.$pnls.children( '.mm-panel_opened' ) )
+			Mmenu.$(this.node.pnls).children( '.mm-panel_opened-parent' )
+				.add( Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ) )
 				.each(
 					( i, elem ) => {
 						states.push( '#' + elem.id );

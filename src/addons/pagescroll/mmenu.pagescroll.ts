@@ -39,7 +39,7 @@ Mmenu.addons.pageScroll = function(
 		{
 			if ( href != '#' &&
 				href.slice( 0, 1 ) == '#' &&
-				Mmenu.node.$page.find( href ).length
+				Mmenu.node.page.querySelector( href )
 			) {
 				return true;
 			}
@@ -140,7 +140,7 @@ Mmenu.addons.pageScroll = function(
 							_selected = s;
 							this.setSelected( 
 								Mmenu.filterListItemAnchors( 
-									this.node.$pnls.children( '.mm-panel_opened' ).find( '.mm-listview' ).children( 'li' )
+									 Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ).find( '.mm-listview' ).children( 'li' )
 								)
 								.filter( '[href="' + scts[ s ] + '"]' )
 								.parent()

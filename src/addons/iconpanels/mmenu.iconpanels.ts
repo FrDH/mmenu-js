@@ -58,7 +58,7 @@ Mmenu.addons.iconPanels = function(
 				cls.push( 'mm-menu_hidedivider' );
 			}
 
-			this.node.menu.classList.add( cls );
+			this.node.menu.classList.add( ...cls );
 		});
 
 		var cls = '';
@@ -82,7 +82,7 @@ Mmenu.addons.iconPanels = function(
 				return;
 			}
 
-			var $panels : JQuery = this.node.$pnls.children( '.mm-panel' );
+			var $panels : JQuery =  Mmenu.$(this.node.pnls).children( '.mm-panel' );
 
 			if ( keepFirst )
 			{
@@ -112,7 +112,7 @@ Mmenu.addons.iconPanels = function(
 		this.bind( 'initPanels:after', ( 
 			$panels	: JQuery
 		) => {
-			setPanels.call( this, this.node.$pnls.children( '.mm-panel_opened' ) );
+			setPanels.call( this,  Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ) );
 		});
 
 		this.bind( 'initListview:after', (

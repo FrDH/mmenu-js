@@ -38,7 +38,7 @@ Mmenu.addons.offCanvas = function(
 		this._initBlocker();
 
 		//	Setup the page
-		this.setPage( Mmenu.node.$page );
+		this.setPage( Mmenu.node.page );
 
 		//	Setup window events
 		this._initWindow_offCanvas();
@@ -70,9 +70,9 @@ Mmenu.addons.offCanvas = function(
 	this.bind( 'setPage:after', ( 
 		$page : JQuery
 	) => {
-		if ( Mmenu.node.$blck )
+		if ( Mmenu.node.blck )
 		{
-			Mmenu.node.$blck
+			Mmenu.$(Mmenu.node.blck)
 				.children( 'a' )
 				.attr( 'href', '#' + $page[ 0 ].id );
 		}
@@ -93,7 +93,7 @@ Mmenu.addons.offCanvas = function(
 
 	//	Add screenreader / text support
 	this.bind( 'initBlocker:after:sr-text', () => {
-		Mmenu.node.$blck
+		Mmenu.$(Mmenu.node.blck)
 			.children( 'a' )
 			.html( Mmenu.sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) ) );
 	});
@@ -146,7 +146,7 @@ Mmenu.addons.offCanvas = function(
 		}
 
 		//	Close menu
-		id = Mmenu.node.$page[ 0 ].id;
+		id = Mmenu.node.page.id;
 		if ( id )
 		{
 			if ( $a.is( '[href="#' + id + '"]' ) )
@@ -219,12 +219,7 @@ Mmenu.prototype._openSetup = function(
 	this.closeAllOthers();
 
 	//	Store style and position
-	Mmenu.node.$page.each(
-		( i, elem ) => {
-			let $page = Mmenu.$(elem);
-			($page[ 0 ] as any).mmStyle = $page[ 0 ].getAttribute( 'style' ) || '';
-		}
-	);
+	(Mmenu.node.page as any).mmStyle = Mmenu.node.page.getAttribute( 'style' ) || '';
 
 	//	Trigger window-resize to measure height
 	Mmenu.$(window).trigger( 'resize.mm-offCanvas', [ true ] );
@@ -245,15 +240,13 @@ Mmenu.prototype._openSetup = function(
 		clsn.push( 'mm-wrapper_background' );
 	}
 
-	Mmenu.$('html').addClass( clsn.join( ' ' ) );
+	document.querySelector( 'html' ).classList.add( ...clsn );
 
 	//	Open
 	//	Without the timeout, the animation won't work because the menu had display: none;
-	setTimeout(
-		() => {
-        	this.vars.opened = true;
-    	}, this.conf.openingInterval
-    );
+	setTimeout(() => {
+    	this.vars.opened = true;
+	}, this.conf.openingInterval );
 
 	this.node.menu.classList.add( 'mm-menu_opened' );
 };
@@ -265,13 +258,13 @@ Mmenu.prototype._openFinish = function(
 	this : Mmenu
 ) {
 	//	Callback when the page finishes opening.
-	Mmenu.transitionend( Mmenu.node.$page.first(), () => {
+	Mmenu.transitionend( Mmenu.$(Mmenu.node.page), () => {
 		this.trigger( 'open:finish' );
 	}, this.conf.transitionDuration );
 
 	//	Opening
 	this.trigger( 'open:start' );
-	Mmenu.$('html').addClass( 'mm-wrapper_opening' );
+	document.querySelector( 'html' ).classList.add( 'mm-wrapper_opening' );
 };
 
 /**
@@ -289,35 +282,30 @@ Mmenu.prototype.close = function(
 
 
 	//	Callback when the page finishes closing.
-	Mmenu.transitionend( Mmenu.node.$page.first(),
-		() => {
-			this.node.menu.classList.remove( 'mm-menu_opened' );
+	Mmenu.transitionend( Mmenu.$(Mmenu.node.page), () => {
+		this.node.menu.classList.remove( 'mm-menu_opened' );
 
-			var clsn = [
-				'mm-wrapper_opened',
-				'mm-wrapper_blocking',
-				'mm-wrapper_modal',
-				'mm-wrapper_background'
-			];
+		var clsn = [
+			'mm-wrapper_opened',
+			'mm-wrapper_blocking',
+			'mm-wrapper_modal',
+			'mm-wrapper_background'
+		];
 
-			Mmenu.$('html').removeClass( clsn.join( ' ' ) );
+		document.querySelector( 'html' ).classList.remove( ...clsn )
 
-			//	Restore style and position
-			Mmenu.node.$page.each( ( i, elem ) => {
-				let $page = Mmenu.$(elem);
-				$page[ 0 ].setAttribute( 'style', ($page[ 0 ] as any).mmStyle );
-			});
+		//	Restore style and position
+		Mmenu.node.page.setAttribute( 'style', (Mmenu.node.page as any).mmStyle );
 
-			this.vars.opened = false;
-			this.trigger( 'close:finish' );
+		this.vars.opened = false;
+		this.trigger( 'close:finish' );
 
-		}, this.conf.transitionDuration
-	);
+	}, this.conf.transitionDuration );
 
 	//	Closing
 	this.trigger( 'close:start' );
 
-	Mmenu.$('html').removeClass( 'mm-wrapper_opening' );
+	document.querySelector( 'html' ).classList.remove( 'mm-wrapper_opening' );
 
 	this.trigger( 'close:after' );
 };
@@ -384,7 +372,7 @@ Mmenu.prototype.setPage = function(
 		);
 
 
-	Mmenu.node.$page = $page;
+	Mmenu.node.page = $page[0];
 
 	this.trigger( 'setPage:after', [ $page ] );
 };
@@ -418,22 +406,20 @@ Mmenu.prototype._initWindow_offCanvas = function(
 	var oldHeight, newHeight;
 	Mmenu.$(window)
 		.off( 'resize.mm-offCanvas' )
-		.on( 'resize.mm-offCanvas',
-			( e, force ) => {
-				if ( Mmenu.node.$page.length == 1 )
+		.on( 'resize.mm-offCanvas', ( e, force ) => {
+		//	if ( Mmenu.node.page.length == 1 )
+			{
+				if ( force || Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
 				{
-					if ( force || Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
+					newHeight = Mmenu.$(window).height();
+					if ( force || newHeight != oldHeight )
 					{
-						newHeight = Mmenu.$(window).height();
-						if ( force || newHeight != oldHeight )
-						{
-							oldHeight = newHeight;
-							Mmenu.node.$page.css( 'minHeight', newHeight );
-						}
+						oldHeight = newHeight;
+						Mmenu.$(Mmenu.node.page).css( 'minHeight', newHeight );
 					}
 				}
 			}
-		);
+		});
 };
 
 /**
@@ -452,33 +438,34 @@ Mmenu.prototype._initBlocker = function(
 		return;
 	}
 
-	if ( !Mmenu.node.$blck )
+	if ( !Mmenu.node.blck )
 	{
-		Mmenu.node.$blck = Mmenu.$( '<div class="mm-wrapper__blocker mm-slideout" />' )
-			.append( '<a />' );
+		let blck = document.createElement( 'div' );
+		blck.classList.add( 'mm-wrapper__blocker', 'mm-slideout' ); 
+		
+		let anchor = document.createElement( 'a' );
+		blck.append( anchor );
+
+		Mmenu.node.blck = blck;
 	}
 
-	Mmenu.node.$blck
+	Mmenu.$(Mmenu.node.blck)
 		.appendTo( conf.menu.insertSelector )
 		.off( 'touchstart.mm-offCanvas touchmove.mm-offCanvas' )
-		.on( 'touchstart.mm-offCanvas touchmove.mm-offCanvas',
-			( e ) => {
-				e.preventDefault();
-				e.stopPropagation();
-				Mmenu.node.$blck.trigger( 'mousedown.mm-offCanvas' );
-			}
-		)
+		.on( 'touchstart.mm-offCanvas touchmove.mm-offCanvas', ( evnt ) => {
+			evnt.preventDefault();
+			evnt.stopPropagation();
+			Mmenu.$(Mmenu.node.blck).trigger( 'mousedown.mm-offCanvas' );
+		})
 		.off( 'mousedown.mm-offCanvas' )
-		.on( 'mousedown.mm-offCanvas',
-			( e ) => {
-				e.preventDefault();
-				if ( !Mmenu.$('html').hasClass( 'mm-wrapper_modal' ) )
-				{
-					this.closeAllOthers();
-					this.close();
-				}
+		.on( 'mousedown.mm-offCanvas', ( evnt ) => {
+			evnt.preventDefault();
+			if ( !document.querySelector( 'html' ).classList.contains( 'mm-wrapper_modal' ) )
+			{
+				this.closeAllOthers();
+				this.close();
 			}
-		);
+		});
 
 	this.trigger( 'initBlocker:after' );
 };

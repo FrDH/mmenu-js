@@ -82,9 +82,10 @@ Mmenu.addons.setSelected = function(
 			$panel : JQuery
 		) => {
 			//	Remove all
-			this.node.$pnls
-				.find( '.mm-listitem_selected-parent' )
-				.removeClass( 'mm-listitem_selected-parent' );
+			let listitems = this.node.pnls.querySelectorAll( '.mm-listitem_selected-parent' )
+			listitems.forEach(( listitem ) => {
+				listitem.classList.remove( 'mm-listitem_selected-parent' );
+			});
 
 			//	Move up the DOM tree
 			var $parent : JQuery = ($panel[ 0 ] as any).mmParent;

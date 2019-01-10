@@ -72,7 +72,7 @@ Mmenu.addons.counters = function(
 			this 	 : Mmenu,
 			$panels	?: JQuery
 		) {
-			$panels = $panels || this.node.$pnls.children( '.mm-panel' );
+			$panels = $panels || Mmenu.$(this.node.pnls).children( '.mm-panel' );
 
 			$panels.each(
 				( i, elem ) => {

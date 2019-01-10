@@ -28,9 +28,9 @@ Mmenu.addons.lazySubmenus = function(
 
 		//	prevent all sub panels from initPanels
 		this.bind( 'initMenu:after', () => {
-			this.node.$pnls
+			 Mmenu.$(this.node.pnls)
 				.find( 'li' )
-				.children( this.conf.panelNodetype )
+				.children( this.conf.panelNodetype.join( ', ' ) )
 				.not( '.mm-listview_inset' )
 				.not( '.mm-nolistview' )
 				.not( '.mm-nopanel' )
@@ -41,7 +41,7 @@ Mmenu.addons.lazySubmenus = function(
 		this.bind( 'initPanels:before', ( 
 			$panels	?: JQuery
 		) => {
-			$panels = $panels || this.node.$pnls.children( this.conf.panelNodetype );
+			$panels = $panels ||  Mmenu.$(this.node.pnls).children( this.conf.panelNodetype.join( ', ' ) );
 
 			Mmenu.findAddSelf( $panels, '.mm-panel_lazysubmenu' )
 				.not( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' )
@@ -50,7 +50,7 @@ Mmenu.addons.lazySubmenus = function(
 
 		//	initPanels for the default opened panel
 		this.bind( 'initOpened:before', () => {
-			var $selected = this.node.$pnls
+			var $selected =  Mmenu.$(this.node.pnls)
 				.find( '.' + this.conf.classNames.selected )
 				.parents( '.mm-panel_lazysubmenu' );
 

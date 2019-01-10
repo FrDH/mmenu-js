@@ -150,12 +150,12 @@ class Mmenu {
 	/**
 	 * Create a mobile menu.
 	 *
-	 * @param {JQuery|string} 	$menu						The menu node.
+	 * @param {JQuery|string} 	menu						The menu node.
 	 * @param {object} 			[options=Mmenu.options]		Options for the menu.
 	 * @param {object} 			[configs=Mmenu.configs]		Configuration options for the menu.
 	 */
 	constructor(
-		$menu 		 : HTMLElement | string,
+		menu 		 : HTMLElement | string,
 		options 	?: mmOptions,
 		configs		?: mmConfigs
 	) {
@@ -176,9 +176,9 @@ class Mmenu {
 
 
 		//	Get menu node from string or HTML element.
-		this.node.menu = ( typeof $menu == 'string' )
-			? document.querySelector( $menu )
-			: this.node.menu = $menu;
+		this.node.menu = ( typeof menu == 'string' )
+			? document.querySelector( menu )
+			: this.node.menu = menu;
 
 
 		if ( typeof this._deprecated == 'function' )
@@ -276,8 +276,8 @@ class Mmenu {
 				return;
 			}
 
-			var $panels 	= this.node.$pnls.children( '.mm-panel' ),
-				$current 	= this.node.$pnls.children( '.mm-panel_opened' );
+			var $panels 	= Mmenu.$(this.node.pnls).children( '.mm-panel' ),
+				$current 	= Mmenu.$(this.node.pnls).children( '.mm-panel_opened' );
 
 
 			//	Close all child panels
@@ -399,18 +399,16 @@ class Mmenu {
 		this.trigger( 'closeAllPanels:before' );
 
 		//	Close all "vertical" panels.
-		this.node.$pnls
-			.find( '.mm-listview' )
-			.children()
-			.removeClass( 'mm-listitem_selected' )
-			.filter( '.mm-listitem_vertical' )
-			.removeClass( 'mm-listitem_opened' );
+		let listitems = this.node.pnls.querySelectorAll( '.mm-listitem' );
+		listitems.forEach(( listitem ) => {
+			listitem.classList.remove( 'mm-listitem_selected', 'mm-listitem_opened' );
+		});
 
 		//	Close all "horizontal" panels.
-		var $pnls = this.node.$pnls.children( '.mm-panel' ),
+		var $pnls = Mmenu.$(this.node.pnls).children( '.mm-panel' ),
 			$frst = ( $panel && $panel.length ) ? $panel : $pnls.first();
 
-		this.node.$pnls
+		Mmenu.$(this.node.pnls)
 			.children( '.mm-panel' )
 			.not( $frst )
 			.removeClass( 'mm-panel_opened' )
@@ -431,14 +429,14 @@ class Mmenu {
 	 * @param {JQuery} $panel Panel to open or close.
 	 */
 	togglePanel(
-		$panel : JQuery
+		panel : HTMLElement
 	) {
-		var $li = $panel.parent();
+		let listitem = panel.parentElement;
 
 		//	Only works for "vertical" panels.
-		if ( $li.hasClass( 'mm-listitem_vertical' ) )
+		if ( listitem && listitem.classList.contains( 'mm-listitem_vertical' ) )
 		{
-			this[ $li.hasClass( 'mm-listitem_opened' ) ? 'closePanel' : 'openPanel' ]( $panel );
+			this[ listitem.classList.contains( 'mm-listitem_opened' ) ? 'closePanel' : 'openPanel' ]( Mmenu.$(panel) );
 		}
 	}
 
@@ -705,23 +703,25 @@ class Mmenu {
 
 		//	Wrap the panels in a node.
 		let panels = document.createElement( 'div' );
-		panels.className = 'mm-panels';
+		panels.classList.add( 'mm-panels' );
 
-		for ( let panel of this.node.menu.children )
-		{
+		Array.from( this.node.menu.children ).forEach(( panel ) => {
 			if ( this.conf.panelNodetype.indexOf( panel.nodeName.toLowerCase() ) > -1 )
 			{
 				panels.append( panel );
 			}
-		}
+		});
 		
 		this.node.menu.append( panels );
 		this.node.pnls = panels;
-this.node.$pnls = Mmenu.$(panels);
 
-		//	Add classes to the menu.
-		this.node.menu.classList.add( 'mm-menu' )
+
+		//	Add class to the menu.
+		this.node.menu.classList.add( 'mm-menu' );
+
+		//	Add class to the wrapper.
 		this.node.menu.parentElement.classList.add( 'mm-wrapper' );
+
 
 		this.trigger( 'initMenu:after' );
 	}
@@ -751,17 +751,17 @@ this.node.$pnls = Mmenu.$(panels);
 				{
 					try
 					{
-						var panel = this.node.menu.querySelector( href );
+						let panel = this.node.menu.querySelector( href );
 
 						if ( panel.classList.contains( 'mm-panel' ) )
 						{
 							if ( $a.parent().hasClass( 'mm-listitem_vertical' ) )
 							{
-								this.togglePanel( Mmenu.$(panel) );
+								this.togglePanel( (panel as HTMLElement) );
 							}
 							else
 							{
-								this.openPanel( Mmenu.$(panel) );
+								this.openPanel( Mmenu.$((panel as HTMLElement)) );
 							}
 							return true;
 						}
@@ -1048,17 +1048,27 @@ this.node.$pnls = Mmenu.$(panels);
 	{
 		this.trigger( 'initOpened:before' );
 
-		//	Find the selected listitem
-		var $selected = this.node.$pnls
-			.find( '.mm-listitem_selected' )
-			.removeClass( 'mm-listitem_selected' )
-			.last()
-			.addClass( 'mm-listitem_selected' );
+		//	Find all selected listitems.
+		let listitems = this.node.pnls.querySelectorAll( '.mm-listitem_selected' );
+		
+		//	Deselect the listitems
+		let last = null;
+		listitems.forEach(( listitem ) => {
+			last = listitem;
+			listitem.classList.remove( 'mm-listitem_selected' );
+		});
+		if ( last )
+		{
+			last.classList.add( 'mm-listitem_selected' );
+		}
+
+		//	Select the last listitem.
+		var $selected = Mmenu.$(last);
 
 		//	Find the current opened panel
 		var $current = ( $selected.length ) 
 			? $selected.closest( '.mm-panel' )
-			: this.node.$pnls.children( '.mm-panel' ).first();
+			: Mmenu.$(this.node.pnls).children( '.mm-panel' ).first();
 
 		//	Open the current opened panel
 		this.openPanel( $current, false );

@@ -91,7 +91,7 @@ Mmenu.addons.columns = function(
 			var colnr = parseInt( classname.split( ' ' )[ 0 ], 10 ) + 1;
 			while( colnr > 0 )
 			{
-				$panel = this.node.$pnls.children( '.mm-panel_columns-' + colnr );
+				$panel = Mmenu.$(this.node.pnls).children( '.mm-panel_columns-' + colnr );
 				if ( $panel.length )
 				{
 					colnr++;
@@ -109,27 +109,25 @@ Mmenu.addons.columns = function(
 		this.bind( 'openPanel:start', (
 			$panel : JQuery
 		) => {
-			var _num = this.node.$pnls.children( '.mm-panel_opened-parent' ).length;
+			var _num = Mmenu.$(this.node.pnls).children( '.mm-panel_opened-parent' ).length;
 			if ( !$panel.hasClass( 'mm-panel_opened-parent' ) )
 			{
 				_num++;
 			}
 			_num = Math.min( opts.visible.max, Math.max( opts.visible.min, _num ) );
 
-			this.node.menu.classList.remove( colm.split( ' ' ) );
+			this.node.menu.classList.remove( ...colm.split( ' ' ) );
 			this.node.menu.classList.add( 'mm-menu_columns-' + _num );
 
-			this.node.$pnls
+			Mmenu.$(this.node.pnls)
 				.children( '.mm-panel' )
 				.removeClass( colp )
 				.filter( '.mm-panel_opened-parent' )
 				.add( $panel )
 				.slice( -opts.visible.max )
-				.each(
-					( i, elem ) => {
-						Mmenu.$(elem).addClass( 'mm-panel_columns-' + i );
-					}
-				);
+				.each(( i, panel ) => {
+					panel.classList.add( 'mm-panel_columns-' + i );
+				});
 		});
 	}
 };

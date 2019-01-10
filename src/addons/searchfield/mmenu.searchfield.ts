@@ -192,7 +192,7 @@ Mmenu.prototype._initSearchPanel = function(
 
 
 	//	Only once
-	if ( this.node.$pnls.children( '.mm-panel_search' ).length )
+	if (  Mmenu.$(this.node.pnls).children( '.mm-panel_search' ).length )
 	{
 		return Mmenu.$();
 	}
@@ -200,7 +200,7 @@ Mmenu.prototype._initSearchPanel = function(
 
 	var $spnl = Mmenu.$( '<div class="mm-panel_search " />' )
 		.append( '<ul />' )
-		.appendTo( this.node.$pnls );
+		.appendTo( this.node.pnls );
 
 	if ( opts.panel.id )
 	{
@@ -326,7 +326,7 @@ Mmenu.prototype._initSearching = function(
 	//	In searchpanel
 	if ( $srch.closest( '.mm-panel_search' ).length )
 	{
-		data.$pnls = this.node.$pnls.find( '.mm-panel' );
+		data.$pnls =  Mmenu.$(this.node.pnls).find( '.mm-panel' );
 		data.$nrsp = $srch.closest( '.mm-panel' );
 	}
 
@@ -340,16 +340,15 @@ Mmenu.prototype._initSearching = function(
 	//	Not in a panel, global
 	else
 	{
-		data.$pnls = this.node.$pnls.find( '.mm-panel' );
+		data.$pnls =  Mmenu.$(this.node.pnls).find( '.mm-panel' );
 		data.$nrsp = Mmenu.$(this.node.menu);
 	}
 
 	//	Filter out vertical submenus
-	data.$pnls = data.$pnls.not(
-		( i, elem ) => {
-			return Mmenu.$(elem).parent( '.mm-listitem_vertical' ).length;
-		}
-	);
+	data.$pnls = data.$pnls.not(( i, panel ) => {
+		let parent = panel.parentElement;
+		return parent && parent.classList.contains( 'mm-listitem_vertical' );
+	});
 
 	//	Filter out search panel
 	if ( opts.panel.add )
@@ -360,7 +359,7 @@ Mmenu.prototype._initSearching = function(
 
 	var $inpt = $srch.find( 'input' ),
 		$cncl = $srch.find( '.mm-searchfield__cancel' ),
-		$spnl = this.node.$pnls.children( '.mm-panel_search' ),
+		$spnl =  Mmenu.$(this.node.pnls).children( '.mm-panel_search' ),
 		$itms = data.$pnls.find( '.mm-listitem' );
 
 	data.$itms = $itms.not( '.mm-listitem_divider' );
@@ -397,7 +396,7 @@ Mmenu.prototype._initSearching = function(
 
 					if ( $spnl.hasClass( 'mm-panel_opened' ) )
 					{
-						this.openPanel( this.node.$pnls.children( '.mm-panel_opened-parent' ).last() );
+						this.openPanel(  Mmenu.$(this.node.pnls).children( '.mm-panel_opened-parent' ).last() );
 					}
 				}
 			);
@@ -454,7 +453,7 @@ Mmenu.prototype._initNoResultsMsg = function(
 	//	Not in a panel
 	if ( !$wrpr.closest( '.mm-panel' ).length )
 	{
-		$wrpr = this.node.$pnls.children( '.mm-panel' ).first();
+		$wrpr =  Mmenu.$(this.node.pnls).children( '.mm-panel' ).first();
 	}
 
 	//	Only once
@@ -498,7 +497,7 @@ Mmenu.prototype.search = function(
 
 	var $srch = $inpt.closest( '.mm-searchfield' ),
 		$btns = $srch.find( '.mm-btn' ),
-		$spnl = this.node.$pnls.children( '.mm-panel_search' ),
+		$spnl =  Mmenu.$(this.node.pnls).children( '.mm-panel_search' ),
 		$pnls = data.$pnls,
 		$itms = data.$itms,
 		$dvdr = data.$dvdr,
@@ -713,7 +712,7 @@ Mmenu.prototype.search = function(
 			//	Close panel 
 			else if ( !$inpt.closest( '.mm-panel_search' ).length )
 			{
-				this.openPanel( this.node.$pnls.children( '.mm-panel_opened-parent' ).last() );
+				this.openPanel(  Mmenu.$(this.node.pnls).children( '.mm-panel_opened-parent' ).last() );
 			}
 		}
 	}

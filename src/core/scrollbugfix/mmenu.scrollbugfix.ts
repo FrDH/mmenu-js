@@ -42,7 +42,7 @@ Mmenu.addons.scrollBugFix = function(
 
 	//	When opening the menu, scroll to the top of the current opened panel.
 	this.bind( 'open:start', () => {
-		this.node.$pnls.children( '.mm-panel_opened' ).scrollTop( 0 );
+		Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ).scrollTop( 0 );
 	});
 
 	this.bind( 'initMenu:after', () => {
@@ -105,7 +105,7 @@ Mmenu.addons.scrollBugFix = function(
 	    	.off( 'orientationchange.mm-scrollBugFix' )
 	    	.on( 'orientationchange.mm-scrollBugFix',
 	    		() => {
-	    			this.node.$pnls
+	    			Mmenu.$(this.node.pnls)
 	    				.children( '.mm-panel_opened' )
 			        	.scrollTop( 0 )
 			        	.css({ '-webkit-overflow-scrolling': 'auto' })

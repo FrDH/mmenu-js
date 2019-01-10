@@ -45,14 +45,10 @@ Mmenu.addons.screenReader = function(
 
 		//	Update aria-hidden for hidden / visible listitems
 		this.bind( 'updateListview', () => {
-			this.node.$pnls
-				.find( '.mm-listitem' )
-				.each(
-					( i, elem ) => {
-						var $li = Mmenu.$(elem);
-						Mmenu.sr_aria( $li, 'hidden', $li.is( '.mm-hidden' ) );
-					}
-				);
+			let listitems = this.node.pnls.querySelectorAll( '.mm-listitem' );
+			listitems.forEach(( listitem ) => {
+				Mmenu.sr_aria( Mmenu.$(listitem), 'hidden', listitem.classList.contains( 'mm-hidden' ) );
+			});
 		});
 
 

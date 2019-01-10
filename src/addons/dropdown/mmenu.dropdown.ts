@@ -200,7 +200,7 @@ Mmenu.addons.dropdown = function(
 		if ( opts.tip )
 		{
 			this.node.menu.classList.remove( 'mm-menu_tip-left', 'mm-menu_tip-right', 'mm-menu_tip-top', 'mm-menu_tip-bottom' );
-			this.node.menu.classList.add( obj[ 1 ] );
+			this.node.menu.classList.add( ...obj[ 1 ] );
 		}
 	};
 

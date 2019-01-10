@@ -49,15 +49,15 @@ Mmenu.addons.autoHeight = function(
 			return;
 		}
 
-		var _top = Math.max( parseInt( this.node.$pnls.css( 'top' )		, 10 ), 0 ) || 0,
-			_bot = Math.max( parseInt( this.node.$pnls.css( 'bottom' )	, 10 ), 0 ) || 0,
+		var _top = Math.max( parseInt( Mmenu.$(this.node.pnls).css( 'top' )		, 10 ), 0 ) || 0,
+			_bot = Math.max( parseInt( Mmenu.$(this.node.pnls).css( 'bottom' )	, 10 ), 0 ) || 0,
 			_hgh = 0;
 
 		this.node.menu.classList.add( 'mm-menu_autoheight-measuring' );
 
 		if ( opts.height == 'auto' )
 		{
-			$panel = $panel || this.node.$pnls.children( '.mm-panel_opened' );
+			$panel = $panel || Mmenu.$(this.node.pnls).children( '.mm-panel_opened' );
 			if ( $panel.parent( '.mm-listitem_vertical' ).length )
 			{
 				$panel = $panel
@@ -70,19 +70,21 @@ Mmenu.addons.autoHeight = function(
 			}
 			if ( !$panel.length )
 			{
-				$panel = this.node.$pnls.children( '.mm-panel' );
+				$panel = Mmenu.$(this.node.pnls).children( '.mm-panel' );
 			}
 
 			_hgh = $panel.first().outerHeight();
 		}
 		else if ( opts.height == 'highest' )
 		{
-			this.node.$pnls
+			Mmenu.$(this.node.pnls)
 				.children('.mm-panel' )
 				.each(
-					( i, elem ) => {
-						var $panel = Mmenu.$(elem);
-						if ( $panel.parent( '.mm-listitem_vertical' ).length )
+					( i, panel ) => {
+
+						let $panel = Mmenu.$(panel);
+						let parent = panel.parentElement;
+						if ( parent && parent.classList.contains( 'mm-listitem_vertical' ) )
 						{
 							$panel = $panel
 								.parents( '.mm-panel' )
@@ -97,9 +99,8 @@ Mmenu.addons.autoHeight = function(
 				);
 		}
 
-		Mmenu.$(this.node.menu)
-			.height( _hgh + _top + _bot )
-			.removeClass( 'mm-menu_autoheight-measuring' );
+		Mmenu.$(this.node.menu).height( _hgh + _top + _bot );
+		this.node.menu.classList.remove( 'mm-menu_autoheight-measuring' );
 	};
 
 	if ( this.opts.offCanvas )

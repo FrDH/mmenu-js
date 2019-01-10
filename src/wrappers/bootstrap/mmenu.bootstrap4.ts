@@ -3,7 +3,7 @@ Mmenu.wrappers.bootstrap4 = function(
 ) {
 
 	//	Create the menu
-	if ( this.node.$menu.hasClass( 'navbar-collapse' ) )
+	if ( this.node.menu.classList.contains( 'navbar-collapse' ) )
 	{
 
 		//	No need for cloning the menu...
@@ -16,7 +16,7 @@ Mmenu.wrappers.bootstrap4 = function(
 
 		$nav.append( $pnl );
 
-		this.node.$menu
+		Mmenu.$(this.node.menu)
 			.children()
 			.each(
 				( i, elem ) => {
@@ -53,11 +53,11 @@ Mmenu.wrappers.bootstrap4 = function(
 		//	Set the menu
 		this.bind( 'initMenu:before', () => {
 			$nav.prependTo( 'body' );
-			this.node.$menu = $nav;
+			this.node.menu = $nav[0];
 		});
 
 		//	Hijack the toggler
-		this.node.$menu
+		Mmenu.$(this.node.menu)
 			.parent()
 			.find( '.navbar-toggler' )
 			.removeAttr( 'data-target' )

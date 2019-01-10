@@ -3,7 +3,7 @@ Mmenu.wrappers.bootstrap3 = function(
 ) {
 
 	//	Create the menu
-	if ( this.node.$menu.hasClass( 'navbar-collapse' ) )
+	if ( this.node.menu.classList.contains( 'navbar-collapse' ) )
 	{
 
 		//	Set some config
@@ -19,7 +19,7 @@ Mmenu.wrappers.bootstrap3 = function(
 
 		for ( var t = 0; t < types.length; t++ )
 		{
-			if ( this.node.$menu.find( '.' + types[ t ] ).length )
+			if ( this.node.menu.querySelector( '.' + types[ t ] ) )
 			{
 				_type = types[ t ];
 				break;
@@ -30,7 +30,7 @@ Mmenu.wrappers.bootstrap3 = function(
 			this.opts.hooks[ 'initMenu:before' ] = () => {
 				if ( _type == 'navbar-nav' )
 				{
-					this.node.$menu.wrapInner( '<div />' );
+					Mmenu.$(this.node.menu).wrapInner( '<div />' );
 				}
 			};
 			this.opts.hooks[ 'initMenu:after' ] = () => {
@@ -43,7 +43,7 @@ Mmenu.wrappers.bootstrap3 = function(
 
 	var init = {
 		menu: () => {
-			this.node.$menu
+			Mmenu.$(this.node.menu)
 				.find( '.nav' )
 				.removeClass( 'nav' )
 				.end()
@@ -53,11 +53,11 @@ Mmenu.wrappers.bootstrap3 = function(
 			var attrs = [ 'role', 'aria-haspopup', 'aria-expanded' ];
 			for ( var a = 0; a < attrs.length; a++ )
 			{
-				this.node.$menu.find( '[' + attrs[ a ] + ']' ).removeAttr( attrs[ a ] );
+				Mmenu.$(this.node.menu).find( '[' + attrs[ a ] + ']' ).removeAttr( attrs[ a ] );
 			}
 		},
 		dropdown: () => {
-			var $dropdown = this.node.$menu.find( '.dropdown' );
+			var $dropdown = Mmenu.$(this.node.menu).find( '.dropdown' );
 
 			$dropdown
 				.removeClass( 'dropdown' );
@@ -76,23 +76,23 @@ Mmenu.wrappers.bootstrap3 = function(
 				.removeClass( 'dropdown-menu' );
 		},
 		tabs: () => {
-			this.node.$menu
+			Mmenu.$(this.node.menu)
 				.find( '.nav-tabs' )
 				.removeClass( 'nav-tabs' );
 		},
 		pills: () => {
-			this.node.$menu
+			Mmenu.$(this.node.menu)
 				.find( '.nav-pills' )
 				.removeClass( 'nav-pills' );
 		},
 		navbar: () => {
 
-			this.node.$menu
+			Mmenu.$(this.node.menu)
 				.removeClass( 'collapse navbar-collapse' )
 				.find( '[class*="navbar-"]' )
 				.removeClass( 'navbar-left navbar-right navbar-nav navbar-text navbar-btn' );
 
-			var $form = this.node.$menu.find( '.navbar-form' );
+			var $form = Mmenu.$(this.node.menu).find( '.navbar-form' );
 			this.conf.searchfield = {
 				form 	: {
 					action 	: $form[ 0 ].getAttribute( 'action' ),
@@ -106,7 +106,7 @@ Mmenu.wrappers.bootstrap3 = function(
 			};
 			$form.remove();
 
-			(this.node.$orig || this.node.$menu)
+			(Mmenu.$(this.node.orig) || Mmenu.$(this.node.menu))
 				.closest( '.navbar' )
 				.find( '.navbar-header' )
 				.find( '.navbar-toggle' )

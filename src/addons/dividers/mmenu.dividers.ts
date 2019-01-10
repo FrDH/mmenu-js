@@ -89,11 +89,17 @@ Mmenu.addons.dividers = function(
 	{
 		//	Add the fixed divider
 		this.bind( 'initPanels:after', () => {
-			if ( typeof this.node.$fixeddivider == 'undefined' )
+			if ( !this.node.fixeddivider )
 			{
-				this.node.$fixeddivider = Mmenu.$('<ul class="mm-listview mm-listview_fixeddivider"><li class="mm-listitem mm-listitem_divider"></li></ul>')
-					.appendTo( this.node.$pnls )
-					.children();
+				let listitem = document.createElement( 'li' );
+				listitem.classList.add( 'mm-listitem', 'mm-listitem_divider' );
+
+				let listview = document.createElement( 'ul' );
+				listview.classList.add( 'mm-listview', 'mm-listview_fixeddivider' );
+				listview.append( listitem );
+
+				this.node.pnls.append( listview );
+				this.node.fixeddivider = listitem;
 			}
 		});
 
@@ -101,7 +107,7 @@ Mmenu.addons.dividers = function(
 			this	 : Mmenu,
 			$panel	?: JQuery
 		) {
-			$panel = $panel || this.node.$pnls.children( '.mm-panel_opened' );
+			$panel = $panel || Mmenu.$(this.node.pnls).children( '.mm-panel_opened' );
 			if ( $panel.is( ':hidden' ) )
 			{
 				return;
@@ -114,18 +120,16 @@ Mmenu.addons.dividers = function(
 			var scrl = $panel.scrollTop() || 0,
 				text = '';
 
-			$dividers.each(
-				( i, elem ) => {
-					let $divider = Mmenu.$(elem);
-					if ( $divider.position().top + scrl < scrl + 1 )
-					{
-						text = $divider.text();
-					}
+			$dividers.each(( i, divider ) => {
+				let $divider = Mmenu.$(divider);
+				if ( $divider.position().top + scrl < scrl + 1 )
+				{
+					text = $divider.text();
 				}
-			);
+			});
 
-			this.node.$fixeddivider.text( text );
-			this.node.$pnls[ text.length ? 'addClass' : 'removeClass' ]( 'mm-panel_dividers' );
+			this.node.fixeddivider.innerText = text;
+			this.node.pnls.classList[ text.length ? 'add' : 'remove' ]( 'mm-panel_dividers' );
 		};
 
 		//	Set correct value when 

@@ -55,7 +55,7 @@ Mmenu.addons.keyboardNavigation = function(
 				.attr( 'tabindex', -1 );
 		});
 		this.bind( 'initBlocker:after', () => {
-			Mmenu.node.$blck
+			Mmenu.$(Mmenu.node.blck)
 				.append( $blckEnd )
 				.children( 'a' )
 				.addClass( 'mm-tabstart' );
@@ -67,7 +67,7 @@ Mmenu.addons.keyboardNavigation = function(
 			this 	 : Mmenu,
 			$panl	?: JQuery
 		) {
-			$panl = $panl || this.node.$pnls.children( '.mm-panel_opened' );
+			$panl = $panl ||  Mmenu.$(this.node.pnls).children( '.mm-panel_opened' );
 
 			var $focs = Mmenu.$(),
 				$navb = Mmenu.$(this.node.menu)
@@ -114,7 +114,7 @@ Mmenu.addons.keyboardNavigation = function(
 
 		//	Add screenreader / aria support
 		this.bind( 'initOpened:after:sr-aria', () => {
-			var $btns = Mmenu.$(this.node.menu).add( Mmenu.node.$blck )
+			var $btns = Mmenu.$(this.node.menu).add( Mmenu.node.blck )
 				.children( '.mm-tabstart, .mm-tabend' );
 
 			Mmenu.sr_aria( $btns, 'hidden', true );
@@ -158,9 +158,9 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 					//	Jump from menu to blocker
 					if ( $target.parent().is( '.mm-menu' ) )
 					{
-						if ( Mmenu.node.$blck )
+						if ( Mmenu.node.blck )
 						{
-							$next = Mmenu.node.$blck;
+							$next = Mmenu.$(Mmenu.node.blck);
 						}
 					}
 					if ( $target.parent().is( '.mm-wrapper__blocker' ) )

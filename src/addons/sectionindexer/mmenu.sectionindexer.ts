@@ -52,46 +52,27 @@ Mmenu.addons.sectionIndexer = function(
 
 
 		//	Add the indexer, only if it does not allready excists
-		if ( !this.node.$indx )
+		if ( !this.node.indx )
 		{
-			this.node.$indx = Mmenu.$( '<div class="mm-sectionindexer" />' )
-				.prependTo( this.node.menu )
-				.append( 
-					'<a href="#a">a</a>' +
-					'<a href="#b">b</a>' +
-					'<a href="#c">c</a>' +
-					'<a href="#d">d</a>' +
-					'<a href="#e">e</a>' +
-					'<a href="#f">f</a>' +
-					'<a href="#g">g</a>' +
-					'<a href="#h">h</a>' +
-					'<a href="#i">i</a>' +
-					'<a href="#j">j</a>' +
-					'<a href="#k">k</a>' +
-					'<a href="#l">l</a>' +
-					'<a href="#m">m</a>' +
-					'<a href="#n">n</a>' +
-					'<a href="#o">o</a>' +
-					'<a href="#p">p</a>' +
-					'<a href="#q">q</a>' +
-					'<a href="#r">r</a>' +
-					'<a href="#s">s</a>' +
-					'<a href="#t">t</a>' +
-					'<a href="#u">u</a>' +
-					'<a href="#v">v</a>' +
-					'<a href="#w">w</a>' +
-					'<a href="#x">x</a>' +
-					'<a href="#y">y</a>' +
-					'<a href="#z">z</a>' );
+			let indexer = document.createElement( 'div' );
+			indexer.classList.add( 'mm-sectionindexer' );
+
+			let alphabet = 'abcdefghijklmnopqrstuvwxyz'.split( '' );
+			alphabet.forEach(( letter ) => {
+				indexer.innerHTML += `<a href="${letter}">${letter}</a>`;
+			});
+
+			this.node.menu.prepend( indexer );
+			this.node.indx = indexer;
 
 			//	Scroll onMouseOver
-			this.node.$indx
+			Mmenu.$(this.node.indx)
 				.on( 'click.mm-sectionIndexer', 'a', ( evnt ) => {
 					evnt.preventDefault();
 				})
 				.on( 'mouseover.mm-sectionIndexer touchstart.mm-sectionIndexer', 'a', ( e ) => {
 					var lttr = Mmenu.$(e.currentTarget).html(),
-						$panl = this.node.$pnls.children( '.mm-panel_opened' ),
+						$panl =  Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ),
 						$list = $panl.find( '.mm-listview' );
 
 					var newTop = -1,
@@ -121,7 +102,7 @@ Mmenu.addons.sectionIndexer = function(
 			this	 : Mmenu,
 			$panel	?: JQuery
 		) {
-			$panel = $panel || this.node.$pnls.children( '.mm-panel_opened' );
+			$panel = $panel ||  Mmenu.$(this.node.pnls).children( '.mm-panel_opened' );
 			this.node.menu.classList[ $panel[ 0 ].classList.contains( 'mm-panel_has-sectionindexer' ) ? 'add' : 'remove' ]( 'mm-menu_has-sectionindexer' );
 		};
 
