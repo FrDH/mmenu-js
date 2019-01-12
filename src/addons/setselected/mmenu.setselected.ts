@@ -32,10 +32,10 @@ Mmenu.addons.setSelected = function(
 		) {
 			url = url.split( "?" )[ 0 ].split( "#" )[ 0 ];
 
-			var $a = Mmenu.$(this.node.menu).find( 'a[href="'+ url +'"], a[href="'+ url +'/"]' );
-			if ( $a.length )
+			var anchor = this.node.menu.querySelector( 'a[href="'+ url +'"], a[href="'+ url +'/"]' );
+			if ( anchor )
 			{
-				this.setSelected( $a.parent() );
+				this.setSelected( anchor.parentElement );
 			}
 			else
 			{
@@ -56,9 +56,9 @@ Mmenu.addons.setSelected = function(
 	else if ( !opts.current )
 	{
 		this.bind( 'initListview:after', ( 
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
-			$panel
+			Mmenu.$(panel)
 				.find( '.mm-listview' )
 				.children( '.mm-listitem_selected' )
 				.removeClass( 'mm-listitem_selected' );
@@ -79,7 +79,7 @@ Mmenu.addons.setSelected = function(
 	if ( opts.parent )
 	{
 		this.bind( 'openPanel:finish', ( 
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
 			//	Remove all
 			let listitems = this.node.pnls.querySelectorAll( '.mm-listitem_selected-parent' )
@@ -88,15 +88,15 @@ Mmenu.addons.setSelected = function(
 			});
 
 			//	Move up the DOM tree
-			var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
-			while ( $parent )
+			var parent : HTMLElement = (panel as any).mmParent;
+			while ( parent )
 			{
-				$parent
+				Mmenu.$(parent)
 					.not( '.mm-listitem_vertical' )
 					.addClass( 'mm-listitem_selected-parent' );
 			
-				$parent = $parent.closest( '.mm-panel' );
-				$parent = ($parent[ 0 ] as any).mmParent;
+				parent = (parent.closest( '.mm-panel' ) as HTMLElement);
+				parent = (parent as any).mmParent;
 			}
 		});
 

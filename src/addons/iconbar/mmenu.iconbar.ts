@@ -80,13 +80,13 @@ Mmenu.addons.iconbar = function(
 
 				try
 				{
-					var $target = Mmenu.$( evnt.currentTarget.getAttribute( 'href' ) );
-					if ( $target.hasClass( 'mm-panel' ) )
+					var target = this.node.menu.querySelector( evnt.currentTarget.getAttribute( 'href' ) );
+					if ( target && target.matches( '.mm-panel' ) )
 					{
 						evnt.preventDefault();
 						evnt.stopImmediatePropagation();
 
-						this.openPanel( $target, false );
+						this.openPanel( (target as HTMLElement), false );
 					}
 				}
 				catch( err ) {}
@@ -94,22 +94,22 @@ Mmenu.addons.iconbar = function(
 
 			function selectTab( 
 				this	: Mmenu,
-				$panel	: JQuery
+				panel	: HTMLElement
 			) {
 				var $tabs = $iconbar.find( 'a' );
 				$tabs.removeClass( 'mm-iconbar__tab_selected' );
 
-				var $tab = $tabs.filter( '[href="#' + $panel[ 0 ].id + '"]' );
+				var $tab = $tabs.filter( '[href="#' + panel.id + '"]' );
 				if ( $tab.length )
 				{
 					$tab.addClass( 'mm-iconbar__tab_selected' );
 				}
 				else
 				{
-					var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
-					if ( $parent && $parent.length )
+					var parent : HTMLElement = (panel as any).mmParent;
+					if ( parent )
 					{
-						selectTab.call( this, $parent.closest( '.mm-panel' ) );
+						selectTab.call( this, parent.closest( '.mm-panel' ) );
 					}
 				}
 			}

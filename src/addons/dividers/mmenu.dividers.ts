@@ -36,17 +36,17 @@ Mmenu.addons.dividers = function(
 	if ( opts.add )
 	{
 		this.bind( 'initListview:after', ( 
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
 			var $wrapper;
 			switch( opts.addTo )
 			{
 				case 'panels':
-					$wrapper = $panel;
+					$wrapper = Mmenu.$(panel);
 					break;
 
 				default:
-					$wrapper = $panel.filter( opts.addTo );
+					$wrapper = Mmenu.$(panel).filter( opts.addTo );
 					break;
 			}
 
@@ -58,28 +58,25 @@ Mmenu.addons.dividers = function(
 			$wrapper
 				.find( '.mm-listitem_divider' )
 				.remove();
-				
+
 			$wrapper
 				.find( '.mm-listview' )
-				.each(
-					( i, elem ) => {
-						var last = '';
-						Mmenu.filterListItems( Mmenu.$(elem).children() )
-							.each(
-								( i, elem ) => {
-									let letter = Mmenu.$(elem)
-										.children( '.mm-listitem__text' )
-										.text().trim().toLowerCase()[ 0 ];
+				.each(( i, elem ) => {
+					var last = '';
+					var listitems = Array.prototype.slice.call( elem.children )
+					Mmenu.filterListItems( listitems )
+						.each(( i, elem ) => {
+							let letter = Mmenu.$(elem)
+								.children( '.mm-listitem__text' )
+								.text().trim().toLowerCase()[ 0 ];
 
-									if ( letter.length && letter != last )
-									{
-										last = letter;
-										Mmenu.$( '<li class="mm-listitem mm-listitem_divider">' + letter + '</li>' ).insertBefore( elem );
-									}
-								}
-							);
-					}
-				);
+							if ( letter.length && letter != last )
+							{
+								last = letter;
+								Mmenu.$( '<li class="mm-listitem mm-listitem_divider">' + letter + '</li>' ).insertBefore( elem );
+							}
+						});
+					});
 		});
 	}
 	
@@ -105,26 +102,26 @@ Mmenu.addons.dividers = function(
 
 		function setValue( 
 			this	 : Mmenu,
-			$panel	?: JQuery
+			panel	?: HTMLElement
 		) {
-			$panel = $panel || Mmenu.$(this.node.pnls).children( '.mm-panel_opened' );
-			if ( $panel.is( ':hidden' ) )
+			panel = panel || Mmenu.DOM.child( this.node.pnls, '.mm-panel_opened' );
+			if ( panel.matches( ':hidden' ) )
 			{
 				return;
 			}
 
-			var $dividers = $panel
+			var $dividers = Mmenu.$(panel)
 				.find( '.mm-listitem_divider' )
 				.not( '.mm-hidden' );
 
-			var scrl = $panel.scrollTop() || 0,
+			var scrl = Mmenu.$(panel).scrollTop() || 0,
 				text = '';
 
 			$dividers.each(( i, divider ) => {
 				let $divider = Mmenu.$(divider);
 				if ( $divider.position().top + scrl < scrl + 1 )
 				{
-					text = $divider.text();
+					text = divider.innerText;
 				}
 			});
 
@@ -141,14 +138,14 @@ Mmenu.addons.dividers = function(
 		this.bind( 'openPanel:start'	, setValue );	// 2
 		this.bind( 'updateListview'		, setValue );	// 3
 		this.bind( 'initPanel:after', (	
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
-			$panel.off( 'scroll.mm-dividers touchmove.mm-dividers' )
+			 Mmenu.$(panel).off( 'scroll.mm-dividers touchmove.mm-dividers' )
 				.on( 'scroll.mm-dividers touchmove.mm-dividers',
 					( e ) => {
-						if ( $panel.hasClass( 'mm-panel_opened' ) )
+						if ( panel.matches( '.mm-panel_opened' ) )
 						{
-							setValue.call( this, $panel );
+							setValue.call( this, panel );
 						}
 					}
 				);

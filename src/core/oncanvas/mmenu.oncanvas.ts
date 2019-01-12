@@ -12,6 +12,7 @@
  */
 
 
+
 /**
  * Class for a mobile menu.
  */
@@ -76,6 +77,247 @@ class Mmenu {
 
 	/** Library for DOM traversal and DOM manipulations. */
 	static $ : JQueryStatic = jQuery || Zepto || cash;
+// 	static $ = (() => {
+// 		class DOMTraversing {
+
+// 			elems : HTMLElement[]
+
+// 			constructor( selector ) {
+// 				var elements = document.querySelectorAll( selector )
+// 				this.s( (elements as any) );
+// 				return this;
+// 			}
+
+// 			//	.length
+// 			get length() {
+// 				return this.elems.length;
+// 			}
+
+// 			//	save
+// 			s( 
+// 				elements  : HTMLElement[],
+// 				selector ?: string
+// 			) {
+// 				this.elems = this.u( this.f( this.c( elements ), selector ) );
+// 			}
+
+// 			//	check
+// 			c( 
+// 				elements  : HTMLElement[]
+// 			) {
+// 				var checked : HTMLElement[] = [];
+// 				elements.forEach(( elem ) => {
+// 					if ( elem )
+// 					{
+// 						checked.push( elem );
+// 					}
+// 				});
+// 				return checked;
+// 			}
+
+// 			//	filter on selector
+// 			f( 
+// 				elements  : HTMLElement[],
+// 				selector ?: string
+// 			) {
+// 				if ( !selector )
+// 				{
+// 					return elements;
+// 				}
+
+// 				var filtered : HTMLElement[] = [];
+// 				elements.forEach(( elem ) => {
+// 					if ( elem.matches( selector ) )
+// 					{
+// 						filtered.push( elem );
+// 					}
+// 				});
+// 				return filtered;
+// 			}
+
+// 			//	unique elements
+// 			u( 
+// 				elements  : HTMLElement[]
+// 			) {
+// 				var unique : HTMLElement[] = [];
+// 				elements.forEach(( elem_a, a ) => {
+// 					var add;
+// 					elements.forEach(( elem_b, b ) => {
+// 						if ( a === b )
+// 						{
+// 							add = true;
+// 						} 
+// 						else if ( elem_a === elem_b )
+// 						{
+// 							add = false;
+// 						}
+// 					});
+// 					if ( add )
+// 					{
+// 						unique.push( elem_a );
+// 					}
+// 				});
+// 				return unique;
+// 			}
+
+// 			_parent( 
+// 				elements  : HTMLElement[]
+// 			) {
+// 				var elems : HTMLElement[] = [];
+// 				elements.forEach(( elem ) => {
+// 					if ( elem )
+// 					{
+// 						elems.push( elem.parentElement );
+// 					}
+// 				});
+// 				return elems;
+// 			}
+// 			parent( 
+// 				selector ?: string
+// 			) {
+// 				this.s( this._parent( this.elems ), selector );
+// 				return this;
+// 			}
+
+// 			parents( 
+// 				selector ?: string
+// 			) {
+// 				var elems 	 : HTMLElement[] = [],
+// 					currents : HTMLElement[] = this.elems;
+
+// 				while ( currents.length )
+// 				{
+// 					currents = this._parent( currents );
+// 					elems.push( ...currents );
+// 				}
+
+// 				this.s( elems, selector );
+// 				return this;
+// 			}
+
+// 			closest(
+// 				selector ?: string
+// 			) {
+// 				var elems : HTMLElement[] = [];
+// 				this.elems.forEach(( elem ) => {
+// 					elems.push( (elem.closest( selector ) as any) );
+// 				});
+// 				this.s( elems );
+// 				return this;
+// 			}
+
+// 			children(
+// 				selector ?: string
+// 			) {
+// 				var elems : HTMLElement[] = [];
+// 				this.elems.forEach(( elem ) => {
+// 					elems.push( ...(elem.children as any) );
+// 				});
+// 				this.s( elems, selector );
+// 				return this;
+// 			}
+
+// 			find(
+// 				selector ?: string
+// 			) {
+// 				var elems : HTMLElement[] = [];
+// 				this.elems.forEach(( elem ) => {
+// 					elems.push( ...(elem.querySelectorAll( selector ) as any)[] );
+// 				});
+// 				this.s( elems );
+// 				return this;
+// 			}
+
+// 			filter(
+// 				selector ?: string
+// 			) {
+// 				this.s( this.elems, selector );
+// 				return this;
+// 			}
+
+// 			// not( selector ) {
+// 			//	? is dit echt nodig ?	
+// 			// }
+
+// 			_prev(
+// 				elements  : HTMLElement[]
+// 			) {
+// 				var elems : HTMLElement[] = [];
+// 				elements.forEach(( elem ) => {
+// 					if ( elem )
+// 					{
+// 						elems.push( (elem.previousElementSibling as any) );
+// 					}
+// 				});
+// 				return elems;
+// 			}
+// 			prev(
+// 				selector ?: string
+// 			) {
+// 				this.s( this._prev( this.elems ), selector );
+// 				return this;
+// 			}
+
+// 			prevAll(
+// 				selector ?: string
+// 			) {
+// 				var elems 	 : HTMLElement[] = [],
+// 					currents : HTMLElement[] = this.elems;
+
+// 				while ( currents.length )
+// 				{
+// 					currents = this._prev( currents );
+// 					elems.push( ...currents );
+// 				}
+
+// 				this.s( elems, selector );
+// 				return this;
+// 			}
+
+// 			_next(
+// 				elements  : HTMLElement[]
+// 			) {
+// 				var elems : HTMLElement[] = [];
+// 				elements.forEach(( elem ) => {
+// 					if ( elem )
+// 					{
+// 						elems.push( (elem.nextElementSibling as any) );
+// 					}
+// 				});
+// 				return elems;
+// 			}
+// 			next(
+// 				selector ?: string
+// 			) {
+// 				this.s( this._next( this.elems ), selector );
+// 				return this;
+// 			}
+
+// 			nextAll(
+// 				selector ?: string
+// 			) {
+// 				var elems 	 : HTMLElement[] = [],
+// 					currents : HTMLElement[] = this.elems;
+
+// 				while ( currents.length )
+// 				{
+// 					currents = this._next( currents );
+// 					elems.push( ...currents );
+// 				}
+
+// 				this.s( elems, selector );
+// 				return this;
+// 			}
+// //				add() {}
+// //				first() {}
+// //				last() {}
+// //				end: function() {},
+// 		}
+
+// 		return ( selector ) => {
+// 			return new DOMTraversing( selector );
+// 		};
+// 	})()
 
 
 	/**	Options for the menu. */
@@ -150,9 +392,9 @@ class Mmenu {
 	/**
 	 * Create a mobile menu.
 	 *
-	 * @param {JQuery|string} 	menu						The menu node.
-	 * @param {object} 			[options=Mmenu.options]		Options for the menu.
-	 * @param {object} 			[configs=Mmenu.configs]		Configuration options for the menu.
+	 * @param {HTMLElement|string} 	menu						The menu node.
+	 * @param {object} 				[options=Mmenu.options]		Options for the menu.
+	 * @param {object} 				[configs=Mmenu.configs]		Configuration options for the menu.
 	 */
 	constructor(
 		menu 		 : HTMLElement | string,
@@ -178,7 +420,7 @@ class Mmenu {
 		//	Get menu node from string or HTML element.
 		this.node.menu = ( typeof menu == 'string' )
 			? document.querySelector( menu )
-			: this.node.menu = menu;
+			: menu;
 
 
 		if ( typeof this._deprecated == 'function' )
@@ -212,24 +454,24 @@ class Mmenu {
 	/**
 	 * Open a panel.
 	 *
-	 * @param {JQuery}	$panel				Panel to open.
-	 * @param {boolean}	[animation=true]	Whether or not to open the panel with an animation.
+	 * @param {HTMLElement} panel				Panel to open.
+	 * @param {boolean}		[animation=true]	Whether or not to open the panel with an animation.
 	 */
 	openPanel( 
-		$panel 		 : JQuery,
+		panel 		 : HTMLElement,
 		animation	?: boolean
 	) {
-		this.trigger( 'openPanel:before', [ $panel ] );
+		this.trigger( 'openPanel:before', [ panel ] );
 
-		if ( !$panel || !$panel.length )
+		if ( !panel )
 		{
 			return;
 		}
-		if ( !$panel.hasClass( 'mm-panel' ) )
+		if ( !panel.matches( '.mm-panel' ) )
 		{
-			$panel = $panel.closest( '.mm-panel' );
+			panel = (panel.closest( '.mm-panel' ) as HTMLElement);
 		}
-		if ( !$panel.hasClass( 'mm-panel' ) )
+		if ( !panel )
 		{
 			return;
 		}
@@ -242,11 +484,11 @@ class Mmenu {
 
 
 		//	Open a "vertical" panel
-		if ( $panel.parent( '.mm-listitem_vertical' ).length )
+		if ( panel.parentElement.matches( '.mm-listitem_vertical' ) )
 		{
 
 			//	Open current and all vertical parent panels
-			$panel
+			Mmenu.$(panel)
 				.parents( '.mm-listitem_vertical' )
 				.addClass( 'mm-listitem_opened' )
 				.children( '.mm-panel' )
@@ -254,24 +496,23 @@ class Mmenu {
 
 			//	Open first non-vertical parent panel
 			this.openPanel( 
-				$panel
+				Mmenu.$(panel)
 					.parents( '.mm-panel' )
 					.not(
-						( i, elem ) => {
-							return Mmenu.$(elem).parent( '.mm-listitem_vertical' ).length ? true : false
+						( p, panel ) => {
+							return panel.parentElement.matches( '.mm-listitem_vertical' ) ? true : false
 						}
-					)
-					.first()
+					)[ 0 ]
 			);
 
-			this.trigger( 'openPanel:start' , [ $panel ] );
-			this.trigger( 'openPanel:finish', [ $panel ] );
+			this.trigger( 'openPanel:start' , [ panel ] );
+			this.trigger( 'openPanel:finish', [ panel ] );
 		}
 
 		//	Open a "horizontal" panel
 		else
 		{
-			if ( $panel.hasClass( 'mm-panel_opened' ) )
+			if ( panel.matches( '.mm-panel_opened' ) )
 			{
 				return;
 			}
@@ -282,75 +523,72 @@ class Mmenu {
 
 			//	Close all child panels
 			$panels
-				.not( $panel )
+				.not( panel )
 				.removeClass( 'mm-panel_opened-parent' );
 
 			//	Open all parent panels
-			var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
-			while( $parent )
+			var parent : HTMLElement = (panel as any).mmParent;
+			while( parent )
 			{
-				$parent = $parent.closest( '.mm-panel' );
-				if ( !$parent.parent( '.mm-listitem_vertical' ).length )
+				parent = (parent.closest( '.mm-panel' ) as HTMLElement);
+				if ( !parent.parentElement.matches( '.mm-listitem_vertical' ) )
 				{
-					$parent.addClass( 'mm-panel_opened-parent' );
+					parent.classList.add( 'mm-panel_opened-parent' );
 				}
-				$parent = ($parent[ 0 ] as any).mmParent;
+				parent = (parent as any).mmParent;
 			}
 
 			//	Add classes for animation
 			$panels
 				.removeClass( 'mm-panel_highest' )
 				.not( $current )
-				.not( $panel )
+				.not( panel )
 				.addClass( 'mm-hidden' );
 
-			$panel
-				.removeClass( 'mm-hidden' );
+			panel.classList.remove( 'mm-hidden' );
 
 			//	Start opening the panel
 			var openPanelStart = () => {
 				$current.removeClass( 'mm-panel_opened' );
-				$panel.addClass( 'mm-panel_opened' );
+				panel.classList.add( 'mm-panel_opened' );
 
-				if ( $panel.hasClass( 'mm-panel_opened-parent' ) )
+				if ( panel.matches( '.mm-panel_opened-parent' ) )
 				{
 					$current.addClass( 'mm-panel_highest' );
-					$panel.removeClass( 'mm-panel_opened-parent' );
+					panel.classList.remove( 'mm-panel_opened-parent' );
 				}
 				else
 				{
 					$current.addClass( 'mm-panel_opened-parent' );
-					$panel.addClass( 'mm-panel_highest' );
+					panel.classList.add( 'mm-panel_highest' );
 				}
 
-				this.trigger( 'openPanel:start', [ $panel ] );
+				this.trigger( 'openPanel:start', [ panel ] );
 			};
 
 			//	Finish opening the panel
 			var openPanelFinish = () => {
 				$current.removeClass( 'mm-panel_highest' ).addClass( 'mm-hidden' );
-				$panel.removeClass( 'mm-panel_highest' );
+				panel.classList.remove( 'mm-panel_highest' );
 
-				this.trigger( 'openPanel:finish', [ $panel ] );
+				this.trigger( 'openPanel:finish', [ panel ] );
 			};
 
-			if ( animation && !$panel.hasClass( 'mm-panel_noanimation' ) )
+			if ( animation && !panel.matches( '.mm-panel_noanimation' ) )
 			{
 				//	Without the timeout the animation will not work because the element had display: none;
 				//	RequestAnimationFrame would be nice here.
-				setTimeout(
-					() => {
-						//	Callback
-						Mmenu.transitionend( $panel,
-							() => {
-								openPanelFinish();
-							}, this.conf.transitionDuration
-						);
+				setTimeout(() => {
+					//	Callback
+					Mmenu.transitionend( Mmenu.$(panel),
+						() => {
+							openPanelFinish();
+						}, this.conf.transitionDuration
+					);
 
-						openPanelStart();
+					openPanelStart();
 
-					}, this.conf.openingInterval
-				);
+				}, this.conf.openingInterval );
 			}
 			else
 			{
@@ -359,42 +597,42 @@ class Mmenu {
 			}
 		}
 
-		this.trigger( 'openPanel:after', [ $panel ] );
+		this.trigger( 'openPanel:after', [ panel ] );
 	}
 
 
 	/**
 	 * Close a panel.
 	 *
-	 * @param {JQuery} $panel Panel to close.
+	 * @param {HTMLElement} panel Panel to close.
 	 */
 	closePanel( 
-		$panel : JQuery
+		panel : HTMLElement
 	) {
-		this.trigger( 'closePanel:before', [ $panel ] );
+		this.trigger( 'closePanel:before', [ panel ] );
 
-		var $li = $panel.parent();
+		var $li = Mmenu.$(panel).parent();
 
 		//	Only works for "vertical" panels
 		if ( $li.hasClass( 'mm-listitem_vertical' ) )
 		{
 			$li.removeClass( 'mm-listitem_opened' );
-			$panel.addClass( 'mm-hidden' );
+			panel.classList.add( 'mm-hidden' );
 
-			this.trigger( 'closePanel', [ $panel ] );
+			this.trigger( 'closePanel', [ panel ] );
 		}
 
-		this.trigger( 'closePanel:after', [ $panel ] );
+		this.trigger( 'closePanel:after', [ panel ] );
 	}
 
 
 	/**
 	 * Close all opened panels.
 	 *
-	 * @param {JQuery} [$panel] Panel to open after closing all other panels.
+	 * @param {HTMLElement} panel Panel to open after closing all other panels.
 	 */
 	closeAllPanels( 
-		$panel ?: JQuery
+		panel ?: HTMLElement
 	) {
 		this.trigger( 'closeAllPanels:before' );
 
@@ -406,7 +644,7 @@ class Mmenu {
 
 		//	Close all "horizontal" panels.
 		var $pnls = Mmenu.$(this.node.pnls).children( '.mm-panel' ),
-			$frst = ( $panel && $panel.length ) ? $panel : $pnls.first();
+			$frst = ( panel ) ? Mmenu.$(panel) : $pnls.first();
 
 		Mmenu.$(this.node.pnls)
 			.children( '.mm-panel' )
@@ -417,7 +655,7 @@ class Mmenu {
 			.addClass( 'mm-hidden' );
 
 		//	Open first panel.
-		this.openPanel( $frst, false );
+		this.openPanel( $frst[0], false );
 
 		this.trigger( 'closeAllPanels:after' );
 	}
@@ -426,7 +664,7 @@ class Mmenu {
 	/**
 	 * Toggle a panel opened/closed.
 	 *
-	 * @param {JQuery} $panel Panel to open or close.
+	 * @param {HTMLElement} panel Panel to open or close.
 	 */
 	togglePanel(
 		panel : HTMLElement
@@ -434,9 +672,9 @@ class Mmenu {
 		let listitem = panel.parentElement;
 
 		//	Only works for "vertical" panels.
-		if ( listitem && listitem.classList.contains( 'mm-listitem_vertical' ) )
+		if ( listitem.matches( '.mm-listitem_vertical' ) )
 		{
-			this[ listitem.classList.contains( 'mm-listitem_opened' ) ? 'closePanel' : 'openPanel' ]( Mmenu.$(panel) );
+			this[ listitem.matches( '.mm-listitem_opened' ) ? 'closePanel' : 'openPanel' ]( panel );
 		}
 	}
 
@@ -444,24 +682,24 @@ class Mmenu {
 	/**
 	 * Display a listitem as being "selected".
 	 *
-	 * @param {JQuery} $listitem Listitem to mark.
+	 * @param {HTMLElement} listitem Listitem to mark.
 	 */
 	setSelected(
-		$listitem : JQuery
+		listitem : HTMLElement
 	) {
-		this.trigger( 'setSelected:before', [ $listitem ] );
+		this.trigger( 'setSelected:before', [ listitem ] );
 
 		//	First, remove the selected class from all listitems.
 		this.node.menu
 			.querySelectorAll( '.mm-listitem_selected' )
-			.forEach(( listitem ) => {
-				listitem.classList.remove( 'mm-listitem_selected' );
+			.forEach(( li ) => {
+				li.classList.remove( 'mm-listitem_selected' );
 			});
 
 		//	Next, add the selected class to the provided listitem.
-		$listitem.addClass( 'mm-listitem_selected' );
+		listitem.classList.add( 'mm-listitem_selected' );
 
-		this.trigger( 'setSelected:after', [ $listitem ] );
+		this.trigger( 'setSelected:after', [ listitem ] );
 	}
 
 
@@ -743,25 +981,22 @@ class Mmenu {
 		) => {
 			if ( args.inMenu )
 			{
-				var $a = Mmenu.$(anchor);
-
 				var href = anchor.getAttribute( 'href' );
-
 				if ( href.length > 1 && href.slice( 0, 1 ) == '#' )
 				{
 					try
 					{
-						let panel = this.node.menu.querySelector( href );
+						let panel = (this.node.menu.querySelector( href ) as HTMLElement);
 
-						if ( panel.classList.contains( 'mm-panel' ) )
+						if ( panel.matches( '.mm-panel' ) )
 						{
-							if ( $a.parent().hasClass( 'mm-listitem_vertical' ) )
+							if ( anchor.parentElement.matches( '.mm-listitem_vertical' ) )
 							{
-								this.togglePanel( (panel as HTMLElement) );
+								this.togglePanel( panel );
 							}
 							else
 							{
-								this.openPanel( Mmenu.$((panel as HTMLElement)) );
+								this.openPanel( panel );
 							}
 							return true;
 						}
@@ -793,24 +1028,24 @@ class Mmenu {
 
 		var $newpanels = Mmenu.$();
 
-		var init = ( $panels ) => {
+		var init = ( $panels : JQuery ) => {
 			$panels
 				.filter( panelNodetype )
-				.each(( i, elem ) => {
-					var $panel = this._initPanel( Mmenu.$(elem) );
-					if ( $panel )
+				.each(( p, panel ) => {
+					var panel = this._initPanel( panel );
+					if ( panel )
 					{
-						this._initNavbar( $panel );
-						this._initListview( $panel );
+						this._initNavbar( panel );
+						this._initListview( panel );
 
-						$newpanels = $newpanels.add( $panel );
+						$newpanels = $newpanels.add( panel );
 
 						//	init child panels
-						var $child = $panel
+						var $child = Mmenu.$(panel)
 							.children( '.mm-listview' )
 							.children( 'li' )
 							.children()
-							.add( $panel.children( '.' + this.conf.classNames.panel ) );
+							.add( Mmenu.$(panel).children( '.' + this.conf.classNames.panel ) );
 
 						if ( $child.length )
 						{
@@ -829,58 +1064,58 @@ class Mmenu {
 	/**
 	 * Initialize a single panel.
 	 *
-	 * @param  {JQuery} $panel 	Panel to initialize.
-	 * @return {JQuery} 		Initialized panel.
+	 * @param  {HTMLElement} 		panel 	Panel to initialize.
+	 * @return {HTMLElement|null} 			Initialized panel.
 	 */
 	_initPanel(
-		$panel : JQuery
+		panel : HTMLElement
 	) {
-		this.trigger( 'initPanel:before', [ $panel ] );
-		
-		var panel = $panel[ 0 ];
+		this.trigger( 'initPanel:before', [ panel ] );
+
 
 		//	Stop if already a panel
-		if ( panel.classList.contains( 'mm-panel' ) )
+		if ( panel.matches( '.mm-panel' ) )
 		{
-			return $panel;
+			return panel;
 		}
 
 
 		//	Refactor panel classnames
-		Mmenu.refactorClass( $panel, this.conf.classNames.panel 	, 'mm-panel' 			);
-		Mmenu.refactorClass( $panel, this.conf.classNames.nopanel 	, 'mm-nopanel' 			);
-		Mmenu.refactorClass( $panel, this.conf.classNames.inset 	, 'mm-listview_inset'	);
+		Mmenu.refactorClass( panel, this.conf.classNames.panel 		, 'mm-panel' 			);
+		Mmenu.refactorClass( panel, this.conf.classNames.nopanel 	, 'mm-nopanel' 			);
+		Mmenu.refactorClass( panel, this.conf.classNames.inset 		, 'mm-listview_inset'	);
 
-		$panel.filter( '.mm-listview_inset' )
-			.addClass( 'mm-nopanel' );
+		if ( panel.matches( '.mm-listview_inset' ) )
+		{
+			panel.classList.add( 'mm-nopanel' );
+		}
 
 
 		//	Stop if not supposed to be a panel
-		if ( panel.classList.contains( 'mm-nopanel' ) )
+		if ( panel.matches( '.mm-nopanel' ) )
 		{
-			return false;
+			return null;
 		}
 
 
 		// //	Wrap UL/OL in DIV
-		var vertical = ( panel.classList.contains( this.conf.classNames.vertical ) || !this.opts.slidingSubmenus );
+		var vertical = ( panel.matches( '.' + this.conf.classNames.vertical ) || !this.opts.slidingSubmenus );
 		panel.classList.remove( this.conf.classNames.vertical );
 
 		var id = panel.id || Mmenu.getUniqueId();
 
-		if ( $panel.is( 'ul, ol' ) )
+		if ( panel.matches( 'ul, ol' ) )
 		{
 			panel.removeAttribute( 'id' );
 
-			$panel.wrap( '<div />' );
-			$panel = $panel.parent();
+			Mmenu.$(panel).wrap( '<div />' );
 			panel = panel.parentElement;
 		}
 
 		panel.id = id;
 		panel.classList.add( 'mm-panel', 'mm-hidden' );
 
-		var $parent = $panel.parent( 'li' );
+		var $parent = Mmenu.$(panel).parent( 'li' );
 		var parent = $parent[ 0 ];
 
 		if ( vertical )
@@ -898,48 +1133,48 @@ class Mmenu {
 		//	Store parent/child relation
 		if ( parent )
 		{
-			(parent as any).mmChild = $panel;
-			(panel as any).mmParent = $parent;
+			(parent as any).mmChild = panel;
+			(panel as any).mmParent = parent;
 		}
 
-		this.trigger( 'initPanel:after', [ $panel ] );
+		this.trigger( 'initPanel:after', [ panel ] );
 
-		return $panel;
+		return panel;
 	}
 
 
 	/**
 	 * Initialize a navbar.
 	 *
-	 * @param {JQuery} $panel Panel for the navbar.
+	 * @param {HTMLElement} panel Panel for the navbar.
 	 */
 	_initNavbar(
-		$panel : JQuery
+		panel : HTMLElement
 	) {
-		this.trigger( 'initNavbar:before', [ $panel ] );
+		this.trigger( 'initNavbar:before', [ panel ] );
 
-		if ( $panel.children( '.mm-navbar' ).length )
+		if ( Mmenu.$(panel).children( '.mm-navbar' ).length )
 		{
 			return;
 		}
 
-		var $parent : JQuery = ($panel[ 0 ] as any).mmParent,
+		var parent : HTMLElement = (panel as any).mmParent,
 			$navbar : JQuery = Mmenu.$( '<div class="mm-navbar" />' );
 
-		var title = this._getPanelTitle( $panel, this.opts.navbar.title ),
+		var title = this._getPanelTitle( panel, this.opts.navbar.title ),
 			href  = '';
 
-		if ( $parent && $parent.length )
+		if ( parent )
 		{
-			if ( $parent.hasClass( 'mm-listitem_vertical' ) )
+			if ( parent.matches( '.mm-listitem_vertical' ) )
 			{
 				return;
 			}
 
 			//	Listview, the panel wrapping this panel
-			if ( $parent.parent().hasClass( 'mm-listview' ) )
+			if ( parent.parentElement.matches( '.mm-listview' ) )
 			{
-				var $a = $parent
+				var $a = Mmenu.$(parent)
 					.children( 'a, span' )
 					.not( '.mm-btn_next' );
 			}
@@ -947,16 +1182,16 @@ class Mmenu {
 			//	Non-listview, the first anchor in the parent panel that links to this panel
 			else
 			{
-				var $a = $parent
+				var $a = Mmenu.$(panel)
 					.closest( '.mm-panel' )
-					.find( 'a[href="#' + $panel.attr( 'id' ) + '"]' );
+					.find( 'a[href="#' + panel.id + '"]' );
 			}
 
 			$a = $a.first();
-			$parent = $a.closest( '.mm-panel' );
+			parent = $a.closest( '.mm-panel' )[0];
 
-			var id = $parent[ 0 ].id;
-			title = this._getPanelTitle( $panel, Mmenu.$('<span>' + $a.text() + '</span>').text() );
+			var id = parent.id;
+			title = this._getPanelTitle( panel, Mmenu.$('<span>' + $a.text() + '</span>').text() );
 
 			switch ( this.opts.navbar.titleLink )
 			{
@@ -978,55 +1213,61 @@ class Mmenu {
 
 		if ( this.opts.navbar.add )
 		{
-			$panel.addClass( 'mm-panel_has-navbar' );
+			panel.classList.add( 'mm-panel_has-navbar' );
 		}
 
 		$navbar.append( '<a class="mm-navbar__title"' + ( href.length ? ' href="' + href + '"' : '' ) + '>' + title + '</a>' )
-			.prependTo( $panel );
+			.prependTo( panel );
 
-		this.trigger( 'initNavbar:after', [ $panel ] );
+		this.trigger( 'initNavbar:after', [ panel ] );
 	}
 
 
 	/**
 	 * Initialize a listview.
 	 *
-	 * @param {JQuery} $panel Panel for the listview(s).
+	 * @param {HTMLElement} panel Panel for the listview(s).
 	 */
 	_initListview(
-		$panel : JQuery
+		panel : HTMLElement
 	) {
-		this.trigger( 'initListview:before', [ $panel ] );
+		this.trigger( 'initListview:before', [ panel ] );
+
+		var $panel = Mmenu.$( panel );
 
 		//	Refactor listviews classnames
-		var $ul = Mmenu.childAddSelf( $panel, 'ul, ol' );
+		var uls = Mmenu.childAddSelf( panel, 'ul, ol' );
 
-		Mmenu.refactorClass( $ul, this.conf.classNames.nolistview, 'mm-nolistview' );
+		uls.forEach(( ul ) => {
+			Mmenu.refactorClass( ul, this.conf.classNames.nolistview, 'mm-nolistview' );
+		});
 
 
 		//	Refactor listitems classnames
-		var $li = $ul
+		var $li = Mmenu.$(uls)
 			.not( '.mm-nolistview' )
 			.addClass( 'mm-listview' )
 			.children()
 			.addClass( 'mm-listitem' );
 
-		Mmenu.refactorClass( $li, this.conf.classNames.selected , 'mm-listitem_selected' 	);
-		Mmenu.refactorClass( $li, this.conf.classNames.divider 	, 'mm-listitem_divider'		);
-		Mmenu.refactorClass( $li, this.conf.classNames.spacer 	, 'mm-listitem_spacer'		);
+		$li.each(( l, li ) => {
+			Mmenu.refactorClass( li, this.conf.classNames.selected 	, 'mm-listitem_selected' 	);
+			Mmenu.refactorClass( li, this.conf.classNames.divider 	, 'mm-listitem_divider'		);
+			Mmenu.refactorClass( li, this.conf.classNames.spacer 	, 'mm-listitem_spacer'		);
+		});
 
 		$li.children( 'a, span' )
 			.not( '.mm-btn' )
 			.addClass( 'mm-listitem__text' );
 
 		//	Add open link to parent listitem
-		var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
-		if ( $parent && $parent.hasClass( 'mm-listitem' ) )
+		var parent : HTMLElement = (panel as any).mmParent;
+		if ( parent && parent.matches( '.mm-listitem' ) )
 		{
-			if ( !$parent.children( '.mm-btn' ).length )
+			if ( !Mmenu.$(parent).children( '.mm-btn' ).length )
 			{
-				var $a = $parent.children( 'a, span' ).first(),
-					$b = Mmenu.$( '<a class="mm-btn mm-btn_next mm-listitem__btn" href="#' + $panel[ 0 ].id + '" />' );
+				var $a = Mmenu.$(parent).children( 'a, span' ).first(),
+					$b = Mmenu.$( '<a class="mm-btn mm-btn_next mm-listitem__btn" href="#' + panel.id + '" />' );
 
 				$b.insertAfter( $a );
 				if ( $a.is( 'span' ) )
@@ -1037,7 +1278,7 @@ class Mmenu {
 			}
 		}
 
-		this.trigger( 'initListview:after', [ $panel ] );
+		this.trigger( 'initListview:after', [ panel ] );
 	}
 
 
@@ -1062,16 +1303,13 @@ class Mmenu {
 			last.classList.add( 'mm-listitem_selected' );
 		}
 
-		//	Select the last listitem.
-		var $selected = Mmenu.$(last);
-
 		//	Find the current opened panel
-		var $current = ( $selected.length ) 
-			? $selected.closest( '.mm-panel' )
-			: Mmenu.$(this.node.pnls).children( '.mm-panel' ).first();
+		var current = ( last ) 
+			? last.closest( '.mm-panel' )
+			: Mmenu.$(this.node.pnls).children( '.mm-panel' )[0];
 
 		//	Open the current opened panel
-		this.openPanel( $current, false );
+		this.openPanel( current, false );
 
 		this.trigger( 'initOpened:after' );
 	}
@@ -1088,32 +1326,32 @@ class Mmenu {
 		Mmenu.$('body')
 			.on( 'click.mm',
 				'a[href]',
-				( e ) => {
-					var $t = Mmenu.$(e.currentTarget),
-						_h = e.currentTarget.getAttribute( 'href' );
+				( evnt ) => {
+					var target = evnt.currentTarget;
+					var href = target.getAttribute( 'href' );
 
 					var args : mmClickArguments = {
-						inMenu 		: Mmenu.$(this.node.menu).find( $t ).length ? true : false, 
-						inListview 	: $t.is( '.mm-listitem > a' ),
-						toExternal 	: $t.is( '[rel="external"]' ) || $t.is( '[target="_blank"]' )
+						inMenu 		: Mmenu.$(this.node.menu).find( target ).length ? true : false, 
+						inListview 	: target.matches( '.mm-listitem > a' ),
+						toExternal 	: target.matches( '[rel="external"]' ) || target.matches( '[target="_blank"]' )
 					};
 
 					var onClick = {
 						close 			: null,
 						setSelected 	: null,
-						preventDefault	: _h.slice( 0, 1 ) == '#'
+						preventDefault	: href.slice( 0, 1 ) == '#'
 					};
 
 
 					//	Find hooked behavior.
 					for ( var c = 0; c < this.clck.length; c++ )
 					{
-						var click = this.clck[ c ].call( this, e.currentTarget, args );
+						var click = this.clck[ c ].call( this, target, args );
 						if ( click )
 						{
 							if ( Mmenu.typeof( click ) == 'boolean' )
 							{
-								e.preventDefault();
+								evnt.preventDefault();
 								return;
 							}
 							if ( Mmenu.typeof( click ) == 'object' )
@@ -1129,20 +1367,20 @@ class Mmenu {
 					{
 
 						//	Set selected item, Default: true
-						if ( Mmenu.valueOrFn( $t, this.opts.onClick.setSelected, onClick.setSelected ) )
+						if ( Mmenu.valueOrFn( target, this.opts.onClick.setSelected, onClick.setSelected ) )
 						{
-							this.setSelected( $t.parent() );
+							this.setSelected( target.parentElement );
 						}
 
 						//	Prevent default / don't follow link. Default: false.
-						if ( Mmenu.valueOrFn( $t, this.opts.onClick.preventDefault, onClick.preventDefault ) )
+						if ( Mmenu.valueOrFn( target, this.opts.onClick.preventDefault, onClick.preventDefault ) )
 						{
-							e.preventDefault();
+							evnt.preventDefault();
 						}
 
 						//	Close menu. Default: false
 						//		TODO: option + code should be in offcanvas add-on
-						if ( Mmenu.valueOrFn( $t, this.opts.onClick.close, onClick.close ) )
+						if ( Mmenu.valueOrFn( target, this.opts.onClick.close, onClick.close ) )
 						{
 							if ( this.opts.offCanvas && typeof this.close == 'function' )
 							{
@@ -1219,12 +1457,12 @@ class Mmenu {
 	/**
 	 * Find the title for a panel.
 	 *
-	 * @param 	{JQuery} 			$panel 		Panel to search in.
+	 * @param 	{HTMLElement}		panel 		Panel to search in.
 	 * @param 	{string|Function} 	[dfault] 	Fallback/default title.
 	 * @return	{string}						The title for the panel.
 	 */
 	_getPanelTitle( 
-		$panel  : JQuery, 
+		panel   : HTMLElement, 
 		dfault ?: string | Function
 	) {
 		var title : string;
@@ -1232,13 +1470,13 @@ class Mmenu {
 		//	Function
 		if ( typeof this.opts.navbar.title == 'function' )
 		{
-			title = (this.opts.navbar.title as Function).call( $panel[ 0 ] );
+			title = (this.opts.navbar.title as Function).call( panel );
 		}
 
 		//	Data attr
 		if ( typeof title == 'undefined' )
 		{
-			title = $panel[ 0 ].getAttribute( 'mm-data-title' );
+			title = panel.getAttribute( 'mm-data-title' );
 		}
 
 		if ( typeof title == 'string' && title.length )
@@ -1253,7 +1491,7 @@ class Mmenu {
 		}
 		else if ( typeof dfault == 'function' )
 		{
-			return this.i18n( (dfault as Function).call( $panel[ 0 ] ) );
+			return this.i18n( (dfault as Function).call( panel ) );
 		}
 
 		//	Default
@@ -1268,19 +1506,19 @@ class Mmenu {
 	/**
 	 * Find the value from an option or function.
 	 *
-	 * @param 	{JQuery} 	$elem 		Scope for the function.
-	 * @param 	{any} 		[option] 	Value or function.
-	 * @param 	{any} 		[dfault] 	Default fallback value.
-	 * @return	{any}					The given evaluation of the given option, or the default fallback value.
+	 * @param 	{HTMLElement} 	element 	Scope for the function.
+	 * @param 	{any} 			[option] 	Value or function.
+	 * @param 	{any} 			[dfault] 	Default fallback value.
+	 * @return	{any}						The given evaluation of the given option, or the default fallback value.
 	 */
 	static valueOrFn( 
-		$elem	 : JQuery,
+		element	 : HTMLElement,
 		option	?: any,
 		dfault 	?: any
 	) {
 		if ( typeof option == 'function' )
 		{
-			var value = option.call( $elem[ 0 ] );
+			var value = option.call( element );
 			if ( typeof value != 'undefined' )
 			{
 				return value;
@@ -1295,62 +1533,122 @@ class Mmenu {
 	}
 
 
+	static DOM = {
+
+		/**
+		 * Find the first child element matching the selector.
+		 *
+		 * @param 	{HTMLElement} 	wrapper 	Element to search in.
+		 * @param 	{string}		selector	The selector to match.
+		 * @return	{HTMLElement}				The first child element that matches the selector.
+		 */
+		child: (
+			wrapper 	 : HTMLElement,
+			selector	?: string
+		) => {
+			return Mmenu.DOM.children( wrapper, selector )[ 0 ];
+		},
+
+		/**
+		 * Find all child elements matching the selector.
+		 *
+		 * @param 	{HTMLElement} 	wrapper 	Element to search in.
+		 * @param 	{string}		selector	The selector to match.
+		 * @return	{array}						Array of child elements that match the selector.
+		 */
+		children: (
+			wrapper		 : HTMLElement,
+			selector	?: string
+		) => {
+			var children : HTMLElement[] = [];
+			Array.prototype.slice.call( wrapper.children ).forEach(( child ) => {
+				if ( !selector || child.matches( selector ) )
+				{
+					children.push( (child as HTMLElement) );
+				}
+			});
+			return children;
+		}
+	}
+
+
 	/**
 	 * Refactor a classname on multiple elements.
 	 *
-	 * @param {JQuery} $elements 	Elements to refactor.
-	 * @param {string}	oldClass 	Classname to remove.
-	 * @param {string}	newClass 	Classname to add.
+	 * @param {HTMLElement} element 	Element to refactor.
+	 * @param {string}		oldClass 	Classname to remove.
+	 * @param {string}		newClass 	Classname to add.
 	 */
 	static refactorClass( 
-		$elements 	: JQuery,
+		element 	: HTMLElement,
 		oldClass	: string,
 		newClass	: string
 	) {
-		return $elements.filter( '.' + oldClass ).removeClass( oldClass ).addClass( newClass );
+		if ( element.matches( '.' + oldClass ) )
+		{
+			element.classList.remove( oldClass );
+			element.classList.add( newClass );
+		}
 	}
 
 
 	/**
 	 * Find and filter child nodes including the node itself.
 	 *
-	 * @param  {JQuery} $elements 	Elements to refactor.
-	 * @param  {string}	selector 	Selector to filter the elements against.
-	 * @return {JQuery}				The expanded and filtered set of nodes.
+	 * @param  {HTMLElement} 	element 	Elements to search in.
+	 * @param  {string}			selector 	Selector to filter the elements against.
+	 * @return {array}						The expanded and filtered set of nodes.
 	 */
 	static findAddSelf( 
-		$element : JQuery,
+		element  : HTMLElement,
 		selector : string
 	) {
-		return $element.find( selector ).add( $element.filter( selector ) );
+		var elements = Array.prototype.slice.call( element.querySelectorAll( selector ) );
+		if ( element.matches( selector ) )
+		{
+			elements.unshift( element );
+		}
+		return elements;
 	}
 
 
 	/**
 	 * Find and filter direct child nodes including the node itself.
 	 *
-	 * @param  {JQuery} $elements 	Elements to refactor.
-	 * @param  {string}	selector 	Selector to filter the elements against.
-	 * @return {JQuery}				The expanded and filtered set of nodes.
+	 * @param  {HTMLElement} 	element 	Elements to search in.
+	 * @param  {string}			selector 	Selector to filter the elements against.
+	 * @return {array}						The expanded and filtered set of nodes.
 	 */
 	static childAddSelf( 
-		$element : JQuery,
+		element : HTMLElement,
 		selector : string
 	) {
-		return $element.children( selector ).add( $element.filter( selector ) );
+		var elements = [];
+		var temp = Array.prototype.slice.call( element.children );
+		temp.forEach(( elem ) => {
+			if ( elem.matches( selector ) )
+			{
+				elements.push( elem );
+			}
+		});
+		if ( element.matches( selector ) )
+		{
+			elements.unshift( element );
+		}
+		return elements;
 	}
 
 
 	/**
 	 * Filter out non-listitem listitems.
 	 *
-	 * @param  {JQuery} $listitems 	Elements to filter.
+	 * @param  {array} $listitems 	Elements to filter.
 	 * @return {JQuery}				The filtered set of listitems.
 	 */
 	static filterListItems(
-		$listitems : JQuery
+		listitems : HTMLElement[]
 	) {
-		return $listitems
+		return Mmenu.$(listitems)
 			.not( '.mm-listitem_divider' )
 			.not( '.mm-hidden' );
 	}
@@ -1359,13 +1657,13 @@ class Mmenu {
 	/**
 	 * Find anchors in listitems.
 	 *
-	 * @param  {JQuery} $listitems 	Elements to filter.
+	 * @param  {array} 	listitems 	Elements to filter.
 	 * @return {JQuery}				The filtered set of listitems.
 	 */
 	static filterListItemAnchors(
-		$listitems : JQuery
+		listitems : HTMLElement[]
 	) {
-		return Mmenu.filterListItems( $listitems )
+		return Mmenu.filterListItems( listitems )
 			.children( 'a' )
 			.not( '.mm-btn_next' );
 	}
@@ -1431,7 +1729,7 @@ class Mmenu {
 	 * Get the type of any given variable. Improvement of "typeof".
 	 *
 	 * @param 	{any}		variable	The variable.
-	 * @return	{string}				The type of the variable.
+	 * @return	{string}				The type of the variable in lowercase.
 	 */
 	static typeof(
 		variable : any
@@ -1481,31 +1779,34 @@ class Mmenu {
 }
 
 
+(function( $ ) {
 
+	/**
+	 * jQuery plugin mmenu.
+	 */
+ 	$.fn[ 'mmenu' ] = function( opts, conf )
+	{
+		var $result = $();
 
-/**
- * jQuery plugin mmenu.
- */
-Mmenu.$.fn[ 'mmenu' ] = function( opts, conf )
-{
-	var $result = Mmenu.$();
-	this.each(
-		( i, elem ) => {
-			if ( (elem as any).mmenu )
+		this.each(( e, element ) => {
+
+			//	Don't proceed if the element already is a mmenu.
+			if ( (element as any).mmenu )
 			{
 				return;
 			}
 
-			let  menu = new Mmenu( elem, opts, conf ),
-				$menu = Mmenu.$( menu.node.menu );
+			let  menu = new Mmenu( element, opts, conf ),
+				$menu = $( menu.node.menu );
 
-			//	Store the API
+			//	Store the API.
 			$menu.data( 'mmenu', menu.API );
 
 			$result = $result.add( $menu );
-		}
-	);
+		});
 
-	return $result;
-};
+		return $result;
+	};
+
+ })( jQuery || Zepto || cash );
 

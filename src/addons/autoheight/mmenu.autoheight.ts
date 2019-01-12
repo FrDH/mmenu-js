@@ -42,7 +42,7 @@ Mmenu.addons.autoHeight = function(
 	//	Set the height
 	function setHeight(
 		 this	: Mmenu,
-		 $panel	: JQuery
+		 panel ?: HTMLElement
 	) {
 		if ( this.opts.offCanvas && !this.vars.opened )
 		{
@@ -57,46 +57,45 @@ Mmenu.addons.autoHeight = function(
 
 		if ( opts.height == 'auto' )
 		{
-			$panel = $panel || Mmenu.$(this.node.pnls).children( '.mm-panel_opened' );
-			if ( $panel.parent( '.mm-listitem_vertical' ).length )
+			if ( !panel )
 			{
-				$panel = $panel
+				panel = Mmenu.DOM.child( this.node.pnls, '.mm-panel_opened' );
+			}
+			if ( panel && panel.parentElement.matches( '.mm-listitem_vertical' ) )
+			{
+				panel = Mmenu.$(panel)
 					.parents( '.mm-panel' )
 					.not(
 						( i, elem ) => {
-							return Mmenu.$(elem).parent( '.mm-listitem_vertical' ).length ? true : false;
+							return elem.parentElement.matches( '.mm-listitem_vertical' );
 						}
-					);
+					)[ 0 ];
 			}
-			if ( !$panel.length )
+			if ( !panel )
 			{
-				$panel = Mmenu.$(this.node.pnls).children( '.mm-panel' );
+				panel = Mmenu.DOM.child( this.node.pnls, '.mm-panel' );
 			}
 
-			_hgh = $panel.first().outerHeight();
+			_hgh = Mmenu.$(panel).outerHeight();
 		}
 		else if ( opts.height == 'highest' )
 		{
-			Mmenu.$(this.node.pnls)
-				.children('.mm-panel' )
-				.each(
-					( i, panel ) => {
-
-						let $panel = Mmenu.$(panel);
-						let parent = panel.parentElement;
-						if ( parent && parent.classList.contains( 'mm-listitem_vertical' ) )
-						{
-							$panel = $panel
-								.parents( '.mm-panel' )
-								.not(
-									( i, elem ) => {
-										return Mmenu.$(elem).parent( '.mm-listitem_vertical' ).length ? true : false
-									}
-								);
-						}
-						_hgh = Math.max( _hgh, $panel.first().outerHeight() );
+			Mmenu.DOM.children( this.node.pnls, '.mm-panel' )
+				.forEach(( panel ) => {
+					let $panel = Mmenu.$(panel);
+					let parent = panel.parentElement;
+					if ( parent.matches( '.mm-listitem_vertical' ) )
+					{
+						$panel = $panel
+							.parents( '.mm-panel' )
+							.not(
+								( i, elem ) => {
+									return elem.parentElement.matches( '.mm-listitem_vertical' );
+								}
+							);
 					}
-				);
+					_hgh = Math.max( _hgh, $panel.first().outerHeight() );
+				});
 		}
 
 		Mmenu.$(this.node.menu).height( _hgh + _top + _bot );

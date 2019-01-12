@@ -3,7 +3,7 @@ Mmenu.wrappers.bootstrap4 = function(
 ) {
 
 	//	Create the menu
-	if ( this.node.menu.classList.contains( 'navbar-collapse' ) )
+	if ( this.node.menu.matches( '.navbar-collapse' ) )
 	{
 
 		//	No need for cloning the menu...

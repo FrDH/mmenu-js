@@ -71,8 +71,8 @@ Mmenu.addons.sectionIndexer = function(
 					evnt.preventDefault();
 				})
 				.on( 'mouseover.mm-sectionIndexer touchstart.mm-sectionIndexer', 'a', ( e ) => {
-					var lttr = Mmenu.$(e.currentTarget).html(),
-						$panl =  Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ),
+					var lttr  = Mmenu.$(e.currentTarget).html(),
+						$panl = Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ),
 						$list = $panl.find( '.mm-listview' );
 
 					var newTop = -1,
@@ -85,7 +85,7 @@ Mmenu.addons.sectionIndexer = function(
 						.each(
 							( i, elem ) => {
 								if ( newTop < 0 &&
-									lttr == Mmenu.$(elem).text().slice( 0, 1 ).toLowerCase()
+									lttr == elem.innerText.slice( 0, 1 ).toLowerCase()
 								) {
 									newTop = Mmenu.$(elem).position().top;
 								}
@@ -100,10 +100,10 @@ Mmenu.addons.sectionIndexer = function(
 		//	Show or hide the indexer
 		function update(
 			this	 : Mmenu,
-			$panel	?: JQuery
+			panel	?: HTMLElement
 		) {
-			$panel = $panel ||  Mmenu.$(this.node.pnls).children( '.mm-panel_opened' );
-			this.node.menu.classList[ $panel[ 0 ].classList.contains( 'mm-panel_has-sectionindexer' ) ? 'add' : 'remove' ]( 'mm-menu_has-sectionindexer' );
+			panel = panel || Mmenu.DOM.child( this.node.pnls, '.mm-panel_opened' );
+			this.node.menu.classList[ panel.matches( '.mm-panel_has-sectionindexer' ) ? 'add' : 'remove' ]( 'mm-menu_has-sectionindexer' );
 		};
 
 		this.bind( 'openPanel:start', 	update );

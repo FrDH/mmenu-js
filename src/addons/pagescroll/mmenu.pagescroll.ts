@@ -82,8 +82,8 @@ Mmenu.addons.pageScroll = function(
 			if ( anchorInPage( href ) )
 			{
 				$section = Mmenu.$(href);
-				if ( this.node.menu.classList.contains( 'mm-menu_sidebar-expanded' ) && 
-					Mmenu.$('html').hasClass( 'mm-wrapper_sidebar-expanded' )
+				if ( this.node.menu.matches( '.mm-menu_sidebar-expanded' ) && 
+					document.documentElement.matches( '.mm-wrapper_sidebar-expanded' )
 				) {
 					scrollTo( this.conf.pageScroll.scrollOffset );
 				}
@@ -105,20 +105,18 @@ Mmenu.addons.pageScroll = function(
 			scts = [];
 
 		this.bind( 'initListview:after', (
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
+			let listitems = Mmenu.DOM.children( panel.querySelector( '.mm-listview' ), 'li' );
+			Mmenu.filterListItemAnchors( listitems )
+				.each(( i, elem ) => {
+					var href = elem.getAttribute( 'href' );
 
-			Mmenu.filterListItemAnchors( $panel.find( '.mm-listview' ).children( 'li' ) )
-				.each(
-					( i, elem ) => {
-						var href = elem.getAttribute( 'href' );
-
-						if ( anchorInPage( href ) )
-						{
-							orgs.push( href );
-						}
+					if ( anchorInPage( href ) )
+					{
+						orgs.push( href );
 					}
-				);
+				});
 
 			scts = orgs.reverse();
 		});
@@ -138,12 +136,15 @@ Mmenu.addons.pageScroll = function(
 						if ( _selected !== s )
 						{
 							_selected = s;
+							let listitems = Array.prototype.slice.call(
+								Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ).find( '.mm-listview' ).children( 'li' )
+							);
 							this.setSelected( 
-								Mmenu.filterListItemAnchors( 
-									 Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ).find( '.mm-listview' ).children( 'li' )
-								)
-								.filter( '[href="' + scts[ s ] + '"]' )
-								.parent()
+								Mmenu.$(
+									Mmenu.filterListItemAnchors( listitems )
+										.filter( '[href="' + scts[ s ] + '"]' )
+										.parent()
+								)[0]
 							);
 						}
 						break;

@@ -43,9 +43,11 @@ Mmenu.addons.lazySubmenus = function(
 		) => {
 			$panels = $panels ||  Mmenu.$(this.node.pnls).children( this.conf.panelNodetype.join( ', ' ) );
 
-			Mmenu.findAddSelf( $panels, '.mm-panel_lazysubmenu' )
-				.not( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' )
-				.removeClass( 'mm-panel_lazysubmenu mm-nolistview  mm-nopanel' );
+			$panels.each(( p, panel ) => {
+				Mmenu.$( Mmenu.findAddSelf( panel, '.mm-panel_lazysubmenu' ) )
+					.not( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' )
+					.removeClass( 'mm-panel_lazysubmenu mm-nolistview  mm-nopanel' );
+			});				
 		});
 
 		//	initPanels for the default opened panel
@@ -63,9 +65,9 @@ Mmenu.addons.lazySubmenus = function(
 
 		//	initPanels for current- and sub panels before openPanel
 		this.bind( 'openPanel:before', ( 
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
-			var $panels = Mmenu.findAddSelf( $panel, '.mm-panel_lazysubmenu' )
+			var $panels = Mmenu.$( Mmenu.findAddSelf( panel, '.mm-panel_lazysubmenu' ) )
 				.not( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' );
 
 			if ( $panels.length )

@@ -124,12 +124,12 @@ Mmenu.addons.searchfield = function(
 	) => {
 		if ( args.inMenu )
 		{
-			if ( anchor.classList.contains( 'mm-searchfield__btn' ) )
+			if ( anchor.matches( '.mm-searchfield__btn' ) )
 			{
 				var $a = Mmenu.$(anchor);
 
 				//	Clicking the clear button
-				if ( anchor.classList.contains( 'mm-btn_close' ) )
+				if ( anchor.matches( '.mm-btn_close' ) )
 				{
 					var $inpt = $a.closest( '.mm-searchfield' ).find( 'input' );
 					$inpt.val( '' );
@@ -139,7 +139,7 @@ Mmenu.addons.searchfield = function(
 				}
 
 				//	Clicking the submit button
-				if ( anchor.classList.contains( 'mm-btn_next' ) )
+				if ( anchor.matches( '.mm-btn_next' ) )
 				{
 					$a.closest( '.mm-searchfield' )
 						.submit();
@@ -347,7 +347,7 @@ Mmenu.prototype._initSearching = function(
 	//	Filter out vertical submenus
 	data.$pnls = data.$pnls.not(( i, panel ) => {
 		let parent = panel.parentElement;
-		return parent && parent.classList.contains( 'mm-listitem_vertical' );
+		return parent && parent.matches( '.mm-listitem_vertical' );
 	});
 
 	//	Filter out search panel
@@ -372,7 +372,7 @@ Mmenu.prototype._initSearching = function(
 			.off( 'focus.mm-searchfield-splash' )
 			.on(  'focus.mm-searchfield-splash',
 				( e ) => {
-					this.openPanel( $spnl );
+					this.openPanel( $spnl[ 0 ] );
 				}
 			);
 	}
@@ -396,7 +396,7 @@ Mmenu.prototype._initSearching = function(
 
 					if ( $spnl.hasClass( 'mm-panel_opened' ) )
 					{
-						this.openPanel(  Mmenu.$(this.node.pnls).children( '.mm-panel_opened-parent' ).last() );
+						this.openPanel( Mmenu.$(this.node.pnls).children( '.mm-panel_opened-parent' ).last()[0] );
 					}
 				}
 			);
@@ -405,9 +405,9 @@ Mmenu.prototype._initSearching = function(
 	if ( opts.panel.add && opts.addTo == 'panel' )
 	{
 		this.bind( 'openPanel:finish', ( 
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
-			if ( $panel[ 0 ] === $spnl[ 0 ] )
+			if ( panel === $spnl[ 0 ] )
 			{
 				$inpt.focus();
 			}
@@ -551,21 +551,19 @@ Mmenu.prototype.search = function(
 			//	Clone all matched listitems into the search panel
 			var $lis = Mmenu.$();
 			$pnls
-				.each(
-					( i, elem ) => {
-						let $panel = Mmenu.$(elem),
-							$li = Mmenu.filterListItems( $panel.find( '.mm-listitem' ) ).clone( true );
+				.each(( p, panel ) => {
+					let listitems 	= Array.prototype.slice.call( panel.querySelectorAll( '.mm-listitem' ) ),
+						$li 		= Mmenu.filterListItems( listitems ).clone( true );
 
-						if ( $li.length )
+					if ( $li.length )
+					{
+						if ( opts.panel.dividers )
 						{
-							if ( opts.panel.dividers )
-							{
-								$lis = $lis.add( '<li class="mm-listitem mm-listitem_divider">' + $panel.find( '.mm-navbar__title' ).text() + '</li>' );
-							}
-							$lis = $lis.add( $li );
+							$lis = $lis.add( '<li class="mm-listitem mm-listitem_divider">' + panel.querySelector( '.mm-navbar__title' ).innerText + '</li>' );
 						}
+						$lis = $lis.add( $li );
 					}
-				);
+				});
 
 
 			//	Remove toggles, checks and open buttons
@@ -577,7 +575,7 @@ Mmenu.prototype.search = function(
 
 
 			//	Open the search panel
-			this.openPanel( $spnl );
+			this.openPanel( $spnl[0] );
 		}
 
 		else
@@ -586,76 +584,72 @@ Mmenu.prototype.search = function(
 			//	Also show listitems in sub-panels for matched listitems
 			if ( opts.showSubPanels )
 			{
-				$pnls.each(
-					( i, elem ) => {
-						let $panel = Mmenu.$(elem);
-						Mmenu.filterListItems( $panel.find( '.mm-listitem' ) )
-							.each(
-								( i, elem ) => {
-									let $child : JQuery = (elem as any).mmChild;
-									if ( $child )
-									{
-										$child.find( '.mm-listview' ).children().removeClass( 'mm-hidden' );
-									}
-								}
-							);
-					}
-				);
+				$pnls.each(( p, panel ) => {
+					let listitems = Array.prototype.slice.call( panel.querySelectorAll( '.mm-listitem' ) );
+
+					Mmenu.filterListItems( listitems )
+						.each(( l, listitem ) => {
+							let child : JQuery = (listitem as any).mmChild;
+							if ( child )
+							{
+								Mmenu.$(child).find( '.mm-listview' ).children().removeClass( 'mm-hidden' );
+							}
+						});
+					});
 			}
 
 
 			//	Update parent for sub-panel
 			Mmenu.$( $pnls.get().reverse() )
-				.each(
-					( i, elem ) => {
-						let $panel  : JQuery = Mmenu.$(elem),
-							$parent : JQuery = (elem as any).mmParent;
+				.each(( p, panel ) => {
+					let $panel : JQuery = Mmenu.$(panel),
+						parent : HTMLElement = (panel as any).mmParent;
 
-						if ( $parent )
+					if ( parent )
+					{
+						//	The current panel has mached listitems
+						let listitems = Array.prototype.slice.call( panel.querySelectorAll( '.mm-listitem' ) );
+						if ( Mmenu.filterListItems( listitems ).length )
 						{
-							//	The current panel has mached listitems
-							if ( Mmenu.filterListItems( $panel.find( '.mm-listitem' ) ).length )
+							//	Show parent
+							if ( parent.matches( '.mm-hidden' ) )
 							{
-								//	Show parent
-								if ( $parent.hasClass( 'mm-hidden' ) )
-								{
-									$parent
-										.removeClass( 'mm-hidden' )
-										.children( '.mm-btn_next' )
-										.not( '.mm-btn_fullwidth' )
-										.addClass( 'mm-btn_fullwidth' )
-										.addClass( 'mm-btn_fullwidth-search' );
-								}
-							}
-
-							else if ( !$inpt.closest( '.mm-panel' ).length )
-							{
-								if ( $panel.hasClass( 'mm-panel_opened' ) || 
-									$panel.hasClass( 'mm-panel_opened-parent' )
-								) {
-									//	Compensate the timeout for the opening animation
-									setTimeout(
-										() => {
-											this.openPanel( $parent.closest( '.mm-panel' ) );
-										}, ( i + 1 ) * ( this.conf.openingInterval * 1.5 )
-									);
-								}
-								$parent.addClass( 'mm-listitem_nosubitems' );
+								Mmenu.$(parent)
+									.removeClass( 'mm-hidden' )
+									.children( '.mm-btn_next' )
+									.not( '.mm-btn_fullwidth' )
+									.addClass( 'mm-btn_fullwidth' )
+									.addClass( 'mm-btn_fullwidth-search' );
 							}
 						}
+
+						else if ( !$inpt.closest( '.mm-panel' ).length )
+						{
+							if ( panel.matches( '.mm-panel_opened' ) || 
+								panel.matches( '.mm-panel_opened-parent' )
+							) {
+								//	Compensate the timeout for the opening animation
+								setTimeout(() => {
+									this.openPanel( (parent.closest( '.mm-panel' ) as HTMLElement) );
+								}, ( p + 1 ) * ( this.conf.openingInterval * 1.5 ));
+							}
+							parent.classList.add( 'mm-listitem_nosubitems' );
+						}
 					}
-				);
+				});
 
 
 			//	Show first preceeding divider of parent
-			Mmenu.filterListItems( $pnls.find( '.mm-listitem' ) )
-				.each(
-					( i, elem ) => {
-						Mmenu.$(elem).prevAll( '.mm-listitem_divider' )
+			$pnls.each(( p, panel ) => {
+				let listitems = Array.prototype.slice.call( panel.querySelectorAll( '.mm-listitem' ) );
+				Mmenu.filterListItems( listitems )
+					.each(( l, listitem ) => {
+						Mmenu.$(listitem).prevAll( '.mm-listitem_divider' )
 							.first()
 							.removeClass( 'mm-hidden' );
-					}
-				);
+					});
+			});
+
 		}
 
 
@@ -712,7 +706,7 @@ Mmenu.prototype.search = function(
 			//	Close panel 
 			else if ( !$inpt.closest( '.mm-panel_search' ).length )
 			{
-				this.openPanel(  Mmenu.$(this.node.pnls).children( '.mm-panel_opened-parent' ).last() );
+				this.openPanel(  Mmenu.$(this.node.pnls).children( '.mm-panel_opened-parent' ).last()[0] );
 			}
 		}
 	}

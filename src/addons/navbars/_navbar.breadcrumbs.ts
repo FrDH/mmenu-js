@@ -6,18 +6,18 @@ Mmenu.addons.navbars.breadcrumbs = function(
 	var $crumbs = Mmenu.$('<span class="mm-navbar__breadcrumbs" />').appendTo( $navbar );
 
 	this.bind( 'initNavbar:after', (
-		$panel	: JQuery
+		panel : HTMLElement
 	) => {
-		if ( $panel.children( '.mm-navbar' ).children( '.mm-navbar__breadcrumbs' ).length )
+		if ( panel.querySelector( '.mm-navbar__breadcrumbs' ) )
 		{
 			return;
 		}
 
-		$panel.removeClass( 'mm-panel_has-navbar' );
+		panel.classList.remove( 'mm-panel_has-navbar' );
 			
 		var crumbs = [],
 			$bcrb = Mmenu.$( '<span class="mm-navbar__breadcrumbs"></span>' ),
-			$crnt = $panel,
+			$crnt = Mmenu.$(panel),
 			first = true;
 
 		while ( $crnt && $crnt.length )
@@ -46,27 +46,27 @@ Mmenu.addons.navbars.breadcrumbs = function(
 
 		$bcrb
 			.append( crumbs.join( '<span class="mm-separator">' + this.conf.navbars.breadcrumbs.separator + '</span>' ) )
-			.appendTo( $panel.children( '.mm-navbar' ) );
+			.appendTo( Mmenu.DOM.child( panel, '.mm-navbar' ) );
 
 	});
 
 	//	Update for to opened panel
 	this.bind( 'openPanel:start', (
-		$panel : JQuery
+		panel : HTMLElement
 	) => {
-		var $bcrb = $panel.find( '.mm-navbar__breadcrumbs' );
-		if ( $bcrb.length )
+		var bcrb = panel.querySelector( '.mm-navbar__breadcrumbs' );
+		if ( bcrb )
 		{
-			$crumbs.html( $bcrb.html() || '' );
+			$crumbs[ 0 ].innerHTML = bcrb.innerHTML;
 		}
 	});
 
 
 	//	Add screenreader / aria support
 	this.bind( 'initNavbar:after:sr-aria', ( 
-		$panel : JQuery
+		panel : HTMLElement
 	) => {
-		$panel
+		Mmenu.$(panel)
 			.children( '.mm-navbar' )
 			.children( '.mm-breadcrumbs' )
 			.children( 'a' )

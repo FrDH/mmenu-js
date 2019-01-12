@@ -88,13 +88,13 @@ Mmenu.addons.dropdown = function(
 
 	//	Add/remove classname and style when opening/closing the menu
 	this.bind( 'open:start', () => {
-		(this.node.menu as any).mmStyle = this.node.menu.getAttribute( 'style' ) || '';
-		Mmenu.$('html').addClass( 'mm-wrapper_dropdown' );
+		(this.node.menu as any).mmStyle = this.node.menu.getAttribute( 'style' );
+		document.documentElement.classList.add( 'mm-wrapper_dropdown' );
 	});
 
 	this.bind( 'close:finish', () => {
 		this.node.menu.setAttribute( 'style', (this.node.menu as any).mmStyle );
-		Mmenu.$('html').removeClass( 'mm-wrapper_dropdown' );
+		document.documentElement.classList.remove( 'mm-wrapper_dropdown' );
 	});
 
 

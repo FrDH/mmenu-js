@@ -187,7 +187,7 @@ Mmenu.addons.drag = function(
 			}
 
 			var $slideOutNodes 	: JQuery,
-				$dragNode 		: JQuery = Mmenu.valueOrFn( Mmenu.$(this.node.menu), opts.menu.node, Mmenu.$(Mmenu.node.page) );
+				$dragNode 		: JQuery = Mmenu.valueOrFn( this.node.menu, opts.menu.node, Mmenu.$(Mmenu.node.page) );
 
 			if ( typeof $dragNode == 'string' )
 			{
@@ -269,7 +269,7 @@ Mmenu.addons.drag = function(
 				.on( 'panend', ( evnt ) => {
 					if ( _stage == 2 )
 					{
-						Mmenu.$('html').removeClass( 'mm-wrapper_dragging' );
+						document.documentElement.classList.remove( 'mm-wrapper_dragging' );
 						$slideOutNodes.css( 'transform', '' );
 						this[ _direction == drag.open_dir ? '_openFinish' : 'close' ]();
 					}
@@ -282,15 +282,15 @@ Mmenu.addons.drag = function(
 	if ( opts.panels.close )
 	{
 		this.bind( 'initPanel:after', (
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
-			var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
+			var parent = (panel as any).mmParent;
 
-			if ( $parent )
+			if ( parent )
 			{
-				$parent = $parent.closest( '.mm-panel' );
+				parent = parent.closest( '.mm-panel' );
 
-				var _hammer = new Hammer( $panel[ 0 ], this.opts.drag.vendors.hammer ),
+				var _hammer = new Hammer( panel, this.opts.drag.vendors.hammer ),
 					timeout = null;
 
 				_hammer
@@ -300,7 +300,7 @@ Mmenu.addons.drag = function(
 							{
 								return;
 							}
-							this.openPanel( $parent );
+							this.openPanel( parent );
 
 							//	prevent dragging while panel still open.
 							timeout = setTimeout(

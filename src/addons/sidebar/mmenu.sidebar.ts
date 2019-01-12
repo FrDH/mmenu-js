@@ -87,8 +87,8 @@ Mmenu.addons.sidebar = function(
 			this.node.menu.classList.add( 'mm-menu_sidebar-collapsed' );
 
 			if ( opts.collapsed.blockMenu &&
-				 this.opts.offCanvas &&
-				!Mmenu.$(this.node.menu).children( '.mm-menu__blocker' ).length
+				this.opts.offCanvas &&
+				!Mmenu.DOM.child( this.node.menu, '.mm-menu__blocker' )
 			) {
 				Mmenu.$(this.node.menu).prepend( '<a class="mm-menu__blocker" href="#' + this.node.menu.id + '" />' );
 			}
@@ -105,17 +105,17 @@ Mmenu.addons.sidebar = function(
 		if ( typeof opts.collapsed.use == 'boolean' )
 		{
 			this.bind( 'initMenu:after', () => {
-				Mmenu.$('html').addClass( clsclpsd );
+				document.documentElement.classList.add( clsclpsd );
 			});
 		}
 		else
 		{
 			this.matchMedia( opts.collapsed.use,
 				() => {
-					Mmenu.$('html').addClass( clsclpsd );
+					document.documentElement.classList.add( clsclpsd );
 				},
 				() => {
-					Mmenu.$('html').removeClass( clsclpsd );
+					document.documentElement.classList.remove( clsclpsd );
 				}
 			);
 		}
@@ -132,7 +132,7 @@ Mmenu.addons.sidebar = function(
 		if ( typeof opts.expanded.use == 'boolean' )
 		{
 			this.bind( 'initMenu:after', () => {
-				Mmenu.$('html').addClass( clsxpndd );
+				document.documentElement.classList.add( clsxpndd );
 				this.open();
 			});
 		}
@@ -140,28 +140,28 @@ Mmenu.addons.sidebar = function(
 		{
 			this.matchMedia( opts.expanded.use,
 				() => {
-					Mmenu.$('html').addClass( clsxpndd );
-					if ( !Mmenu.$('html').hasClass( 'mm-wrapper_sidebar-closed' ) )
+					document.documentElement.classList.add( clsxpndd );
+					if ( !document.documentElement.matches( '.mm-wrapper_sidebar-closed' ) )
 					{
 						this.open();
 					}
 				},
 				() => {
-					Mmenu.$('html').removeClass( clsxpndd );
+					document.documentElement.classList.remove( clsxpndd );
 					this.close();
 				}
 			);
 		}
 
 		this.bind( 'close:start', () => {
-			if ( Mmenu.$('html').hasClass( clsxpndd ) )
+			if ( document.documentElement.matches( '.' + clsxpndd ) )
 			{
-				Mmenu.$('html').addClass( 'mm-wrapper_sidebar-closed' );
+				document.documentElement.classList.add( 'mm-wrapper_sidebar-closed' );
 			}
 		});
 
 		this.bind( 'open:start', () => {
-			Mmenu.$('html').removeClass( 'mm-wrapper_sidebar-closed' );
+			document.documentElement.classList.remove( 'mm-wrapper_sidebar-closed' );
 		});
 
 
@@ -174,7 +174,7 @@ Mmenu.addons.sidebar = function(
 
 			if ( args.inMenu && args.inListview )
 			{
-				if ( Mmenu.$('html').hasClass( 'mm-wrapper_sidebar-expanded' ) )
+				if ( document.documentElement.matches( '.mm-wrapper_sidebar-expanded' ) )
 				{
 					return {
 						close: false

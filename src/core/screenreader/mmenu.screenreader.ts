@@ -47,22 +47,22 @@ Mmenu.addons.screenReader = function(
 		this.bind( 'updateListview', () => {
 			let listitems = this.node.pnls.querySelectorAll( '.mm-listitem' );
 			listitems.forEach(( listitem ) => {
-				Mmenu.sr_aria( Mmenu.$(listitem), 'hidden', listitem.classList.contains( 'mm-hidden' ) );
+				Mmenu.sr_aria( Mmenu.$(listitem), 'hidden', listitem.matches( '.mm-hidden' ) );
 			});
 		});
 
 
 		//	Update aria-hidden for the panels when opening and closing a panel.
 		this.bind( 'openPanel:start', (
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
 			var $hidden = Mmenu.$(this.node.menu)
 				.find( '.mm-panel' )
-				.not( $panel )
-				.not( $panel.parents( '.mm-panel' ) );
+				.not( panel )
+				.not( Mmenu.$(panel).parents( '.mm-panel' ) );
 
-			var $shown = $panel.add(
-				$panel
+			var $shown = Mmenu.$(panel).add(
+				Mmenu.$(panel)
 					.find( '.mm-listitem_vertical .mm-listitem_opened' )
 					.children( '.mm-panel' )
 			);
@@ -71,9 +71,9 @@ Mmenu.addons.screenReader = function(
 			Mmenu.sr_aria( $shown, 'hidden', false );
 		});
 		this.bind( 'closePanel', (
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
-			Mmenu.sr_aria( $panel, 'hidden', true );
+			Mmenu.sr_aria( panel, 'hidden', true );
 		});
 
 
@@ -96,10 +96,10 @@ Mmenu.addons.screenReader = function(
 
 		//	Add aria-hidden for navbars in panels.
 		this.bind( 'initNavbar:after', (
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
-			var $navbar = $panel.children( '.mm-navbar' );
-			Mmenu.sr_aria( $navbar, 'hidden', !$panel.hasClass( 'mm-panel_has-navbar' ) );
+			var $navbar = Mmenu.$(panel).children( '.mm-navbar' );
+			Mmenu.sr_aria( $navbar, 'hidden', !panel.matches( '.mm-panel_has-navbar' ) );
 		});
 
 
@@ -110,9 +110,9 @@ Mmenu.addons.screenReader = function(
 			if ( this.opts.navbar.titleLink == 'parent' )
 			{
 				this.bind( 'initNavbar:after', (
-					$panel : JQuery
+					panel : HTMLElement
 				) => {
-					var $navbar = $panel.children( '.mm-navbar' ),
+					var $navbar = Mmenu.$(panel).children( '.mm-navbar' ),
 						hidden  = ( $navbar.children( '.mm-btn_prev' ).length ) ? true : false;
 
 					Mmenu.sr_aria( $navbar.children( '.mm-title' ), 'hidden', hidden );
@@ -137,9 +137,9 @@ Mmenu.addons.screenReader = function(
 
 		//	Add text to the prev-buttons.
 		this.bind( 'initNavbar:after', ( 
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
-			var $navbar = $panel.children( '.mm-navbar' ),
+			var $navbar = Mmenu.$(panel).children( '.mm-navbar' ),
 				text = this.i18n( conf.text.closeSubmenu );
 
 			$navbar.children( '.mm-btn_prev' ).html( Mmenu.sr_text( text ) );
@@ -148,12 +148,12 @@ Mmenu.addons.screenReader = function(
 
 		//	Add text to the next-buttons.
 		this.bind( 'initListview:after', (
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
-			var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
-			if ( $parent && $parent.length )
+			var $parent : HTMLElement = (panel as any).mmParent;
+			if ( parent )
 			{
-				var $next = $parent.children( '.mm-btn_next' ),
+				var $next = Mmenu.$(parent).children( '.mm-btn_next' ),
 					text = this.i18n( conf.text[ $next.parent().is( '.mm-listitem_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
 
 				$next.append( Mmenu.sr_text( text ) );

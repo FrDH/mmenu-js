@@ -62,22 +62,22 @@ Mmenu.addons.columns = function(
 
 		//	Close all later opened panels
 		this.bind( 'openPanel:before', (
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
-			var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
-			if ( !$parent )
+			var parent : HTMLElement = (panel as any).mmParent;
+			if ( !parent )
 			{
 				return;
 			}
 
-			$parent = $parent.closest( '.mm-panel' );
-			if ( !$parent.length )
+			parent = (parent.closest( '.mm-panel' ) as HTMLElement);
+			if ( !parent )
 			{
 				return;
 			}
 
-			var classname = $parent[ 0 ].className;
-			if ( !classname )
+			var classname = parent.className;
+			if ( !classname.length )
 			{
 				return;
 			}
@@ -91,12 +91,12 @@ Mmenu.addons.columns = function(
 			var colnr = parseInt( classname.split( ' ' )[ 0 ], 10 ) + 1;
 			while( colnr > 0 )
 			{
-				$panel = Mmenu.$(this.node.pnls).children( '.mm-panel_columns-' + colnr );
-				if ( $panel.length )
+				panel = Mmenu.DOM.child( this.node.pnls, '.mm-panel_columns-' + colnr );
+				if ( panel )
 				{
 					colnr++;
-					$panel.removeClass( rmvc )
-						.addClass( 'mm-hidden' );
+					panel.classList.remove( rmvc );
+					panel.classList.add( 'mm-hidden' );
 				}
 				else
 				{
@@ -107,10 +107,10 @@ Mmenu.addons.columns = function(
 		});
 
 		this.bind( 'openPanel:start', (
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
-			var _num = Mmenu.$(this.node.pnls).children( '.mm-panel_opened-parent' ).length;
-			if ( !$panel.hasClass( 'mm-panel_opened-parent' ) )
+			var _num = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' ).length;
+			if ( !panel.matches( '.mm-panel_opened-parent' ) )
 			{
 				_num++;
 			}
@@ -123,7 +123,7 @@ Mmenu.addons.columns = function(
 				.children( '.mm-panel' )
 				.removeClass( colp )
 				.filter( '.mm-panel_opened-parent' )
-				.add( $panel )
+				.add( panel )
 				.slice( -opts.visible.max )
 				.each(( i, panel ) => {
 					panel.classList.add( 'mm-panel_columns-' + i );

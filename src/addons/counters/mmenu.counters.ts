@@ -1,5 +1,3 @@
-(function( $ : JQueryStatic ) {
-
 Mmenu.addons.counters = function(
 	this : Mmenu
 ) {
@@ -26,10 +24,10 @@ Mmenu.addons.counters = function(
 
 	//	Refactor counter class
 	this.bind( 'initListview:after', (
-		$panel : JQuery
+		panel : HTMLElement
 	) => {
 		var cntrclss = this.conf.classNames.counters.counter;
-		Mmenu.refactorClass( $panel.find( '.' + cntrclss ), cntrclss, 'mm-counter' );
+		Mmenu.refactorClass( panel.querySelector( '.' + cntrclss ), cntrclss, 'mm-counter' );
 	});
 
 
@@ -37,28 +35,30 @@ Mmenu.addons.counters = function(
 	if ( opts.add )
 	{
 		this.bind( 'initListview:after', (
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
 			var $wrapper : JQuery;
 			switch( opts.addTo )
 			{
 				case 'panels':
-					$wrapper = $panel;
+					$wrapper = Mmenu.$(panel);
 					break;
 
 				default:
-					$wrapper = $panel.filter( opts.addTo );
+					$wrapper = Mmenu.$(panel).filter( opts.addTo );
 					break;
 			}
 
 			$wrapper.each(
-				( i, elem ) => {
-					var $parent : JQuery = (elem as any).mmParent;
-					if ( $parent )
+				( w, wrapper ) => {
+					var parent : HTMLElement = (wrapper as any).mmParent;
+					if ( parent )
 					{
-						if ( !$parent.find( '.mm-counter' ).length )
+						if ( !parent.querySelector( '.mm-counter' ) )
 						{
-							$parent.children( '.mm-btn' ).prepend( $( '<span class="mm-counter" />' ) );
+							let counter = document.createElement( 'span' );
+							counter.classList.add( 'mm-counter' );
+							Mmenu.DOM.child( parent, '.mm-btn' ).prepend( counter );
 						}
 					}
 				}
@@ -70,43 +70,37 @@ Mmenu.addons.counters = function(
 	{
 		function count(
 			this 	 : Mmenu,
-			$panels	?: JQuery
+			panel	?: HTMLElement
 		) {
-			$panels = $panels || Mmenu.$(this.node.pnls).children( '.mm-panel' );
+			var panels = panel ? [ panel ] : Mmenu.DOM.children( this.node.pnls, '.mm-panel' );
+			panels.forEach(( panel ) => {
+				var parent : HTMLElement = (panel as any).mmParent;
 
-			$panels.each(
-				( i, elem ) => {
-					var $panel 	: JQuery = $(elem),
-						$parent : JQuery = (elem as any).mmParent;
-
-					if ( !$parent )
-					{
-						return;
-					}
-
-					var $counter = $parent.find( '.mm-counter' );
-					if ( !$counter.length )
-					{
-						return;
-					}
-
-					var $listview = $panel.children( '.mm-listview' );
-					if ( !$listview.length )
-					{
-						return;
-					}
-
-					$counter.html( Mmenu.filterListItems( $listview.children() ).length.toString() );
+				if ( !parent )
+				{
+					return;
 				}
-			);
+
+				var counter = parent.querySelector( '.mm-counter' );
+				if ( !counter )
+				{
+					return;
+				}
+
+				var $listview = Mmenu.$(panel).children( '.mm-listview' );
+				if ( !$listview.length )
+				{
+					return;
+				}
+				var listitems : HTMLElement[] = Array.prototype.slice.call( $listview.children() );
+				counter.innerHTML = Mmenu.filterListItems( listitems ).length.toString();
+			});
 		};
 
 		this.bind( 'initListview:after'	, count );
 		this.bind( 'updateListview'		, count );
 	}
 };
-
-})( jQuery );
 
 
 //	Default options and configuration.

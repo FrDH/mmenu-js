@@ -8,32 +8,32 @@ Mmenu.addons.navbars.prev = function(
 
 	
 	this.bind( 'initNavbar:after', ( 
-		$panel : JQuery
+		panel : HTMLElement
 	) => {
-		$panel.removeClass( 'mm-panel_has-navbar' );
+		panel.classList.remove( 'mm-panel_has-navbar' );
 	});
 
 
 	//	Update to opened panel.
-	var $org : JQuery;
+	var org : HTMLElement;
 	var _url, _txt;
 
 	this.bind( 'openPanel:start', (
-		$panel : JQuery
+		panel : HTMLElement
 	) => {
-		if ( $panel.parent( '.mm-listitem_vertical' ).length )
+		if ( panel.parentElement.matches( '.mm-listitem_vertical' ) )
 		{
 			return;
 		}
 
-		$org = $panel.find( '.' + this.conf.classNames.navbars.panelPrev );
-		if ( !$org.length )
+		org = panel.querySelector( '.' + this.conf.classNames.navbars.panelPrev );
+		if ( !org )
 		{
-			$org = $panel.children( '.mm-navbar' ).children( '.mm-btn_prev' );
+			org = Mmenu.$(panel).children( '.mm-navbar' ).children( '.mm-btn_prev' )[0];
 		}
 
-		_url = $org.length ? $org[ 0 ].getAttribute( 'href' ) : '';
-		_txt = $org.html();
+		_url = org ? org.getAttribute( 'href' ) : '';
+		_txt = org.innerHTML;
 
 		if ( _url )
 		{
@@ -51,13 +51,12 @@ Mmenu.addons.navbars.prev = function(
 
 	//	Add screenreader / aria support
 	this.bind( 'initNavbar:after:sr-aria', (
-		$panel : JQuery
+		panel : HTMLElement
 	) => {
-		var $navbar = $panel.children( '.mm-navbar' );
-		Mmenu.sr_aria( $navbar, 'hidden', true );
+		Mmenu.sr_aria( panel.querySelector( '.mm-navbar' ), 'hidden', true );
 	});
 	this.bind( 'openPanel:start:sr-aria', (
-		$panel : JQuery
+		panel : HTMLElement
 	) => {
 		Mmenu.sr_aria( $prev, 'hidden', $prev.hasClass( 'mm-hidden' ) );
 		Mmenu.sr_aria( $prev, 'owns', ( $prev[ 0 ].getAttribute( 'href' ) || '' ).slice( 1 ) );

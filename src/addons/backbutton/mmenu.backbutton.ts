@@ -39,13 +39,10 @@ Mmenu.addons.backButton = function(
 			this : Mmenu
 		) {
 			states = [ _menu ];
-			Mmenu.$(this.node.pnls).children( '.mm-panel_opened-parent' )
-				.add( Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ) )
-				.each(
-					( i, elem ) => {
-						states.push( '#' + elem.id );
-					}
-				);
+			Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened, .mm-panel_opened-parent' )
+				.forEach(( panel ) => {
+					states.push( '#' + panel.id );
+				});
 		}
 
 		this.bind( 'open:finish', () => {
@@ -53,7 +50,7 @@ Mmenu.addons.backButton = function(
 		});
 		this.bind( 'open:finish'		, setStates );
 		this.bind( 'openPanel:finish'	, setStates );
-		this.bind( 'close:finish', () => {
+		this.bind( 'close:finish'		, () => {
 			states = [];
 			history.back();
 			history.pushState( null, document.title, location.pathname + location.search );
@@ -73,7 +70,7 @@ Mmenu.addons.backButton = function(
 					}
 					else
 					{
-						this.openPanel( Mmenu.$( hash ) );
+						this.openPanel( this.node.menu.querySelector( hash ) );
 						history.pushState( null, document.title, _menu );
 					}
 				}

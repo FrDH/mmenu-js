@@ -3,7 +3,7 @@ Mmenu.wrappers.wordpress = function(
 ) {
 	this.conf.classNames.selected = 'current-menu-item';
 
-	Mmenu.$("#wpadminbar")
-		.css( 'position', 'fixed' )
-		.addClass( 'mm-slideout' );
+	var wpadminbar = document.getElementById( 'wpadminbar' );
+	wpadminbar.style.position = 'fixed';
+	wpadminbar.classList.add( 'mm-slideout' );
 };

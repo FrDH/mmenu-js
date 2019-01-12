@@ -14,8 +14,8 @@ Mmenu.addons.navbars.tabs = function(
 		.on( 'click.mm-navbars', ( evnt ) => {
 			evnt.preventDefault();
 
-			var $tab = Mmenu.$(evnt.currentTarget);
-			if ( $tab.hasClass( 'mm-navbar__tab_selected' ) )
+			var tab = evnt.currentTarget;
+			if ( tab.matches( 'mm-navbar__tab_selected' ) )
 			{
 				evnt.stopImmediatePropagation();
 				return;
@@ -23,7 +23,7 @@ Mmenu.addons.navbars.tabs = function(
 
 			try
 			{
-				this.openPanel( Mmenu.$( $tab[ 0 ].getAttribute( 'href' ) ), false );
+				this.openPanel( this.node.menu.querySelector( tab.getAttribute( 'href' ) ), false );
 				evnt.stopImmediatePropagation();
 			}
 			catch( err ) {}
@@ -31,21 +31,21 @@ Mmenu.addons.navbars.tabs = function(
 
 	function selectTab( 
 		this	: Mmenu,
-		$panel	: JQuery
+		panel	: HTMLElement
 	) {
 		$tabs.removeClass( 'mm-navbar__tab_selected' );
 
-		var $tab = $tabs.filter( '[href="#' + $panel[ 0 ].id + '"]' );
+		var $tab = $tabs.filter( '[href="#' + panel.id + '"]' );
 		if ( $tab.length )
 		{
 			$tab.addClass( 'mm-navbar__tab_selected' );
 		}
 		else
 		{
-			var $parent : JQuery = ($panel[ 0 ] as any).mmParent;
-			if ( $parent && $parent.length )
+			var parent : HTMLElement = (panel as any).mmParent;
+			if ( parent )
 			{
-				selectTab.call( this, $parent.closest( '.mm-panel' ) );
+				selectTab.call( this, parent.closest( '.mm-panel' ) );
 			}
 		}
 	}

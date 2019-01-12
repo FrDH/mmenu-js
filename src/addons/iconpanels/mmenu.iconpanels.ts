@@ -75,54 +75,61 @@ Mmenu.addons.iconPanels = function(
 		}
 		function setPanels(
 			this	: Mmenu,
-			$panel	: JQuery
+			panel	: HTMLElement
 		) {
-			if ( $panel.parent( '.mm-listitem_vertical' ).length )
+			if ( panel.parentElement.matches( '.mm-listitem_vertical' ) )
 			{
 				return;
 			}
 
-			var $panels : JQuery =  Mmenu.$(this.node.pnls).children( '.mm-panel' );
+			var $panels : JQuery = Mmenu.$(this.node.pnls).children( '.mm-panel' );
+			var panels = Mmenu.DOM.children( this.node.pnls, '.mm-panels' );
 
 			if ( keepFirst )
 			{
-				$panels
-					.removeClass( 'mm-panel_iconpanel-first' )
-					.first()
-					.addClass( 'mm-panel_iconpanel-first' );
+				panels.forEach(( panel, p ) => {
+					panel.classList[ p == 0 ? 'add' : 'remove' ]( 'mm-panel_iconpanel-first' );
+				});
 			}
 			else
 			{
-				$panels
-					.removeClass( cls )
-					.filter( '.mm-panel_opened-parent' )
-					.add( $panel )
-					.removeClass( 'mm-hidden' )
-					.not(( i, elem ) => {
-						return Mmenu.$(elem).parent( '.mm-listitem_vertical' ).length ? true : false
-					})
-					.slice( -opts.visible )
-					.each(( i, elem ) => {
-						Mmenu.$(elem).addClass( 'mm-panel_iconpanel-' + i );
-					});
+				var opened : HTMLElement[] = [];
+				panels.forEach(( panel, p ) => {
+					panel.classList.remove( cls );
+
+					if ( panel.matches( '.mm-panel_opened-parent' ) &&
+						!panel.parentElement.matches( '.mm-listitem_vertical' )
+					) {
+						opened.push( panel );
+					}
+				});
+				opened.push( panel );
+				opened.forEach(( panel ) => {
+					panel.classList.remove( 'mm-hidden' );
+				});
+				opened = opened.slice( -opts.visible );
+				opened.forEach(( panel, p ) => {
+					panel.classList.add( 'mm-panel_iconpanel-' + p );
+				});
 			}
 		};
 
 		this.bind( 'openPanel:start', setPanels );
-		this.bind( 'initPanels:after', ( 
-			$panels	: JQuery
-		) => {
-			setPanels.call( this,  Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ) );
+		this.bind( 'initPanels:after', () => {
+			setPanels.call( this, Mmenu.DOM.child( this.node.pnls, '.mm-panel_opened' ) );
 		});
 
 		this.bind( 'initListview:after', (
-			$panel : JQuery
+			panel : HTMLElement
 		) => {
 			if ( opts.blockPanel &&
-				!$panel.parent( '.mm-listitem_vertical' ).length &&
-				!$panel.children( '.mm-panel__blocker' ).length
+				!panel.parentElement.matches( '.mm-listitem_vertical' ) &&
+				!Mmenu.DOM.child( panel, '.mm-panel__blocker' )
 			) {
-				$panel.prepend( '<a href="#' + $panel.closest( '.mm-panel' )[ 0 ].id + '" class="mm-panel__blocker" />' );
+				var anchor = document.createElement( 'a' );
+				anchor.classList.add( 'mm-panel__blocker' );
+				anchor.setAttribute( 'href', panel.closest( '.mm-panel' ).id );
+				panel.prepend( anchor );
 			}	
 		});
 	}

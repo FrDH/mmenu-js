@@ -68,13 +68,13 @@ Mmenu.addons.offCanvas = function(
 
 	//	Sync the blocker to target the page.
 	this.bind( 'setPage:after', ( 
-		$page : JQuery
+		page : HTMLElement
 	) => {
 		if ( Mmenu.node.blck )
 		{
 			Mmenu.$(Mmenu.node.blck)
 				.children( 'a' )
-				.attr( 'href', '#' + $page[ 0 ].id );
+				.attr( 'href', '#' + page.id );
 		}
 	});
 
@@ -111,7 +111,7 @@ Mmenu.addons.offCanvas = function(
 		var id = this.vars.orgMenuId;
 		if ( id )
 		{
-			if ( $a.is( '[href="#' + id + '"]' ) )
+			if ( anchor.matches( '[href="#' + id + '"]' ) )
 			{
 				//	Opening this menu from within this menu
 				//		-> Open menu
@@ -123,14 +123,14 @@ Mmenu.addons.offCanvas = function(
 
 				//	Opening this menu from within a second menu
 				//		-> Close the second menu before opening this menu
-				var $menu = $a.closest( '.mm-menu' );
-				if ( $menu.length )
+				var menu = (anchor.closest( '.mm-menu' ) as HTMLElement);
+				if ( menu )
 				{
-					var api : mmApi = ($menu as any).mmenu;
+					var api : mmApi = (menu as any).mmenu;
 					if ( api && api.close )
 					{
 						api.close();
-						Mmenu.transitionend( $menu,
+						Mmenu.transitionend( Mmenu.$(menu),
 							() => {
 								this.open();
 							}, this.conf.transitionDuration
@@ -149,7 +149,7 @@ Mmenu.addons.offCanvas = function(
 		id = Mmenu.node.page.id;
 		if ( id )
 		{
-			if ( $a.is( '[href="#' + id + '"]' ) )
+			if ( anchor.matches( '[href="#' + id + '"]' ) )
 			{
 				this.close();
 				return true;
@@ -460,7 +460,7 @@ Mmenu.prototype._initBlocker = function(
 		.off( 'mousedown.mm-offCanvas' )
 		.on( 'mousedown.mm-offCanvas', ( evnt ) => {
 			evnt.preventDefault();
-			if ( !document.querySelector( 'html' ).classList.contains( 'mm-wrapper_modal' ) )
+			if ( !document.querySelector( 'html' ).matches( '.mm-wrapper_modal' ) )
 			{
 				this.closeAllOthers();
 				this.close();

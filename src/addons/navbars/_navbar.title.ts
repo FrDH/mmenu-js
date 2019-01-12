@@ -9,24 +9,24 @@ Mmenu.addons.navbars.title = function(
 
 	//	Update to opened panel
 	var _url, _txt;
-	var $org : JQuery;
+	var org : HTMLElement;
 
 	this.bind( 'openPanel:start', ( 
-		$panel : JQuery
+		panel : HTMLElement
 	) => {
-		if ( $panel.parent( '.mm-listitem_vertical' ).length )
+		if ( panel.parentElement.matches( '.mm-listitem_vertical' ) )
 		{
 			return;
 		}
 
-		$org = $panel.find( '.' + this.conf.classNames.navbars.panelTitle );
-		if ( !$org.length )
+		org = panel.querySelector( '.' + this.conf.classNames.navbars.panelTitle );
+		if ( !org )
 		{
-			$org = $panel.children( '.mm-navbar' ).children( '.mm-navbar__title' );
+			org = panel.querySelector( '.mm-navbar__title' );
 		}
 
-		_url = $org[ 0 ].getAttribute( 'href' );
-		_txt = $org.html();
+		_url = org.getAttribute( 'href' );
+		_txt = org.innerHTML;
 
 		if ( _url )
 		{
@@ -46,7 +46,7 @@ Mmenu.addons.navbars.title = function(
 	var $prev;
 
 	this.bind( 'openPanel:start:sr-aria', (
-		$panel : JQuery
+		panel : HTMLElement
 	) => {
 		if ( this.opts.screenReader.text )
 		{

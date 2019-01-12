@@ -65,9 +65,9 @@ Mmenu.addons.keyboardNavigation = function(
 		var focs = 'input, select, textarea, button, label, a[href]';
 		function focus( 
 			this 	 : Mmenu,
-			$panl	?: JQuery
+			panel	?: HTMLElement
 		) {
-			$panl = $panl ||  Mmenu.$(this.node.pnls).children( '.mm-panel_opened' );
+			panel = panel || Mmenu.DOM.child( this.node.pnls, '.mm-panel_opened' );
 
 			var $focs = Mmenu.$(),
 				$navb = Mmenu.$(this.node.menu)
@@ -83,12 +83,14 @@ Mmenu.addons.keyboardNavigation = function(
 			if ( opts.enable == 'default' )
 			{
 				//	first anchor in listview
-				$focs = $panl.children( '.mm-listview' ).find( 'a[href]' ).not( '.mm-hidden' );
+				$focs = Mmenu.$(panel).children( '.mm-listview' ).find( 'a[href]' ).not( '.mm-hidden' );
 
 				//	first element in panel
 				if ( !$focs.length )
 				{
-					$focs = $panl.find( focs ).not( '.mm-hidden' );
+					$focs = Mmenu.$(panel)
+						.find( focs )
+						.not( '.mm-hidden' );
 				}
 
 				//	first element in navbar
@@ -147,16 +149,17 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 		//	Prevent tabbing outside an offcanvas menu
 		.off( 'focusin.mm-keyboardNavigation' )
 		.on( 'focusin.mm-keyboardNavigation', ( evnt ) => {
-			if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
+			if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
 			{
-				var $target = Mmenu.$(evnt.target);
+				var target = (evnt.target as any);
+				var $target = Mmenu.$(target);
 
-				if ( $target.is( '.mm-tabend' ) )
+				if ( target.matches( '.mm-tabend' ) )
 				{
 					var $next = Mmenu.$();
 
 					//	Jump from menu to blocker
-					if ( $target.parent().is( '.mm-menu' ) )
+					if ( target.parentElement.matches( '.mm-menu' ) )
 					{
 						if ( Mmenu.node.blck )
 						{
@@ -171,7 +174,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 					}
 					if ( !$next.length )
 					{
-						($next as any) = $target.parent();	//	Without the any type, Typescript complains about $target being the window.
+						$next = $target.parent();
 					}
 
 					$next.children( '.mm-tabstart' ).focus();
@@ -182,15 +185,15 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 		//	Default keyboard navigation
 		.off( 'keydown.mm-keyboardNavigation' )
 		.on( 'keydown.mm-keyboardNavigation', ( evnt ) => {
-			var $target = Mmenu.$(evnt.target),
-				$menu 	= $target.closest( '.mm-menu' );
+			var target 	= (evnt.target as any);
+			var menu	= target.closest( '.mm-menu' );
 
-			if ( $menu.length )
+			if ( menu )
 			{
-				var api : mmApi = ($menu[ 0 ] as any).mmenu;
+				var api : mmApi = (menu as any).mmenu;
 
 				//	special case for input and textarea
-				if ( $target.is( 'input, textarea' ) )
+				if ( target.matches( 'input, textarea' ) )
 				{
 				}
 				else
@@ -199,10 +202,10 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 					{
 						//	press enter to toggle and check
 						case 13: 
-							if ( $target.is( '.mm-toggle' ) || 
-								 $target.is( '.mm-check' )
+							if ( target.matches( '.mm-toggle' ) || 
+								 target.matches( '.mm-check' )
 							) {
-								$target.trigger( 'click.mm' );
+								Mmenu.$(target).trigger( 'click.mm' );
 							}
 							break;
 
@@ -226,21 +229,21 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 			//	Enhanced keyboard navigation
 			.off( 'keydown.mm-keyboardNavigation' )
 			.on( 'keydown.mm-keyboardNavigation', ( evnt ) => {
-				var $target = Mmenu.$(evnt.target),
-					$menu 	= $target.closest( '.mm-menu' );
+				var target 	= (evnt.target as any),
+					menu 	= target.closest( '.mm-menu' );
 
-				if ( $menu.length )
+				if ( menu )
 				{
-					var api : mmApi = ($menu[ 0 ] as any).mmenu;
+					var api : mmApi = (menu as any).mmenu;
 
 					//	special case for input and textarea
-					if ( $target.is( 'input' ) )
+					if ( target.matches( 'input' ) )
 					{
 						switch( evnt.keyCode )
 						{
 							//	empty searchfield with esc
 							case 27:
-								$target.val( '' );
+								target.value = '';
 								break;
 						}
 					}
@@ -250,16 +253,16 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 						{
 							//	close submenu with backspace
 							case 8: 
-								var $parent : JQuery = ($menu.find( '.mm-panel_opened' )[ 0 ] as any).mmParent;
-								if ( $parent && $parent.length )
+								var parent : HTMLElement = (menu.querySelector( '.mm-panel_opened' ) as any).mmParent;
+								if ( parent )
 								{
-									api.openPanel( $parent.closest( '.mm-panel' ) );
+									api.openPanel( parent.closest( '.mm-panel' ) );
 								}
 								break;
 
 							//	close menu with esc
 							case 27:
-								if ( $menu.hasClass( 'mm-menu_offcanvas' ) )
+								if ( menu.matches( '.mm-menu_offcanvas' ) )
 								{
 									api.close();
 								}

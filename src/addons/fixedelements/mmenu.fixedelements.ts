@@ -11,48 +11,53 @@ Mmenu.addons.fixedElements = function(
 
 	var _fixd 	: string,
 		_stck 	: string, 
-		$fixd	: JQuery,
-		$stck 	: JQuery;
+		fixed	: NodeListOf<Element>,
+		stick 	: NodeListOf<Element>;
 
 
 	this.bind( 'setPage:after', ( 
-		$page : JQuery
+		page : HTMLElement
 	) => {
 		//	Fixed elements
 		_fixd = this.conf.classNames.fixedElements.fixed;
-		$fixd = $page.find( '.' + _fixd );
+		fixed = page.querySelectorAll( '.' + _fixd );
 
-		Mmenu.refactorClass( $fixd, _fixd, 'mm-slideout' );
+		fixed.forEach(( fxd, f ) => {
+			Mmenu.refactorClass( (fxd as HTMLElement), _fixd, 'mm-slideout' );
+		});
+		
 
-		$fixd[ conf.fixed.insertMethod ]( conf.fixed.insertSelector );
+		Mmenu.$(fixed)[ conf.fixed.insertMethod ]( conf.fixed.insertSelector );
 
 		//	Sticky elements
 		_stck = this.conf.classNames.fixedElements.sticky;
-		$stck = $page.find( '.' + _stck );
+		stick = page.querySelectorAll( '.' + _stck );
 
-		Mmenu.refactorClass( $stck, _stck, 'mm-sticky' );
+		stick.forEach(( stck, s ) => {
+			Mmenu.refactorClass( (stck as HTMLElement), _stck, 'mm-sticky' );
+		});
 
-		$stck = $page.find( '.mm-sticky' );
+		stick = page.querySelectorAll( '.mm-sticky' );
 	});
 	
 	this.bind( 'open:start', () => {
-		if ( $stck.length )
+		if ( stick.length )
 		{
 			if ( Mmenu.$('html').css( 'overflow' ) == 'hidden' )
 			{
 				var scrolltop = Mmenu.$(window).scrollTop() + conf.sticky.offset;
-				$stck.each(
-					( i, elem ) => {
-						Mmenu.$(elem).css( 'top', parseInt( Mmenu.$(elem).css( 'top' ), 10 ) + scrolltop );
+				stick.forEach(
+					( stck, s ) => {
+						Mmenu.$(stck).css( 'top', parseInt( Mmenu.$(stck).css( 'top' ), 10 ) + scrolltop );
 					}
 				);
 			}
 		}
 	});
 	this.bind( 'close:finish', () => {
-		if ( $stck.length )
+		if ( stick.length )
 		{
-			$stck.css( 'top', '' );
+			Mmenu.$(stick).css( 'top', '' );
 		}
 	});
 };

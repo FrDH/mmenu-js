@@ -5,18 +5,20 @@ Mmenu.addons.toggles = function()
 	) => {
 
 		//	Refactor toggle classes
-		Mmenu.refactorClass( $panels.find( 'input' ), this.conf.classNames.toggles.toggle , 'mm-toggle' );
-		Mmenu.refactorClass( $panels.find( 'input' ), this.conf.classNames.toggles.check  , 'mm-check'  );
+		$panels.find( 'input' ).each(( i, input ) => {
+			Mmenu.refactorClass( input, this.conf.classNames.toggles.toggle , 'mm-toggle' );
+			Mmenu.refactorClass( input, this.conf.classNames.toggles.check  , 'mm-check'  );
+		});
 
 
 		//	Add markup
 		$panels
 			.find( 'input.mm-toggle, input.mm-check' )
 			.each((
-				i 	 : number,
-				elem : HTMLElement
+				i 	 	: number,
+				input 	: HTMLElement
 			) => {
-				var $inpt = Mmenu.$(elem),
+				var $inpt = Mmenu.$(input),
 					$prnt = $inpt.closest( 'li' ),
 					cl = $inpt.hasClass( 'mm-toggle' ) ? 'toggle' : 'check',
 					id = $inpt[ 0 ].id || Mmenu.getUniqueId();
