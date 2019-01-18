@@ -52,7 +52,7 @@ Mmenu.addons.keyboardNavigation = function(
 				.forEach(( navbars ) => {
 					navbars.querySelectorAll( 'a.mm-navbar__title' )
 						.forEach(( title ) => {
-							title.setAttribute( 'tabindex', -1 );
+							title.setAttribute( 'tabindex', '-1' );
 						});
 				});
 		});
