@@ -1,10 +1,10 @@
 Mmenu.addons.navbars.prev = function( 
 	this	: Mmenu,
-	$navbar	: JQuery
+	navbar	: HTMLElement
 ) {
 	//	Add content.
-	var $prev = Mmenu.$('<a class="mm-btn mm-btn_prev mm-navbar__btn" href="#" />')
-		.appendTo( $navbar );
+	var prev = Mmenu.DOM.create( 'a.mm-btn.mm-btn_prev.mm-navbar__btn' );
+	navbar.append( prev );
 
 	
 	this.bind( 'initNavbar:after', ( 
@@ -29,23 +29,23 @@ Mmenu.addons.navbars.prev = function(
 		org = panel.querySelector( '.' + this.conf.classNames.navbars.panelPrev );
 		if ( !org )
 		{
-			org = Mmenu.$(panel).children( '.mm-navbar' ).children( '.mm-btn_prev' )[0];
+			org = panel.querySelector( '.mm-navbar__btn.mm-btn_prev' );
 		}
 
 		_url = org ? org.getAttribute( 'href' ) : '';
-		_txt = org.innerHTML;
+		_txt = org ? org.innerHTML : '';
 
 		if ( _url )
 		{
-			$prev[ 0 ].setAttribute( 'href', _url );
+			prev.setAttribute( 'href', _url );
 		}
 		else
 		{
-			$prev[ 0 ].removeAttribute( 'href' );
+			prev.removeAttribute( 'href' );
 		}
 
-		$prev[ _url || _txt ? 'removeClass' : 'addClass' ]( 'mm-hidden' );
-		$prev.html( _txt );
+		prev.classList[ _url || _txt ? 'remove' : 'add' ]( 'mm-hidden' );
+		prev.innerHTML = _txt;
 	});
 
 
@@ -58,8 +58,8 @@ Mmenu.addons.navbars.prev = function(
 	this.bind( 'openPanel:start:sr-aria', (
 		panel : HTMLElement
 	) => {
-		Mmenu.sr_aria( $prev, 'hidden', $prev.hasClass( 'mm-hidden' ) );
-		Mmenu.sr_aria( $prev, 'owns', ( $prev[ 0 ].getAttribute( 'href' ) || '' ).slice( 1 ) );
+		Mmenu.sr_aria( prev, 'hidden', prev.matches( '.mm-hidden' ) );
+		Mmenu.sr_aria( prev, 'owns', ( prev.getAttribute( 'href' ) || '' ).slice( 1 ) );
 	});
 };
 

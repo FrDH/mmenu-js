@@ -1,15 +1,12 @@
 Mmenu.addons.navbars.tabs = function( 
 	this	: Mmenu,
-	$navbar	: JQuery
+	navbar	: HTMLElement
 ) {
 
-	var $tabs = $navbar.children( 'a' );
+	navbar.classList.add( 'mm-navbar_tabs' );
+	navbar.parentElement.classList.add( 'mm-navbars_has-tabs' );
 
-	$navbar
-		.addClass( 'mm-navbar_tabs' )
-		.parent()
-		.addClass( 'mm-navbars_has-tabs' );
-
+	var $tabs = Mmenu.$(navbar).children( 'a' );
 	$tabs
 		.on( 'click.mm-navbars', ( evnt ) => {
 			evnt.preventDefault();

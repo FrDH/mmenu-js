@@ -11,10 +11,10 @@ Mmenu.wrappers.bootstrap4 = function(
 
 
 		//	... We'll create a new menu
-		var $nav = Mmenu.$('<nav />'),
+		var nav = Mmenu.DOM.create( 'nav' ),
 			$pnl = Mmenu.$('<div />');
 
-		$nav.append( $pnl );
+		nav.append( $pnl[ 0 ] );
 
 		Mmenu.$(this.node.menu)
 			.children()
@@ -52,16 +52,15 @@ Mmenu.wrappers.bootstrap4 = function(
 
 		//	Set the menu
 		this.bind( 'initMenu:before', () => {
-			$nav.prependTo( 'body' );
-			this.node.menu = $nav[0];
+			document.body.prepend( nav );
+			this.node.menu = nav;
 		});
 
 		//	Hijack the toggler
-		Mmenu.$(this.node.menu)
-			.parent()
-			.find( '.navbar-toggler' )
-			.removeAttr( 'data-target' )
-			.removeAttr( 'aria-controls' )
+		var toggler = this.node.menu.parentElement.querySelector( '.navbar-toggler' );
+		toggler.removeAttribute( 'data-target' );
+		toggler.removeAttribute( 'aria-controls' );
+		Mmenu.$(toggler)
 			.off( 'click' )
 			.on( 'click', ( evnt ) => {
 				evnt.preventDefault();
@@ -69,7 +68,6 @@ Mmenu.wrappers.bootstrap4 = function(
 				this[ this.vars.opened ? 'close' : 'open' ]();
 			});
 	}
-
 
 
 	function cloneLink( 

@@ -1,12 +1,10 @@
 Mmenu.addons.navbars.close = function( 
 	this	: Mmenu,
-	$navbar	: JQuery
+	navbar	: HTMLElement
 ) {
 	//	Add content
-	var close = document.createElement( 'a' );
-	close.classList.add( 'mm-btn', 'mm-btn_close', 'mm-navbar__btn' );
-	close.setAttribute( 'href', '#' );
-	$navbar.append( close );
+	var close = Mmenu.DOM.create( 'a.mm-btn.mm-btn_close.mm-navbar__btn' );
+	navbar.append( close );
 
 
 	//	Update to page node
@@ -20,6 +18,6 @@ Mmenu.addons.navbars.close = function(
 	//	Add screenreader / text support
 	this.bind( 'setPage:after:sr-text', () => {
 		close.innerHTML = Mmenu.sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) );
-		Mmenu.sr_aria( Mmenu.$(close), 'owns', close.getAttribute( 'href' ).slice( 1 ) );
+		Mmenu.sr_aria( close, 'owns', close.getAttribute( 'href' ).slice( 1 ) );
 	});
 };

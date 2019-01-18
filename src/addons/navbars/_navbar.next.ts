@@ -1,12 +1,10 @@
 Mmenu.addons.navbars.next = function( 
 	this	: Mmenu,
-	$navbar	: JQuery
+	navbar	: HTMLElement
 ) {
 	//	Add content
-	var next = document.createElement( 'a' );
-	next.classList.add( 'mm-btn', 'mm-btn_next', 'mm-navbar__btn' );
-	next.setAttribute( 'href', '#' );
-	$navbar.append( next );
+	var next = Mmenu.DOM.create( 'a.mm-btn.mm-btn_next.mm-navbar__btn' );
+	navbar.append( next );
 
 
 	//	Update to opened panel
@@ -20,7 +18,7 @@ Mmenu.addons.navbars.next = function(
 		org = panel.querySelector( '.' + this.conf.classNames.navbars.panelNext );
 
 		_url = org ? org.getAttribute( 'href' ) : '';
-		_txt = org.innerHTML;
+		_txt = org ? org.innerHTML : '';
 
 		if ( _url )
 		{
@@ -40,8 +38,8 @@ Mmenu.addons.navbars.next = function(
 	this.bind( 'openPanel:start:sr-aria', (
 		panel : HTMLElement
 	) => {
-		Mmenu.sr_aria( Mmenu.$(next), 'hidden', next.matches( 'mm-hidden' ) );
-		Mmenu.sr_aria( Mmenu.$(next), 'owns', ( next.getAttribute( 'href' ) || '' ).slice( 1 ) );
+		Mmenu.sr_aria( next, 'hidden', next.matches( 'mm-hidden' ) );
+		Mmenu.sr_aria( next, 'owns', ( next.getAttribute( 'href' ) || '' ).slice( 1 ) );
 	});
 };
 

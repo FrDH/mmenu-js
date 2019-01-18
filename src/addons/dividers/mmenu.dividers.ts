@@ -16,10 +16,13 @@ Mmenu.addons.dividers = function(
 	{
 		(opts as mmLooseObject) = {};
 	}
+	if ( opts.addTo == 'panels' )
+	{
+		opts.addTo = '.mm-panels';
+	}
 	//	/Extend shorthand options
 
 
-	//opts = this.opts.dividers = jQuery.extend( true, {}, Mmenu.options.dividers, opts );
 	this.opts.dividers = Mmenu.extend( opts, Mmenu.options.dividers );
 
 
@@ -38,45 +41,37 @@ Mmenu.addons.dividers = function(
 		this.bind( 'initListview:after', ( 
 			panel : HTMLElement
 		) => {
-			var $wrapper;
-			switch( opts.addTo )
-			{
-				case 'panels':
-					$wrapper = Mmenu.$(panel);
-					break;
 
-				default:
-					$wrapper = Mmenu.$(panel).filter( opts.addTo );
-					break;
-			}
-
-			if ( !$wrapper.length )
+			if ( !panel.matches( opts.addTo ) )
 			{
 				return;
 			}
 
-			$wrapper
-				.find( '.mm-listitem_divider' )
-				.remove();
+			Mmenu.DOM.find( panel, '.mm-listitem_divider' )
+				.forEach(( divider ) => {
+					divider.remove();
+				});
 
-			$wrapper
-				.find( '.mm-listview' )
-				.each(( i, elem ) => {
-					var last = '';
-					var listitems = Array.prototype.slice.call( elem.children )
+			Mmenu.DOM.find( panel, '.mm-listview' )
+				.forEach(( listview ) => {
+					var lastletter = '',
+						listitems  = Mmenu.DOM.children( listview );
+
 					Mmenu.filterListItems( listitems )
-						.each(( i, elem ) => {
-							let letter = Mmenu.$(elem)
-								.children( '.mm-listitem__text' )
-								.text().trim().toLowerCase()[ 0 ];
+						.forEach(( listitem ) => {
+							let letter = Mmenu.DOM.children( listitem, '.mm-listitem__text' )[ 0 ]
+								.innerText.trim().toLowerCase()[ 0 ];
 
-							if ( letter.length && letter != last )
+							if ( letter.length && letter != lastletter )
 							{
-								last = letter;
-								Mmenu.$( '<li class="mm-listitem mm-listitem_divider">' + letter + '</li>' ).insertBefore( elem );
+								lastletter = letter;
+								let divider = Mmenu.DOM.create( 'li.mm-listitem.mm-listitem_divider' );
+									divider.innerText = letter;
+
+								listview.insertBefore( divider, listitem );  
 							}
 						});
-					});
+				});
 		});
 	}
 	
@@ -85,16 +80,15 @@ Mmenu.addons.dividers = function(
 	if ( opts.fixed )
 	{
 		//	Add the fixed divider
-		this.bind( 'initPanels:after', () => {
+		this.bind( 'initPanels:after', (
+			panels : HTMLElement[]
+		) => {
 			if ( !this.node.fixeddivider )
 			{
-				let listitem = document.createElement( 'li' );
-				listitem.classList.add( 'mm-listitem', 'mm-listitem_divider' );
+				let listview = Mmenu.DOM.create( 'ul.mm-listview.mm-listview_fixeddivider' ),
+					listitem = Mmenu.DOM.create( 'li.mm-listitem.mm-listitem_divider' );
 
-				let listview = document.createElement( 'ul' );
-				listview.classList.add( 'mm-listview', 'mm-listview_fixeddivider' );
 				listview.append( listitem );
-
 				this.node.pnls.append( listview );
 				this.node.fixeddivider = listitem;
 			}
@@ -104,28 +98,28 @@ Mmenu.addons.dividers = function(
 			this	 : Mmenu,
 			panel	?: HTMLElement
 		) {
-			panel = panel || Mmenu.DOM.child( this.node.pnls, '.mm-panel_opened' );
-			if ( panel.matches( ':hidden' ) )
+			panel = panel || Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
+			if ( !panel || window.getComputedStyle( panel ).display == 'none' )
 			{
 				return;
 			}
 
-			var $dividers = Mmenu.$(panel)
-				.find( '.mm-listitem_divider' )
-				.not( '.mm-hidden' );
 
 			var scrl = Mmenu.$(panel).scrollTop() || 0,
 				text = '';
 
-			$dividers.each(( i, divider ) => {
-				let $divider = Mmenu.$(divider);
-				if ( $divider.position().top + scrl < scrl + 1 )
-				{
-					text = divider.innerText;
-				}
-			});
+			Mmenu.DOM.find( panel, '.mm-listitem_divider' )
+				.forEach(( divider ) => {
+					if ( !divider.matches( '.mm-hidden' ) )
+					{
+						if ( Mmenu.$(divider).position().top + scrl < scrl + 1 )
+						{
+							text = divider.innerHTML;
+						}
+					}
+				});
 
-			this.node.fixeddivider.innerText = text;
+			this.node.fixeddivider.innerHTML = text;
 			this.node.pnls.classList[ text.length ? 'add' : 'remove' ]( 'mm-panel_dividers' );
 		};
 
@@ -136,19 +130,16 @@ Mmenu.addons.dividers = function(
 		//		4) after scrolling a panel
 		this.bind( 'open:start'			, setValue );	// 1
 		this.bind( 'openPanel:start'	, setValue );	// 2
-		this.bind( 'updateListview'		, setValue );	// 3
-		this.bind( 'initPanel:after', (	
+		this.bind( 'updateListview'		, setValue );	// 3	//	TODO? does not pass "panel" argument.
+		this.bind( 'initPanel:after', (
 			panel : HTMLElement
 		) => {
-			 Mmenu.$(panel).off( 'scroll.mm-dividers touchmove.mm-dividers' )
-				.on( 'scroll.mm-dividers touchmove.mm-dividers',
-					( e ) => {
-						if ( panel.matches( '.mm-panel_opened' ) )
-						{
-							setValue.call( this, panel );
-						}
-					}
-				);
+			panel.addEventListener( 'scroll', () => {
+				if ( panel.matches( '.mm-panel_opened' ) )
+				{
+					setValue.call( this, panel );
+				}
+			}, { passive: true });
 		});
 
 	}

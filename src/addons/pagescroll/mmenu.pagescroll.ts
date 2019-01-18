@@ -6,14 +6,14 @@ Mmenu.addons.pageScroll = function(
 		conf = this.conf.pageScroll;
 
 
-	//	Extend shorthand options
+	//	Extend shorthand options.
 	if ( typeof opts == 'boolean' )
 	{
 		(opts as mmLooseObject) = {
 			scroll: opts
 		};
 	}
-	//	/Extend shorthand options
+	//	/Extend shorthand options.
 
 
 	this.opts.pageScroll = Mmenu.extend( opts, Mmenu.options.pageScroll );
@@ -109,8 +109,8 @@ Mmenu.addons.pageScroll = function(
 		) => {
 			let listitems = Mmenu.DOM.children( panel.querySelector( '.mm-listview' ), 'li' );
 			Mmenu.filterListItemAnchors( listitems )
-				.each(( i, elem ) => {
-					var href = elem.getAttribute( 'href' );
+				.forEach(( anchor ) => {
+					var href = anchor.getAttribute( 'href' );
 
 					if ( anchorInPage( href ) )
 					{
@@ -136,16 +136,16 @@ Mmenu.addons.pageScroll = function(
 						if ( _selected !== s )
 						{
 							_selected = s;
-							let listitems = Array.prototype.slice.call(
-								Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ).find( '.mm-listview' ).children( 'li' )
-							);
-							this.setSelected( 
-								Mmenu.$(
-									Mmenu.filterListItemAnchors( listitems )
-										.filter( '[href="' + scts[ s ] + '"]' )
-										.parent()
-								)[0]
-							);
+
+							let panel 		= Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ],
+								listitems	= Mmenu.DOM.find( panel, '.mm-listitem' ),
+								anchor 		= Mmenu.filterListItemAnchors( listitems )
+									.filter( listitem => listitem.matches( '[href="' + scts[ s ] + '"]' ) )[ 0 ];
+
+							if ( anchor )
+							{
+								this.setSelected( anchor.parentElement );
+							}
 						}
 						break;
 					}

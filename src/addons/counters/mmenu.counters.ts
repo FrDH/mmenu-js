@@ -16,6 +16,10 @@ Mmenu.addons.counters = function(
 	{
 		(opts as mmLooseObject) = {};
 	}
+	if ( opts.addTo == 'panels' )
+	{
+		opts.addTo = '.mm-panel';
+	}
 	//	/Extend shorthand options
 
 
@@ -26,43 +30,42 @@ Mmenu.addons.counters = function(
 	this.bind( 'initListview:after', (
 		panel : HTMLElement
 	) => {
-		var cntrclss = this.conf.classNames.counters.counter;
-		Mmenu.refactorClass( panel.querySelector( '.' + cntrclss ), cntrclss, 'mm-counter' );
+		var cntrclss = this.conf.classNames.counters.counter,
+			counters = panel.querySelectorAll( '.' + cntrclss );
+
+		counters.forEach(( counter ) => {
+			Mmenu.refactorClass( (counter as HTMLElement), cntrclss, 'mm-counter' );
+		});
 	});
 
 
-	//	Add the counters
+	//	Add the counters after a listview is initiated.
 	if ( opts.add )
 	{
 		this.bind( 'initListview:after', (
 			panel : HTMLElement
 		) => {
-			var $wrapper : JQuery;
-			switch( opts.addTo )
-			{
-				case 'panels':
-					$wrapper = Mmenu.$(panel);
-					break;
 
-				default:
-					$wrapper = Mmenu.$(panel).filter( opts.addTo );
-					break;
+			if ( !panel.matches( opts.addTo ) )
+			{
+				return;
 			}
 
-			$wrapper.each(
-				( w, wrapper ) => {
-					var parent : HTMLElement = (wrapper as any).mmParent;
-					if ( parent )
+			var parent : HTMLElement = (panel as any).mmParent;
+			if ( parent )
+			{
+				//	Check if no counter already excists.
+				if ( !parent.querySelector( '.mm-counter' ) )
+				{
+					let counter = Mmenu.DOM.create( 'span.mm-counter' );
+
+					let btn = Mmenu.DOM.children( parent, '.mm-btn' )[ 0 ];
+					if ( btn )
 					{
-						if ( !parent.querySelector( '.mm-counter' ) )
-						{
-							let counter = document.createElement( 'span' );
-							counter.classList.add( 'mm-counter' );
-							Mmenu.DOM.child( parent, '.mm-btn' ).prepend( counter );
-						}
+						btn.prepend( counter );
 					}
 				}
-			);
+			}
 		});
 	}
 
@@ -87,12 +90,12 @@ Mmenu.addons.counters = function(
 					return;
 				}
 
-				var $listview = Mmenu.$(panel).children( '.mm-listview' );
-				if ( !$listview.length )
-				{
-					return;
-				}
-				var listitems : HTMLElement[] = Array.prototype.slice.call( $listview.children() );
+				var listitems : HTMLElement[] = [];
+				Mmenu.DOM.children( panel, '.mm-listview' )
+					.forEach(( listview ) => {
+						listitems.push( ...Mmenu.DOM.children( listview ) );
+					});
+
 				counter.innerHTML = Mmenu.filterListItems( listitems ).length.toString();
 			});
 		};

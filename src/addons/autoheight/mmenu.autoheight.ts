@@ -34,12 +34,13 @@ Mmenu.addons.autoHeight = function(
 	}
 
 
+	//	Add the autoheight class to the menu.
 	this.bind( 'initMenu:after', () => {
 		this.node.menu.classList.add( 'mm-menu_autoheight' );
 	});
 
 
-	//	Set the height
+	//	Set the height.
 	function setHeight(
 		 this	: Mmenu,
 		 panel ?: HTMLElement
@@ -49,56 +50,52 @@ Mmenu.addons.autoHeight = function(
 			return;
 		}
 
-		var _top = Math.max( parseInt( Mmenu.$(this.node.pnls).css( 'top' )		, 10 ), 0 ) || 0,
-			_bot = Math.max( parseInt( Mmenu.$(this.node.pnls).css( 'bottom' )	, 10 ), 0 ) || 0,
+		var style = window.getComputedStyle( this.node.pnls );
+
+		var _top = Math.max( parseInt( style.top	, 10 ), 0 ) || 0,
+			_bot = Math.max( parseInt( style.bottom	, 10 ), 0 ) || 0,
 			_hgh = 0;
 
 		this.node.menu.classList.add( 'mm-menu_autoheight-measuring' );
+
 
 		if ( opts.height == 'auto' )
 		{
 			if ( !panel )
 			{
-				panel = Mmenu.DOM.child( this.node.pnls, '.mm-panel_opened' );
+				panel = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
 			}
-			if ( panel && panel.parentElement.matches( '.mm-listitem_vertical' ) )
+			if ( panel )
 			{
-				panel = Mmenu.$(panel)
-					.parents( '.mm-panel' )
-					.not(
-						( i, elem ) => {
-							return elem.parentElement.matches( '.mm-listitem_vertical' );
-						}
-					)[ 0 ];
+				let parent = panel.parentElement;
+				if ( parent.matches( '.mm-listitem_vertical' ) )
+				{
+					panel = Mmenu.DOM.parents( panel, '.mm-panel' )
+						.filter( panel => !panel.parentElement.matches( '.mm-listitem_vertical' ) )[ 0 ];
+				}
 			}
 			if ( !panel )
 			{
-				panel = Mmenu.DOM.child( this.node.pnls, '.mm-panel' );
+				panel = Mmenu.DOM.children( this.node.pnls, '.mm-panel' )[ 0 ];
 			}
 
-			_hgh = Mmenu.$(panel).outerHeight();
+			_hgh = panel.offsetHeight;
 		}
 		else if ( opts.height == 'highest' )
 		{
 			Mmenu.DOM.children( this.node.pnls, '.mm-panel' )
 				.forEach(( panel ) => {
-					let $panel = Mmenu.$(panel);
 					let parent = panel.parentElement;
 					if ( parent.matches( '.mm-listitem_vertical' ) )
 					{
-						$panel = $panel
-							.parents( '.mm-panel' )
-							.not(
-								( i, elem ) => {
-									return elem.parentElement.matches( '.mm-listitem_vertical' );
-								}
-							);
+						panel = Mmenu.DOM.parents( panel, '.mm-panel' )
+							.filter( panel => !panel.parentElement.matches( '.mm-listitem_vertical' ) )[ 0 ];
 					}
-					_hgh = Math.max( _hgh, $panel.first().outerHeight() );
+					_hgh = Math.max( _hgh, panel.offsetHeight );
 				});
 		}
 
-		Mmenu.$(this.node.menu).height( _hgh + _top + _bot );
+		this.node.menu.style.height = (_hgh + _top + _bot) + 'px';
 		this.node.menu.classList.remove( 'mm-menu_autoheight-measuring' );
 	};
 
@@ -109,12 +106,12 @@ Mmenu.addons.autoHeight = function(
 
 	if ( opts.height == 'highest' )
 	{
-		this.bind( 'initPanels:after' 	, setHeight );
+		this.bind( 'initPanels:after' 	, setHeight );	//	TODO: passes array for "panel" argument
 	}
 
 	if ( opts.height == 'auto' )
 	{
-		this.bind( 'updateListview'		, setHeight );
+		this.bind( 'updateListview'		, setHeight );	//	TODO? does not pass "panel" argument
 		this.bind( 'openPanel:start'	, setHeight );
 		this.bind( 'closePanel'			, setHeight );
 	}

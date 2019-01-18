@@ -232,7 +232,7 @@ Mmenu.addons.drag = function(
 					{
 						if ( _stage == 1 )
 						{
-							if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
+							if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
 							{
 								return;
 							}
@@ -240,7 +240,7 @@ Mmenu.addons.drag = function(
 
 							this._openSetup();
 							this.trigger( 'open:start' );
-							Mmenu.$('html').addClass( 'mm-wrapper_dragging' );
+							document.documentElement.classList.add( 'mm-wrapper_dragging' );
 
 							_maxDistance = minMax( 
 								Mmenu.$(window)[ _dimension ]() * conf.menu[ _dimension ].perc, 

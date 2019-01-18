@@ -6,7 +6,7 @@ Mmenu.addons.iconbar = function(
 
 
 	//	Extend shorthand options
-	if ( opts instanceof Array )
+	if ( Mmenu.typeof( opts ) == 'array' )
 	{
 		(opts as mmLooseObject) = {
 			add: true,
@@ -22,57 +22,67 @@ Mmenu.addons.iconbar = function(
 	}
 
 
-	var $iconbar : JQuery = null;
+	var iconbar : HTMLElement;
 
-	[ 'top', 'bottom' ].forEach(( poss, n ) => {
+	[ 'top', 'bottom' ].forEach(( position, n ) => {
 
-		var ctnt = opts[ poss ];
+		var ctnt = opts[ position ];
 
 		//	Extend shorthand options
-		//if ( !( ctnt instanceof Array ) )
 		if ( Mmenu.typeof( ctnt ) != 'array' )
 		{
 			ctnt = [ ctnt ];
 		}
 
 		//	Create node
-		var $ibar = Mmenu.$( '<div class="mm-iconbar__' + poss + '" />' );
+		var ibar = Mmenu.DOM.create( 'div.mm-iconbar__' + position );
 
 
 		//	Add content
 		for ( var c = 0, l = ctnt.length; c < l; c++ )
 		{
-			$ibar.append( ctnt[ c ] );
+			if ( typeof ctnt[ c ] == 'string' ) {
+				ibar.innerHTML += ctnt[ c ];
+			}
+			else
+			{
+				ibar.append( ctnt[ c ] );
+			}
 		}
 
-		if ( $ibar.children().length )
+		if ( ibar.children.length )
 		{
-			if ( !$iconbar )
+			if ( !iconbar )
 			{
-				$iconbar = Mmenu.$('<div class="mm-iconbar" />');
+				iconbar = Mmenu.DOM.create( 'div.mm-iconbar' );
 			}
-			$iconbar.append( $ibar );
+			iconbar.append( ibar );
 		}
 	});
 
 
 	//	Add to menu
-	if ( $iconbar )
+	if ( iconbar )
 	{
 		this.bind( 'initMenu:after', () => {
 			this.node.menu.classList.add( 'mm-menu_iconbar' );
-			Mmenu.$(this.node.menu).prepend( $iconbar );
+			this.node.menu.prepend( iconbar );
 		});
 
 		//	Tabs
 		if ( opts.type == 'tabs' )
 		{
 
-			$iconbar.addClass( 'mm-iconbar_tabs' );
+			iconbar.classList.add( 'mm-iconbar_tabs' );
+			iconbar.addEventListener( 'click', ( evnt ) => {
+				var anchor = (evnt.target as HTMLElement)
 
-			$iconbar.on( 'click.mm-iconbar', 'a', ( evnt ) => {
-				var $tab = Mmenu.$(evnt.currentTarget);
-				if ( $tab.hasClass( 'mm-iconbar__tab_selected' ) )
+				if ( !anchor.matches( 'a' ) )
+				{
+					return;
+				}
+
+				if ( anchor.matches( '.mm-iconbar__tab_selected' ) )
 				{
 					evnt.stopImmediatePropagation();
 					return;
@@ -80,13 +90,14 @@ Mmenu.addons.iconbar = function(
 
 				try
 				{
-					var target = this.node.menu.querySelector( evnt.currentTarget.getAttribute( 'href' ) );
-					if ( target && target.matches( '.mm-panel' ) )
+					var panel = this.node.menu.querySelector( anchor.getAttribute( 'href' ) )[ 0 ];
+
+					if ( panel && panel.matches( '.mm-panel' ) )
 					{
 						evnt.preventDefault();
 						evnt.stopImmediatePropagation();
 
-						this.openPanel( (target as HTMLElement), false );
+						this.openPanel( panel, false );
 					}
 				}
 				catch( err ) {}
@@ -96,17 +107,19 @@ Mmenu.addons.iconbar = function(
 				this	: Mmenu,
 				panel	: HTMLElement
 			) {
-				var $tabs = $iconbar.find( 'a' );
-				$tabs.removeClass( 'mm-iconbar__tab_selected' );
+				Mmenu.DOM.find( iconbar, 'a' )
+					.forEach(( anchor ) => {
+						anchor.classList.remove( 'mm-iconbar__tab_selected' );
+					});				
 
-				var $tab = $tabs.filter( '[href="#' + panel.id + '"]' );
-				if ( $tab.length )
+				var anchor = Mmenu.DOM.find( iconbar, '[href="#' + panel.id + '"]' )[ 0 ];
+				if ( anchor )
 				{
-					$tab.addClass( 'mm-iconbar__tab_selected' );
+					anchor.classList.add( 'mm-iconbar__tab_selected' );
 				}
 				else
 				{
-					var parent : HTMLElement = (panel as any).mmParent;
+					let parent : HTMLElement = (panel as any).mmParent;
 					if ( parent )
 					{
 						selectTab.call( this, parent.closest( '.mm-panel' ) );

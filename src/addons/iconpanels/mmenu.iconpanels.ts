@@ -82,7 +82,6 @@ Mmenu.addons.iconPanels = function(
 				return;
 			}
 
-			var $panels : JQuery = Mmenu.$(this.node.pnls).children( '.mm-panel' );
 			var panels = Mmenu.DOM.children( this.node.pnls, '.mm-panels' );
 
 			if ( keepFirst )
@@ -93,30 +92,38 @@ Mmenu.addons.iconPanels = function(
 			}
 			else
 			{
-				var opened : HTMLElement[] = [];
-				panels.forEach(( panel, p ) => {
+				//	Remove the "iconpanel" classnames from all panels.
+				panels.forEach(( panel ) => {
 					panel.classList.remove( cls );
-
-					if ( panel.matches( '.mm-panel_opened-parent' ) &&
-						!panel.parentElement.matches( '.mm-listitem_vertical' )
-					) {
-						opened.push( panel );
-					}
 				});
-				opened.push( panel );
-				opened.forEach(( panel ) => {
+
+				//	Filter out panels that are not opened.
+				panels = panels.filter( panel => panel.matches( '.mm-panel_opened-parent' ) );
+
+				//	Add the current panel to the list.
+				//	TODO: check for duplicate?
+				panels.push( panel );
+
+				//	Remove the "hidden" classname from all opened panels.
+				panels.forEach(( panel ) => {
 					panel.classList.remove( 'mm-hidden' );
 				});
-				opened = opened.slice( -opts.visible );
-				opened.forEach(( panel, p ) => {
+
+				//	Slice the opened panels to the max visible amount.
+				panels = panels.slice( -opts.visible );
+
+				//	Add the "iconpanel" classnames.
+				panels.forEach(( panel, p ) => {
 					panel.classList.add( 'mm-panel_iconpanel-' + p );
 				});
 			}
 		};
 
 		this.bind( 'openPanel:start', setPanels );
-		this.bind( 'initPanels:after', () => {
-			setPanels.call( this, Mmenu.DOM.child( this.node.pnls, '.mm-panel_opened' ) );
+		this.bind( 'initPanels:after', (
+			panels : HTMLElement[]
+		) => {
+			setPanels.call( this, Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ] );
 		});
 
 		this.bind( 'initListview:after', (
@@ -124,11 +131,11 @@ Mmenu.addons.iconPanels = function(
 		) => {
 			if ( opts.blockPanel &&
 				!panel.parentElement.matches( '.mm-listitem_vertical' ) &&
-				!Mmenu.DOM.child( panel, '.mm-panel__blocker' )
+				!Mmenu.DOM.children( panel, '.mm-panel__blocker' )[ 0 ]
 			) {
-				var anchor = document.createElement( 'a' );
-				anchor.classList.add( 'mm-panel__blocker' );
-				anchor.setAttribute( 'href', panel.closest( '.mm-panel' ).id );
+				var anchor = Mmenu.DOM.create( 'a.mm-panel__blocker' );
+					anchor.setAttribute( 'href', panel.closest( '.mm-panel' ).id );
+
 				panel.prepend( anchor );
 			}	
 		});

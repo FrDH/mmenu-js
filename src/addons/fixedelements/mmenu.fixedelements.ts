@@ -11,54 +11,51 @@ Mmenu.addons.fixedElements = function(
 
 	var _fixd 	: string,
 		_stck 	: string, 
-		fixed	: NodeListOf<Element>,
-		stick 	: NodeListOf<Element>;
+		fixed	: HTMLElement[],
+		stick 	: HTMLElement[];
 
 
 	this.bind( 'setPage:after', ( 
 		page : HTMLElement
 	) => {
+
 		//	Fixed elements
 		_fixd = this.conf.classNames.fixedElements.fixed;
-		fixed = page.querySelectorAll( '.' + _fixd );
 
-		fixed.forEach(( fxd, f ) => {
-			Mmenu.refactorClass( (fxd as HTMLElement), _fixd, 'mm-slideout' );
+		fixed = Mmenu.DOM.find( page, '.' + _fixd );
+		fixed.forEach(( fxd ) => {
+			Mmenu.refactorClass( fxd, _fixd, 'mm-slideout' );
 		});
-		
 
-		Mmenu.$(fixed)[ conf.fixed.insertMethod ]( conf.fixed.insertSelector );
+		document.querySelector( conf.fixed.insertSelector )[ conf.fixed.insertMethod ]( fixed );
 
 		//	Sticky elements
 		_stck = this.conf.classNames.fixedElements.sticky;
-		stick = page.querySelectorAll( '.' + _stck );
 
-		stick.forEach(( stck, s ) => {
-			Mmenu.refactorClass( (stck as HTMLElement), _stck, 'mm-sticky' );
-		});
+		Mmenu.DOM.find( page, '.' + _stck )
+			.forEach(( stick ) => {
+				Mmenu.refactorClass( (stick as HTMLElement), _stck, 'mm-sticky' );
+			});
 
-		stick = page.querySelectorAll( '.mm-sticky' );
+		stick = Mmenu.DOM.find( page, '.mm-sticky' );
 	});
 	
 	this.bind( 'open:start', () => {
 		if ( stick.length )
 		{
-			if ( Mmenu.$('html').css( 'overflow' ) == 'hidden' )
+			if ( window.getComputedStyle( document.documentElement ).overflow == 'hidden' )
 			{
 				var scrolltop = Mmenu.$(window).scrollTop() + conf.sticky.offset;
-				stick.forEach(
-					( stck, s ) => {
-						Mmenu.$(stck).css( 'top', parseInt( Mmenu.$(stck).css( 'top' ), 10 ) + scrolltop );
-					}
-				);
+				stick.forEach(( element ) => {
+					element.style.top = ( parseInt( Mmenu.$(element).css( 'top' ), 10 ) + scrolltop ) + 'px';
+				});
 			}
 		}
 	});
 	this.bind( 'close:finish', () => {
-		if ( stick.length )
-		{
-			Mmenu.$(stick).css( 'top', '' );
-		}
+		stick.forEach(( element ) => {
+			element.style.top = '';
+		});
 	});
 };
 
@@ -66,7 +63,7 @@ Mmenu.addons.fixedElements = function(
 //	Default options and configuration.
 Mmenu.configs.fixedElements = {
 	fixed	: {
-		insertMethod	: 'appendTo',
+		insertMethod	: 'append',
 		insertSelector	: 'body'
 	},
 	sticky 	: {

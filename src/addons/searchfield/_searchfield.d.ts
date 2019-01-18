@@ -1,7 +1,7 @@
 /**	Options for the searchfield add-on. */
 interface mmOptionsSearchfield {
 	add 			: boolean
-	addTo			: string | JQuery
+	addTo			: string | HTMLElement[]
 	cancel			: boolean
 	noResults		: string
 	placeholder		: string

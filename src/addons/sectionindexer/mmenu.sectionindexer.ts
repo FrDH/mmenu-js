@@ -28,48 +28,53 @@ Mmenu.addons.sectionIndexer = function(
 
 
 	this.bind( 'initPanels:after', (
-		$panels	: JQuery
+		panels	: HTMLElement[]
 	) => {
 
-		//	Set the panel(s)
-		var $wrapper: JQuery;
-		switch( opts.addTo )
-		{
-			case 'panels':
-				 $wrapper = $panels;
-				break;
+		var $panels = Mmenu.$(panels);
 
-			default:
-				$wrapper = Mmenu.$(this.node.menu).find( opts.addTo );
-				$wrapper = $wrapper.filter( '.mm-panel' );
-				break;
+		//	Set the panel(s)
+		if ( opts.addTo != 'panels' )
+		{
+			//	TODO addTo kan ook een HTML element zijn?
+			panels = Mmenu.DOM.find( this.node.menu, opts.addTo )
+				.filter( panel => panel.matches( '.mm-panel' ) );
 		}
 
-		$wrapper
-			.find( '.mm-listitem_divider' )
-			.closest( '.mm-panel' )
-			.addClass( 'mm-panel_has-sectionindexer' );
+		panels.forEach(( panel ) => {
+			Mmenu.DOM.find( panel, '.mm-listitem_divider' )
+				.forEach(( listitem ) => {
+					listitem.closest( '.mm-panel' ).classList.add( 'mm-panel_has-sectionindexer' );
+				});
+		});
 
 
 		//	Add the indexer, only if it does not allready excists
 		if ( !this.node.indx )
 		{
-			let indexer = document.createElement( 'div' );
-			indexer.classList.add( 'mm-sectionindexer' );
-
-			let alphabet = 'abcdefghijklmnopqrstuvwxyz'.split( '' );
-			alphabet.forEach(( letter ) => {
-				indexer.innerHTML += `<a href="${letter}">${letter}</a>`;
+			let buttons = '';
+			'abcdefghijklmnopqrstuvwxyz'.split( '' ).forEach(( letter ) => {
+				buttons += '<a href="' + letter + '">' + letter + '</a>';
 			});
+
+			let indexer = Mmenu.DOM.create( 'div.mm-sectionindexer' );
+				indexer.innerHTML = buttons;
 
 			this.node.menu.prepend( indexer );
 			this.node.indx = indexer;
 
+			//	Prevent default behavior when clicking an anchor
+			this.node.indx.addEventListener( 'click', ( evnt ) => {
+				var anchor = (evnt.target as HTMLElement)
+
+				if ( anchor.matches( 'a' ) )
+				{
+					evnt.preventDefault();
+				}
+			});
+
 			//	Scroll onMouseOver
 			Mmenu.$(this.node.indx)
-				.on( 'click.mm-sectionIndexer', 'a', ( evnt ) => {
-					evnt.preventDefault();
-				})
 				.on( 'mouseover.mm-sectionIndexer touchstart.mm-sectionIndexer', 'a', ( e ) => {
 					var lttr  = Mmenu.$(e.currentTarget).html(),
 						$panl = Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ),
@@ -102,12 +107,12 @@ Mmenu.addons.sectionIndexer = function(
 			this	 : Mmenu,
 			panel	?: HTMLElement
 		) {
-			panel = panel || Mmenu.DOM.child( this.node.pnls, '.mm-panel_opened' );
+			panel = panel || Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
 			this.node.menu.classList[ panel.matches( '.mm-panel_has-sectionindexer' ) ? 'add' : 'remove' ]( 'mm-menu_has-sectionindexer' );
 		};
 
 		this.bind( 'openPanel:start', 	update );
-		this.bind( 'initPanels:after',	update );
+		this.bind( 'initPanels:after',	update ); // TODO panel argument is an array
 	});
 };
 

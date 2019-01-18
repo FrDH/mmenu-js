@@ -1,37 +1,45 @@
 Mmenu.addons.toggles = function()
 {
 	this.bind( 'initPanels:after', ( 
-		$panels	: JQuery
+		panels	: HTMLElement[]
 	) => {
 
 		//	Refactor toggle classes
-		$panels.find( 'input' ).each(( i, input ) => {
-			Mmenu.refactorClass( input, this.conf.classNames.toggles.toggle , 'mm-toggle' );
-			Mmenu.refactorClass( input, this.conf.classNames.toggles.check  , 'mm-check'  );
+		panels.forEach(( panel ) => {
+			Mmenu.DOM.find( panel, 'input' )
+				.forEach(( input ) => {
+					Mmenu.refactorClass( input, this.conf.classNames.toggles.toggle , 'mm-toggle' );
+					Mmenu.refactorClass( input, this.conf.classNames.toggles.check  , 'mm-check'  );
+				});
 		});
 
+		//	Loop over all panels.
+		panels.forEach(( panel ) => {
 
-		//	Add markup
-		$panels
-			.find( 'input.mm-toggle, input.mm-check' )
-			.each((
-				i 	 	: number,
-				input 	: HTMLElement
-			) => {
-				var $inpt = Mmenu.$(input),
-					$prnt = $inpt.closest( 'li' ),
-					cl = $inpt.hasClass( 'mm-toggle' ) ? 'toggle' : 'check',
-					id = $inpt[ 0 ].id || Mmenu.getUniqueId();
+			//	Loop over all toggles and checks.
+			Mmenu.DOM.find( panel, 'input.mm-toggle, input.mm-check' )
+				.forEach(( input ) => {
 
-				if ( !$prnt.children( 'label[for="' + id + '"]' ).length )
-				{
-					$inpt[ 0 ].id = id;
-					$prnt.prepend( $inpt );
+					//	Find the listitem the input is in.
+					var parent = input.closest( 'li' );
 
-					Mmenu.$('<label for="' + id + '" class="mm-' + cl + '"></label>')
-						.insertAfter( $prnt.children( '.mm-listitem__text' ).last() );
-				}
-			});
+					//	Get or create an ID for the input.
+					var id = input.id || Mmenu.getUniqueId();
+
+					//	Only needs to be done once.
+					if ( !Mmenu.DOM.children( parent, 'label[for="' + id + '"]' ).length )
+					{
+						input.id = id;
+						parent.prepend( input );
+
+						let label = Mmenu.DOM.create( 'label.mm-' + ( input.matches( '.mm-toggle' ) ? 'toggle' : 'check' ) );
+							label.setAttribute( 'for', id );
+
+						let text = Mmenu.DOM.children( parent, '.mm-listitem__text' )[ 0 ];
+						text.parentElement.insertBefore(label, text.nextSibling);
+					}
+				});
+		});
 	});
 };
 

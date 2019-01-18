@@ -45,10 +45,10 @@ Mmenu.addons.screenReader = function(
 
 		//	Update aria-hidden for hidden / visible listitems
 		this.bind( 'updateListview', () => {
-			let listitems = this.node.pnls.querySelectorAll( '.mm-listitem' );
-			listitems.forEach(( listitem ) => {
-				Mmenu.sr_aria( Mmenu.$(listitem), 'hidden', listitem.matches( '.mm-hidden' ) );
-			});
+			this.node.pnls.querySelectorAll( '.mm-listitem' )
+				.forEach(( listitem ) => {
+					Mmenu.sr_aria( listitem, 'hidden', listitem.matches( '.mm-hidden' ) );
+				});
 		});
 
 
@@ -56,20 +56,28 @@ Mmenu.addons.screenReader = function(
 		this.bind( 'openPanel:start', (
 			panel : HTMLElement
 		) => {
-			var $hidden = Mmenu.$(this.node.menu)
-				.find( '.mm-panel' )
-				.not( panel )
-				.not( Mmenu.$(panel).parents( '.mm-panel' ) );
 
-			var $shown = Mmenu.$(panel).add(
-				Mmenu.$(panel)
-					.find( '.mm-listitem_vertical .mm-listitem_opened' )
-					.children( '.mm-panel' )
-			);
+			/** Panels that should be considered "hidden". */
+			var hidden : HTMLElement[] = Mmenu.DOM.find( this.node.pnls, '.mm-panel' )
+				.filter( hide => hide !== panel )
+				.filter( hide => !hide.parentElement.matches( '.mm-panel' ) );
 
-			Mmenu.sr_aria( $hidden, 'hidden', true );
-			Mmenu.sr_aria( $shown, 'hidden', false );
+			/** Panels that should be considered "visible". */
+			var visible : HTMLElement[] = [ panel ];
+			Mmenu.DOM.find( panel, '.mm-listitem_vertical .mm-listitem_opened' )
+				.forEach(( listitem ) => {
+					visible.push( ...Mmenu.DOM.children( listitem, '.mm-panel' ) );
+				});
+
+			//	Set the panels to be considered "hidden" or "visible".
+			hidden.forEach(( panel ) => {
+				Mmenu.sr_aria( panel, 'hidden', true );
+			});
+			visible.forEach(( panel ) => {
+				Mmenu.sr_aria( panel, 'hidden', false );
+			});
 		});
+
 		this.bind( 'closePanel', (
 			panel : HTMLElement
 		) => {
@@ -79,18 +87,15 @@ Mmenu.addons.screenReader = function(
 
 		//	Add aria-haspopup and aria-owns to prev- and next buttons.
 		this.bind( 'initPanels:after', ( 
-			$panels : JQuery
+			panels : HTMLElement[]
 		) => {
-			var $btns = $panels
-				.find( '.mm-btn' )
-				.each(
-					function( i, elem )
-					{
-						Mmenu.sr_aria( Mmenu.$(elem), 'owns', elem.getAttribute( 'href' ).replace( '#', '' ) );
-					}
-				);
-
-			Mmenu.sr_aria( $btns, 'haspopup', true );
+			panels.forEach(( panel ) => {
+				Mmenu.DOM.find( panel, '.mm-btn' )
+					.forEach(( button ) => {
+						Mmenu.sr_aria( button, 'owns', button.getAttribute( 'href' ).replace( '#', '' ) );
+						Mmenu.sr_aria( button, 'haspopup', true );
+					});
+			});
 		});
 
 
@@ -98,8 +103,14 @@ Mmenu.addons.screenReader = function(
 		this.bind( 'initNavbar:after', (
 			panel : HTMLElement
 		) => {
-			var $navbar = Mmenu.$(panel).children( '.mm-navbar' );
-			Mmenu.sr_aria( $navbar, 'hidden', !panel.matches( '.mm-panel_has-navbar' ) );
+			/** The navbar in the panel. */
+			var navbar = Mmenu.DOM.children( panel, '.mm-navbar' )[ 0 ];
+
+			/** Whether or not the navbar should be considered "hidden". */
+			var hidden = !panel.matches( '.mm-panel_has-navbar' );
+			
+			//	Set the navbar to be considered "hidden" or "visible".
+			Mmenu.sr_aria( navbar, 'hidden', hidden );
 		});
 
 
@@ -112,10 +123,14 @@ Mmenu.addons.screenReader = function(
 				this.bind( 'initNavbar:after', (
 					panel : HTMLElement
 				) => {
-					var $navbar = Mmenu.$(panel).children( '.mm-navbar' ),
-						hidden  = ( $navbar.children( '.mm-btn_prev' ).length ) ? true : false;
+					/** The navbar in the panel. */
+					var navbar = Mmenu.DOM.children( panel, '.mm-navbar' )[ 0 ];
+					
+					/** Whether or not the navbar should be considered "hidden". */
+					var hidden = navbar.querySelector( '.mm-btn_prev' ) ? true : false;
 
-					Mmenu.sr_aria( $navbar.children( '.mm-title' ), 'hidden', hidden );
+					//	Set the navbar-title to be considered "hidden" or "visible".
+					Mmenu.sr_aria( Mmenu.DOM.find( navbar, '.mm-navbar__title' )[ 0 ], 'hidden', hidden );
 				});
 			}
 		}
@@ -139,10 +154,15 @@ Mmenu.addons.screenReader = function(
 		this.bind( 'initNavbar:after', ( 
 			panel : HTMLElement
 		) => {
-			var $navbar = Mmenu.$(panel).children( '.mm-navbar' ),
-				text = this.i18n( conf.text.closeSubmenu );
-
-			$navbar.children( '.mm-btn_prev' ).html( Mmenu.sr_text( text ) );
+			let navbar = Mmenu.DOM.children( panel, '.mm-navbar' )[ 0 ];
+			if ( navbar )
+			{
+				let button = Mmenu.DOM.children( navbar, '.mm-btn_prev' )[ 0 ];
+				if ( button )
+				{
+					button.innerHTML = Mmenu.sr_text( this.i18n( conf.text.closeSubmenu ) );
+				}
+			}
 		});
 
 
@@ -150,13 +170,15 @@ Mmenu.addons.screenReader = function(
 		this.bind( 'initListview:after', (
 			panel : HTMLElement
 		) => {
-			var $parent : HTMLElement = (panel as any).mmParent;
+			let parent : HTMLElement = (panel as any).mmParent;
 			if ( parent )
 			{
-				var $next = Mmenu.$(parent).children( '.mm-btn_next' ),
-					text = this.i18n( conf.text[ $next.parent().is( '.mm-listitem_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
-
-				$next.append( Mmenu.sr_text( text ) );
+				let next = Mmenu.DOM.children( parent, '.mm-btn_next' )[ 0 ];
+				if ( next )
+				{
+					let text = this.i18n( conf.text[ next.parentElement.matches( '.mm-listitem_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
+					next.innerHTML += Mmenu.sr_text( text );
+				}
 			}			
 		});
 	}
@@ -182,47 +204,47 @@ Mmenu.configs.screenReader = {
 //	Methods
 (function() {
 	var attr = function( 
-		$elem	: JQuery, 
+		element	: HTMLElement, 
 		attr	: string, 
 		value	: string | boolean
 	) {
-		$elem.prop( attr, value );
+		element[ attr ] = value;
 		if ( value )
 		{
-			$elem.attr( attr, value.toString() );
+			element.setAttribute( attr, value.toString() );
 		}
 		else
 		{
-			$elem.removeAttr( attr );
+			element.removeAttribute( attr );
 		}
 	}
 
 	/**
 	 * Add aria (property and) attribute to a HTML element.
 	 *
-	 * @param {JQuery} 			$elem 	The node to add the attribute to.
+	 * @param {HTMLElement} 	element	The node to add the attribute to.
 	 * @param {string}			name	The (non-aria-prefixed) attribute name.
 	 * @param {string|boolean}	value	The attribute value.
 	 */
 	Mmenu.sr_aria = function( 
-		$elem	: JQuery, 
+		element	: HTMLElement, 
 		name	: string, 
 		value	: string | boolean
 	) {
-		attr( $elem, 'aria-' + name, value );
+		attr( element, 'aria-' + name, value );
 	};
 
 	/**
 	 * Add role attribute to a HTML element.
 	 *
-	 * @param {JQuery} 			$elem 	The node to add the attribute to.
+	 * @param {HTMLElement}		element	The node to add the attribute to.
 	 * @param {string|boolean}	value	The attribute value.
 	 */
 	Mmenu.sr_role = function( 
-		$elem	: JQuery, 
+		element	: HTMLElement, 
 		value	: string | boolean
 	) {
-		attr( $elem, 'role', value );
+		attr( element, 'role', value );
 	};
 
 	/**

@@ -39,7 +39,7 @@ Mmenu.addons.dropdown = function(
 	}
 
 
-	var $button : JQuery;
+	var button : HTMLElement;
 
 	this.bind( 'initMenu:after', () => {
 		this.node.menu.classList.add( 'mm-menu_dropdown' );
@@ -59,7 +59,7 @@ Mmenu.addons.dropdown = function(
 
 
 		//	Get the button to put the menu next to
-		$button = Mmenu.$(opts.position.of);
+		button = Mmenu.DOM.find( document.body, opts.position.of )[ 0 ];
 
 		//	Emulate hover effect
 		var events = opts.event.split( ' ' );
@@ -69,19 +69,15 @@ Mmenu.addons.dropdown = function(
 		}
 		if ( events[ 0 ] == 'hover' )
 		{
-			$button.on( 'mouseenter.mm-dropdown',
-				() => {
-					this.open();
-				}
-			);
+			button.addEventListener( 'mouseenter', ( evnt ) => {
+				this.open();
+			}, { passive: true });
 		}
 		if ( events[ 1 ] == 'hover' )
 		{
-			Mmenu.$(this.node.menu).on( 'mouseleave.mm-dropdown',
-				() => {
-					this.close();
-				}
-			);
+			this.node.menu.addEventListener( 'mouseleave', ( evnt ) => {
+				this.close();
+			}, { passive: true });
 		}
 	});
 
@@ -107,18 +103,18 @@ Mmenu.addons.dropdown = function(
 		var css = obj[ 0 ],
 			cls = obj[ 1 ];
 
-		var _scr = dir == 'x' ? 'scrollLeft' 	: 'scrollTop',
-			_out = dir == 'x' ? 'outerWidth' 	: 'outerHeight',
-			_str = dir == 'x' ? 'left' 			: 'top',
-			_stp = dir == 'x' ? 'right' 		: 'bottom',
-			_siz = dir == 'x' ? 'width' 		: 'height',
-			_max = dir == 'x' ? 'maxWidth' 		: 'maxHeight',
-			_pos = null;
+		var _scrollPos 	= dir == 'x' ? 'scrollLeft' 	: 'scrollTop',
+			_outerSize 	= dir == 'x' ? 'outerWidth' 	: 'outerHeight',
+			_startPos 	= dir == 'x' ? 'left' 			: 'top',
+			_stopPos 	= dir == 'x' ? 'right' 			: 'bottom',
+			_size 		= dir == 'x' ? 'width' 			: 'height',
+			_maxSize 	= dir == 'x' ? 'maxWidth' 		: 'maxHeight',
+			_position 	= null;
 
-		var scrl = Mmenu.$(window)[ _scr ](),
-			strt = $button.offset()[ _str ] -= scrl,
-			stop = strt + $button[ _out ](),
-			wndw = Mmenu.$(window)[ _siz ]();
+		var scrollPos 	= Mmenu.$(window)[ _scrollPos ](),
+			startPos 	= Mmenu.$(button).offset()[ _startPos ] -= scrollPos,
+			stopPos 	= startPos + Mmenu.$(button)[ _outerSize ](),
+			windowSize 	= Mmenu.$(window)[ _size ]();
 
 		var offs = conf.offset.button[ dir ] + conf.offset.viewport[ dir ];
 
@@ -129,31 +125,31 @@ Mmenu.addons.dropdown = function(
 			{
 				case 'left':
 				case 'bottom':
-					_pos = 'after';
+					_position = 'after';
 					break;
 
 				case 'right':
 				case 'top':
-					_pos = 'before';
+					_position = 'before';
 					break;
 			}
 		}
 
 		//	Position not set in option, find most space
-		if ( _pos === null )
+		if ( _position === null )
 		{
-			_pos = ( strt + ( ( stop - strt ) / 2 ) < wndw / 2 ) ? 'after' : 'before';
+			_position = ( startPos + ( ( stopPos - startPos ) / 2 ) < windowSize / 2 ) ? 'after' : 'before';
 		}
 
 		//	Set position and max
 		var val, max;
-		if ( _pos == 'after' )
+		if ( _position == 'after' )
 		{
-			val = ( dir == 'x' ) ? strt : stop;
-			max = wndw - ( val + offs );
+			val = ( dir == 'x' ) ? startPos : stopPos;
+			max = windowSize - ( val + offs );
 
-			css[ _str ] = val + conf.offset.button[ dir ];
-			css[ _stp ] = 'auto';
+			css[ _startPos ] = val + conf.offset.button[ dir ];
+			css[ _stopPos ]  = 'auto';
 
 			if ( opts.tip )
 			{
@@ -162,11 +158,11 @@ Mmenu.addons.dropdown = function(
 		}
 		else
 		{
-			val = ( dir == 'x' ) ? stop : strt;
+			val = ( dir == 'x' ) ? stopPos : startPos;
 			max = val - offs;
 
-			css[ _stp ] = 'calc( 100% - ' + ( val - conf.offset.button[ dir ] ) + 'px )';
-			css[ _str ] = 'auto';
+			css[ _stopPos ]  = 'calc( 100% - ' + ( val - conf.offset.button[ dir ] ) + 'px )';
+			css[ _startPos ] = 'auto';
 
 			if ( opts.tip )
 			{
@@ -176,7 +172,7 @@ Mmenu.addons.dropdown = function(
 
 		if ( opts.fitViewport )
 		{
-			css[ _max ] = Math.min( conf[ _siz ].max, max );
+			css[ _maxSize ] = Math.min( conf[ _size ].max, max );
 		}
 
 		return [ css, cls ];
@@ -206,17 +202,15 @@ Mmenu.addons.dropdown = function(
 
 	this.bind( 'open:start', position );
 
-	Mmenu.$(window)
-		.on( 'resize.mm-dropdown', ( evnt ) => {
-			position.call( this );
-		});
+	window.addEventListener( 'resize', ( evnt ) => {
+		position.call( this );
+	}, { passive: true });
 
 	if ( !this.opts.offCanvas.blockUI )
 	{
-		Mmenu.$(window)
-			.on( 'scroll.mm-dropdown', ( evnt ) => {
-				position.call( this );
-			});
+		window.addEventListener( 'scroll', ( evnt ) => {
+			position.call( this );
+		}, { passive: true });
 	}
 
 };

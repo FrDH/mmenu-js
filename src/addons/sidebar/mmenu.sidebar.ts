@@ -88,7 +88,7 @@ Mmenu.addons.sidebar = function(
 
 			if ( opts.collapsed.blockMenu &&
 				this.opts.offCanvas &&
-				!Mmenu.DOM.child( this.node.menu, '.mm-menu__blocker' )
+				!Mmenu.DOM.children( this.node.menu, '.mm-menu__blocker' )[ 0 ]
 			) {
 				Mmenu.$(this.node.menu).prepend( '<a class="mm-menu__blocker" href="#' + this.node.menu.id + '" />' );
 			}

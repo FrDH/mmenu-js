@@ -1,70 +1,79 @@
 Mmenu.addons.navbars.title = function( 
 	this	: Mmenu,
-	$navbar	: JQuery
+	navbar	: HTMLElement
 ) {
-	//	Add content
-	var $title = Mmenu.$('<a class="mm-navbar__title" />')
-		.appendTo( $navbar );
+	//	Add content to the navbar.
+	var title = Mmenu.DOM.create( 'a.mm-navbar__title' );
+	navbar.append( title );
 
 
-	//	Update to opened panel
+	//	Update the title to the opened panel.
 	var _url, _txt;
-	var org : HTMLElement;
+	var original : HTMLElement;
 
 	this.bind( 'openPanel:start', ( 
 		panel : HTMLElement
 	) => {
+		//	Do nothing in a vertically expanding panel.
 		if ( panel.parentElement.matches( '.mm-listitem_vertical' ) )
 		{
 			return;
 		}
 
-		org = panel.querySelector( '.' + this.conf.classNames.navbars.panelTitle );
-		if ( !org )
+		//	Find the original title in the opened panel.
+		original = panel.querySelector( '.' + this.conf.classNames.navbars.panelTitle );
+		if ( !original )
 		{
-			org = panel.querySelector( '.mm-navbar__title' );
+			original = panel.querySelector( '.mm-navbar__title' );
 		}
 
-		_url = org.getAttribute( 'href' );
-		_txt = org.innerHTML;
-
+		//	Get the URL for the title.
+		_url = original ? original.getAttribute( 'href' ) : '';
 		if ( _url )
 		{
-			$title[ 0 ].setAttribute( 'href', _url );
+			title.setAttribute( 'href', _url );
 		}
 		else
 		{
-			$title[ 0 ].removeAttribute( 'href' );
+			title.removeAttribute( 'href' );
 		}
 
-		$title[ _url || _txt ? 'removeClass' : 'addClass' ]( 'mm-hidden' );
-		$title.html( _txt );
+		//	Get the text for the title.
+		_txt = original ? original.innerHTML : '';
+		title.innerHTML = _txt;
+
+		//	Show or hide the title.
+		title.classList[ _url || _txt ? 'remove' : 'add' ]( 'mm-hidden' );
 	});
 
 
 	//	Add screenreader / aria support
-	var $prev;
+	var prev : HTMLElement;
 
 	this.bind( 'openPanel:start:sr-aria', (
 		panel : HTMLElement
 	) => {
 		if ( this.opts.screenReader.text )
 		{
-			if ( !$prev )
+			if ( !prev )
 			{
-				$prev = Mmenu.$(this.node.menu)
-					.children( '.mm-navbars_top, .mm-navbars_bottom' )
-					.children( '.mm-navbar' )
-					.children( '.mm-btn_prev' );
+				var navbars = Mmenu.DOM.children( this.node.menu, '.mm-navbars_top, .mm-navbars_bottom' );
+				navbars.forEach(( navbar ) => {
+					let btn = navbar.querySelector( '.mm-btn_prev' );
+					if ( btn )
+					{
+						prev = (btn as HTMLElement);
+					}
+				});
 			}
-			if ( $prev.length )
+			if ( prev )
 			{
 				var hidden = true;
 				if ( this.opts.navbar.titleLink == 'parent' )
 				{
-					hidden = !$prev.hasClass( 'mm-hidden' );
+					hidden = !prev.matches( '.mm-hidden' );
 				}
-				Mmenu.sr_aria( $title, 'hidden', hidden );
+				Mmenu.sr_aria( title, 'hidden', hidden );
 			}
 		}
 	});

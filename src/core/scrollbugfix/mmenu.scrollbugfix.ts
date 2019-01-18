@@ -51,10 +51,10 @@ Mmenu.addons.scrollBugFix = function(
 	    Mmenu.$(document)
 	    	.off( 'touchmove.mm-scrollBugFix' )
 	    	.on( 'touchmove.mm-scrollBugFix',
-		    	( e ) => {
-					if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
+		    	( evnt ) => {
+					if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
 					{
-						e.preventDefault();
+						evnt.preventDefault();
 					}
 		    	}
 		    );
@@ -64,20 +64,21 @@ Mmenu.addons.scrollBugFix = function(
 	    	.off( 'touchstart.mm-scrollBugFix' )
 	    	.on( 'touchstart.mm-scrollBugFix',
 		    	'.mm-panels > .mm-panel',
-		    	( e ) => {
-			        if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
+		    	( evnt ) => {
+		    		var panel = evnt.currentTarget;
+			        if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
 			        {
 			        	if ( !scrolling )
 						{
 						    scrolling = true;   
 
-					        if ( e.currentTarget.scrollTop === 0 )
+					        if ( panel.scrollTop === 0 )
 					        {
-					            e.currentTarget.scrollTop = 1;
+					            panel.scrollTop = 1;
 					        }
-					        else if ( e.currentTarget.scrollHeight === e.currentTarget.scrollTop + e.currentTarget.offsetHeight )
+					        else if ( panel.scrollHeight === panel.scrollTop + panel.offsetHeight )
 					        {
-					            e.currentTarget.scrollTop -= 1;
+					            panel.scrollTop -= 1;
 					        }
 
 						    scrolling = false;
@@ -88,13 +89,13 @@ Mmenu.addons.scrollBugFix = function(
 	 		.off( 'touchmove.mm-scrollBugFix' )
 	 		.on( 'touchmove.mm-scrollBugFix',
 		 		'.mm-panels > .mm-panel',
-		 		( e ) => {
-			        if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
+		 		( evnt ) => {
+			        if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
 			        {
-			        	var $panel = Mmenu.$(e.currentTarget);
-				        if ( $panel[ 0 ].scrollHeight > $panel.innerHeight() )
+			        	var panel = evnt.currentTarget;
+				        if ( panel.scrollHeight > panel.clientHeight )
 				        {
-				        	e.stopPropagation();
+				        	evnt.stopPropagation();
 				        }
 			        }
 		    	}

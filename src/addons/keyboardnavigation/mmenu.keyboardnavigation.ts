@@ -33,9 +33,9 @@ Mmenu.addons.keyboardNavigation = function(
 	if ( opts.enable )
 	{
 
-		var $menuStart 	= Mmenu.$('<button class="mm-tabstart" />'),
-			$menuEnd   	= Mmenu.$('<button class="mm-tabend" />'),
-			$blckEnd 	= Mmenu.$('<button class="mm-tabend" />');
+		let menuStart 	= Mmenu.DOM.create( 'button.mm-tabstart' ),
+			menuEnd   	= Mmenu.DOM.create( 'button.mm-tabend' ),
+			blockerEnd 	= Mmenu.DOM.create( 'button.mm-tabend' );
 
 		this.bind( 'initMenu:after', () => {
 			if ( opts.enhance )
@@ -46,19 +46,20 @@ Mmenu.addons.keyboardNavigation = function(
 			this._initWindow_keyboardNavigation( opts.enhance );
 		});
 		this.bind( 'initOpened:before', () => {
-			Mmenu.$(this.node.menu)
-				.prepend( $menuStart )
-				.append( $menuEnd )
-				.children( '.mm-navbars-top, .mm-navbars-bottom' )
-				.children( '.mm-navbar' )
-				.children( 'a.mm-title' )
-				.attr( 'tabindex', -1 );
+			this.node.menu.prepend( menuStart );
+			this.node.menu.append( menuEnd );
+			Mmenu.DOM.children( this.node.menu, '.mm-navbars-top, .mm-navbars-bottom' )
+				.forEach(( navbars ) => {
+					navbars.querySelectorAll( 'a.mm-navbar__title' )
+						.forEach(( title ) => {
+							title.setAttribute( 'tabindex', -1 );
+						});
+				});
 		});
 		this.bind( 'initBlocker:after', () => {
-			Mmenu.$(Mmenu.node.blck)
-				.append( $blckEnd )
-				.children( 'a' )
-				.addClass( 'mm-tabstart' );
+			Mmenu.node.blck.append( blockerEnd );
+			Mmenu.DOM.children( Mmenu.node.blck, 'a' )[ 0 ]
+				.classList.add( 'mm-tabstart' );
 		});
 
 
@@ -67,7 +68,7 @@ Mmenu.addons.keyboardNavigation = function(
 			this 	 : Mmenu,
 			panel	?: HTMLElement
 		) {
-			panel = panel || Mmenu.DOM.child( this.node.pnls, '.mm-panel_opened' );
+			panel = panel || Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
 
 			var $focs = Mmenu.$(),
 				$navb = Mmenu.$(this.node.menu)
@@ -119,8 +120,10 @@ Mmenu.addons.keyboardNavigation = function(
 			var $btns = Mmenu.$(this.node.menu).add( Mmenu.node.blck )
 				.children( '.mm-tabstart, .mm-tabend' );
 
-			Mmenu.sr_aria( $btns, 'hidden', true );
-			Mmenu.sr_role( $btns, 'presentation' );
+			$btns.each(( b, btn ) => {
+				Mmenu.sr_aria( btn, 'hidden', true );
+				Mmenu.sr_role( btn, 'presentation' );
+			});
 		});
 	}
 };
@@ -144,6 +147,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 	Mmenu.$(window)
 
 		//	Re-enable tabbing in general
+		//	TODO: dit wordt lastig omdat removeEventListner de functie als argument nodig heeft
 		.off( 'keydown.mm-offCanvas' )
 
 		//	Prevent tabbing outside an offcanvas menu
@@ -151,33 +155,30 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 		.on( 'focusin.mm-keyboardNavigation', ( evnt ) => {
 			if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
 			{
-				var target = (evnt.target as any);
-				var $target = Mmenu.$(target);
+				let target = (evnt.target as any); // Typecast to any because somehow, TypeScript thinks event.target is the window.
 
 				if ( target.matches( '.mm-tabend' ) )
 				{
-					var $next = Mmenu.$();
+					let next;
 
 					//	Jump from menu to blocker
 					if ( target.parentElement.matches( '.mm-menu' ) )
 					{
 						if ( Mmenu.node.blck )
 						{
-							$next = Mmenu.$(Mmenu.node.blck);
+							next = Mmenu.node.blck;
 						}
 					}
-					if ( $target.parent().is( '.mm-wrapper__blocker' ) )
+					if ( target.parentElement.matches( '.mm-wrapper__blocker' ) )
 					{
-						$next = Mmenu.$('body')
-							.find( '.mm-menu_offcanvas' )
-							.filter( '.mm-menu_opened' );
+						next = Mmenu.DOM.find( document.body, '.mm-menu_offcanvas.mm-menu_opened' )[ 0 ];
 					}
-					if ( !$next.length )
+					if ( !next )
 					{
-						$next = $target.parent();
+						next = target.parentElement;
 					}
 
-					$next.children( '.mm-tabstart' ).focus();
+					Mmenu.DOM.children( next, '.mm-tabstart' )[ 0 ].focus();
 				}
 			}
 		})
@@ -229,7 +230,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 			//	Enhanced keyboard navigation
 			.off( 'keydown.mm-keyboardNavigation' )
 			.on( 'keydown.mm-keyboardNavigation', ( evnt ) => {
-				var target 	= (evnt.target as any),
+				var target 	= (evnt.target as any), // Typecast to any because somehow, TypeScript thinks event.target is the window.
 					menu 	= target.closest( '.mm-menu' );
 
 				if ( menu )

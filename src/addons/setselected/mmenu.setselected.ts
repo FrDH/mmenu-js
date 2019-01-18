@@ -58,10 +58,10 @@ Mmenu.addons.setSelected = function(
 		this.bind( 'initListview:after', ( 
 			panel : HTMLElement
 		) => {
-			Mmenu.$(panel)
-				.find( '.mm-listview' )
-				.children( '.mm-listitem_selected' )
-				.removeClass( 'mm-listitem_selected' );
+			Mmenu.DOM.find( panel, '.mm-listitem_selected' )
+				.forEach(( listitem ) => {
+					listitem.classList.remove( 'mm-listitem_selected' );
+				});
 		});
 	}
 
@@ -82,10 +82,10 @@ Mmenu.addons.setSelected = function(
 			panel : HTMLElement
 		) => {
 			//	Remove all
-			let listitems = this.node.pnls.querySelectorAll( '.mm-listitem_selected-parent' )
-			listitems.forEach(( listitem ) => {
-				listitem.classList.remove( 'mm-listitem_selected-parent' );
-			});
+			Mmenu.DOM.find( this.node.pnls, '.mm-listitem_selected-parent' )
+				.forEach(( listitem ) => {
+					listitem.classList.remove( 'mm-listitem_selected-parent' );
+				});
 
 			//	Move up the DOM tree
 			var parent : HTMLElement = (panel as any).mmParent;

@@ -5,7 +5,7 @@ Mmenu.addons.searchfield = function(
 		conf = this.conf.searchfield;
 
 
-	//	Extend shorthand options
+	//	Extend shorthand options.
 	if ( typeof opts == 'boolean' )
 	{
 		(opts as mmLooseObject) = {
@@ -26,7 +26,7 @@ Mmenu.addons.searchfield = function(
 	{
 		(opts.panel as mmLooseObject) = {};
 	}
-	//	/Extend shorthand options
+	//	/Extend shorthand options.
 
 
 	if ( !opts.add )
@@ -35,7 +35,7 @@ Mmenu.addons.searchfield = function(
 	}
 
 
-	//	Extend logical options
+	//	Extend logical options.
 	if ( opts.addTo == 'panel' )
 	{
 		opts.panel.add = true;
@@ -49,7 +49,7 @@ Mmenu.addons.searchfield = function(
 			opts.cancel = true;
 		}
 	}
-	//	/Extend logical options
+	//	/Extend logical options.
 
 
 	this.opts.searchfield = Mmenu.extend( opts, Mmenu.options.searchfield );
@@ -57,16 +57,18 @@ Mmenu.addons.searchfield = function(
 
 	//	Blur searchfield
 	this.bind( 'close:start', () => {
-		Mmenu.$(this.node.menu)
-			.find( '.mm-searchfield' )
-			.children( 'input' )
-			.blur();
+		Mmenu.DOM.find( this.node.menu, '.mm-searchfield' )
+			.forEach(( input ) => {
+				input.blur();
+			});
 	});
 
 
 	this.bind( 'initPanels:after', (
-		$pnls : JQuery
+		panels : HTMLElement[]
 	) => {
+
+		var $pnls = Mmenu.$( panels );
 
 		var $spnl = Mmenu.$();
 
@@ -89,7 +91,14 @@ Mmenu.addons.searchfield = function(
 				break;
 
 			default:
-				$field = Mmenu.$(this.node.menu).find( opts.addTo );
+				if ( typeof opts.addTo == 'string' )
+				{
+					$field = Mmenu.$(this.node.menu).find( opts.addTo );
+				}
+				else
+				{
+					$field = Mmenu.$(opts.addTo);
+				}
 				break;
 		}
 
@@ -231,7 +240,7 @@ Mmenu.prototype._initSearchPanel = function(
 		$spnl.append( '<div class="mm-panel__searchsplash">' + opts.panel.splash + '</div>' );
 	}
 
-	this._initPanels( $spnl );
+	this._initPanels( $spnl.get() );
 
 	return $spnl;
 };
@@ -549,33 +558,42 @@ Mmenu.prototype.search = function(
 		if ( opts.panel.add )
 		{
 			//	Clone all matched listitems into the search panel
-			var $lis = Mmenu.$();
+			var listitems = [];
 			$pnls
 				.each(( p, panel ) => {
-					let listitems 	= Array.prototype.slice.call( panel.querySelectorAll( '.mm-listitem' ) ),
-						$li 		= Mmenu.filterListItems( listitems ).clone( true );
+					let items = Mmenu.filterListItems( Mmenu.DOM.find( panel, '.mm-listitem' ) );
 
-					if ( $li.length )
+					if ( items.length )
 					{
 						if ( opts.panel.dividers )
 						{
-							$lis = $lis.add( '<li class="mm-listitem mm-listitem_divider">' + panel.querySelector( '.mm-navbar__title' ).innerText + '</li>' );
+							let divider = Mmenu.DOM.create( 'li.mm-listitem.mm-listitem_divider' );
+								divider.innerHTML = panel.querySelector( '.mm-navbar__title' ).innerHTML;
+
+							listitems.push( divider );
 						}
-						$lis = $lis.add( $li );
+						items.forEach(( item ) => {
+							listitems.push( item.cloneNode( true ) );
+						});
 					}
 				});
 
 
 			//	Remove toggles, checks and open buttons
-			$lis.find( '.mm-toggle, .mm-check, .mm-btn' ).remove();
+			listitems.forEach(( listitem ) => {
+				listitem.querySelectorAll( '.mm-toggle, .mm-check, .mm-btn' )
+					.forEach(( element ) => {
+						element.remove();
+					});
+			});
 
 
 			//	Add to the search panel
-			$spnl.children( '.mm-listview' ).append( $lis );
+			$spnl.children( '.mm-listview' ).append( listitems );
 
 
 			//	Open the search panel
-			this.openPanel( $spnl[0] );
+			this.openPanel( $spnl[ 0 ] );
 		}
 
 		else
@@ -585,14 +603,17 @@ Mmenu.prototype.search = function(
 			if ( opts.showSubPanels )
 			{
 				$pnls.each(( p, panel ) => {
-					let listitems = Array.prototype.slice.call( panel.querySelectorAll( '.mm-listitem' ) );
+					let listitems = Mmenu.DOM.find( panel, '.mm-listitem' );
 
 					Mmenu.filterListItems( listitems )
-						.each(( l, listitem ) => {
-							let child : JQuery = (listitem as any).mmChild;
+						.forEach(( listitem ) => {
+							let child : HTMLElement = (listitem as any).mmChild;
 							if ( child )
 							{
-								Mmenu.$(child).find( '.mm-listview' ).children().removeClass( 'mm-hidden' );
+								Mmenu.DOM.find( child, '.mm-listitem' )
+									.forEach(( listitem ) => {
+										listitem.classList.remove( 'mm-hidden' );
+									});
 							}
 						});
 					});
@@ -608,7 +629,7 @@ Mmenu.prototype.search = function(
 					if ( parent )
 					{
 						//	The current panel has mached listitems
-						let listitems = Array.prototype.slice.call( panel.querySelectorAll( '.mm-listitem' ) );
+						let listitems = Mmenu.DOM.find( panel, '.mm-listitem' );
 						if ( Mmenu.filterListItems( listitems ).length )
 						{
 							//	Show parent
@@ -641,9 +662,9 @@ Mmenu.prototype.search = function(
 
 			//	Show first preceeding divider of parent
 			$pnls.each(( p, panel ) => {
-				let listitems = Array.prototype.slice.call( panel.querySelectorAll( '.mm-listitem' ) );
+				let listitems = Mmenu.DOM.find( panel, '.mm-listitem' );
 				Mmenu.filterListItems( listitems )
-					.each(( l, listitem ) => {
+					.forEach(( listitem ) => {
 						Mmenu.$(listitem).prevAll( '.mm-listitem_divider' )
 							.first()
 							.removeClass( 'mm-hidden' );

@@ -1,6 +1,6 @@
 /**	"navbar" options for the navbars add-on. */
 interface mmOptionsNavbarsNavbar {
-	content : string[] | JQuery[]
+	content : string[] | HTMLElement[]
 	height	: number
 	position: string
 	type 	: string

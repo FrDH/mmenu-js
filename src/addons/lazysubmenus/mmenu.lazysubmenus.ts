@@ -28,38 +28,59 @@ Mmenu.addons.lazySubmenus = function(
 
 		//	prevent all sub panels from initPanels
 		this.bind( 'initMenu:after', () => {
-			 Mmenu.$(this.node.pnls)
-				.find( 'li' )
-				.children( this.conf.panelNodetype.join( ', ' ) )
-				.not( '.mm-listview_inset' )
-				.not( '.mm-nolistview' )
-				.not( '.mm-nopanel' )
-				.addClass( 'mm-panel_lazysubmenu mm-nolistview mm-nopanel' );
+			var panels : HTMLElement[] = [];
+
+			//	Find all potential subpanels
+			Mmenu.DOM.find( this.node.pnls, 'li' )
+				.forEach(( listitem ) => {
+					panels.push( ...Mmenu.DOM.children( listitem, this.conf.panelNodetype.join( ', ' ) ) )
+				});
+
+			//	Filter out all non-panels and add the lazyload classes
+			panels.filter( panel => !panel.matches( '.mm-listview_inset' ) )
+				.filter( panel => !panel.matches( '.mm-nolistview' ) )
+				.filter( panel => !panel.matches( '.mm-nopanel' ) )
+				.forEach(( panel ) => {
+					panel.classList.add( 'mm-panel_lazysubmenu', 'mm-nolistview', 'mm-nopanel' );
+				});
 		});
 
 		//	prepare current and one level sub panels for initPanels
 		this.bind( 'initPanels:before', ( 
-			$panels	?: JQuery
+			panels	?: HTMLElement[]
 		) => {
-			$panels = $panels ||  Mmenu.$(this.node.pnls).children( this.conf.panelNodetype.join( ', ' ) );
+			panels = panels || Mmenu.DOM.children( this.node.pnls, this.conf.panelNodetype.join( ', ' ) );
 
-			$panels.each(( p, panel ) => {
-				Mmenu.$( Mmenu.findAddSelf( panel, '.mm-panel_lazysubmenu' ) )
-					.not( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' )
-					.removeClass( 'mm-panel_lazysubmenu mm-nolistview  mm-nopanel' );
+			panels.forEach(( panel ) => {
+				var filter = '.mm-panel_lazysubmenu',
+					panels = Mmenu.DOM.find( panel, filter );
+
+				if ( panel.matches( filter ) )
+				{
+					panels.unshift( panel );
+				}
+				panels.filter( panel => !panel.matches( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' ) )
+					.forEach(( panel ) => {
+						panel.classList.remove( 'mm-panel_lazysubmenu', 'mm-nolistview', 'mm-nopanel' );
+					});
 			});				
 		});
 
 		//	initPanels for the default opened panel
 		this.bind( 'initOpened:before', () => {
-			var $selected =  Mmenu.$(this.node.pnls)
-				.find( '.' + this.conf.classNames.selected )
-				.parents( '.mm-panel_lazysubmenu' );
 
-			if ( $selected.length )
+			var panels : HTMLElement[] = [];
+			Mmenu.DOM.find( this.node.pnls, '.' + this.conf.classNames.selected )
+				.forEach(( listitem ) => {
+					panels.push( ...Mmenu.DOM.parents( listitem, '.mm-panel_lazysubmenu' ) );
+				});
+
+			if ( panels.length )
 			{
-				$selected.removeClass( 'mm-panel_lazysubmenu mm-nolistview mm-nopanel' );
-				this.initPanels( $selected.last() );
+				panels.forEach(( panel ) => {
+					panel.classList.remove( 'mm-panel_lazysubmenu', 'mm-nolistview mm-nopanel' );
+				});
+				this.initPanels( [ panels[ panels.length - 1 ] ] );
 			}
 		});
 
@@ -67,12 +88,17 @@ Mmenu.addons.lazySubmenus = function(
 		this.bind( 'openPanel:before', ( 
 			panel : HTMLElement
 		) => {
-			var $panels = Mmenu.$( Mmenu.findAddSelf( panel, '.mm-panel_lazysubmenu' ) )
-				.not( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' );
-
-			if ( $panels.length )
+			var filter = '.mm-panel_lazysubmenu',
+				panels = Mmenu.DOM.find( panel, filter );
+			if ( panel.matches( filter ) )
 			{
-				this.initPanels( $panels );
+				panels.unshift( panel );
+			}
+			panels = panels.filter( panel => !panel.matches( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' ) );
+
+			if ( panels.length )
+			{
+				this.initPanels( panels );
 			}
 		});
 	}

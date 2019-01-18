@@ -72,30 +72,32 @@ Mmenu.addons.offCanvas = function(
 	) => {
 		if ( Mmenu.node.blck )
 		{
-			Mmenu.$(Mmenu.node.blck)
-				.children( 'a' )
-				.attr( 'href', '#' + page.id );
+			Mmenu.DOM.children( Mmenu.node.blck, 'a' )
+				.forEach(( anchor ) => {
+					anchor.setAttribute( 'href', '#' + page.id )
+				});
 		}
 	});
 
 
 	//	Add screenreader / aria support
 	this.bind( 'open:start:sr-aria', () => {
-		Mmenu.sr_aria( Mmenu.$(this.node.menu), 'hidden', false );
+		Mmenu.sr_aria( this.node.menu, 'hidden', false );
 	});
 	this.bind( 'close:finish:sr-aria', () => {
-		Mmenu.sr_aria( Mmenu.$(this.node.menu), 'hidden', true );
+		Mmenu.sr_aria( this.node.menu, 'hidden', true );
 	});
 	this.bind( 'initMenu:after:sr-aria', () => {
-		Mmenu.sr_aria( Mmenu.$(this.node.menu), 'hidden', true );
+		Mmenu.sr_aria( this.node.menu, 'hidden', true );
 	});
 
 
 	//	Add screenreader / text support
 	this.bind( 'initBlocker:after:sr-text', () => {
-		Mmenu.$(Mmenu.node.blck)
-			.children( 'a' )
-			.html( Mmenu.sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) ) );
+		Mmenu.DOM.children( Mmenu.node.blck, 'a' )
+			.forEach(( anchor ) => {
+				anchor.innerHTML = Mmenu.sr_text( this.i18n( this.conf.screenReader.text.closeMenu ) );
+			});
 	});
 
 
@@ -105,8 +107,6 @@ Mmenu.addons.offCanvas = function(
 		anchor	: HTMLElement,
 		args 	: mmClickArguments
 	) => {
-		var $a = Mmenu.$(anchor);
-
 		//	Open menu if the clicked anchor links to the menu
 		var id = this.vars.orgMenuId;
 		if ( id )
@@ -176,8 +176,7 @@ Mmenu.configs.offCanvas = {
 	page 	: {
 		nodetype		: 'div',
 		selector		: null,
-		noSelector		: [],
-		wrapIfNeeded	: true,
+		noSelector		: []
 	}
 };
 
@@ -331,50 +330,52 @@ Mmenu.prototype.closeAllOthers = function(
 };
 
 /**
- * Set "page" node.
+ * Set the "page" node.
+ *
+ * @param {HTMLElement} page Element to set as the page.
  */
 Mmenu.prototype.setPage = function( 
 	this : Mmenu,
-	$page: JQuery
+	page : HTMLElement
 ) {
 
-	this.trigger( 'setPage:before', [ $page ] );
+	this.trigger( 'setPage:before', [ page ] );
 
 	var conf = this.conf.offCanvas;
 
-	if ( !$page || !$page.length )
+	//	If no page was specified, find it.
+	if ( !page )
 	{
-		$page = ( typeof conf.page.selector == 'string' )
-			? Mmenu.$('body').find( conf.page.selector )
-			: Mmenu.$('body').children( conf.page.nodetype );
-		
-		$page = $page
-			.not( '.mm-menu' )
-			.not( '.mm-wrapper__blocker' );
+		/** Array of elements that are / could be "the page". */
+		var pages = ( typeof conf.page.selector == 'string' )
+			? Mmenu.DOM.find( document.body, conf.page.selector )
+			: Mmenu.DOM.children( document.body, conf.page.nodetype );
 
+		//	Filter out elements that are absolutely not "the page".
+		pages = pages.filter( page => !page.matches( '.mm-menu, .mm-wrapper__blocker' ) );
+
+		//	Filter out elements that are configured to not be "the page".
 		if ( conf.page.noSelector.length )
 		{
-			$page = $page.not( conf.page.noSelector.join( ', ' ) );
+			pages = pages.filter( page => !page.matches( conf.page.noSelector.join( ', ' ) ) );
 		}
-		if ( $page.length > 1 && conf.page.wrapIfNeeded )
+
+		//	Wrap multiple pages in a single element.
+		if ( pages.length > 1 )
 		{
-			$page = $page
+			pages = [ Mmenu.$(pages)
 				.wrapAll( '<' + conf.page.nodetype + ' />' )
-				.parent();
+				.parent()[ 0 ] ];
 		}
+
+		page = pages[ 0 ];
 	}
-	$page.addClass( 'mm-page mm-slideout' )
-		.each(
-			function( i, elem )
-			{
-				elem.id = elem.id || Mmenu.getUniqueId();
-			}
-		);
+	page.classList.add( 'mm-page', 'mm-slideout' );
+	page.id = page.id || Mmenu.getUniqueId();
 
+	Mmenu.node.page = page;
 
-	Mmenu.node.page = $page[0];
-
-	this.trigger( 'setPage:after', [ $page ] );
+	this.trigger( 'setPage:after', [ page ] );
 };
 
 /**
@@ -440,11 +441,8 @@ Mmenu.prototype._initBlocker = function(
 
 	if ( !Mmenu.node.blck )
 	{
-		let blck = document.createElement( 'div' );
-		blck.classList.add( 'mm-wrapper__blocker', 'mm-slideout' ); 
-		
-		let anchor = document.createElement( 'a' );
-		blck.append( anchor );
+		let blck = Mmenu.DOM.create( 'div.mm-wrapper__blocker.mm-slideout' ); 
+		blck.innerHTML = '<a></a>';
 
 		Mmenu.node.blck = blck;
 	}

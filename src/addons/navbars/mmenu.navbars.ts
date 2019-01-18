@@ -14,124 +14,125 @@ Mmenu.addons.navbars = function(
 		navs = [ navs ];
 	}
 
-	var _pos = {},
-		$pos = {};
+	var sizes 	= {},
+		navbars = {};
 
 	if ( !navs.length )
 	{
 		return;
 	}
 
-	navs.forEach(
-		( opts ) => {
+	navs.forEach(( opts ) => {
 
-			//	Extend shorthand options
-			if ( typeof opts == 'boolean' && opts )
+		//	Extend shorthand options.
+		if ( typeof opts == 'boolean' && opts )
+		{
+			(opts as mmLooseObject) = {};
+		}
+		if ( typeof opts != 'object' )
+		{
+			(opts as mmLooseObject) = {};
+		}
+		if ( typeof opts.content == 'undefined' )
+		{
+			opts.content = [ 'prev', 'title' ];
+		}
+		if ( !( opts.content instanceof Array ) )
+		{
+			opts.content = [ opts.content ];
+		}
+		//	/Extend shorthand options.
+
+
+		//	Create the navbar element.
+		var navbar = Mmenu.DOM.create( 'div.mm-navbar' );
+			
+
+		//	Get the height for the navbar.
+		var height = opts.height;
+		if ( typeof height != 'number' )
+		{
+			//	Defaults to a height of 1.
+			height = 1;
+		}
+		else
+		{
+			//	Restrict the height between 1 to 4.
+			height = Math.min( 4, Math.max( 1, height ) );
+			if ( height > 1 )
 			{
-				(opts as mmLooseObject) = {};
+				//	Add the height class to the navbar.
+				navbar.classList.add( 'mm-navbar_size-' + height );
 			}
-			if ( typeof opts != 'object' )
-			{
-				(opts as mmLooseObject) = {};
-			}
-			if ( typeof opts.content == 'undefined' )
-			{
-				opts.content = [ 'prev', 'title' ];
-			}
-			if ( !( opts.content instanceof Array ) )
-			{
-				opts.content = [ opts.content ];
-			}
-			//	/Extend shorthand options
+		}
+
+		//	Get the position for the navbar.
+		var position = opts.position;
+
+		//	Restrict the position to either "bottom" or "top" (default).
+		if ( position !== 'bottom' )
+		{
+			position = 'top';
+		}
+
+		//	Add up the wrapper height for the navbar position.
+		if ( !sizes[ position ] )
+		{
+			sizes[ position ] = 0;
+		}
+		sizes[ position ] += height;
+
+		//	Create the wrapper for the navbar position.
+		if ( !navbars[ position ] )
+		{
+			navbars[ position ] = Mmenu.DOM.create( 'div.mm-navbars_' + position );
+		}
+		navbars[ position ].append( navbar );
 
 
-			//	Create node
-			var $navbar = Mmenu.$( '<div class="mm-navbar" />' );
-				
+		//	Add content to the navbar
+		for ( let c = 0, l = opts.content.length; c < l; c++ )
+		{
+			//	Content from
+			let ctnt = ( typeof opts.content[ c ] == 'string' && Mmenu.addons.navbars[ (opts.content[ c ] as string) ] ) || null;
 
-			//	Get height
-			var hght = opts.height;
-
-			if ( typeof hght != 'number' )
+			if ( ctnt )
 			{
-				hght = 1;
+				ctnt.call( this, navbar );
 			}
 			else
 			{
-				hght = Math.min( 4, Math.max( 1, hght ) );
-				if ( hght > 1 )
+//	TODO... <a href="/"></a> moet ook werken
+//		zie iconbar?
+				ctnt = opts.content[ c ];
+				if ( !( ctnt instanceof Mmenu.$ ) )
 				{
-					$navbar.addClass( 'mm-navbar_size-' + hght );
+					ctnt = Mmenu.$( (opts.content[ c ] as string) );
 				}
-			}
-
-			//	Get position
-			var poss = opts.position;
-
-			switch( poss )
-			{
-				case 'bottom':
-					break;
-
-				default:
-					poss = 'top';
-					break;
-			}
-
-			if ( !_pos[ poss ] )
-			{
-				_pos[ poss ] = 0;
-			}
-			_pos[ poss ] += hght;
-
-			if ( !$pos[ poss ] )
-			{
-				$pos[ poss ] = Mmenu.$( '<div class="mm-navbars_' + poss + '" />' );
-			}
-			$pos[ poss ].append( $navbar );
-
-
-			//	Add content
-			for ( var c = 0, l = opts.content.length; c < l; c++ )
-			{
-				//	Content from
-				var ctnt = ( typeof opts.content[ c ] == 'string' && Mmenu.addons.navbars[ (opts.content[ c ] as string) ] ) || null;
-				if ( ctnt )
-				{
-					ctnt.call( this, $navbar );
-				}
-				else
-				{
-					ctnt = opts.content[ c ];
-					if ( !( ctnt instanceof Mmenu.$ ) )
-					{
-						ctnt = Mmenu.$( (opts.content[ c ] as string) );
-					}
-					$navbar.append( ctnt );
-				}
-			}
-
-			//	Added buttons
-			if ( $navbar.children( '.mm-btn' ).length )
-			{
-				$navbar.addClass( 'mm-navbar_has-btns' );
-			}
-
-			//	Call type
-			var type = ( typeof opts.type == 'string' && Mmenu.addons.navbars[ opts.type ] ) || null;
-			if ( type )
-			{
-				type.call( this, $navbar );
+				navbar.append( ctnt );
 			}
 		}
-	);
+
+		//	Added buttons
+		if ( navbar.querySelector( '.mm-navbar__btn' ) )
+		{
+			navbar.classList.add( 'mm-navbar_has-btns' );
+		}
+
+		//	Call type
+		var type = ( typeof opts.type == 'string' && Mmenu.addons.navbars[ opts.type ] ) || null;
+		if ( type )
+		{
+			type.call( this, navbar );
+		}
+	});
 
 	//	Add to menu
 	this.bind( 'initMenu:after', () => {
-		for ( var poss in _pos )
+		for ( let position in navbars )
 		{
-			this.node.menu.classList.add( 'mm-menu_navbar_' + poss + '-' + _pos[ poss ] );
-			Mmenu.$(this.node.menu)[ poss == 'bottom' ? 'append' : 'prepend' ]( $pos[ poss ] );
+			this.node.menu.classList.add( 'mm-menu_navbar_' + position + '-' + sizes[ position ] );
+			this.node.menu[ position == 'bottom' ? 'append' : 'prepend' ]( navbars[ position ] );
 		}
 	});
 };

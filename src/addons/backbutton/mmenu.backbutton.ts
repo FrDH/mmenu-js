@@ -56,7 +56,7 @@ Mmenu.addons.backButton = function(
 			history.pushState( null, document.title, location.pathname + location.search );
 		});
 
-		Mmenu.$(window).on( 'popstate', ( evnt ) => {
+		window.addEventListener( 'popstate', ( evnt ) => {
 			if ( this.vars.opened )
 			{
 				if ( states.length )
@@ -80,7 +80,7 @@ Mmenu.addons.backButton = function(
 
 	if ( opts.open )
 	{
-		Mmenu.$(window).on( 'popstate', ( evnt ) => {
+		window.addEventListener( 'popstate', ( evnt ) => {
 			if ( !this.vars.opened && location.hash == _menu )
 			{
 				this.open();

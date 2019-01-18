@@ -17,5 +17,4 @@ interface mmConfigsOffcanvasPage {
 	nodetype		: string
 	selector		: string
 	noSelector		: string[]
-	wrapIfNeeded	: boolean
 }
