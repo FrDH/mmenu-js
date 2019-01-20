@@ -1,1 +1,56 @@
-Mmenu.addons.navbars.title=function(e){var t,n,a,r,i=this,m=Mmenu.DOM.create("a.mm-navbar__title");e.append(m),this.bind("openPanel:start",function(e){e.parentElement.matches(".mm-listitem_vertical")||((a=e.querySelector("."+i.conf.classNames.navbars.panelTitle))||(a=e.querySelector(".mm-navbar__title")),(t=a?a.getAttribute("href"):"")?m.setAttribute("href",t):m.removeAttribute("href"),n=a?a.innerHTML:"",m.innerHTML=n,m.classList[t||n?"remove":"add"]("mm-hidden"))}),this.bind("openPanel:start:sr-aria",function(e){if(i.opts.screenReader.text){if(!r)Mmenu.DOM.children(i.node.menu,".mm-navbars_top, .mm-navbars_bottom").forEach(function(e){var t=e.querySelector(".mm-btn_prev");t&&(r=t)});if(r){var t=!0;"parent"==i.opts.navbar.titleLink&&(t=!r.matches(".mm-hidden")),Mmenu.sr_aria(m,"hidden",t)}}})},Mmenu.configs.classNames.navbars.panelTitle="Title";
+Mmenu.addons.navbars.title = function (navbar) {
+    var _this = this;
+    //	Add content to the navbar.
+    var title = Mmenu.DOM.create('a.mm-navbar__title');
+    navbar.append(title);
+    //	Update the title to the opened panel.
+    var _url, _txt;
+    var original;
+    this.bind('openPanel:start', function (panel) {
+        //	Do nothing in a vertically expanding panel.
+        if (panel.parentElement.matches('.mm-listitem_vertical')) {
+            return;
+        }
+        //	Find the original title in the opened panel.
+        original = panel.querySelector('.' + _this.conf.classNames.navbars.panelTitle);
+        if (!original) {
+            original = panel.querySelector('.mm-navbar__title');
+        }
+        //	Get the URL for the title.
+        _url = original ? original.getAttribute('href') : '';
+        if (_url) {
+            title.setAttribute('href', _url);
+        }
+        else {
+            title.removeAttribute('href');
+        }
+        //	Get the text for the title.
+        _txt = original ? original.innerHTML : '';
+        title.innerHTML = _txt;
+        //	Show or hide the title.
+        title.classList[_url || _txt ? 'remove' : 'add']('mm-hidden');
+    });
+    //	Add screenreader / aria support
+    var prev;
+    this.bind('openPanel:start:sr-aria', function (panel) {
+        if (_this.opts.screenReader.text) {
+            if (!prev) {
+                var navbars = Mmenu.DOM.children(_this.node.menu, '.mm-navbars_top, .mm-navbars_bottom');
+                navbars.forEach(function (navbar) {
+                    var btn = navbar.querySelector('.mm-btn_prev');
+                    if (btn) {
+                        prev = btn;
+                    }
+                });
+            }
+            if (prev) {
+                var hidden = true;
+                if (_this.opts.navbar.titleLink == 'parent') {
+                    hidden = !prev.matches('.mm-hidden');
+                }
+                Mmenu.sr_aria(title, 'hidden', hidden);
+            }
+        }
+    });
+};
+Mmenu.configs.classNames.navbars.panelTitle = 'Title';

@@ -1,1 +1,94 @@
-Mmenu.addons.iconbar=function(){var r,n=this,m=this.opts.iconbar;if(("array"==Mmenu.typeof(m)&&(m={add:!0,top:m}),m.add)&&(["top","bottom"].forEach(function(e,t){var a=m[e];"array"!=Mmenu.typeof(a)&&(a=[a]);for(var n=Mmenu.DOM.create("div.mm-iconbar__"+e),i=0,o=a.length;i<o;i++)"string"==typeof a[i]?n.innerHTML+=a[i]:n.append(a[i]);n.children.length&&(r||(r=Mmenu.DOM.create("div.mm-iconbar")),r.append(n))}),r&&(this.bind("initMenu:after",function(){n.node.menu.classList.add("mm-menu_iconbar"),n.node.menu.prepend(r)}),"tabs"==m.type))){r.classList.add("mm-iconbar_tabs"),r.addEventListener("click",function(e){var t=e.target;if(t.matches("a"))if(t.matches(".mm-iconbar__tab_selected"))e.stopImmediatePropagation();else try{var a=n.node.menu.querySelector(t.getAttribute("href"))[0];a&&a.matches(".mm-panel")&&(e.preventDefault(),e.stopImmediatePropagation(),n.openPanel(a,!1))}catch(e){}}),this.bind("openPanel:start",function e(t){Mmenu.DOM.find(r,"a").forEach(function(e){e.classList.remove("mm-iconbar__tab_selected")});var a=Mmenu.DOM.find(r,'[href="#'+t.id+'"]')[0];if(a)a.classList.add("mm-iconbar__tab_selected");else{var n=t.mmParent;n&&e.call(this,n.closest(".mm-panel"))}})}},Mmenu.options.iconbar={add:!1,top:[],bottom:[],type:"default"};
+Mmenu.addons.iconbar = function () {
+    var _this = this;
+    var opts = this.opts.iconbar;
+    //	Extend shorthand options
+    if (Mmenu.typeof(opts) == 'array') {
+        opts = {
+            add: true,
+            top: opts
+        };
+    }
+    //	/Extend shorthand options
+    if (!opts.add) {
+        return;
+    }
+    var iconbar;
+    ['top', 'bottom'].forEach(function (position, n) {
+        var ctnt = opts[position];
+        //	Extend shorthand options
+        if (Mmenu.typeof(ctnt) != 'array') {
+            ctnt = [ctnt];
+        }
+        //	Create node
+        var ibar = Mmenu.DOM.create('div.mm-iconbar__' + position);
+        //	Add content
+        for (var c = 0, l = ctnt.length; c < l; c++) {
+            if (typeof ctnt[c] == 'string') {
+                ibar.innerHTML += ctnt[c];
+            }
+            else {
+                ibar.append(ctnt[c]);
+            }
+        }
+        if (ibar.children.length) {
+            if (!iconbar) {
+                iconbar = Mmenu.DOM.create('div.mm-iconbar');
+            }
+            iconbar.append(ibar);
+        }
+    });
+    //	Add to menu
+    if (iconbar) {
+        this.bind('initMenu:after', function () {
+            _this.node.menu.classList.add('mm-menu_iconbar');
+            _this.node.menu.prepend(iconbar);
+        });
+        //	Tabs
+        if (opts.type == 'tabs') {
+            iconbar.classList.add('mm-iconbar_tabs');
+            iconbar.addEventListener('click', function (evnt) {
+                var anchor = evnt.target;
+                if (!anchor.matches('a')) {
+                    return;
+                }
+                if (anchor.matches('.mm-iconbar__tab_selected')) {
+                    evnt.stopImmediatePropagation();
+                    return;
+                }
+                try {
+                    var panel = _this.node.menu.querySelector(anchor.getAttribute('href'))[0];
+                    if (panel && panel.matches('.mm-panel')) {
+                        evnt.preventDefault();
+                        evnt.stopImmediatePropagation();
+                        _this.openPanel(panel, false);
+                    }
+                }
+                catch (err) { }
+            });
+            function selectTab(panel) {
+                Mmenu.DOM.find(iconbar, 'a')
+                    .forEach(function (anchor) {
+                    anchor.classList.remove('mm-iconbar__tab_selected');
+                });
+                var anchor = Mmenu.DOM.find(iconbar, '[href="#' + panel.id + '"]')[0];
+                if (anchor) {
+                    anchor.classList.add('mm-iconbar__tab_selected');
+                }
+                else {
+                    var parent_1 = panel.mmParent;
+                    if (parent_1) {
+                        selectTab.call(this, parent_1.closest('.mm-panel'));
+                    }
+                }
+            }
+            this.bind('openPanel:start', selectTab);
+        }
+    }
+};
+//	Default options and configuration.
+Mmenu.options.iconbar = {
+    add: false,
+    top: [],
+    bottom: [],
+    type: 'default'
+};

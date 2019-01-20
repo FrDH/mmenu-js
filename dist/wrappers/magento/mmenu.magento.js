@@ -1,1 +1,3 @@
-Mmenu.wrappers.magento=function(){this.conf.classNames.selected="active"};
+Mmenu.wrappers.magento = function () {
+    this.conf.classNames.selected = 'active';
+};

@@ -241,11 +241,11 @@ gulp.task( 'js-compile', () => {
   		.pipe( typescript({
 			"target": "es5"
   		}) )
-		.pipe( uglify({ 
-			output: {
-				comments: "/^!/"
-			}
-		}) )
+		// .pipe( uglify({ 
+		// 	output: {
+		// 		comments: "/^!/"
+		// 	}
+		// }) )
 		.on('error', ( err ) => { console.log( err ) } )
 		.pipe( gulp.dest( outputDir ) );
 });

@@ -18,7 +18,7 @@ Mmenu.addons.dividers = function(
 	}
 	if ( opts.addTo == 'panels' )
 	{
-		opts.addTo = '.mm-panels';
+		opts.addTo = '.mm-panel';
 	}
 	//	/Extend shorthand options
 
@@ -33,7 +33,6 @@ Mmenu.addons.dividers = function(
 			this.node.menu.classList.add( 'mm-menu_dividers-' + opts.type );
 		});
 	}
-
 
 	//	Add dividers
 	if ( opts.add )
@@ -104,15 +103,14 @@ Mmenu.addons.dividers = function(
 				return;
 			}
 
-
-			var scrl = Mmenu.$(panel).scrollTop() || 0,
+			var scrl = panel.scrollTop,
 				text = '';
 
 			Mmenu.DOM.find( panel, '.mm-listitem_divider' )
 				.forEach(( divider ) => {
 					if ( !divider.matches( '.mm-hidden' ) )
 					{
-						if ( Mmenu.$(divider).position().top + scrl < scrl + 1 )
+						if ( divider.offsetTop + scrl < scrl + 1 )
 						{
 							text = divider.innerHTML;
 						}
@@ -120,7 +118,7 @@ Mmenu.addons.dividers = function(
 				});
 
 			this.node.fixeddivider.innerHTML = text;
-			this.node.pnls.classList[ text.length ? 'add' : 'remove' ]( 'mm-panel_dividers' );
+			this.node.pnls.classList[ text.length ? 'add' : 'remove' ]( 'mm-panels_dividers' );
 		};
 
 		//	Set correct value when 

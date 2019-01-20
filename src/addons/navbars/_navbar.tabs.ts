@@ -6,36 +6,40 @@ Mmenu.addons.navbars.tabs = function(
 	navbar.classList.add( 'mm-navbar_tabs' );
 	navbar.parentElement.classList.add( 'mm-navbars_has-tabs' );
 
-	var $tabs = Mmenu.$(navbar).children( 'a' );
-	$tabs
-		.on( 'click.mm-navbars', ( evnt ) => {
-			evnt.preventDefault();
+	var anchors = Mmenu.DOM.children( navbar, 'a' );
+	
+	navbar.addEventListener( 'click', ( evnt ) => {
+		var anchor = (evnt.target as HTMLElement);
+		if ( !anchor.matches( 'a' ) )
+		{
+			return;
+		}
+		if ( anchor.matches( '.mm-navbar__tab_selected' ) )
+		{
+			evnt.stopImmediatePropagation();
+			return;
+		}
 
-			var tab = evnt.currentTarget;
-			if ( tab.matches( 'mm-navbar__tab_selected' ) )
-			{
-				evnt.stopImmediatePropagation();
-				return;
-			}
-
-			try
-			{
-				this.openPanel( this.node.menu.querySelector( tab.getAttribute( 'href' ) ), false );
-				evnt.stopImmediatePropagation();
-			}
-			catch( err ) {}
-		});
+		try
+		{
+			this.openPanel( this.node.menu.querySelector( anchor.getAttribute( 'href' ) ), false );
+			evnt.stopImmediatePropagation();
+		}
+		catch( err ) {}
+	});
 
 	function selectTab( 
 		this	: Mmenu,
 		panel	: HTMLElement
 	) {
-		$tabs.removeClass( 'mm-navbar__tab_selected' );
-
-		var $tab = $tabs.filter( '[href="#' + panel.id + '"]' );
-		if ( $tab.length )
+		anchors.forEach(( anchor ) => {
+			anchor.classList.remove( 'mm-navbar__tab_selected' );
+		});
+		
+		var anchor = anchors.filter( anchor => anchor.matches( '[href="#' + panel.id + '"]' ) )[ 0 ];
+		if ( anchor )
 		{
-			$tab.addClass( 'mm-navbar__tab_selected' );
+			anchor.classList.add( 'mm-navbar__tab_selected' );
 		}
 		else
 		{

@@ -1,1 +1,164 @@
-Mmenu.addons.dropdown=function(){var o=this;if(this.opts.offCanvas){var b=this.opts.dropdown,x=this.conf.dropdown;if("boolean"==typeof b&&b&&(b={drop:b}),"object"!=typeof b&&(b={}),"string"==typeof b.position&&(b.position={of:b.position}),this.opts.dropdown=Mmenu.extend(b,Mmenu.options.dropdown),b.drop){var g;this.bind("initMenu:after",function(){if(o.node.menu.classList.add("mm-menu_dropdown"),"string"!=typeof b.position.of){var t=o.vars.orgMenuId;t&&t.length&&(b.position.of='[href="#'+t+'"]')}if("string"==typeof b.position.of){g=Mmenu.DOM.find(document.body,b.position.of)[0];var e=b.event.split(" ");1==e.length&&(e[1]=e[0]),"hover"==e[0]&&g.addEventListener("mouseenter",function(t){o.open()},{passive:!0}),"hover"==e[1]&&o.node.menu.addEventListener("mouseleave",function(t){o.close()},{passive:!0})}}),this.bind("open:start",function(){o.node.menu.mmStyle=o.node.menu.getAttribute("style"),document.documentElement.classList.add("mm-wrapper_dropdown")}),this.bind("close:finish",function(){o.node.menu.setAttribute("style",o.node.menu.mmStyle),document.documentElement.classList.remove("mm-wrapper_dropdown")});var n=function(t,e){var o,n,i=e[0],s=e[1],m="x"==t?"scrollLeft":"scrollTop",d="x"==t?"outerWidth":"outerHeight",p="x"==t?"left":"top",r="x"==t?"right":"bottom",u="x"==t?"width":"height",a="x"==t?"maxWidth":"maxHeight",f=null,l=Mmenu.$(window)[m](),c=Mmenu.$(g).offset()[p]-=l,h=c+Mmenu.$(g)[d](),v=Mmenu.$(window)[u](),w=x.offset.button[t]+x.offset.viewport[t];if(b.position[t])switch(b.position[t]){case"left":case"bottom":f="after";break;case"right":case"top":f="before"}return null===f&&(f=c+(h-c)/2<v/2?"after":"before"),"after"==f?(n=v-((o="x"==t?c:h)+w),i[p]=o+x.offset.button[t],i[r]="auto",b.tip&&s.push("mm-menu_tip-"+("x"==t?"left":"top"))):(n=(o="x"==t?h:c)-w,i[r]="calc( 100% - "+(o-x.offset.button[t])+"px )",i[p]="auto",b.tip&&s.push("mm-menu_tip-"+("x"==t?"right":"bottom"))),b.fitViewport&&(i[a]=Math.min(x[u].max,n)),[i,s]};this.bind("open:start",e),window.addEventListener("resize",function(t){e.call(o)},{passive:!0}),this.opts.offCanvas.blockUI||window.addEventListener("scroll",function(t){e.call(o)},{passive:!0})}}function e(){var t;if(this.vars.opened){this.node.menu.setAttribute("style",this.node.menu.mmStyle);var e=[{},[]];e=n.call(this,"y",e),e=n.call(this,"x",e),Mmenu.$(this.node.menu).css(e[0]),b.tip&&(this.node.menu.classList.remove("mm-menu_tip-left","mm-menu_tip-right","mm-menu_tip-top","mm-menu_tip-bottom"),(t=this.node.menu.classList).add.apply(t,e[1]))}}},Mmenu.options.dropdown={drop:!1,fitViewport:!0,event:"click",position:{},tip:!0},Mmenu.configs.dropdown={offset:{button:{x:-5,y:5},viewport:{x:20,y:20}},height:{max:880},width:{max:440}};
+Mmenu.addons.dropdown = function () {
+    var _this = this;
+    if (!this.opts.offCanvas) {
+        return;
+    }
+    var opts = this.opts.dropdown, conf = this.conf.dropdown;
+    //	Extend shorthand options
+    if (typeof opts == 'boolean' && opts) {
+        opts = {
+            drop: opts
+        };
+    }
+    if (typeof opts != 'object') {
+        opts = {};
+    }
+    if (typeof opts.position == 'string') {
+        opts.position = {
+            of: opts.position
+        };
+    }
+    //	/Extend shorthand options
+    this.opts.dropdown = Mmenu.extend(opts, Mmenu.options.dropdown);
+    if (!opts.drop) {
+        return;
+    }
+    var button;
+    this.bind('initMenu:after', function () {
+        _this.node.menu.classList.add('mm-menu_dropdown');
+        if (typeof opts.position.of != 'string') {
+            var id = _this.vars.orgMenuId;
+            if (id && id.length) {
+                opts.position.of = '[href="#' + id + '"]';
+            }
+        }
+        if (typeof opts.position.of != 'string') {
+            return;
+        }
+        //	Get the button to put the menu next to
+        button = Mmenu.DOM.find(document.body, opts.position.of)[0];
+        //	Emulate hover effect
+        var events = opts.event.split(' ');
+        if (events.length == 1) {
+            events[1] = events[0];
+        }
+        if (events[0] == 'hover') {
+            button.addEventListener('mouseenter', function (evnt) {
+                _this.open();
+            }, { passive: true });
+        }
+        if (events[1] == 'hover') {
+            _this.node.menu.addEventListener('mouseleave', function (evnt) {
+                _this.close();
+            }, { passive: true });
+        }
+    });
+    //	Add/remove classname and style when opening/closing the menu
+    this.bind('open:start', function () {
+        _this.node.menu.mmStyle = _this.node.menu.getAttribute('style');
+        document.documentElement.classList.add('mm-wrapper_dropdown');
+    });
+    this.bind('close:finish', function () {
+        _this.node.menu.setAttribute('style', _this.node.menu.mmStyle);
+        document.documentElement.classList.remove('mm-wrapper_dropdown');
+    });
+    //	Update the position and sizes
+    var getPosition = function (dir, obj) {
+        var css = obj[0], cls = obj[1];
+        var _scrollPos = dir == 'x' ? 'scrollLeft' : 'scrollTop', _outerSize = dir == 'x' ? 'outerWidth' : 'outerHeight', _startPos = dir == 'x' ? 'left' : 'top', _stopPos = dir == 'x' ? 'right' : 'bottom', _size = dir == 'x' ? 'width' : 'height', _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight', _position = null;
+        var scrollPos = Mmenu.$(window)[_scrollPos](), startPos = Mmenu.$(button).offset()[_startPos] -= scrollPos, stopPos = startPos + Mmenu.$(button)[_outerSize](), windowSize = Mmenu.$(window)[_size]();
+        var offs = conf.offset.button[dir] + conf.offset.viewport[dir];
+        //	Position set in option
+        if (opts.position[dir]) {
+            switch (opts.position[dir]) {
+                case 'left':
+                case 'bottom':
+                    _position = 'after';
+                    break;
+                case 'right':
+                case 'top':
+                    _position = 'before';
+                    break;
+            }
+        }
+        //	Position not set in option, find most space
+        if (_position === null) {
+            _position = (startPos + ((stopPos - startPos) / 2) < windowSize / 2) ? 'after' : 'before';
+        }
+        //	Set position and max
+        var val, max;
+        if (_position == 'after') {
+            val = (dir == 'x') ? startPos : stopPos;
+            max = windowSize - (val + offs);
+            css[_startPos] = val + conf.offset.button[dir];
+            css[_stopPos] = 'auto';
+            if (opts.tip) {
+                cls.push('mm-menu_tip-' + (dir == 'x' ? 'left' : 'top'));
+            }
+        }
+        else {
+            val = (dir == 'x') ? stopPos : startPos;
+            max = val - offs;
+            css[_stopPos] = 'calc( 100% - ' + (val - conf.offset.button[dir]) + 'px )';
+            css[_startPos] = 'auto';
+            if (opts.tip) {
+                cls.push('mm-menu_tip-' + (dir == 'x' ? 'right' : 'bottom'));
+            }
+        }
+        if (opts.fitViewport) {
+            css[_maxSize] = Math.min(conf[_size].max, max);
+        }
+        return [css, cls];
+    };
+    function position() {
+        var _a;
+        if (!this.vars.opened) {
+            return;
+        }
+        this.node.menu.setAttribute('style', this.node.menu.mmStyle);
+        var obj = [{}, []];
+        obj = getPosition.call(this, 'y', obj);
+        obj = getPosition.call(this, 'x', obj);
+        Mmenu.$(this.node.menu).css(obj[0]);
+        if (opts.tip) {
+            this.node.menu.classList.remove('mm-menu_tip-left', 'mm-menu_tip-right', 'mm-menu_tip-top', 'mm-menu_tip-bottom');
+            (_a = this.node.menu.classList).add.apply(_a, obj[1]);
+        }
+    }
+    ;
+    this.bind('open:start', position);
+    window.addEventListener('resize', function (evnt) {
+        position.call(_this);
+    }, { passive: true });
+    if (!this.opts.offCanvas.blockUI) {
+        window.addEventListener('scroll', function (evnt) {
+            position.call(_this);
+        }, { passive: true });
+    }
+};
+//	Default options and configuration.
+Mmenu.options.dropdown = {
+    drop: false,
+    fitViewport: true,
+    event: 'click',
+    position: {},
+    tip: true
+};
+Mmenu.configs.dropdown = {
+    offset: {
+        button: {
+            x: -5,
+            y: 5
+        },
+        viewport: {
+            x: 20,
+            y: 20
+        }
+    },
+    height: {
+        max: 880
+    },
+    width: {
+        max: 440
+    }
+};

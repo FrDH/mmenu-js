@@ -1,1 +1,28 @@
-Mmenu.addons.navbars.next=function(e){var n,t,a,r=this,s=Mmenu.DOM.create("a.mm-btn.mm-btn_next.mm-navbar__btn");e.append(s),this.bind("openPanel:start",function(e){n=e.querySelector("."+r.conf.classNames.navbars.panelNext),t=n?n.getAttribute("href"):"",a=n?n.innerHTML:"",t?s.setAttribute("href",t):s.removeAttribute("href"),s.classList[t||a?"remove":"add"]("mm-hidden"),s.innerHTML=a}),this.bind("openPanel:start:sr-aria",function(e){Mmenu.sr_aria(s,"hidden",s.matches("mm-hidden")),Mmenu.sr_aria(s,"owns",(s.getAttribute("href")||"").slice(1))})},Mmenu.configs.classNames.navbars.panelNext="Next";
+Mmenu.addons.navbars.next = function (navbar) {
+    var _this = this;
+    //	Add content
+    var next = Mmenu.DOM.create('a.mm-btn.mm-btn_next.mm-navbar__btn');
+    navbar.append(next);
+    //	Update to opened panel
+    var org;
+    var _url, _txt;
+    this.bind('openPanel:start', function (panel) {
+        org = panel.querySelector('.' + _this.conf.classNames.navbars.panelNext);
+        _url = org ? org.getAttribute('href') : '';
+        _txt = org ? org.innerHTML : '';
+        if (_url) {
+            next.setAttribute('href', _url);
+        }
+        else {
+            next.removeAttribute('href');
+        }
+        next.classList[_url || _txt ? 'remove' : 'add']('mm-hidden');
+        next.innerHTML = _txt;
+    });
+    //	Add screenreader / aria support
+    this.bind('openPanel:start:sr-aria', function (panel) {
+        Mmenu.sr_aria(next, 'hidden', next.matches('mm-hidden'));
+        Mmenu.sr_aria(next, 'owns', (next.getAttribute('href') || '').slice(1));
+    });
+};
+Mmenu.configs.classNames.navbars.panelNext = 'Next';

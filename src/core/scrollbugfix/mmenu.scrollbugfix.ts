@@ -42,7 +42,7 @@ Mmenu.addons.scrollBugFix = function(
 
 	//	When opening the menu, scroll to the top of the current opened panel.
 	this.bind( 'open:start', () => {
-		Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ).scrollTop( 0 );
+		Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ].scrollTop = 0;
 	});
 
 	this.bind( 'initMenu:after', () => {

@@ -5,7 +5,6 @@ Mmenu.addons.pageScroll = function(
 	var opts = this.opts.pageScroll,
 		conf = this.conf.pageScroll;
 
-
 	//	Extend shorthand options.
 	if ( typeof opts == 'boolean' )
 	{
@@ -19,18 +18,20 @@ Mmenu.addons.pageScroll = function(
 	this.opts.pageScroll = Mmenu.extend( opts, Mmenu.options.pageScroll );
 
 
-	var $section : JQuery;
+	var section : HTMLElement;
 
 	function scrollTo(
 		offset : number
 	) {
-		if ( $section && $section.length && $section.is( ':visible' ) )
+		if ( section && section.matches( ':visible' ) )
 		{
-			Mmenu.$('html, body').animate({
-				scrollTop: $section.offset().top + offset
-			});
+			//	TODO: animate in vanilla JS
+			document.documentElement.scrollTop = section.offsetTop + offset;
+			// Mmenu.$('html, body').animate({
+			// 	scrollTop: $section.offset().top + offset
+			// });
 		}
-		$section = Mmenu.$();
+		section = null;
 	}
 	function anchorInPage( 
 		href : string
@@ -61,7 +62,7 @@ Mmenu.addons.pageScroll = function(
 	}
 
 	//	Add click behavior.
-	//	Prevents default behavior when clicking an anchor
+	//	Prevents default behavior when clicking an anchor.
 	if ( this.opts.offCanvas && opts.scroll )
 	{
 		this.clck.push((
@@ -69,34 +70,41 @@ Mmenu.addons.pageScroll = function(
 			args 	: mmClickArguments
 		) => {
 	
-			$section = Mmenu.$();
+			section = null;
 
-			if ( !args.inMenu ||
-				!args.inListview
-			) {
+			//	Don't continue if the clicked anchor is not in the menu.
+			if ( !args.inMenu )
+			{
 				return;
 			}
 
+			//	Don't continue if the targeted section is not on the page.
 			var href = anchor.getAttribute( 'href' );
-
-			if ( anchorInPage( href ) )
+			if ( !anchorInPage( href ) )
 			{
-				$section = Mmenu.$(href);
-				if ( this.node.menu.matches( '.mm-menu_sidebar-expanded' ) && 
-					document.documentElement.matches( '.mm-wrapper_sidebar-expanded' )
-				) {
-					scrollTo( this.conf.pageScroll.scrollOffset );
-				}
-				else
-				{
-					return {
-						close: true
-					};
-				}
+				return;
+			}
+
+			section = document.querySelector( href );
+
+			//	If the sidebar add-on is "expanded"...
+			if ( this.node.menu.matches( '.mm-menu_sidebar-expanded' ) && 
+				document.documentElement.matches( '.mm-wrapper_sidebar-expanded' )
+			) {
+				//	... scroll the page to the section.
+				scrollTo( this.conf.pageScroll.scrollOffset );
+			}
+
+			//	... otherwise...
+			else
+			{
+				//	... close the menu.
+				return {
+					close: true
+				};
 			}
 		});
 	}
-
 
 	//	Update selected menu item after scrolling.
 	if ( opts.update )
@@ -107,6 +115,8 @@ Mmenu.addons.pageScroll = function(
 		this.bind( 'initListview:after', (
 			panel : HTMLElement
 		) => {
+			//	TODO de sections zouden geordend moeten worden op de hoogte in de DOM, niet op volgorde in het menu.
+			//	TODO querySelector haalt een enkel HTML element op, er kunnen meerdere lisviews in een panel zitten.
 			let listitems = Mmenu.DOM.children( panel.querySelector( '.mm-listview' ), 'li' );
 			Mmenu.filterListItemAnchors( listitems )
 				.forEach(( anchor ) => {
@@ -123,34 +133,31 @@ Mmenu.addons.pageScroll = function(
 
 		let _selected = -1;
 
-		Mmenu.$(window)
-			.on( 'scroll.mm-pageScroll', (
-				evnt
-			) => {
-				var ofst = Mmenu.$(window).scrollTop();
+		window.addEventListener( 'scroll', ( evnt ) => {
+			var scrollTop = document.documentElement.scrollTop;
 
-				for ( var s = 0; s < scts.length; s++ )
+			for ( var s = 0; s < scts.length; s++ )
+			{
+				if ( scts[ s ].offsetTop < scrollTop + conf.updateOffset )
 				{
-					if ( Mmenu.$(scts[ s ]).offset().top < ofst + conf.updateOffset )
+					if ( _selected !== s )
 					{
-						if ( _selected !== s )
+						_selected = s;
+
+						let panel 		= Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ],
+							listitems	= Mmenu.DOM.find( panel, '.mm-listitem' ),
+							anchors 	= Mmenu.filterListItemAnchors( listitems );
+							anchors 	= anchors.filter( anchor => anchor.matches( '[href="' + scts[ s ] + '"]' ) );
+
+						if ( anchors.length )
 						{
-							_selected = s;
-
-							let panel 		= Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ],
-								listitems	= Mmenu.DOM.find( panel, '.mm-listitem' ),
-								anchor 		= Mmenu.filterListItemAnchors( listitems )
-									.filter( listitem => listitem.matches( '[href="' + scts[ s ] + '"]' ) )[ 0 ];
-
-							if ( anchor )
-							{
-								this.setSelected( anchor.parentElement );
-							}
+							this.setSelected( anchors[ 0 ].parentElement );
 						}
-						break;
 					}
+					break;
 				}
-			});
+			}
+		});
 	}
 };
 

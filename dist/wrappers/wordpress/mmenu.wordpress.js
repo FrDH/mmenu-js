@@ -1,1 +1,6 @@
-Mmenu.wrappers.wordpress=function(){this.conf.classNames.selected="current-menu-item";var e=document.getElementById("wpadminbar");e.style.position="fixed",e.classList.add("mm-slideout")};
+Mmenu.wrappers.wordpress = function () {
+    this.conf.classNames.selected = 'current-menu-item';
+    var wpadminbar = document.getElementById('wpadminbar');
+    wpadminbar.style.position = 'fixed';
+    wpadminbar.classList.add('mm-slideout');
+};

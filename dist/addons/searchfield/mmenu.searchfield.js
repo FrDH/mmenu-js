@@ -1,1 +1,467 @@
-Mmenu.addons.searchfield=function(){var m=this,l=this.opts.searchfield;this.conf.searchfield;"boolean"==typeof l&&(l={add:l}),"object"!=typeof l&&(l={}),"boolean"==typeof l.panel&&(l.panel={add:l.panel}),"object"!=typeof l.panel&&(l.panel={}),l.add&&("panel"==l.addTo&&(l.panel.add=!0),l.panel.add&&(l.showSubPanels=!1,l.panel.splash&&(l.cancel=!0)),this.opts.searchfield=Mmenu.extend(l,Mmenu.options.searchfield),this.bind("close:start",function(){Mmenu.DOM.find(m.node.menu,".mm-searchfield").forEach(function(e){e.blur()})}),this.bind("initPanels:after",function(e){var n,s=Mmenu.$(e),a=Mmenu.$();switch(l.panel.add&&(a=m._initSearchPanel(s)),l.addTo){case"panels":n=s;break;case"panel":n=a;break;default:n="string"==typeof l.addTo?Mmenu.$(m.node.menu).find(l.addTo):Mmenu.$(l.addTo)}(n.each(function(e,n){var s=m._initSearchfield(Mmenu.$(n));l.search&&s.length&&m._initSearching(s)}),l.noResults)&&(l.panel.add?a:s).each(function(e,n){m._initNoResultsMsg(Mmenu.$(n))})}),this.clck.push(function(e,n){if(n.inMenu&&e.matches(".mm-searchfield__btn")){var s=Mmenu.$(e);if(e.matches(".mm-btn_close")){var a=s.closest(".mm-searchfield").find("input");return a.val(""),m.search(a),!0}if(e.matches(".mm-btn_next"))return s.closest(".mm-searchfield").submit(),!0}}))},Mmenu.options.searchfield={add:!1,addTo:"panels",cancel:!1,noResults:"No results found.",placeholder:"Search",panel:{add:!1,dividers:!0,fx:"none",id:null,splash:null,title:"Search"},search:!0,showTextItems:!1,showSubPanels:!0},Mmenu.configs.searchfield={clear:!1,form:!1,input:!1,submit:!1},Mmenu.prototype._initSearchPanel=function(e){var n=this.opts.searchfield;this.conf.searchfield;if(Mmenu.$(this.node.pnls).children(".mm-panel_search").length)return Mmenu.$();var s=Mmenu.$('<div class="mm-panel_search " />').append("<ul />").appendTo(this.node.pnls);switch(n.panel.id&&(s[0].id=n.panel.id),n.panel.title&&s[0].setAttribute("data-mm-title",n.panel.title),n.panel.fx){case!1:break;case"none":s.addClass("mm-panel_noanimation");break;default:s.addClass("mm-panel_fx-"+n.panel.fx)}return n.panel.splash&&s.append('<div class="mm-panel__searchsplash">'+n.panel.splash+"</div>"),this._initPanels(s.get()),s},Mmenu.prototype._initSearchfield=function(e){var n=this.opts.searchfield,s=this.conf.searchfield;if(e.parent(".mm-listitem_vertical").length)return Mmenu.$();if(e.find(".mm-searchfield").length)return e.find(".mm-searchfield");var a=Mmenu.$("<"+(s.form?"form":"div")+' class="mm-searchfield" />'),m=Mmenu.$('<div class="mm-searchfield__input" />'),l=Mmenu.$('<input placeholder="'+this.i18n(n.placeholder)+'" type="text" autocomplete="off" />');function i(e,n){if(n)for(var s in n)e[0].setAttribute(s,n[s])}return m.append(l).appendTo(a),e.prepend(a),e.hasClass("mm-panel")&&e.addClass("mm-panel_has-searchfield"),i(l,s.input),s.clear&&Mmenu.$('<a class="mm-btn mm-btn_close mm-searchfield__btn" href="#" />').appendTo(m),i(a,s.form),s.form&&s.submit&&!s.clear&&Mmenu.$('<a class="mm-btn mm-btn_next mm-searchfield__btn" href="#" />').appendTo(m),n.cancel&&Mmenu.$('<a href="#" class="mm-searchfield__cancel">'+this.i18n("cancel")+"</a>").appendTo(a),a},Mmenu.prototype._initSearching=function(e){var n=this,s=this.opts.searchfield,a=(this.conf.searchfield,{});e.closest(".mm-panel_search").length?(a.$pnls=Mmenu.$(this.node.pnls).find(".mm-panel"),a.$nrsp=e.closest(".mm-panel")):e.closest(".mm-panel").length?(a.$pnls=e.closest(".mm-panel"),a.$nrsp=a.$pnls):(a.$pnls=Mmenu.$(this.node.pnls).find(".mm-panel"),a.$nrsp=Mmenu.$(this.node.menu)),a.$pnls=a.$pnls.not(function(e,n){var s=n.parentElement;return s&&s.matches(".mm-listitem_vertical")}),s.panel.add&&(a.$pnls=a.$pnls.not(".mm-panel_search"));var m=e.find("input"),l=e.find(".mm-searchfield__cancel"),i=Mmenu.$(this.node.pnls).children(".mm-panel_search"),t=a.$pnls.find(".mm-listitem");a.$itms=t.not(".mm-listitem_divider"),a.$dvdr=t.filter(".mm-listitem_divider"),s.panel.add&&s.panel.splash&&m.off("focus.mm-searchfield-splash").on("focus.mm-searchfield-splash",function(e){n.openPanel(i[0])}),s.cancel&&(m.off("focus.mm-searchfield-cancel").on("focus.mm-searchfield-cancel",function(e){l.addClass("mm-searchfield__cancel-active")}),l.off("click.mm-searchfield-splash").on("click.mm-searchfield-splash",function(e){e.preventDefault(),l.removeClass("mm-searchfield__cancel-active"),i.hasClass("mm-panel_opened")&&n.openPanel(Mmenu.$(n.node.pnls).children(".mm-panel_opened-parent").last()[0])})),s.panel.add&&"panel"==s.addTo&&this.bind("openPanel:finish",function(e){e===i[0]&&m.focus()}),m[0].mmSearchfield=a,m.off("input.mm-searchfield").on("input.mm-searchfield",function(e){switch(e.keyCode){case 9:case 16:case 17:case 18:case 37:case 38:case 39:case 40:break;default:n.search(m)}}),this.search(m)},Mmenu.prototype._initNoResultsMsg=function(e){var n=this.opts.searchfield;this.conf.searchfield;if(e.closest(".mm-panel").length||(e=Mmenu.$(this.node.pnls).children(".mm-panel").first()),!e.children(".mm-panel__noresultsmsg").length){var s=e.children(".mm-listview").first(),a=Mmenu.$('<div class="mm-panel__noresultsmsg mm-hidden" />').append(this.i18n(n.noResults));s.length?a.insertAfter(s):a.prependTo(e)}},Mmenu.prototype.search=function(m,l){var i=this,t=this.opts.searchfield;this.conf.searchfield;m=m||Mmenu.$(this.node.menu).find(".mm-searchfield").children("input").first(),l=(l=l||""+m.val()).toLowerCase().trim();var e=m[0].mmSearchfield,n=m.closest(".mm-searchfield").find(".mm-btn"),s=Mmenu.$(this.node.pnls).children(".mm-panel_search"),a=e.$pnls,d=e.$itms,c=e.$dvdr,r=e.$nrsp;if(d.removeClass("mm-listitem_nosubitems").find(".mm-btn_fullwidth-search").removeClass("mm-btn_fullwidth-search mm-btn_fullwidth"),s.children(".mm-listview").empty(),a.scrollTop(0),l.length){if(d.add(c).addClass("mm-hidden"),d.each(function(e,n){var s=Mmenu.$(n),a="a";(t.showTextItems||t.showSubPanels&&s.find(".mm-btn_next"))&&(a="a, span"),-1<s.children(a).not(".mm-btn_next").text().toLowerCase().indexOf(l)&&s.removeClass("mm-hidden")}),t.panel.add){var h=[];a.each(function(e,n){var s=Mmenu.filterListItems(Mmenu.DOM.find(n,".mm-listitem"));if(s.length){if(t.panel.dividers){var a=Mmenu.DOM.create("li.mm-listitem.mm-listitem_divider");a.innerHTML=n.querySelector(".mm-navbar__title").innerHTML,h.push(a)}s.forEach(function(e){h.push(e.cloneNode(!0))})}}),h.forEach(function(e){e.querySelectorAll(".mm-toggle, .mm-check, .mm-btn").forEach(function(e){e.remove()})}),s.children(".mm-listview").append(h),this.openPanel(s[0])}else t.showSubPanels&&a.each(function(e,n){var s=Mmenu.DOM.find(n,".mm-listitem");Mmenu.filterListItems(s).forEach(function(e){var n=e.mmChild;n&&Mmenu.DOM.find(n,".mm-listitem").forEach(function(e){e.classList.remove("mm-hidden")})})}),Mmenu.$(a.get().reverse()).each(function(e,n){Mmenu.$(n);var s=n.mmParent;if(s){var a=Mmenu.DOM.find(n,".mm-listitem");Mmenu.filterListItems(a).length?s.matches(".mm-hidden")&&Mmenu.$(s).removeClass("mm-hidden").children(".mm-btn_next").not(".mm-btn_fullwidth").addClass("mm-btn_fullwidth").addClass("mm-btn_fullwidth-search"):m.closest(".mm-panel").length||((n.matches(".mm-panel_opened")||n.matches(".mm-panel_opened-parent"))&&setTimeout(function(){i.openPanel(s.closest(".mm-panel"))},(e+1)*(1.5*i.conf.openingInterval)),s.classList.add("mm-listitem_nosubitems"))}}),a.each(function(e,n){var s=Mmenu.DOM.find(n,".mm-listitem");Mmenu.filterListItems(s).forEach(function(e){Mmenu.$(e).prevAll(".mm-listitem_divider").first().removeClass("mm-hidden")})});n.removeClass("mm-hidden"),r.find(".mm-panel__noresultsmsg")[d.not(".mm-hidden").length?"addClass":"removeClass"]("mm-hidden"),t.panel.add&&(t.panel.splash&&s.find(".mm-panel__searchsplash").addClass("mm-hidden"),d.add(c).removeClass("mm-hidden"))}else d.add(c).removeClass("mm-hidden"),n.addClass("mm-hidden"),r.find(".mm-panel__noresultsmsg").addClass("mm-hidden"),t.panel.add&&(t.panel.splash?s.find(".mm-panel__searchsplash").removeClass("mm-hidden"):m.closest(".mm-panel_search").length||this.openPanel(Mmenu.$(this.node.pnls).children(".mm-panel_opened-parent").last()[0]));this.trigger("updateListview")};
+Mmenu.addons.searchfield = function () {
+    var _this = this;
+    var opts = this.opts.searchfield, conf = this.conf.searchfield;
+    //	Extend shorthand options.
+    if (typeof opts == 'boolean') {
+        opts = {
+            add: opts
+        };
+    }
+    if (typeof opts != 'object') {
+        opts = {};
+    }
+    if (typeof opts.panel == 'boolean') {
+        opts.panel = {
+            add: opts.panel
+        };
+    }
+    if (typeof opts.panel != 'object') {
+        opts.panel = {};
+    }
+    //	/Extend shorthand options.
+    if (!opts.add) {
+        return;
+    }
+    //	Extend logical options.
+    if (opts.addTo == 'panel') {
+        opts.panel.add = true;
+    }
+    if (opts.panel.add) {
+        opts.showSubPanels = false;
+        if (opts.panel.splash) {
+            opts.cancel = true;
+        }
+    }
+    //	/Extend logical options.
+    this.opts.searchfield = Mmenu.extend(opts, Mmenu.options.searchfield);
+    //	Blur searchfield
+    this.bind('close:start', function () {
+        Mmenu.DOM.find(_this.node.menu, '.mm-searchfield')
+            .forEach(function (input) {
+            input.blur();
+        });
+    });
+    this.bind('initPanels:after', function (panels) {
+        var $pnls = Mmenu.$(panels);
+        var $spnl = Mmenu.$();
+        //	Add the search panel
+        if (opts.panel.add) {
+            $spnl = _this._initSearchPanel($pnls);
+        }
+        //	Add the searchfield
+        var $field;
+        switch (opts.addTo) {
+            case 'panels':
+                $field = $pnls;
+                break;
+            case 'panel':
+                $field = $spnl;
+                break;
+            default:
+                if (typeof opts.addTo == 'string') {
+                    $field = Mmenu.$(_this.node.menu).find(opts.addTo);
+                }
+                else {
+                    $field = Mmenu.$(opts.addTo);
+                }
+                break;
+        }
+        $field.each(function (e, elem) {
+            var $srch = _this._initSearchfield(Mmenu.$(elem));
+            if (opts.search && $srch.length) {
+                _this._initSearching($srch);
+            }
+        });
+        //	Add the no-results message
+        if (opts.noResults) {
+            var $results = (opts.panel.add) ? $spnl : $pnls;
+            $results.each(function (i, elem) {
+                _this._initNoResultsMsg(Mmenu.$(elem));
+            });
+        }
+    });
+    //	Add click behavior.
+    //	Prevents default behavior when clicking an anchor
+    this.clck.push(function (anchor, args) {
+        if (args.inMenu) {
+            if (anchor.matches('.mm-searchfield__btn')) {
+                var $a = Mmenu.$(anchor);
+                //	Clicking the clear button
+                if (anchor.matches('.mm-btn_close')) {
+                    var $inpt = $a.closest('.mm-searchfield').find('input');
+                    $inpt.val('');
+                    _this.search($inpt);
+                    return true;
+                }
+                //	Clicking the submit button
+                if (anchor.matches('.mm-btn_next')) {
+                    $a.closest('.mm-searchfield')
+                        .submit();
+                    return true;
+                }
+            }
+        }
+    });
+};
+//	Default options and configuration.
+Mmenu.options.searchfield = {
+    add: false,
+    addTo: 'panels',
+    cancel: false,
+    noResults: 'No results found.',
+    placeholder: 'Search',
+    panel: {
+        add: false,
+        dividers: true,
+        fx: 'none',
+        id: null,
+        splash: null,
+        title: 'Search'
+    },
+    search: true,
+    showTextItems: false,
+    showSubPanels: true
+};
+Mmenu.configs.searchfield = {
+    clear: false,
+    form: false,
+    input: false,
+    submit: false
+};
+Mmenu.prototype._initSearchPanel = function ($panels) {
+    var opts = this.opts.searchfield, conf = this.conf.searchfield;
+    //	Only once
+    if (Mmenu.$(this.node.pnls).children('.mm-panel_search').length) {
+        return Mmenu.$();
+    }
+    var $spnl = Mmenu.$('<div class="mm-panel_search " />')
+        .append('<ul />')
+        .appendTo(this.node.pnls);
+    if (opts.panel.id) {
+        $spnl[0].id = opts.panel.id;
+    }
+    if (opts.panel.title) {
+        $spnl[0].setAttribute('data-mm-title', opts.panel.title);
+    }
+    switch (opts.panel.fx) {
+        case false:
+            break;
+        case 'none':
+            $spnl.addClass('mm-panel_noanimation');
+            break;
+        default:
+            $spnl.addClass('mm-panel_fx-' + opts.panel.fx);
+            break;
+    }
+    //	Add splash content
+    if (opts.panel.splash) {
+        $spnl.append('<div class="mm-panel__searchsplash">' + opts.panel.splash + '</div>');
+    }
+    this._initPanels($spnl.get());
+    return $spnl;
+};
+Mmenu.prototype._initSearchfield = function ($wrpr) {
+    var opts = this.opts.searchfield, conf = this.conf.searchfield;
+    //	No searchfield in vertical submenus	
+    if ($wrpr.parent('.mm-listitem_vertical').length) {
+        return Mmenu.$();
+    }
+    //	Only one searchfield per panel
+    if ($wrpr.find('.mm-searchfield').length) {
+        return $wrpr.find('.mm-searchfield');
+    }
+    var $srch = Mmenu.$('<' + (conf.form ? 'form' : 'div') + ' class="mm-searchfield" />'), $inpd = Mmenu.$('<div class="mm-searchfield__input" />'), $inpt = Mmenu.$('<input placeholder="' + this.i18n(opts.placeholder) + '" type="text" autocomplete="off" />');
+    $inpd.append($inpt).appendTo($srch);
+    $wrpr.prepend($srch);
+    if ($wrpr.hasClass('mm-panel')) {
+        $wrpr.addClass('mm-panel_has-searchfield');
+    }
+    function addAttributes($el, attr) {
+        if (attr) {
+            for (var a in attr) {
+                $el[0].setAttribute(a, attr[a]);
+            }
+        }
+    }
+    //	Add attributes to the input
+    addAttributes($inpt, conf.input);
+    //	Add the clear button
+    if (conf.clear) {
+        Mmenu.$('<a class="mm-btn mm-btn_close mm-searchfield__btn" href="#" />')
+            .appendTo($inpd);
+    }
+    //	Add attributes and submit to the form
+    addAttributes($srch, conf.form);
+    if (conf.form && conf.submit && !conf.clear) {
+        Mmenu.$('<a class="mm-btn mm-btn_next mm-searchfield__btn" href="#" />')
+            .appendTo($inpd);
+    }
+    if (opts.cancel) {
+        Mmenu.$('<a href="#" class="mm-searchfield__cancel">' + this.i18n('cancel') + '</a>')
+            .appendTo($srch);
+    }
+    return $srch;
+};
+Mmenu.prototype._initSearching = function ($srch) {
+    var _this = this;
+    var opts = this.opts.searchfield, conf = this.conf.searchfield;
+    var data = {};
+    //	In searchpanel
+    if ($srch.closest('.mm-panel_search').length) {
+        data.$pnls = Mmenu.$(this.node.pnls).find('.mm-panel');
+        data.$nrsp = $srch.closest('.mm-panel');
+    }
+    //	In a panel
+    else if ($srch.closest('.mm-panel').length) {
+        data.$pnls = $srch.closest('.mm-panel');
+        data.$nrsp = data.$pnls;
+    }
+    //	Not in a panel, global
+    else {
+        data.$pnls = Mmenu.$(this.node.pnls).find('.mm-panel');
+        data.$nrsp = Mmenu.$(this.node.menu);
+    }
+    //	Filter out vertical submenus
+    data.$pnls = data.$pnls.not(function (i, panel) {
+        var parent = panel.parentElement;
+        return parent && parent.matches('.mm-listitem_vertical');
+    });
+    //	Filter out search panel
+    if (opts.panel.add) {
+        data.$pnls = data.$pnls.not('.mm-panel_search');
+    }
+    var $inpt = $srch.find('input'), $cncl = $srch.find('.mm-searchfield__cancel'), $spnl = Mmenu.$(this.node.pnls).children('.mm-panel_search'), $itms = data.$pnls.find('.mm-listitem');
+    data.$itms = $itms.not('.mm-listitem_divider');
+    data.$dvdr = $itms.filter('.mm-listitem_divider');
+    if (opts.panel.add && opts.panel.splash) {
+        $inpt
+            .off('focus.mm-searchfield-splash')
+            .on('focus.mm-searchfield-splash', function (e) {
+            _this.openPanel($spnl[0]);
+        });
+    }
+    if (opts.cancel) {
+        $inpt
+            .off('focus.mm-searchfield-cancel')
+            .on('focus.mm-searchfield-cancel', function (e) {
+            $cncl.addClass('mm-searchfield__cancel-active');
+        });
+        $cncl
+            .off('click.mm-searchfield-splash')
+            .on('click.mm-searchfield-splash', function (e) {
+            e.preventDefault();
+            $cncl.removeClass('mm-searchfield__cancel-active');
+            if ($spnl.hasClass('mm-panel_opened')) {
+                _this.openPanel(Mmenu.$(_this.node.pnls).children('.mm-panel_opened-parent').last()[0]);
+            }
+        });
+    }
+    if (opts.panel.add && opts.addTo == 'panel') {
+        this.bind('openPanel:finish', function (panel) {
+            if (panel === $spnl[0]) {
+                $inpt.focus();
+            }
+        });
+    }
+    $inpt[0].mmSearchfield = data;
+    $inpt.off('input.mm-searchfield')
+        .on('input.mm-searchfield', function (e) {
+        switch (e.keyCode) {
+            case 9: //	tab
+            case 16: //	shift
+            case 17: //	control
+            case 18: //	alt
+            case 37: //	left
+            case 38: //	top
+            case 39: //	right
+            case 40: //	bottom
+                break;
+            default:
+                _this.search($inpt);
+                break;
+        }
+    });
+    //	Fire once initially
+    //	TODO better in initMenu:after or the likes
+    this.search($inpt);
+};
+Mmenu.prototype._initNoResultsMsg = function ($wrpr) {
+    var opts = this.opts.searchfield, conf = this.conf.searchfield;
+    //	Not in a panel
+    if (!$wrpr.closest('.mm-panel').length) {
+        $wrpr = Mmenu.$(this.node.pnls).children('.mm-panel').first();
+    }
+    //	Only once
+    if ($wrpr.children('.mm-panel__noresultsmsg').length) {
+        return;
+    }
+    //	Add no-results message
+    var $lst = $wrpr.children('.mm-listview').first(), $msg = Mmenu.$('<div class="mm-panel__noresultsmsg mm-hidden" />')
+        .append(this.i18n(opts.noResults));
+    if ($lst.length) {
+        $msg.insertAfter($lst);
+    }
+    else {
+        $msg.prependTo($wrpr);
+    }
+};
+Mmenu.prototype.search = function ($inpt, query) {
+    var _this = this;
+    var opts = this.opts.searchfield, conf = this.conf.searchfield;
+    $inpt = $inpt || Mmenu.$(this.node.menu).find('.mm-searchfield').children('input').first();
+    query = query || '' + $inpt.val();
+    query = query.toLowerCase().trim();
+    var _anchor = 'a', _both = 'a, span';
+    var data = $inpt[0].mmSearchfield;
+    var $srch = $inpt.closest('.mm-searchfield'), $btns = $srch.find('.mm-btn'), $spnl = Mmenu.$(this.node.pnls).children('.mm-panel_search'), $pnls = data.$pnls, $itms = data.$itms, $dvdr = data.$dvdr, $nrsp = data.$nrsp;
+    //	Reset previous results
+    $itms
+        .removeClass('mm-listitem_nosubitems')
+        .find('.mm-btn_fullwidth-search')
+        .removeClass('mm-btn_fullwidth-search mm-btn_fullwidth');
+    $spnl.children('.mm-listview').empty();
+    $pnls.scrollTop(0);
+    //	Search
+    if (query.length) {
+        //	Initially hide all listitems
+        $itms
+            .add($dvdr)
+            .addClass('mm-hidden');
+        //	Re-show only listitems that match
+        $itms
+            .each(function (i, elem) {
+            var $item = Mmenu.$(elem), _search = _anchor;
+            if (opts.showTextItems || (opts.showSubPanels && $item.find('.mm-btn_next'))) {
+                _search = _both;
+            }
+            if ($item.children(_search).not('.mm-btn_next').text().toLowerCase().indexOf(query) > -1) {
+                $item.removeClass('mm-hidden');
+            }
+        });
+        //	Show all mached listitems in the search panel
+        if (opts.panel.add) {
+            //	Clone all matched listitems into the search panel
+            var listitems = [];
+            $pnls
+                .each(function (p, panel) {
+                var items = Mmenu.filterListItems(Mmenu.DOM.find(panel, '.mm-listitem'));
+                if (items.length) {
+                    if (opts.panel.dividers) {
+                        var divider = Mmenu.DOM.create('li.mm-listitem.mm-listitem_divider');
+                        divider.innerHTML = panel.querySelector('.mm-navbar__title').innerHTML;
+                        listitems.push(divider);
+                    }
+                    items.forEach(function (item) {
+                        listitems.push(item.cloneNode(true));
+                    });
+                }
+            });
+            //	Remove toggles, checks and open buttons
+            listitems.forEach(function (listitem) {
+                listitem.querySelectorAll('.mm-toggle, .mm-check, .mm-btn')
+                    .forEach(function (element) {
+                    element.remove();
+                });
+            });
+            //	Add to the search panel
+            $spnl.children('.mm-listview').append(listitems);
+            //	Open the search panel
+            this.openPanel($spnl[0]);
+        }
+        else {
+            //	Also show listitems in sub-panels for matched listitems
+            if (opts.showSubPanels) {
+                $pnls.each(function (p, panel) {
+                    var listitems = Mmenu.DOM.find(panel, '.mm-listitem');
+                    Mmenu.filterListItems(listitems)
+                        .forEach(function (listitem) {
+                        var child = listitem.mmChild;
+                        if (child) {
+                            Mmenu.DOM.find(child, '.mm-listitem')
+                                .forEach(function (listitem) {
+                                listitem.classList.remove('mm-hidden');
+                            });
+                        }
+                    });
+                });
+            }
+            //	Update parent for sub-panel
+            Mmenu.$($pnls.get().reverse())
+                .each(function (p, panel) {
+                var $panel = Mmenu.$(panel), parent = panel.mmParent;
+                if (parent) {
+                    //	The current panel has mached listitems
+                    var listitems_1 = Mmenu.DOM.find(panel, '.mm-listitem');
+                    if (Mmenu.filterListItems(listitems_1).length) {
+                        //	Show parent
+                        if (parent.matches('.mm-hidden')) {
+                            Mmenu.$(parent)
+                                .removeClass('mm-hidden')
+                                .children('.mm-btn_next')
+                                .not('.mm-btn_fullwidth')
+                                .addClass('mm-btn_fullwidth')
+                                .addClass('mm-btn_fullwidth-search');
+                        }
+                    }
+                    else if (!$inpt.closest('.mm-panel').length) {
+                        if (panel.matches('.mm-panel_opened') ||
+                            panel.matches('.mm-panel_opened-parent')) {
+                            //	Compensate the timeout for the opening animation
+                            setTimeout(function () {
+                                _this.openPanel(parent.closest('.mm-panel'));
+                            }, (p + 1) * (_this.conf.openingInterval * 1.5));
+                        }
+                        parent.classList.add('mm-listitem_nosubitems');
+                    }
+                }
+            });
+            //	Show first preceeding divider of parent
+            $pnls.each(function (p, panel) {
+                var listitems = Mmenu.DOM.find(panel, '.mm-listitem');
+                Mmenu.filterListItems(listitems)
+                    .forEach(function (listitem) {
+                    Mmenu.$(listitem).prevAll('.mm-listitem_divider')
+                        .first()
+                        .removeClass('mm-hidden');
+                });
+            });
+        }
+        //	Show submit / clear button
+        $btns.removeClass('mm-hidden');
+        //	Show/hide no results message
+        $nrsp.find('.mm-panel__noresultsmsg')[$itms.not('.mm-hidden').length ? 'addClass' : 'removeClass']('mm-hidden');
+        if (opts.panel.add) {
+            //	Hide splash
+            if (opts.panel.splash) {
+                $spnl.find('.mm-panel__searchsplash').addClass('mm-hidden');
+            }
+            //	Re-show original listitems when in search panel
+            $itms
+                .add($dvdr)
+                .removeClass('mm-hidden');
+        }
+    }
+    //	Don't search
+    else {
+        //	Show all items
+        $itms
+            .add($dvdr)
+            .removeClass('mm-hidden');
+        //	Hide submit / clear button
+        $btns.addClass('mm-hidden');
+        //	Hide no results message
+        $nrsp.find('.mm-panel__noresultsmsg').addClass('mm-hidden');
+        if (opts.panel.add) {
+            //	Show splash
+            if (opts.panel.splash) {
+                $spnl.find('.mm-panel__searchsplash').removeClass('mm-hidden');
+            }
+            //	Close panel 
+            else if (!$inpt.closest('.mm-panel_search').length) {
+                this.openPanel(Mmenu.$(this.node.pnls).children('.mm-panel_opened-parent').last()[0]);
+            }
+        }
+    }
+    //	Update for other addons
+    this.trigger('updateListview');
+};

@@ -1,1 +1,45 @@
-Mmenu.addons.navbars.breadcrumbs=function(a){var t=this,r=Mmenu.DOM.create("span.mm-navbar__breadcrumbs");a.append(r),this.bind("initNavbar:after",function(a){if(!a.querySelector(".mm-navbar__breadcrumbs")){a.classList.remove("mm-panel_has-navbar");for(var n=[],r=Mmenu.DOM.create("span.mm-navbar__breadcrumbs"),e=a,m=!0;e;){if(e.matches(".mm-panel")||(e=e.closest(".mm-panel")),!e.parentElement.matches(".mm-listitem_vertical")){var s=Mmenu.DOM.find(e,".mm-navbar__title")[0].innerText;s.length&&n.unshift(m?"<span>"+s+"</span>":'<a href="#'+e.id+'">'+s+"</a>"),m=!1}e=e.mmParent}t.conf.navbars.breadcrumbs.removeFirst&&n.shift(),r.innerHTML=n.join('<span class="mm-separator">'+t.conf.navbars.breadcrumbs.separator+"</span>"),Mmenu.DOM.children(a,".mm-navbar")[0].append(r)}}),this.bind("openPanel:start",function(a){var n=a.querySelector(".mm-navbar__breadcrumbs");n&&(r.innerHTML=n.innerHTML)}),this.bind("initNavbar:after:sr-aria",function(a){Mmenu.DOM.find(a,".mm-breadcrumbs a").forEach(function(a){Mmenu.sr_aria(a,"owns",a.getAttribute("href").slice(1))})})};
+Mmenu.addons.navbars.breadcrumbs = function (navbar) {
+    //	Add content
+    var _this = this;
+    var breadcrumbs = Mmenu.DOM.create('span.mm-navbar__breadcrumbs');
+    navbar.append(breadcrumbs);
+    this.bind('initNavbar:after', function (panel) {
+        if (panel.querySelector('.mm-navbar__breadcrumbs')) {
+            return;
+        }
+        panel.classList.remove('mm-panel_has-navbar');
+        var crumbs = [], breadcrumbs = Mmenu.DOM.create('span.mm-navbar__breadcrumbs'), current = panel, first = true;
+        while (current) {
+            if (!current.matches('.mm-panel')) {
+                current = current.closest('.mm-panel');
+            }
+            if (!current.parentElement.matches('.mm-listitem_vertical')) {
+                var text = Mmenu.DOM.find(current, '.mm-navbar__title')[0].innerText;
+                if (text.length) {
+                    crumbs.unshift(first ? '<span>' + text + '</span>' : '<a href="#' + current.id + '">' + text + '</a>');
+                }
+                first = false;
+            }
+            current = current.mmParent;
+        }
+        if (_this.conf.navbars.breadcrumbs.removeFirst) {
+            crumbs.shift();
+        }
+        breadcrumbs.innerHTML = crumbs.join('<span class="mm-separator">' + _this.conf.navbars.breadcrumbs.separator + '</span>');
+        Mmenu.DOM.children(panel, '.mm-navbar')[0].append(breadcrumbs);
+    });
+    //	Update for to opened panel
+    this.bind('openPanel:start', function (panel) {
+        var crumbs = panel.querySelector('.mm-navbar__breadcrumbs');
+        if (crumbs) {
+            breadcrumbs.innerHTML = crumbs.innerHTML;
+        }
+    });
+    //	Add screenreader / aria support
+    this.bind('initNavbar:after:sr-aria', function (panel) {
+        Mmenu.DOM.find(panel, '.mm-breadcrumbs a')
+            .forEach(function (anchor) {
+            Mmenu.sr_aria(anchor, 'owns', anchor.getAttribute('href').slice(1));
+        });
+    });
+};

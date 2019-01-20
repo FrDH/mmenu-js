@@ -54,7 +54,7 @@ Mmenu.addons.sectionIndexer = function(
 		{
 			let buttons = '';
 			'abcdefghijklmnopqrstuvwxyz'.split( '' ).forEach(( letter ) => {
-				buttons += '<a href="' + letter + '">' + letter + '</a>';
+				buttons += '<a href="#">' + letter + '</a>';
 			});
 
 			let indexer = Mmenu.DOM.create( 'div.mm-sectionindexer' );
@@ -76,28 +76,27 @@ Mmenu.addons.sectionIndexer = function(
 			//	Scroll onMouseOver
 			Mmenu.$(this.node.indx)
 				.on( 'mouseover.mm-sectionIndexer touchstart.mm-sectionIndexer', 'a', ( e ) => {
-					var lttr  = Mmenu.$(e.currentTarget).html(),
-						$panl = Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ),
+					var letter  = e.target.innerText,
+						panel 	= Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
+						
+					var $panl = Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ),
 						$list = $panl.find( '.mm-listview' );
 
 					var newTop = -1,
-						oldTop = $panl.scrollTop();
+						oldTop = panel.scrollTop;
 
-					$panl.scrollTop( 0 );
-					$list
-						.children( '.mm-listitem_divider' )
-						.not( '.mm-hidden' )
-						.each(
-							( i, elem ) => {
-								if ( newTop < 0 &&
-									lttr == elem.innerText.slice( 0, 1 ).toLowerCase()
-								) {
-									newTop = Mmenu.$(elem).position().top;
-								}
+					panel.scrollTop = 0;
+					Mmenu.DOM.find( panel, '.mm-listitem_divider' )
+						.filter( divider => !divider.matches( '.mm-hidden' ) )
+						.forEach(( divider ) => {
+							if ( newTop < 0 &&
+								letter == divider.innerText.trim().slice( 0, 1 ).toLowerCase()
+							) {
+								newTop = divider.offsetTop;
 							}
-						);
+						});
 
-					$panl.scrollTop( newTop > -1 ? newTop : oldTop );
+					panel.scrollTop = newTop > -1 ? newTop : oldTop;
 				});
 		}
 

@@ -1,1 +1,104 @@
-Mmenu.addons.dividers=function(){var t=this,i=this.opts.dividers;if("boolean"==typeof i&&(i={add:i,fixed:i}),"object"!=typeof i&&(i={}),"panels"==i.addTo&&(i.addTo=".mm-panels"),this.opts.dividers=Mmenu.extend(i,Mmenu.options.dividers),i.type&&this.bind("initMenu:after",function(){t.node.menu.classList.add("mm-menu_dividers-"+i.type)}),i.add&&this.bind("initListview:after",function(e){e.matches(i.addTo)&&(Mmenu.DOM.find(e,".mm-listitem_divider").forEach(function(e){e.remove()}),Mmenu.DOM.find(e,".mm-listview").forEach(function(t){var d="",e=Mmenu.DOM.children(t);Mmenu.filterListItems(e).forEach(function(e){var i=Mmenu.DOM.children(e,".mm-listitem__text")[0].innerText.trim().toLowerCase()[0];if(i.length&&i!=d){d=i;var n=Mmenu.DOM.create("li.mm-listitem.mm-listitem_divider");n.innerText=i,t.insertBefore(n,e)}})}))}),i.fixed){function n(e){if((e=e||Mmenu.DOM.children(this.node.pnls,".mm-panel_opened")[0])&&"none"!=window.getComputedStyle(e).display){var i=Mmenu.$(e).scrollTop()||0,n="";Mmenu.DOM.find(e,".mm-listitem_divider").forEach(function(e){e.matches(".mm-hidden")||Mmenu.$(e).position().top+i<i+1&&(n=e.innerHTML)}),this.node.fixeddivider.innerHTML=n,this.node.pnls.classList[n.length?"add":"remove"]("mm-panel_dividers")}}this.bind("initPanels:after",function(e){if(!t.node.fixeddivider){var i=Mmenu.DOM.create("ul.mm-listview.mm-listview_fixeddivider"),n=Mmenu.DOM.create("li.mm-listitem.mm-listitem_divider");i.append(n),t.node.pnls.append(i),t.node.fixeddivider=n}}),this.bind("open:start",n),this.bind("openPanel:start",n),this.bind("updateListview",n),this.bind("initPanel:after",function(e){e.addEventListener("scroll",function(){e.matches(".mm-panel_opened")&&n.call(t,e)},{passive:!0})})}},Mmenu.options.dividers={add:!1,addTo:"panels",fixed:!1,type:null};
+Mmenu.addons.dividers = function () {
+    var _this = this;
+    var opts = this.opts.dividers;
+    //	Extend shorthand options
+    if (typeof opts == 'boolean') {
+        opts = {
+            add: opts,
+            fixed: opts
+        };
+    }
+    if (typeof opts != 'object') {
+        opts = {};
+    }
+    if (opts.addTo == 'panels') {
+        opts.addTo = '.mm-panel';
+    }
+    //	/Extend shorthand options
+    this.opts.dividers = Mmenu.extend(opts, Mmenu.options.dividers);
+    //	Add classname to the menu to specify the type of the dividers
+    if (opts.type) {
+        this.bind('initMenu:after', function () {
+            _this.node.menu.classList.add('mm-menu_dividers-' + opts.type);
+        });
+    }
+    //	Add dividers
+    if (opts.add) {
+        this.bind('initListview:after', function (panel) {
+            if (!panel.matches(opts.addTo)) {
+                return;
+            }
+            Mmenu.DOM.find(panel, '.mm-listitem_divider')
+                .forEach(function (divider) {
+                divider.remove();
+            });
+            Mmenu.DOM.find(panel, '.mm-listview')
+                .forEach(function (listview) {
+                var lastletter = '', listitems = Mmenu.DOM.children(listview);
+                Mmenu.filterListItems(listitems)
+                    .forEach(function (listitem) {
+                    var letter = Mmenu.DOM.children(listitem, '.mm-listitem__text')[0]
+                        .innerText.trim().toLowerCase()[0];
+                    if (letter.length && letter != lastletter) {
+                        lastletter = letter;
+                        var divider = Mmenu.DOM.create('li.mm-listitem.mm-listitem_divider');
+                        divider.innerText = letter;
+                        listview.insertBefore(divider, listitem);
+                    }
+                });
+            });
+        });
+    }
+    //	Fixed dividers
+    if (opts.fixed) {
+        //	Add the fixed divider
+        this.bind('initPanels:after', function (panels) {
+            if (!_this.node.fixeddivider) {
+                var listview = Mmenu.DOM.create('ul.mm-listview.mm-listview_fixeddivider'), listitem = Mmenu.DOM.create('li.mm-listitem.mm-listitem_divider');
+                listview.append(listitem);
+                _this.node.pnls.append(listview);
+                _this.node.fixeddivider = listitem;
+            }
+        });
+        function setValue(panel) {
+            panel = panel || Mmenu.DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+            if (!panel || window.getComputedStyle(panel).display == 'none') {
+                return;
+            }
+            var scrl = panel.scrollTop, text = '';
+            Mmenu.DOM.find(panel, '.mm-listitem_divider')
+                .forEach(function (divider) {
+                if (!divider.matches('.mm-hidden')) {
+                    if (divider.offsetTop + scrl < scrl + 1) {
+                        text = divider.innerHTML;
+                    }
+                }
+            });
+            this.node.fixeddivider.innerHTML = text;
+            this.node.pnls.classList[text.length ? 'add' : 'remove']('mm-panels_dividers');
+        }
+        ;
+        //	Set correct value when 
+        //		1) opening the menu,
+        //		2) opening a panel,
+        //		3) after updating listviews and
+        //		4) after scrolling a panel
+        this.bind('open:start', setValue); // 1
+        this.bind('openPanel:start', setValue); // 2
+        this.bind('updateListview', setValue); // 3	//	TODO? does not pass "panel" argument.
+        this.bind('initPanel:after', function (panel) {
+            panel.addEventListener('scroll', function () {
+                if (panel.matches('.mm-panel_opened')) {
+                    setValue.call(_this, panel);
+                }
+            }, { passive: true });
+        });
+    }
+};
+//	Default options and configuration.
+Mmenu.options.dividers = {
+    add: false,
+    addTo: 'panels',
+    fixed: false,
+    type: null
+};

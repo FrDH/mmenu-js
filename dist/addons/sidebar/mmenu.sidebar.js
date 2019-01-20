@@ -1,1 +1,141 @@
-Mmenu.addons.sidebar=function(){var e=this;if(this.opts.offCanvas){var d=this.opts.sidebar;("string"==typeof d||"boolean"==typeof d&&d||"number"==typeof d)&&(d={expanded:d}),"object"!=typeof d&&(d={}),"boolean"==typeof d.collapsed&&d.collapsed&&(d.collapsed={use:"all"}),"string"!=typeof d.collapsed&&"number"!=typeof d.collapsed||(d.collapsed={use:d.collapsed}),"object"!=typeof d.collapsed&&(d.collapsed={}),"number"==typeof d.collapsed.use&&(d.collapsed.use="(min-width: "+d.collapsed.use+"px)"),"boolean"==typeof d.expanded&&d.expanded&&(d.expanded={use:"all"}),"string"!=typeof d.expanded&&"number"!=typeof d.expanded||(d.expanded={use:d.expanded}),"object"!=typeof d.expanded&&(d.expanded={}),"number"==typeof d.expanded.use&&(d.expanded.use="(min-width: "+d.expanded.use+"px)"),this.opts.sidebar=Mmenu.extend(d,Mmenu.options.sidebar);var n="mm-wrapper_sidebar-collapsed",s="mm-wrapper_sidebar-expanded";d.collapsed.use&&(this.bind("initMenu:after",function(){e.node.menu.classList.add("mm-menu_sidebar-collapsed"),d.collapsed.blockMenu&&e.opts.offCanvas&&!Mmenu.DOM.children(e.node.menu,".mm-menu__blocker")[0]&&Mmenu.$(e.node.menu).prepend('<a class="mm-menu__blocker" href="#'+e.node.menu.id+'" />'),d.collapsed.hideNavbar&&e.node.menu.classList.add("mm-menu_hidenavbar"),d.collapsed.hideDivider&&e.node.menu.classList.add("mm-menu_hidedivider")}),"boolean"==typeof d.collapsed.use?this.bind("initMenu:after",function(){document.documentElement.classList.add(n)}):this.matchMedia(d.collapsed.use,function(){document.documentElement.classList.add(n)},function(){document.documentElement.classList.remove(n)})),d.expanded.use&&(this.bind("initMenu:after",function(){e.node.menu.classList.add("mm-menu_sidebar-expanded")}),"boolean"==typeof d.expanded.use?this.bind("initMenu:after",function(){document.documentElement.classList.add(s),e.open()}):this.matchMedia(d.expanded.use,function(){document.documentElement.classList.add(s),document.documentElement.matches(".mm-wrapper_sidebar-closed")||e.open()},function(){document.documentElement.classList.remove(s),e.close()}),this.bind("close:start",function(){document.documentElement.matches("."+s)&&document.documentElement.classList.add("mm-wrapper_sidebar-closed")}),this.bind("open:start",function(){document.documentElement.classList.remove("mm-wrapper_sidebar-closed")}),this.clck.push(function(e,d){if(d.inMenu&&d.inListview&&document.documentElement.matches(".mm-wrapper_sidebar-expanded"))return{close:!1}}))}},Mmenu.options.sidebar={collapsed:{use:!1,blockMenu:!0,hideDivider:!1,hideNavbar:!0},expanded:{use:!1}};
+Mmenu.addons.sidebar = function () {
+    var _this = this;
+    if (!this.opts.offCanvas) {
+        return;
+    }
+    var opts = this.opts.sidebar;
+    //	Extend shorthand options
+    if (typeof opts == 'string' ||
+        (typeof opts == 'boolean' && opts) ||
+        typeof opts == 'number') {
+        opts = {
+            expanded: opts
+        };
+    }
+    if (typeof opts != 'object') {
+        opts = {};
+    }
+    //	Extend collapsed shorthand options.
+    if (typeof opts.collapsed == 'boolean' && opts.collapsed) {
+        opts.collapsed = {
+            use: 'all'
+        };
+    }
+    if (typeof opts.collapsed == 'string' ||
+        typeof opts.collapsed == 'number') {
+        opts.collapsed = {
+            use: opts.collapsed
+        };
+    }
+    if (typeof opts.collapsed != 'object') {
+        opts.collapsed = {};
+    }
+    if (typeof opts.collapsed.use == 'number') {
+        opts.collapsed.use = '(min-width: ' + opts.collapsed.use + 'px)';
+    }
+    //	Extend expanded shorthand options.
+    if (typeof opts.expanded == 'boolean' && opts.expanded) {
+        opts.expanded = {
+            use: 'all'
+        };
+    }
+    if (typeof opts.expanded == 'string' ||
+        typeof opts.expanded == 'number') {
+        opts.expanded = {
+            use: opts.expanded
+        };
+    }
+    if (typeof opts.expanded != 'object') {
+        opts.expanded = {};
+    }
+    if (typeof opts.expanded.use == 'number') {
+        opts.expanded.use = '(min-width: ' + opts.expanded.use + 'px)';
+    }
+    //	/Extend shorthand options
+    //opts = this.opts.sidebar = jQuery.extend( true, {}, Mmenu.options.sidebar, opts );
+    this.opts.sidebar = Mmenu.extend(opts, Mmenu.options.sidebar);
+    var clsclpsd = 'mm-wrapper_sidebar-collapsed', clsxpndd = 'mm-wrapper_sidebar-expanded';
+    //	Collapsed
+    if (opts.collapsed.use) {
+        this.bind('initMenu:after', function () {
+            _this.node.menu.classList.add('mm-menu_sidebar-collapsed');
+            if (opts.collapsed.blockMenu &&
+                _this.opts.offCanvas &&
+                !Mmenu.DOM.children(_this.node.menu, '.mm-menu__blocker')[0]) {
+                Mmenu.$(_this.node.menu).prepend('<a class="mm-menu__blocker" href="#' + _this.node.menu.id + '" />');
+            }
+            if (opts.collapsed.hideNavbar) {
+                _this.node.menu.classList.add('mm-menu_hidenavbar');
+            }
+            if (opts.collapsed.hideDivider) {
+                _this.node.menu.classList.add('mm-menu_hidedivider');
+            }
+        });
+        if (typeof opts.collapsed.use == 'boolean') {
+            this.bind('initMenu:after', function () {
+                document.documentElement.classList.add(clsclpsd);
+            });
+        }
+        else {
+            this.matchMedia(opts.collapsed.use, function () {
+                document.documentElement.classList.add(clsclpsd);
+            }, function () {
+                document.documentElement.classList.remove(clsclpsd);
+            });
+        }
+    }
+    //	Expanded
+    if (opts.expanded.use) {
+        this.bind('initMenu:after', function () {
+            _this.node.menu.classList.add('mm-menu_sidebar-expanded');
+        });
+        if (typeof opts.expanded.use == 'boolean') {
+            this.bind('initMenu:after', function () {
+                document.documentElement.classList.add(clsxpndd);
+                _this.open();
+            });
+        }
+        else {
+            this.matchMedia(opts.expanded.use, function () {
+                document.documentElement.classList.add(clsxpndd);
+                if (!document.documentElement.matches('.mm-wrapper_sidebar-closed')) {
+                    _this.open();
+                }
+            }, function () {
+                document.documentElement.classList.remove(clsxpndd);
+                _this.close();
+            });
+        }
+        this.bind('close:start', function () {
+            if (document.documentElement.matches('.' + clsxpndd)) {
+                document.documentElement.classList.add('mm-wrapper_sidebar-closed');
+            }
+        });
+        this.bind('open:start', function () {
+            document.documentElement.classList.remove('mm-wrapper_sidebar-closed');
+        });
+        //	Add click behavior.
+        //	Prevents default behavior when clicking an anchor
+        this.clck.push(function (anchor, args) {
+            if (args.inMenu && args.inListview) {
+                if (document.documentElement.matches('.mm-wrapper_sidebar-expanded')) {
+                    return {
+                        close: false
+                    };
+                }
+            }
+        });
+    }
+};
+//	Default options and configuration.
+Mmenu.options.sidebar = {
+    collapsed: {
+        use: false,
+        blockMenu: true,
+        hideDivider: false,
+        hideNavbar: true
+    },
+    expanded: {
+        use: false
+    }
+};

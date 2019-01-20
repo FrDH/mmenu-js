@@ -90,40 +90,50 @@ Mmenu.addons.navbars = function(
 		navbars[ position ].append( navbar );
 
 
-		//	Add content to the navbar
+		//	Add content to the navbar.
 		for ( let c = 0, l = opts.content.length; c < l; c++ )
 		{
-			//	Content from
-			let ctnt = ( typeof opts.content[ c ] == 'string' && Mmenu.addons.navbars[ (opts.content[ c ] as string) ] ) || null;
-
-			if ( ctnt )
+			let ctnt = opts.content[ c ];
+			//	The content is a string.
+			if ( typeof ctnt == 'string' )
 			{
-				ctnt.call( this, navbar );
+				//	The content refers to one of the navbar-presets ("prev", "title", etc).
+				let func = Mmenu.addons.navbars[ ctnt ];
+				if ( typeof func == 'function' )
+				{
+					//	Call the preset function.
+					func.call( this, navbar );
+				}
+				//	The content is just HTML.
+				else
+				{
+					//	Add the HTML.
+					navbar.innerHTML += ctnt;
+				}
 			}
+			//	The content is not a string, it must be an element.
 			else
 			{
-//	TODO... <a href="/"></a> moet ook werken
-//		zie iconbar?
-				ctnt = opts.content[ c ];
-				if ( !( ctnt instanceof Mmenu.$ ) )
-				{
-					ctnt = Mmenu.$( (opts.content[ c ] as string) );
-				}
 				navbar.append( ctnt );
 			}
 		}
 
-		//	Added buttons
+		//	If buttons were added, tell the navbar.
 		if ( navbar.querySelector( '.mm-navbar__btn' ) )
 		{
 			navbar.classList.add( 'mm-navbar_has-btns' );
 		}
 
-		//	Call type
-		var type = ( typeof opts.type == 'string' && Mmenu.addons.navbars[ opts.type ] ) || null;
-		if ( type )
+		//	The type option is set.
+		if ( typeof opts.type == 'string' )
 		{
-			type.call( this, navbar );
+			//	The function refers to one of the navbar-presets ("tabs").
+			let func = Mmenu.addons.navbars[ opts.type ];
+			if ( typeof func == 'function' )
+			{
+				//	Call the preset function.
+				func.call( this, navbar );
+			}
 		}
 	});
 

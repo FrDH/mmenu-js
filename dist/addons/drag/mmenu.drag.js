@@ -1,1 +1,244 @@
-Mmenu.addons.drag=function(){var v=this;if(this.opts.offCanvas&&!("function"!=typeof Hammer||Hammer.VERSION<2)){var _=this.opts.drag,w=this.conf.drag;"boolean"==typeof _&&(_={menu:_,panels:_}),"object"!=typeof _&&(_={}),"boolean"==typeof _.menu&&(_={open:_.menu}),"object"!=typeof _.menu&&(_.menu={}),"boolean"==typeof _.panels&&(_.panels={close:_.panels}),"object"!=typeof _.panels&&(_.panels={}),this.opts.drag=Mmenu.extend(_,Mmenu.options.drag),_.menu.open&&this.bind("setPage:after",function(){var n,t,o,i={events:"panleft panright",typeLower:"x",typeUpper:"X",open_dir:"right",close_dir:"left",negative:!1},r="width",m=i.open_dir,a=function(e){e<=_.menu.maxStartPos&&(p=1)},s=function(){return Mmenu.$(".mm-slideout")},p=0,u=0,d=0,e=v.opts.extensions.all,c=void 0===e?"left":-1<e.indexOf("mm-menu_position-right")?"right":-1<e.indexOf("mm-menu_position-top")?"top":-1<e.indexOf("mm-menu_position-bottom")?"bottom":"left",l=void 0===e?"back":-1<e.indexOf("mm-menu_position-top")||-1<e.indexOf("mm-menu_position-bottom")||-1<e.indexOf("mm-menu_position-front")?"front":"back";switch(c){case"top":case"bottom":i.events="panup pandown",i.typeLower="y",i.typeUpper="Y",r="height"}switch(c){case"right":case"bottom":i.negative=!0,a=function(e){e>=Mmenu.$(window)[r]()-_.menu.maxStartPos&&(p=1)}}switch(c){case"right":i.open_dir="left",i.close_dir="right";break;case"top":i.open_dir="down",i.close_dir="up";break;case"bottom":i.open_dir="up",i.close_dir="down"}switch(l){case"front":s=function(){return Mmenu.$(this.node.menu)}}var f,g=Mmenu.valueOrFn(v.node.menu,_.menu.node,Mmenu.$(Mmenu.node.page));"string"==typeof g&&(g=Mmenu.$(g));var h=new Hammer(g[0],v.opts.drag.vendors.hammer);h.on("panstart",function(e){a.call(v,e.center[i.typeLower]),f=s.call(v),m=i.open_dir}),h.on(i.events+" panend",function(e){0<p&&e.preventDefault()}),h.on(i.events,function(e){if(n=e["delta"+i.typeUpper],i.negative&&(n=-n),n!=u&&(m=u<=n?i.open_dir:i.close_dir),(u=n)>_.menu.threshold&&1==p){if(document.documentElement.matches(".mm-wrapper_opened"))return;p=2,v._openSetup(),v.trigger("open:start"),document.documentElement.classList.add("mm-wrapper_dragging"),d=b(Mmenu.$(window)[r]()*w.menu[r].perc,w.menu[r].min,w.menu[r].max)}2==p&&(t=b(u,10,d)-("front"==l?d:0),i.negative&&(t=-t),o="translate"+i.typeUpper+"("+t+"px )",f.css({"-webkit-transform":"-webkit-"+o,transform:o}))}),h.on("panend",function(e){2==p&&(document.documentElement.classList.remove("mm-wrapper_dragging"),f.css("transform",""),v[m==i.open_dir?"_openFinish":"close"]()),p=0})}),_.panels.close&&this.bind("initPanel:after",function(e){var n=e.mmParent;if(n){n=n.closest(".mm-panel");var t=new Hammer(e,v.opts.drag.vendors.hammer),o=null;t.on("panright",function(e){o||(v.openPanel(n),o=setTimeout(function(){clearTimeout(o),o=null},v.conf.openingInterval+v.conf.transitionDuration))})}})}function b(e,n,t){return e<n&&(e=n),t<e&&(e=t),e}},Mmenu.options.drag={menu:{open:!1,node:null,maxStartPos:100,threshold:50},panels:{close:!1},vendors:{hammer:{}}},Mmenu.configs.drag={menu:{width:{perc:.8,min:140,max:440},height:{perc:.8,min:140,max:880}}};
+Mmenu.addons.drag = function () {
+    var _this = this;
+    if (!this.opts.offCanvas) {
+        return;
+    }
+    if (typeof Hammer != 'function' || Hammer.VERSION < 2) {
+        return;
+    }
+    var opts = this.opts.drag, conf = this.conf.drag;
+    //	Extend shorthand options
+    if (typeof opts == 'boolean') {
+        opts = {
+            menu: opts,
+            panels: opts
+        };
+    }
+    if (typeof opts != 'object') {
+        opts = {};
+    }
+    if (typeof opts.menu == 'boolean') {
+        opts = {
+            open: opts.menu
+        };
+    }
+    if (typeof opts.menu != 'object') {
+        opts.menu = {};
+    }
+    if (typeof opts.panels == 'boolean') {
+        opts.panels = {
+            close: opts.panels
+        };
+    }
+    if (typeof opts.panels != 'object') {
+        opts.panels = {};
+    }
+    //	/Extend shorthand options
+    //opts = this.opts.drag = jQuery.extend( true, {}, Mmenu.options.drag, opts );
+    this.opts.drag = Mmenu.extend(opts, Mmenu.options.drag);
+    function minMax(val, min, max) {
+        if (val < min) {
+            val = min;
+        }
+        if (val > max) {
+            val = max;
+        }
+        return val;
+    }
+    //	Drag open the menu
+    if (opts.menu.open) {
+        this.bind('setPage:after', function () {
+            //	defaults for "left"
+            var drag = {
+                events: 'panleft panright',
+                typeLower: 'x',
+                typeUpper: 'X',
+                open_dir: 'right',
+                close_dir: 'left',
+                negative: false
+            };
+            var _dimension = 'width', _direction = drag.open_dir;
+            var doPanstart = function (pos) {
+                if (pos <= opts.menu.maxStartPos) {
+                    _stage = 1;
+                }
+            };
+            var getSlideNodes = function () {
+                return Mmenu.$('.mm-slideout');
+            };
+            var _stage = 0, _distance = 0, _maxDistance = 0;
+            var new_distance, drag_distance, css_value;
+            //	Find menu position from Positioning extension
+            var x = _this.opts.extensions['all'];
+            var position = (typeof x == 'undefined')
+                ? 'left'
+                : (x.indexOf('mm-menu_position-right') > -1)
+                    ? 'right'
+                    : (x.indexOf('mm-menu_position-top') > -1)
+                        ? 'top'
+                        : (x.indexOf('mm-menu_position-bottom') > -1)
+                            ? 'bottom'
+                            : 'left';
+            var zposition = (typeof x == 'undefined')
+                ? 'back'
+                : (x.indexOf('mm-menu_position-top') > -1) ||
+                    (x.indexOf('mm-menu_position-bottom') > -1) ||
+                    (x.indexOf('mm-menu_position-front') > -1)
+                    ? 'front'
+                    : 'back';
+            switch (position) {
+                case 'top':
+                case 'bottom':
+                    drag.events = 'panup pandown';
+                    drag.typeLower = 'y';
+                    drag.typeUpper = 'Y';
+                    _dimension = 'height';
+                    break;
+            }
+            switch (position) {
+                case 'right':
+                case 'bottom':
+                    drag.negative = true;
+                    doPanstart = function (pos) {
+                        if (pos >= Mmenu.$(window)[_dimension]() - opts.menu.maxStartPos) {
+                            _stage = 1;
+                        }
+                    };
+                    break;
+            }
+            switch (position) {
+                case 'right':
+                    drag.open_dir = 'left';
+                    drag.close_dir = 'right';
+                    break;
+                case 'top':
+                    drag.open_dir = 'down';
+                    drag.close_dir = 'up';
+                    break;
+                case 'bottom':
+                    drag.open_dir = 'up';
+                    drag.close_dir = 'down';
+                    break;
+            }
+            switch (zposition) {
+                case 'front':
+                    getSlideNodes = function () {
+                        return Mmenu.$(this.node.menu);
+                    };
+                    break;
+            }
+            var $slideOutNodes, $dragNode = Mmenu.valueOrFn(_this.node.menu, opts.menu.node, Mmenu.$(Mmenu.node.page));
+            if (typeof $dragNode == 'string') {
+                $dragNode = Mmenu.$($dragNode);
+            }
+            //	Bind events
+            var _hammer = new Hammer($dragNode[0], _this.opts.drag.vendors.hammer);
+            _hammer
+                .on('panstart', function (evnt) {
+                doPanstart.call(_this, evnt.center[drag.typeLower]);
+                $slideOutNodes = getSlideNodes.call(_this);
+                _direction = drag.open_dir;
+            });
+            _hammer
+                .on(drag.events + ' panend', function (evnt) {
+                if (_stage > 0) {
+                    evnt.preventDefault();
+                }
+            });
+            _hammer
+                .on(drag.events, function (evnt) {
+                new_distance = evnt['delta' + drag.typeUpper];
+                if (drag.negative) {
+                    new_distance = -new_distance;
+                }
+                if (new_distance != _distance) {
+                    _direction = (new_distance >= _distance) ? drag.open_dir : drag.close_dir;
+                }
+                _distance = new_distance;
+                if (_distance > opts.menu.threshold) {
+                    if (_stage == 1) {
+                        if (document.documentElement.matches('.mm-wrapper_opened')) {
+                            return;
+                        }
+                        _stage = 2;
+                        _this._openSetup();
+                        _this.trigger('open:start');
+                        document.documentElement.classList.add('mm-wrapper_dragging');
+                        _maxDistance = minMax(Mmenu.$(window)[_dimension]() * conf.menu[_dimension].perc, conf.menu[_dimension].min, conf.menu[_dimension].max);
+                    }
+                }
+                if (_stage == 2) {
+                    drag_distance = minMax(_distance, 10, _maxDistance) - (zposition == 'front' ? _maxDistance : 0);
+                    if (drag.negative) {
+                        drag_distance = -drag_distance;
+                    }
+                    css_value = 'translate' + drag.typeUpper + '(' + drag_distance + 'px )';
+                    $slideOutNodes.css({
+                        '-webkit-transform': '-webkit-' + css_value,
+                        'transform': css_value
+                    });
+                }
+            });
+            _hammer
+                .on('panend', function (evnt) {
+                if (_stage == 2) {
+                    document.documentElement.classList.remove('mm-wrapper_dragging');
+                    $slideOutNodes.css('transform', '');
+                    _this[_direction == drag.open_dir ? '_openFinish' : 'close']();
+                }
+                _stage = 0;
+            });
+        });
+    }
+    //	Drag close panels
+    if (opts.panels.close) {
+        this.bind('initPanel:after', function (panel) {
+            var parent = panel.mmParent;
+            if (parent) {
+                parent = parent.closest('.mm-panel');
+                var _hammer = new Hammer(panel, _this.opts.drag.vendors.hammer), timeout = null;
+                _hammer
+                    .on('panright', function (e) {
+                    if (timeout) {
+                        return;
+                    }
+                    _this.openPanel(parent);
+                    //	prevent dragging while panel still open.
+                    timeout = setTimeout(function () {
+                        clearTimeout(timeout);
+                        timeout = null;
+                    }, _this.conf.openingInterval + _this.conf.transitionDuration);
+                });
+            }
+        });
+    }
+};
+//	Default options and configuration.
+Mmenu.options.drag = {
+    menu: {
+        open: false,
+        node: null,
+        maxStartPos: 100,
+        threshold: 50
+    },
+    panels: {
+        close: false
+    },
+    vendors: {
+        hammer: {}
+    }
+};
+Mmenu.configs.drag = {
+    menu: {
+        width: {
+            perc: 0.8,
+            min: 140,
+            max: 440
+        },
+        height: {
+            perc: 0.8,
+            min: 140,
+            max: 880
+        }
+    }
+};

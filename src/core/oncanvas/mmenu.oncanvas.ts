@@ -420,17 +420,26 @@ class Mmenu {
 
 			//	Start opening the panel
 			var openPanelStart = () => {
-				current.classList.remove( 'mm-panel_opened' );
+				if ( current )
+				{
+					current.classList.remove( 'mm-panel_opened' );
+				}
 				panel.classList.add( 'mm-panel_opened' );
 
 				if ( panel.matches( '.mm-panel_opened-parent' ) )
 				{
-					current.classList.add( 'mm-panel_highest' );
+					if ( current )
+					{
+						current.classList.add( 'mm-panel_highest' );
+					}
 					panel.classList.remove( 'mm-panel_opened-parent' );
 				}
 				else
 				{
-					current.classList.add( 'mm-panel_opened-parent' );
+					if ( current )
+					{
+						current.classList.add( 'mm-panel_opened-parent' );
+					}
 					panel.classList.add( 'mm-panel_highest' );
 				}
 
@@ -439,8 +448,11 @@ class Mmenu {
 
 			//	Finish opening the panel
 			var openPanelFinish = () => {
-				current.classList.remove( 'mm-panel_highest' );
-				current.classList.add( 'mm-hidden' );
+				if ( current )
+				{
+					current.classList.remove( 'mm-panel_highest' );
+					current.classList.add( 'mm-hidden' );
+				}
 				panel.classList.remove( 'mm-panel_highest' );
 
 				this.trigger( 'openPanel:finish', [ panel ] );
@@ -1196,9 +1208,9 @@ class Mmenu {
 		}
 
 		//	Find the current opened panel
-		var current = ( last ) 
+		let current = ( last ) 
 			? last.closest( '.mm-panel' )
-			: Mmenu.$(this.node.pnls).children( '.mm-panel' )[0];
+			: Mmenu.$(this.node.pnls).children( '.mm-panel' )[ 0 ];
 
 		//	Open the current opened panel
 		this.openPanel( current, false );
@@ -1562,7 +1574,7 @@ class Mmenu {
 	}
 
 	/**
-	 * Find anchors in listitems.
+	 * Find anchors in listitems (excluding anchor that open a sub-panel).
 	 *
 	 * @param  {array} 	listitems 	Elements to filter.
 	 * @return {array}				The found set of anchors.
@@ -1573,7 +1585,7 @@ class Mmenu {
 		var anchors = [];
 		Mmenu.filterListItems( listitems )
 			.forEach(( listitem ) => {
-				anchors.push( ...Mmenu.DOM.children( listitem, 'a' ) );
+				anchors.push( ...Mmenu.DOM.children( listitem, 'a.mm-listitem__text' ) );
 			});
 		return anchors.filter( anchor => !anchor.matches( '.mm-btn_next' ) )
 	}

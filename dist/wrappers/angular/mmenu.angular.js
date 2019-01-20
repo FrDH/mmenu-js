@@ -1,1 +1,7 @@
-Mmenu.wrappers.angular=function(){this.opts.onClick={close:!0,preventDefault:!1,setSelected:!0}};
+Mmenu.wrappers.angular = function () {
+    this.opts.onClick = {
+        close: true,
+        preventDefault: false,
+        setSelected: true
+    };
+};

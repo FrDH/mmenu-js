@@ -1,1 +1,19 @@
-Mmenu.wrappers.turbolinks=function(){var t,n;Mmenu.$(document).on("turbolinks:before-visit",function(){n=document.documentElement,t=n.getAttribute("class"),t=Mmenu.$.grep(t.split(/\s+/),function(t){return!/mm-/.test(t)}).join(" ")}).on("turbolinks:load",function(){void 0!==n&&n.setAttribute("class",t)})};
+Mmenu.wrappers.turbolinks = function () {
+    var classnames, html;
+    Mmenu.$(document)
+        //	Store the HTML classnames onDocumentReady
+        .on('turbolinks:before-visit', function () {
+        html = document.documentElement;
+        classnames = html.getAttribute('class');
+        classnames = Mmenu.$.grep(classnames.split(/\s+/), function (name) {
+            return !/mm-/.test(name);
+        }).join(' ');
+    })
+        //	Reset the HTML classnames when changing pages
+        .on('turbolinks:load', function () {
+        if (typeof html === 'undefined') {
+            return;
+        }
+        html.setAttribute('class', classnames);
+    });
+};

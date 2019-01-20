@@ -1,1 +1,68 @@
-Mmenu.addons.backButton=function(){var e=this;if(this.opts.offCanvas){var n=this.opts.backButton;"boolean"==typeof n&&(n={close:n}),"object"!=typeof n&&(n={}),this.opts.backButton=Mmenu.extend(n,Mmenu.options.backButton);var o="#"+this.node.menu.id;if(n.close){var i=[];function t(){i=[o],Mmenu.DOM.children(this.node.pnls,".mm-panel_opened, .mm-panel_opened-parent").forEach(function(n){i.push("#"+n.id)})}this.bind("open:finish",function(){history.pushState(null,document.title,o)}),this.bind("open:finish",t),this.bind("openPanel:finish",t),this.bind("close:finish",function(){i=[],history.back(),history.pushState(null,document.title,location.pathname+location.search)}),window.addEventListener("popstate",function(n){if(e.vars.opened&&i.length){var t=(i=i.slice(0,-1))[i.length-1];t==o?e.close():(e.openPanel(e.node.menu.querySelector(t)),history.pushState(null,document.title,o))}})}n.open&&window.addEventListener("popstate",function(n){e.vars.opened||location.hash!=o||e.open()})}},Mmenu.options.backButton={close:!1,open:!1};
+Mmenu.addons.backButton = function () {
+    var _this = this;
+    if (!this.opts.offCanvas) {
+        return;
+    }
+    var opts = this.opts.backButton;
+    //	Extend shorthand options
+    if (typeof opts == 'boolean') {
+        opts = {
+            close: opts
+        };
+    }
+    if (typeof opts != 'object') {
+        opts = {};
+    }
+    //	/Extend shorthand options
+    //opts = this.opts.backButton = jQuery.extend( true, {}, Mmenu.options.backButton, opts );
+    this.opts.backButton = Mmenu.extend(opts, Mmenu.options.backButton);
+    var _menu = '#' + this.node.menu.id;
+    //	Close menu
+    if (opts.close) {
+        var states = [];
+        function setStates() {
+            states = [_menu];
+            Mmenu.DOM.children(this.node.pnls, '.mm-panel_opened, .mm-panel_opened-parent')
+                .forEach(function (panel) {
+                states.push('#' + panel.id);
+            });
+        }
+        this.bind('open:finish', function () {
+            history.pushState(null, document.title, _menu);
+        });
+        this.bind('open:finish', setStates);
+        this.bind('openPanel:finish', setStates);
+        this.bind('close:finish', function () {
+            states = [];
+            history.back();
+            history.pushState(null, document.title, location.pathname + location.search);
+        });
+        window.addEventListener('popstate', function (evnt) {
+            if (_this.vars.opened) {
+                if (states.length) {
+                    states = states.slice(0, -1);
+                    var hash = states[states.length - 1];
+                    if (hash == _menu) {
+                        _this.close();
+                    }
+                    else {
+                        _this.openPanel(_this.node.menu.querySelector(hash));
+                        history.pushState(null, document.title, _menu);
+                    }
+                }
+            }
+        });
+    }
+    if (opts.open) {
+        window.addEventListener('popstate', function (evnt) {
+            if (!_this.vars.opened && location.hash == _menu) {
+                _this.open();
+            }
+        });
+    }
+};
+//	Default options and configuration.
+Mmenu.options.backButton = {
+    close: false,
+    open: false
+};
