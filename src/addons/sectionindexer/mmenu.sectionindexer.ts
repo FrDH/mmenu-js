@@ -31,8 +31,6 @@ Mmenu.addons.sectionIndexer = function(
 		panels	: HTMLElement[]
 	) => {
 
-		var $panels = Mmenu.$(panels);
-
 		//	Set the panel(s)
 		if ( opts.addTo != 'panels' )
 		{
@@ -73,31 +71,38 @@ Mmenu.addons.sectionIndexer = function(
 				}
 			});
 
-			//	Scroll onMouseOver
-			Mmenu.$(this.node.indx)
-				.on( 'mouseover.mm-sectionIndexer touchstart.mm-sectionIndexer', 'a', ( e ) => {
-					var letter  = e.target.innerText,
-						panel 	= Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
-						
-					var $panl = Mmenu.$(this.node.pnls).children( '.mm-panel_opened' ),
-						$list = $panl.find( '.mm-listview' );
+			//	Scroll onMouseOver / onTouchStart
+			let mouseOverEvent = ( evnt ) => {
+				if ( !evnt.target.matches( 'a' ) )
+				{
+					return;
+				}
 
-					var newTop = -1,
-						oldTop = panel.scrollTop;
+				var letter  = evnt.target.innerText,
+					panel 	= Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
 
-					panel.scrollTop = 0;
-					Mmenu.DOM.find( panel, '.mm-listitem_divider' )
-						.filter( divider => !divider.matches( '.mm-hidden' ) )
-						.forEach(( divider ) => {
-							if ( newTop < 0 &&
-								letter == divider.innerText.trim().slice( 0, 1 ).toLowerCase()
-							) {
-								newTop = divider.offsetTop;
-							}
-						});
+				var newTop = -1,
+					oldTop = panel.scrollTop;
 
-					panel.scrollTop = newTop > -1 ? newTop : oldTop;
-				});
+				panel.scrollTop = 0;
+				Mmenu.DOM.find( panel, '.mm-listitem_divider' )
+					.filter( divider => !divider.matches( '.mm-hidden' ) )
+					.forEach(( divider ) => {
+						if ( newTop < 0 &&
+							letter == divider.innerText.trim().slice( 0, 1 ).toLowerCase()
+						) {
+							newTop = divider.offsetTop;
+						}
+					});
+
+				panel.scrollTop = newTop > -1 ? newTop : oldTop;
+			};
+
+			this.node.indx.addEventListener( 'mouseover', mouseOverEvent );
+			if ( Mmenu.support.touch )
+			{
+				this.node.indx.addEventListener( 'touchstart', mouseOverEvent );
+			}
 		}
 
 

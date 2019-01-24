@@ -16,7 +16,6 @@ Mmenu.addons.sectionIndexer = function () {
         return;
     }
     this.bind('initPanels:after', function (panels) {
-        var $panels = Mmenu.$(panels);
         //	Set the panel(s)
         if (opts.addTo != 'panels') {
             //	TODO addTo kan ook een HTML element zijn?
@@ -46,11 +45,12 @@ Mmenu.addons.sectionIndexer = function () {
                     evnt.preventDefault();
                 }
             });
-            //	Scroll onMouseOver
-            Mmenu.$(_this.node.indx)
-                .on('mouseover.mm-sectionIndexer touchstart.mm-sectionIndexer', 'a', function (e) {
-                var letter = e.target.innerText, panel = Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
-                var $panl = Mmenu.$(_this.node.pnls).children('.mm-panel_opened'), $list = $panl.find('.mm-listview');
+            //	Scroll onMouseOver / onTouchStart
+            var mouseOverEvent = function (evnt) {
+                if (!evnt.target.matches('a')) {
+                    return;
+                }
+                var letter = evnt.target.innerText, panel = Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
                 var newTop = -1, oldTop = panel.scrollTop;
                 panel.scrollTop = 0;
                 Mmenu.DOM.find(panel, '.mm-listitem_divider')
@@ -62,7 +62,11 @@ Mmenu.addons.sectionIndexer = function () {
                     }
                 });
                 panel.scrollTop = newTop > -1 ? newTop : oldTop;
-            });
+            };
+            _this.node.indx.addEventListener('mouseover', mouseOverEvent);
+            if (Mmenu.support.touch) {
+                _this.node.indx.addEventListener('touchstart', mouseOverEvent);
+            }
         }
         //	Show or hide the indexer
         function update(panel) {

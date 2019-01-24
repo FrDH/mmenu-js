@@ -120,9 +120,12 @@ Mmenu.addons.keyboardNavigation = function(
 			var $btns = Mmenu.$(this.node.menu).add( Mmenu.node.blck )
 				.children( '.mm-tabstart, .mm-tabend' );
 
-			$btns.each(( b, btn ) => {
-				Mmenu.sr_aria( btn, 'hidden', true );
-				Mmenu.sr_role( btn, 'presentation' );
+			[ this.node.menu, Mmenu.node.blck ].forEach(( element ) => {
+				Mmenu.DOM.children( element, '.mm-tabstart, .mm-tabend' )
+					.forEach(( tabber ) => {
+						Mmenu.sr_aria( tabber, 'hidden', true );
+						Mmenu.sr_role( tabber, 'presentation' );
+					});
 			});
 		});
 	}
@@ -206,7 +209,8 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 							if ( target.matches( '.mm-toggle' ) || 
 								 target.matches( '.mm-check' )
 							) {
-								Mmenu.$(target).trigger( 'click.mm' );
+
+								target.dispatchEvent( new Event( 'click' ) );
 							}
 							break;
 

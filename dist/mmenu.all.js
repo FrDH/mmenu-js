@@ -171,7 +171,7 @@ var Mmenu = /** @class */ (function () {
                 //	RequestAnimationFrame would be nice here.
                 setTimeout(function () {
                     //	Callback
-                    Mmenu.transitionend(Mmenu.$(panel), function () {
+                    Mmenu.transitionend(panel, function () {
                         openPanelFinish();
                     }, _this.conf.transitionDuration);
                     openPanelStart();
@@ -213,16 +213,18 @@ var Mmenu = /** @class */ (function () {
             listitem.classList.remove('mm-listitem_selected', 'mm-listitem_opened');
         });
         //	Close all "horizontal" panels.
-        var $pnls = Mmenu.$(this.node.pnls).children('.mm-panel'), $frst = (panel) ? Mmenu.$(panel) : $pnls.first();
-        Mmenu.$(this.node.pnls)
-            .children('.mm-panel')
-            .not($frst)
-            .removeClass('mm-panel_opened')
-            .removeClass('mm-panel_opened-parent')
-            .removeClass('mm-panel_highest')
-            .addClass('mm-hidden');
+        var panels = Mmenu.DOM.children(this.node.pnls, '.mm-panel'), opened = (panel) ? panel : panels[0];
+        Mmenu.DOM.children(this.node.pnls, '.mm-panel')
+            .forEach(function (panel) {
+            if (panel !== opened) {
+                panel.classList.remove('mm-panel_opened');
+                panel.classList.remove('mm-panel_opened-parent');
+                panel.classList.remove('mm-panel_highest');
+                panel.classList.add('mm-hidden');
+            }
+        });
         //	Open first panel.
-        this.openPanel($frst[0], false);
+        this.openPanel(opened, false);
         this.trigger('closeAllPanels:after');
     };
     /**
@@ -549,8 +551,7 @@ var Mmenu = /** @class */ (function () {
         }
         panel.id = id;
         panel.classList.add('mm-panel', 'mm-hidden');
-        var $parent = Mmenu.$(panel).parent('li');
-        var parent = $parent[0];
+        var parent = [panel.parentElement].filter(function (listitem) { return listitem.matches('li'); })[0];
         if (vertical) {
             if (parent) {
                 parent.classList.add('mm-listitem_vertical');
@@ -574,40 +575,38 @@ var Mmenu = /** @class */ (function () {
      */
     Mmenu.prototype._initNavbar = function (panel) {
         this.trigger('initNavbar:before', [panel]);
-        if (Mmenu.$(panel).children('.mm-navbar').length) {
+        if (Mmenu.DOM.children(panel, '.mm-navbar').length) {
             return;
         }
-        var parent = panel.mmParent, $navbar = Mmenu.$('<div class="mm-navbar" />');
+        var parent = panel.mmParent, navbar = Mmenu.DOM.create('div.mm-navbar');
         var title = this._getPanelTitle(panel, this.opts.navbar.title), href = '';
         if (parent) {
             if (parent.matches('.mm-listitem_vertical')) {
                 return;
             }
+            var opener_1;
             //	Listview, the panel wrapping this panel
-            if (parent.parentElement.matches('.mm-listview')) {
-                var $a = Mmenu.$(parent)
-                    .children('a, span')
-                    .not('.mm-btn_next');
+            if (parent.matches('.mm-listitem')) {
+                opener_1 = Mmenu.DOM.children(parent, '.mm-listitem__text')[0];
             }
             //	Non-listview, the first anchor in the parent panel that links to this panel
             else {
-                var $a = Mmenu.$(panel)
-                    .closest('.mm-panel')
-                    .find('a[href="#' + panel.id + '"]');
+                opener_1 = panel.closest('.mm-panel');
+                opener_1 = Mmenu.DOM.find(opener_1, 'a[href="#' + panel.id + '"]')[0];
             }
-            $a = $a.first();
-            parent = $a.closest('.mm-panel')[0];
-            var id = parent.id;
-            title = this._getPanelTitle(panel, Mmenu.$('<span>' + $a.text() + '</span>').text());
+            var id = opener_1.closest('.mm-panel').id;
+            title = this._getPanelTitle(panel, opener_1.innerText);
             switch (this.opts.navbar.titleLink) {
                 case 'anchor':
-                    href = $a[0].getAttribute('href');
+                    href = opener_1.getAttribute('href');
                     break;
                 case 'parent':
                     href = '#' + id;
                     break;
             }
-            $navbar.append('<a class="mm-btn mm-btn_prev mm-navbar__btn" href="#' + id + '" />');
+            var anchor_1 = Mmenu.DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
+            anchor_1.setAttribute('href', '#' + id);
+            navbar.append(anchor_1);
         }
         else if (!this.opts.navbar.title) {
             return;
@@ -615,8 +614,13 @@ var Mmenu = /** @class */ (function () {
         if (this.opts.navbar.add) {
             panel.classList.add('mm-panel_has-navbar');
         }
-        $navbar.append('<a class="mm-navbar__title"' + (href.length ? ' href="' + href + '"' : '') + '>' + title + '</a>')
-            .prependTo(panel);
+        var anchor = Mmenu.DOM.create('a.mm-navbar__title');
+        anchor.innerHTML = title;
+        if (href) {
+            anchor.setAttribute('href', href);
+        }
+        navbar.append(anchor);
+        panel.prepend(navbar);
         this.trigger('initNavbar:after', [panel]);
     };
     /**
@@ -627,38 +631,48 @@ var Mmenu = /** @class */ (function () {
     Mmenu.prototype._initListview = function (panel) {
         var _this = this;
         this.trigger('initListview:before', [panel]);
-        var $panel = Mmenu.$(panel);
         //	Refactor listviews classnames
-        var filter = 'ul, ol', uls = Mmenu.DOM.children(panel, filter);
+        var filter = 'ul, ol', listviews = Mmenu.DOM.children(panel, filter);
         if (panel.matches(filter)) {
-            uls.unshift(panel);
+            listviews.unshift(panel);
         }
-        uls.forEach(function (ul) {
-            Mmenu.refactorClass(ul, _this.conf.classNames.nolistview, 'mm-nolistview');
+        listviews.forEach(function (listview) {
+            Mmenu.refactorClass(listview, _this.conf.classNames.nolistview, 'mm-nolistview');
         });
+        var listitems = [];
         //	Refactor listitems classnames
-        var $li = Mmenu.$(uls)
-            .not('.mm-nolistview')
-            .addClass('mm-listview')
-            .children()
-            .addClass('mm-listitem');
-        $li.each(function (l, li) {
-            Mmenu.refactorClass(li, _this.conf.classNames.selected, 'mm-listitem_selected');
-            Mmenu.refactorClass(li, _this.conf.classNames.divider, 'mm-listitem_divider');
-            Mmenu.refactorClass(li, _this.conf.classNames.spacer, 'mm-listitem_spacer');
+        listviews.forEach(function (listview) {
+            if (!listview.matches('.mm-nolistview')) {
+                listview.classList.add('mm-listview');
+                Mmenu.DOM.children(listview)
+                    .forEach(function (listitem) {
+                    listitem.classList.add('mm-listitem');
+                    Mmenu.refactorClass(listitem, _this.conf.classNames.selected, 'mm-listitem_selected');
+                    Mmenu.refactorClass(listitem, _this.conf.classNames.divider, 'mm-listitem_divider');
+                    Mmenu.refactorClass(listitem, _this.conf.classNames.spacer, 'mm-listitem_spacer');
+                    Mmenu.DOM.children(listitem, 'a, span')
+                        .forEach(function (item) {
+                        if (!item.matches('.mm-btn')) {
+                            item.classList.add('mm-listitem__text');
+                        }
+                    });
+                });
+            }
         });
-        $li.children('a, span')
-            .not('.mm-btn')
-            .addClass('mm-listitem__text');
         //	Add open link to parent listitem
         var parent = panel.mmParent;
         if (parent && parent.matches('.mm-listitem')) {
-            if (!Mmenu.$(parent).children('.mm-btn').length) {
-                var $a = Mmenu.$(parent).children('a, span').first(), $b = Mmenu.$('<a class="mm-btn mm-btn_next mm-listitem__btn" href="#' + panel.id + '" />');
-                $b.insertAfter($a);
-                if ($a.is('span')) {
-                    $b.addClass('mm-listitem__text').html($a.html());
-                    $a.remove();
+            if (!Mmenu.DOM.children(parent, '.mm-btn').length) {
+                var item = Mmenu.DOM.children(parent, 'a, span')[0];
+                if (item) {
+                    var button = Mmenu.DOM.create('a.mm-btn.mm-btn_next.mm-listitem__btn');
+                    button.setAttribute('href', '#' + panel.id);
+                    Mmenu.$(button).insertAfter(item);
+                    if (item.matches('span')) {
+                        button.classList.add('mm-listitem__text');
+                        button.innerHTML = item.innerHTML;
+                        item.remove();
+                    }
                 }
             }
         }
@@ -672,18 +686,18 @@ var Mmenu = /** @class */ (function () {
         //	Find all selected listitems.
         var listitems = this.node.pnls.querySelectorAll('.mm-listitem_selected');
         //	Deselect the listitems
-        var last = null;
+        var lastitem = null;
         listitems.forEach(function (listitem) {
-            last = listitem;
+            lastitem = listitem;
             listitem.classList.remove('mm-listitem_selected');
         });
-        if (last) {
-            last.classList.add('mm-listitem_selected');
+        if (lastitem) {
+            lastitem.classList.add('mm-listitem_selected');
         }
         //	Find the current opened panel
-        var current = (last)
-            ? last.closest('.mm-panel')
-            : Mmenu.$(this.node.pnls).children('.mm-panel')[0];
+        var current = (lastitem)
+            ? lastitem.closest('.mm-panel')
+            : Mmenu.DOM.children(this.node.pnls, '.mm-panel')[0];
         //	Open the current opened panel
         this.openPanel(current, false);
         this.trigger('initOpened:after');
@@ -742,6 +756,7 @@ var Mmenu = /** @class */ (function () {
         });
         this.trigger('initAnchors:after');
     };
+    //	TODO: interface that tells what will be returned based on input
     /**
      * Get the translation for a text.
      *
@@ -864,23 +879,23 @@ var Mmenu = /** @class */ (function () {
      * @param {function}	func		Function to invoke.
      * @param {number}		duration	The duration of the animation (for the fallback).
      */
-    Mmenu.transitionend = function ($element, func, duration) {
+    Mmenu.transitionend = function (element, func, duration) {
         var guid = Mmenu.getUniqueId();
-        var _ended = false, _fn = function (e) {
-            if (typeof e !== 'undefined') {
-                if (e.target != $element[0]) {
+        var _ended = false, _fn = function (evnt) {
+            if (typeof evnt !== 'undefined') {
+                if (evnt.target !== element) {
                     return;
                 }
             }
             if (!_ended) {
-                $element.off('transitionend.' + guid);
-                $element.off('webkitTransitionEnd.' + guid);
-                func.call($element[0]);
+                element.removeEventListener('transitionend', _fn);
+                element.removeEventListener('webkitTransitionEnd', _fn);
+                func.call(element);
             }
             _ended = true;
         };
-        $element.on('transitionend.' + guid, _fn);
-        $element.on('webkitTransitionEnd.' + guid, _fn);
+        element.addEventListener('transitionend', _fn);
+        element.addEventListener('webkitTransitionEnd', _fn);
         setTimeout(_fn, duration * 1.1);
     };
     /**
@@ -970,6 +985,7 @@ var Mmenu = /** @class */ (function () {
     };
     /** Library for DOM traversal and DOM manipulations. */
     Mmenu.$ = jQuery || Zepto || cash;
+    //	TODO: interface that tells what will be returned based on input
     /**
      * get or set a translated / translatable text.
      *
@@ -1061,6 +1077,22 @@ var Mmenu = /** @class */ (function () {
             return filter
                 ? parents.filter(function (parent) { return parent.matches(filter); })
                 : parents;
+        },
+        /**
+         * Get an element offset relative to the document.
+         *
+         * @param 	{HTMLElement}	 element 			Element to start measuring from.
+         * @param 	{string}	 	[direction=top] 	Offset top or left.
+         * @return	{number}							The element offset relative to the document.
+         */
+        offset: function (element, direction) {
+            direction = (direction === 'left') ? 'offsetLeft' : 'offsetTop';
+            var offset = 0;
+            while (element) {
+                offset += element[direction];
+                element = element.offsetParent;
+            }
+            return offset;
         }
     };
     /**
@@ -1184,7 +1216,7 @@ Mmenu.addons.offCanvas = function () {
                     var api = menu.mmenu;
                     if (api && api.close) {
                         api.close();
-                        Mmenu.transitionend(Mmenu.$(menu), function () {
+                        Mmenu.transitionend(menu, function () {
                             _this.open();
                         }, _this.conf.transitionDuration);
                         return true;
@@ -1276,7 +1308,7 @@ Mmenu.prototype._openSetup = function () {
 Mmenu.prototype._openFinish = function () {
     var _this = this;
     //	Callback when the page finishes opening.
-    Mmenu.transitionend(Mmenu.$(Mmenu.node.page), function () {
+    Mmenu.transitionend(Mmenu.node.page, function () {
         _this.trigger('open:finish');
     }, this.conf.transitionDuration);
     //	Opening
@@ -1293,7 +1325,7 @@ Mmenu.prototype.close = function () {
         return;
     }
     //	Callback when the page finishes closing.
-    Mmenu.transitionend(Mmenu.$(Mmenu.node.page), function () {
+    Mmenu.transitionend(Mmenu.node.page, function () {
         var _a;
         _this.node.menu.classList.remove('mm-menu_opened');
         var clsn = [
@@ -1317,13 +1349,14 @@ Mmenu.prototype.close = function () {
  * Close all other menus.
  */
 Mmenu.prototype.closeAllOthers = function () {
-    Mmenu.$('body')
-        .find('.mm-menu_offcanvas')
-        .not(this.node.menu)
-        .each(function (i, elem) {
-        var api = elem.mmenu;
-        if (api && api.close) {
-            api.close();
+    var _this = this;
+    Mmenu.DOM.find(document.body, '.mm-menu_offcanvas')
+        .forEach(function (menu) {
+        if (menu !== _this.node.menu) {
+            var api = menu.mmenu;
+            if (api && api.close) {
+                api.close();
+            }
         }
     });
 };
@@ -1367,10 +1400,11 @@ Mmenu.prototype._initWindow_offCanvas = function () {
     //	Prevent tabbing
     //	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
     //	In other words: The menu would move out of view.
+    //	TODO event opslaan zodat het weer verwijderd kan worden met removeListener en direct aangeroepen ipv trigger()
     Mmenu.$(window)
         .off('keydown.mm-offCanvas')
         .on('keydown.mm--offCanvas', function (e) {
-        if (Mmenu.$('html').hasClass('mm-wrapper_opened')) {
+        if (document.documentElement.matches('.mm-wrapper_opened')) {
             if (e.keyCode == 9) {
                 e.preventDefault();
                 return false;
@@ -1379,16 +1413,17 @@ Mmenu.prototype._initWindow_offCanvas = function () {
     });
     //	Set "page" node min-height to window height
     var oldHeight, newHeight;
+    //	TODO event opslaan zodat het weer verwijderd kan worden met removeListener en direct aangeroepen ipv trigger()
     Mmenu.$(window)
         .off('resize.mm-offCanvas')
-        .on('resize.mm-offCanvas', function (e, force) {
+        .on('resize.mm-offCanvas', function (evnt, force) {
         //	if ( Mmenu.node.page.length == 1 )
         {
-            if (force || Mmenu.$('html').hasClass('mm-wrapper_opened')) {
-                newHeight = Mmenu.$(window).height();
+            if (force || document.documentElement.matches('.mm-wrapper_opened')) {
+                newHeight = window.innerHeight;
                 if (force || newHeight != oldHeight) {
                     oldHeight = newHeight;
-                    Mmenu.$(Mmenu.node.page).css('minHeight', newHeight);
+                    Mmenu.node.page.style.minHeight = newHeight + 'px';
                 }
             }
         }
@@ -1409,18 +1444,19 @@ Mmenu.prototype._initBlocker = function () {
         blck.innerHTML = '<a></a>';
         Mmenu.node.blck = blck;
     }
+    document.querySelector(conf.menu.insertSelector)
+        .append(Mmenu.node.blck);
     Mmenu.$(Mmenu.node.blck)
-        .appendTo(conf.menu.insertSelector)
         .off('touchstart.mm-offCanvas touchmove.mm-offCanvas')
         .on('touchstart.mm-offCanvas touchmove.mm-offCanvas', function (evnt) {
         evnt.preventDefault();
         evnt.stopPropagation();
-        Mmenu.$(Mmenu.node.blck).trigger('mousedown.mm-offCanvas');
+        Mmenu.node.blck.dispatchEvent(new Event('mousedown'));
     })
         .off('mousedown.mm-offCanvas')
         .on('mousedown.mm-offCanvas', function (evnt) {
         evnt.preventDefault();
-        if (!document.querySelector('html').matches('.mm-wrapper_modal')) {
+        if (!document.documentElement.matches('.mm-wrapper_modal')) {
             _this.closeAllOthers();
             _this.close();
         }
@@ -1612,12 +1648,12 @@ Mmenu.configs.screenReader = {
 Mmenu.addons.scrollBugFix = function () {
     var _this = this;
     //	The scrollBugFix add-on fixes a scrolling bug
-    //		1) in an off-canvas menu 
-    //		2) that -when opened- blocks the UI from interaction 
-    //		3) on touch devices
-    if (!Mmenu.support.touch || // 3
-        !this.opts.offCanvas || // 1
-        !this.opts.offCanvas.blockUI // 2
+    //		1) on touch devices
+    //		2) in an off-canvas menu 
+    //		3) that -when opened- blocks the UI from interaction 
+    if (!Mmenu.support.touch || // 1
+        !this.opts.offCanvas || // 2
+        !this.opts.offCanvas.blockUI // 3
     ) {
         return;
     }
@@ -1632,7 +1668,6 @@ Mmenu.addons.scrollBugFix = function () {
         opts = {};
     }
     //	Extend shorthand options
-    //opts = this.opts.scrollBugFix = jQuery.extend( true, {}, Mmenu.options.scrollBugFix, opts );
     this.opts.scrollBugFix = Mmenu.extend(opts, Mmenu.options.scrollBugFix);
     if (!opts.fix) {
         return;
@@ -1657,6 +1692,8 @@ Mmenu.addons.scrollBugFix = function () {
             var panel = evnt.currentTarget;
             if (document.documentElement.matches('.mm-wrapper_opened')) {
                 if (!scrolling) {
+                    //	Since we're potentially scrolling the panel in the onScroll event, 
+                    //	this little hack prevents an infinite loop.
                     scrolling = true;
                     if (panel.scrollTop === 0) {
                         panel.scrollTop = 1;
@@ -1664,6 +1701,7 @@ Mmenu.addons.scrollBugFix = function () {
                     else if (panel.scrollHeight === panel.scrollTop + panel.offsetHeight) {
                         panel.scrollTop -= 1;
                     }
+                    //	End of infinite loop preventing hack.
                     scrolling = false;
                 }
             }
@@ -1672,6 +1710,7 @@ Mmenu.addons.scrollBugFix = function () {
             .on('touchmove.mm-scrollBugFix', '.mm-panels > .mm-panel', function (evnt) {
             if (document.documentElement.matches('.mm-wrapper_opened')) {
                 var panel = evnt.currentTarget;
+                console.log(panel);
                 if (panel.scrollHeight > panel.clientHeight) {
                     evnt.stopPropagation();
                 }
@@ -1679,13 +1718,12 @@ Mmenu.addons.scrollBugFix = function () {
         });
         //	Fix issue after device rotation change
         Mmenu.$('window')
-            .off('orientationchange.mm-scrollBugFix')
-            .on('orientationchange.mm-scrollBugFix', function () {
-            Mmenu.$(_this.node.pnls)
-                .children('.mm-panel_opened')
-                .scrollTop(0)
-                .css({ '-webkit-overflow-scrolling': 'auto' })
-                .css({ '-webkit-overflow-scrolling': 'touch' });
+            .on('orientationchange.mm-scrollBugFix', function (evnt) {
+            var panel = Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
+            panel.scrollTop = 0;
+            //	Apparently, changing the overflow-scrolling property triggers some event :)
+            panel.style['-webkit-overflow-scrolling'] = 'auto';
+            panel.style['-webkit-overflow-scrolling'] = 'touch';
         });
     });
 };
@@ -1845,85 +1883,6 @@ Mmenu.options.backButton = {
     open: false
 };
 
-Mmenu.addons.counters = function () {
-    var _this = this;
-    var opts = this.opts.counters;
-    //	Extend shorthand options
-    if (typeof opts == 'boolean') {
-        opts = {
-            add: opts,
-            count: opts
-        };
-    }
-    if (typeof opts != 'object') {
-        opts = {};
-    }
-    if (opts.addTo == 'panels') {
-        opts.addTo = '.mm-panel';
-    }
-    //	/Extend shorthand options
-    this.opts.counters = Mmenu.extend(opts, Mmenu.options.counters);
-    //	Refactor counter class
-    this.bind('initListview:after', function (panel) {
-        var cntrclss = _this.conf.classNames.counters.counter, counters = panel.querySelectorAll('.' + cntrclss);
-        counters.forEach(function (counter) {
-            Mmenu.refactorClass(counter, cntrclss, 'mm-counter');
-        });
-    });
-    //	Add the counters after a listview is initiated.
-    if (opts.add) {
-        this.bind('initListview:after', function (panel) {
-            if (!panel.matches(opts.addTo)) {
-                return;
-            }
-            var parent = panel.mmParent;
-            if (parent) {
-                //	Check if no counter already excists.
-                if (!parent.querySelector('.mm-counter')) {
-                    var counter = Mmenu.DOM.create('span.mm-counter');
-                    var btn = Mmenu.DOM.children(parent, '.mm-btn')[0];
-                    if (btn) {
-                        btn.prepend(counter);
-                    }
-                }
-            }
-        });
-    }
-    if (opts.count) {
-        function count(panel) {
-            var panels = panel ? [panel] : Mmenu.DOM.children(this.node.pnls, '.mm-panel');
-            panels.forEach(function (panel) {
-                var parent = panel.mmParent;
-                if (!parent) {
-                    return;
-                }
-                var counter = parent.querySelector('.mm-counter');
-                if (!counter) {
-                    return;
-                }
-                var listitems = [];
-                Mmenu.DOM.children(panel, '.mm-listview')
-                    .forEach(function (listview) {
-                    listitems.push.apply(listitems, Mmenu.DOM.children(listview));
-                });
-                counter.innerHTML = Mmenu.filterListItems(listitems).length.toString();
-            });
-        }
-        ;
-        this.bind('initListview:after', count);
-        this.bind('updateListview', count);
-    }
-};
-//	Default options and configuration.
-Mmenu.options.counters = {
-    add: false,
-    addTo: 'panels',
-    count: false
-};
-Mmenu.configs.classNames.counters = {
-    counter: 'Counter'
-};
-
 Mmenu.addons.columns = function () {
     var _this = this;
     var opts = this.opts.columns;
@@ -2033,6 +1992,85 @@ Mmenu.options.columns = {
         min: 1,
         max: 3
     }
+};
+
+Mmenu.addons.counters = function () {
+    var _this = this;
+    var opts = this.opts.counters;
+    //	Extend shorthand options
+    if (typeof opts == 'boolean') {
+        opts = {
+            add: opts,
+            count: opts
+        };
+    }
+    if (typeof opts != 'object') {
+        opts = {};
+    }
+    if (opts.addTo == 'panels') {
+        opts.addTo = '.mm-panel';
+    }
+    //	/Extend shorthand options
+    this.opts.counters = Mmenu.extend(opts, Mmenu.options.counters);
+    //	Refactor counter class
+    this.bind('initListview:after', function (panel) {
+        var cntrclss = _this.conf.classNames.counters.counter, counters = panel.querySelectorAll('.' + cntrclss);
+        counters.forEach(function (counter) {
+            Mmenu.refactorClass(counter, cntrclss, 'mm-counter');
+        });
+    });
+    //	Add the counters after a listview is initiated.
+    if (opts.add) {
+        this.bind('initListview:after', function (panel) {
+            if (!panel.matches(opts.addTo)) {
+                return;
+            }
+            var parent = panel.mmParent;
+            if (parent) {
+                //	Check if no counter already excists.
+                if (!parent.querySelector('.mm-counter')) {
+                    var counter = Mmenu.DOM.create('span.mm-counter');
+                    var btn = Mmenu.DOM.children(parent, '.mm-btn')[0];
+                    if (btn) {
+                        btn.prepend(counter);
+                    }
+                }
+            }
+        });
+    }
+    if (opts.count) {
+        function count(panel) {
+            var panels = panel ? [panel] : Mmenu.DOM.children(this.node.pnls, '.mm-panel');
+            panels.forEach(function (panel) {
+                var parent = panel.mmParent;
+                if (!parent) {
+                    return;
+                }
+                var counter = parent.querySelector('.mm-counter');
+                if (!counter) {
+                    return;
+                }
+                var listitems = [];
+                Mmenu.DOM.children(panel, '.mm-listview')
+                    .forEach(function (listview) {
+                    listitems.push.apply(listitems, Mmenu.DOM.children(listview));
+                });
+                counter.innerHTML = Mmenu.filterListItems(listitems).length.toString();
+            });
+        }
+        ;
+        this.bind('initListview:after', count);
+        this.bind('updateListview', count);
+    }
+};
+//	Default options and configuration.
+Mmenu.options.counters = {
+    add: false,
+    addTo: 'panels',
+    count: false
+};
+Mmenu.configs.classNames.counters = {
+    counter: 'Counter'
 };
 
 Mmenu.addons.dividers = function () {
@@ -2199,17 +2237,17 @@ Mmenu.addons.drag = function () {
                 close_dir: 'left',
                 negative: false
             };
-            var _dimension = 'width', _direction = drag.open_dir;
+            var _dimension = 'width', _winDimension = 'innerWidth', _direction = drag.open_dir;
             var doPanstart = function (pos) {
                 if (pos <= opts.menu.maxStartPos) {
                     _stage = 1;
                 }
             };
             var getSlideNodes = function () {
-                return Mmenu.$('.mm-slideout');
+                return Mmenu.DOM.find(document.body, '.mm-slideout');
             };
             var _stage = 0, _distance = 0, _maxDistance = 0;
-            var new_distance, drag_distance, css_value;
+            var new_distance, drag_distance;
             //	Find menu position from Positioning extension
             var x = _this.opts.extensions['all'];
             var position = (typeof x == 'undefined')
@@ -2235,6 +2273,7 @@ Mmenu.addons.drag = function () {
                     drag.typeLower = 'y';
                     drag.typeUpper = 'Y';
                     _dimension = 'height';
+                    _winDimension = 'innerHeight';
                     break;
             }
             switch (position) {
@@ -2242,7 +2281,7 @@ Mmenu.addons.drag = function () {
                 case 'bottom':
                     drag.negative = true;
                     doPanstart = function (pos) {
-                        if (pos >= Mmenu.$(window)[_dimension]() - opts.menu.maxStartPos) {
+                        if (pos >= window[_winDimension] - opts.menu.maxStartPos) {
                             _stage = 1;
                         }
                     };
@@ -2265,20 +2304,21 @@ Mmenu.addons.drag = function () {
             switch (zposition) {
                 case 'front':
                     getSlideNodes = function () {
-                        return Mmenu.$(this.node.menu);
+                        return [this.node.menu];
                     };
                     break;
             }
-            var $slideOutNodes, $dragNode = Mmenu.valueOrFn(_this.node.menu, opts.menu.node, Mmenu.$(Mmenu.node.page));
-            if (typeof $dragNode == 'string') {
-                $dragNode = Mmenu.$($dragNode);
+            var slideOutNodes;
+            var dragNode = Mmenu.valueOrFn(_this.node.menu, opts.menu.node, Mmenu.node.page);
+            if (typeof dragNode == 'string') {
+                dragNode = document.querySelector(dragNode);
             }
             //	Bind events
-            var _hammer = new Hammer($dragNode[0], _this.opts.drag.vendors.hammer);
+            var _hammer = new Hammer(dragNode, _this.opts.drag.vendors.hammer);
             _hammer
                 .on('panstart', function (evnt) {
                 doPanstart.call(_this, evnt.center[drag.typeLower]);
-                $slideOutNodes = getSlideNodes.call(_this);
+                slideOutNodes = getSlideNodes.call(_this);
                 _direction = drag.open_dir;
             });
             _hammer
@@ -2306,7 +2346,7 @@ Mmenu.addons.drag = function () {
                         _this._openSetup();
                         _this.trigger('open:start');
                         document.documentElement.classList.add('mm-wrapper_dragging');
-                        _maxDistance = minMax(Mmenu.$(window)[_dimension]() * conf.menu[_dimension].perc, conf.menu[_dimension].min, conf.menu[_dimension].max);
+                        _maxDistance = minMax(window[_winDimension] * conf.menu[_dimension].perc, conf.menu[_dimension].min, conf.menu[_dimension].max);
                     }
                 }
                 if (_stage == 2) {
@@ -2314,10 +2354,10 @@ Mmenu.addons.drag = function () {
                     if (drag.negative) {
                         drag_distance = -drag_distance;
                     }
-                    css_value = 'translate' + drag.typeUpper + '(' + drag_distance + 'px )';
-                    $slideOutNodes.css({
-                        '-webkit-transform': '-webkit-' + css_value,
-                        'transform': css_value
+                    var css_value_1 = 'translate' + drag.typeUpper + '(' + drag_distance + 'px )';
+                    slideOutNodes.forEach(function (node) {
+                        node.style['-webkit-transform'] = '-webkit-' + css_value_1;
+                        node.style['transform'] = css_value_1;
                     });
                 }
             });
@@ -2325,7 +2365,10 @@ Mmenu.addons.drag = function () {
                 .on('panend', function (evnt) {
                 if (_stage == 2) {
                     document.documentElement.classList.remove('mm-wrapper_dragging');
-                    $slideOutNodes.css('transform', '');
+                    slideOutNodes.forEach(function (node) {
+                        node.style['-webkit-transform'] = '';
+                        node.style['transform'] = '';
+                    });
                     _this[_direction == drag.open_dir ? '_openFinish' : 'close']();
                 }
                 _stage = 0;
@@ -2452,8 +2495,8 @@ Mmenu.addons.dropdown = function () {
     //	Update the position and sizes
     var getPosition = function (dir, obj) {
         var css = obj[0], cls = obj[1];
-        var _scrollPos = dir == 'x' ? 'scrollLeft' : 'scrollTop', _outerSize = dir == 'x' ? 'outerWidth' : 'outerHeight', _startPos = dir == 'x' ? 'left' : 'top', _stopPos = dir == 'x' ? 'right' : 'bottom', _size = dir == 'x' ? 'width' : 'height', _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight', _position = null;
-        var scrollPos = Mmenu.$(window)[_scrollPos](), startPos = Mmenu.$(button).offset()[_startPos] -= scrollPos, stopPos = startPos + Mmenu.$(button)[_outerSize](), windowSize = Mmenu.$(window)[_size]();
+        var _scrollPos = dir == 'x' ? 'scrollLeft' : 'scrollTop', _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight', _startPos = dir == 'x' ? 'left' : 'top', _stopPos = dir == 'x' ? 'right' : 'bottom', _size = dir == 'x' ? 'width' : 'height', _winSize = dir == 'x' ? 'innerWidth' : 'innerHeight', _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight', _position = null;
+        var scrollPos = document.documentElement.scrollTop[_scrollPos], startPos = Mmenu.DOM.offset(button, _startPos) - scrollPos, stopPos = startPos + button[_outerSize], windowSize = window[_winSize];
         var offs = conf.offset.button[dir] + conf.offset.viewport[dir];
         //	Position set in option
         if (opts.position[dir]) {
@@ -2506,7 +2549,9 @@ Mmenu.addons.dropdown = function () {
         var obj = [{}, []];
         obj = getPosition.call(this, 'y', obj);
         obj = getPosition.call(this, 'x', obj);
-        Mmenu.$(this.node.menu).css(obj[0]);
+        for (var s in obj[0]) {
+            this.node.menu[s] = obj[0][s];
+        }
         if (opts.tip) {
             this.node.menu.classList.remove('mm-menu_tip-left', 'mm-menu_tip-right', 'mm-menu_tip-top', 'mm-menu_tip-bottom');
             (_a = this.node.menu.classList).add.apply(_a, obj[1]);
@@ -2576,9 +2621,9 @@ Mmenu.addons.fixedElements = function () {
     this.bind('open:start', function () {
         if (stick.length) {
             if (window.getComputedStyle(document.documentElement).overflow == 'hidden') {
-                var scrolltop = Mmenu.$(window).scrollTop() + conf.sticky.offset;
+                var scrollTop_1 = document.documentElement.scrollTop + conf.sticky.offset;
                 stick.forEach(function (element) {
-                    element.style.top = (parseInt(Mmenu.$(element).css('top'), 10) + scrolltop) + 'px';
+                    element.style.top = (parseInt(window.getComputedStyle(element).top, 10) + scrollTop_1) + 'px';
                 });
             }
         }
@@ -2889,9 +2934,12 @@ Mmenu.addons.keyboardNavigation = function () {
         this.bind('initOpened:after:sr-aria', function () {
             var $btns = Mmenu.$(_this.node.menu).add(Mmenu.node.blck)
                 .children('.mm-tabstart, .mm-tabend');
-            $btns.each(function (b, btn) {
-                Mmenu.sr_aria(btn, 'hidden', true);
-                Mmenu.sr_role(btn, 'presentation');
+            [_this.node.menu, Mmenu.node.blck].forEach(function (element) {
+                Mmenu.DOM.children(element, '.mm-tabstart, .mm-tabend')
+                    .forEach(function (tabber) {
+                    Mmenu.sr_aria(tabber, 'hidden', true);
+                    Mmenu.sr_role(tabber, 'presentation');
+                });
             });
         });
     }
@@ -2949,7 +2997,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function (enhance) {
                     case 13:
                         if (target.matches('.mm-toggle') ||
                             target.matches('.mm-check')) {
-                            Mmenu.$(target).trigger('click.mm');
+                            target.dispatchEvent(new Event('click'));
                         }
                         break;
                     //	prevent spacebar or arrows from scrolling the page
@@ -3382,7 +3430,7 @@ Mmenu.addons.searchfield = function () {
                 break;
         }
         $field.each(function (e, elem) {
-            var $srch = _this._initSearchfield(Mmenu.$(elem));
+            var $srch = _this._initSearchfield(elem);
             if (opts.search && $srch.length) {
                 _this._initSearching($srch);
             }
@@ -3390,8 +3438,8 @@ Mmenu.addons.searchfield = function () {
         //	Add the no-results message
         if (opts.noResults) {
             var $results = (opts.panel.add) ? $spnl : $pnls;
-            $results.each(function (i, elem) {
-                _this._initNoResultsMsg(Mmenu.$(elem));
+            $results.each(function (i, panel) {
+                _this._initNoResultsMsg(panel);
             });
         }
     });
@@ -3446,74 +3494,87 @@ Mmenu.configs.searchfield = {
 Mmenu.prototype._initSearchPanel = function ($panels) {
     var opts = this.opts.searchfield, conf = this.conf.searchfield;
     //	Only once
-    if (Mmenu.$(this.node.pnls).children('.mm-panel_search').length) {
+    if (Mmenu.DOM.children(this.node.pnls, '.mm-panel_search').length) {
         return Mmenu.$();
     }
-    var $spnl = Mmenu.$('<div class="mm-panel_search " />')
-        .append('<ul />')
-        .appendTo(this.node.pnls);
+    var searchpanel = Mmenu.DOM.create('div.mm-panel_search'), listview = Mmenu.DOM.create('ul');
+    searchpanel.append(listview);
+    this.node.pnls.append(searchpanel);
     if (opts.panel.id) {
-        $spnl[0].id = opts.panel.id;
+        searchpanel.id = opts.panel.id;
     }
     if (opts.panel.title) {
-        $spnl[0].setAttribute('data-mm-title', opts.panel.title);
+        searchpanel.setAttribute('data-mm-title', opts.panel.title);
     }
     switch (opts.panel.fx) {
         case false:
             break;
         case 'none':
-            $spnl.addClass('mm-panel_noanimation');
+            searchpanel.classList.add('mm-panel_noanimation');
             break;
         default:
-            $spnl.addClass('mm-panel_fx-' + opts.panel.fx);
+            searchpanel.classList.add('mm-panel_fx-' + opts.panel.fx);
             break;
     }
     //	Add splash content
     if (opts.panel.splash) {
-        $spnl.append('<div class="mm-panel__searchsplash">' + opts.panel.splash + '</div>');
+        var splash = Mmenu.DOM.create('div.mm-panel__searchsplash');
+        splash.innerHTML = opts.panel.splash;
+        searchpanel.append(splash);
     }
-    this._initPanels($spnl.get());
-    return $spnl;
+    this._initPanels([searchpanel]);
+    return Mmenu.$(searchpanel);
 };
-Mmenu.prototype._initSearchfield = function ($wrpr) {
+Mmenu.prototype._initSearchfield = function (wrapper) {
     var opts = this.opts.searchfield, conf = this.conf.searchfield;
     //	No searchfield in vertical submenus	
-    if ($wrpr.parent('.mm-listitem_vertical').length) {
+    if (wrapper.parentElement.matches('.mm-listitem_vertical')) {
         return Mmenu.$();
     }
     //	Only one searchfield per panel
-    if ($wrpr.find('.mm-searchfield').length) {
-        return $wrpr.find('.mm-searchfield');
+    var form = Mmenu.DOM.find(wrapper, '.mm-searchfield');
+    if (form.length) {
+        return form;
     }
-    var $srch = Mmenu.$('<' + (conf.form ? 'form' : 'div') + ' class="mm-searchfield" />'), $inpd = Mmenu.$('<div class="mm-searchfield__input" />'), $inpt = Mmenu.$('<input placeholder="' + this.i18n(opts.placeholder) + '" type="text" autocomplete="off" />');
-    $inpd.append($inpt).appendTo($srch);
-    $wrpr.prepend($srch);
-    if ($wrpr.hasClass('mm-panel')) {
-        $wrpr.addClass('mm-panel_has-searchfield');
-    }
-    function addAttributes($el, attr) {
+    function addAttributes(element, attr) {
         if (attr) {
             for (var a in attr) {
-                $el[0].setAttribute(a, attr[a]);
+                element.setAttribute(a, attr[a]);
             }
         }
     }
+    var $srch = Mmenu.$('<' + (conf.form ? 'form' : 'div') + ' class="mm-searchfield" />');
+    var field = Mmenu.DOM.create('div.mm-searchfield__input');
+    var input = Mmenu.DOM.create('input');
+    input.type = 'text';
+    input.autocomplete = 'off';
+    input.placeholder = this.i18n(opts.placeholder);
+    field.append(input);
+    $srch.append(field);
+    wrapper.prepend($srch[0]);
+    if (wrapper.matches('.mm-panel')) {
+        wrapper.classList.add('mm-panel_has-searchfield');
+    }
     //	Add attributes to the input
-    addAttributes($inpt, conf.input);
+    addAttributes(input, conf.input);
     //	Add the clear button
     if (conf.clear) {
-        Mmenu.$('<a class="mm-btn mm-btn_close mm-searchfield__btn" href="#" />')
-            .appendTo($inpd);
+        var anchor = Mmenu.DOM.create('a.mm-btn.mm-btn_close.mm-searchfield__btn');
+        anchor.setAttribute('href', '#');
+        field.append(anchor);
     }
     //	Add attributes and submit to the form
-    addAttributes($srch, conf.form);
+    addAttributes($srch[0], conf.form);
     if (conf.form && conf.submit && !conf.clear) {
-        Mmenu.$('<a class="mm-btn mm-btn_next mm-searchfield__btn" href="#" />')
-            .appendTo($inpd);
+        var anchor = Mmenu.DOM.create('a.mm-btn.mm-btn_next.mm-searchfield__btn');
+        anchor.setAttribute('href', '#');
+        field.append(anchor);
     }
     if (opts.cancel) {
-        Mmenu.$('<a href="#" class="mm-searchfield__cancel">' + this.i18n('cancel') + '</a>')
-            .appendTo($srch);
+        var anchor = Mmenu.DOM.create('a.mm-searchfield__cancel');
+        anchor.setAttribute('href', '#');
+        anchor.innerText = this.i18n('cancel');
+        $srch.append(anchor);
     }
     return $srch;
 };
@@ -3545,41 +3606,45 @@ Mmenu.prototype._initSearching = function ($srch) {
     if (opts.panel.add) {
         data.$pnls = data.$pnls.not('.mm-panel_search');
     }
-    var $inpt = $srch.find('input'), $cncl = $srch.find('.mm-searchfield__cancel'), $spnl = Mmenu.$(this.node.pnls).children('.mm-panel_search'), $itms = data.$pnls.find('.mm-listitem');
+    var $itms = data.$pnls.find('.mm-listitem');
+    var searchpanel = Mmenu.DOM.children(this.node.pnls, '.mm-panel_search')[0], input = Mmenu.DOM.find($srch[0], 'input')[0], cancel = Mmenu.DOM.find($srch[0], '.mm-searchfield__cancel')[0];
     data.$itms = $itms.not('.mm-listitem_divider');
     data.$dvdr = $itms.filter('.mm-listitem_divider');
     if (opts.panel.add && opts.panel.splash) {
-        $inpt
+        Mmenu.$(input)
             .off('focus.mm-searchfield-splash')
             .on('focus.mm-searchfield-splash', function (e) {
-            _this.openPanel($spnl[0]);
+            _this.openPanel(searchpanel);
         });
     }
     if (opts.cancel) {
-        $inpt
-            .off('focus.mm-searchfield-cancel')
+        Mmenu.$(input)
+            .off('focus.mm-searchfield-cancel') //	TODO, is this really needed?
             .on('focus.mm-searchfield-cancel', function (e) {
-            $cncl.addClass('mm-searchfield__cancel-active');
+            cancel.classList.add('mm-searchfield__cancel-active');
         });
-        $cncl
-            .off('click.mm-searchfield-splash')
+        Mmenu.$(cancel)
+            .off('click.mm-searchfield-splash') //	TODO, is this really needed?
             .on('click.mm-searchfield-splash', function (e) {
             e.preventDefault();
-            $cncl.removeClass('mm-searchfield__cancel-active');
-            if ($spnl.hasClass('mm-panel_opened')) {
-                _this.openPanel(Mmenu.$(_this.node.pnls).children('.mm-panel_opened-parent').last()[0]);
+            cancel.classList.remove('mm-searchfield__cancel-active');
+            if (searchpanel.matches('.mm-panel_opened')) {
+                var parents = Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened-parent');
+                if (parents.length) {
+                    _this.openPanel(parents[parents.length - 1]);
+                }
             }
         });
     }
     if (opts.panel.add && opts.addTo == 'panel') {
         this.bind('openPanel:finish', function (panel) {
-            if (panel === $spnl[0]) {
-                $inpt.focus();
+            if (panel === searchpanel) {
+                input.focus();
             }
         });
     }
-    $inpt[0].mmSearchfield = data;
-    $inpt.off('input.mm-searchfield')
+    input.mmSearchfield = data;
+    Mmenu.$(input).off('input.mm-searchfield') // 	TOOD: is dit nodig?
         .on('input.mm-searchfield', function (e) {
         switch (e.keyCode) {
             case 9: //	tab
@@ -3592,33 +3657,28 @@ Mmenu.prototype._initSearching = function ($srch) {
             case 40: //	bottom
                 break;
             default:
-                _this.search($inpt);
+                _this.search(Mmenu.$(input));
                 break;
         }
     });
     //	Fire once initially
     //	TODO better in initMenu:after or the likes
-    this.search($inpt);
+    this.search(Mmenu.$(input));
 };
-Mmenu.prototype._initNoResultsMsg = function ($wrpr) {
+Mmenu.prototype._initNoResultsMsg = function (wrapper) {
     var opts = this.opts.searchfield, conf = this.conf.searchfield;
     //	Not in a panel
-    if (!$wrpr.closest('.mm-panel').length) {
-        $wrpr = Mmenu.$(this.node.pnls).children('.mm-panel').first();
+    if (!wrapper.closest('.mm-panel')) {
+        wrapper = Mmenu.DOM.children(this.node.pnls, '.mm-panel')[0];
     }
     //	Only once
-    if ($wrpr.children('.mm-panel__noresultsmsg').length) {
+    if (Mmenu.DOM.children(wrapper, '.mm-panel__noresultsmsg').length) {
         return;
     }
     //	Add no-results message
-    var $lst = $wrpr.children('.mm-listview').first(), $msg = Mmenu.$('<div class="mm-panel__noresultsmsg mm-hidden" />')
-        .append(this.i18n(opts.noResults));
-    if ($lst.length) {
-        $msg.insertAfter($lst);
-    }
-    else {
-        $msg.prependTo($wrpr);
-    }
+    var message = Mmenu.DOM.create('div.mm-panel__noresultsmsg.mm-hidden');
+    message.innerHTML = this.i18n(opts.noResults);
+    wrapper.prepend(message);
 };
 Mmenu.prototype.search = function ($inpt, query) {
     var _this = this;
@@ -3626,16 +3686,18 @@ Mmenu.prototype.search = function ($inpt, query) {
     $inpt = $inpt || Mmenu.$(this.node.menu).find('.mm-searchfield').children('input').first();
     query = query || '' + $inpt.val();
     query = query.toLowerCase().trim();
-    var _anchor = 'a', _both = 'a, span';
     var data = $inpt[0].mmSearchfield;
     var $srch = $inpt.closest('.mm-searchfield'), $btns = $srch.find('.mm-btn'), $spnl = Mmenu.$(this.node.pnls).children('.mm-panel_search'), $pnls = data.$pnls, $itms = data.$itms, $dvdr = data.$dvdr, $nrsp = data.$nrsp;
     //	Reset previous results
     $itms
         .removeClass('mm-listitem_nosubitems')
+        //	TODO: dit klopt niet meer	
         .find('.mm-btn_fullwidth-search')
         .removeClass('mm-btn_fullwidth-search mm-btn_fullwidth');
     $spnl.children('.mm-listview').empty();
-    $pnls.scrollTop(0);
+    $pnls.each(function (p, panel) {
+        panel.scrollTop = 0;
+    });
     //	Search
     if (query.length) {
         //	Initially hide all listitems
@@ -3644,13 +3706,16 @@ Mmenu.prototype.search = function ($inpt, query) {
             .addClass('mm-hidden');
         //	Re-show only listitems that match
         $itms
-            .each(function (i, elem) {
-            var $item = Mmenu.$(elem), _search = _anchor;
-            if (opts.showTextItems || (opts.showSubPanels && $item.find('.mm-btn_next'))) {
-                _search = _both;
+            .each(function (i, item) {
+            var $item = Mmenu.$(item), _search = '.mm-listitem__text'; // 'a'
+            if (opts.showTextItems || (opts.showSubPanels && item.querySelector('.mm-btn_next'))) {
+                // _search = 'a, span';
             }
-            if ($item.children(_search).not('.mm-btn_next').text().toLowerCase().indexOf(query) > -1) {
-                $item.removeClass('mm-hidden');
+            else {
+                _search = 'a' + _search;
+            }
+            if (Mmenu.DOM.children(item, _search)[0].innerText.toLowerCase().indexOf(query) > -1) {
+                item.classList.remove('mm-hidden');
             }
         });
         //	Show all mached listitems in the search panel
@@ -3703,19 +3768,21 @@ Mmenu.prototype.search = function ($inpt, query) {
             //	Update parent for sub-panel
             Mmenu.$($pnls.get().reverse())
                 .each(function (p, panel) {
-                var $panel = Mmenu.$(panel), parent = panel.mmParent;
+                var parent = panel.mmParent;
                 if (parent) {
                     //	The current panel has mached listitems
                     var listitems_1 = Mmenu.DOM.find(panel, '.mm-listitem');
                     if (Mmenu.filterListItems(listitems_1).length) {
                         //	Show parent
                         if (parent.matches('.mm-hidden')) {
-                            Mmenu.$(parent)
-                                .removeClass('mm-hidden')
-                                .children('.mm-btn_next')
-                                .not('.mm-btn_fullwidth')
-                                .addClass('mm-btn_fullwidth')
-                                .addClass('mm-btn_fullwidth-search');
+                            parent.classList.remove('mm-hidden');
+                            //	TODO: dit klopt niet meer...
+                            //	Het idee was een btn tijdelijk fullwidth te laten zijn
+                            // Mmenu.$(parent)
+                            // 	.children( '.mm-btn_next' )
+                            // 	.not( '.mm-btn_fullwidth' )
+                            // 	.addClass( 'mm-btn_fullwidth' )
+                            // 	.addClass( 'mm-btn_fullwidth-search' );
                         }
                     }
                     else if (!$inpt.closest('.mm-panel').length) {
@@ -3799,7 +3866,6 @@ Mmenu.addons.sectionIndexer = function () {
         return;
     }
     this.bind('initPanels:after', function (panels) {
-        var $panels = Mmenu.$(panels);
         //	Set the panel(s)
         if (opts.addTo != 'panels') {
             //	TODO addTo kan ook een HTML element zijn?
@@ -3829,11 +3895,12 @@ Mmenu.addons.sectionIndexer = function () {
                     evnt.preventDefault();
                 }
             });
-            //	Scroll onMouseOver
-            Mmenu.$(_this.node.indx)
-                .on('mouseover.mm-sectionIndexer touchstart.mm-sectionIndexer', 'a', function (e) {
-                var letter = e.target.innerText, panel = Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
-                var $panl = Mmenu.$(_this.node.pnls).children('.mm-panel_opened'), $list = $panl.find('.mm-listview');
+            //	Scroll onMouseOver / onTouchStart
+            var mouseOverEvent = function (evnt) {
+                if (!evnt.target.matches('a')) {
+                    return;
+                }
+                var letter = evnt.target.innerText, panel = Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
                 var newTop = -1, oldTop = panel.scrollTop;
                 panel.scrollTop = 0;
                 Mmenu.DOM.find(panel, '.mm-listitem_divider')
@@ -3845,7 +3912,11 @@ Mmenu.addons.sectionIndexer = function () {
                     }
                 });
                 panel.scrollTop = newTop > -1 ? newTop : oldTop;
-            });
+            };
+            _this.node.indx.addEventListener('mouseover', mouseOverEvent);
+            if (Mmenu.support.touch) {
+                _this.node.indx.addEventListener('touchstart', mouseOverEvent);
+            }
         }
         //	Show or hide the indexer
         function update(panel) {
@@ -3925,9 +3996,9 @@ Mmenu.addons.setSelected = function () {
             //	Move up the DOM tree
             var parent = panel.mmParent;
             while (parent) {
-                Mmenu.$(parent)
-                    .not('.mm-listitem_vertical')
-                    .addClass('mm-listitem_selected-parent');
+                if (!parent.matches('.mm-listitem_vertical')) {
+                    parent.classList.add('mm-listitem_selected-parent');
+                }
                 parent = parent.closest('.mm-panel');
                 parent = parent.mmParent;
             }
@@ -4008,7 +4079,9 @@ Mmenu.addons.sidebar = function () {
             if (opts.collapsed.blockMenu &&
                 _this.opts.offCanvas &&
                 !Mmenu.DOM.children(_this.node.menu, '.mm-menu__blocker')[0]) {
-                Mmenu.$(_this.node.menu).prepend('<a class="mm-menu__blocker" href="#' + _this.node.menu.id + '" />');
+                var anchor = Mmenu.DOM.create('a.mm-menu__blocker');
+                anchor.setAttribute('href', '#' + _this.node.menu.id);
+                _this.node.menu.prepend(anchor);
             }
             if (opts.collapsed.hideNavbar) {
                 _this.node.menu.classList.add('mm-menu_hidenavbar');
@@ -4483,6 +4556,7 @@ Mmenu.wrappers.olark = function () {
 Mmenu.wrappers.turbolinks = function () {
     var classnames, html;
     Mmenu.$(document)
+        //	TODO: werkt dit met addEventListener?
         //	Store the HTML classnames onDocumentReady
         .on('turbolinks:before-visit', function () {
         html = document.documentElement;

@@ -464,7 +464,7 @@ class Mmenu {
 				//	RequestAnimationFrame would be nice here.
 				setTimeout(() => {
 					//	Callback
-					Mmenu.transitionend( Mmenu.$(panel),
+					Mmenu.transitionend( panel,
 						() => {
 							openPanelFinish();
 						}, this.conf.transitionDuration
@@ -527,19 +527,22 @@ class Mmenu {
 		});
 
 		//	Close all "horizontal" panels.
-		var $pnls = Mmenu.$(this.node.pnls).children( '.mm-panel' ),
-			$frst = ( panel ) ? Mmenu.$(panel) : $pnls.first();
+		var panels = Mmenu.DOM.children( this.node.pnls, '.mm-panel' ),
+			opened = ( panel ) ? panel : panels[ 0 ];
 
-		Mmenu.$(this.node.pnls)
-			.children( '.mm-panel' )
-			.not( $frst )
-			.removeClass( 'mm-panel_opened' )
-			.removeClass( 'mm-panel_opened-parent' )
-			.removeClass( 'mm-panel_highest' )
-			.addClass( 'mm-hidden' );
+		Mmenu.DOM.children( this.node.pnls, '.mm-panel' )
+			.forEach(( panel ) => {
+				if ( panel !== opened )
+				{
+					panel.classList.remove( 'mm-panel_opened' );
+					panel.classList.remove( 'mm-panel_opened-parent' );
+					panel.classList.remove( 'mm-panel_highest' );
+					panel.classList.add( 'mm-hidden' );
+				}
+			});
 
 		//	Open first panel.
-		this.openPanel( $frst[0], false );
+		this.openPanel( opened, false );
 
 		this.trigger( 'closeAllPanels:after' );
 	}
@@ -1013,8 +1016,7 @@ class Mmenu {
 		panel.id = id;
 		panel.classList.add( 'mm-panel', 'mm-hidden' );
 
-		var $parent = Mmenu.$(panel).parent( 'li' );
-		var parent = $parent[ 0 ];
+		var parent = [ panel.parentElement ].filter( listitem => listitem.matches( 'li' ) )[ 0 ];
 
 		if ( vertical )
 		{
@@ -1051,50 +1053,48 @@ class Mmenu {
 	) {
 		this.trigger( 'initNavbar:before', [ panel ] );
 
-		if ( Mmenu.$(panel).children( '.mm-navbar' ).length )
+		if ( Mmenu.DOM.children( panel, '.mm-navbar' ).length )
 		{
 			return;
 		}
 
 		var parent : HTMLElement = (panel as any).mmParent,
-			$navbar : JQuery = Mmenu.$( '<div class="mm-navbar" />' );
+			navbar : HTMLElement = Mmenu.DOM.create( 'div.mm-navbar' );
 
 		var title = this._getPanelTitle( panel, this.opts.navbar.title ),
 			href  = '';
 
 		if ( parent )
 		{
+
 			if ( parent.matches( '.mm-listitem_vertical' ) )
 			{
 				return;
 			}
 
+			let opener : HTMLElement;
+
 			//	Listview, the panel wrapping this panel
-			if ( parent.parentElement.matches( '.mm-listview' ) )
+			if ( parent.matches( '.mm-listitem' ) )
 			{
-				var $a = Mmenu.$(parent)
-					.children( 'a, span' )
-					.not( '.mm-btn_next' );
+				opener = Mmenu.DOM.children( parent, '.mm-listitem__text' )[ 0 ];
 			}
 
 			//	Non-listview, the first anchor in the parent panel that links to this panel
 			else
 			{
-				var $a = Mmenu.$(panel)
-					.closest( '.mm-panel' )
-					.find( 'a[href="#' + panel.id + '"]' );
+				opener = (panel.closest( '.mm-panel' ) as HTMLElement);
+				opener = Mmenu.DOM.find( opener, 'a[href="#' + panel.id + '"]' )[ 0 ];
 			}
 
-			$a = $a.first();
-			parent = $a.closest( '.mm-panel' )[0];
 
-			var id = parent.id;
-			title = this._getPanelTitle( panel, Mmenu.$('<span>' + $a.text() + '</span>').text() );
+			let id = opener.closest( '.mm-panel' ).id;
+			title = this._getPanelTitle( panel, opener.innerText );
 
 			switch ( this.opts.navbar.titleLink )
 			{
 				case 'anchor':
-					href = $a[ 0 ].getAttribute( 'href' );
+					href = opener.getAttribute( 'href' );
 					break;
 
 				case 'parent':
@@ -1102,7 +1102,10 @@ class Mmenu {
 					break;
 			}
 
-			$navbar.append( '<a class="mm-btn mm-btn_prev mm-navbar__btn" href="#' + id + '" />' );
+			let anchor = Mmenu.DOM.create( 'a.mm-btn.mm-btn_prev.mm-navbar__btn' );
+				anchor.setAttribute( 'href', '#' + id );
+
+			navbar.append( anchor );
 		}
 		else if ( !this.opts.navbar.title )
 		{
@@ -1114,8 +1117,16 @@ class Mmenu {
 			panel.classList.add( 'mm-panel_has-navbar' );
 		}
 
-		$navbar.append( '<a class="mm-navbar__title"' + ( href.length ? ' href="' + href + '"' : '' ) + '>' + title + '</a>' )
-			.prependTo( panel );
+		let anchor = Mmenu.DOM.create( 'a.mm-navbar__title' );
+			anchor.innerHTML = (title as string);
+
+		if ( href )
+		{
+			anchor.setAttribute( 'href', href );
+		}
+
+		navbar.append( anchor );
+		panel.prepend( navbar );
 
 		this.trigger( 'initNavbar:after', [ panel ] );
 	}
@@ -1131,53 +1142,70 @@ class Mmenu {
 	) {
 		this.trigger( 'initListview:before', [ panel ] );
 
-		var $panel = Mmenu.$( panel );
-
 		//	Refactor listviews classnames
 		var filter = 'ul, ol',
-			uls = Mmenu.DOM.children( panel, filter );
+			listviews = Mmenu.DOM.children( panel, filter );
 
 		if ( panel.matches( filter ) )
 		{
-			uls.unshift( panel );
+			listviews.unshift( panel );
 		}
 
-		uls.forEach(( ul ) => {
-			Mmenu.refactorClass( ul, this.conf.classNames.nolistview, 'mm-nolistview' );
+		listviews.forEach(( listview ) => {
+			Mmenu.refactorClass( listview, this.conf.classNames.nolistview, 'mm-nolistview' );
 		});
 
+
+		var listitems : HTMLElement[] = [];
 
 		//	Refactor listitems classnames
-		var $li = Mmenu.$(uls)
-			.not( '.mm-nolistview' )
-			.addClass( 'mm-listview' )
-			.children()
-			.addClass( 'mm-listitem' );
+		listviews.forEach(( listview ) => {
+			if ( !listview.matches( '.mm-nolistview' ) )
+			{
+				listview.classList.add( 'mm-listview' );
 
-		$li.each(( l, li ) => {
-			Mmenu.refactorClass( li, this.conf.classNames.selected 	, 'mm-listitem_selected' 	);
-			Mmenu.refactorClass( li, this.conf.classNames.divider 	, 'mm-listitem_divider'		);
-			Mmenu.refactorClass( li, this.conf.classNames.spacer 	, 'mm-listitem_spacer'		);
+				Mmenu.DOM.children( listview )
+					.forEach(( listitem ) => {
+						listitem.classList.add( 'mm-listitem' );
+
+						Mmenu.refactorClass( listitem, this.conf.classNames.selected 	, 'mm-listitem_selected' 	);
+						Mmenu.refactorClass( listitem, this.conf.classNames.divider 	, 'mm-listitem_divider'		);
+						Mmenu.refactorClass( listitem, this.conf.classNames.spacer 		, 'mm-listitem_spacer'		);
+
+						Mmenu.DOM.children( listitem, 'a, span' )
+							.forEach(( item ) => {
+								if ( !item.matches( '.mm-btn' ) )
+								{
+									item.classList.add( 'mm-listitem__text' );
+								}
+							});
+					});
+			}
 		});
 
-		$li.children( 'a, span' )
-			.not( '.mm-btn' )
-			.addClass( 'mm-listitem__text' );
 
 		//	Add open link to parent listitem
 		var parent : HTMLElement = (panel as any).mmParent;
 		if ( parent && parent.matches( '.mm-listitem' ) )
 		{
-			if ( !Mmenu.$(parent).children( '.mm-btn' ).length )
+			if ( !Mmenu.DOM.children( parent, '.mm-btn' ).length )
 			{
-				var $a = Mmenu.$(parent).children( 'a, span' ).first(),
-					$b = Mmenu.$( '<a class="mm-btn mm-btn_next mm-listitem__btn" href="#' + panel.id + '" />' );
 
-				$b.insertAfter( $a );
-				if ( $a.is( 'span' ) )
+				let item = Mmenu.DOM.children( parent, 'a, span' )[ 0 ];
+
+				if ( item )
 				{
-					$b.addClass( 'mm-listitem__text' ).html( $a.html() );
-					$a.remove();
+					let button = Mmenu.DOM.create( 'a.mm-btn.mm-btn_next.mm-listitem__btn' );
+						button.setAttribute( 'href', '#' + panel.id );
+
+					Mmenu.$(button).insertAfter( item );
+
+					if ( item.matches( 'span' ) )
+					{
+						button.classList.add( 'mm-listitem__text' );
+						button.innerHTML = item.innerHTML;
+						item.remove();
+					}
 				}
 			}
 		}
@@ -1197,20 +1225,21 @@ class Mmenu {
 		let listitems = this.node.pnls.querySelectorAll( '.mm-listitem_selected' );
 		
 		//	Deselect the listitems
-		let last = null;
+		let lastitem = null;
 		listitems.forEach(( listitem ) => {
-			last = listitem;
+			lastitem = listitem;
 			listitem.classList.remove( 'mm-listitem_selected' );
 		});
-		if ( last )
+
+		if ( lastitem )
 		{
-			last.classList.add( 'mm-listitem_selected' );
+			lastitem.classList.add( 'mm-listitem_selected' );
 		}
 
 		//	Find the current opened panel
-		let current = ( last ) 
-			? last.closest( '.mm-panel' )
-			: Mmenu.$(this.node.pnls).children( '.mm-panel' )[ 0 ];
+		let current = ( lastitem ) 
+			? lastitem.closest( '.mm-panel' )
+			: Mmenu.DOM.children( this.node.pnls, '.mm-panel' )[ 0 ];
 
 		//	Open the current opened panel
 		this.openPanel( current, false );
@@ -1226,12 +1255,12 @@ class Mmenu {
 	{
 		this.trigger( 'initAnchors:before' );
 
-
 		Mmenu.$('body')
 			.on( 'click.mm',
 				'a[href]',
 				( evnt ) => {
 					var target = evnt.currentTarget;
+
 					var href = target.getAttribute( 'href' );
 
 					var args : mmClickArguments = {
@@ -1300,6 +1329,7 @@ class Mmenu {
 	}
 
 
+//	TODO: interface that tells what will be returned based on input
 	/**
 	 * Get the translation for a text.
 	 *
@@ -1313,6 +1343,7 @@ class Mmenu {
 	}
 
 
+//	TODO: interface that tells what will be returned based on input
 	/**
 	 * get or set a translated / translatable text.
 	 *
@@ -1356,7 +1387,6 @@ class Mmenu {
 			}
 		};
 	})();
-
 
 	/**
 	 * Find the title for a panel.
@@ -1516,6 +1546,29 @@ class Mmenu {
 			return filter
 				? parents.filter( parent => parent.matches( filter ) )
 				: parents;
+		},
+
+		/**
+		 * Get an element offset relative to the document.
+		 *
+		 * @param 	{HTMLElement}	 element 			Element to start measuring from.
+		 * @param 	{string}	 	[direction=top] 	Offset top or left.
+		 * @return	{number}							The element offset relative to the document.
+		 */
+		offset: (
+			element 	 : HTMLElement,
+			direction	?: string
+		) : number => {
+
+			direction = ( direction === 'left' ) ? 'offsetLeft' : 'offsetTop';
+
+			var offset = 0;
+			while ( element )
+			{
+				offset += element[ direction ];
+				element = (element.offsetParent as HTMLElement);
+			}
+			return offset;
 		}
 	}
 
@@ -1599,18 +1652,18 @@ class Mmenu {
 	 * @param {number}		duration	The duration of the animation (for the fallback).
 	 */
 	static transitionend( 
-		$element 	: JQuery, 
+		element 	: HTMLElement,
 		func 		: Function,
 		duration	: number
 	) {
 		var guid = Mmenu.getUniqueId();
 
 		var _ended = false,
-			_fn = function( e )
+			_fn = function( evnt )
 			{
-				if ( typeof e !== 'undefined' )
+				if ( typeof evnt !== 'undefined' )
 				{
-					if ( e.target != $element[ 0 ] )
+					if ( evnt.target !== element )
 					{
 						return;
 					}
@@ -1618,15 +1671,15 @@ class Mmenu {
 
 				if ( !_ended )
 				{
-					$element.off( 	    'transitionend.' + guid );
-					$element.off( 'webkitTransitionEnd.' + guid );
-					func.call( $element[ 0 ] );
+					element.removeEventListener( 	   'transitionend', _fn );
+					element.removeEventListener( 'webkitTransitionEnd', _fn );
+					func.call( element );
 				}
 				_ended = true;
 			};
 
-		$element.on( 	   'transitionend.' + guid, _fn );
-		$element.on( 'webkitTransitionEnd.' + guid, _fn );
+		element.addEventListener( 	    'transitionend', _fn );
+		element.addEventListener( 'webkitTransitionEnd', _fn );
 		setTimeout( _fn, duration * 1.1 );
 	}
 

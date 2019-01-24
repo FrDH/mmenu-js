@@ -85,7 +85,7 @@ Mmenu.addons.offCanvas = function () {
                     var api = menu.mmenu;
                     if (api && api.close) {
                         api.close();
-                        Mmenu.transitionend(Mmenu.$(menu), function () {
+                        Mmenu.transitionend(menu, function () {
                             _this.open();
                         }, _this.conf.transitionDuration);
                         return true;
@@ -177,7 +177,7 @@ Mmenu.prototype._openSetup = function () {
 Mmenu.prototype._openFinish = function () {
     var _this = this;
     //	Callback when the page finishes opening.
-    Mmenu.transitionend(Mmenu.$(Mmenu.node.page), function () {
+    Mmenu.transitionend(Mmenu.node.page, function () {
         _this.trigger('open:finish');
     }, this.conf.transitionDuration);
     //	Opening
@@ -194,7 +194,7 @@ Mmenu.prototype.close = function () {
         return;
     }
     //	Callback when the page finishes closing.
-    Mmenu.transitionend(Mmenu.$(Mmenu.node.page), function () {
+    Mmenu.transitionend(Mmenu.node.page, function () {
         var _a;
         _this.node.menu.classList.remove('mm-menu_opened');
         var clsn = [
@@ -218,13 +218,14 @@ Mmenu.prototype.close = function () {
  * Close all other menus.
  */
 Mmenu.prototype.closeAllOthers = function () {
-    Mmenu.$('body')
-        .find('.mm-menu_offcanvas')
-        .not(this.node.menu)
-        .each(function (i, elem) {
-        var api = elem.mmenu;
-        if (api && api.close) {
-            api.close();
+    var _this = this;
+    Mmenu.DOM.find(document.body, '.mm-menu_offcanvas')
+        .forEach(function (menu) {
+        if (menu !== _this.node.menu) {
+            var api = menu.mmenu;
+            if (api && api.close) {
+                api.close();
+            }
         }
     });
 };
@@ -268,10 +269,11 @@ Mmenu.prototype._initWindow_offCanvas = function () {
     //	Prevent tabbing
     //	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
     //	In other words: The menu would move out of view.
+    //	TODO event opslaan zodat het weer verwijderd kan worden met removeListener en direct aangeroepen ipv trigger()
     Mmenu.$(window)
         .off('keydown.mm-offCanvas')
         .on('keydown.mm--offCanvas', function (e) {
-        if (Mmenu.$('html').hasClass('mm-wrapper_opened')) {
+        if (document.documentElement.matches('.mm-wrapper_opened')) {
             if (e.keyCode == 9) {
                 e.preventDefault();
                 return false;
@@ -280,16 +282,17 @@ Mmenu.prototype._initWindow_offCanvas = function () {
     });
     //	Set "page" node min-height to window height
     var oldHeight, newHeight;
+    //	TODO event opslaan zodat het weer verwijderd kan worden met removeListener en direct aangeroepen ipv trigger()
     Mmenu.$(window)
         .off('resize.mm-offCanvas')
-        .on('resize.mm-offCanvas', function (e, force) {
+        .on('resize.mm-offCanvas', function (evnt, force) {
         //	if ( Mmenu.node.page.length == 1 )
         {
-            if (force || Mmenu.$('html').hasClass('mm-wrapper_opened')) {
-                newHeight = Mmenu.$(window).height();
+            if (force || document.documentElement.matches('.mm-wrapper_opened')) {
+                newHeight = window.innerHeight;
                 if (force || newHeight != oldHeight) {
                     oldHeight = newHeight;
-                    Mmenu.$(Mmenu.node.page).css('minHeight', newHeight);
+                    Mmenu.node.page.style.minHeight = newHeight + 'px';
                 }
             }
         }
@@ -310,18 +313,19 @@ Mmenu.prototype._initBlocker = function () {
         blck.innerHTML = '<a></a>';
         Mmenu.node.blck = blck;
     }
+    document.querySelector(conf.menu.insertSelector)
+        .append(Mmenu.node.blck);
     Mmenu.$(Mmenu.node.blck)
-        .appendTo(conf.menu.insertSelector)
         .off('touchstart.mm-offCanvas touchmove.mm-offCanvas')
         .on('touchstart.mm-offCanvas touchmove.mm-offCanvas', function (evnt) {
         evnt.preventDefault();
         evnt.stopPropagation();
-        Mmenu.$(Mmenu.node.blck).trigger('mousedown.mm-offCanvas');
+        Mmenu.node.blck.dispatchEvent(new Event('mousedown'));
     })
         .off('mousedown.mm-offCanvas')
         .on('mousedown.mm-offCanvas', function (evnt) {
         evnt.preventDefault();
-        if (!document.querySelector('html').matches('.mm-wrapper_modal')) {
+        if (!document.documentElement.matches('.mm-wrapper_modal')) {
             _this.closeAllOthers();
             _this.close();
         }

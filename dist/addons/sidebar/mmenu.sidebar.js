@@ -62,7 +62,9 @@ Mmenu.addons.sidebar = function () {
             if (opts.collapsed.blockMenu &&
                 _this.opts.offCanvas &&
                 !Mmenu.DOM.children(_this.node.menu, '.mm-menu__blocker')[0]) {
-                Mmenu.$(_this.node.menu).prepend('<a class="mm-menu__blocker" href="#' + _this.node.menu.id + '" />');
+                var anchor = Mmenu.DOM.create('a.mm-menu__blocker');
+                anchor.setAttribute('href', '#' + _this.node.menu.id);
+                _this.node.menu.prepend(anchor);
             }
             if (opts.collapsed.hideNavbar) {
                 _this.node.menu.classList.add('mm-menu_hidenavbar');

@@ -91,9 +91,10 @@ Mmenu.addons.setSelected = function(
 			var parent : HTMLElement = (panel as any).mmParent;
 			while ( parent )
 			{
-				Mmenu.$(parent)
-					.not( '.mm-listitem_vertical' )
-					.addClass( 'mm-listitem_selected-parent' );
+				if ( !parent.matches( '.mm-listitem_vertical' ) )
+				{
+					parent.classList.add( 'mm-listitem_selected-parent' );
+				}
 			
 				parent = (parent.closest( '.mm-panel' ) as HTMLElement);
 				parent = (parent as any).mmParent;

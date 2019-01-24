@@ -130,7 +130,7 @@ Mmenu.addons.offCanvas = function(
 					if ( api && api.close )
 					{
 						api.close();
-						Mmenu.transitionend( Mmenu.$(menu),
+						Mmenu.transitionend( menu,
 							() => {
 								this.open();
 							}, this.conf.transitionDuration
@@ -257,7 +257,7 @@ Mmenu.prototype._openFinish = function(
 	this : Mmenu
 ) {
 	//	Callback when the page finishes opening.
-	Mmenu.transitionend( Mmenu.$(Mmenu.node.page), () => {
+	Mmenu.transitionend( Mmenu.node.page, () => {
 		this.trigger( 'open:finish' );
 	}, this.conf.transitionDuration );
 
@@ -281,7 +281,7 @@ Mmenu.prototype.close = function(
 
 
 	//	Callback when the page finishes closing.
-	Mmenu.transitionend( Mmenu.$(Mmenu.node.page), () => {
+	Mmenu.transitionend( Mmenu.node.page, () => {
 		this.node.menu.classList.remove( 'mm-menu_opened' );
 
 		var clsn = [
@@ -315,18 +315,17 @@ Mmenu.prototype.close = function(
 Mmenu.prototype.closeAllOthers = function(
 	this : Mmenu
 ) {
-	Mmenu.$('body')
-		.find( '.mm-menu_offcanvas' )
-		.not( this.node.menu )
-		.each(
-			( i, elem ) => {
-				var api : mmApi = (elem as any).mmenu;
+	Mmenu.DOM.find( document.body, '.mm-menu_offcanvas' )
+		.forEach(( menu ) => {
+			if ( menu !== this.node.menu )
+			{
+				let api : mmApi = (menu as any).mmenu;
 				if ( api && api.close )
 				{
 					api.close();
 				}
 			}
-		);
+		});
 };
 
 /**
@@ -347,7 +346,7 @@ Mmenu.prototype.setPage = function(
 	if ( !page )
 	{
 		/** Array of elements that are / could be "the page". */
-		var pages = ( typeof conf.page.selector == 'string' )
+		let pages = ( typeof conf.page.selector == 'string' )
 			? Mmenu.DOM.find( document.body, conf.page.selector )
 			: Mmenu.DOM.children( document.body, conf.page.nodetype );
 
@@ -388,11 +387,13 @@ Mmenu.prototype._initWindow_offCanvas = function(
 	//	Prevent tabbing
 	//	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
 	//	In other words: The menu would move out of view.
+
+	//	TODO event opslaan zodat het weer verwijderd kan worden met removeListener en direct aangeroepen ipv trigger()
 	Mmenu.$(window)
 		.off( 'keydown.mm-offCanvas' )
 		.on(  'keydown.mm--offCanvas',
 			( e ) => {
-				if ( Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
+				if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
 				{
 					if ( e.keyCode == 9 )
 					{
@@ -405,18 +406,20 @@ Mmenu.prototype._initWindow_offCanvas = function(
 
 	//	Set "page" node min-height to window height
 	var oldHeight, newHeight;
+
+	//	TODO event opslaan zodat het weer verwijderd kan worden met removeListener en direct aangeroepen ipv trigger()
 	Mmenu.$(window)
 		.off( 'resize.mm-offCanvas' )
-		.on( 'resize.mm-offCanvas', ( e, force ) => {
+		.on( 'resize.mm-offCanvas', ( evnt, force ) => {
 		//	if ( Mmenu.node.page.length == 1 )
 			{
-				if ( force || Mmenu.$('html').hasClass( 'mm-wrapper_opened' ) )
+				if ( force || document.documentElement.matches( '.mm-wrapper_opened' ) )
 				{
-					newHeight = Mmenu.$(window).height();
+					newHeight =  window.innerHeight;
 					if ( force || newHeight != oldHeight )
 					{
 						oldHeight = newHeight;
-						Mmenu.$(Mmenu.node.page).css( 'minHeight', newHeight );
+						Mmenu.node.page.style.minHeight = newHeight + 'px';
 					}
 				}
 			}
@@ -442,23 +445,27 @@ Mmenu.prototype._initBlocker = function(
 	if ( !Mmenu.node.blck )
 	{
 		let blck = Mmenu.DOM.create( 'div.mm-wrapper__blocker.mm-slideout' ); 
-		blck.innerHTML = '<a></a>';
+			blck.innerHTML = '<a></a>';
 
 		Mmenu.node.blck = blck;
 	}
 
+	document.querySelector( conf.menu.insertSelector )
+		.append( Mmenu.node.blck );
+
 	Mmenu.$(Mmenu.node.blck)
-		.appendTo( conf.menu.insertSelector )
 		.off( 'touchstart.mm-offCanvas touchmove.mm-offCanvas' )
 		.on( 'touchstart.mm-offCanvas touchmove.mm-offCanvas', ( evnt ) => {
 			evnt.preventDefault();
 			evnt.stopPropagation();
-			Mmenu.$(Mmenu.node.blck).trigger( 'mousedown.mm-offCanvas' );
+
+			Mmenu.node.blck.dispatchEvent( new Event( 'mousedown' ) );
 		})
 		.off( 'mousedown.mm-offCanvas' )
 		.on( 'mousedown.mm-offCanvas', ( evnt ) => {
 			evnt.preventDefault();
-			if ( !document.querySelector( 'html' ).matches( '.mm-wrapper_modal' ) )
+
+			if ( !document.documentElement.matches( '.mm-wrapper_modal' ) )
 			{
 				this.closeAllOthers();
 				this.close();

@@ -171,7 +171,7 @@ var Mmenu = /** @class */ (function () {
                 //	RequestAnimationFrame would be nice here.
                 setTimeout(function () {
                     //	Callback
-                    Mmenu.transitionend(Mmenu.$(panel), function () {
+                    Mmenu.transitionend(panel, function () {
                         openPanelFinish();
                     }, _this.conf.transitionDuration);
                     openPanelStart();
@@ -213,16 +213,18 @@ var Mmenu = /** @class */ (function () {
             listitem.classList.remove('mm-listitem_selected', 'mm-listitem_opened');
         });
         //	Close all "horizontal" panels.
-        var $pnls = Mmenu.$(this.node.pnls).children('.mm-panel'), $frst = (panel) ? Mmenu.$(panel) : $pnls.first();
-        Mmenu.$(this.node.pnls)
-            .children('.mm-panel')
-            .not($frst)
-            .removeClass('mm-panel_opened')
-            .removeClass('mm-panel_opened-parent')
-            .removeClass('mm-panel_highest')
-            .addClass('mm-hidden');
+        var panels = Mmenu.DOM.children(this.node.pnls, '.mm-panel'), opened = (panel) ? panel : panels[0];
+        Mmenu.DOM.children(this.node.pnls, '.mm-panel')
+            .forEach(function (panel) {
+            if (panel !== opened) {
+                panel.classList.remove('mm-panel_opened');
+                panel.classList.remove('mm-panel_opened-parent');
+                panel.classList.remove('mm-panel_highest');
+                panel.classList.add('mm-hidden');
+            }
+        });
         //	Open first panel.
-        this.openPanel($frst[0], false);
+        this.openPanel(opened, false);
         this.trigger('closeAllPanels:after');
     };
     /**
@@ -549,8 +551,7 @@ var Mmenu = /** @class */ (function () {
         }
         panel.id = id;
         panel.classList.add('mm-panel', 'mm-hidden');
-        var $parent = Mmenu.$(panel).parent('li');
-        var parent = $parent[0];
+        var parent = [panel.parentElement].filter(function (listitem) { return listitem.matches('li'); })[0];
         if (vertical) {
             if (parent) {
                 parent.classList.add('mm-listitem_vertical');
@@ -574,40 +575,38 @@ var Mmenu = /** @class */ (function () {
      */
     Mmenu.prototype._initNavbar = function (panel) {
         this.trigger('initNavbar:before', [panel]);
-        if (Mmenu.$(panel).children('.mm-navbar').length) {
+        if (Mmenu.DOM.children(panel, '.mm-navbar').length) {
             return;
         }
-        var parent = panel.mmParent, $navbar = Mmenu.$('<div class="mm-navbar" />');
+        var parent = panel.mmParent, navbar = Mmenu.DOM.create('div.mm-navbar');
         var title = this._getPanelTitle(panel, this.opts.navbar.title), href = '';
         if (parent) {
             if (parent.matches('.mm-listitem_vertical')) {
                 return;
             }
+            var opener_1;
             //	Listview, the panel wrapping this panel
-            if (parent.parentElement.matches('.mm-listview')) {
-                var $a = Mmenu.$(parent)
-                    .children('a, span')
-                    .not('.mm-btn_next');
+            if (parent.matches('.mm-listitem')) {
+                opener_1 = Mmenu.DOM.children(parent, '.mm-listitem__text')[0];
             }
             //	Non-listview, the first anchor in the parent panel that links to this panel
             else {
-                var $a = Mmenu.$(panel)
-                    .closest('.mm-panel')
-                    .find('a[href="#' + panel.id + '"]');
+                opener_1 = panel.closest('.mm-panel');
+                opener_1 = Mmenu.DOM.find(opener_1, 'a[href="#' + panel.id + '"]')[0];
             }
-            $a = $a.first();
-            parent = $a.closest('.mm-panel')[0];
-            var id = parent.id;
-            title = this._getPanelTitle(panel, Mmenu.$('<span>' + $a.text() + '</span>').text());
+            var id = opener_1.closest('.mm-panel').id;
+            title = this._getPanelTitle(panel, opener_1.innerText);
             switch (this.opts.navbar.titleLink) {
                 case 'anchor':
-                    href = $a[0].getAttribute('href');
+                    href = opener_1.getAttribute('href');
                     break;
                 case 'parent':
                     href = '#' + id;
                     break;
             }
-            $navbar.append('<a class="mm-btn mm-btn_prev mm-navbar__btn" href="#' + id + '" />');
+            var anchor_1 = Mmenu.DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
+            anchor_1.setAttribute('href', '#' + id);
+            navbar.append(anchor_1);
         }
         else if (!this.opts.navbar.title) {
             return;
@@ -615,8 +614,13 @@ var Mmenu = /** @class */ (function () {
         if (this.opts.navbar.add) {
             panel.classList.add('mm-panel_has-navbar');
         }
-        $navbar.append('<a class="mm-navbar__title"' + (href.length ? ' href="' + href + '"' : '') + '>' + title + '</a>')
-            .prependTo(panel);
+        var anchor = Mmenu.DOM.create('a.mm-navbar__title');
+        anchor.innerHTML = title;
+        if (href) {
+            anchor.setAttribute('href', href);
+        }
+        navbar.append(anchor);
+        panel.prepend(navbar);
         this.trigger('initNavbar:after', [panel]);
     };
     /**
@@ -627,38 +631,48 @@ var Mmenu = /** @class */ (function () {
     Mmenu.prototype._initListview = function (panel) {
         var _this = this;
         this.trigger('initListview:before', [panel]);
-        var $panel = Mmenu.$(panel);
         //	Refactor listviews classnames
-        var filter = 'ul, ol', uls = Mmenu.DOM.children(panel, filter);
+        var filter = 'ul, ol', listviews = Mmenu.DOM.children(panel, filter);
         if (panel.matches(filter)) {
-            uls.unshift(panel);
+            listviews.unshift(panel);
         }
-        uls.forEach(function (ul) {
-            Mmenu.refactorClass(ul, _this.conf.classNames.nolistview, 'mm-nolistview');
+        listviews.forEach(function (listview) {
+            Mmenu.refactorClass(listview, _this.conf.classNames.nolistview, 'mm-nolistview');
         });
+        var listitems = [];
         //	Refactor listitems classnames
-        var $li = Mmenu.$(uls)
-            .not('.mm-nolistview')
-            .addClass('mm-listview')
-            .children()
-            .addClass('mm-listitem');
-        $li.each(function (l, li) {
-            Mmenu.refactorClass(li, _this.conf.classNames.selected, 'mm-listitem_selected');
-            Mmenu.refactorClass(li, _this.conf.classNames.divider, 'mm-listitem_divider');
-            Mmenu.refactorClass(li, _this.conf.classNames.spacer, 'mm-listitem_spacer');
+        listviews.forEach(function (listview) {
+            if (!listview.matches('.mm-nolistview')) {
+                listview.classList.add('mm-listview');
+                Mmenu.DOM.children(listview)
+                    .forEach(function (listitem) {
+                    listitem.classList.add('mm-listitem');
+                    Mmenu.refactorClass(listitem, _this.conf.classNames.selected, 'mm-listitem_selected');
+                    Mmenu.refactorClass(listitem, _this.conf.classNames.divider, 'mm-listitem_divider');
+                    Mmenu.refactorClass(listitem, _this.conf.classNames.spacer, 'mm-listitem_spacer');
+                    Mmenu.DOM.children(listitem, 'a, span')
+                        .forEach(function (item) {
+                        if (!item.matches('.mm-btn')) {
+                            item.classList.add('mm-listitem__text');
+                        }
+                    });
+                });
+            }
         });
-        $li.children('a, span')
-            .not('.mm-btn')
-            .addClass('mm-listitem__text');
         //	Add open link to parent listitem
         var parent = panel.mmParent;
         if (parent && parent.matches('.mm-listitem')) {
-            if (!Mmenu.$(parent).children('.mm-btn').length) {
-                var $a = Mmenu.$(parent).children('a, span').first(), $b = Mmenu.$('<a class="mm-btn mm-btn_next mm-listitem__btn" href="#' + panel.id + '" />');
-                $b.insertAfter($a);
-                if ($a.is('span')) {
-                    $b.addClass('mm-listitem__text').html($a.html());
-                    $a.remove();
+            if (!Mmenu.DOM.children(parent, '.mm-btn').length) {
+                var item = Mmenu.DOM.children(parent, 'a, span')[0];
+                if (item) {
+                    var button = Mmenu.DOM.create('a.mm-btn.mm-btn_next.mm-listitem__btn');
+                    button.setAttribute('href', '#' + panel.id);
+                    Mmenu.$(button).insertAfter(item);
+                    if (item.matches('span')) {
+                        button.classList.add('mm-listitem__text');
+                        button.innerHTML = item.innerHTML;
+                        item.remove();
+                    }
                 }
             }
         }
@@ -672,18 +686,18 @@ var Mmenu = /** @class */ (function () {
         //	Find all selected listitems.
         var listitems = this.node.pnls.querySelectorAll('.mm-listitem_selected');
         //	Deselect the listitems
-        var last = null;
+        var lastitem = null;
         listitems.forEach(function (listitem) {
-            last = listitem;
+            lastitem = listitem;
             listitem.classList.remove('mm-listitem_selected');
         });
-        if (last) {
-            last.classList.add('mm-listitem_selected');
+        if (lastitem) {
+            lastitem.classList.add('mm-listitem_selected');
         }
         //	Find the current opened panel
-        var current = (last)
-            ? last.closest('.mm-panel')
-            : Mmenu.$(this.node.pnls).children('.mm-panel')[0];
+        var current = (lastitem)
+            ? lastitem.closest('.mm-panel')
+            : Mmenu.DOM.children(this.node.pnls, '.mm-panel')[0];
         //	Open the current opened panel
         this.openPanel(current, false);
         this.trigger('initOpened:after');
@@ -742,6 +756,7 @@ var Mmenu = /** @class */ (function () {
         });
         this.trigger('initAnchors:after');
     };
+    //	TODO: interface that tells what will be returned based on input
     /**
      * Get the translation for a text.
      *
@@ -864,23 +879,23 @@ var Mmenu = /** @class */ (function () {
      * @param {function}	func		Function to invoke.
      * @param {number}		duration	The duration of the animation (for the fallback).
      */
-    Mmenu.transitionend = function ($element, func, duration) {
+    Mmenu.transitionend = function (element, func, duration) {
         var guid = Mmenu.getUniqueId();
-        var _ended = false, _fn = function (e) {
-            if (typeof e !== 'undefined') {
-                if (e.target != $element[0]) {
+        var _ended = false, _fn = function (evnt) {
+            if (typeof evnt !== 'undefined') {
+                if (evnt.target !== element) {
                     return;
                 }
             }
             if (!_ended) {
-                $element.off('transitionend.' + guid);
-                $element.off('webkitTransitionEnd.' + guid);
-                func.call($element[0]);
+                element.removeEventListener('transitionend', _fn);
+                element.removeEventListener('webkitTransitionEnd', _fn);
+                func.call(element);
             }
             _ended = true;
         };
-        $element.on('transitionend.' + guid, _fn);
-        $element.on('webkitTransitionEnd.' + guid, _fn);
+        element.addEventListener('transitionend', _fn);
+        element.addEventListener('webkitTransitionEnd', _fn);
         setTimeout(_fn, duration * 1.1);
     };
     /**
@@ -970,6 +985,7 @@ var Mmenu = /** @class */ (function () {
     };
     /** Library for DOM traversal and DOM manipulations. */
     Mmenu.$ = jQuery || Zepto || cash;
+    //	TODO: interface that tells what will be returned based on input
     /**
      * get or set a translated / translatable text.
      *
@@ -1061,6 +1077,22 @@ var Mmenu = /** @class */ (function () {
             return filter
                 ? parents.filter(function (parent) { return parent.matches(filter); })
                 : parents;
+        },
+        /**
+         * Get an element offset relative to the document.
+         *
+         * @param 	{HTMLElement}	 element 			Element to start measuring from.
+         * @param 	{string}	 	[direction=top] 	Offset top or left.
+         * @return	{number}							The element offset relative to the document.
+         */
+        offset: function (element, direction) {
+            direction = (direction === 'left') ? 'offsetLeft' : 'offsetTop';
+            var offset = 0;
+            while (element) {
+                offset += element[direction];
+                element = element.offsetParent;
+            }
+            return offset;
         }
     };
     /**
@@ -1184,7 +1216,7 @@ Mmenu.addons.offCanvas = function () {
                     var api = menu.mmenu;
                     if (api && api.close) {
                         api.close();
-                        Mmenu.transitionend(Mmenu.$(menu), function () {
+                        Mmenu.transitionend(menu, function () {
                             _this.open();
                         }, _this.conf.transitionDuration);
                         return true;
@@ -1276,7 +1308,7 @@ Mmenu.prototype._openSetup = function () {
 Mmenu.prototype._openFinish = function () {
     var _this = this;
     //	Callback when the page finishes opening.
-    Mmenu.transitionend(Mmenu.$(Mmenu.node.page), function () {
+    Mmenu.transitionend(Mmenu.node.page, function () {
         _this.trigger('open:finish');
     }, this.conf.transitionDuration);
     //	Opening
@@ -1293,7 +1325,7 @@ Mmenu.prototype.close = function () {
         return;
     }
     //	Callback when the page finishes closing.
-    Mmenu.transitionend(Mmenu.$(Mmenu.node.page), function () {
+    Mmenu.transitionend(Mmenu.node.page, function () {
         var _a;
         _this.node.menu.classList.remove('mm-menu_opened');
         var clsn = [
@@ -1317,13 +1349,14 @@ Mmenu.prototype.close = function () {
  * Close all other menus.
  */
 Mmenu.prototype.closeAllOthers = function () {
-    Mmenu.$('body')
-        .find('.mm-menu_offcanvas')
-        .not(this.node.menu)
-        .each(function (i, elem) {
-        var api = elem.mmenu;
-        if (api && api.close) {
-            api.close();
+    var _this = this;
+    Mmenu.DOM.find(document.body, '.mm-menu_offcanvas')
+        .forEach(function (menu) {
+        if (menu !== _this.node.menu) {
+            var api = menu.mmenu;
+            if (api && api.close) {
+                api.close();
+            }
         }
     });
 };
@@ -1367,10 +1400,11 @@ Mmenu.prototype._initWindow_offCanvas = function () {
     //	Prevent tabbing
     //	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
     //	In other words: The menu would move out of view.
+    //	TODO event opslaan zodat het weer verwijderd kan worden met removeListener en direct aangeroepen ipv trigger()
     Mmenu.$(window)
         .off('keydown.mm-offCanvas')
         .on('keydown.mm--offCanvas', function (e) {
-        if (Mmenu.$('html').hasClass('mm-wrapper_opened')) {
+        if (document.documentElement.matches('.mm-wrapper_opened')) {
             if (e.keyCode == 9) {
                 e.preventDefault();
                 return false;
@@ -1379,16 +1413,17 @@ Mmenu.prototype._initWindow_offCanvas = function () {
     });
     //	Set "page" node min-height to window height
     var oldHeight, newHeight;
+    //	TODO event opslaan zodat het weer verwijderd kan worden met removeListener en direct aangeroepen ipv trigger()
     Mmenu.$(window)
         .off('resize.mm-offCanvas')
-        .on('resize.mm-offCanvas', function (e, force) {
+        .on('resize.mm-offCanvas', function (evnt, force) {
         //	if ( Mmenu.node.page.length == 1 )
         {
-            if (force || Mmenu.$('html').hasClass('mm-wrapper_opened')) {
-                newHeight = Mmenu.$(window).height();
+            if (force || document.documentElement.matches('.mm-wrapper_opened')) {
+                newHeight = window.innerHeight;
                 if (force || newHeight != oldHeight) {
                     oldHeight = newHeight;
-                    Mmenu.$(Mmenu.node.page).css('minHeight', newHeight);
+                    Mmenu.node.page.style.minHeight = newHeight + 'px';
                 }
             }
         }
@@ -1409,18 +1444,19 @@ Mmenu.prototype._initBlocker = function () {
         blck.innerHTML = '<a></a>';
         Mmenu.node.blck = blck;
     }
+    document.querySelector(conf.menu.insertSelector)
+        .append(Mmenu.node.blck);
     Mmenu.$(Mmenu.node.blck)
-        .appendTo(conf.menu.insertSelector)
         .off('touchstart.mm-offCanvas touchmove.mm-offCanvas')
         .on('touchstart.mm-offCanvas touchmove.mm-offCanvas', function (evnt) {
         evnt.preventDefault();
         evnt.stopPropagation();
-        Mmenu.$(Mmenu.node.blck).trigger('mousedown.mm-offCanvas');
+        Mmenu.node.blck.dispatchEvent(new Event('mousedown'));
     })
         .off('mousedown.mm-offCanvas')
         .on('mousedown.mm-offCanvas', function (evnt) {
         evnt.preventDefault();
-        if (!document.querySelector('html').matches('.mm-wrapper_modal')) {
+        if (!document.documentElement.matches('.mm-wrapper_modal')) {
             _this.closeAllOthers();
             _this.close();
         }
@@ -1612,12 +1648,12 @@ Mmenu.configs.screenReader = {
 Mmenu.addons.scrollBugFix = function () {
     var _this = this;
     //	The scrollBugFix add-on fixes a scrolling bug
-    //		1) in an off-canvas menu 
-    //		2) that -when opened- blocks the UI from interaction 
-    //		3) on touch devices
-    if (!Mmenu.support.touch || // 3
-        !this.opts.offCanvas || // 1
-        !this.opts.offCanvas.blockUI // 2
+    //		1) on touch devices
+    //		2) in an off-canvas menu 
+    //		3) that -when opened- blocks the UI from interaction 
+    if (!Mmenu.support.touch || // 1
+        !this.opts.offCanvas || // 2
+        !this.opts.offCanvas.blockUI // 3
     ) {
         return;
     }
@@ -1632,7 +1668,6 @@ Mmenu.addons.scrollBugFix = function () {
         opts = {};
     }
     //	Extend shorthand options
-    //opts = this.opts.scrollBugFix = jQuery.extend( true, {}, Mmenu.options.scrollBugFix, opts );
     this.opts.scrollBugFix = Mmenu.extend(opts, Mmenu.options.scrollBugFix);
     if (!opts.fix) {
         return;
@@ -1657,6 +1692,8 @@ Mmenu.addons.scrollBugFix = function () {
             var panel = evnt.currentTarget;
             if (document.documentElement.matches('.mm-wrapper_opened')) {
                 if (!scrolling) {
+                    //	Since we're potentially scrolling the panel in the onScroll event, 
+                    //	this little hack prevents an infinite loop.
                     scrolling = true;
                     if (panel.scrollTop === 0) {
                         panel.scrollTop = 1;
@@ -1664,6 +1701,7 @@ Mmenu.addons.scrollBugFix = function () {
                     else if (panel.scrollHeight === panel.scrollTop + panel.offsetHeight) {
                         panel.scrollTop -= 1;
                     }
+                    //	End of infinite loop preventing hack.
                     scrolling = false;
                 }
             }
@@ -1672,6 +1710,7 @@ Mmenu.addons.scrollBugFix = function () {
             .on('touchmove.mm-scrollBugFix', '.mm-panels > .mm-panel', function (evnt) {
             if (document.documentElement.matches('.mm-wrapper_opened')) {
                 var panel = evnt.currentTarget;
+                console.log(panel);
                 if (panel.scrollHeight > panel.clientHeight) {
                     evnt.stopPropagation();
                 }
@@ -1679,13 +1718,12 @@ Mmenu.addons.scrollBugFix = function () {
         });
         //	Fix issue after device rotation change
         Mmenu.$('window')
-            .off('orientationchange.mm-scrollBugFix')
-            .on('orientationchange.mm-scrollBugFix', function () {
-            Mmenu.$(_this.node.pnls)
-                .children('.mm-panel_opened')
-                .scrollTop(0)
-                .css({ '-webkit-overflow-scrolling': 'auto' })
-                .css({ '-webkit-overflow-scrolling': 'touch' });
+            .on('orientationchange.mm-scrollBugFix', function (evnt) {
+            var panel = Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
+            panel.scrollTop = 0;
+            //	Apparently, changing the overflow-scrolling property triggers some event :)
+            panel.style['-webkit-overflow-scrolling'] = 'auto';
+            panel.style['-webkit-overflow-scrolling'] = 'touch';
         });
     });
 };

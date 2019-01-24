@@ -104,17 +104,19 @@ Mmenu.addons.dropdown = function(
 			cls = obj[ 1 ];
 
 		var _scrollPos 	= dir == 'x' ? 'scrollLeft' 	: 'scrollTop',
-			_outerSize 	= dir == 'x' ? 'outerWidth' 	: 'outerHeight',
+			_outerSize 	= dir == 'x' ? 'offsetWidth' 	: 'offsetHeight',
 			_startPos 	= dir == 'x' ? 'left' 			: 'top',
 			_stopPos 	= dir == 'x' ? 'right' 			: 'bottom',
 			_size 		= dir == 'x' ? 'width' 			: 'height',
+			_winSize	= dir == 'x' ? 'innerWidth'		: 'innerHeight',
 			_maxSize 	= dir == 'x' ? 'maxWidth' 		: 'maxHeight',
 			_position 	= null;
 
-		var scrollPos 	= Mmenu.$(window)[ _scrollPos ](),
-			startPos 	= Mmenu.$(button).offset()[ _startPos ] -= scrollPos,
-			stopPos 	= startPos + Mmenu.$(button)[ _outerSize ](),
-			windowSize 	= Mmenu.$(window)[ _size ]();
+		var scrollPos 	= document.documentElement.scrollTop[ _scrollPos ],
+			startPos 	= Mmenu.DOM.offset( button, _startPos ) - scrollPos,
+			stopPos 	= startPos + button[ _outerSize ],
+			windowSize 	= window[ _winSize ];
+
 
 		var offs = conf.offset.button[ dir ] + conf.offset.viewport[ dir ];
 
@@ -191,7 +193,10 @@ Mmenu.addons.dropdown = function(
 			obj = getPosition.call( this, 'y', obj );
 			obj = getPosition.call( this, 'x', obj );
 
-		Mmenu.$(this.node.menu).css( obj[ 0 ] );
+		for ( let s in obj[ 0 ] )
+		{
+			this.node.menu[ s ] = obj[ 0 ][ s ];
+		}
 
 		if ( opts.tip )
 		{

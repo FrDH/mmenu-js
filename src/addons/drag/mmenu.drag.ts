@@ -81,8 +81,9 @@ Mmenu.addons.drag = function(
 				close_dir 	: 'left',
 				negative	: false
 			};
-			var _dimension = 'width',
-				_direction = drag.open_dir;
+			var _dimension 		= 'width',
+				_winDimension	= 'innerWidth',
+				_direction 		= drag.open_dir;
 
 			var doPanstart = function( 
 				this	: Mmenu,
@@ -95,15 +96,15 @@ Mmenu.addons.drag = function(
 			};
 			var getSlideNodes = function(
 				this : Mmenu
-			) {
-				return Mmenu.$('.mm-slideout');
+			) : HTMLElement[] {
+				return Mmenu.DOM.find( document.body, '.mm-slideout' );
 			};
 
 			var _stage 			= 0,
 				_distance 		= 0,
 				_maxDistance 	= 0;
 
-			var new_distance, drag_distance, css_value;
+			var new_distance, drag_distance;
 
 
 			//	Find menu position from Positioning extension
@@ -137,6 +138,7 @@ Mmenu.addons.drag = function(
 					drag.typeUpper	= 'Y';
 
 					_dimension 		= 'height';
+					_winDimension	= 'innerHeight';
 					break;
 			}
 
@@ -149,7 +151,7 @@ Mmenu.addons.drag = function(
 						this	: Mmenu,
 						pos 	: number
 					) {
-						if ( pos >= Mmenu.$(window)[ _dimension ]() - opts.menu.maxStartPos )
+						if ( pos >= window[ _winDimension ] - opts.menu.maxStartPos )
 						{
 							_stage = 1;
 						}
@@ -180,28 +182,28 @@ Mmenu.addons.drag = function(
 				case 'front':
 					getSlideNodes = function(
 						this : Mmenu
-					) {
-						return Mmenu.$(this.node.menu);
+					) : HTMLElement[] {
+						return [ this.node.menu ];
 					};
 					break;
 			}
 
-			var $slideOutNodes 	: JQuery,
-				$dragNode 		: JQuery = Mmenu.valueOrFn( this.node.menu, opts.menu.node, Mmenu.$(Mmenu.node.page) );
+			var slideOutNodes 	: HTMLElement[];
+			var dragNode 		: HTMLElement = Mmenu.valueOrFn( this.node.menu, opts.menu.node, Mmenu.node.page );
 
-			if ( typeof $dragNode == 'string' )
+			if ( typeof dragNode == 'string' )
 			{
-				$dragNode = Mmenu.$($dragNode);
+				dragNode = document.querySelector( dragNode );
 			}
 
 
 			//	Bind events
-			var _hammer = new Hammer( $dragNode[ 0 ], this.opts.drag.vendors.hammer );
+			var _hammer = new Hammer( dragNode, this.opts.drag.vendors.hammer );
 
 			_hammer
 				.on( 'panstart', ( evnt ) => {
 					doPanstart.call( this, evnt.center[ drag.typeLower ] );
-					$slideOutNodes = getSlideNodes.call( this );
+					slideOutNodes = getSlideNodes.call( this );
 					_direction = drag.open_dir;
 				});
 
@@ -243,8 +245,8 @@ Mmenu.addons.drag = function(
 							document.documentElement.classList.add( 'mm-wrapper_dragging' );
 
 							_maxDistance = minMax( 
-								Mmenu.$(window)[ _dimension ]() * conf.menu[ _dimension ].perc, 
-								conf.menu[ _dimension ].min, 
+								window[ _winDimension ] * conf.menu[ _dimension ].perc, 
+								conf.menu[ _dimension ].min,
 								conf.menu[ _dimension ].max
 							);
 						}
@@ -256,11 +258,11 @@ Mmenu.addons.drag = function(
 						{
 							drag_distance = -drag_distance;
 						}
-						css_value = 'translate' + drag.typeUpper + '(' + drag_distance + 'px )';
+						let css_value = 'translate' + drag.typeUpper + '(' + drag_distance + 'px )';
 
-						$slideOutNodes.css({
-							'-webkit-transform': '-webkit-' + css_value,	
-							'transform': css_value
+						slideOutNodes.forEach(( node ) => {
+							node.style[ '-webkit-transform' ] = '-webkit-' + css_value;
+							node.style[ 'transform' ] = css_value;
 						});
 					}
 				});
@@ -270,7 +272,12 @@ Mmenu.addons.drag = function(
 					if ( _stage == 2 )
 					{
 						document.documentElement.classList.remove( 'mm-wrapper_dragging' );
-						$slideOutNodes.css( 'transform', '' );
+						
+						slideOutNodes.forEach(( node ) => {
+							node.style[ '-webkit-transform' ] = '';
+							node.style[ 'transform' ] = '';
+						});
+
 						this[ _direction == drag.open_dir ? '_openFinish' : 'close' ]();
 					}
 		        	_stage = 0;

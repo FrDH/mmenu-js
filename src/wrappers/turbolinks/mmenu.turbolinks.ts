@@ -4,7 +4,7 @@ Mmenu.wrappers.turbolinks = function(
 	var classnames, html;
 
 	Mmenu.$(document)
-
+//	TODO: werkt dit met addEventListener?
 		//	Store the HTML classnames onDocumentReady
 		.on( 'turbolinks:before-visit',
 			() => {

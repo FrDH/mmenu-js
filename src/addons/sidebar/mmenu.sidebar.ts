@@ -90,7 +90,10 @@ Mmenu.addons.sidebar = function(
 				this.opts.offCanvas &&
 				!Mmenu.DOM.children( this.node.menu, '.mm-menu__blocker' )[ 0 ]
 			) {
-				Mmenu.$(this.node.menu).prepend( '<a class="mm-menu__blocker" href="#' + this.node.menu.id + '" />' );
+				let anchor = Mmenu.DOM.create( 'a.mm-menu__blocker' );
+					anchor.setAttribute( 'href', '#' + this.node.menu.id );
+				
+				this.node.menu.prepend( anchor );
 			}
 			if ( opts.collapsed.hideNavbar )
 			{

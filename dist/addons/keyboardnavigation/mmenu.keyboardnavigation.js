@@ -80,9 +80,12 @@ Mmenu.addons.keyboardNavigation = function () {
         this.bind('initOpened:after:sr-aria', function () {
             var $btns = Mmenu.$(_this.node.menu).add(Mmenu.node.blck)
                 .children('.mm-tabstart, .mm-tabend');
-            $btns.each(function (b, btn) {
-                Mmenu.sr_aria(btn, 'hidden', true);
-                Mmenu.sr_role(btn, 'presentation');
+            [_this.node.menu, Mmenu.node.blck].forEach(function (element) {
+                Mmenu.DOM.children(element, '.mm-tabstart, .mm-tabend')
+                    .forEach(function (tabber) {
+                    Mmenu.sr_aria(tabber, 'hidden', true);
+                    Mmenu.sr_role(tabber, 'presentation');
+                });
             });
         });
     }
@@ -140,7 +143,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function (enhance) {
                     case 13:
                         if (target.matches('.mm-toggle') ||
                             target.matches('.mm-check')) {
-                            Mmenu.$(target).trigger('click.mm');
+                            target.dispatchEvent(new Event('click'));
                         }
                         break;
                     //	prevent spacebar or arrows from scrolling the page
