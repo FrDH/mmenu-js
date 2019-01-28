@@ -221,6 +221,8 @@ Mmenu.prototype._openSetup = function(
 	(Mmenu.node.page as any).mmStyle = Mmenu.node.page.getAttribute( 'style' ) || '';
 
 	//	Trigger window-resize to measure height
+	//	Je kunt geen custom argumenten meegeven aan window.dispatchEvent( new Event( 'resize' ) )
+	//	Daarom de functie opslaan in een object
 	Mmenu.$(window).trigger( 'resize.mm-offCanvas', [ true ] );
 
 	var clsn = [ 'mm-wrapper_opened' ];
@@ -411,11 +413,11 @@ Mmenu.prototype._initWindow_offCanvas = function(
 	Mmenu.$(window)
 		.off( 'resize.mm-offCanvas' )
 		.on( 'resize.mm-offCanvas', ( evnt, force ) => {
-		//	if ( Mmenu.node.page.length == 1 )
+			if ( Mmenu.node.page )
 			{
 				if ( force || document.documentElement.matches( '.mm-wrapper_opened' ) )
 				{
-					newHeight =  window.innerHeight;
+					newHeight = window.innerHeight;
 					if ( force || newHeight != oldHeight )
 					{
 						oldHeight = newHeight;
@@ -437,40 +439,44 @@ Mmenu.prototype._initBlocker = function(
 
 	this.trigger( 'initBlocker:before' );
 
+
 	if ( !opts.blockUI )
 	{
 		return;
 	}
 
+
+	//	Create the blocker node.
 	if ( !Mmenu.node.blck )
 	{
 		let blck = Mmenu.DOM.create( 'div.mm-wrapper__blocker.mm-slideout' ); 
 			blck.innerHTML = '<a></a>';
 
+		//	Append the blocker node to the body.
+		document.querySelector( conf.menu.insertSelector )
+			.append( blck );
+
+		//	Store the blocker node.
 		Mmenu.node.blck = blck;
 	}
 
-	document.querySelector( conf.menu.insertSelector )
-		.append( Mmenu.node.blck );
+	//	Close the menu when 
+	//		1) clicking, 
+	//		2) touching or 
+	//		3) dragging the blocker node.
+	var closeMenu = ( evnt : Event ) => {
+		evnt.preventDefault();
+		evnt.stopPropagation();
 
-	Mmenu.$(Mmenu.node.blck)
-		.off( 'touchstart.mm-offCanvas touchmove.mm-offCanvas' )
-		.on( 'touchstart.mm-offCanvas touchmove.mm-offCanvas', ( evnt ) => {
-			evnt.preventDefault();
-			evnt.stopPropagation();
+		if ( !document.documentElement.matches( '.mm-wrapper_modal' ) )
+		{
+			this.close();
+		}
+	};
+	Mmenu.node.blck.addEventListener( 'mousedown'	, closeMenu ); // 1
+	Mmenu.node.blck.addEventListener( 'touchstart'	, closeMenu ); // 2
+	Mmenu.node.blck.addEventListener( 'touchmove'	, closeMenu ); // 3
 
-			Mmenu.node.blck.dispatchEvent( new Event( 'mousedown' ) );
-		})
-		.off( 'mousedown.mm-offCanvas' )
-		.on( 'mousedown.mm-offCanvas', ( evnt ) => {
-			evnt.preventDefault();
-
-			if ( !document.documentElement.matches( '.mm-wrapper_modal' ) )
-			{
-				this.closeAllOthers();
-				this.close();
-			}
-		});
 
 	this.trigger( 'initBlocker:after' );
 };
