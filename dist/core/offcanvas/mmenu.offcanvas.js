@@ -82,7 +82,7 @@ Mmenu.addons.offCanvas = function () {
                 //		-> Close the second menu before opening this menu
                 var menu = anchor.closest('.mm-menu');
                 if (menu) {
-                    var api = menu.mmenu;
+                    var api = menu['mmenu'];
                     if (api && api.close) {
                         api.close();
                         Mmenu.transitionend(menu, function () {
@@ -149,8 +149,10 @@ Mmenu.prototype._openSetup = function () {
     //	Close other menus
     this.closeAllOthers();
     //	Store style and position
-    Mmenu.node.page.mmStyle = Mmenu.node.page.getAttribute('style') || '';
+    Mmenu.node.page['mmStyle'] = Mmenu.node.page.getAttribute('style') || '';
     //	Trigger window-resize to measure height
+    //	Je kunt geen custom argumenten meegeven aan window.dispatchEvent( new Event( 'resize' ) )
+    //	Daarom de functie opslaan in een object
     Mmenu.$(window).trigger('resize.mm-offCanvas', [true]);
     var clsn = ['mm-wrapper_opened'];
     //	Add options
@@ -205,7 +207,7 @@ Mmenu.prototype.close = function () {
         ];
         (_a = document.querySelector('html').classList).remove.apply(_a, clsn);
         //	Restore style and position
-        Mmenu.node.page.setAttribute('style', Mmenu.node.page.mmStyle);
+        Mmenu.node.page.setAttribute('style', Mmenu.node.page['mmStyle']);
         _this.vars.opened = false;
         _this.trigger('close:finish');
     }, this.conf.transitionDuration);
@@ -222,7 +224,7 @@ Mmenu.prototype.closeAllOthers = function () {
     Mmenu.DOM.find(document.body, '.mm-menu_offcanvas')
         .forEach(function (menu) {
         if (menu !== _this.node.menu) {
-            var api = menu.mmenu;
+            var api = menu['mmenu'];
             if (api && api.close) {
                 api.close();
             }
@@ -286,8 +288,7 @@ Mmenu.prototype._initWindow_offCanvas = function () {
     Mmenu.$(window)
         .off('resize.mm-offCanvas')
         .on('resize.mm-offCanvas', function (evnt, force) {
-        //	if ( Mmenu.node.page.length == 1 )
-        {
+        if (Mmenu.node.page) {
             if (force || document.documentElement.matches('.mm-wrapper_opened')) {
                 newHeight = window.innerHeight;
                 if (force || newHeight != oldHeight) {
@@ -308,27 +309,29 @@ Mmenu.prototype._initBlocker = function () {
     if (!opts.blockUI) {
         return;
     }
+    //	Create the blocker node.
     if (!Mmenu.node.blck) {
         var blck = Mmenu.DOM.create('div.mm-wrapper__blocker.mm-slideout');
         blck.innerHTML = '<a></a>';
+        //	Append the blocker node to the body.
+        document.querySelector(conf.menu.insertSelector)
+            .append(blck);
+        //	Store the blocker node.
         Mmenu.node.blck = blck;
     }
-    document.querySelector(conf.menu.insertSelector)
-        .append(Mmenu.node.blck);
-    Mmenu.$(Mmenu.node.blck)
-        .off('touchstart.mm-offCanvas touchmove.mm-offCanvas')
-        .on('touchstart.mm-offCanvas touchmove.mm-offCanvas', function (evnt) {
+    //	Close the menu when 
+    //		1) clicking, 
+    //		2) touching or 
+    //		3) dragging the blocker node.
+    var closeMenu = function (evnt) {
         evnt.preventDefault();
         evnt.stopPropagation();
-        Mmenu.node.blck.dispatchEvent(new Event('mousedown'));
-    })
-        .off('mousedown.mm-offCanvas')
-        .on('mousedown.mm-offCanvas', function (evnt) {
-        evnt.preventDefault();
         if (!document.documentElement.matches('.mm-wrapper_modal')) {
-            _this.closeAllOthers();
             _this.close();
         }
-    });
+    };
+    Mmenu.node.blck.addEventListener('mousedown', closeMenu); // 1
+    Mmenu.node.blck.addEventListener('touchstart', closeMenu); // 2
+    Mmenu.node.blck.addEventListener('touchmove', closeMenu); // 3
     this.trigger('initBlocker:after');
 };

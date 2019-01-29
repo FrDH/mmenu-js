@@ -75,7 +75,7 @@ Mmenu.addons.iconbar = function () {
                     anchor.classList.add('mm-iconbar__tab_selected');
                 }
                 else {
-                    var parent_1 = panel.mmParent;
+                    var parent_1 = panel['mmParent'];
                     if (parent_1) {
                         selectTab.call(this, parent_1.closest('.mm-panel'));
                     }

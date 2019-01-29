@@ -119,7 +119,7 @@ Mmenu.addons.iconbar = function(
 				}
 				else
 				{
-					let parent : HTMLElement = (panel as any).mmParent;
+					let parent : HTMLElement = panel[ 'mmParent' ];
 					if ( parent )
 					{
 						selectTab.call( this, parent.closest( '.mm-panel' ) );

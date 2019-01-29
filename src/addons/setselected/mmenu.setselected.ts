@@ -88,7 +88,7 @@ Mmenu.addons.setSelected = function(
 				});
 
 			//	Move up the DOM tree
-			var parent : HTMLElement = (panel as any).mmParent;
+			var parent : HTMLElement = panel[ 'mmParent' ];
 			while ( parent )
 			{
 				if ( !parent.matches( '.mm-listitem_vertical' ) )
@@ -97,7 +97,7 @@ Mmenu.addons.setSelected = function(
 				}
 			
 				parent = (parent.closest( '.mm-panel' ) as HTMLElement);
-				parent = (parent as any).mmParent;
+				parent = parent[ 'mmParent' ];
 			}
 		});
 

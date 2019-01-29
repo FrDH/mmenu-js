@@ -204,7 +204,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 
 			if ( menu )
 			{
-				let api : mmApi = (menu as any).mmenu;
+				let api : mmApi = menu[ 'mmenu' ];
 
 				//	special case for input and textarea
 				if ( target.matches( 'input, textarea' ) )
@@ -248,7 +248,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 
 				if ( menu )
 				{
-					let api : mmApi = (menu as any).mmenu;
+					let api : mmApi = menu[ 'mmenu' ];
 
 					//	special case for input and textarea
 					if ( target.matches( 'input' ) )
@@ -267,7 +267,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 						{
 							//	close submenu with backspace
 							case 8: 
-								var parent : HTMLElement = (menu.querySelector( '.mm-panel_opened' ) as any).mmParent;
+								var parent : HTMLElement = Mmenu.DOM.find( menu, '.mm-panel_opened' )[ 0 ][ 'mmParent' ];
 								if ( parent )
 								{
 									api.openPanel( parent.closest( '.mm-panel' ) );

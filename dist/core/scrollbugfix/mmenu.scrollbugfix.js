@@ -30,48 +30,53 @@ Mmenu.addons.scrollBugFix = function () {
         Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0].scrollTop = 0;
     });
     this.bind('initMenu:after', function () {
-        //	Prevent the body from scrolling
-        Mmenu.$(document)
-            .off('touchmove.mm-scrollBugFix')
-            .on('touchmove.mm-scrollBugFix', function (evnt) {
-            if (document.documentElement.matches('.mm-wrapper_opened')) {
-                evnt.preventDefault();
-            }
-        });
-        var scrolling = false;
-        Mmenu.$('body')
-            .off('touchstart.mm-scrollBugFix')
-            .on('touchstart.mm-scrollBugFix', '.mm-panels > .mm-panel', function (evnt) {
-            var panel = evnt.currentTarget;
-            if (document.documentElement.matches('.mm-wrapper_opened')) {
-                if (!scrolling) {
-                    //	Since we're potentially scrolling the panel in the onScroll event, 
-                    //	this little hack prevents an infinite loop.
-                    scrolling = true;
-                    if (panel.scrollTop === 0) {
-                        panel.scrollTop = 1;
-                    }
-                    else if (panel.scrollHeight === panel.scrollTop + panel.offsetHeight) {
-                        panel.scrollTop -= 1;
-                    }
-                    //	End of infinite loop preventing hack.
-                    scrolling = false;
+        //	Only needs to be done once per page.
+        if (!_this.vars.scrollBugFixed) {
+            var scrolling_1 = false;
+            //	Prevent the body from scrolling.
+            document.addEventListener('touchmove', function (evnt) {
+                if (document.documentElement.matches('.mm-wrapper_opened')) {
+                    evnt.preventDefault();
                 }
-            }
-        })
-            .off('touchmove.mm-scrollBugFix')
-            .on('touchmove.mm-scrollBugFix', '.mm-panels > .mm-panel', function (evnt) {
-            if (document.documentElement.matches('.mm-wrapper_opened')) {
+            });
+            document.body.addEventListener('touchstart', function (evnt) {
                 var panel = evnt.currentTarget;
                 console.log(panel);
-                if (panel.scrollHeight > panel.clientHeight) {
-                    evnt.stopPropagation();
+                if (!panel.matches('.mm-panels > .mm-panel')) {
+                    return;
                 }
-            }
-        });
-        //	Fix issue after device rotation change
-        Mmenu.$('window')
-            .on('orientationchange.mm-scrollBugFix', function (evnt) {
+                if (document.documentElement.matches('.mm-wrapper_opened')) {
+                    if (!scrolling_1) {
+                        //	Since we're potentially scrolling the panel in the onScroll event, 
+                        //	this little hack prevents an infinite loop.
+                        scrolling_1 = true;
+                        if (panel.scrollTop === 0) {
+                            panel.scrollTop = 1;
+                        }
+                        else if (panel.scrollHeight === panel.scrollTop + panel.offsetHeight) {
+                            panel.scrollTop -= 1;
+                        }
+                        //	End of infinite loop preventing hack.
+                        scrolling_1 = false;
+                    }
+                }
+            });
+            document.body.addEventListener('touchmove', function (evnt) {
+                var panel = evnt.currentTarget;
+                console.log(panel);
+                if (!panel.matches('.mm-panels > .mm-panel')) {
+                    return;
+                }
+                if (document.documentElement.matches('.mm-wrapper_opened')) {
+                    if (panel.scrollHeight > panel.clientHeight) {
+                        evnt.stopPropagation();
+                    }
+                }
+            });
+        }
+        _this.vars.scrollBugFixed = true;
+        //	Fix issue after device rotation change.
+        window.addEventListener('orientationchange', function (evnt) {
             var panel = Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
             panel.scrollTop = 0;
             //	Apparently, changing the overflow-scrolling property triggers some event :)

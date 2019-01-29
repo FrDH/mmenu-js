@@ -55,18 +55,18 @@ Mmenu.addons.dropdown = function () {
     });
     //	Add/remove classname and style when opening/closing the menu
     this.bind('open:start', function () {
-        _this.node.menu.mmStyle = _this.node.menu.getAttribute('style');
+        _this.node.menu['mmStyle'] = _this.node.menu.getAttribute('style');
         document.documentElement.classList.add('mm-wrapper_dropdown');
     });
     this.bind('close:finish', function () {
-        _this.node.menu.setAttribute('style', _this.node.menu.mmStyle);
+        _this.node.menu.setAttribute('style', _this.node.menu['mmStyle']);
         document.documentElement.classList.remove('mm-wrapper_dropdown');
     });
     //	Update the position and sizes
     var getPosition = function (dir, obj) {
         var css = obj[0], cls = obj[1];
         var _scrollPos = dir == 'x' ? 'scrollLeft' : 'scrollTop', _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight', _startPos = dir == 'x' ? 'left' : 'top', _stopPos = dir == 'x' ? 'right' : 'bottom', _size = dir == 'x' ? 'width' : 'height', _winSize = dir == 'x' ? 'innerWidth' : 'innerHeight', _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight', _position = null;
-        var scrollPos = document.documentElement.scrollTop[_scrollPos], startPos = Mmenu.DOM.offset(button, _startPos) - scrollPos, stopPos = startPos + button[_outerSize], windowSize = window[_winSize];
+        var scrollPos = document.documentElement[_scrollPos] || document.body[_scrollPos], startPos = Mmenu.DOM.offset(button, _startPos) - scrollPos, stopPos = startPos + button[_outerSize], windowSize = window[_winSize];
         var offs = conf.offset.button[dir] + conf.offset.viewport[dir];
         //	Position set in option
         if (opts.position[dir]) {
@@ -115,7 +115,7 @@ Mmenu.addons.dropdown = function () {
         if (!this.vars.opened) {
             return;
         }
-        this.node.menu.setAttribute('style', this.node.menu.mmStyle);
+        this.node.menu.setAttribute('style', this.node.menu['mmStyle']);
         var obj = [{}, []];
         obj = getPosition.call(this, 'y', obj);
         obj = getPosition.call(this, 'x', obj);

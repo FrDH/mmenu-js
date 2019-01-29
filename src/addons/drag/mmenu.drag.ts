@@ -291,7 +291,7 @@ Mmenu.addons.drag = function(
 		this.bind( 'initPanel:after', (
 			panel : HTMLElement
 		) => {
-			var parent = (panel as any).mmParent;
+			var parent = panel[ 'mmParent '];
 
 			if ( parent )
 			{

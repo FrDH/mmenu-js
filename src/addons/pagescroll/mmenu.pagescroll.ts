@@ -27,6 +27,7 @@ Mmenu.addons.pageScroll = function(
 		{
 			//	TODO: animate in vanilla JS
 			document.documentElement.scrollTop = section.offsetTop + offset;
+			document.body.scrollTop = section.offsetTop + offset;
 			// Mmenu.$('html, body').animate({
 			// 	scrollTop: $section.offset().top + offset
 			// });
@@ -134,7 +135,7 @@ Mmenu.addons.pageScroll = function(
 		let _selected = -1;
 
 		window.addEventListener( 'scroll', ( evnt ) => {
-			var scrollTop = document.documentElement.scrollTop;
+			var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
 
 			for ( var s = 0; s < scts.length; s++ )
 			{

@@ -42,7 +42,7 @@ Mmenu.addons.columns = function () {
         this.bind('openPanel:before', function (panel) {
             var parent;
             if (panel) {
-                parent = panel.mmParent;
+                parent = panel['mmParent'];
             }
             if (!parent) {
                 return;

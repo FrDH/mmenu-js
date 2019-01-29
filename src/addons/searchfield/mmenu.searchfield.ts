@@ -344,32 +344,28 @@ Mmenu.prototype._initSearching = function(
 	var opts : mmOptionsSearchfield = this.opts.searchfield,
 		conf : mmConfigsSearchfield = this.conf.searchfield;
 
-	var data = {
-		panels 		: HTMLElement[],
-		noresults	: HTMLElement[],
-		listitems	: HTMLElement[],
-		dividers	: HTMLElement[]
-	};
+
+	var data : mmLooseObject = {};
 
 	//	In the searchpanel.
 	if ( form.closest( '.mm-panel_search' ) )
 	{
-		data.panels = Mmenu.DOM.find( this.node.pnls, '.mm-panel' );
-		data.noresults = [ form.closest( '.mm-panel' ) ];
+		data.panels 	= Mmenu.DOM.find( this.node.pnls, '.mm-panel' );
+		data.noresults 	= [ form.closest( '.mm-panel' ) ];
 	}
 
 	//	In a panel
 	else if ( form.closest( '.mm-panel' ) )
 	{
-		data.panels = [ form.closest( '.mm-panel' ) ];
-		data.noresults = data.panels;
+		data.panels 	= [ form.closest( '.mm-panel' ) ];
+		data.noresults 	= data.panels;
 	}
 
 	//	Not in a panel, global
 	else
 	{
-		data.panels = Mmenu.DOM.find( this.node.pnls, '.mm-panel' );
-		data.noresults = [ this.node.menu ];
+		data.panels 	= Mmenu.DOM.find( this.node.pnls, '.mm-panel' );
+		data.noresults 	= [ this.node.menu ];
 	}
 
 	//	Filter out vertical submenus
@@ -387,7 +383,7 @@ Mmenu.prototype._initSearching = function(
 	data.listitems  = listitems.filter( listitem => !listitem.matches( '.mm-listitem_divider' ) );
 	data.dividers	= listitems.filter( listitem => listitem.matches( '.mm-listitem_divider' ) );
 
-	(input as any).mmSearchfield = data;
+	input[ 'mmSearchfield' ] = data;
 
 
 	var searchpanel : HTMLElement = Mmenu.DOM.children( this.node.pnls, '.mm-panel_search' )[ 0 ],
@@ -514,7 +510,7 @@ Mmenu.prototype.search = function(
 	query = query.toLowerCase().trim();
 
 
-	var data  = (input as any).mmSearchfield;
+	var data  = input[ 'mmSearchfield' ];
 
 	var form 		: HTMLElement 	= (input.closest( '.mm-searchfield' ) as HTMLElement),
 		buttons 	: HTMLElement[] = Mmenu.DOM.find( (form as HTMLElement), '.mm-btn' ),
@@ -629,7 +625,7 @@ Mmenu.prototype.search = function(
 
 					Mmenu.filterListItems( listitems )
 						.forEach(( listitem ) => {
-							let child : HTMLElement = (listitem as any).mmChild;
+							let child : HTMLElement = listitem [ 'mmChild' ];
 							if ( child )
 							{
 								Mmenu.DOM.find( child, '.mm-listitem' )
@@ -644,8 +640,8 @@ Mmenu.prototype.search = function(
 
 			//	Update parent for sub-panel
 			panels.reverse()
-				.forEach(( panel ) => {
-					let parent : HTMLElement = (panel as any).mmParent;
+				.forEach(( panel, p ) => {
+					let parent : HTMLElement = panel[ 'mmParent' ];
 
 					if ( parent )
 					{
@@ -689,9 +685,8 @@ Mmenu.prototype.search = function(
 				let listitems = Mmenu.DOM.find( panel, '.mm-listitem' );
 				Mmenu.filterListItems( listitems )
 					.forEach(( listitem ) => {
-						Mmenu.$(listitem).prevAll( '.mm-listitem_divider' )
-							.first()
-							.removeClass( 'mm-hidden' );
+						Mmenu.DOM.prevAll( listitem, '.mm-listitem_divider' )[ 0 ]
+							.classList.remove( 'mm-hidden' );
 					});
 			});
 

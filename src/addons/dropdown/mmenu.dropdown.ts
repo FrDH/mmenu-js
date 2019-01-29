@@ -84,12 +84,12 @@ Mmenu.addons.dropdown = function(
 
 	//	Add/remove classname and style when opening/closing the menu
 	this.bind( 'open:start', () => {
-		(this.node.menu as any).mmStyle = this.node.menu.getAttribute( 'style' );
+		this.node.menu[ 'mmStyle' ] = this.node.menu.getAttribute( 'style' );
 		document.documentElement.classList.add( 'mm-wrapper_dropdown' );
 	});
 
 	this.bind( 'close:finish', () => {
-		this.node.menu.setAttribute( 'style', (this.node.menu as any).mmStyle );
+		this.node.menu.setAttribute( 'style', this.node.menu[ 'mmStyle' ] );
 		document.documentElement.classList.remove( 'mm-wrapper_dropdown' );
 	});
 
@@ -112,7 +112,7 @@ Mmenu.addons.dropdown = function(
 			_maxSize 	= dir == 'x' ? 'maxWidth' 		: 'maxHeight',
 			_position 	= null;
 
-		var scrollPos 	= document.documentElement.scrollTop[ _scrollPos ],
+		var scrollPos 	= document.documentElement[ _scrollPos ] || document.body[ _scrollPos ],
 			startPos 	= Mmenu.DOM.offset( button, _startPos ) - scrollPos,
 			stopPos 	= startPos + button[ _outerSize ],
 			windowSize 	= window[ _winSize ];
@@ -187,7 +187,7 @@ Mmenu.addons.dropdown = function(
 			return;
 		}
 
-		this.node.menu.setAttribute( 'style', (this.node.menu as any).mmStyle );
+		this.node.menu.setAttribute( 'style', this.node.menu[ 'mmStyle' ] );
 
 		var obj : [ mmLooseObject, string[] ] = [{}, []];
 			obj = getPosition.call( this, 'y', obj );

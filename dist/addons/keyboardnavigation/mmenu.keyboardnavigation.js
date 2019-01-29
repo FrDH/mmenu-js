@@ -31,7 +31,7 @@ Mmenu.addons.keyboardNavigation = function () {
             _this.node.menu.append(menuEnd_1);
             Mmenu.DOM.children(_this.node.menu, '.mm-navbars-top, .mm-navbars-bottom')
                 .forEach(function (navbars) {
-                navbars.querySelectorAll('a.mm-navbar__title')
+                navbars.querySelectorAll('.mm-navbar__title')
                     .forEach(function (title) {
                     title.setAttribute('tabindex', '-1');
                 });
@@ -42,44 +42,47 @@ Mmenu.addons.keyboardNavigation = function () {
             Mmenu.DOM.children(Mmenu.node.blck, 'a')[0]
                 .classList.add('mm-tabstart');
         });
-        var focs = 'input, select, textarea, button, label, a[href]';
-        function focus(panel) {
+        var focusable = 'input, select, textarea, button, label, a[href]';
+        function setFocus(panel) {
             panel = panel || Mmenu.DOM.children(this.node.pnls, '.mm-panel_opened')[0];
-            var $focs = Mmenu.$(), $navb = Mmenu.$(this.node.menu)
-                .children('.mm-navbars_top, .mm-navbars_bottom')
-                .children('.mm-navbar');
-            //	already focus in navbar
-            if ($navb.find(focs).filter(':focus').length) {
-                return;
+            var focus = null;
+            //	Focus already is on an element in a navbar in this menu.
+            var navbar = document.activeElement.closest('.mm-navbar');
+            if (navbar) {
+                if (navbar.closest('.mm-menu') == this.node.menu) {
+                    return;
+                }
             }
+            //	Set the focus to the first focusable element by default.
             if (opts.enable == 'default') {
-                //	first anchor in listview
-                $focs = Mmenu.$(panel).children('.mm-listview').find('a[href]').not('.mm-hidden');
-                //	first element in panel
-                if (!$focs.length) {
-                    $focs = Mmenu.$(panel)
-                        .find(focs)
-                        .not('.mm-hidden');
+                //	First visible anchor in a listview in the current panel.
+                focus = Mmenu.DOM.find(panel, '.mm-listview a[href]:not(.mm-hidden)')[0];
+                //	First focusable and visible element in the current panel.
+                if (!focus) {
+                    focus = Mmenu.DOM.find(panel, focusable + ':not(.mm-hidden)')[0];
                 }
-                //	first element in navbar
-                if (!$focs.length) {
-                    $focs = $navb
-                        .find(focs)
-                        .not('.mm-hidden');
+                //	First focusable and visible element in a navbar.
+                if (!focus) {
+                    var elements_1 = [];
+                    Mmenu.DOM.children(this.node.menu, '.mm-navbars_top, .mm-navbars_bottom')
+                        .forEach(function (navbar) {
+                        elements_1.push.apply(elements_1, Mmenu.DOM.find(navbar, focusable + ':not(.mm-hidden)'));
+                    });
+                    focus = elements_1[0];
                 }
             }
-            //	default
-            if (!$focs.length) {
-                $focs = Mmenu.$(this.node.menu).children('.mm-tabstart');
+            //	Default.
+            if (!focus) {
+                focus = Mmenu.DOM.children(this.node.menu, '.mm-tabstart')[0];
             }
-            $focs.first().focus();
+            if (focus) {
+                focus.focus();
+            }
         }
-        this.bind('open:finish', focus);
-        this.bind('openPanel:finish', focus);
-        //	Add screenreader / aria support
+        this.bind('open:finish', setFocus);
+        this.bind('openPanel:finish', setFocus);
+        //	Add screenreader / aria support.
         this.bind('initOpened:after:sr-aria', function () {
-            var $btns = Mmenu.$(_this.node.menu).add(Mmenu.node.blck)
-                .children('.mm-tabstart, .mm-tabend');
             [_this.node.menu, Mmenu.node.blck].forEach(function (element) {
                 Mmenu.DOM.children(element, '.mm-tabstart, .mm-tabend')
                     .forEach(function (tabber) {
@@ -111,19 +114,23 @@ Mmenu.prototype._initWindow_keyboardNavigation = function (enhance) {
             var target = evnt.target; // Typecast to any because somehow, TypeScript thinks event.target is the window.
             if (target.matches('.mm-tabend')) {
                 var next = void 0;
-                //	Jump from menu to blocker
+                //	Jump from menu to blocker.
                 if (target.parentElement.matches('.mm-menu')) {
                     if (Mmenu.node.blck) {
                         next = Mmenu.node.blck;
                     }
                 }
+                //	Jump to opened menu.
                 if (target.parentElement.matches('.mm-wrapper__blocker')) {
                     next = Mmenu.DOM.find(document.body, '.mm-menu_offcanvas.mm-menu_opened')[0];
                 }
+                //	If no available element found, stay in current element.
                 if (!next) {
                     next = target.parentElement;
                 }
-                Mmenu.DOM.children(next, '.mm-tabstart')[0].focus();
+                if (next) {
+                    Mmenu.DOM.children(next, '.mm-tabstart')[0].focus();
+                }
             }
         }
     })
@@ -133,7 +140,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function (enhance) {
         var target = evnt.target;
         var menu = target.closest('.mm-menu');
         if (menu) {
-            var api = menu.mmenu;
+            var api = menu['mmenu'];
             //	special case for input and textarea
             if (target.matches('input, textarea')) {
             }
@@ -163,10 +170,10 @@ Mmenu.prototype._initWindow_keyboardNavigation = function (enhance) {
             //	Enhanced keyboard navigation
             .off('keydown.mm-keyboardNavigation')
             .on('keydown.mm-keyboardNavigation', function (evnt) {
-            var target = evnt.target, // Typecast to any because somehow, TypeScript thinks event.target is the window.
-            menu = target.closest('.mm-menu');
+            var target = evnt.target; // Typecast to any because somehow, TypeScript thinks event.target is the window.
+            var menu = target.closest('.mm-menu');
             if (menu) {
-                var api = menu.mmenu;
+                var api = menu['mmenu'];
                 //	special case for input and textarea
                 if (target.matches('input')) {
                     switch (evnt.keyCode) {
@@ -180,7 +187,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function (enhance) {
                     switch (evnt.keyCode) {
                         //	close submenu with backspace
                         case 8:
-                            var parent = menu.querySelector('.mm-panel_opened').mmParent;
+                            var parent = Mmenu.DOM.find(menu, '.mm-panel_opened')[0]['mmParent'];
                             if (parent) {
                                 api.openPanel(parent.closest('.mm-panel'));
                             }

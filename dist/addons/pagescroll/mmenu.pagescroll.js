@@ -14,6 +14,7 @@ Mmenu.addons.pageScroll = function () {
         if (section && section.matches(':visible')) {
             //	TODO: animate in vanilla JS
             document.documentElement.scrollTop = section.offsetTop + offset;
+            document.body.scrollTop = section.offsetTop + offset;
             // Mmenu.$('html, body').animate({
             // 	scrollTop: $section.offset().top + offset
             // });
@@ -87,7 +88,7 @@ Mmenu.addons.pageScroll = function () {
         });
         var _selected_1 = -1;
         window.addEventListener('scroll', function (evnt) {
-            var scrollTop = document.documentElement.scrollTop;
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
             for (var s = 0; s < scts_1.length; s++) {
                 if (scts_1[s].offsetTop < scrollTop + conf.updateOffset) {
                     if (_selected_1 !== s) {

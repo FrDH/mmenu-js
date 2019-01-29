@@ -51,7 +51,7 @@ Mmenu.addons.counters = function(
 				return;
 			}
 
-			var parent : HTMLElement = (panel as any).mmParent;
+			var parent : HTMLElement = panel[ 'mmParent' ];
 			if ( parent )
 			{
 				//	Check if no counter already excists.
@@ -77,7 +77,7 @@ Mmenu.addons.counters = function(
 		) {
 			var panels = panel ? [ panel ] : Mmenu.DOM.children( this.node.pnls, '.mm-panel' );
 			panels.forEach(( panel ) => {
-				var parent : HTMLElement = (panel as any).mmParent;
+				var parent : HTMLElement = panel[ 'mmParent' ];
 
 				if ( !parent )
 				{

@@ -126,7 +126,7 @@ Mmenu.addons.offCanvas = function(
 				var menu = (anchor.closest( '.mm-menu' ) as HTMLElement);
 				if ( menu )
 				{
-					var api : mmApi = (menu as any).mmenu;
+					var api : mmApi = menu[ 'mmenu' ];
 					if ( api && api.close )
 					{
 						api.close();
@@ -218,7 +218,7 @@ Mmenu.prototype._openSetup = function(
 	this.closeAllOthers();
 
 	//	Store style and position
-	(Mmenu.node.page as any).mmStyle = Mmenu.node.page.getAttribute( 'style' ) || '';
+	Mmenu.node.page[ 'mmStyle' ] = Mmenu.node.page.getAttribute( 'style' ) || '';
 
 	//	Trigger window-resize to measure height
 	//	Je kunt geen custom argumenten meegeven aan window.dispatchEvent( new Event( 'resize' ) )
@@ -296,7 +296,7 @@ Mmenu.prototype.close = function(
 		document.querySelector( 'html' ).classList.remove( ...clsn )
 
 		//	Restore style and position
-		Mmenu.node.page.setAttribute( 'style', (Mmenu.node.page as any).mmStyle );
+		Mmenu.node.page.setAttribute( 'style', Mmenu.node.page[ 'mmStyle' ] );
 
 		this.vars.opened = false;
 		this.trigger( 'close:finish' );
@@ -321,7 +321,7 @@ Mmenu.prototype.closeAllOthers = function(
 		.forEach(( menu ) => {
 			if ( menu !== this.node.menu )
 			{
-				let api : mmApi = (menu as any).mmenu;
+				let api : mmApi = menu[ 'mmenu' ];
 				if ( api && api.close )
 				{
 					api.close();

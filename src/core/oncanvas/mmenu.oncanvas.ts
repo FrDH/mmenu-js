@@ -77,110 +77,6 @@ class Mmenu {
 
 	/** Library for DOM traversal and DOM manipulations. */
 	static $ : JQueryStatic = jQuery || Zepto || cash;
-// 	static $ = (() => {
-// 		class DOMTraversing {
-
-
-
-// 			//	unique elements
-// 			u( 
-// 				elements  : HTMLElement[]
-// 			) {
-// 				var unique : HTMLElement[] = [];
-// 				elements.forEach(( elem_a, a ) => {
-// 					var add;
-// 					elements.forEach(( elem_b, b ) => {
-// 						if ( a === b )
-// 						{
-// 							add = true;
-// 						} 
-// 						else if ( elem_a === elem_b )
-// 						{
-// 							add = false;
-// 						}
-// 					});
-// 					if ( add )
-// 					{
-// 						unique.push( elem_a );
-// 					}
-// 				});
-// 				return unique;
-// 			}
-
-// 			_prev(
-// 				elements  : HTMLElement[]
-// 			) {
-// 				var elems : HTMLElement[] = [];
-// 				elements.forEach(( elem ) => {
-// 					if ( elem )
-// 					{
-// 						elems.push( (elem.previousElementSibling as any) );
-// 					}
-// 				});
-// 				return elems;
-// 			}
-// 			prev(
-// 				selector ?: string
-// 			) {
-// 				this.s( this._prev( this.elems ), selector );
-// 				return this;
-// 			}
-
-// 			prevAll(
-// 				selector ?: string
-// 			) {
-// 				var elems 	 : HTMLElement[] = [],
-// 					currents : HTMLElement[] = this.elems;
-
-// 				while ( currents.length )
-// 				{
-// 					currents = this._prev( currents );
-// 					elems.push( ...currents );
-// 				}
-
-// 				this.s( elems, selector );
-// 				return this;
-// 			}
-
-// 			_next(
-// 				elements  : HTMLElement[]
-// 			) {
-// 				var elems : HTMLElement[] = [];
-// 				elements.forEach(( elem ) => {
-// 					if ( elem )
-// 					{
-// 						elems.push( (elem.nextElementSibling as any) );
-// 					}
-// 				});
-// 				return elems;
-// 			}
-// 			next(
-// 				selector ?: string
-// 			) {
-// 				this.s( this._next( this.elems ), selector );
-// 				return this;
-// 			}
-
-// 			nextAll(
-// 				selector ?: string
-// 			) {
-// 				var elems 	 : HTMLElement[] = [],
-// 					currents : HTMLElement[] = this.elems;
-
-// 				while ( currents.length )
-// 				{
-// 					currents = this._next( currents );
-// 					elems.push( ...currents );
-// 				}
-
-// 				this.s( elems, selector );
-// 				return this;
-// 			}
-// //				add() {}
-// //				first() {}
-// //				last() {}
-// //				end: function() {},
-// 		}
 
 
 	/**	Options for the menu. */
@@ -279,7 +175,7 @@ class Mmenu {
 		this.mtch 	= {};
 		this.clck 	= [];
 
-		//	Get menu node from string or HTML element.
+		//	Get menu node from string or element.
 		this.node.menu = ( typeof menu == 'string' )
 			? document.querySelector( menu )
 			: menu;
@@ -391,7 +287,7 @@ class Mmenu {
 				});
 
 			//	Open all parent panels
-			var parent : HTMLElement = (panel as any).mmParent;
+			var parent : HTMLElement = panel[ 'mmParent' ];
 			while( parent )
 			{
 				parent = (parent.closest( '.mm-panel' ) as HTMLElement);
@@ -401,7 +297,7 @@ class Mmenu {
 					{
 						parent.classList.add( 'mm-panel_opened-parent' );
 					}
-					parent = (parent as any).mmParent;
+					parent = parent[ 'mmParent' ];
 				}
 			}
 
@@ -707,7 +603,7 @@ class Mmenu {
 		});
 
 		//	Store the API in the HTML node for external usage.
-		(this.node.menu as any).mmenu = this.API;
+		this.node.menu[ 'mmenu' ] = this.API;
 	}
 
 
@@ -814,7 +710,7 @@ class Mmenu {
 			this.node.orig = this.node.menu;
 
 			//	Clone the original menu and store it.
-			(this.node.menu as any) = this.node.orig.cloneNode( true );
+			this.node.menu = (this.node.orig.cloneNode( true ) as HTMLElement);
 
 			//	Prefix all ID's in the cloned menu.
 			this.node.menu.id = 'mm-' + this.node.menu.id;
@@ -871,7 +767,7 @@ class Mmenu {
 				{
 					try
 					{
-						let panel = (this.node.menu.querySelector( href ) as HTMLElement);
+						let panel = Mmenu.DOM.find( this.node.menu, href )[ 0 ];
 						if ( panel && panel.matches( '.mm-panel' ) )
 						{
 							if ( anchor.parentElement.matches( '.mm-listitem_vertical' ) )
@@ -1033,8 +929,8 @@ class Mmenu {
 		//	Store parent/child relation
 		if ( parent )
 		{
-			(parent as any).mmChild = panel;
-			(panel as any).mmParent = parent;
+			parent[ 'mmChild' ] = panel;
+			panel[ 'mmParent' ] = parent;
 		}
 
 		this.trigger( 'initPanel:after', [ panel ] );
@@ -1058,7 +954,7 @@ class Mmenu {
 			return;
 		}
 
-		var parent : HTMLElement = (panel as any).mmParent,
+		var parent : HTMLElement = panel[ 'mmParent' ],
 			navbar : HTMLElement = Mmenu.DOM.create( 'div.mm-navbar' );
 
 		var title = this._getPanelTitle( panel, this.opts.navbar.title ),
@@ -1185,7 +1081,7 @@ class Mmenu {
 
 
 		//	Add open link to parent listitem
-		var parent : HTMLElement = (panel as any).mmParent;
+		var parent : HTMLElement = panel[ 'mmParent' ];
 		if ( parent && parent.matches( '.mm-listitem' ) )
 		{
 			if ( !Mmenu.DOM.children( parent, '.mm-btn' ).length )
@@ -1198,7 +1094,7 @@ class Mmenu {
 					let button = Mmenu.DOM.create( 'a.mm-btn.mm-btn_next.mm-listitem__btn' );
 						button.setAttribute( 'href', '#' + panel.id );
 
-					Mmenu.$(button).insertAfter( item );
+					item.parentElement.insertBefore( button, item.nextSibling );
 
 					if ( item.matches( 'span' ) )
 					{
@@ -1391,9 +1287,9 @@ class Mmenu {
 	/**
 	 * Find the title for a panel.
 	 *
-	 * @param 	{HTMLElement}		panel 		Panel to search in.
-	 * @param 	{string|Function} 	[dfault] 	Fallback/default title.
-	 * @return	{string}						The title for the panel.
+	 * @param 	{HTMLElement}			panel 		Panel to search in.
+	 * @param 	{string|Function} 		[dfault] 	Fallback/default title.
+	 * @return	{string}							The title for the panel.
 	 */
 	_getPanelTitle( 
 		panel   : HTMLElement, 
@@ -1471,6 +1367,9 @@ class Mmenu {
 
 		/**
 		 * Create an element with classname.
+		 *
+		 * @param 	{string}		selector	The nodeName and classnames for the element to create.
+		 * @return	{HTMLElement}				The created element.
 		 */
 		create: (
 			selector : string
@@ -1526,7 +1425,7 @@ class Mmenu {
 		 *
 		 * @param 	{HTMLElement} 	element Element to start searching from.
 		 * @param 	{string}		filter	The filter to match.
-		 * @return	{array}					Array of preceding elements that match the filter.
+		 * @return	{array}					Array of preceding elements that match the selector.
 		 */
 		parents: (
 			element	 : HTMLElement,
@@ -1549,10 +1448,40 @@ class Mmenu {
 		},
 
 		/**
+		 * Find all previous siblings matching the selecotr.
+		 *
+		 * @param 	{HTMLElement} 	element Element to start searching from.
+		 * @param 	{string}		filter	The filter to match.
+		 * @return	{array}					Array of previous siblings that match the selector.
+		 */
+		prevAll: (
+			element	 : HTMLElement,
+			filter  ?: string
+		) : HTMLElement[] => {
+
+			/** Array of previous siblings that match the selector. */
+			var previous : HTMLElement[] = [];
+
+			/** Current element in the loop */
+			var current = element;
+
+			while ( current )
+			{
+				current = (current.previousElementSibling as HTMLElement);
+				if ( !filter || current.matches( filter ) )
+				{
+					previous.push( current );
+				}
+			}
+
+			return previous;
+		},
+
+		/**
 		 * Get an element offset relative to the document.
 		 *
 		 * @param 	{HTMLElement}	 element 			Element to start measuring from.
-		 * @param 	{string}	 	[direction=top] 	Offset top or left.
+		 * @param 	{string}		 [direction=top] 	Offset top or left.
 		 * @return	{number}							The element offset relative to the document.
 		 */
 		offset: (
@@ -1566,7 +1495,7 @@ class Mmenu {
 			while ( element )
 			{
 				offset += element[ direction ];
-				element = (element.offsetParent as HTMLElement);
+				element = (element.offsetParent as HTMLElement) || null;
 			}
 			return offset;
 		}
@@ -1647,9 +1576,9 @@ class Mmenu {
 	/**
 	 * Set and invoke a (single) transition-end function with fallback.
 	 *
-	 * @param {JQuery} 		$element 	Scope for the function.
-	 * @param {function}	func		Function to invoke.
-	 * @param {number}		duration	The duration of the animation (for the fallback).
+	 * @param {HTMLElement} 	eelement 	Scope for the function.
+	 * @param {function}		func		Function to invoke.
+	 * @param {number}			duration	The duration of the animation (for the fallback).
 	 */
 	static transitionend( 
 		element 	: HTMLElement,
@@ -1765,7 +1694,7 @@ class Mmenu {
 		this.each(( e, element ) => {
 
 			//	Don't proceed if the element already is a mmenu.
-			if ( (element as any).mmenu )
+			if ( element[ 'mmenu' ] )
 			{
 				return;
 			}

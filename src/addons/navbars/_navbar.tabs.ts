@@ -43,7 +43,7 @@ Mmenu.addons.navbars.tabs = function(
 		}
 		else
 		{
-			var parent : HTMLElement = (panel as any).mmParent;
+			var parent : HTMLElement = panel[ 'mmParent' ];
 			if ( parent )
 			{
 				selectTab.call( this, parent.closest( '.mm-panel' ) );

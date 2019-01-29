@@ -27,7 +27,7 @@ Mmenu.addons.navbars.tabs = function (navbar) {
             anchor.classList.add('mm-navbar__tab_selected');
         }
         else {
-            var parent = panel.mmParent;
+            var parent = panel['mmParent'];
             if (parent) {
                 selectTab.call(this, parent.closest('.mm-panel'));
             }

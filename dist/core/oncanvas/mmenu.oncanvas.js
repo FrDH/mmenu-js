@@ -33,7 +33,7 @@ var Mmenu = /** @class */ (function () {
         this.hook = {};
         this.mtch = {};
         this.clck = [];
-        //	Get menu node from string or HTML element.
+        //	Get menu node from string or element.
         this.node.menu = (typeof menu == 'string')
             ? document.querySelector(menu)
             : menu;
@@ -108,14 +108,14 @@ var Mmenu = /** @class */ (function () {
                 parent.classList.remove('mm-panel_opened-parent');
             });
             //	Open all parent panels
-            var parent = panel.mmParent;
+            var parent = panel['mmParent'];
             while (parent) {
                 parent = parent.closest('.mm-panel');
                 if (parent) {
                     if (!parent.parentElement.matches('.mm-listitem_vertical')) {
                         parent.classList.add('mm-panel_opened-parent');
                     }
-                    parent = parent.mmParent;
+                    parent = parent['mmParent'];
                 }
             }
             //	Add classes for animation
@@ -329,7 +329,7 @@ var Mmenu = /** @class */ (function () {
             };
         });
         //	Store the API in the HTML node for external usage.
-        this.node.menu.mmenu = this.API;
+        this.node.menu['mmenu'] = this.API;
     };
     /**
      * Bind the hooks specified in the options.
@@ -443,7 +443,7 @@ var Mmenu = /** @class */ (function () {
                 var href = anchor.getAttribute('href');
                 if (href.length > 1 && href.slice(0, 1) == '#') {
                     try {
-                        var panel = _this.node.menu.querySelector(href);
+                        var panel = Mmenu.DOM.find(_this.node.menu, href)[0];
                         if (panel && panel.matches('.mm-panel')) {
                             if (anchor.parentElement.matches('.mm-listitem_vertical')) {
                                 _this.togglePanel(panel);
@@ -553,8 +553,8 @@ var Mmenu = /** @class */ (function () {
         }
         //	Store parent/child relation
         if (parent) {
-            parent.mmChild = panel;
-            panel.mmParent = parent;
+            parent['mmChild'] = panel;
+            panel['mmParent'] = parent;
         }
         this.trigger('initPanel:after', [panel]);
         return panel;
@@ -569,7 +569,7 @@ var Mmenu = /** @class */ (function () {
         if (Mmenu.DOM.children(panel, '.mm-navbar').length) {
             return;
         }
-        var parent = panel.mmParent, navbar = Mmenu.DOM.create('div.mm-navbar');
+        var parent = panel['mmParent'], navbar = Mmenu.DOM.create('div.mm-navbar');
         var title = this._getPanelTitle(panel, this.opts.navbar.title), href = '';
         if (parent) {
             if (parent.matches('.mm-listitem_vertical')) {
@@ -651,14 +651,14 @@ var Mmenu = /** @class */ (function () {
             }
         });
         //	Add open link to parent listitem
-        var parent = panel.mmParent;
+        var parent = panel['mmParent'];
         if (parent && parent.matches('.mm-listitem')) {
             if (!Mmenu.DOM.children(parent, '.mm-btn').length) {
                 var item = Mmenu.DOM.children(parent, 'a, span')[0];
                 if (item) {
                     var button = Mmenu.DOM.create('a.mm-btn.mm-btn_next.mm-listitem__btn');
                     button.setAttribute('href', '#' + panel.id);
-                    Mmenu.$(button).insertAfter(item);
+                    item.parentElement.insertBefore(button, item.nextSibling);
                     if (item.matches('span')) {
                         button.classList.add('mm-listitem__text');
                         button.innerHTML = item.innerHTML;
@@ -760,9 +760,9 @@ var Mmenu = /** @class */ (function () {
     /**
      * Find the title for a panel.
      *
-     * @param 	{HTMLElement}		panel 		Panel to search in.
-     * @param 	{string|Function} 	[dfault] 	Fallback/default title.
-     * @return	{string}						The title for the panel.
+     * @param 	{HTMLElement}			panel 		Panel to search in.
+     * @param 	{string|Function} 		[dfault] 	Fallback/default title.
+     * @return	{string}							The title for the panel.
      */
     Mmenu.prototype._getPanelTitle = function (panel, dfault) {
         var title;
@@ -866,9 +866,9 @@ var Mmenu = /** @class */ (function () {
     /**
      * Set and invoke a (single) transition-end function with fallback.
      *
-     * @param {JQuery} 		$element 	Scope for the function.
-     * @param {function}	func		Function to invoke.
-     * @param {number}		duration	The duration of the animation (for the fallback).
+     * @param {HTMLElement} 	eelement 	Scope for the function.
+     * @param {function}		func		Function to invoke.
+     * @param {number}			duration	The duration of the animation (for the fallback).
      */
     Mmenu.transitionend = function (element, func, duration) {
         var guid = Mmenu.getUniqueId();
@@ -1012,6 +1012,9 @@ var Mmenu = /** @class */ (function () {
     Mmenu.DOM = {
         /**
          * Create an element with classname.
+         *
+         * @param 	{string}		selector	The nodeName and classnames for the element to create.
+         * @return	{HTMLElement}				The created element.
          */
         create: function (selector) {
             var elem;
@@ -1054,7 +1057,7 @@ var Mmenu = /** @class */ (function () {
          *
          * @param 	{HTMLElement} 	element Element to start searching from.
          * @param 	{string}		filter	The filter to match.
-         * @return	{array}					Array of preceding elements that match the filter.
+         * @return	{array}					Array of preceding elements that match the selector.
          */
         parents: function (element, filter) {
             /** Array of preceding elements that match the selector. */
@@ -1070,10 +1073,30 @@ var Mmenu = /** @class */ (function () {
                 : parents;
         },
         /**
+         * Find all previous siblings matching the selecotr.
+         *
+         * @param 	{HTMLElement} 	element Element to start searching from.
+         * @param 	{string}		filter	The filter to match.
+         * @return	{array}					Array of previous siblings that match the selector.
+         */
+        prevAll: function (element, filter) {
+            /** Array of previous siblings that match the selector. */
+            var previous = [];
+            /** Current element in the loop */
+            var current = element;
+            while (current) {
+                current = current.previousElementSibling;
+                if (!filter || current.matches(filter)) {
+                    previous.push(current);
+                }
+            }
+            return previous;
+        },
+        /**
          * Get an element offset relative to the document.
          *
          * @param 	{HTMLElement}	 element 			Element to start measuring from.
-         * @param 	{string}	 	[direction=top] 	Offset top or left.
+         * @param 	{string}		 [direction=top] 	Offset top or left.
          * @return	{number}							The element offset relative to the document.
          */
         offset: function (element, direction) {
@@ -1081,7 +1104,7 @@ var Mmenu = /** @class */ (function () {
             var offset = 0;
             while (element) {
                 offset += element[direction];
-                element = element.offsetParent;
+                element = element.offsetParent || null;
             }
             return offset;
         }
@@ -1108,7 +1131,7 @@ var Mmenu = /** @class */ (function () {
         var $result = $();
         this.each(function (e, element) {
             //	Don't proceed if the element already is a mmenu.
-            if (element.mmenu) {
+            if (element['mmenu']) {
                 return;
             }
             var menu = new Mmenu(element, opts, conf), $menu = $(menu.node.menu);

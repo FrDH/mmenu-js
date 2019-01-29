@@ -114,7 +114,7 @@ Mmenu.addons.screenReader = function () {
         });
         //	Add text to the next-buttons.
         this.bind('initListview:after', function (panel) {
-            var parent = panel.mmParent;
+            var parent = panel['mmParent'];
             if (parent) {
                 var next = Mmenu.DOM.children(parent, '.mm-btn_next')[0];
                 if (next) {

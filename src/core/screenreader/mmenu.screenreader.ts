@@ -170,7 +170,7 @@ Mmenu.addons.screenReader = function(
 		this.bind( 'initListview:after', (
 			panel : HTMLElement
 		) => {
-			let parent : HTMLElement = (panel as any).mmParent;
+			let parent : HTMLElement = panel[ 'mmParent' ];
 			if ( parent )
 			{
 				let next = Mmenu.DOM.children( parent, '.mm-btn_next' )[ 0 ];

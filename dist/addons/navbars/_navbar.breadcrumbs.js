@@ -20,7 +20,7 @@ Mmenu.addons.navbars.breadcrumbs = function (navbar) {
                 }
                 first = false;
             }
-            current = current.mmParent;
+            current = current['mmParent'];
         }
         if (_this.conf.navbars.breadcrumbs.removeFirst) {
             crumbs.shift();

@@ -198,7 +198,7 @@ Mmenu.addons.drag = function () {
     //	Drag close panels
     if (opts.panels.close) {
         this.bind('initPanel:after', function (panel) {
-            var parent = panel.mmParent;
+            var parent = panel['mmParent '];
             if (parent) {
                 parent = parent.closest('.mm-panel');
                 var _hammer = new Hammer(panel, _this.opts.drag.vendors.hammer), timeout = null;

@@ -39,7 +39,7 @@ Mmenu.addons.navbars.breadcrumbs = function(
 
 				first = false;
 			}
-			current = (current as any).mmParent;
+			current = current[ 'mmParent' ];
 		}
 		if ( this.conf.navbars.breadcrumbs.removeFirst )
 		{

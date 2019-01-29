@@ -68,7 +68,7 @@ Mmenu.addons.columns = function(
 
 			if ( panel )
 			{
-				parent = (panel as any).mmParent;
+				parent = panel[ 'mmParent' ];
 			}
 
 			if ( !parent )

@@ -45,7 +45,7 @@ Mmenu.addons.fixedElements = function(
 		{
 			if ( window.getComputedStyle( document.documentElement ).overflow == 'hidden' )
 			{
-				let scrollTop = document.documentElement.scrollTop + conf.sticky.offset;
+				let scrollTop = (document.documentElement.scrollTop || document.body.scrollTop) + conf.sticky.offset;
 				stick.forEach(( element ) => {
 					element.style.top = ( parseInt( window.getComputedStyle( element ).top, 10 ) + scrollTop ) + 'px';
 				});

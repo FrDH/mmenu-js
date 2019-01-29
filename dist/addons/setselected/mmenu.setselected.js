@@ -58,13 +58,13 @@ Mmenu.addons.setSelected = function () {
                 listitem.classList.remove('mm-listitem_selected-parent');
             });
             //	Move up the DOM tree
-            var parent = panel.mmParent;
+            var parent = panel['mmParent'];
             while (parent) {
                 if (!parent.matches('.mm-listitem_vertical')) {
                     parent.classList.add('mm-listitem_selected-parent');
                 }
                 parent = parent.closest('.mm-panel');
-                parent = parent.mmParent;
+                parent = parent['mmParent'];
             }
         });
         this.bind('initMenu:after', function () {
