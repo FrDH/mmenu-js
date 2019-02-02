@@ -59,13 +59,13 @@ Mmenu.addons.dividers = function(
 					Mmenu.filterListItems( listitems )
 						.forEach(( listitem ) => {
 							let letter = Mmenu.DOM.children( listitem, '.mm-listitem__text' )[ 0 ]
-								.innerText.trim().toLowerCase()[ 0 ];
+								.textContent.trim().toLowerCase()[ 0 ];
 
 							if ( letter.length && letter != lastletter )
 							{
 								lastletter = letter;
 								let divider = Mmenu.DOM.create( 'li.mm-listitem.mm-listitem_divider' );
-									divider.innerText = letter;
+									divider.textContent = letter;
 
 								listview.insertBefore( divider, listitem );  
 							}

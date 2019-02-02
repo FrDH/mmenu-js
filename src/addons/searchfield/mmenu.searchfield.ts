@@ -329,7 +329,7 @@ Mmenu.prototype._initSearchfield = function(
 	{
 		let anchor = Mmenu.DOM.create( 'a.mm-searchfield__cancel' );
 			anchor.setAttribute( 'href', '#' );
-			anchor.innerText =  (this.i18n( 'cancel' ) as string);
+			anchor.textContent =  (this.i18n( 'cancel' ) as string);
 
 		form.append( anchor );
 	}
@@ -566,7 +566,7 @@ Mmenu.prototype.search = function(
 				_search = 'a' + _search;
 			}
 
-			if ( Mmenu.DOM.children( listitem, _search )[ 0 ].innerText.toLowerCase().indexOf( query ) > -1 )
+			if ( Mmenu.DOM.children( listitem, _search )[ 0 ].textContent.toLowerCase().indexOf( query ) > -1 )
 			{
 				listitem.classList.remove( 'mm-hidden' );
 			}

@@ -78,7 +78,7 @@ Mmenu.addons.sectionIndexer = function(
 					return;
 				}
 
-				var letter  = evnt.target.innerText,
+				var letter  = evnt.target.textContent,
 					panel 	= Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
 
 				var newTop = -1,
@@ -89,7 +89,7 @@ Mmenu.addons.sectionIndexer = function(
 					.filter( divider => !divider.matches( '.mm-hidden' ) )
 					.forEach(( divider ) => {
 						if ( newTop < 0 &&
-							letter == divider.innerText.trim().slice( 0, 1 ).toLowerCase()
+							letter == divider.textContent.trim().slice( 0, 1 ).toLowerCase()
 						) {
 							newTop = divider.offsetTop;
 						}

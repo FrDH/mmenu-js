@@ -23,15 +23,14 @@
 */
 
 
-var gulp 			= require( 'gulp' ),
-	sass 			= require( 'gulp-sass' ),
+var { src, dest, series, parallel } = require( 'gulp' );
+
+var sass 			= require( 'gulp-sass' ),
 	autoprefixer 	= require( 'gulp-autoprefixer' ),
 	cleancss		= require( 'gulp-clean-css' ),
-	uglify 			= require( 'gulp-uglify' ),
+	uglify 			= require( 'gulp-terser' ),
 	concat 			= require( 'gulp-concat' ),
-	umd				= require( 'gulp-umd' ),
 	typescript		= require( 'gulp-typescript' ),
-	merge			= require( 'merge-stream' ),
 	fs 				= require( 'fs' );
 
 
@@ -42,27 +41,12 @@ var inputDir 		= 'src',
 
 
 
-function concatUmdJS( files, name ) {
-	var stream = gulp.src( files )
-		.pipe( concat( name ) );
-
-	if ( build.umd )
-	{
-		stream = stream.pipe( umd({
-			dependencies: () => [ {
-				name 	: 'jquery',
-				global 	: 'jQuery',
-				param 	: 'jQuery'
-			} ],
-			exports: () => 'Mmenu',
-			namespace: () => 'Mmenu'
-		}));
-	}
-	return stream.pipe( gulp.dest( outputDir ) );
-}
+const concatUmdJS = ( files, name ) => {
+	
+};
 
 
-function getOption( opt ) {
+const getOption = ( opt ) => {
 	var index = process.argv.indexOf( '--' + opt );
 	if ( index > -1 )
 	{
@@ -73,7 +57,7 @@ function getOption( opt ) {
 }
 
 
-function start( callback ) {
+const start = ( cb ) => {
 
 	var o = getOption( 'o' ),
 		c = getOption( 'c' );
@@ -100,201 +84,140 @@ function start( callback ) {
 			{
 				build = require( build );
 			}
-			callback();
+			cb();
 		});
 	}
 	else
 	{
 		build = require( build );
-		callback();
+		cb();
 	}
 }
-
 
 
 
 /*
 	$ gulp
 */
+const defaultTask = ( cb ) => {
+	start( parallel( css, js ) );
+	cb();
+};
+exports.default = defaultTask;
 
-gulp.task( 'default', function() {
-	start(function() {
-		gulp.start( [ 'js', 'css' ] );
+
+/*
+	$ gulp watch
+*/
+const watchTask = ( cb ) => {
+	start(() => {
+		// watch();
+		// gulp.watch( inputDir + '/**/*.scss'		, [ 'css' ] );
+		// gulp.watch( inputDir + '/**/*.ts'		, [ 'js'  ] );
 	});
-});
-
-gulp.task( 'watch', function() {
-	start(function() {
-		gulp.watch( inputDir + '/**/*.scss'		, [ 'css' ] );
-		gulp.watch( inputDir + '/**/*.ts'		, [ 'js'  ] );
-	});
-});
-
+	cb();
+};
+exports.watch = watchTask;
 
 
 
 /*
-	$ gulp css
+	CSS tasks.
 */
 
-gulp.task( 'css', [ 'css-concat' ] );
-
-
-//	1)	Concatenate variables and mixins
-gulp.task( 'css-variables', () => {
-
-	var files  	= {
-		variables: [ 
-			inputDir + '/core/oncanvas/_variables.scss',	//	Oncanvas needs to be first
-			inputDir + '/core/**/_variables.scss',
-			inputDir + '/addons/**/_variables.scss',
-			inputDir + '/extensions/**/_variables.scss',
-			inputDir + '/wrappers/**/_variables.scss'
-		],
-		mixins: [
-			inputDir + '/core/**/_mixins.scss',
-			inputDir + '/addons/**/_mixins.scss',
-			inputDir + '/extensions/**/_mixins.scss',
-			inputDir + '/wrappers/**/_mixins.scss'
-		]
-	};
+// Concatenate variables.
+const cssVariables = () => {
+	var files  	= [
+		inputDir + '/core/oncanvas/_variables.scss',	//	Oncanvas needs to be first
+		inputDir + '/core/**/_variables.scss',			//	Core needs to be next
+		inputDir + '/addons/**/_variables.scss',
+		inputDir + '/extensions/**/_variables.scss',
+		inputDir + '/wrappers/**/_variables.scss'
+	];
 
 	if ( customDir )
 	{
-		//	With the globstar, the file does not need to excist
-		files.variables.unshift( customDir + '/**/_variables.custom.scss' );
+		//	Because of the the globstar, the file does not need to excist.
+		files.unshift( customDir + '/**/_variables.custom.scss' );
 	}
-	
-	var mixins = gulp.src( files.mixins )
-		.pipe( concat( '_mixins.scss' ) )
-		.pipe( gulp.dest( inputDir ) );
 
-	var variables = gulp.src( files.variables )
+	return src( files )
 		.pipe( concat( '_variables.scss' ) )
-		.pipe( gulp.dest( inputDir ) );
+    	.pipe( dest( inputDir ) );
+};
 
-	return merge.apply( this, [ variables, mixins ] );
-});
-
-//	2) 	Compile CSS
-gulp.task( 'css-compile', [ 'css-variables' ], () => {
-
-	var files = [	//	Without the globstar, all files would be put directly in the outputDir
-		inputDir + '/**/core/@(' 		+ build.files.core.join( '|' ) 			+ ')/*.scss',
-		inputDir + '/**/addons/@(' 		+ build.files.addons.join( '|' ) 		+ ')/*.scss',
-		inputDir + '/**/extensions/@(' 	+ build.files.extensions.join( '|' ) 	+ ')/*.scss',
-		inputDir + '/**/wrappers/@(' 	+ build.files.wrappers.join( '|' ) 		+ ')/*.scss'
+// Concatenate mixins.
+const cssMixins = () => {
+	var files = [
+		inputDir + '/core/**/_mixins.scss',
+		inputDir + '/addons/**/_mixins.scss',
+		inputDir + '/extensions/**/_mixins.scss',
+		inputDir + '/wrappers/**/_mixins.scss'
 	];
 
-	return gulp.src( files )
+	return src( files )
+		.pipe( concat( '_mixins.scss' ) )
+		.pipe( dest( inputDir ) );
+};
+
+// Compile and concatenate all SCSS files to CSS.
+const cssCompile = () => {
+	var files = [	//	Without the globstar, all files would be put directly in the outputDir
+		inputDir + '/core/oncanvas/*.scss',
+		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 			+ ')/*.scss',
+		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 		+ ')/*.scss',
+		inputDir + '/extensions/@(' + build.files.extensions.join( '|' ) 	+ ')/*.scss',
+		inputDir + '/wrappers/@(' 	+ build.files.wrappers.join( '|' ) 		+ ')/*.scss'
+	];
+
+	return src( files )
 		.pipe( sass().on( 'error', sass.logError ) )
 		.pipe( autoprefixer( [ '> 5%', 'last 5 versions' ] ) )
 		.pipe( cleancss() )
-		.pipe( gulp.dest( outputDir ) );
-});
-
-//	3) 	Concatenate CSS
-gulp.task( 'css-concat', [ 'css-compile' ], () => {
-
-	//	Core
-	var files = [
-		outputDir + '/core/oncanvas/*.css',	//	Oncanvas needs to be first
-		outputDir + '/core/**/*.css',
-	];
-
-	var core = gulp.src( files )
 		.pipe( concat( 'mmenu.css' ) )
-		.pipe( gulp.dest( outputDir ) );
+		.pipe( dest( outputDir ) );
+};
 
-	//	Add addons, extensions and wrappers
-	files.push( outputDir + '/addons/**/*.css' );
-	files.push( outputDir + '/extensions/**/*.css' );
-	files.push( outputDir + '/wrappers/**/*.css' );
-
-	var all = gulp.src( files )
-		.pipe( concat( build.name + '.css' ) )
-		.pipe( gulp.dest( outputDir ) );
-
-	return merge.apply( this, [ core, all ] );
-});
-
-
+const css = series( 
+	parallel( 
+		cssVariables,
+		cssMixins
+	),
+	cssCompile
+);
 
 
 
 /*
-	$ gulp js
+	JS tasks.
 */
 
-gulp.task( 'js', [ 'js-concat' ] );
-
-//	1) 	Compile core + add-ons
-gulp.task( 'js-compile', () => {
-
-	var files = [	//	Without the globstar, all files would be put directly in the outputDir
-		inputDir + '/**/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/*.ts',
-		inputDir + '/**/addons/@(' 		+ build.files.addons.join( '|' ) 	+ ')/*.ts',
-		inputDir + '/**/wrappers/@(' 	+ build.files.wrappers.join( '|' ) 	+ ')/*.ts'
-	];
-
-	return gulp.src( files )
-  		.pipe( typescript({
-			"target": "es5"
-  		}) )
-		// .pipe( uglify({ 
-		// 	output: {
-		// 		comments: "/^!/"
-		// 	}
-		// }) )
-		.on('error', ( err ) => { console.log( err ) } )
-		.pipe( gulp.dest( outputDir ) );
-});
-
-//	2)	Compile translations
-gulp.task( 'js-translations', [ 'js-compile' ], () => {
-
-	var streams = [];
-
-	if ( build.files.translations.length < 1 )
-	{
-		return gulp.src([]);
-	}
-
-	for ( var t = 0; t < build.files.translations.length; t++ )
-	{
-		var lang = build.files.translations[ t ];
-		var files = [
-			outputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/translations/' + lang + '.js',
-			outputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/translations/' + lang + '.js'
-		];
-
-		var stream = gulp.src( files )
-			.pipe( concat( 'mmenu.' + lang + '.js' ) )
-			.pipe( gulp.dest( outputDir + '/translations' ) );
-
-		streams.push( stream );
-	}
-
-	return merge.apply( this, streams ); 
-});
-
-//	3) 	Concatenate JS
-gulp.task( 'js-concat', [ 'js-translations' ], () => {
-
-	//	Core
+// 1) Compile and concatenate all TS files to JS.
+const jsCompile = () => {
 	var files = [
-		outputDir + '/core/oncanvas/*.js',	//	Oncanvas needs to be first
-		outputDir + '/core/**/*.js'
+		inputDir + '/core/oncanvas/*.ts',
+		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/*.ts',
+		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/translations/@(' 	+ build.files.translations.join( '|' ) 	+ ').js',
+		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/*.ts',
+		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/translations/@(' 	+ build.files.translations.join( '|' ) 	+ ').js',
+		inputDir + '/wrappers/@(' 	+ build.files.wrappers.join( '|' ) 	+ ')/*.ts'
 	];
-	var core = concatUmdJS( files, 'mmenu.js' );
 
-	//	Add addons, wrappers and translations
-	files.push( outputDir + '/addons/**/[!_]*.js' );	//	Files that are NOT prefixed with an underscore need to be added first.
-	files.push( outputDir + '/addons/**/[_]*.js' );		//	Files that ARE prefixed with an underscore can be added later.
-	files.push( outputDir + '/wrappers/**/*.js' );
-	files.push( outputDir + '/translations/**/*.js' );
+	return src( files )
+  		.pipe( typescript({
+			"target": "es6"
+  		}) )
+		.pipe( uglify({ 
+			output: {
+				comments: "/^!/"
+			}
+		}) )
+		.on( 'error', ( err ) => { console.log( err ) } )
+		.pipe( concat( build.name + '.js' ) )
+		.pipe( dest( outputDir ) );
+};
 
-	var all = concatUmdJS( files, build.name + '.js' );
+const js = series(
+	jsCompile
+);
 
-	return merge.apply( this, [ core, all ] );
-});

@@ -1,6 +1,5 @@
 {
 	"name" 	: "mmenu.all",
-	"umd"	: true,
 	"files" : {
 		"core" : [
 			"oncanvas",

@@ -31,7 +31,7 @@ Mmenu.addons.navbars.breadcrumbs = function(
 
 			if ( !current.parentElement.matches( '.mm-listitem_vertical' ) )
 			{
-				var text = Mmenu.DOM.find( current, '.mm-navbar__title' )[ 0 ].innerText;
+				var text = Mmenu.DOM.find( current, '.mm-navbar__title' )[ 0 ].textContent;
 				if ( text.length )
 				{
 					crumbs.unshift( first ? '<span>' + text + '</span>' : '<a href="#' + current.id + '">' + text + '</a>' );

@@ -28,19 +28,14 @@
 		"build": "gulp default"
 	},
 	"devDependencies": {
-		"@types/hammerjs": "*",
-		"@types/jquery": "*",
-		"@types/modernizr": "*",
-		"gulp": "*",
-		"gulp-autoprefixer": "*",
-		"gulp-clean-css": "*",
-		"gulp-concat": "*",
-		"gulp-rename": "*",
-		"gulp-sass": "*",
-		"gulp-typescript": "*",
-		"gulp-uglify": "*",
-		"gulp-umd": "*",
-		"merge-stream": "*",
-		"typescript": "*"
+		"@types/hammerjs": "^2.0.36",
+		"gulp": "^4.0.0",
+		"gulp-autoprefixer": "^6.0.0",
+		"gulp-clean-css": "^4.0.0",
+		"gulp-concat": "^2.6.1",
+		"gulp-sass": "^4.0.2",
+		"gulp-terser": "^1.1.7",
+		"gulp-typescript": "^5.0.0",
+		"typescript": "^3.3.1"
 	}
 }

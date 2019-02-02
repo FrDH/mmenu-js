@@ -76,7 +76,7 @@ class Mmenu {
 
 
 	/** Library for DOM traversal and DOM manipulations. */
-	static $ : JQueryStatic = jQuery || Zepto || cash;
+	static $ : any;
 
 
 	/**	Options for the menu. */
@@ -985,7 +985,7 @@ class Mmenu {
 
 
 			let id = opener.closest( '.mm-panel' ).id;
-			title = this._getPanelTitle( panel, opener.innerText );
+			title = this._getPanelTitle( panel, opener.textContent );
 
 			switch ( this.opts.navbar.titleLink )
 			{
@@ -1711,5 +1711,5 @@ class Mmenu {
 		return $result;
 	};
 
- })( jQuery || Zepto || cash );
+ })( jQuery );
 

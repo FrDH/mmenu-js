@@ -1,6 +1,7 @@
-//	Declare global variables jQuery alternatives
-declare var Zepto : JQueryStatic
-declare var cash  : JQueryStatic
+declare var jQuery : any
+interface JQuery {
+	[key: string] 	: any
+}
 
 
 /** An object with any value. */
