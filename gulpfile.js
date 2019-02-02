@@ -174,7 +174,7 @@ const cssCompile = () => {
 		.pipe( sass().on( 'error', sass.logError ) )
 		.pipe( autoprefixer( [ '> 5%', 'last 5 versions' ] ) )
 		.pipe( cleancss() )
-		.pipe( concat( 'mmenu.css' ) )
+		.pipe( concat( build.name + '.css' ) )
 		.pipe( dest( outputDir ) );
 };
 

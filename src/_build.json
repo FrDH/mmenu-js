@@ -1,5 +1,5 @@
 {
-	"name" 	: "mmenu.all",
+	"name" 	: "mmenu",
 	"files" : {
 		"core" : [
 			"oncanvas",

@@ -2,7 +2,7 @@
  * mmenu v8.0.0
  * @requires jQuery 1.7.0 or later
  *
- * mmenu.frebsite.nl
+ * mmenujs.com
  *	
  * Copyright (c) Fred Heusschen
  * www.frebsite.nl
