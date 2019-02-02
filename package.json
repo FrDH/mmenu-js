@@ -1,6 +1,6 @@
 {
 	"name": "jquery.mmenu",
-	"version": "7.2.2",
+	"version": "7.2.3",
 	"main": "dist/jquery.mmenu.all.js",
 	"author": "Fred Heusschen <info@frebsite.nl>",
 	"license": "CC-BY-NC-4.0",
@@ -31,7 +31,6 @@
 		"@types/hammerjs": "*",
 		"@types/jquery": "*",
 		"@types/modernizr": "*",
-		"gulp": "*",
 		"gulp-autoprefixer": "*",
 		"gulp-clean-css": "*",
 		"gulp-concat": "*",
@@ -43,6 +42,6 @@
 		"merge-stream": "*",
 		"typescript": "*"
 	},
-	"types": "./index.d.ts"
-
+	"types": "./index.d.ts",
+	"dependencies": {}
 }
