@@ -1,4 +1,4 @@
-jQuery.mmenu
+mmenu JS
 ================
 
 The best javascript plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp. It is very customizable through a wide range of options, extensions and add-ons and it will always fit your needs.
@@ -6,14 +6,11 @@ The best javascript plugin for app look-alike on- and off-canvas menus with slid
 Need help? Have a look at [the documentation](https://mmenujs.com) for demos, tutorials, documentation and support.<br />
 Working on a WordPress site? Check out [the mmenu WordPress plugin](https://mmenujs.com/wordpress-plugin).
 
-<img src="https:/mmenujs.com/img/preview-3.png" alt="jQuery mmenu" width="100%" />
+<img src="https://mmenujs.com/img/preview-3.png" alt="jQuery mmenu" width="100%" />
 
 ### Licence
-The jQuery.mmenu plugin is licensed under the [CC-BY-NC-4.0 license](http://creativecommons.org/licenses/by-nc/4.0/).<br />
+The mmenu javascript plugin is licensed under the [CC-BY-NC-4.0 license](http://creativecommons.org/licenses/by-nc/4.0/).<br />
 You can [purchase a license](https://mmenujs.com/download.html) if you want to use it in a commercial project.
-
-### Dependencies
-+ jQuery 1.7 or higher
 
 ### Learn more
 + [Tutorial](https://mmenujs.com/tutorials/off-canvas/)
@@ -21,6 +18,10 @@ You can [purchase a license](https://mmenujs.com/download.html) if you want to u
 + [Extensions](https://mmenujs.com/documentation/extensions/)
 + [Add-ons](https://mmenujs.com/documentation/addons/)
 + [API](https://mmenujs.com/documentation/core/api.html)
+
+### Browser support
+The mmenu javascript plugin uses ES6, meaning IE11 and earlier are not supported. 
+If you need support for IE11, use the legacy (jQuery) version: version 7.3.0.
 
 ### Development
 This project uses [Gulp](http://gulpjs.com/) to transpile, minify and concatenate the TS/JS and SCSS/CSS files.
