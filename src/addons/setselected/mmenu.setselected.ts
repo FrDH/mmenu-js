@@ -19,7 +19,6 @@ Mmenu.addons.setSelected = function(
 	//	Extend shorthand options
 
 
-	//opts = this.opts.setSelected = jQuery.extend( true, {}, Mmenu.options.setSelected, opts );
 	this.opts.setSelected = Mmenu.extend( opts, Mmenu.options.setSelected );
 
 

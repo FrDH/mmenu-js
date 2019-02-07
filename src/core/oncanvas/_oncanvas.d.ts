@@ -1,7 +1,5 @@
-declare var jQuery : any
-interface JQuery {
-	[key: string] 	: any
-}
+// declare var jQuery : any
+declare var Zepto : any
 
 
 /** An object with any value. */
@@ -24,19 +22,13 @@ interface mmFunctionObject {
 	[key: string] 	: Function
 }
 
-/** An object with jQuery values. */
-interface mmJqueryObject {
-	[key: string] 	: JQuery
+interface mmEventObject {
+	[key: string]	: EventListener
 }
 
 /** An object with jQuery values. */
 interface mmHtmlObject {
 	[key: string] 	: HTMLElement
-}
-
-/** Typescript bugfix */
-interface ArrayConstructor {
-    from(arrayLike: any, mapFn?, thisArg?) : any[];
 }
 
 //	TODO	add description for each method

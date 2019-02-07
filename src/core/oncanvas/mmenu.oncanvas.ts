@@ -66,8 +66,11 @@ class Mmenu {
 	/** Available wrappers for the plugin. */
 	static wrappers : mmFunctionObject	= {}
 
-	/**	Globally used HTML nodes. */
+	/**	Globally used HTMLElements. */
 	static node 	: mmHtmlObject = {}
+
+	/** Globally used EventListeners. */
+	static evnt		: mmEventObject = {}
 
 	/**	Features supported by the browser. */
 	static support 	: mmBooleanObject = {
@@ -97,7 +100,7 @@ class Mmenu {
 
 	/** Variables used for the menu. */
 	vars	: mmLooseObject
-	
+
 	/** Callback hooks used for the menu. */
 	hook	: mmLooseObject
 
@@ -107,12 +110,15 @@ class Mmenu {
 	/** Click handlers used for the menu. */
 	clck	: Function[]
 
+	/** EventListeners used for the menu. */
+	evnt	: mmEventObject;
+
 
 	/** Log deprecated warnings when using the debugger. */
 	_deprecated : Function
 
 	/** Log debug messages when using the debugger. */
-	_debug 		: Function
+	_debug : Function
 
 
 	//	screenReader add-on
@@ -905,8 +911,11 @@ class Mmenu {
 		{
 			panel.removeAttribute( 'id' );
 
-			Mmenu.$(panel).wrap( '<div />' );
-			panel = panel.parentElement;
+			let wrapper = Mmenu.DOM.create( 'div' );
+			panel.before( wrapper );
+			wrapper.append( panel );
+
+			panel = wrapper;
 		}
 
 		panel.id = id;
@@ -1151,75 +1160,80 @@ class Mmenu {
 	{
 		this.trigger( 'initAnchors:before' );
 
-		Mmenu.$('body')
-			.on( 'click.mm',
-				'a[href]',
-				( evnt ) => {
-					var target = evnt.currentTarget;
+		document.body.addEventListener( 'click', ( evnt ) => {
+			console.log( evnt.target, evnt.currentTarget );
 
-					var href = target.getAttribute( 'href' );
+			var target = (evnt.currentTarget as HTMLElement);
 
-					var args : mmClickArguments = {
-						inMenu		: target.closest( '.mm-menu' ) === this.node.menu,
-						inListview 	: target.matches( '.mm-listitem > a' ),
-						toExternal 	: target.matches( '[rel="external"]' ) || target.matches( '[target="_blank"]' )
-					};
-
-					var onClick = {
-						close 			: null,
-						setSelected 	: null,
-						preventDefault	: href.slice( 0, 1 ) == '#'
-					};
-
-
-					//	Find hooked behavior.
-					for ( var c = 0; c < this.clck.length; c++ )
-					{
-						var click = this.clck[ c ].call( this, target, args );
-						if ( click )
-						{
-							if ( Mmenu.typeof( click ) == 'boolean' )
-							{
-								evnt.preventDefault();
-								return;
-							}
-							if ( Mmenu.typeof( click ) == 'object' )
-							{
-								onClick = Mmenu.extend( click, onClick );
-							}
-						}
-					}
-
-
-					//	Default behavior for anchors in lists.
-					if ( args.inMenu && args.inListview && !args.toExternal )
-					{
-
-						//	Set selected item, Default: true
-						if ( Mmenu.valueOrFn( target, this.opts.onClick.setSelected, onClick.setSelected ) )
-						{
-							this.setSelected( target.parentElement );
-						}
-
-						//	Prevent default / don't follow link. Default: false.
-						if ( Mmenu.valueOrFn( target, this.opts.onClick.preventDefault, onClick.preventDefault ) )
-						{
-							evnt.preventDefault();
-						}
-
-						//	Close menu. Default: false
-						//		TODO: option + code should be in offcanvas add-on
-						if ( Mmenu.valueOrFn( target, this.opts.onClick.close, onClick.close ) )
-						{
-							if ( this.opts.offCanvas && typeof this.close == 'function' )
-							{
-								this.close();
-							}
-						}
-					}
-
+			if ( !target.matches( 'a[href]' ) )
+			{
+				target = (target.closest( 'a[href]' ) as HTMLElement);
+				if ( !target )
+				{
+					return;
 				}
-			);
+			}
+
+			var args : mmClickArguments = {
+				inMenu		: target.closest( '.mm-menu' ) === this.node.menu,
+				inListview 	: target.matches( '.mm-listitem > a' ),
+				toExternal 	: target.matches( '[rel="external"]' ) || target.matches( '[target="_blank"]' )
+			};
+
+			var onClick : mmOptionsOnclick = {
+				close 			: null,
+				setSelected 	: null,
+				preventDefault	: target.getAttribute( 'href' ).slice( 0, 1 ) == '#'
+			};
+
+
+			//	Find hooked behavior.
+			for ( let c = 0; c < this.clck.length; c++ )
+			{
+				let click = this.clck[ c ].call( this, target, args );
+				if ( click )
+				{
+					if ( Mmenu.typeof( click ) == 'boolean' )
+					{
+						evnt.preventDefault();
+						return;
+					}
+					if ( Mmenu.typeof( click ) == 'object' )
+					{
+						onClick = Mmenu.extend( click, onClick );
+					}
+				}
+			}
+
+
+			//	Default behavior for anchors in lists.
+			if ( args.inMenu && args.inListview && !args.toExternal )
+			{
+
+				//	Set selected item, Default: true
+				if ( Mmenu.valueOrFn( target, this.opts.onClick.setSelected, onClick.setSelected ) )
+				{
+					this.setSelected( target.parentElement );
+				}
+
+				//	Prevent default / don't follow link. Default: false.
+				if ( Mmenu.valueOrFn( target, this.opts.onClick.preventDefault, onClick.preventDefault ) )
+				{
+					evnt.preventDefault();
+				}
+
+				//	Close menu. Default: false
+				//		TODO: option + code should be in offcanvas add-on
+				if ( Mmenu.valueOrFn( target, this.opts.onClick.close, onClick.close ) )
+				{
+					if ( this.opts.offCanvas && typeof this.close == 'function' )
+					{
+						this.close();
+					}
+				}
+			}
+
+		});
 
 		this.trigger( 'initAnchors:after' );
 	}
@@ -1363,6 +1377,7 @@ class Mmenu {
 	}
 
 
+	/** Set of DOM-traversing, -manupulation and -measuring methods. */
 	static DOM = {
 
 		/**
@@ -1489,15 +1504,7 @@ class Mmenu {
 			direction	?: string
 		) : number => {
 
-			direction = ( direction === 'left' ) ? 'offsetLeft' : 'offsetTop';
-
-			var offset = 0;
-			while ( element )
-			{
-				offset += element[ direction ];
-				element = (element.offsetParent as HTMLElement) || null;
-			}
-			return offset;
+			return element.getBoundingClientRect()[ direction ] + document.body[ ( direction === 'left' ) ? 'scrollLeft' : 'scrollTop' ];
 		}
 	}
 
@@ -1519,26 +1526,6 @@ class Mmenu {
 			element.classList.remove( oldClass );
 			element.classList.add( newClass );
 		}
-	}
-
-
-	/**
-	 * Find and filter direct child elements including the node itself.
-	 *
-	 * @param  {HTMLElement} 	element Elements to search in.
-	 * @param  {string}			filter 	Selector to filter the elements against.
-	 * @return {array}					The expanded and filtered set of elements.
-	 */
-	static childAddSelf( 
-		element : HTMLElement,
-		filter : string
-	) : HTMLElement[] {
-		var elements = Mmenu.DOM.children( element, filter );
-		if ( element.matches( filter ) )
-		{
-			elements.unshift( element );
-		}
-		return elements;
 	}
 
 	/**
@@ -1684,32 +1671,35 @@ class Mmenu {
 
 (function( $ ) {
 
-	/**
-	 * jQuery plugin mmenu.
-	 */
- 	$.fn[ 'mmenu' ] = function( opts, conf )
+	if ( $ )
 	{
-		var $result = $();
+		/**
+		 * jQuery plugin mmenu.
+		 */
+	 	$.fn[ 'mmenu' ] = function( opts, conf )
+		{
+			var $result = $();
 
-		this.each(( e, element ) => {
+			this.each(( e, element ) => {
 
-			//	Don't proceed if the element already is a mmenu.
-			if ( element[ 'mmenu' ] )
-			{
-				return;
-			}
+				//	Don't proceed if the element already is a mmenu.
+				if ( element[ 'mmenu' ] )
+				{
+					return;
+				}
 
-			let  menu = new Mmenu( element, opts, conf ),
-				$menu = $( menu.node.menu );
+				let  menu = new Mmenu( element, opts, conf ),
+					$menu = $( menu.node.menu );
 
-			//	Store the API.
-			$menu.data( 'mmenu', menu.API );
+				//	Store the API.
+				$menu.data( 'mmenu', menu.API );
 
-			$result = $result.add( $menu );
-		});
+				$result = $result.add( $menu );
+			});
 
-		return $result;
-	};
+			return $result;
+		};
+	}
 
- })( jQuery );
+ })( jQuery || Zepto );
 

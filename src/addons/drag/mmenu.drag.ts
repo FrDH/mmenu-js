@@ -50,7 +50,6 @@ Mmenu.addons.drag = function(
 	//	/Extend shorthand options
 
 
-	//opts = this.opts.drag = jQuery.extend( true, {}, Mmenu.options.drag, opts );
 	this.opts.drag = Mmenu.extend( opts, Mmenu.options.drag );
 
 

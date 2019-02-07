@@ -8,7 +8,7 @@ interface mmOptionsDrag {
 /**	"menu" options for the drag add-on. */
 interface mmOptionsDragMenu {
 	open 		: boolean
-	node		: string | JQuery | Function
+	node		: string | HTMLElement | Function
 	maxStartPos	: number
 	threshold	: number
 }

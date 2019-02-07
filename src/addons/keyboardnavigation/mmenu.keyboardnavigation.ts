@@ -150,15 +150,16 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 	enhance	: boolean
 ) {
 
-	Mmenu.$(window)
-
+	if ( Mmenu.evnt.keydownOffCanvas )
+	{
 		//	Re-enable tabbing in general
-		//	TODO: dit wordt lastig omdat removeEventListner de functie als argument nodig heeft
-		.off( 'keydown.mm-offCanvas' )
+		window.removeEventListener( 'keydown', Mmenu.evnt.keydownOffCanvas );
+	}
 
-		//	Prevent tabbing outside an offcanvas menu
-		.off( 'focusin.mm-keyboardNavigation' )
-		.on( 'focusin.mm-keyboardNavigation', ( evnt ) => {
+
+	if ( !Mmenu.evnt.focusinKeyboardNavigation )
+	{
+		Mmenu.evnt.focusinKeyboardNavigation = ( evnt: KeyboardEvent ) => {
 			if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
 			{
 				let target = (evnt.target as any); // Typecast to any because somehow, TypeScript thinks event.target is the window.
@@ -194,11 +195,13 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 					}
 				}
 			}
-		})
+		};
+		window.addEventListener( 'focusin', Mmenu.evnt.focusinKeyboardNavigation );
+	}
 
-		//	Default keyboard navigation
-		.off( 'keydown.mm-keyboardNavigation' )
-		.on( 'keydown.mm-keyboardNavigation', ( evnt ) => {
+	if ( !Mmenu.evnt.keydownKeyboardNavigation )
+	{
+		Mmenu.evnt.keydownKeyboardNavigation = ( evnt: KeyboardEvent ) => {
 			var target 	= (evnt.target as any);
 			var menu	= target.closest( '.mm-menu' );
 
@@ -233,23 +236,9 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 							break;
 					}
 				}
-			}
-		});
 
-	if ( enhance )
-	{
-		Mmenu.$(window)
-
-			//	Enhanced keyboard navigation
-			.off( 'keydown.mm-keyboardNavigation' )
-			.on( 'keydown.mm-keyboardNavigation', ( evnt ) => {
-				var target 	= (evnt.target as any); // Typecast to any because somehow, TypeScript thinks event.target is the window.
-				var menu 	= target.closest( '.mm-menu' );
-
-				if ( menu )
+				if ( enhance )
 				{
-					let api : mmApi = menu[ 'mmenu' ];
-
 					//	special case for input and textarea
 					if ( target.matches( 'input' ) )
 					{
@@ -263,11 +252,13 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 					}
 					else
 					{
+						let api : mmApi = menu[ 'mmenu' ];
+
 						switch( evnt.keyCode )
 						{
 							//	close submenu with backspace
 							case 8: 
-								var parent : HTMLElement = Mmenu.DOM.find( menu, '.mm-panel_opened' )[ 0 ][ 'mmParent' ];
+								let parent : HTMLElement = Mmenu.DOM.find( menu, '.mm-panel_opened' )[ 0 ][ 'mmParent' ];
 								if ( parent )
 								{
 									api.openPanel( parent.closest( '.mm-panel' ) );
@@ -284,7 +275,9 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 						}
 					}
 				}
-			});
+			}
+		};
+		window.addEventListener( 'keydown', Mmenu.evnt.keydownKeyboardNavigation );
 	}
 };
 

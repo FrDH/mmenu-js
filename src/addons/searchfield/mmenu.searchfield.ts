@@ -391,44 +391,72 @@ Mmenu.prototype._initSearching = function(
 		cancel 		: HTMLElement = Mmenu.DOM.find( form, '.mm-searchfield__cancel' )[ 0 ];
 
 
+	//	Open the splash panel when focussing the input.
 	if ( opts.panel.add && opts.panel.splash )
 	{
-		Mmenu.$(input)
-			.off( 'focus.mm-searchfield-splash' )
-			.on(  'focus.mm-searchfield-splash',
-				( e ) => {
-					this.openPanel( searchpanel );
-				}
-			);
+		if ( this.evnt[ 'focusSearchfieldSplash' ] )
+		{
+			//	Remove the focus eventlistener from the input.
+			input.removeEventListener( 'focus', this.evnt[ 'focusSearchfieldSplash' ] );
+		}
+		else
+		{
+			//	Create the eventlistener.
+			this.evnt[ 'focusSearchfieldSplash' ] = ( evnt ) => {
+				this.openPanel( searchpanel );
+			};
+		}
+
+		//	Add the focus eventlistener to the input..
+		input.addEventListener( 'focus', this.evnt[ 'focusSearchfieldSplash' ] );
 	}
+
+
+	//	Handle the cancel button.
 	if ( opts.cancel )
 	{
-		Mmenu.$(input)
-			.off( 'focus.mm-searchfield-cancel' ) //	TODO, is this really needed?
-			.on(  'focus.mm-searchfield-cancel',
-				( e ) => {
-					cancel.classList.add( 'mm-searchfield__cancel-active' );
-				}
-			);
+		if ( this.evnt[ 'focusSearchfieldCancel' ] )
+		{
+			//	Remove the focus eventlistener from the input.
+			input.removeEventListener( 'focus', this.evnt[ 'focusSearchfieldCancel' ] );
+		}
+		else
+		{
+			//	Create the eventlistener.	
+			this.evnt[ 'focusSearchfieldCancel' ] = ( evnt ) => {
+				cancel.classList.add( 'mm-searchfield__cancel-active' );
+			};
+		}
+
+		//	Add the focus eventlistener to the input.
+		input.addEventListener( 'focus', this.evnt[ 'focusSearchfieldCancel' ] );
 
 
-		Mmenu.$(cancel)
-			.off( 'click.mm-searchfield-splash' ) //	TODO, is this really needed?
-			.on(  'click.mm-searchfield-splash',
-				( e ) => {
-					e.preventDefault();
-					cancel.classList.remove( 'mm-searchfield__cancel-active' );
+		if ( this.evnt[ 'clickSearchfieldSplash' ] )
+		{
+			//	Remove the focus eventlistener from the input.
+			cancel.removeEventListener( 'click', this.evnt[ 'clickSearchfieldSplash' ] );
+		}
+		else
+		{
+			//	Create the eventlistener.	
+			this.evnt[ 'clickSearchfieldSplash' ] = ( evnt ) => {
+				evnt.preventDefault();
+				cancel.classList.remove( 'mm-searchfield__cancel-active' );
 
-					if ( searchpanel.matches( '.mm-panel_opened' ) )
+				if ( searchpanel.matches( '.mm-panel_opened' ) )
+				{
+					let parents = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' );
+					if ( parents.length )
 					{
-						let parents = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' );
-						if ( parents.length )
-						{
-							this.openPanel( parents[ parents.length - 1 ] );
-						}
+						this.openPanel( parents[ parents.length - 1 ] );
 					}
 				}
-			);
+			};
+		}
+
+		//	Add the focus eventlistener to the input.
+		cancel.addEventListener( 'click', this.evnt[ 'clickSearchfieldSplash' ] );
 	}
 
 	if ( opts.panel.add && opts.addTo == 'panel' )
@@ -443,32 +471,40 @@ Mmenu.prototype._initSearching = function(
 		});
 	}
 
-	Mmenu.$(input)
-		.off( 'input.mm-searchfield' ) // 	TOOD: is dit nodig?
-		.on(  'input.mm-searchfield',
-			( evnt ) => {
-				switch( evnt.keyCode )
-				{
-					case 9:		//	tab
-					case 16:	//	shift
-					case 17:	//	control
-					case 18:	//	alt
-					case 37:	//	left
-					case 38:	//	top
-					case 39:	//	right
-					case 40:	//	bottom
-						break;
 
-					default:
-						this.search( input );
-						break;
-				}
+	if ( this.evnt[ 'inputSearchfield' ] )
+	{
+		//	Remove the focus eventlistener from the input.
+		input.removeEventListener( 'input', this.evnt[ 'inputSearchfield' ] );
+	}
+	else
+	{
+		//	Create the eventlistener.	
+		this.evnt[ 'inputSearchfield' ] = ( evnt ) => {
+			switch( (evnt as KeyboardEvent).keyCode )
+			{
+				case 9:		//	tab
+				case 16:	//	shift
+				case 17:	//	control
+				case 18:	//	alt
+				case 37:	//	left
+				case 38:	//	top
+				case 39:	//	right
+				case 40:	//	bottom
+					break;
+
+				default:
+					this.search( input );
+					break;
 			}
-		);
+		};
+	}
+
+	//	Add the focus eventlistener to the input.
+	input.addEventListener( 'focus', this.evnt[ 'inputSearchfield' ] );
 
 
 	//	Fire once initially
-	//	TODO better in initMenu:after or the likes
 	this.search( input );
 };	
 
@@ -654,7 +690,7 @@ Mmenu.prototype.search = function(
 							{
 								parent.classList.remove( 'mm-hidden' );
 								//	TODO: dit klopt niet meer...
-								//	Het idee was een btn tijdelijk fullwidth te laten zijn
+								//	Het idee was een btn tijdelijk fullwidth te laten zijn omdat het zelf geen resultaat is, maar zn submenu wel.
 								// Mmenu.$(parent)
 
 								// 	.children( '.mm-btn_next' )

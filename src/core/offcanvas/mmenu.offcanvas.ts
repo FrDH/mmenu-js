@@ -221,9 +221,7 @@ Mmenu.prototype._openSetup = function(
 	Mmenu.node.page[ 'mmStyle' ] = Mmenu.node.page.getAttribute( 'style' ) || '';
 
 	//	Trigger window-resize to measure height
-	//	Je kunt geen custom argumenten meegeven aan window.dispatchEvent( new Event( 'resize' ) )
-	//	Daarom de functie opslaan in een object
-	Mmenu.$(window).trigger( 'resize.mm-offCanvas', [ true ] );
+	(Mmenu.evnt.resizeOffCanvas as Function).call( {} );
 
 	var clsn = [ 'mm-wrapper_opened' ];
 
@@ -364,9 +362,13 @@ Mmenu.prototype.setPage = function(
 		//	Wrap multiple pages in a single element.
 		if ( pages.length > 1 )
 		{
-			pages = [ Mmenu.$(pages)
-				.wrapAll( '<' + conf.page.nodetype + ' />' )
-				.parent()[ 0 ] ];
+			let wrapper = Mmenu.DOM.create( 'div' );
+			pages[ 0 ].before( wrapper );
+			pages.forEach(( page ) => { 
+				wrapper.append( page );
+			});
+
+			pages = [ wrapper ];
 		}
 
 		page = pages[ 0 ];
@@ -389,43 +391,42 @@ Mmenu.prototype._initWindow_offCanvas = function(
 	//	Prevent tabbing
 	//	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
 	//	In other words: The menu would move out of view.
-
-	//	TODO event opslaan zodat het weer verwijderd kan worden met removeListener en direct aangeroepen ipv trigger()
-	Mmenu.$(window)
-		.off( 'keydown.mm-offCanvas' )
-		.on(  'keydown.mm--offCanvas',
-			( e ) => {
-				if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
+	if ( !Mmenu.evnt.keydownOffCanvas )
+	{
+		Mmenu.evnt.keydownOffCanvas = ( evnt: KeyboardEvent ) => {
+			if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
+			{
+				if ( evnt.keyCode == 9 )
 				{
-					if ( e.keyCode == 9 )
-					{
-						e.preventDefault();
-						return false;
-					}
+					evnt.preventDefault();
+					return false;
 				}
 			}
-		);
+		};
 
-	//	Set "page" node min-height to window height
+		window.addEventListener( 'keydown', Mmenu.evnt.keydownOffCanvas )
+	}
+
+	//	Set "page" element min-height to window height
 	var oldHeight, newHeight;
 
-	//	TODO event opslaan zodat het weer verwijderd kan worden met removeListener en direct aangeroepen ipv trigger()
-	Mmenu.$(window)
-		.off( 'resize.mm-offCanvas' )
-		.on( 'resize.mm-offCanvas', ( evnt, force ) => {
+	if ( !Mmenu.evnt.resizeOffCanvas )
+	{
+		Mmenu.evnt.resizeOffCanvas = ( evnt ) => {
 			if ( Mmenu.node.page )
 			{
-				if ( force || document.documentElement.matches( '.mm-wrapper_opened' ) )
+				if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
 				{
 					newHeight = window.innerHeight;
-					if ( force || newHeight != oldHeight )
+					if ( newHeight != oldHeight )
 					{
 						oldHeight = newHeight;
 						Mmenu.node.page.style.minHeight = newHeight + 'px';
 					}
 				}
 			}
-		});
+		}
+	}
 };
 
 /**

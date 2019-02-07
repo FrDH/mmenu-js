@@ -18,7 +18,6 @@ Mmenu.addons.lazySubmenus = function(
 	//	/Extend shorthand options
 
 
-	// opts = this.opts.lazySubmenus = jQuery.extend( true, {}, Mmenu.options.lazySubmenus, opts );
 	this.opts.lazySubmenus = Mmenu.extend( opts, Mmenu.options.lazySubmenus );
 
 

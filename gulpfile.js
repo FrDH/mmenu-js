@@ -23,7 +23,7 @@
 */
 
 
-var { src, dest, series, parallel } = require( 'gulp' );
+var { src, dest, watch, series, parallel } = require( 'gulp' );
 
 var sass 			= require( 'gulp-sass' ),
 	autoprefixer 	= require( 'gulp-autoprefixer' ),
@@ -39,11 +39,6 @@ var inputDir 		= 'src',
 	customDir 		= null,
 	build 			='./' + inputDir + '/_build.json';
 
-
-
-const concatUmdJS = ( files, name ) => {
-	
-};
 
 
 const getOption = ( opt ) => {
@@ -111,9 +106,8 @@ exports.default = defaultTask;
 */
 const watchTask = ( cb ) => {
 	start(() => {
-		// watch();
-		// gulp.watch( inputDir + '/**/*.scss'		, [ 'css' ] );
-		// gulp.watch( inputDir + '/**/*.ts'		, [ 'js'  ] );
+		watch( inputDir + '/**/*.scss'	, css );
+		watch( inputDir + '/**/*.ts'	, js );
 	});
 	cb();
 };

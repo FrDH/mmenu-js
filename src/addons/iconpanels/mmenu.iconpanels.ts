@@ -35,7 +35,6 @@ Mmenu.addons.iconPanels = function(
 	//	/Extend shorthand options
 
 
-	//opts = this.opts.iconPanels = jQuery.extend( true, {}, Mmenu.options.iconPanels, opts );
 	this.opts.iconPanels = Mmenu.extend( opts, Mmenu.options.iconPanels );
 
 

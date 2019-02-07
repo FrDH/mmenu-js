@@ -72,7 +72,6 @@ Mmenu.addons.sidebar = function(
 	//	/Extend shorthand options
 
 
-	//opts = this.opts.sidebar = jQuery.extend( true, {}, Mmenu.options.sidebar, opts );
 	this.opts.sidebar = Mmenu.extend( opts, Mmenu.options.sidebar );
 
 

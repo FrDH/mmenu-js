@@ -23,7 +23,6 @@ Mmenu.addons.backButton = function(
 	//	/Extend shorthand options
 
 
-	//opts = this.opts.backButton = jQuery.extend( true, {}, Mmenu.options.backButton, opts );
 	this.opts.backButton = Mmenu.extend( opts, Mmenu.options.backButton );
 
 
