@@ -1,58 +1,58 @@
 Mmenu.addons.searchfield = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.searchfield,
-		conf = this.conf.searchfield;
+	var options = this.opts.searchfield,
+		configs = this.conf.searchfield;
 
 
 	//	Extend shorthand options.
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		(opts as mmLooseObject) = {
-			add: opts
+		(options as mmLooseObject) = {
+			add: options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
-	if ( typeof opts.panel == 'boolean' )
+	if ( typeof options.panel == 'boolean' )
 	{
-		(opts.panel as mmLooseObject) = {
-			add: opts.panel
+		(options.panel as mmLooseObject) = {
+			add: options.panel
 		};
 	}
-	if ( typeof opts.panel != 'object' )
+	if ( typeof options.panel != 'object' )
 	{
-		(opts.panel as mmLooseObject) = {};
+		(options.panel as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options.
 
 
-	if ( !opts.add )
+	if ( !options.add )
 	{
 		return;
 	}
 
 
 	//	Extend logical options.
-	if ( opts.addTo == 'panel' )
+	if ( options.addTo == 'panel' )
 	{
-		opts.panel.add = true;
+		options.panel.add = true;
 	}
-	if ( opts.panel.add )
+	if ( options.panel.add )
 	{
-		opts.showSubPanels = false;
+		options.showSubPanels = false;
 
-		if ( opts.panel.splash )
+		if ( options.panel.splash )
 		{
-			opts.cancel = true;
+			options.cancel = true;
 		}
 	}
 	//	/Extend logical options.
 
 
-	this.opts.searchfield = Mmenu.extend( opts, Mmenu.options.searchfield );
+	this.opts.searchfield = Mmenu.extend( options, Mmenu.options.searchfield );
 
 
 	//	Blur searchfield
@@ -71,14 +71,14 @@ Mmenu.addons.searchfield = function(
 		var searchpanel : HTMLElement = null;
 
 		//	Add the search panel
-		if ( opts.panel.add )
+		if ( options.panel.add )
 		{
 			searchpanel = this._initSearchPanel( panels );
 		}
 
 		//	Add the searchfield
 		var addTo : HTMLElement[] = null;
-		switch( opts.addTo )
+		switch( options.addTo )
 		{
 			case 'panels':
 				addTo = panels;
@@ -89,20 +89,20 @@ Mmenu.addons.searchfield = function(
 				break;
 
 			default:
-				if ( typeof opts.addTo == 'string' )
+				if ( typeof options.addTo == 'string' )
 				{
-					addTo = Mmenu.DOM.find( this.node.menu, opts.addTo );
+					addTo = Mmenu.DOM.find( this.node.menu, options.addTo );
 				}
-				else if ( Mmenu.typeof( opts.addTo ) == 'array' )
+				else if ( Mmenu.typeof( options.addTo ) == 'array' )
 				{
-					addTo = opts.addTo;
+					addTo = options.addTo;
 				}
 				break;
 		}
 
 		addTo.forEach(( form ) => {
 			form = this._initSearchfield( form );
-			if ( opts.search && form )
+			if ( options.search && form )
 			{
 				this._initSearching( form );
 			}
@@ -110,9 +110,9 @@ Mmenu.addons.searchfield = function(
 
 
 		//	Add the no-results message
-		if ( opts.noResults )
+		if ( options.noResults )
 		{
-			( opts.panel.add ? [ searchpanel ] : panels ).forEach(( panel ) => {
+			( options.panel.add ? [ searchpanel ] : panels ).forEach(( panel ) => {
 				this._initNoResultsMsg( panel );
 			});
 		}
@@ -157,45 +157,15 @@ Mmenu.addons.searchfield = function(
 		}
 	});
 
-};	
-
-
-
-//	Default options and configuration.
-Mmenu.options.searchfield = {
-	add 			: false,
-	addTo			: 'panels',
-	cancel 			: false,
-	noResults		: 'No results found.',
-	placeholder		: 'Search',
-	panel 			: {
-		add 			: false,
-		dividers		: true,
-		fx 				: 'none',
-		id				: null,
-		splash			: null,
-		title			: 'Search'
-	},
-	search			: true,
-	showTextItems	: false,
-	showSubPanels	: true
 };
-
-Mmenu.configs.searchfield = {
-	clear			: false,
-	form			: false,
-	input			: false,
-	submit			: false
-};
-	
 
 	
 Mmenu.prototype._initSearchPanel = function( 
 	this	: Mmenu,
 	panels	: HTMLElement[]
 ) : HTMLElement {
-	var opts : mmOptionsSearchfield = this.opts.searchfield,
-		conf : mmConfigsSearchfield = this.conf.searchfield;
+	var options = this.opts.searchfield,
+		configs = this.conf.searchfield;
 
 
 	//	Only once
@@ -210,16 +180,16 @@ Mmenu.prototype._initSearchPanel = function(
 	searchpanel.append( listview );
 	this.node.pnls.append( searchpanel )
 
-	if ( opts.panel.id )
+	if ( options.panel.id )
 	{
-		searchpanel.id = opts.panel.id;
+		searchpanel.id = options.panel.id;
 	}
-	if ( opts.panel.title )
+	if ( options.panel.title )
 	{
-		searchpanel.setAttribute( 'data-mm-title', opts.panel.title );
+		searchpanel.setAttribute( 'data-mm-title', options.panel.title );
 	}
 
-	switch ( opts.panel.fx )
+	switch ( options.panel.fx )
 	{
 		case false:
 			break;
@@ -229,15 +199,15 @@ Mmenu.prototype._initSearchPanel = function(
 			break;
 
 		default:
-			searchpanel.classList.add( 'mm-panel_fx-' + opts.panel.fx );
+			searchpanel.classList.add( 'mm-panel_fx-' + options.panel.fx );
 			break;
 	}
 
 	//	Add splash content
-	if ( opts.panel.splash )
+	if ( options.panel.splash )
 	{
 		let splash = Mmenu.DOM.create( 'div.mm-panel__searchsplash' );
-			splash.innerHTML = opts.panel.splash;
+			splash.innerHTML = options.panel.splash;
 
 		searchpanel.append( splash );
 	}
@@ -251,8 +221,8 @@ Mmenu.prototype._initSearchfield = function(
 	this	: Mmenu,
 	wrapper	: HTMLElement
 ) : HTMLElement {
-	var opts : mmOptionsSearchfield = this.opts.searchfield,
-		conf : mmConfigsSearchfield = this.conf.searchfield;
+	var options = this.opts.searchfield,
+		configs = this.conf.searchfield;
 
 
 	//	No searchfield in vertical submenus	
@@ -283,13 +253,13 @@ Mmenu.prototype._initSearchfield = function(
 	}
 
 
-	var form  = Mmenu.DOM.create( ( conf.form ? 'form' : 'div' ) + '.mm-searchfield' ),
+	var form  = Mmenu.DOM.create( ( configs.form ? 'form' : 'div' ) + '.mm-searchfield' ),
 		field = Mmenu.DOM.create( 'div.mm-searchfield__input' ),
 		input = (Mmenu.DOM.create( 'input' ) as HTMLInputElement);
 	
 	input.type = 'text';
 	input.autocomplete = 'off';
-	input.placeholder = (this.i18n( opts.placeholder ) as string);
+	input.placeholder = (this.i18n( options.placeholder ) as string);
 
 	field.append( input );
 	form.append( field );
@@ -302,11 +272,11 @@ Mmenu.prototype._initSearchfield = function(
 
 
 	//	Add attributes to the input
-	addAttributes( input, conf.input );
+	addAttributes( input, configs.input );
 	
 
 	//	Add the clear button
-	if ( conf.clear )
+	if ( configs.clear )
 	{
 		let anchor = Mmenu.DOM.create( 'a.mm-btn.mm-btn_close.mm-searchfield__btn' );
 			anchor.setAttribute( 'href', '#' );
@@ -316,8 +286,8 @@ Mmenu.prototype._initSearchfield = function(
 
 
 	//	Add attributes and submit to the form
-	addAttributes( form, conf.form );
-	if ( conf.form && conf.submit && !conf.clear )
+	addAttributes( form, configs.form );
+	if ( configs.form && configs.submit && !configs.clear )
 	{
 		let anchor = Mmenu.DOM.create( 'a.mm-btn.mm-btn_next.mm-searchfield__btn' );
 			anchor.setAttribute( 'href', '#' );
@@ -325,7 +295,7 @@ Mmenu.prototype._initSearchfield = function(
 		field.append( anchor );
 	}
 
-	if ( opts.cancel )
+	if ( options.cancel )
 	{
 		let anchor = Mmenu.DOM.create( 'a.mm-searchfield__cancel' );
 			anchor.setAttribute( 'href', '#' );
@@ -341,8 +311,8 @@ Mmenu.prototype._initSearching = function(
 	this	: Mmenu,
 	form	: HTMLElement
 ) {
-	var opts : mmOptionsSearchfield = this.opts.searchfield,
-		conf : mmConfigsSearchfield = this.conf.searchfield;
+	var options = this.opts.searchfield,
+		configs = this.conf.searchfield;
 
 
 	var data : mmLooseObject = {};
@@ -392,74 +362,68 @@ Mmenu.prototype._initSearching = function(
 
 
 	//	Open the splash panel when focussing the input.
-	if ( opts.panel.add && opts.panel.splash )
+	if ( options.panel.add && options.panel.splash )
 	{
-		if ( this.evnt[ 'focusSearchfieldSplash' ] )
+		//	Remove the focus eventlistener from the input.
+		if ( this.evnt.inputFocusSearchfieldSplash )
 		{
-			//	Remove the focus eventlistener from the input.
-			input.removeEventListener( 'focus', this.evnt[ 'focusSearchfieldSplash' ] );
+			input.removeEventListener( 'focus', this.evnt.inputFocusSearchfieldSplash );
 		}
-		else
-		{
-			//	Create the eventlistener.
-			this.evnt[ 'focusSearchfieldSplash' ] = ( evnt ) => {
-				this.openPanel( searchpanel );
-			};
-		}
+			
+		//	Create the eventlistener.
+		this.evnt.inputFocusSearchfieldSplash = ( evnt ) => {
+			this.openPanel( searchpanel );
+		};
 
 		//	Add the focus eventlistener to the input..
-		input.addEventListener( 'focus', this.evnt[ 'focusSearchfieldSplash' ] );
+		input.addEventListener( 'focus', this.evnt.inputFocusSearchfieldSplash );
 	}
 
 
 	//	Handle the cancel button.
-	if ( opts.cancel )
+	if ( options.cancel )
 	{
-		if ( this.evnt[ 'focusSearchfieldCancel' ] )
+		//	Remove the focus eventlistener from the input.
+		if ( this.evnt.inputFocusSearchfieldCancel )
 		{
-			//	Remove the focus eventlistener from the input.
-			input.removeEventListener( 'focus', this.evnt[ 'focusSearchfieldCancel' ] );
+			input.removeEventListener( 'focus', this.evnt.inputFocusSearchfieldCancel );
 		}
-		else
-		{
-			//	Create the eventlistener.	
-			this.evnt[ 'focusSearchfieldCancel' ] = ( evnt ) => {
-				cancel.classList.add( 'mm-searchfield__cancel-active' );
-			};
-		}
+
+		//	Create the eventlistener.	
+		this.evnt.inputFocusSearchfieldCancel = ( evnt ) => {
+			cancel.classList.add( 'mm-searchfield__cancel-active' );
+		};
 
 		//	Add the focus eventlistener to the input.
-		input.addEventListener( 'focus', this.evnt[ 'focusSearchfieldCancel' ] );
+		input.addEventListener( 'focus', this.evnt.inputFocusSearchfieldCancel );
 
 
-		if ( this.evnt[ 'clickSearchfieldSplash' ] )
+		//	Remove the focus eventlistener from the input.
+		if ( this.evnt.cancelClickSearchfieldSplash )
 		{
-			//	Remove the focus eventlistener from the input.
-			cancel.removeEventListener( 'click', this.evnt[ 'clickSearchfieldSplash' ] );
+			cancel.removeEventListener( 'click', this.evnt.cancelClickSearchfieldSplash );
 		}
-		else
-		{
-			//	Create the eventlistener.	
-			this.evnt[ 'clickSearchfieldSplash' ] = ( evnt ) => {
-				evnt.preventDefault();
-				cancel.classList.remove( 'mm-searchfield__cancel-active' );
 
-				if ( searchpanel.matches( '.mm-panel_opened' ) )
+		//	Create the eventlistener.	
+		this.evnt.cancelClickSearchfieldSplash = ( evnt ) => {
+			evnt.preventDefault();
+			cancel.classList.remove( 'mm-searchfield__cancel-active' );
+
+			if ( searchpanel.matches( '.mm-panel_opened' ) )
+			{
+				let parents = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' );
+				if ( parents.length )
 				{
-					let parents = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' );
-					if ( parents.length )
-					{
-						this.openPanel( parents[ parents.length - 1 ] );
-					}
+					this.openPanel( parents[ parents.length - 1 ] );
 				}
-			};
-		}
+			}
+		};
 
 		//	Add the focus eventlistener to the input.
-		cancel.addEventListener( 'click', this.evnt[ 'clickSearchfieldSplash' ] );
+		cancel.addEventListener( 'click', this.evnt.cancelClickSearchfieldSplash );
 	}
 
-	if ( opts.panel.add && opts.addTo == 'panel' )
+	if ( options.panel.add && options.addTo == 'panel' )
 	{
 		this.bind( 'openPanel:finish', ( 
 			panel : HTMLElement
@@ -472,36 +436,36 @@ Mmenu.prototype._initSearching = function(
 	}
 
 
-	if ( this.evnt[ 'inputSearchfield' ] )
+	//	Remove the focus eventlistener from the input.
+	if ( this.evnt.inputInputSearchfieldSearch )
 	{
-		//	Remove the focus eventlistener from the input.
-		input.removeEventListener( 'input', this.evnt[ 'inputSearchfield' ] );
+		input.removeEventListener( 'input', this.evnt.inputInputSearchfieldSearch );
 	}
-	else
-	{
-		//	Create the eventlistener.	
-		this.evnt[ 'inputSearchfield' ] = ( evnt ) => {
-			switch( (evnt as KeyboardEvent).keyCode )
-			{
-				case 9:		//	tab
-				case 16:	//	shift
-				case 17:	//	control
-				case 18:	//	alt
-				case 37:	//	left
-				case 38:	//	top
-				case 39:	//	right
-				case 40:	//	bottom
-					break;
 
-				default:
-					this.search( input );
-					break;
-			}
-		};
-	}
+	//	Create the eventlistener.	
+	this.evnt.inputInputSearchfieldSearch = ( 
+		evnt : KeyboardEvent
+	) => {
+		switch( evnt.keyCode )
+		{
+			case 9:		//	tab
+			case 16:	//	shift
+			case 17:	//	control
+			case 18:	//	alt
+			case 37:	//	left
+			case 38:	//	top
+			case 39:	//	right
+			case 40:	//	bottom
+				break;
+
+			default:
+				this.search( input );
+				break;
+		}
+	};
 
 	//	Add the focus eventlistener to the input.
-	input.addEventListener( 'focus', this.evnt[ 'inputSearchfield' ] );
+	input.addEventListener( 'focus', this.evnt.inputInputSearchfieldSearch );
 
 
 	//	Fire once initially
@@ -512,8 +476,8 @@ Mmenu.prototype._initNoResultsMsg = function(
 	this	: Mmenu,
 	wrapper	: HTMLElement
 ) {
-	var opts : mmOptionsSearchfield = this.opts.searchfield,
-		conf : mmConfigsSearchfield = this.conf.searchfield;
+	var options = this.opts.searchfield,
+		configs = this.conf.searchfield;
 
 	//	Not in a panel
 	if ( !wrapper.closest( '.mm-panel' ) )
@@ -529,7 +493,7 @@ Mmenu.prototype._initNoResultsMsg = function(
 
 	//	Add no-results message
 	var message = Mmenu.DOM.create( 'div.mm-panel__noresultsmsg.mm-hidden' );
-		message.innerHTML = (this.i18n( opts.noResults ) as string);
+		message.innerHTML = (this.i18n( options.noResults ) as string);
 
 	wrapper.prepend( message );
 }
@@ -539,8 +503,8 @@ Mmenu.prototype.search = function(
 	input	: HTMLInputElement,
 	query	: string
 ) {
-	var opts : mmOptionsSearchfield = this.opts.searchfield,
-		conf : mmConfigsSearchfield = this.conf.searchfield;
+	var options = this.opts.searchfield,
+		configs = this.conf.searchfield;
 
 	query = query || '' + input.value;
 	query = query.toLowerCase().trim();
@@ -593,7 +557,7 @@ Mmenu.prototype.search = function(
 		listitems.forEach(( listitem ) => {
 			var _search = '.mm-listitem__text'; // 'a'
 
-			if ( opts.showTextItems || ( opts.showSubPanels && listitem.querySelector( '.mm-btn_next' ) ) )
+			if ( options.showTextItems || ( options.showSubPanels && listitem.querySelector( '.mm-btn_next' ) ) )
 			{
 				// _search = 'a, span';
 			}
@@ -610,7 +574,7 @@ Mmenu.prototype.search = function(
 
 
 		//	Show all mached listitems in the search panel
-		if ( opts.panel.add )
+		if ( options.panel.add )
 		{
 			//	Clone all matched listitems into the search panel
 			let allitems : HTMLElement[] = [];
@@ -619,7 +583,7 @@ Mmenu.prototype.search = function(
 
 				if ( listitems.length )
 				{
-					if ( opts.panel.dividers )
+					if ( options.panel.dividers )
 					{
 						let divider = Mmenu.DOM.create( 'li.mm-listitem.mm-listitem_divider' );
 							divider.innerHTML = panel.querySelector( '.mm-navbar__title' ).innerHTML;
@@ -654,7 +618,7 @@ Mmenu.prototype.search = function(
 		{
 
 			//	Also show listitems in sub-panels for matched listitems
-			if ( opts.showSubPanels )
+			if ( options.showSubPanels )
 			{
 				panels.forEach(( panel ) => {
 					let listitems = Mmenu.DOM.find( panel, '.mm-listitem' );
@@ -742,10 +706,10 @@ Mmenu.prototype.search = function(
 		});
 
 
-		if ( opts.panel.add )
+		if ( options.panel.add )
 		{
 			//	Hide splash
-			if ( opts.panel.splash )
+			if ( options.panel.splash )
 			{
 				Mmenu.DOM.find( searchpanel, '.mm-panel__searchsplash' )[ 0 ]
 					.classList.add( 'mm-hidden' );
@@ -786,10 +750,10 @@ Mmenu.prototype.search = function(
 		});
 
 
-		if ( opts.panel.add )
+		if ( options.panel.add )
 		{
 			//	Show splash
-			if ( opts.panel.splash )
+			if ( options.panel.splash )
 			{
 				Mmenu.DOM.find( searchpanel, '.mm-panel__searchsplash' )[ 0 ]
 					.classList.remove( 'mm-hidden' );

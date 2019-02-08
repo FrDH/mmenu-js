@@ -2,21 +2,21 @@ Mmenu.addons.iconbar = function(
 	this : Mmenu
 ) {
 
-	var opts = this.opts.iconbar;
+	var options = this.opts.iconbar;
 
 
 	//	Extend shorthand options
-	if ( Mmenu.typeof( opts ) == 'array' )
+	if ( Mmenu.typeof( options ) == 'array' )
 	{
-		(opts as mmLooseObject) = {
+		(options as mmLooseObject) = {
 			add: true,
-			top: opts
+			top: options
 		};
 	}
 	//	/Extend shorthand options
 
 
-	if ( !opts.add )
+	if ( !options.add )
 	{
 		return;
 	}
@@ -26,7 +26,7 @@ Mmenu.addons.iconbar = function(
 
 	[ 'top', 'bottom' ].forEach(( position, n ) => {
 
-		var ctnt = opts[ position ];
+		var ctnt = options[ position ];
 
 		//	Extend shorthand options
 		if ( Mmenu.typeof( ctnt ) != 'array' )
@@ -70,7 +70,7 @@ Mmenu.addons.iconbar = function(
 		});
 
 		//	Tabs
-		if ( opts.type == 'tabs' )
+		if ( options.type == 'tabs' )
 		{
 
 			iconbar.classList.add( 'mm-iconbar_tabs' );
@@ -129,13 +129,4 @@ Mmenu.addons.iconbar = function(
 			this.bind( 'openPanel:start', selectTab );
 		}
 	}
-};
-
-
-//	Default options and configuration.
-Mmenu.options.iconbar = {
-	add 	: false,
-	top 	: [],
-	bottom 	: [],
-	type	: 'default'
 };

@@ -1,27 +1,27 @@
 Mmenu.addons.sectionIndexer = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.sectionIndexer;
+	var options = this.opts.sectionIndexer;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		(opts as mmLooseObject) = {
-			add: opts
+		(options as mmLooseObject) = {
+			add: options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.sectionIndexer = Mmenu.extend( opts, Mmenu.options.sectionIndexer );
+	this.opts.sectionIndexer = Mmenu.extend( options, Mmenu.options.sectionIndexer );
 
 
-	if ( !opts.add )
+	if ( !options.add )
 	{
 		return;
 	}
@@ -32,10 +32,10 @@ Mmenu.addons.sectionIndexer = function(
 	) => {
 
 		//	Set the panel(s)
-		if ( opts.addTo != 'panels' )
+		if ( options.addTo != 'panels' )
 		{
 			//	TODO addTo kan ook een HTML element zijn?
-			panels = Mmenu.DOM.find( this.node.menu, opts.addTo )
+			panels = Mmenu.DOM.find( this.node.menu, options.addTo )
 				.filter( panel => panel.matches( '.mm-panel' ) );
 		}
 
@@ -118,11 +118,4 @@ Mmenu.addons.sectionIndexer = function(
 		this.bind( 'openPanel:start', 	update );
 		this.bind( 'initPanels:after',	update ); // TODO panel argument is an array
 	});
-};
-
-
-//	Default options and configuration.
-Mmenu.options.sectionIndexer = {
-	add		: false,
-	addTo	: 'panels'
 };

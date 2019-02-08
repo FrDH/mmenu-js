@@ -6,30 +6,30 @@ Mmenu.addons.backButton = function(
 		return;
 	}
 
-	var opts = this.opts.backButton;
+	var options = this.opts.backButton;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		(opts as mmLooseObject) = {
-			close: opts
+		(options as mmLooseObject) = {
+			close: options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.backButton = Mmenu.extend( opts, Mmenu.options.backButton );
+	this.opts.backButton = Mmenu.extend( options, Mmenu.options.backButton );
 
 
 	var _menu = '#' + this.node.menu.id;
 
 	//	Close menu
-	if ( opts.close )
+	if ( options.close )
 	{
 
 		var states = [];
@@ -77,7 +77,7 @@ Mmenu.addons.backButton = function(
 		});
 	}
 
-	if ( opts.open )
+	if ( options.open )
 	{
 		window.addEventListener( 'popstate', ( evnt ) => {
 			if ( !this.vars.opened && location.hash == _menu )
@@ -86,11 +86,4 @@ Mmenu.addons.backButton = function(
 			}
 		});
 	}
-};
-
-
-//	Default options and configuration.
-Mmenu.options.backButton = {
-	close 	: false,
-	open 	: false
 };

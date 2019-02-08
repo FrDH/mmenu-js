@@ -6,34 +6,34 @@ Mmenu.addons.dropdown = function(
 		return;
 	}
 
-	var opts = this.opts.dropdown,
-		conf = this.conf.dropdown;
+	var options = this.opts.dropdown,
+		configs = this.conf.dropdown;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' && opts )
+	if ( typeof options == 'boolean' && options )
 	{
-		(opts as mmLooseObject) = {
-			drop: opts
+		(options as mmLooseObject) = {
+			drop: options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
-	if ( typeof opts.position == 'string' )
+	if ( typeof options.position == 'string' )
 	{
-		opts.position = {
-			of: opts.position
+		options.position = {
+			of: options.position
 		};
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.dropdown = Mmenu.extend( opts, Mmenu.options.dropdown );
+	this.opts.dropdown = Mmenu.extend( options, Mmenu.options.dropdown );
 
 
-	if ( !opts.drop )
+	if ( !options.drop )
 	{
 		return;
 	}
@@ -44,25 +44,25 @@ Mmenu.addons.dropdown = function(
 	this.bind( 'initMenu:after', () => {
 		this.node.menu.classList.add( 'mm-menu_dropdown' );
 
-		if ( typeof opts.position.of != 'string' )
+		if ( typeof options.position.of != 'string' )
 		{
 			let id = this.vars.orgMenuId;
 			if ( id && id.length )
 			{
-				opts.position.of = '[href="#' + id + '"]';
+				options.position.of = '[href="#' + id + '"]';
 			}
 		}
-		if ( typeof opts.position.of != 'string' )
+		if ( typeof options.position.of != 'string' )
 		{
 			return;
 		}
 
 
 		//	Get the button to put the menu next to
-		button = Mmenu.DOM.find( document.body, opts.position.of )[ 0 ];
+		button = Mmenu.DOM.find( document.body, options.position.of )[ 0 ];
 
 		//	Emulate hover effect
-		var events = opts.event.split( ' ' );
+		var events = options.event.split( ' ' );
 		if ( events.length == 1 )
 		{
 			events[ 1 ] = events[ 0 ];
@@ -118,12 +118,12 @@ Mmenu.addons.dropdown = function(
 			windowSize 	= window[ _winSize ];
 
 
-		var offs = conf.offset.button[ dir ] + conf.offset.viewport[ dir ];
+		var offs = configs.offset.button[ dir ] + configs.offset.viewport[ dir ];
 
 		//	Position set in option
-		if ( opts.position[ dir ] )
+		if ( options.position[ dir ] )
 		{
-			switch ( opts.position[ dir ] )
+			switch ( options.position[ dir ] )
 			{
 				case 'left':
 				case 'bottom':
@@ -150,10 +150,10 @@ Mmenu.addons.dropdown = function(
 			val = ( dir == 'x' ) ? startPos : stopPos;
 			max = windowSize - ( val + offs );
 
-			css[ _startPos ] = val + conf.offset.button[ dir ];
+			css[ _startPos ] = ( val + configs.offset.button[ dir ] ) + 'px';
 			css[ _stopPos ]  = 'auto';
 
-			if ( opts.tip )
+			if ( options.tip )
 			{
 				cls.push( 'mm-menu_tip-' + ( dir == 'x' ? 'left' : 'top' ) );
 			}
@@ -163,18 +163,18 @@ Mmenu.addons.dropdown = function(
 			val = ( dir == 'x' ) ? stopPos : startPos;
 			max = val - offs;
 
-			css[ _stopPos ]  = 'calc( 100% - ' + ( val - conf.offset.button[ dir ] ) + 'px )';
+			css[ _stopPos ]  = 'calc( 100% - ' + ( val - configs.offset.button[ dir ] ) + 'px )';
 			css[ _startPos ] = 'auto';
 
-			if ( opts.tip )
+			if ( options.tip )
 			{
 				cls.push( 'mm-menu_tip-' + ( dir == 'x' ? 'right' : 'bottom' ) );
 			}
 		}
 
-		if ( opts.fitViewport )
+		if ( options.fitViewport )
 		{
-			css[ _maxSize ] = Math.min( conf[ _size ].max, max );
+			css[ _maxSize ] = Math.min( configs[ _size ].max, max ) + 'px';
 		}
 
 		return [ css, cls ];
@@ -195,10 +195,10 @@ Mmenu.addons.dropdown = function(
 
 		for ( let s in obj[ 0 ] )
 		{
-			this.node.menu[ s ] = obj[ 0 ][ s ];
+			this.node.menu.style[ s ] = obj[ 0 ][ s ];
 		}
 
-		if ( opts.tip )
+		if ( options.tip )
 		{
 			this.node.menu.classList.remove( 'mm-menu_tip-left', 'mm-menu_tip-right', 'mm-menu_tip-top', 'mm-menu_tip-bottom' );
 			this.node.menu.classList.add( ...obj[ 1 ] );
@@ -218,33 +218,4 @@ Mmenu.addons.dropdown = function(
 		}, { passive: true });
 	}
 
-};
-
-
-//	Default options and configuration.
-Mmenu.options.dropdown = {
-	drop 		: false,
-	fitViewport	: true,
-	event		: 'click',
-	position	: {},
-	tip			: true
-};
-
-Mmenu.configs.dropdown = {
-	offset: {
-		button	: {
-			x 		: -5,
-			y		: 5
-		},
-		viewport: {
-			x 		: 20,
-			y 		: 20
-		}
-	},
-	height	: {
-		max		: 880
-	},
-	width	: {
-		max		: 440
-	}
 };

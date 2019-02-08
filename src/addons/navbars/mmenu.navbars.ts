@@ -22,24 +22,24 @@ Mmenu.addons.navbars = function(
 		return;
 	}
 
-	navs.forEach(( opts ) => {
+	navs.forEach(( options ) => {
 
 		//	Extend shorthand options.
-		if ( typeof opts == 'boolean' && opts )
+		if ( typeof options == 'boolean' && options )
 		{
-			(opts as mmLooseObject) = {};
+			(options as mmLooseObject) = {};
 		}
-		if ( typeof opts != 'object' )
+		if ( typeof options != 'object' )
 		{
-			(opts as mmLooseObject) = {};
+			(options as mmLooseObject) = {};
 		}
-		if ( typeof opts.content == 'undefined' )
+		if ( typeof options.content == 'undefined' )
 		{
-			opts.content = [ 'prev', 'title' ];
+			options.content = [ 'prev', 'title' ];
 		}
-		if ( !( opts.content instanceof Array ) )
+		if ( !( options.content instanceof Array ) )
 		{
-			opts.content = [ opts.content ];
+			options.content = [ options.content ];
 		}
 		//	/Extend shorthand options.
 
@@ -49,7 +49,7 @@ Mmenu.addons.navbars = function(
 			
 
 		//	Get the height for the navbar.
-		var height = opts.height;
+		var height = options.height;
 		if ( typeof height != 'number' )
 		{
 			//	Defaults to a height of 1.
@@ -67,7 +67,7 @@ Mmenu.addons.navbars = function(
 		}
 
 		//	Get the position for the navbar.
-		var position = opts.position;
+		var position = options.position;
 
 		//	Restrict the position to either "bottom" or "top" (default).
 		if ( position !== 'bottom' )
@@ -91,9 +91,9 @@ Mmenu.addons.navbars = function(
 
 
 		//	Add content to the navbar.
-		for ( let c = 0, l = opts.content.length; c < l; c++ )
+		for ( let c = 0, l = options.content.length; c < l; c++ )
 		{
-			let ctnt = opts.content[ c ];
+			let ctnt = options.content[ c ];
 			//	The content is a string.
 			if ( typeof ctnt == 'string' )
 			{
@@ -125,10 +125,10 @@ Mmenu.addons.navbars = function(
 		}
 
 		//	The type option is set.
-		if ( typeof opts.type == 'string' )
+		if ( typeof options.type == 'string' )
 		{
 			//	The function refers to one of the navbar-presets ("tabs").
-			let func = Mmenu.addons.navbars[ opts.type ];
+			let func = Mmenu.addons.navbars[ options.type ];
 			if ( typeof func == 'function' )
 			{
 				//	Call the preset function.
@@ -147,15 +147,3 @@ Mmenu.addons.navbars = function(
 	});
 };
 
-
-//	Default options and configuration.
-Mmenu.options.navbars = [];
-
-Mmenu.configs.navbars = {
-	breadcrumbs: {
-		separator 	: '/',
-		removeFirst : false
-	}
-};
-
-Mmenu.configs.classNames.navbars = {};

@@ -42,10 +42,3 @@ Mmenu.addons.toggles = function()
 		});
 	});
 };
-
-
-//	Default options and configuration.
-Mmenu.configs.classNames.toggles = {
-	toggle	: 'Toggle',
-	check	: 'Check'
-};

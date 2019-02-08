@@ -1,29 +1,29 @@
 Mmenu.addons.setSelected = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.setSelected;
+	var options = this.opts.setSelected;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		(opts as mmLooseObject) = {
-			hover	: opts,
-			parent	: opts
+		(options as mmLooseObject) = {
+			hover	: options,
+			parent	: options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
 	//	Extend shorthand options
 
 
-	this.opts.setSelected = Mmenu.extend( opts, Mmenu.options.setSelected );
+	this.opts.setSelected = Mmenu.extend( options, Mmenu.options.setSelected );
 
 
 	//	Find current by URL
-	if ( opts.current == 'detect' )
+	if ( options.current == 'detect' )
 	{
 		function findCurrent( 
 			this : Mmenu,
@@ -52,7 +52,7 @@ Mmenu.addons.setSelected = function(
 	}
 
 	//	Remove current selected item
-	else if ( !opts.current )
+	else if ( !options.current )
 	{
 		this.bind( 'initListview:after', ( 
 			panel : HTMLElement
@@ -66,7 +66,7 @@ Mmenu.addons.setSelected = function(
 
 
 	//	Add :hover effect on items
-	if ( opts.hover )
+	if ( options.hover )
 	{
 		this.bind( 'initMenu:after', () => {
 			this.node.menu.classList.add( 'mm-menu_selected-hover' );
@@ -75,7 +75,7 @@ Mmenu.addons.setSelected = function(
 
 
 	//	Set parent item selected for submenus
-	if ( opts.parent )
+	if ( options.parent )
 	{
 		this.bind( 'openPanel:finish', ( 
 			panel : HTMLElement
@@ -104,12 +104,4 @@ Mmenu.addons.setSelected = function(
 			this.node.menu.classList.add( 'mm-menu_selected-parent' );
 		});
 	}
-};
-
-
-//	Default options and configuration.
-Mmenu.options.setSelected = {
-	current : true,
-	hover	: false,
-	parent	: false
 };

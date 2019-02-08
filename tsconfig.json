@@ -3,6 +3,6 @@
         "src/**/*.ts"
     ],
     "compilerOptions": {
-		"target": "es6"
+		"target": "es5"
 	}
 }

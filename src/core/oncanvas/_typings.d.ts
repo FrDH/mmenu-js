@@ -22,17 +22,18 @@ interface mmFunctionObject {
 	[key: string] 	: Function
 }
 
+/** An object with even listeners. */
 interface mmEventObject {
 	[key: string]	: EventListener
 }
 
-/** An object with jQuery values. */
+/** An object with HTMLElement values. */
 interface mmHtmlObject {
 	[key: string] 	: HTMLElement
 }
 
 //	TODO	add description for each method
-/** API for the menu. */
+/** The menu API. */
 interface mmApi {
 	bind 			: Function
 	initPanels		: Function
@@ -62,15 +63,25 @@ interface mmMethodI18n {
 	) : string | object
 }
 
-
 //	TODO	add description for each option
 /**	Options for the menu. */
 interface mmOptions {
+	/** Funcitons to invoke in hooks. */
 	hooks 				: mmFunctionObject
+
+	/** List of extensions to use. */
 	extensions			: mmOptionsExensions | string[]
+
+	/** List of wrappers to use. */
 	wrappers			: string[]
+
+	/** Options for the navbar. */
 	navbar 				: mmOptionsNavbar
+
+	/** Options for clicking a listitem. */
 	onClick				: mmOptionsOnclick
+
+	/** Whether or not to use sliding submenus.*/
 	slidingSubmenus		: boolean
 
 	//	Core add-ons
@@ -97,6 +108,7 @@ interface mmOptions {
 	setSelected			?: mmOptionsSetselected
 	sidebar				?: mmOptionsSidebar
 }
+
 
 /**	Extensions for the menu. */
 interface mmOptionsExensions {

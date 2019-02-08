@@ -1,0 +1,1 @@
+Mmenu.options.navbars = [];

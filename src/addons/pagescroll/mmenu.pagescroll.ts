@@ -2,20 +2,20 @@ Mmenu.addons.pageScroll = function(
 	this : Mmenu
 ) {
 
-	var opts = this.opts.pageScroll,
-		conf = this.conf.pageScroll;
+	var options = this.opts.pageScroll,
+		configs = this.conf.pageScroll;
 
 	//	Extend shorthand options.
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		(opts as mmLooseObject) = {
-			scroll: opts
+		(options as mmLooseObject) = {
+			scroll: options
 		};
 	}
 	//	/Extend shorthand options.
 
 
-	this.opts.pageScroll = Mmenu.extend( opts, Mmenu.options.pageScroll );
+	this.opts.pageScroll = Mmenu.extend( options, Mmenu.options.pageScroll );
 
 
 	var section : HTMLElement;
@@ -25,12 +25,9 @@ Mmenu.addons.pageScroll = function(
 	) {
 		if ( section && section.matches( ':visible' ) )
 		{
-			//	TODO: animate in vanilla JS
+			//	TODO: animate?
 			document.documentElement.scrollTop = section.offsetTop + offset;
 			document.body.scrollTop = section.offsetTop + offset;
-			// Mmenu.$('html, body').animate({
-			// 	scrollTop: $section.offset().top + offset
-			// });
 		}
 		section = null;
 	}
@@ -55,16 +52,16 @@ Mmenu.addons.pageScroll = function(
 
 
 	//	Scroll to section after clicking menu item.
-	if ( opts.scroll )
+	if ( options.scroll )
 	{
 		this.bind( 'close:finish', () => {
-			scrollTo( conf.scrollOffset );
+			scrollTo( configs.scrollOffset );
 		});
 	}
 
 	//	Add click behavior.
 	//	Prevents default behavior when clicking an anchor.
-	if ( this.opts.offCanvas && opts.scroll )
+	if ( this.opts.offCanvas && options.scroll )
 	{
 		this.clck.push((
 			anchor	: HTMLElement,
@@ -108,7 +105,7 @@ Mmenu.addons.pageScroll = function(
 	}
 
 	//	Update selected menu item after scrolling.
-	if ( opts.update )
+	if ( options.update )
 	{
 		let orgs = [],
 			scts = [];
@@ -139,7 +136,7 @@ Mmenu.addons.pageScroll = function(
 
 			for ( var s = 0; s < scts.length; s++ )
 			{
-				if ( scts[ s ].offsetTop < scrollTop + conf.updateOffset )
+				if ( scts[ s ].offsetTop < scrollTop + configs.updateOffset )
 				{
 					if ( _selected !== s )
 					{
@@ -161,16 +158,3 @@ Mmenu.addons.pageScroll = function(
 		});
 	}
 };
-
-
-//	Default options and configuration.
-Mmenu.options.pageScroll = {
-	scroll: false,
-	update: false
-};
-
-Mmenu.configs.pageScroll = {
-	scrollOffset: 0,
-	updateOffset: 50
-};
-

@@ -7,8 +7,8 @@ Mmenu.addons.offCanvas = function(
 		return;
 	}
 
-	var opts = this.opts.offCanvas,
-		conf = this.conf.offCanvas;
+	var options = this.opts.offCanvas,
+		configs = this.conf.offCanvas;
 
 
 	//	Add methods to the API
@@ -16,15 +16,15 @@ Mmenu.addons.offCanvas = function(
 
 
 	//	Extend shorthand options
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.offCanvas = Mmenu.extend( opts, Mmenu.options.offCanvas );
-	this.conf.offCanvas = Mmenu.extend( conf, Mmenu.configs.offCanvas );
+	this.opts.offCanvas = Mmenu.extend( options, Mmenu.options.offCanvas );
+	this.conf.offCanvas = Mmenu.extend( configs, Mmenu.configs.offCanvas );
 
 
 	//	Setup the menu
@@ -49,7 +49,7 @@ Mmenu.addons.offCanvas = function(
 		
 
 		//	Append to the <body>
-		document.querySelector( conf.menu.insertSelector )[ conf.menu.insertMethod ]( this.node.menu );
+		document.querySelector( configs.menu.insertSelector )[ configs.menu.insertMethod ]( this.node.menu );
 
 		//	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
 		let hash = window.location.hash;
@@ -162,25 +162,6 @@ Mmenu.addons.offCanvas = function(
 };
 
 
-//	Default options and configuration.
-Mmenu.options.offCanvas = {
-	blockUI			: true,
-	moveBackground	: true
-};
-
-Mmenu.configs.offCanvas = {
-	menu 	: {
-		insertMethod	: 'prepend',
-		insertSelector	: 'body'
-	},
-	page 	: {
-		nodetype		: 'div',
-		selector		: null,
-		noSelector		: []
-	}
-};
-
-
 /**
  * Open the menu.
  */
@@ -212,7 +193,7 @@ Mmenu.prototype.open = function(
 Mmenu.prototype._openSetup = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.offCanvas;
+	var options = this.opts.offCanvas;
 
 	//	Close other menus
 	this.closeAllOthers();
@@ -221,20 +202,20 @@ Mmenu.prototype._openSetup = function(
 	Mmenu.node.page[ 'mmStyle' ] = Mmenu.node.page.getAttribute( 'style' ) || '';
 
 	//	Trigger window-resize to measure height
-	(Mmenu.evnt.resizeOffCanvas as Function).call( {} );
+	(Mmenu.evnt.windowResizeOffCanvas as Function).call( {} );
 
 	var clsn = [ 'mm-wrapper_opened' ];
 
 	//	Add options
-	if ( opts.blockUI )
+	if ( options.blockUI )
 	{
 		clsn.push( 'mm-wrapper_blocking' );
 	}
-	if ( opts.blockUI == 'modal' )
+	if ( options.blockUI == 'modal' )
 	{
 		clsn.push( 'mm-wrapper_modal' );
 	}
-	if ( opts.moveBackground )
+	if ( options.moveBackground )
 	{
 		clsn.push( 'mm-wrapper_background' );
 	}
@@ -340,23 +321,23 @@ Mmenu.prototype.setPage = function(
 
 	this.trigger( 'setPage:before', [ page ] );
 
-	var conf = this.conf.offCanvas;
+	var configs = this.conf.offCanvas;
 
 	//	If no page was specified, find it.
 	if ( !page )
 	{
 		/** Array of elements that are / could be "the page". */
-		let pages = ( typeof conf.page.selector == 'string' )
-			? Mmenu.DOM.find( document.body, conf.page.selector )
-			: Mmenu.DOM.children( document.body, conf.page.nodetype );
+		let pages = ( typeof configs.page.selector == 'string' )
+			? Mmenu.DOM.find( document.body, configs.page.selector )
+			: Mmenu.DOM.children( document.body, configs.page.nodetype );
 
 		//	Filter out elements that are absolutely not "the page".
 		pages = pages.filter( page => !page.matches( '.mm-menu, .mm-wrapper__blocker' ) );
 
 		//	Filter out elements that are configured to not be "the page".
-		if ( conf.page.noSelector.length )
+		if ( configs.page.noSelector.length )
 		{
-			pages = pages.filter( page => !page.matches( conf.page.noSelector.join( ', ' ) ) );
+			pages = pages.filter( page => !page.matches( configs.page.noSelector.join( ', ' ) ) );
 		}
 
 		//	Wrap multiple pages in a single element.
@@ -391,9 +372,11 @@ Mmenu.prototype._initWindow_offCanvas = function(
 	//	Prevent tabbing
 	//	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
 	//	In other words: The menu would move out of view.
-	if ( !Mmenu.evnt.keydownOffCanvas )
+	if ( !Mmenu.evnt.windowKeydownOffCanvasTab )
 	{
-		Mmenu.evnt.keydownOffCanvas = ( evnt: KeyboardEvent ) => {
+		Mmenu.evnt.windowKeydownOffCanvasTab = ( 
+			evnt : KeyboardEvent
+		) => {
 			if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
 			{
 				if ( evnt.keyCode == 9 )
@@ -404,7 +387,7 @@ Mmenu.prototype._initWindow_offCanvas = function(
 			}
 		};
 
-		window.addEventListener( 'keydown', Mmenu.evnt.keydownOffCanvas )
+		window.addEventListener( 'keydown', Mmenu.evnt.windowKeydownOffCanvasTab );
 	}
 
 	//	Set "page" element min-height to window height
@@ -412,7 +395,7 @@ Mmenu.prototype._initWindow_offCanvas = function(
 
 	if ( !Mmenu.evnt.resizeOffCanvas )
 	{
-		Mmenu.evnt.resizeOffCanvas = ( evnt ) => {
+		Mmenu.evnt.windowResizeOffCanvas = ( evnt ) => {
 			if ( Mmenu.node.page )
 			{
 				if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
@@ -426,6 +409,8 @@ Mmenu.prototype._initWindow_offCanvas = function(
 				}
 			}
 		}
+
+		window.addEventListener( 'keydown', Mmenu.evnt.windowResizeOffCanvas )
 	}
 };
 
@@ -435,13 +420,13 @@ Mmenu.prototype._initWindow_offCanvas = function(
 Mmenu.prototype._initBlocker = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.offCanvas,
-		conf = this.conf.offCanvas;
+	var options = this.opts.offCanvas,
+		configs = this.conf.offCanvas;
 
 	this.trigger( 'initBlocker:before' );
 
 
-	if ( !opts.blockUI )
+	if ( !options.blockUI )
 	{
 		return;
 	}
@@ -454,7 +439,7 @@ Mmenu.prototype._initBlocker = function(
 			blck.innerHTML = '<a></a>';
 
 		//	Append the blocker node to the body.
-		document.querySelector( conf.menu.insertSelector )
+		document.querySelector( configs.menu.insertSelector )
 			.append( blck );
 
 		//	Store the blocker node.

@@ -6,73 +6,73 @@ Mmenu.addons.sidebar = function(
 		return;
 	}
 
-	var opts = this.opts.sidebar;
+	var options = this.opts.sidebar;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'string' ||
-	   ( typeof opts == 'boolean' && opts ) ||
-		 typeof opts == 'number'
+	if ( typeof options == 'string' ||
+	   ( typeof options == 'boolean' && options ) ||
+		 typeof options == 'number'
 	) {
-		(opts as mmLooseObject) = {
-			expanded: opts
+		(options as mmLooseObject) = {
+			expanded: options
 		};
 	}
 
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
 
 	//	Extend collapsed shorthand options.
-	if ( typeof opts.collapsed == 'boolean' && opts.collapsed )
+	if ( typeof options.collapsed == 'boolean' && options.collapsed )
 	{
-		(opts.collapsed as mmLooseObject) = {
+		(options.collapsed as mmLooseObject) = {
 			use: 'all'
 		};
 	}
-	if ( typeof opts.collapsed == 'string' ||
-		 typeof opts.collapsed == 'number'
+	if ( typeof options.collapsed == 'string' ||
+		 typeof options.collapsed == 'number'
 	) {
-		(opts.collapsed as mmLooseObject) = {
-			use: opts.collapsed
+		(options.collapsed as mmLooseObject) = {
+			use: options.collapsed
 		};
 	}
-	if ( typeof opts.collapsed != 'object' )
+	if ( typeof options.collapsed != 'object' )
 	{
-		(opts.collapsed as mmLooseObject) = {};
+		(options.collapsed as mmLooseObject) = {};
 	}
-	if ( typeof opts.collapsed.use == 'number' )
+	if ( typeof options.collapsed.use == 'number' )
 	{
-		opts.collapsed.use = '(min-width: ' + opts.collapsed.use + 'px)';
+		options.collapsed.use = '(min-width: ' + options.collapsed.use + 'px)';
 	}
 
 	//	Extend expanded shorthand options.
-	if ( typeof opts.expanded == 'boolean' && opts.expanded )
+	if ( typeof options.expanded == 'boolean' && options.expanded )
 	{
-		opts.expanded = {
+		options.expanded = {
 			use: 'all'
 		};
 	}
-	if ( typeof opts.expanded == 'string' ||
-		 typeof opts.expanded == 'number'
+	if ( typeof options.expanded == 'string' ||
+		 typeof options.expanded == 'number'
 	) {
-		opts.expanded = {
-			use: opts.expanded
+		options.expanded = {
+			use: options.expanded
 		};
 	}
-	if ( typeof opts.expanded != 'object' )
+	if ( typeof options.expanded != 'object' )
 	{
-		(opts.expanded as mmLooseObject) = {};
+		(options.expanded as mmLooseObject) = {};
 	}
-	if ( typeof opts.expanded.use == 'number' )
+	if ( typeof options.expanded.use == 'number' )
 	{
-		opts.expanded.use = '(min-width: ' + opts.expanded.use + 'px)';
+		options.expanded.use = '(min-width: ' + options.expanded.use + 'px)';
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.sidebar = Mmenu.extend( opts, Mmenu.options.sidebar );
+	this.opts.sidebar = Mmenu.extend( options, Mmenu.options.sidebar );
 
 
 	var clsclpsd = 'mm-wrapper_sidebar-collapsed',
@@ -80,12 +80,12 @@ Mmenu.addons.sidebar = function(
 
 
 	//	Collapsed
-	if ( opts.collapsed.use )
+	if ( options.collapsed.use )
 	{
 		this.bind( 'initMenu:after', () => {
 			this.node.menu.classList.add( 'mm-menu_sidebar-collapsed' );
 
-			if ( opts.collapsed.blockMenu &&
+			if ( options.collapsed.blockMenu &&
 				this.opts.offCanvas &&
 				!Mmenu.DOM.children( this.node.menu, '.mm-menu__blocker' )[ 0 ]
 			) {
@@ -94,17 +94,17 @@ Mmenu.addons.sidebar = function(
 				
 				this.node.menu.prepend( anchor );
 			}
-			if ( opts.collapsed.hideNavbar )
+			if ( options.collapsed.hideNavbar )
 			{
 				this.node.menu.classList.add( 'mm-menu_hidenavbar' );
 			}
-			if ( opts.collapsed.hideDivider )
+			if ( options.collapsed.hideDivider )
 			{
 				this.node.menu.classList.add( 'mm-menu_hidedivider' );
 			}
 		});
 
-		if ( typeof opts.collapsed.use == 'boolean' )
+		if ( typeof options.collapsed.use == 'boolean' )
 		{
 			this.bind( 'initMenu:after', () => {
 				document.documentElement.classList.add( clsclpsd );
@@ -112,7 +112,7 @@ Mmenu.addons.sidebar = function(
 		}
 		else
 		{
-			this.matchMedia( opts.collapsed.use,
+			this.matchMedia( options.collapsed.use,
 				() => {
 					document.documentElement.classList.add( clsclpsd );
 				},
@@ -125,13 +125,13 @@ Mmenu.addons.sidebar = function(
 
 
 	//	Expanded
-	if ( opts.expanded.use )
+	if ( options.expanded.use )
 	{
 		this.bind( 'initMenu:after', () => {
 			this.node.menu.classList.add( 'mm-menu_sidebar-expanded' );
 		});
 
-		if ( typeof opts.expanded.use == 'boolean' )
+		if ( typeof options.expanded.use == 'boolean' )
 		{
 			this.bind( 'initMenu:after', () => {
 				document.documentElement.classList.add( clsxpndd );
@@ -140,7 +140,7 @@ Mmenu.addons.sidebar = function(
 		}
 		else
 		{
-			this.matchMedia( opts.expanded.use,
+			this.matchMedia( options.expanded.use,
 				() => {
 					document.documentElement.classList.add( clsxpndd );
 					if ( !document.documentElement.matches( '.mm-wrapper_sidebar-closed' ) )
@@ -185,19 +185,5 @@ Mmenu.addons.sidebar = function(
 			}
 		});
 
-	}
-};
-
-
-//	Default options and configuration.
-Mmenu.options.sidebar = {
-	collapsed 	: {
-		use 		: false,
-		blockMenu	: true,
-		hideDivider	: false,
-		hideNavbar	: true
-	},
-	expanded 	: {
-		use			: false
 	}
 };

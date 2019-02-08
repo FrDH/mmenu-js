@@ -13,27 +13,27 @@ Mmenu.addons.scrollBugFix = function(
 	}
 
 
-	var opts = this.opts.scrollBugFix;
+	var options = this.opts.scrollBugFix;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		opts = {
-			fix: opts
+		options = {
+			fix: options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
 	//	Extend shorthand options
 
 
-	this.opts.scrollBugFix = Mmenu.extend( opts, Mmenu.options.scrollBugFix );
+	this.opts.scrollBugFix = Mmenu.extend( options, Mmenu.options.scrollBugFix );
 
 
-	if ( !opts.fix )
+	if ( !options.fix )
 	{
 		return;
 	}
@@ -60,8 +60,7 @@ Mmenu.addons.scrollBugFix = function(
 		    });
 
 		    document.body.addEventListener( 'touchstart', ( evnt ) => {
-		    	var panel = (evnt.currentTarget as HTMLElement);
-console.log(panel)
+		    	var panel = (evnt.target as HTMLElement);
 
 				if ( !panel.matches( '.mm-panels > .mm-panel' ) )
 				{
@@ -92,8 +91,7 @@ console.log(panel)
 		    });
 
 		    document.body.addEventListener( 'touchmove', ( evnt ) => {
-		    	var panel = (evnt.currentTarget as HTMLElement);
-console.log(panel)
+		    	var panel = (evnt.target as HTMLElement);
 
 		    	if ( !panel.matches( '.mm-panels > .mm-panel' ) )
 				{
@@ -122,10 +120,4 @@ console.log(panel)
 			panel.style[ '-webkit-overflow-scrolling'] = 'touch';
 		});
 	});
-};
-
-
-//	Default options and configuration.
-Mmenu.options.scrollBugFix = {
-	fix: true
 };

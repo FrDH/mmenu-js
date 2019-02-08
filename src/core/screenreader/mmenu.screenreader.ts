@@ -1,31 +1,31 @@
 Mmenu.addons.screenReader = function( 
 	this : Mmenu
 ) {
-	var opts = this.opts.screenReader,
-		conf = this.conf.screenReader;
+	var options = this.opts.screenReader,
+		configs = this.conf.screenReader;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		opts = {
-			aria: opts,
-			text: opts
+		options = {
+			aria: options,
+			text: options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
 
 
 	//opts = this.opts.screenReader = jQuery.extend( true, {}, Mmenu.options.screenReader, opts );
-	this.opts.screenReader = Mmenu.extend( opts, Mmenu.options.screenReader );
+	this.opts.screenReader = Mmenu.extend( options, Mmenu.options.screenReader );
 
 
 	//	Add Aria-* attributes
-	if ( opts.aria )
+	if ( options.aria )
 	{
 
 		//	Add screenreader / aria hooks for add-ons
@@ -115,7 +115,7 @@ Mmenu.addons.screenReader = function(
 
 
 		//	Text
-		if ( opts.text )
+		if ( options.text )
 		{
 			//	Add aria-hidden to titles in navbars
 			if ( this.opts.navbar.titleLink == 'parent' )
@@ -138,7 +138,7 @@ Mmenu.addons.screenReader = function(
 
 
 	//	Add screenreader text
-	if ( opts.text )
+	if ( options.text )
 	{
 
 		//	Add screenreader / text hooks for add-ons
@@ -160,7 +160,7 @@ Mmenu.addons.screenReader = function(
 				let button = Mmenu.DOM.children( navbar, '.mm-btn_prev' )[ 0 ];
 				if ( button )
 				{
-					button.innerHTML = Mmenu.sr_text( this.i18n( conf.text.closeSubmenu ) );
+					button.innerHTML = Mmenu.sr_text( this.i18n( configs.text.closeSubmenu ) );
 				}
 			}
 		});
@@ -176,7 +176,7 @@ Mmenu.addons.screenReader = function(
 				let next = Mmenu.DOM.children( parent, '.mm-btn_next' )[ 0 ];
 				if ( next )
 				{
-					let text = this.i18n( conf.text[ next.parentElement.matches( '.mm-listitem_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
+					let text = this.i18n( configs.text[ next.parentElement.matches( '.mm-listitem_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
 					next.innerHTML += Mmenu.sr_text( text );
 				}
 			}			
@@ -184,21 +184,6 @@ Mmenu.addons.screenReader = function(
 	}
 };
 
-
-//	Default options and configuration.
-Mmenu.options.screenReader = {
-	aria: true,
-	text: true
-};
-
-Mmenu.configs.screenReader = {
-	text: {
-		closeMenu       : 'Close menu',
-		closeSubmenu    : 'Close submenu',
-		openSubmenu     : 'Open submenu',
-		toggleSubmenu   : 'Toggle submenu'
-	}
-};
 
 
 //	Methods

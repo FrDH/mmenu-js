@@ -11,46 +11,46 @@ Mmenu.addons.drag = function(
 	}
 
 
-	var opts = this.opts.drag,
-		conf = this.conf.drag;
+	var options = this.opts.drag,
+		configs = this.conf.drag;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		(opts as mmLooseObject) = {
-			menu 	: opts,
-			panels 	: opts
+		(options as mmLooseObject) = {
+			menu 	: options,
+			panels 	: options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
-	if ( typeof opts.menu == 'boolean' )
+	if ( typeof options.menu == 'boolean' )
 	{
-		(opts as mmLooseObject) = {
-			open 	: opts.menu
+		(options as mmLooseObject) = {
+			open 	: options.menu
 		};
 	}
-	if ( typeof opts.menu != 'object' )
+	if ( typeof options.menu != 'object' )
 	{
-		(opts.menu as mmLooseObject) = {};
+		(options.menu as mmLooseObject) = {};
 	}
-	if ( typeof opts.panels == 'boolean' )
+	if ( typeof options.panels == 'boolean' )
 	{
-		opts.panels = {
-			close 	: opts.panels
+		options.panels = {
+			close 	: options.panels
 		};
 	}
-	if ( typeof opts.panels != 'object' )
+	if ( typeof options.panels != 'object' )
 	{
-		(opts.panels as mmLooseObject) = {};
+		(options.panels as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.drag = Mmenu.extend( opts, Mmenu.options.drag );
+	this.opts.drag = Mmenu.extend( options, Mmenu.options.drag );
 
 
 	function minMax( val, min, max )
@@ -68,7 +68,7 @@ Mmenu.addons.drag = function(
 
 
 	//	Drag open the menu
-	if ( opts.menu.open )
+	if ( options.menu.open )
 	{
 		this.bind( 'setPage:after', () => {
 			//	defaults for "left"
@@ -88,7 +88,7 @@ Mmenu.addons.drag = function(
 				this	: Mmenu,
 				pos 	: number
 			) {
-				if ( pos <= opts.menu.maxStartPos )
+				if ( pos <= options.menu.maxStartPos )
 				{
 					_stage = 1;
 				}
@@ -150,7 +150,7 @@ Mmenu.addons.drag = function(
 						this	: Mmenu,
 						pos 	: number
 					) {
-						if ( pos >= window[ _winDimension ] - opts.menu.maxStartPos )
+						if ( pos >= window[ _winDimension ] - options.menu.maxStartPos )
 						{
 							_stage = 1;
 						}
@@ -188,7 +188,7 @@ Mmenu.addons.drag = function(
 			}
 
 			var slideOutNodes 	: HTMLElement[];
-			var dragNode 		: HTMLElement = Mmenu.valueOrFn( this.node.menu, opts.menu.node, Mmenu.node.page );
+			var dragNode 		: HTMLElement = Mmenu.valueOrFn( this.node.menu, options.menu.node, Mmenu.node.page );
 
 			if ( typeof dragNode == 'string' )
 			{
@@ -229,7 +229,7 @@ Mmenu.addons.drag = function(
 
 					_distance = new_distance;
 
-					if ( _distance > opts.menu.threshold )
+					if ( _distance > options.menu.threshold )
 					{
 						if ( _stage == 1 )
 						{
@@ -244,9 +244,9 @@ Mmenu.addons.drag = function(
 							document.documentElement.classList.add( 'mm-wrapper_dragging' );
 
 							_maxDistance = minMax( 
-								window[ _winDimension ] * conf.menu[ _dimension ].perc, 
-								conf.menu[ _dimension ].min,
-								conf.menu[ _dimension ].max
+								window[ _winDimension ] * configs.menu[ _dimension ].perc, 
+								configs.menu[ _dimension ].min,
+								configs.menu[ _dimension ].max
 							);
 						}
 					}
@@ -285,7 +285,7 @@ Mmenu.addons.drag = function(
 	}
 
 	//	Drag close panels
-	if ( opts.panels.close )
+	if ( options.panels.close )
 	{
 		this.bind( 'initPanel:after', (
 			panel : HTMLElement
@@ -319,37 +319,5 @@ Mmenu.addons.drag = function(
 					);
 			}
 		});
-	}
-};
-
-
-//	Default options and configuration.
-Mmenu.options.drag = {
-	menu 	: {
-		open 		: false,
-		node		: null,
-		maxStartPos	: 100,
-		threshold	: 50
-	},
-	panels 	: {
-		close 	: false
-	},
-	vendors	: {
-		hammer	: {}
-	}
-};
-
-Mmenu.configs.drag = {
-	menu : {
-		width	: {
-			perc	: 0.8,
-			min		: 140,
-			max		: 440
-		},
-		height	: {
-			perc	: 0.8,
-			min		: 140,
-			max		: 880
-		}
 	}
 };

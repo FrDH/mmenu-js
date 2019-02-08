@@ -1,47 +1,47 @@
 Mmenu.addons.dividers = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.dividers;
+	var options = this.opts.dividers;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		(opts as mmLooseObject) = {
-			add		: opts,
-			fixed	: opts
+		(options as mmLooseObject) = {
+			add		: options,
+			fixed	: options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
-	if ( opts.addTo == 'panels' )
+	if ( options.addTo == 'panels' )
 	{
-		opts.addTo = '.mm-panel';
+		options.addTo = '.mm-panel';
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.dividers = Mmenu.extend( opts, Mmenu.options.dividers );
+	this.opts.dividers = Mmenu.extend( options, Mmenu.options.dividers );
 
 
 	//	Add classname to the menu to specify the type of the dividers
-	if ( opts.type )
+	if ( options.type )
 	{
 		this.bind( 'initMenu:after', () => {
-			this.node.menu.classList.add( 'mm-menu_dividers-' + opts.type );
+			this.node.menu.classList.add( 'mm-menu_dividers-' + options.type );
 		});
 	}
 
 	//	Add dividers
-	if ( opts.add )
+	if ( options.add )
 	{
 		this.bind( 'initListview:after', ( 
 			panel : HTMLElement
 		) => {
 
-			if ( !panel.matches( opts.addTo ) )
+			if ( !panel.matches( options.addTo ) )
 			{
 				return;
 			}
@@ -76,7 +76,7 @@ Mmenu.addons.dividers = function(
 	
 
 	//	Fixed dividers
-	if ( opts.fixed )
+	if ( options.fixed )
 	{
 		//	Add the fixed divider
 		this.bind( 'initPanels:after', (
@@ -143,11 +143,3 @@ Mmenu.addons.dividers = function(
 	}
 };
 
-
-//	Default options and configuration.
-Mmenu.options.dividers = {
-	add		: false,
-	addTo	: 'panels',
-	fixed	: false,
-	type	: null
-};

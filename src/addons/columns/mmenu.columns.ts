@@ -1,52 +1,52 @@
 Mmenu.addons.columns = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.columns;
+	var options = this.opts.columns;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		(opts as mmLooseObject) = {
-			add 	: opts
+		(options as mmLooseObject) = {
+			add 	: options
 		};
 	}
-	if ( typeof opts == 'number' )
+	if ( typeof options == 'number' )
 	{
-		opts = {
+		options = {
 			add 	: true,
-			visible : opts
+			visible : options
 		};
 	}
 
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
-	if ( typeof opts.visible == 'number' )
+	if ( typeof options.visible == 'number' )
 	{
-		opts.visible = {
-			min 	: opts.visible,
-			max 	: opts.visible
+		options.visible = {
+			min 	: options.visible,
+			max 	: options.visible
 		};
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.columns = Mmenu.extend( opts, Mmenu.options.columns );
+	this.opts.columns = Mmenu.extend( options, Mmenu.options.columns );
 
 
 	//	Add the columns
-	if ( opts.add )
+	if ( options.add )
 	{
-		opts.visible.min = Math.max( 1, Math.min( 6, opts.visible.min ) );
-		opts.visible.max = Math.max( opts.visible.min, Math.min( 6, opts.visible.max ) );
+		options.visible.min = Math.max( 1, Math.min( 6, options.visible.min ) );
+		options.visible.max = Math.max( options.visible.min, Math.min( 6, options.visible.max ) );
 
 
 		var colm = '',
 			colp = '';
 
-		for ( var i = 0; i <= opts.visible.max; i++ )
+		for ( var i = 0; i <= options.visible.max; i++ )
 		{
 			colm += ' mm-menu_columns-' + i;
 			colp += ' mm-panel_columns-' + i;
@@ -120,7 +120,7 @@ Mmenu.addons.columns = function(
 			{
 				_num++;
 			}
-			_num = Math.min( opts.visible.max, Math.max( opts.visible.min, _num ) );
+			_num = Math.min( options.visible.max, Math.max( options.visible.min, _num ) );
 
 			this.node.menu.classList.remove( ...colm.split( ' ' ) );
 			this.node.menu.classList.add( 'mm-menu_columns-' + _num );
@@ -137,20 +137,10 @@ Mmenu.addons.columns = function(
 
 //	TODO: check if not in array?
 			panels.push( panel );
-			panels.slice( -opts.visible.max )
+			panels.slice( -options.visible.max )
 				.forEach(( panel, p ) => {
 					panel.classList.add( 'mm-panel_columns-' + p );
 				});
 		});
-	}
-};
-
-
-//	Default options and configuration.
-Mmenu.options.columns = {
-	add 		: false,
-	visible		: {
-		min			: 1,
-		max			: 3
 	}
 };

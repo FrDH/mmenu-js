@@ -1,28 +1,28 @@
 Mmenu.addons.lazySubmenus = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.lazySubmenus;
+	var options = this.opts.lazySubmenus;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		opts = {
-			load : opts
+		options = {
+			load : options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.lazySubmenus = Mmenu.extend( opts, Mmenu.options.lazySubmenus );
+	this.opts.lazySubmenus = Mmenu.extend( options, Mmenu.options.lazySubmenus );
 
 
 	//	Sliding submenus
-	if ( opts.load )
+	if ( options.load )
 	{
 
 		//	prevent all sub panels from initPanels
@@ -103,8 +103,3 @@ Mmenu.addons.lazySubmenus = function(
 	}
 };
 
-
-//	Default options and configuration.
-Mmenu.options.lazySubmenus = {
-	load: false
-};

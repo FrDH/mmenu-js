@@ -9,28 +9,28 @@ Mmenu.addons.keyboardNavigation = function(
 	}
 
 
-	var opts = this.opts.keyboardNavigation;
+	var options = this.opts.keyboardNavigation;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' || typeof opts == 'string' )
+	if ( typeof options == 'boolean' || typeof options == 'string' )
 	{
-		(opts as mmLooseObject) = {
-			enable: opts
+		(options as mmLooseObject) = {
+			enable: options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.keyboardNavigation = Mmenu.extend( opts, Mmenu.options.keyboardNavigation );
+	this.opts.keyboardNavigation = Mmenu.extend( options, Mmenu.options.keyboardNavigation );
 
 
 	//	Enable keyboard navigation
-	if ( opts.enable )
+	if ( options.enable )
 	{
 
 		let menuStart 	= Mmenu.DOM.create( 'button.mm-tabstart' ),
@@ -38,12 +38,12 @@ Mmenu.addons.keyboardNavigation = function(
 			blockerEnd 	= Mmenu.DOM.create( 'button.mm-tabend' );
 
 		this.bind( 'initMenu:after', () => {
-			if ( opts.enhance )
+			if ( options.enhance )
 			{
 				this.node.menu.classList.add( 'mm-menu_keyboardfocus' );
 			}
 
-			this._initWindow_keyboardNavigation( opts.enhance );
+			this._initWindow_keyboardNavigation( options.enhance );
 		});
 		this.bind( 'initOpened:before', () => {
 			this.node.menu.prepend( menuStart );
@@ -83,7 +83,7 @@ Mmenu.addons.keyboardNavigation = function(
 			}
 
 			//	Set the focus to the first focusable element by default.
-			if ( opts.enable == 'default' )
+			if ( options.enable == 'default' )
 			{
 				//	First visible anchor in a listview in the current panel.
 				focus = Mmenu.DOM.find( panel, '.mm-listview a[href]:not(.mm-hidden)' )[ 0 ];
@@ -134,13 +134,6 @@ Mmenu.addons.keyboardNavigation = function(
 	}
 };
 
-//	Default options and configuration.
-Mmenu.options.keyboardNavigation = {
-	enable 	: false,
-	enhance	: false
-};
-
-
 /**
  * Initialize the window.
  * @param {boolean} enhance - Whether or not to also rich enhance the keyboard behavior.
@@ -150,19 +143,19 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 	enhance	: boolean
 ) {
 
-	if ( Mmenu.evnt.keydownOffCanvas )
+	if ( Mmenu.evnt.windowKeydownOffCanvasTab )
 	{
 		//	Re-enable tabbing in general
-		window.removeEventListener( 'keydown', Mmenu.evnt.keydownOffCanvas );
+		window.removeEventListener( 'keydown', Mmenu.evnt.windowKeydownOffCanvasTab );
 	}
 
 
-	if ( !Mmenu.evnt.focusinKeyboardNavigation )
+	if ( !Mmenu.evnt.windowFocusinKeyboardNavigationTab )
 	{
-		Mmenu.evnt.focusinKeyboardNavigation = ( evnt: KeyboardEvent ) => {
+		Mmenu.evnt.windowFocusinKeyboardNavigationTab = ( evnt : KeyboardEvent ) => {
 			if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
 			{
-				let target = (evnt.target as any); // Typecast to any because somehow, TypeScript thinks event.target is the window.
+				let target = (evnt.target as HTMLElement);
 
 				if ( target.matches( '.mm-tabend' ) )
 				{
@@ -196,14 +189,14 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 				}
 			}
 		};
-		window.addEventListener( 'focusin', Mmenu.evnt.focusinKeyboardNavigation );
+		window.addEventListener( 'focusin', Mmenu.evnt.windowFocusinKeyboardNavigationTab );
 	}
 
-	if ( !Mmenu.evnt.keydownKeyboardNavigation )
+	if ( !Mmenu.evnt.windowKeydownKeyboardNavigationKeys )
 	{
-		Mmenu.evnt.keydownKeyboardNavigation = ( evnt: KeyboardEvent ) => {
-			var target 	= (evnt.target as any);
-			var menu	= target.closest( '.mm-menu' );
+		Mmenu.evnt.windowKeydownKeyboardNavigationKeys = ( evnt : KeyboardEvent ) => {
+			var target 	= (evnt.target as HTMLElement);
+			var menu	= (target.closest( '.mm-menu' ) as HTMLElement);
 
 			if ( menu )
 			{
@@ -246,7 +239,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 						{
 							//	empty searchfield with esc
 							case 27:
-								target.value = '';
+								(target as HTMLInputElement).value = '';
 								break;
 						}
 					}
@@ -277,7 +270,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 				}
 			}
 		};
-		window.addEventListener( 'keydown', Mmenu.evnt.keydownKeyboardNavigation );
+		window.addEventListener( 'keydown', Mmenu.evnt.windowKeydownKeyboardNavigationKeys );
 	}
 };
 

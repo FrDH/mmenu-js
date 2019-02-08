@@ -2,33 +2,33 @@ Mmenu.addons.autoHeight = function(
 	this : Mmenu
 ) {
 
-	var opts = this.opts.autoHeight;
+	var options = this.opts.autoHeight;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' && opts )
+	if ( typeof options == 'boolean' && options )
 	{
-		opts = {
+		options = {
 			height: 'auto'
 		};
 	}
-	if ( typeof opts == 'string' )
+	if ( typeof options == 'string' )
 	{
-		opts = {
-			height: opts
+		options = {
+			height: options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.autoHeight = Mmenu.extend( opts, Mmenu.options.autoHeight );
+	this.opts.autoHeight = Mmenu.extend( options, Mmenu.options.autoHeight );
 
 
-	if ( opts.height != 'auto' && opts.height != 'highest' )
+	if ( options.height != 'auto' && options.height != 'highest' )
 	{
 		return;
 	}
@@ -59,7 +59,7 @@ Mmenu.addons.autoHeight = function(
 		this.node.menu.classList.add( 'mm-menu_autoheight-measuring' );
 
 
-		if ( opts.height == 'auto' )
+		if ( options.height == 'auto' )
 		{
 			if ( !panel )
 			{
@@ -81,7 +81,7 @@ Mmenu.addons.autoHeight = function(
 
 			_hgh = panel.offsetHeight;
 		}
-		else if ( opts.height == 'highest' )
+		else if ( options.height == 'highest' )
 		{
 			Mmenu.DOM.children( this.node.pnls, '.mm-panel' )
 				.forEach(( panel ) => {
@@ -104,21 +104,15 @@ Mmenu.addons.autoHeight = function(
 		this.bind( 'open:start'			, setHeight );
 	}
 
-	if ( opts.height == 'highest' )
+	if ( options.height == 'highest' )
 	{
 		this.bind( 'initPanels:after' 	, setHeight );	//	TODO: passes array for "panel" argument
 	}
 
-	if ( opts.height == 'auto' )
+	if ( options.height == 'auto' )
 	{
 		this.bind( 'updateListview'		, setHeight );	//	TODO? does not pass "panel" argument
 		this.bind( 'openPanel:start'	, setHeight );
 		this.bind( 'closePanel'			, setHeight );
 	}
-};
-
-
-//	Default options and configuration.
-Mmenu.options.autoHeight = {
-	height: 'default' // 'default/highest/auto'
 };

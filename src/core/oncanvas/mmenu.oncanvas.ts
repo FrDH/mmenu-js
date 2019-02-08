@@ -23,41 +23,10 @@ class Mmenu {
 
 
 	/**	Default options for menus. */
-	static options : mmOptions = {
-		hooks 				: {},
-		extensions			: [],
-		wrappers			: [],
-		navbar 				: {
-			add 				: true,
-			title				: 'Menu',
-			titleLink			: 'parent'
-		},
-		onClick				: {
-			close				: null,
-			preventDefault		: null,
-			setSelected			: true
-		},
-		slidingSubmenus		: true
-	}
+	static options : mmOptions
 
 	/**	Default configuration for menus. */
-	static configs : mmConfigs = {
-		classNames			: {
-			divider				: 'Divider',
-			inset 				: 'Inset',
-			nolistview 			: 'NoListview',
-			nopanel				: 'NoPanel',
-			panel				: 'Panel',
-			selected			: 'Selected',
-			spacer				: 'Spacer',
-			vertical			: 'Vertical'
-		},
-		clone				: false,
-		language			: null,
-		openingInterval		: 25,
-		panelNodetype		: ['ul', 'ol', 'div'],
-		transitionDuration	: 400
-	}
+	static configs : mmConfigs
 
 
 	/**	Available add-ons for the plugin. */
@@ -76,10 +45,6 @@ class Mmenu {
 	static support 	: mmBooleanObject = {
 		touch: 'ontouchstart' in window || (navigator.msMaxTouchPoints ? true : false) || false
 	}
-
-
-	/** Library for DOM traversal and DOM manipulations. */
-	static $ : any;
 
 
 	/**	Options for the menu. */
@@ -729,7 +694,7 @@ class Mmenu {
 		//	Wrap the panels in a node.
 		let panels = Mmenu.DOM.create( 'div.mm-panels' );
 
-		Array.from( this.node.menu.children )
+		Mmenu.DOM.children( this.node.menu )
 			.forEach(( panel ) => {
 				if ( this.conf.panelNodetype.indexOf( panel.nodeName.toLowerCase() ) > -1 )
 				{
@@ -1161,9 +1126,8 @@ class Mmenu {
 		this.trigger( 'initAnchors:before' );
 
 		document.body.addEventListener( 'click', ( evnt ) => {
-			console.log( evnt.target, evnt.currentTarget );
 
-			var target = (evnt.currentTarget as HTMLElement);
+			var target = (evnt.target as HTMLElement);
 
 			if ( !target.matches( 'a[href]' ) )
 			{
@@ -1610,7 +1574,7 @@ class Mmenu {
 
 		//	Using a factory for the "id" local var.
 		return () => {
-			return 'mm-guid-' + id++;
+			return 'mm-' + id++;
 		};
 	})()
 
@@ -1667,39 +1631,4 @@ class Mmenu {
 		return orignl;
 	}
 }
-
-
-(function( $ ) {
-
-	if ( $ )
-	{
-		/**
-		 * jQuery plugin mmenu.
-		 */
-	 	$.fn[ 'mmenu' ] = function( opts, conf )
-		{
-			var $result = $();
-
-			this.each(( e, element ) => {
-
-				//	Don't proceed if the element already is a mmenu.
-				if ( element[ 'mmenu' ] )
-				{
-					return;
-				}
-
-				let  menu = new Mmenu( element, opts, conf ),
-					$menu = $( menu.node.menu );
-
-				//	Store the API.
-				$menu.data( 'mmenu', menu.API );
-
-				$result = $result.add( $menu );
-			});
-
-			return $result;
-		};
-	}
-
- })( jQuery || Zepto );
 

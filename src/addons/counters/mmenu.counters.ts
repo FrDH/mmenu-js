@@ -1,29 +1,29 @@
 Mmenu.addons.counters = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.counters;
+	var options = this.opts.counters;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		(opts as mmLooseObject) = {
-			add		: opts,
-			count	: opts
+		(options as mmLooseObject) = {
+			add		: options,
+			count	: options
 		};
 	}
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
-	if ( opts.addTo == 'panels' )
+	if ( options.addTo == 'panels' )
 	{
-		opts.addTo = '.mm-panel';
+		options.addTo = '.mm-panel';
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.counters = Mmenu.extend( opts, Mmenu.options.counters );
+	this.opts.counters = Mmenu.extend( options, Mmenu.options.counters );
 
 
 	//	Refactor counter class
@@ -40,13 +40,13 @@ Mmenu.addons.counters = function(
 
 
 	//	Add the counters after a listview is initiated.
-	if ( opts.add )
+	if ( options.add )
 	{
 		this.bind( 'initListview:after', (
 			panel : HTMLElement
 		) => {
 
-			if ( !panel.matches( opts.addTo ) )
+			if ( !panel.matches( options.addTo ) )
 			{
 				return;
 			}
@@ -69,7 +69,7 @@ Mmenu.addons.counters = function(
 		});
 	}
 
-	if ( opts.count )
+	if ( options.count )
 	{
 		function count(
 			this 	 : Mmenu,
@@ -103,16 +103,4 @@ Mmenu.addons.counters = function(
 		this.bind( 'initListview:after'	, count );
 		this.bind( 'updateListview'		, count );
 	}
-};
-
-
-//	Default options and configuration.
-Mmenu.options.counters = {
-	add		: false,
-	addTo	: 'panels',
-	count	: false
-};
-
-Mmenu.configs.classNames.counters = {
-	counter: 'Counter'
 };

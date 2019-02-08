@@ -11,44 +11,40 @@ Mmenu.wrappers.bootstrap4 = function(
 
 
 		//	... We'll create a new menu
-		var nav = Mmenu.DOM.create( 'nav' ),
-			$pnl = Mmenu.$('<div />');
+		var nav 	= Mmenu.DOM.create( 'nav' ),
+			panel 	= Mmenu.DOM.create( 'div' );
 
-		nav.append( $pnl[ 0 ] );
+		nav.append( panel );
 
-		Mmenu.$(this.node.menu)
-			.children()
-			.each(
-				( i, elem ) => {
-					var $t = Mmenu.$(elem);
-					switch( true )
-					{
-						case $t.hasClass( 'navbar-nav' ):
-							$pnl.append( cloneNav( $t ) );
-							break;
+		Mmenu.DOM.children( this.node.menu )
+			.forEach(( child ) => {
+				switch( true )
+				{
+					case child.matches( '.navbar-nav' ):
+						panel.append( cloneNav( child ) );
+						break;
 
-						case $t.hasClass( 'dropdown-menu' ):
-							$pnl.append( cloneDropdown( $t ) );
-							break;
+					case child.matches( '.dropdown-menu' ):
+						panel.append( cloneDropdown( child ) );
+						break;
 
-						case $t.hasClass( 'form-inline' ):
-							this.conf.searchfield.form = {
-								action	: $t[ 0 ].getAttribute( 'action' ) 	|| null,
-								method	: $t[ 0 ].getAttribute( 'method' ) 	|| null
-							};
-							this.conf.searchfield.input = {
-								name	: $t.find( 'input' )[ 0 ].getAttribute( 'name' ) || null
-							};
-							this.conf.searchfield.clear 	= false;
-							this.conf.searchfield.submit	= true;
-							break;
+					case child.matches( '.form-inline' ):
+						this.conf.searchfield.form = {
+							action	: child.getAttribute( 'action' ) 	|| null,
+							method	: child.getAttribute( 'method' ) 	|| null
+						};
+						this.conf.searchfield.input = {
+							name	: child.querySelector( 'input' ).getAttribute( 'name' ) || null
+						};
+						this.conf.searchfield.clear 	= false;
+						this.conf.searchfield.submit	= true;
+						break;
 
-						default:
-							$pnl.append( $t.clone( true ) );
-							break;
-					}
+					default:
+						panel.append( child.cloneNode( true ) );
+						break;
 				}
-			);
+			});
 
 		//	Set the menu
 		this.bind( 'initMenu:before', () => {
@@ -56,85 +52,96 @@ Mmenu.wrappers.bootstrap4 = function(
 			this.node.menu = nav;
 		});
 
-		//	Hijack the toggler
+		//	Hijack the toggler.
 		var toggler = this.node.menu.parentElement.querySelector( '.navbar-toggler' );
-		toggler.removeAttribute( 'data-target' );
-		toggler.removeAttribute( 'aria-controls' );
-		Mmenu.$(toggler)
-			.off( 'click' )
-			.on( 'click', ( evnt ) => {
-				evnt.preventDefault();
-				evnt.stopImmediatePropagation();
-				this[ this.vars.opened ? 'close' : 'open' ]();
-			});
+			toggler.removeAttribute( 'data-target' );
+			toggler.removeAttribute( 'aria-controls' );
+
+			//	Remove all bound events.
+		toggler.outerHTML = toggler.outerHTML;
+
+		toggler.addEventListener( 'click', ( evnt ) => {
+			evnt.preventDefault();
+			evnt.stopImmediatePropagation();
+			this[ this.vars.opened ? 'close' : 'open' ]();
+		});
 	}
 
 
 	function cloneLink( 
-		$a : JQuery
+		anchor : HTMLElement
 	) {
-		var $i = Mmenu.$('<a />');
+		var link = Mmenu.DOM.create( 'a' );
+
+		//	Copy attributes
 		var attr = ['href', 'title', 'target'];
 		for ( var a = 0; a < attr.length; a++ )
 		{
-			if ( typeof $a.attr( attr[ a ] ) != 'undefined' )
+			if ( typeof anchor.getAttribute( attr[ a ] ) != 'undefined' )
 			{
-				$i[ 0 ].setAttribute(  attr[ a ], $a[ 0 ].getAttribute(  attr[ a ] ) );
+				link.setAttribute(  attr[ a ], anchor.getAttribute(  attr[ a ] ) );
 			}
 		}
-		$i.html( $a.html() );
-		$i.find( '.sr-only' ).remove();
-		return $i;
+
+		//	Copy contents
+		link.innerHTML = anchor.innerHTML;
+
+		//	Remove Screen reader text.
+		Mmenu.DOM.find( link, '.sr-only' )
+			.forEach(( sro ) => {
+				sro.remove();	
+			})
+
+		return link;
 	}
 	function cloneDropdown( 
-		$d : JQuery
+		dropdown : HTMLElement
 	) {
-		var $ul = Mmenu.$('<ul />');
-		$d.children()
-			.each(function() {
-				var $di = Mmenu.$(this),
-					$li = Mmenu.$('<li />');
+		var list = Mmenu.DOM.create( 'ul' );
+		Mmenu.DOM.children( dropdown )
+			.forEach(( anchor ) => {
+				var item = Mmenu.DOM.create( 'li' );
 
-				if ( $di.hasClass( 'dropdown-divider' ) )
+				if ( anchor.matches( '.dropdown-divider' ) )
 				{
-					$li.addClass( 'Divider' );
+					item.classList.add( 'Divider' );
 				}
-				else if ( $di.hasClass( 'dropdown-item' ) )
+				else if ( anchor.matches( '.dropdown-item' ) )
 				{
-					$li.append( cloneLink( $di ) );
+					item.append( cloneLink( anchor ) );
 				}
-				$ul.append( $li );
+				list.append( item );
 			}
 		);
-		return $ul;
+		return list;
 	}
 	function cloneNav( 
-		$n : JQuery
+		nav : HTMLElement
 	) {
-		var $ul = Mmenu.$('<ul />');
-		$n.find( '.nav-item' )
-			.each(function() {
-				var $ni = Mmenu.$(this),
-					$li = Mmenu.$('<li />');
+		var list = Mmenu.DOM.create( 'ul' );
 
-				if ( $ni.hasClass( 'active' ) )
+		Mmenu.DOM.find( nav, '.nav-item' )
+			.forEach(( anchor ) => {
+				var item = Mmenu.DOM.create( 'li' );
+
+				if ( anchor.matches( '.active' ) )
 				{
-					$li.addClass( 'Selected' );
+					item.classList.add( 'Selected' );
 				}
-				if ( !$ni.hasClass( 'nav-link' ) )
+				if ( !anchor.matches( '.nav-link' ) )
 				{
-					var $dd = $ni.children( '.dropdown-menu' );
-					if ( $dd.length )
+					let dropdown = Mmenu.DOM.children( anchor, '.dropdown-menu' )[ 0 ];
+					if ( dropdown )
 					{
-						$li.append( cloneDropdown( $dd ) );
+						item.append( cloneDropdown( dropdown ) );
 					}
-					$ni = $ni.children( '.nav-link' );
+					anchor = Mmenu.DOM.children( anchor, '.nav-link' )[ 0 ];
 				}
-				$li.prepend( cloneLink( $ni ) );
+				item.prepend( cloneLink( anchor ) );
 
-				$ul.append( $li );
+				list.append( item );
 			}
 		);
-		return $ul;
+		return list;
 	}
 };

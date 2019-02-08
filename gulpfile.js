@@ -156,7 +156,7 @@ const cssMixins = () => {
 
 // Compile and concatenate all SCSS files to CSS.
 const cssCompile = () => {
-	var files = [	//	Without the globstar, all files would be put directly in the outputDir
+	var files = [
 		inputDir + '/core/oncanvas/*.scss',
 		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 			+ ')/*.scss',
 		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 		+ ')/*.scss',
@@ -189,17 +189,21 @@ const css = series(
 // 1) Compile and concatenate all TS files to JS.
 const jsCompile = () => {
 	var files = [
-		inputDir + '/core/oncanvas/*.ts',
-		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/*.ts',
-		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/translations/@(' 	+ build.files.translations.join( '|' ) 	+ ').js',
-		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/*.ts',
-		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/translations/@(' 	+ build.files.translations.join( '|' ) 	+ ').js',
+		inputDir + '**/*.d.ts',
+		inputDir + '/core/oncanvas/[!_]*.ts',
+		inputDir + '/core/oncanvas/[_]*.ts',
+		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/[!_]*.ts',
+		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/[_]*.ts',
+		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/translations/@(' 	+ build.files.translations.join( '|' ) 	+ ').ts',
+		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/[!_]*.ts',
+		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/[_]*.ts',
+		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/translations/@(' 	+ build.files.translations.join( '|' ) 	+ ').ts',
 		inputDir + '/wrappers/@(' 	+ build.files.wrappers.join( '|' ) 	+ ')/*.ts'
 	];
 
 	return src( files )
   		.pipe( typescript({
-			"target": "es6"
+			"target": "es5"
   		}) )
 		.pipe( uglify({ 
 			output: {

@@ -7,7 +7,7 @@ Mmenu.addons.fixedElements = function(
 	}
 
 
-	var conf = this.conf.fixedElements;
+	var configs = this.conf.fixedElements;
 
 	var _fixd 	: string,
 		_stck 	: string, 
@@ -27,7 +27,7 @@ Mmenu.addons.fixedElements = function(
 			Mmenu.refactorClass( fxd, _fixd, 'mm-slideout' );
 		});
 
-		document.querySelector( conf.fixed.insertSelector )[ conf.fixed.insertMethod ]( fixed );
+		document.querySelector( configs.fixed.insertSelector )[ configs.fixed.insertMethod ]( fixed );
 
 		//	Sticky elements
 		_stck = this.conf.classNames.fixedElements.sticky;
@@ -45,7 +45,7 @@ Mmenu.addons.fixedElements = function(
 		{
 			if ( window.getComputedStyle( document.documentElement ).overflow == 'hidden' )
 			{
-				let scrollTop = (document.documentElement.scrollTop || document.body.scrollTop) + conf.sticky.offset;
+				let scrollTop = (document.documentElement.scrollTop || document.body.scrollTop) + configs.sticky.offset;
 				stick.forEach(( element ) => {
 					element.style.top = ( parseInt( window.getComputedStyle( element ).top, 10 ) + scrollTop ) + 'px';
 				});
@@ -57,21 +57,4 @@ Mmenu.addons.fixedElements = function(
 			element.style.top = '';
 		});
 	});
-};
-
-
-//	Default options and configuration.
-Mmenu.configs.fixedElements = {
-	fixed	: {
-		insertMethod	: 'append',
-		insertSelector	: 'body'
-	},
-	sticky 	: {
-		offset : 0
-	}
-};
-
-Mmenu.configs.classNames.fixedElements = {
-	fixed 	: 'Fixed',
-	sticky	: 'Sticky'
 };

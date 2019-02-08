@@ -1,58 +1,58 @@
 Mmenu.addons.iconPanels = function(
 	this : Mmenu
 ) {
-	var opts = this.opts.iconPanels;
+	var options = this.opts.iconPanels;
 
 	var keepFirst = false;
 
 
 	//	Extend shorthand options
-	if ( typeof opts == 'boolean' )
+	if ( typeof options == 'boolean' )
 	{
-		(opts as mmLooseObject) = {
-			add : opts
+		(options as mmLooseObject) = {
+			add : options
 		};
 	}
-	if ( typeof opts == 'number' ||
-		 typeof opts == 'string'
+	if ( typeof options == 'number' ||
+		 typeof options == 'string'
 	) {
-		(opts as mmLooseObject) = {
+		(options as mmLooseObject) = {
 			add 	: true,
-			visible : opts
+			visible : options
 		};
 	}
 
-	if ( typeof opts != 'object' )
+	if ( typeof options != 'object' )
 	{
-		(opts as mmLooseObject) = {};
+		(options as mmLooseObject) = {};
 	}
 
-	if ( opts.visible == 'first' )
+	if ( options.visible == 'first' )
 	{
 		keepFirst = true;
-		opts.visible = 1;
+		options.visible = 1;
 	}
 	//	/Extend shorthand options
 
 
-	this.opts.iconPanels = Mmenu.extend( opts, Mmenu.options.iconPanels );
+	this.opts.iconPanels = Mmenu.extend( options, Mmenu.options.iconPanels );
 
 
-	opts.visible = Math.min( 3, Math.max( 1, (opts.visible as number) ) );
-	opts.visible++;
+	options.visible = Math.min( 3, Math.max( 1, (options.visible as number) ) );
+	options.visible++;
 
 
 	//	Add the iconpanels
-	if ( opts.add )
+	if ( options.add )
 	{
 		this.bind( 'initMenu:after', () => {
 			var cls = [ 'mm-menu_iconpanel' ];
 
-			if ( opts.hideNavbar )
+			if ( options.hideNavbar )
 			{
 				cls.push( 'mm-menu_hidenavbar' );
 			}
-			if ( opts.hideDivider )
+			if ( options.hideDivider )
 			{
 				cls.push( 'mm-menu_hidedivider' );
 			}
@@ -63,7 +63,7 @@ Mmenu.addons.iconPanels = function(
 		var cls = '';
 		if ( !keepFirst )
 		{
-			for ( var i = 0; i <= opts.visible; i++ )
+			for ( var i = 0; i <= options.visible; i++ )
 			{
 				cls += ' mm-panel_iconpanel-' + i;
 			}
@@ -109,7 +109,7 @@ Mmenu.addons.iconPanels = function(
 				});
 
 				//	Slice the opened panels to the max visible amount.
-				panels = panels.slice( -opts.visible );
+				panels = panels.slice( -options.visible );
 
 				//	Add the "iconpanel" classnames.
 				panels.forEach(( panel, p ) => {
@@ -128,7 +128,7 @@ Mmenu.addons.iconPanels = function(
 		this.bind( 'initListview:after', (
 			panel : HTMLElement
 		) => {
-			if ( opts.blockPanel &&
+			if ( options.blockPanel &&
 				!panel.parentElement.matches( '.mm-listitem_vertical' ) &&
 				!Mmenu.DOM.children( panel, '.mm-panel__blocker' )[ 0 ]
 			) {
@@ -139,14 +139,4 @@ Mmenu.addons.iconPanels = function(
 			}	
 		});
 	}
-};
-
-
-//	Default options and configuration.
-Mmenu.options.iconPanels = {
-	add 		: false,
-	blockPanel	: true,
-	hideDivider	: false,
-	hideNavbar	: true,
-	visible		: 3
 };
