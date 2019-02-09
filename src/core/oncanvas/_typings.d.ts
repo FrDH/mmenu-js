@@ -63,50 +63,94 @@ interface mmMethodI18n {
 	) : string | object
 }
 
-//	TODO	add description for each option
 /**	Options for the menu. */
 interface mmOptions {
+
 	/** Funcitons to invoke in hooks. */
-	hooks 				: mmFunctionObject
+	hooks : mmFunctionObject
 
 	/** List of extensions to use. */
-	extensions			: mmOptionsExensions | string[]
+	extensions : mmOptionsExensions | string[]
 
 	/** List of wrappers to use. */
-	wrappers			: string[]
+	wrappers : string[]
 
 	/** Options for the navbar. */
-	navbar 				: mmOptionsNavbar
+	navbar : mmOptionsNavbar
 
 	/** Options for clicking a listitem. */
-	onClick				: mmOptionsOnclick
+	onClick : mmOptionsOnclick
 
 	/** Whether or not to use sliding submenus.*/
-	slidingSubmenus		: boolean
+	slidingSubmenus : boolean
+
+
 
 	//	Core add-ons
-	offCanvas			?: mmOptionsOffcanvas
-	screenReader		?: mmOptionsScreenreader
-	scrollBugFix		?: mmOptionsScrollbugfix
+
+	/** Optons for the off-canvas add-on. */
+	offCanvas ?: mmOptionsOffcanvas
+
+	/** Options for the screen reader add-on. */
+	screenReader ?: mmOptionsScreenreader
+
+	/** Options for the scroll bug fix add-on. */
+	scrollBugFix ?: mmOptionsScrollbugfix
+
+
 
 	//	Add-ons
-	autoHeight			?: mmOptionsAutoheight
-	backButton			?: mmOptionsBackbutton
-	columns				?: mmOptionsColumns
-	counters			?: mmOptionsCounters
-	dividers 			?: mmOptionsDividers
-	drag 				?: mmOptionsDrag
-	dropdown			?: mmOptionsDropdown
-	iconbar 			?: mmOptionsIconbar
-	iconPanels			?: mmOptionsIconpanels
-	keyboardNavigation	?: mmOptionsKeyboardnavigation
-	lazySubmenus		?: mmOptionsLazysubmenus
-	navbars				?: mmOptionsNavbarsNavbar[]
-	pageScroll			?: mmOptionsPagescroll
-	searchfield			?: mmOptionsSearchfield
-	sectionIndexer		?: mmOptionsSectionindexer
-	setSelected			?: mmOptionsSetselected
-	sidebar				?: mmOptionsSidebar
+
+	/** Optons for the auto height add-on. */
+	autoHeight ?: mmOptionsAutoheight
+
+	/** Optons for the back button add-on. */
+	backButton ?: mmOptionsBackbutton
+
+	/** Optons for the columns add-on. */
+	columns ?: mmOptionsColumns
+
+	/** Optons for the counters add-on. */
+	counters ?: mmOptionsCounters
+
+	/** Optons for the dividers add-on. */
+	dividers ?: mmOptionsDividers
+
+	/** Optons for the drag add-on. */
+	drag ?: mmOptionsDrag
+
+	/** Optons for the dropdown add-on. */
+	dropdown ?: mmOptionsDropdown
+
+	/** Optons for the iconbar add-on. */
+	iconbar ?: mmOptionsIconbar
+
+	/** Optons for the icon panels add-on. */
+	iconPanels ?: mmOptionsIconpanels
+
+	/** Optons for the keyboard navigation add-on. */
+	keyboardNavigation ?: mmOptionsKeyboardnavigation
+
+	/** Optons for the lazy submenus add-on. */
+	lazySubmenus ?: mmOptionsLazysubmenus
+
+	/** Range of navbar options for the navbars add-on. */
+	navbars ?: mmOptionsNavbarsNavbar[]
+
+	/** Optons for the page scroll add-on. */
+	pageScroll ?: mmOptionsPagescroll
+
+	/** Optons for the searchfield add-on. */
+	searchfield ?: mmOptionsSearchfield
+
+	/** Optons for the section indexer add-on. */
+	sectionIndexer ?: mmOptionsSectionindexer
+
+	/** Optons for the set selected add-on. */
+	setSelected ?: mmOptionsSetselected
+
+	/** Optons for the sidebar add-on. */
+	sidebar ?: mmOptionsSidebar
 }
 
 
@@ -124,33 +168,70 @@ interface mmOptionsNavbar {
 
 /**	onClick options for the menu. */
 interface mmOptionsOnclick {
-	close				: boolean
-	preventDefault		: boolean
-	setSelected			: boolean
+
+	/** Whether or not to close the menu after clicking a menu item. */
+	close : boolean
+
+	/** Whether or not to prevent the default behavior after clicking a menu item. */
+	preventDefault : boolean
+
+	/** Whether or not to a clicked menu item selected. */
+	setSelected : boolean
 }
 
 
-//	TODO	add description for each option
 /**	Configuration for the menu. */
 interface mmConfigs {
-	classNames			: mmLooseObject
-	clone				: boolean
-	language			: string
-	openingInterval		: number
-	panelNodetype		: string[]
-	transitionDuration	: number
+
+	/** Object with classnames to refactor. */
+	classNames : mmLooseObject
+
+	/** Whether or not to use a clone of the menu node. */
+	clone : boolean
+
+	/** The language to translate to. */
+	language : 'nl' | 'de' | 'ru' | 'fa'
+
+	/** Interval between the setup and opening the menu. */
+	openingInterval : number
+
+	/** List of node-types that are considered to be panels. */
+	panelNodetype : string[]
+
+	/** The duration of transitions. */
+	transitionDuration : number
+
+
 
 	//	Core add-ons
-	offCanvas 			?: mmConfigsOffcanvas
-	screenReader		?: mmConfigsScreenreader
+
+	/** Configuration for the off-canvas add-on. */
+	offCanvas ?: mmConfigsOffcanvas
+
+	/** Configuration for the screen reader add-on. */
+	screenReader ?: mmConfigsScreenreader
+
+
 
 	//	Add-ons
-	drag 				?: mmConfigsDrag
-	dropdown			?: mmConfigsDropdown
-	fixedElements		?: mmConfigsFixedelements
-	navbars				?: mmConfigsNavbars
-	pageScroll			?: mmConfigsPagescroll
-	searchfield			?: mmConfigsSearchfield
+
+	/** Configuration for the drag add-on. */
+	drag ?: mmConfigsDrag
+
+	/** Configuration for the dropdown add-on. */
+	dropdown ?: mmConfigsDropdown
+
+	/** Configuration for the fixed elements add-on. */
+	fixedElements ?: mmConfigsFixedelements
+
+	/** Configuration for the navbars add-on. */
+	navbars ?: mmConfigsNavbars
+
+	/** Configuration for the page scroll add-on. */
+	pageScroll ?: mmConfigsPagescroll
+
+	/** Configuration for the searchfield add-on. */
+	searchfield	?: mmConfigsSearchfield
 }
 
 
