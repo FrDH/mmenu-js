@@ -37,16 +37,15 @@ Mmenu.addons.pageScroll = function(
 		try
 		{
 			if ( href != '#' &&
-				href.slice( 0, 1 ) == '#' &&
-				Mmenu.node.page.querySelector( href )
+				href.slice( 0, 1 ) == '#'
 			) {
-				return true;
+				return (Mmenu.node.page.querySelector( href ) as HTMLElement);
 			}
-			return false;
+			return null;
 		}
 		catch( err )
 		{
-			return false;
+			return null;
 		}
 	}
 
@@ -78,12 +77,12 @@ Mmenu.addons.pageScroll = function(
 
 			//	Don't continue if the targeted section is not on the page.
 			var href = anchor.getAttribute( 'href' );
-			if ( !anchorInPage( href ) )
+
+			section = anchorInPage( href );
+			if ( !section )
 			{
 				return;
 			}
-
-			section = document.querySelector( href );
 
 			//	If the sidebar add-on is "expanded"...
 			if ( this.node.menu.matches( '.mm-menu_sidebar-expanded' ) && 
@@ -107,26 +106,23 @@ Mmenu.addons.pageScroll = function(
 	//	Update selected menu item after scrolling.
 	if ( options.update )
 	{
-		let orgs = [],
-			scts = [];
+		let scts : HTMLElement[] = [];
 
 		this.bind( 'initListview:after', (
 			panel : HTMLElement
 		) => {
 			//	TODO de sections zouden geordend moeten worden op de hoogte in de DOM, niet op volgorde in het menu.
-			//	TODO querySelector haalt een enkel HTML element op, er kunnen meerdere lisviews in een panel zitten.
-			let listitems = Mmenu.DOM.children( panel.querySelector( '.mm-listview' ), 'li' );
+			let listitems = Mmenu.DOM.find( panel, '.mm-listitem' );
 			Mmenu.filterListItemAnchors( listitems )
 				.forEach(( anchor ) => {
 					var href = anchor.getAttribute( 'href' );
+					var section = anchorInPage( href );
 
-					if ( anchorInPage( href ) )
+					if ( section )
 					{
-						orgs.push( href );
+						scts.unshift( section );
 					}
 				});
-
-			scts = orgs.reverse();
 		});
 
 		let _selected = -1;
@@ -145,7 +141,8 @@ Mmenu.addons.pageScroll = function(
 						let panel 		= Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ],
 							listitems	= Mmenu.DOM.find( panel, '.mm-listitem' ),
 							anchors 	= Mmenu.filterListItemAnchors( listitems );
-							anchors 	= anchors.filter( anchor => anchor.matches( '[href="' + scts[ s ] + '"]' ) );
+
+						anchors = anchors.filter( anchor => anchor.matches( '[href="#' + scts[ s ].id + '"]' ) );
 
 						if ( anchors.length )
 						{

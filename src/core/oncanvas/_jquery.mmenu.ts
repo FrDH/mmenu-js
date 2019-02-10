@@ -30,4 +30,4 @@
 		};
 	}
 
- })( jQuery || Zepto || null );
+ })( window[ 'jQuery' ] || window[ 'Zepto' ] || null );

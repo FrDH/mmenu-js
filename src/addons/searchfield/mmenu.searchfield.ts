@@ -353,12 +353,13 @@ Mmenu.prototype._initSearching = function(
 	data.listitems  = listitems.filter( listitem => !listitem.matches( '.mm-listitem_divider' ) );
 	data.dividers	= listitems.filter( listitem => listitem.matches( '.mm-listitem_divider' ) );
 
-	input[ 'mmSearchfield' ] = data;
-
 
 	var searchpanel : HTMLElement = Mmenu.DOM.children( this.node.pnls, '.mm-panel_search' )[ 0 ],
 		input 		: HTMLElement = Mmenu.DOM.find( form, 'input' )[ 0 ],
 		cancel 		: HTMLElement = Mmenu.DOM.find( form, '.mm-searchfield__cancel' )[ 0 ];
+
+
+	input[ 'mmSearchfield' ] = data;
 
 
 	//	Open the splash panel when focussing the input.
@@ -465,7 +466,7 @@ Mmenu.prototype._initSearching = function(
 	};
 
 	//	Add the focus eventlistener to the input.
-	input.addEventListener( 'focus', this.evnt.inputInputSearchfieldSearch );
+	input.addEventListener( 'input', this.evnt.inputInputSearchfieldSearch );
 
 
 	//	Fire once initially
@@ -514,7 +515,7 @@ Mmenu.prototype.search = function(
 
 	var form 		: HTMLElement 	= (input.closest( '.mm-searchfield' ) as HTMLElement),
 		buttons 	: HTMLElement[] = Mmenu.DOM.find( (form as HTMLElement), '.mm-btn' ),
-		searchpanel : HTMLElement 	=  Mmenu.DOM.children( this.node.pnls, '.mm-panel_search' )[ 0 ];
+		searchpanel : HTMLElement 	= Mmenu.DOM.children( this.node.pnls, '.mm-panel_search' )[ 0 ];
 
 	var panels 		: HTMLElement[] = data.panels,
 		noresults 	: HTMLElement[] = data.noresults,
@@ -532,8 +533,10 @@ Mmenu.prototype.search = function(
 	//	TODO: dit klopt niet meer	
 		// Mmenu.$(listitems).find( '.mm-btn_fullwidth-search' )
 		// .removeClass( 'mm-btn_fullwidth-search mm-btn_fullwidth' );
-
-	Mmenu.DOM.children( searchpanel, '.mm-listview' )[ 0 ].innerHTML = '';
+	if ( searchpanel )
+	{
+		Mmenu.DOM.children( searchpanel, '.mm-listview' )[ 0 ].innerHTML = '';
+	}
 
 	panels.forEach(( panel ) => {
 		panel.scrollTop = 0;
@@ -685,8 +688,11 @@ Mmenu.prototype.search = function(
 				let listitems = Mmenu.DOM.find( panel, '.mm-listitem' );
 				Mmenu.filterListItems( listitems )
 					.forEach(( listitem ) => {
-						Mmenu.DOM.prevAll( listitem, '.mm-listitem_divider' )[ 0 ]
-							.classList.remove( 'mm-hidden' );
+						let divider = Mmenu.DOM.prevAll( listitem, '.mm-listitem_divider' )[ 0 ];
+						if ( divider )
+						{
+							divider.classList.remove( 'mm-hidden' );
+						}
 					});
 			});
 
@@ -694,15 +700,13 @@ Mmenu.prototype.search = function(
 
 
 		//	Show submit / clear button
-		buttons.forEach(( button ) => {
-			button.classList.remove( 'mm-hidden' );
-		});
+		buttons.forEach( button => button.classList.remove( 'mm-hidden' ) );
 
 
 		//	Show/hide no results message
-		noresults.forEach(( wrapper ) => {
-			Mmenu.DOM.find( wrapper, '.mm-panel__noresultsmsg' )[ 0 ]
-				.classList[ listitems.filter( listitem => !listitem.matches( '.mm-hidden' ) ).length ? 'add' : 'remove' ]( 'mm-hidden' );
+		noresults.forEach( wrapper => {
+			Mmenu.DOM.find( wrapper, '.mm-panel__noresultsmsg' )
+				.forEach( message => message.classList[ listitems.filter( listitem => !listitem.matches( '.mm-hidden' ) ).length ? 'add' : 'remove' ]( 'mm-hidden' ) );
 		});
 
 
@@ -711,17 +715,13 @@ Mmenu.prototype.search = function(
 			//	Hide splash
 			if ( options.panel.splash )
 			{
-				Mmenu.DOM.find( searchpanel, '.mm-panel__searchsplash' )[ 0 ]
-					.classList.add( 'mm-hidden' );
+				Mmenu.DOM.find( searchpanel, '.mm-panel__searchsplash' )
+					.forEach( splash => splash.classList.add( 'mm-hidden' ) );
 			}
 
 			//	Re-show original listitems when in search panel
-			listitems.forEach(( listitem ) => {
-				listitem.classList.remove( 'mm-hidden' );
-			});
-			dividers.forEach(( divider ) => {
-				divider.classList.remove( 'mm-hidden' );
-			});
+			listitems.forEach( listitem => listitem.classList.remove( 'mm-hidden' ) );
+			dividers.forEach( divider => divider.classList.remove( 'mm-hidden' ) );
 		}
 	}
 
@@ -731,22 +731,16 @@ Mmenu.prototype.search = function(
 	{
 
 		//	Show all items
-		listitems.forEach(( listitem ) => {
-			listitem.classList.remove( 'mm-hidden' );
-		});
-		dividers.forEach(( divider ) => {
-			divider.classList.remove( 'mm-hidden' );
-		});
+		listitems.forEach( listitem => listitem.classList.remove( 'mm-hidden' ) );
+		dividers.forEach( divider => divider.classList.remove( 'mm-hidden' ) );
 
 		//	Hide submit / clear button
-		buttons.forEach(( button ) => {
-			button.classList.add( 'mm-hidden' );
-		});
+		buttons.forEach( button => button.classList.add( 'mm-hidden' ) );
 
 		//	Hide no results message
-		noresults.forEach(( wrapper ) => {
-			Mmenu.DOM.find( wrapper, '.mm-panel__noresultsmsg' )[ 0 ]
-				.classList.add( 'mm-hidden' );
+		noresults.forEach( wrapper => {
+			Mmenu.DOM.find( wrapper, '.mm-panel__noresultsmsg' )
+				.forEach( message => message.classList.add( 'mm-hidden' ) );
 		});
 
 
@@ -755,8 +749,8 @@ Mmenu.prototype.search = function(
 			//	Show splash
 			if ( options.panel.splash )
 			{
-				Mmenu.DOM.find( searchpanel, '.mm-panel__searchsplash' )[ 0 ]
-					.classList.remove( 'mm-hidden' );
+				Mmenu.DOM.find( searchpanel, '.mm-panel__searchsplash' )
+					.forEach( splash => splash.classList.remove( 'mm-hidden' ) );
 			}
 
 			//	Close panel 

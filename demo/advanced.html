@@ -5,13 +5,18 @@
 		<meta name="author" content="www.frebsite.nl" />
 		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
 
-		<title>jQuery.mmenu demo</title>
+		<title>mmenu.js demo</title>
 
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 		<link rel="stylesheet" href="css/demo.css" />
-		<link rel="stylesheet" href="../dist/jquery.mmenu.all.css" />
+		<link rel="stylesheet" href="../dist/mmenu.css" />
 
 		<style>
+			.mm-menu {
+				--mm-listitem-size: 50px;
+				--mm-navbar-size: 50px;
+			}
+
 			@media (min-width: 992px) {
 				.header a {
 					display: none;
@@ -30,11 +35,11 @@
 		</style>
 
 		<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-		<script src="../dist/jquery.mmenu.all.js"></script>
+		<script src="../dist/mmenu.js"></script>
 		<script>
 			$(function() {
 				$('nav#menu').mmenu({
-					extensions	: [ 'theme-dark' ],
+					extensions	: [ 'theme-dark', 'shadow-page' ],
 					setSelected	: true,
 					counters	: true,
 					searchfield : {
@@ -42,7 +47,6 @@
 					},
 					iconbar		: {
 						add 		: true,
-						size		: 40,
 						top 		: [ 
 							'<a href="#/"><span class="fa fa-home"></span></a>'
 						],
@@ -55,12 +59,10 @@
 					sidebar		: {
 						collapsed		: {
 							use 			: '(min-width: 450px)',
-							size			: 40,
 							hideNavbar		: false
 						},
 						expanded		: {
-							use 			: '(min-width: 992px)',
-							size			: 35
+							use 			: '(min-width: 992px)'
 						}
 					},
 					navbars		: [

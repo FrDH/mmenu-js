@@ -1,14 +1,14 @@
 /*
 	Tasks:
 
-	$ gulp 					: Runs "css" and "js" tasks
-	$ gulp watch			: Starts a watch on "css" and "js" tasks
+	$ gulp 					: Runs "css" and "js" tasks.
+	$ gulp watch			: Starts a watch on "css" and "js" tasks.
 
 
 	Flags:
 
-	--o ../path/to 	: Sets the "output" directory to the specified directory
-	--c ../path/to 	: Creates a "custom build" using _build.json and _variables.custom.scss from the specified directory
+	--o ../path/to 	: Sets the "output" directory to the specified directory.
+	--c ../path/to 	: Creates a "custom build" using _build.json and _variables.custom.scss from the specified directory.
 
 
 	Examples:
@@ -187,9 +187,17 @@ const css = series(
 */
 
 // 1) Compile and concatenate all TS files to JS.
-const jsCompile = () => {
-	var files = [
+const js = () => {
+
+	var files = [];
+
+	//	Add typings.
+	files.push(
 		inputDir + '**/*.d.ts',
+	);
+
+	//	Add files.
+	files.push(
 		inputDir + '/core/oncanvas/[!_]*.ts',
 		inputDir + '/core/oncanvas/[_]*.ts',
 		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/[!_]*.ts',
@@ -199,23 +207,19 @@ const jsCompile = () => {
 		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/[_]*.ts',
 		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/translations/@(' 	+ build.files.translations.join( '|' ) 	+ ').ts',
 		inputDir + '/wrappers/@(' 	+ build.files.wrappers.join( '|' ) 	+ ')/*.ts'
-	];
+	);
 
 	return src( files )
   		.pipe( typescript({
 			"target": "es5"
   		}) )
-		.pipe( uglify({ 
-			output: {
-				comments: "/^!/"
-			}
-		}) )
+		// .pipe( uglify({ 
+		// 	output: {
+		// 		comments: "/^!/"
+		// 	}
+		// }) )
 		.on( 'error', ( err ) => { console.log( err ) } )
 		.pipe( concat( build.name + '.js' ) )
 		.pipe( dest( outputDir ) );
 };
-
-const js = series(
-	jsCompile
-);
 

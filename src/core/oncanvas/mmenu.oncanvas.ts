@@ -1,7 +1,5 @@
 /*!
- * mmenu v8.0.0
- * @requires jQuery 1.7.0 or later
- *
+ * mmenu.js v8.0.0
  * mmenujs.com
  *	
  * Copyright (c) Fred Heusschen
@@ -72,11 +70,11 @@ class Mmenu {
 	/** MatchMedia hooks used for the menu. */
 	mtch	: mmLooseObject
 
-	/** Click handlers used for the menu. */
-	clck	: Function[]
-
 	/** EventListeners used for the menu. */
 	evnt	: mmEventObject;
+
+	/** Click handlers used for the menu. */
+	clck	: Function[]
 
 
 	/** Log deprecated warnings when using the debugger. */
@@ -144,6 +142,7 @@ class Mmenu {
 		this.vars	= {};
 		this.hook 	= {};
 		this.mtch 	= {};
+		this.evnt 	= {};
 		this.clck 	= [];
 
 		//	Get menu node from string or element.
@@ -1442,15 +1441,15 @@ class Mmenu {
 			var previous : HTMLElement[] = [];
 
 			/** Current element in the loop */
-			var current = element;
+			var current = (element.previousElementSibling as HTMLElement);
 
 			while ( current )
 			{
-				current = (current.previousElementSibling as HTMLElement);
 				if ( !filter || current.matches( filter ) )
 				{
 					previous.push( current );
 				}
+				current = (current.previousElementSibling as HTMLElement);
 			}
 
 			return previous;
