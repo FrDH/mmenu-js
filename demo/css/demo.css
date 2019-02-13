@@ -1,10 +1,8 @@
-html, body
-{
+html, body {
 	padding: 0;
 	margin: 0;
 }
-body
-{
+body {
 	background-color: #fff;
 	font-family: Arial, Helvetica, Verdana;
 	font-size: 14px;
@@ -13,54 +11,41 @@ body
 	position: relative;
 	-webkit-text-size-adjust: none;
 }
-body *
-{
-	text-shadow: none;
-}
-h1, h2, h3, h4, h5, h6
-{
+h1, h2, h3, h4, h5, h6 {
 	line-height: 1;
 	font-weight: bold;
 	margin: 20px 0 10px 0;
 }
-h1, h2, h3
-{
+h1, h2, h3 {
 	font-size: 18px;
 }
-h4, h5, h6
-{
+h4, h5, h6 {
 	font-size: 16px;
 }
-p
-{
+p {
 	margin: 0 0 10px 0;
 }
-a, a:link, a:active, a:visited, a:hover
-{
+a, a:link, a:active, a:visited, a:hover {
 	color: inherit;
 	text-decoration: underline;
 }
 
-nav:not(.mm-menu)
-{
+nav:not(.mm-menu) {
 	display: none;
 }
 
 .header,
 .content,
-.footer
-{
+.footer {
 	text-align: center;
 }
 .header,
-.footer
-{
+.footer {
 	background: #777;
 	font-size: 16px;
 	font-weight: bold;
 	color: #fff;
 	line-height: 40px;
-
 
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;	
@@ -68,20 +53,17 @@ nav:not(.mm-menu)
 	height: 40px;
 	padding: 0 50px;
 }
-.header.fixed
-{
+.header.fixed {
 	position: fixed;
 	top: 0;
 	left: 0;
 }
-.footer.fixed
-{
+.footer.fixed {
 	position: fixed;
 	bottom: 0;
 	left: 0;
 }
-.header a
-{
+.header a {
 	display: block;
 	width: 28px;
 	height: 18px;
@@ -91,21 +73,18 @@ nav:not(.mm-menu)
 	left: 0;
 }
 .header a:before,
-.header a:after
-{
+.header a:after {
 	content: '';
 	display: block;
 	background: #fff;
 	height: 2px;
 }
-.header a span
-{
+.header a span {
 	background: #fff;
 	display: block;
 	height: 2px;
 	margin: 6px 0;
 }
-.content
-{
+.content {
 	padding: 150px 50px 50px 50px;
 }
