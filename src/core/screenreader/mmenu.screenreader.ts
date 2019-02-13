@@ -20,7 +20,6 @@ Mmenu.addons.screenReader = function(
 	//	/Extend shorthand options
 
 
-	//opts = this.opts.screenReader = jQuery.extend( true, {}, Mmenu.options.screenReader, opts );
 	this.opts.screenReader = Mmenu.extend( options, Mmenu.options.screenReader );
 
 

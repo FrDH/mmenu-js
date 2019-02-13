@@ -1241,7 +1241,6 @@ class Mmenu {
 						{
 							translations[ language ] = {};
 						}
-						//jQuery.extend( translations[ language ], text );
 						Mmenu.extend( translations[ language ], (text as object) );
 					}
 					return translations;

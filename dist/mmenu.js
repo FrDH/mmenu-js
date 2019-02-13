@@ -949,7 +949,6 @@ var Mmenu = /** @class */ (function () {
                         if (typeof translations[language] == 'undefined') {
                             translations[language] = {};
                         }
-                        //jQuery.extend( translations[ language ], text );
                         Mmenu.extend(translations[language], text);
                     }
                     return translations;
@@ -1469,7 +1468,6 @@ Mmenu.addons.screenReader = function () {
         options = {};
     }
     //	/Extend shorthand options
-    //opts = this.opts.screenReader = jQuery.extend( true, {}, Mmenu.options.screenReader, opts );
     this.opts.screenReader = Mmenu.extend(options, Mmenu.options.screenReader);
     //	Add Aria-* attributes
     if (options.aria) {

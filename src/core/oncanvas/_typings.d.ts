@@ -1,7 +1,3 @@
-// declare var jQuery : any
-declare var Zepto : any
-
-
 /** An object with any value. */
 interface mmLooseObject {
 	[key: string] 	: any

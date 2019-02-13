@@ -1,13 +1,8 @@
 /*	
- * Debugger for mmenu
- * Include this file after including the jquery.mmenu plugin to debug your menu.
+ * Debugger for mmenu.js
+ * Include this file after including the mmenu.js plugin to debug your menu.
  */
-
-
-(function( $ ) {
-
-return;
-
+(function() {
 	var _cns = Mmenu.console || console || { info: function() {}, log: function() {}, warn: function() {} };
 
 	function debug( msg )
@@ -44,5 +39,4 @@ return;
 		//	Lets rethink this whole thing :)
 	};
 
-
-})( jQuery );
+})();

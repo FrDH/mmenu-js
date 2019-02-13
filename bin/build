@@ -4,7 +4,7 @@ include dirname( __FILE__ ) . '/_inc.php';
 
 $langs	= [];
 $output = '{
-	"name" 	: "jquery.mmenu.all",
+	"name" 	: "mmenu",
 	"umd"	: true,
 	"files" : {';
 
