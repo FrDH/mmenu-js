@@ -1,8 +1,8 @@
 /*!
- * jQuery mmenu v7.2.3
+ * jQuery mmenu v7.3.0
  * @requires jQuery 1.7.0 or later
  *
- * mmenu.frebsite.nl
+ * mmenujs.com
  *	
  * Copyright (c) Fred Heusschen
  * www.frebsite.nl
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	const _PLUGIN_  = 'mmenu';
-	const _VERSION_	= '7.2.3';
+	const _VERSION_	= '7.3.0';
 
 
 	//	Newer version of the plugin already excists
@@ -1057,10 +1057,6 @@
 		//	First time plugin is fired
 		initPlugin();
 
-		//	Extend options
-		opts = $.extend( true, {}, $[ _PLUGIN_ ].defaults, opts );
-		conf = $.extend( true, {}, $[ _PLUGIN_ ].configuration, conf );
-
 		var $result = $();
 		this.each(
 			function()
@@ -1071,7 +1067,11 @@
 					return;
 				}
 
-				var _menu = new $[ _PLUGIN_ ]( $menu, opts, conf );
+				//	Extend options
+				var optsCopy = jQuery.extend(true, {}, $[ _PLUGIN_ ].defaults, opts),
+					confCopy = jQuery.extend(true, {}, $[ _PLUGIN_ ].configuration, opts);
+
+				var _menu = new $[ _PLUGIN_ ]( $menu, optsCopy, confCopy );
 				_menu.$menu.data( _PLUGIN_, _menu.__api() );
 
 				$result = $result.add( _menu.$menu );

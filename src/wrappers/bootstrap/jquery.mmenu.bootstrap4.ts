@@ -88,7 +88,8 @@
 
 	function cloneLink( $a )
 	{
-		var $i = $('<a />');
+		var $i = $a.is( 'a' ) ? $('<a />') : $('<span />');
+
 		var attr = ['href', 'title', 'target'];
 		for ( var a= 0; a < attr.length; a++ )
 		{
