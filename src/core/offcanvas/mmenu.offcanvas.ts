@@ -202,7 +202,7 @@ Mmenu.prototype._openSetup = function(
 	Mmenu.node.page[ 'mmStyle' ] = Mmenu.node.page.getAttribute( 'style' ) || '';
 
 	//	Trigger window-resize to measure height
-	(Mmenu.evnt.windowResizeOffCanvas as Function).call( {} );
+	(Mmenu.evnt.windowResizeOffCanvas as Function)( { force: true } );
 
 	var clsn = [ 'mm-wrapper_opened' ];
 
@@ -398,8 +398,9 @@ Mmenu.prototype._initWindow_offCanvas = function(
 		Mmenu.evnt.windowResizeOffCanvas = ( evnt ) => {
 			if ( Mmenu.node.page )
 			{
-				if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
-				{
+				if ( document.documentElement.matches( '.mm-wrapper_opening' ) 
+					|| (evnt as any).force
+				) {
 					newHeight = window.innerHeight;
 					if ( newHeight != oldHeight )
 					{
@@ -410,7 +411,7 @@ Mmenu.prototype._initWindow_offCanvas = function(
 			}
 		}
 
-		window.addEventListener( 'keydown', Mmenu.evnt.windowResizeOffCanvas )
+		window.addEventListener( 'resize', Mmenu.evnt.windowResizeOffCanvas )
 	}
 };
 

@@ -71,7 +71,7 @@ Mmenu.wrappers.bootstrap4 = function(
 	function cloneLink( 
 		anchor : HTMLElement
 	) {
-		var link = Mmenu.DOM.create( 'a' );
+		var link = Mmenu.DOM.create( anchor.matches( 'a' ) ? 'a' : 'span' );
 
 		//	Copy attributes
 		var attr = ['href', 'title', 'target'];

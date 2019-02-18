@@ -1268,7 +1268,7 @@ Mmenu.prototype._openSetup = function () {
     //	Store style and position
     Mmenu.node.page['mmStyle'] = Mmenu.node.page.getAttribute('style') || '';
     //	Trigger window-resize to measure height
-    Mmenu.evnt.windowResizeOffCanvas.call({});
+    Mmenu.evnt.windowResizeOffCanvas({ force: true });
     var clsn = ['mm-wrapper_opened'];
     //	Add options
     if (options.blockUI) {
@@ -1405,7 +1405,8 @@ Mmenu.prototype._initWindow_offCanvas = function () {
     if (!Mmenu.evnt.resizeOffCanvas) {
         Mmenu.evnt.windowResizeOffCanvas = function (evnt) {
             if (Mmenu.node.page) {
-                if (document.documentElement.matches('.mm-wrapper_opened')) {
+                if (document.documentElement.matches('.mm-wrapper_opening')
+                    || evnt.force) {
                     newHeight = window.innerHeight;
                     if (newHeight != oldHeight) {
                         oldHeight = newHeight;
@@ -1414,7 +1415,7 @@ Mmenu.prototype._initWindow_offCanvas = function () {
                 }
             }
         };
-        window.addEventListener('keydown', Mmenu.evnt.windowResizeOffCanvas);
+        window.addEventListener('resize', Mmenu.evnt.windowResizeOffCanvas);
     }
 };
 /**
@@ -1452,6 +1453,92 @@ Mmenu.prototype._initBlocker = function () {
     Mmenu.node.blck.addEventListener('touchstart', closeMenu); // 2
     Mmenu.node.blck.addEventListener('touchmove', closeMenu); // 3
     this.trigger('initBlocker:after');
+};
+
+Mmenu.addons.scrollBugFix = function () {
+    var _this = this;
+    //	The scrollBugFix add-on fixes a scrolling bug
+    //		1) on touch devices
+    //		2) in an off-canvas menu 
+    //		3) that -when opened- blocks the UI from interaction 
+    if (!Mmenu.support.touch || // 1
+        !this.opts.offCanvas || // 2
+        !this.opts.offCanvas.blockUI // 3
+    ) {
+        return;
+    }
+    var options = this.opts.scrollBugFix;
+    //	Extend shorthand options
+    if (typeof options == 'boolean') {
+        options = {
+            fix: options
+        };
+    }
+    if (typeof options != 'object') {
+        options = {};
+    }
+    //	Extend shorthand options
+    this.opts.scrollBugFix = Mmenu.extend(options, Mmenu.options.scrollBugFix);
+    if (!options.fix) {
+        return;
+    }
+    //	When opening the menu, scroll to the top of the current opened panel.
+    this.bind('open:start', function () {
+        Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0].scrollTop = 0;
+    });
+    this.bind('initMenu:after', function () {
+        //	Only needs to be done once per page.
+        if (!_this.vars.scrollBugFixed) {
+            var scrolling_1 = false;
+            //	Prevent the body from scrolling.
+            document.addEventListener('touchmove', function (evnt) {
+                if (document.documentElement.matches('.mm-wrapper_opened')) {
+                    evnt.preventDefault();
+                }
+            });
+            document.body.addEventListener('touchstart', function (evnt) {
+                var panel = evnt.target;
+                if (!panel.matches('.mm-panels > .mm-panel')) {
+                    return;
+                }
+                if (document.documentElement.matches('.mm-wrapper_opened')) {
+                    if (!scrolling_1) {
+                        //	Since we're potentially scrolling the panel in the onScroll event, 
+                        //	this little hack prevents an infinite loop.
+                        scrolling_1 = true;
+                        if (panel.scrollTop === 0) {
+                            panel.scrollTop = 1;
+                        }
+                        else if (panel.scrollHeight === panel.scrollTop + panel.offsetHeight) {
+                            panel.scrollTop -= 1;
+                        }
+                        //	End of infinite loop preventing hack.
+                        scrolling_1 = false;
+                    }
+                }
+            });
+            document.body.addEventListener('touchmove', function (evnt) {
+                var panel = evnt.target;
+                if (!panel.matches('.mm-panels > .mm-panel')) {
+                    return;
+                }
+                if (document.documentElement.matches('.mm-wrapper_opened')) {
+                    if (panel.scrollHeight > panel.clientHeight) {
+                        evnt.stopPropagation();
+                    }
+                }
+            });
+        }
+        _this.vars.scrollBugFixed = true;
+        //	Fix issue after device rotation change.
+        window.addEventListener('orientationchange', function (evnt) {
+            var panel = Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
+            panel.scrollTop = 0;
+            //	Apparently, changing the overflow-scrolling property triggers some event :)
+            panel.style['-webkit-overflow-scrolling'] = 'auto';
+            panel.style['-webkit-overflow-scrolling'] = 'touch';
+        });
+    });
 };
 
 Mmenu.addons.screenReader = function () {
@@ -1621,92 +1708,6 @@ Mmenu.addons.screenReader = function () {
     };
 })();
 
-Mmenu.addons.scrollBugFix = function () {
-    var _this = this;
-    //	The scrollBugFix add-on fixes a scrolling bug
-    //		1) on touch devices
-    //		2) in an off-canvas menu 
-    //		3) that -when opened- blocks the UI from interaction 
-    if (!Mmenu.support.touch || // 1
-        !this.opts.offCanvas || // 2
-        !this.opts.offCanvas.blockUI // 3
-    ) {
-        return;
-    }
-    var options = this.opts.scrollBugFix;
-    //	Extend shorthand options
-    if (typeof options == 'boolean') {
-        options = {
-            fix: options
-        };
-    }
-    if (typeof options != 'object') {
-        options = {};
-    }
-    //	Extend shorthand options
-    this.opts.scrollBugFix = Mmenu.extend(options, Mmenu.options.scrollBugFix);
-    if (!options.fix) {
-        return;
-    }
-    //	When opening the menu, scroll to the top of the current opened panel.
-    this.bind('open:start', function () {
-        Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0].scrollTop = 0;
-    });
-    this.bind('initMenu:after', function () {
-        //	Only needs to be done once per page.
-        if (!_this.vars.scrollBugFixed) {
-            var scrolling_1 = false;
-            //	Prevent the body from scrolling.
-            document.addEventListener('touchmove', function (evnt) {
-                if (document.documentElement.matches('.mm-wrapper_opened')) {
-                    evnt.preventDefault();
-                }
-            });
-            document.body.addEventListener('touchstart', function (evnt) {
-                var panel = evnt.target;
-                if (!panel.matches('.mm-panels > .mm-panel')) {
-                    return;
-                }
-                if (document.documentElement.matches('.mm-wrapper_opened')) {
-                    if (!scrolling_1) {
-                        //	Since we're potentially scrolling the panel in the onScroll event, 
-                        //	this little hack prevents an infinite loop.
-                        scrolling_1 = true;
-                        if (panel.scrollTop === 0) {
-                            panel.scrollTop = 1;
-                        }
-                        else if (panel.scrollHeight === panel.scrollTop + panel.offsetHeight) {
-                            panel.scrollTop -= 1;
-                        }
-                        //	End of infinite loop preventing hack.
-                        scrolling_1 = false;
-                    }
-                }
-            });
-            document.body.addEventListener('touchmove', function (evnt) {
-                var panel = evnt.target;
-                if (!panel.matches('.mm-panels > .mm-panel')) {
-                    return;
-                }
-                if (document.documentElement.matches('.mm-wrapper_opened')) {
-                    if (panel.scrollHeight > panel.clientHeight) {
-                        evnt.stopPropagation();
-                    }
-                }
-            });
-        }
-        _this.vars.scrollBugFixed = true;
-        //	Fix issue after device rotation change.
-        window.addEventListener('orientationchange', function (evnt) {
-            var panel = Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
-            panel.scrollTop = 0;
-            //	Apparently, changing the overflow-scrolling property triggers some event :)
-            panel.style['-webkit-overflow-scrolling'] = 'auto';
-            panel.style['-webkit-overflow-scrolling'] = 'touch';
-        });
-    });
-};
-
 Mmenu.configs.offCanvas = {
     menu: {
         insertMethod: 'prepend',
@@ -1724,6 +1725,10 @@ Mmenu.options.offCanvas = {
     moveBackground: true
 };
 
+Mmenu.options.scrollBugFix = {
+    fix: true
+};
+
 Mmenu.configs.screenReader = {
     text: {
         closeMenu: 'Close menu',
@@ -1736,10 +1741,6 @@ Mmenu.configs.screenReader = {
 Mmenu.options.screenReader = {
     aria: true,
     text: true
-};
-
-Mmenu.options.scrollBugFix = {
-    fix: true
 };
 
 Mmenu.i18n({
@@ -1927,76 +1928,6 @@ Mmenu.addons.backButton = function () {
     }
 };
 
-Mmenu.addons.counters = function () {
-    var _this = this;
-    var options = this.opts.counters;
-    //	Extend shorthand options
-    if (typeof options == 'boolean') {
-        options = {
-            add: options,
-            count: options
-        };
-    }
-    if (typeof options != 'object') {
-        options = {};
-    }
-    if (options.addTo == 'panels') {
-        options.addTo = '.mm-panel';
-    }
-    //	/Extend shorthand options
-    this.opts.counters = Mmenu.extend(options, Mmenu.options.counters);
-    //	Refactor counter class
-    this.bind('initListview:after', function (panel) {
-        var cntrclss = _this.conf.classNames.counters.counter, counters = panel.querySelectorAll('.' + cntrclss);
-        counters.forEach(function (counter) {
-            Mmenu.refactorClass(counter, cntrclss, 'mm-counter');
-        });
-    });
-    //	Add the counters after a listview is initiated.
-    if (options.add) {
-        this.bind('initListview:after', function (panel) {
-            if (!panel.matches(options.addTo)) {
-                return;
-            }
-            var parent = panel['mmParent'];
-            if (parent) {
-                //	Check if no counter already excists.
-                if (!parent.querySelector('.mm-counter')) {
-                    var counter = Mmenu.DOM.create('span.mm-counter');
-                    var btn = Mmenu.DOM.children(parent, '.mm-btn')[0];
-                    if (btn) {
-                        btn.prepend(counter);
-                    }
-                }
-            }
-        });
-    }
-    if (options.count) {
-        function count(panel) {
-            var panels = panel ? [panel] : Mmenu.DOM.children(this.node.pnls, '.mm-panel');
-            panels.forEach(function (panel) {
-                var parent = panel['mmParent'];
-                if (!parent) {
-                    return;
-                }
-                var counter = parent.querySelector('.mm-counter');
-                if (!counter) {
-                    return;
-                }
-                var listitems = [];
-                Mmenu.DOM.children(panel, '.mm-listview')
-                    .forEach(function (listview) {
-                    listitems.push.apply(listitems, Mmenu.DOM.children(listview));
-                });
-                counter.innerHTML = Mmenu.filterListItems(listitems).length.toString();
-            });
-        }
-        ;
-        this.bind('initListview:after', count);
-        this.bind('updateListview', count);
-    }
-};
-
 Mmenu.addons.columns = function () {
     var _this = this;
     var options = this.opts.columns;
@@ -2100,14 +2031,14 @@ Mmenu.addons.columns = function () {
     }
 };
 
-Mmenu.addons.dividers = function () {
+Mmenu.addons.counters = function () {
     var _this = this;
-    var options = this.opts.dividers;
+    var options = this.opts.counters;
     //	Extend shorthand options
     if (typeof options == 'boolean') {
         options = {
             add: options,
-            fixed: options
+            count: options
         };
     }
     if (typeof options != 'object') {
@@ -2117,84 +2048,56 @@ Mmenu.addons.dividers = function () {
         options.addTo = '.mm-panel';
     }
     //	/Extend shorthand options
-    this.opts.dividers = Mmenu.extend(options, Mmenu.options.dividers);
-    //	Add classname to the menu to specify the type of the dividers
-    if (options.type) {
-        this.bind('initMenu:after', function () {
-            _this.node.menu.classList.add('mm-menu_dividers-' + options.type);
+    this.opts.counters = Mmenu.extend(options, Mmenu.options.counters);
+    //	Refactor counter class
+    this.bind('initListview:after', function (panel) {
+        var cntrclss = _this.conf.classNames.counters.counter, counters = panel.querySelectorAll('.' + cntrclss);
+        counters.forEach(function (counter) {
+            Mmenu.refactorClass(counter, cntrclss, 'mm-counter');
         });
-    }
-    //	Add dividers
+    });
+    //	Add the counters after a listview is initiated.
     if (options.add) {
         this.bind('initListview:after', function (panel) {
             if (!panel.matches(options.addTo)) {
                 return;
             }
-            Mmenu.DOM.find(panel, '.mm-listitem_divider')
-                .forEach(function (divider) {
-                divider.remove();
-            });
-            Mmenu.DOM.find(panel, '.mm-listview')
-                .forEach(function (listview) {
-                var lastletter = '', listitems = Mmenu.DOM.children(listview);
-                Mmenu.filterListItems(listitems)
-                    .forEach(function (listitem) {
-                    var letter = Mmenu.DOM.children(listitem, '.mm-listitem__text')[0]
-                        .textContent.trim().toLowerCase()[0];
-                    if (letter.length && letter != lastletter) {
-                        lastletter = letter;
-                        var divider = Mmenu.DOM.create('li.mm-listitem.mm-listitem_divider');
-                        divider.textContent = letter;
-                        listview.insertBefore(divider, listitem);
+            var parent = panel['mmParent'];
+            if (parent) {
+                //	Check if no counter already excists.
+                if (!parent.querySelector('.mm-counter')) {
+                    var counter = Mmenu.DOM.create('span.mm-counter');
+                    var btn = Mmenu.DOM.children(parent, '.mm-btn')[0];
+                    if (btn) {
+                        btn.prepend(counter);
                     }
-                });
-            });
+                }
+            }
         });
     }
-    //	Fixed dividers
-    if (options.fixed) {
-        //	Add the fixed divider
-        this.bind('initPanels:after', function (panels) {
-            if (!_this.node.fixeddivider) {
-                var listview = Mmenu.DOM.create('ul.mm-listview.mm-listview_fixeddivider'), listitem = Mmenu.DOM.create('li.mm-listitem.mm-listitem_divider');
-                listview.append(listitem);
-                _this.node.pnls.append(listview);
-                _this.node.fixeddivider = listitem;
-            }
-        });
-        function setValue(panel) {
-            panel = panel || Mmenu.DOM.children(this.node.pnls, '.mm-panel_opened')[0];
-            if (!panel || window.getComputedStyle(panel).display == 'none') {
-                return;
-            }
-            var scrl = panel.scrollTop, text = '';
-            Mmenu.DOM.find(panel, '.mm-listitem_divider')
-                .forEach(function (divider) {
-                if (!divider.matches('.mm-hidden')) {
-                    if (divider.offsetTop + scrl < scrl + 1) {
-                        text = divider.innerHTML;
-                    }
+    if (options.count) {
+        function count(panel) {
+            var panels = panel ? [panel] : Mmenu.DOM.children(this.node.pnls, '.mm-panel');
+            panels.forEach(function (panel) {
+                var parent = panel['mmParent'];
+                if (!parent) {
+                    return;
                 }
+                var counter = parent.querySelector('.mm-counter');
+                if (!counter) {
+                    return;
+                }
+                var listitems = [];
+                Mmenu.DOM.children(panel, '.mm-listview')
+                    .forEach(function (listview) {
+                    listitems.push.apply(listitems, Mmenu.DOM.children(listview));
+                });
+                counter.innerHTML = Mmenu.filterListItems(listitems).length.toString();
             });
-            this.node.fixeddivider.innerHTML = text;
-            this.node.pnls.classList[text.length ? 'add' : 'remove']('mm-panels_dividers');
         }
         ;
-        //	Set correct value when 
-        //		1) opening the menu,
-        //		2) opening a panel,
-        //		3) after updating listviews and
-        //		4) after scrolling a panel
-        this.bind('open:start', setValue); // 1
-        this.bind('openPanel:start', setValue); // 2
-        this.bind('updateListview', setValue); // 3	//	TODO? does not pass "panel" argument.
-        this.bind('initPanel:after', function (panel) {
-            panel.addEventListener('scroll', function () {
-                if (panel.matches('.mm-panel_opened')) {
-                    setValue.call(_this, panel);
-                }
-            }, { passive: true });
-        });
+        this.bind('initListview:after', count);
+        this.bind('updateListview', count);
     }
 };
 
@@ -2414,6 +2317,104 @@ Mmenu.addons.drag = function () {
                     }, _this.conf.openingInterval + _this.conf.transitionDuration);
                 });
             }
+        });
+    }
+};
+
+Mmenu.addons.dividers = function () {
+    var _this = this;
+    var options = this.opts.dividers;
+    //	Extend shorthand options
+    if (typeof options == 'boolean') {
+        options = {
+            add: options,
+            fixed: options
+        };
+    }
+    if (typeof options != 'object') {
+        options = {};
+    }
+    if (options.addTo == 'panels') {
+        options.addTo = '.mm-panel';
+    }
+    //	/Extend shorthand options
+    this.opts.dividers = Mmenu.extend(options, Mmenu.options.dividers);
+    //	Add classname to the menu to specify the type of the dividers
+    if (options.type) {
+        this.bind('initMenu:after', function () {
+            _this.node.menu.classList.add('mm-menu_dividers-' + options.type);
+        });
+    }
+    //	Add dividers
+    if (options.add) {
+        this.bind('initListview:after', function (panel) {
+            if (!panel.matches(options.addTo)) {
+                return;
+            }
+            Mmenu.DOM.find(panel, '.mm-listitem_divider')
+                .forEach(function (divider) {
+                divider.remove();
+            });
+            Mmenu.DOM.find(panel, '.mm-listview')
+                .forEach(function (listview) {
+                var lastletter = '', listitems = Mmenu.DOM.children(listview);
+                Mmenu.filterListItems(listitems)
+                    .forEach(function (listitem) {
+                    var letter = Mmenu.DOM.children(listitem, '.mm-listitem__text')[0]
+                        .textContent.trim().toLowerCase()[0];
+                    if (letter.length && letter != lastletter) {
+                        lastletter = letter;
+                        var divider = Mmenu.DOM.create('li.mm-listitem.mm-listitem_divider');
+                        divider.textContent = letter;
+                        listview.insertBefore(divider, listitem);
+                    }
+                });
+            });
+        });
+    }
+    //	Fixed dividers
+    if (options.fixed) {
+        //	Add the fixed divider
+        this.bind('initPanels:after', function (panels) {
+            if (!_this.node.fixeddivider) {
+                var listview = Mmenu.DOM.create('ul.mm-listview.mm-listview_fixeddivider'), listitem = Mmenu.DOM.create('li.mm-listitem.mm-listitem_divider');
+                listview.append(listitem);
+                _this.node.pnls.append(listview);
+                _this.node.fixeddivider = listitem;
+            }
+        });
+        function setValue(panel) {
+            panel = panel || Mmenu.DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+            if (!panel || window.getComputedStyle(panel).display == 'none') {
+                return;
+            }
+            var scrl = panel.scrollTop, text = '';
+            Mmenu.DOM.find(panel, '.mm-listitem_divider')
+                .forEach(function (divider) {
+                if (!divider.matches('.mm-hidden')) {
+                    if (divider.offsetTop + scrl < scrl + 1) {
+                        text = divider.innerHTML;
+                    }
+                }
+            });
+            this.node.fixeddivider.innerHTML = text;
+            this.node.pnls.classList[text.length ? 'add' : 'remove']('mm-panels_dividers');
+        }
+        ;
+        //	Set correct value when 
+        //		1) opening the menu,
+        //		2) opening a panel,
+        //		3) after updating listviews and
+        //		4) after scrolling a panel
+        this.bind('open:start', setValue); // 1
+        this.bind('openPanel:start', setValue); // 2
+        this.bind('updateListview', setValue); // 3	//	TODO? does not pass "panel" argument.
+        this.bind('initPanel:after', function (panel) {
+            panel.addEventListener('scroll', function () {
+                if (panel.matches('.mm-panel_opened')) {
+                    setValue.call(_this, panel);
+                }
+            }, { passive: true });
         });
     }
 };
@@ -3055,6 +3056,109 @@ Mmenu.addons.lazySubmenus = function () {
     }
 };
 
+Mmenu.addons.pageScroll = function () {
+    var _this = this;
+    var options = this.opts.pageScroll, configs = this.conf.pageScroll;
+    //	Extend shorthand options.
+    if (typeof options == 'boolean') {
+        options = {
+            scroll: options
+        };
+    }
+    //	/Extend shorthand options.
+    this.opts.pageScroll = Mmenu.extend(options, Mmenu.options.pageScroll);
+    var section;
+    function scrollTo(offset) {
+        if (section && section.matches(':visible')) {
+            //	TODO: animate?
+            document.documentElement.scrollTop = section.offsetTop + offset;
+            document.body.scrollTop = section.offsetTop + offset;
+        }
+        section = null;
+    }
+    function anchorInPage(href) {
+        try {
+            if (href != '#' &&
+                href.slice(0, 1) == '#') {
+                return Mmenu.node.page.querySelector(href);
+            }
+            return null;
+        }
+        catch (err) {
+            return null;
+        }
+    }
+    //	Scroll to section after clicking menu item.
+    if (options.scroll) {
+        this.bind('close:finish', function () {
+            scrollTo(configs.scrollOffset);
+        });
+    }
+    //	Add click behavior.
+    //	Prevents default behavior when clicking an anchor.
+    if (this.opts.offCanvas && options.scroll) {
+        this.clck.push(function (anchor, args) {
+            section = null;
+            //	Don't continue if the clicked anchor is not in the menu.
+            if (!args.inMenu) {
+                return;
+            }
+            //	Don't continue if the targeted section is not on the page.
+            var href = anchor.getAttribute('href');
+            section = anchorInPage(href);
+            if (!section) {
+                return;
+            }
+            //	If the sidebar add-on is "expanded"...
+            if (_this.node.menu.matches('.mm-menu_sidebar-expanded') &&
+                document.documentElement.matches('.mm-wrapper_sidebar-expanded')) {
+                //	... scroll the page to the section.
+                scrollTo(_this.conf.pageScroll.scrollOffset);
+            }
+            //	... otherwise...
+            else {
+                //	... close the menu.
+                return {
+                    close: true
+                };
+            }
+        });
+    }
+    //	Update selected menu item after scrolling.
+    if (options.update) {
+        var scts_1 = [];
+        this.bind('initListview:after', function (panel) {
+            //	TODO de sections zouden geordend moeten worden op de hoogte in de DOM, niet op volgorde in het menu.
+            var listitems = Mmenu.DOM.find(panel, '.mm-listitem');
+            Mmenu.filterListItemAnchors(listitems)
+                .forEach(function (anchor) {
+                var href = anchor.getAttribute('href');
+                var section = anchorInPage(href);
+                if (section) {
+                    scts_1.unshift(section);
+                }
+            });
+        });
+        var _selected_1 = -1;
+        window.addEventListener('scroll', function (evnt) {
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            for (var s = 0; s < scts_1.length; s++) {
+                if (scts_1[s].offsetTop < scrollTop + configs.updateOffset) {
+                    if (_selected_1 !== s) {
+                        _selected_1 = s;
+                        var panel = Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0], listitems = Mmenu.DOM.find(panel, '.mm-listitem'), anchors = Mmenu.filterListItemAnchors(listitems);
+                        anchors = anchors.filter(function (anchor) { return anchor.matches('[href="#' + scts_1[s].id + '"]'); });
+                        if (anchors.length) {
+                            _this.setSelected(anchors[0].parentElement);
+                        }
+                    }
+                    break;
+                }
+            }
+        });
+    }
+};
+
 Mmenu.addons.navbars = function () {
     var _this = this;
     var navs = this.opts.navbars;
@@ -3158,109 +3262,6 @@ Mmenu.addons.navbars = function () {
             _this.node.menu[position == 'bottom' ? 'append' : 'prepend'](navbars[position]);
         }
     });
-};
-
-Mmenu.addons.pageScroll = function () {
-    var _this = this;
-    var options = this.opts.pageScroll, configs = this.conf.pageScroll;
-    //	Extend shorthand options.
-    if (typeof options == 'boolean') {
-        options = {
-            scroll: options
-        };
-    }
-    //	/Extend shorthand options.
-    this.opts.pageScroll = Mmenu.extend(options, Mmenu.options.pageScroll);
-    var section;
-    function scrollTo(offset) {
-        if (section && section.matches(':visible')) {
-            //	TODO: animate?
-            document.documentElement.scrollTop = section.offsetTop + offset;
-            document.body.scrollTop = section.offsetTop + offset;
-        }
-        section = null;
-    }
-    function anchorInPage(href) {
-        try {
-            if (href != '#' &&
-                href.slice(0, 1) == '#') {
-                return Mmenu.node.page.querySelector(href);
-            }
-            return null;
-        }
-        catch (err) {
-            return null;
-        }
-    }
-    //	Scroll to section after clicking menu item.
-    if (options.scroll) {
-        this.bind('close:finish', function () {
-            scrollTo(configs.scrollOffset);
-        });
-    }
-    //	Add click behavior.
-    //	Prevents default behavior when clicking an anchor.
-    if (this.opts.offCanvas && options.scroll) {
-        this.clck.push(function (anchor, args) {
-            section = null;
-            //	Don't continue if the clicked anchor is not in the menu.
-            if (!args.inMenu) {
-                return;
-            }
-            //	Don't continue if the targeted section is not on the page.
-            var href = anchor.getAttribute('href');
-            section = anchorInPage(href);
-            if (!section) {
-                return;
-            }
-            //	If the sidebar add-on is "expanded"...
-            if (_this.node.menu.matches('.mm-menu_sidebar-expanded') &&
-                document.documentElement.matches('.mm-wrapper_sidebar-expanded')) {
-                //	... scroll the page to the section.
-                scrollTo(_this.conf.pageScroll.scrollOffset);
-            }
-            //	... otherwise...
-            else {
-                //	... close the menu.
-                return {
-                    close: true
-                };
-            }
-        });
-    }
-    //	Update selected menu item after scrolling.
-    if (options.update) {
-        var scts_1 = [];
-        this.bind('initListview:after', function (panel) {
-            //	TODO de sections zouden geordend moeten worden op de hoogte in de DOM, niet op volgorde in het menu.
-            var listitems = Mmenu.DOM.find(panel, '.mm-listitem');
-            Mmenu.filterListItemAnchors(listitems)
-                .forEach(function (anchor) {
-                var href = anchor.getAttribute('href');
-                var section = anchorInPage(href);
-                if (section) {
-                    scts_1.unshift(section);
-                }
-            });
-        });
-        var _selected_1 = -1;
-        window.addEventListener('scroll', function (evnt) {
-            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            for (var s = 0; s < scts_1.length; s++) {
-                if (scts_1[s].offsetTop < scrollTop + configs.updateOffset) {
-                    if (_selected_1 !== s) {
-                        _selected_1 = s;
-                        var panel = Mmenu.DOM.children(_this.node.pnls, '.mm-panel_opened')[0], listitems = Mmenu.DOM.find(panel, '.mm-listitem'), anchors = Mmenu.filterListItemAnchors(listitems);
-                        anchors = anchors.filter(function (anchor) { return anchor.matches('[href="#' + scts_1[s].id + '"]'); });
-                        if (anchors.length) {
-                            _this.setSelected(anchors[0].parentElement);
-                        }
-                    }
-                    break;
-                }
-            }
-        });
-    }
 };
 
 Mmenu.addons.searchfield = function () {
@@ -4084,16 +4085,6 @@ Mmenu.options.backButton = {
     open: false
 };
 
-Mmenu.configs.classNames.counters = {
-    counter: 'Counter'
-};
-
-Mmenu.options.counters = {
-    add: false,
-    addTo: 'panels',
-    count: false
-};
-
 Mmenu.options.columns = {
     add: false,
     visible: {
@@ -4102,11 +4093,14 @@ Mmenu.options.columns = {
     }
 };
 
-Mmenu.options.dividers = {
+Mmenu.configs.classNames.counters = {
+    counter: 'Counter'
+};
+
+Mmenu.options.counters = {
     add: false,
     addTo: 'panels',
-    fixed: false,
-    type: null
+    count: false
 };
 
 Mmenu.configs.drag = {
@@ -4137,6 +4131,13 @@ Mmenu.options.drag = {
     vendors: {
         hammer: {}
     }
+};
+
+Mmenu.options.dividers = {
+    add: false,
+    addTo: 'panels',
+    fixed: false,
+    type: null
 };
 
 Mmenu.configs.dropdown = {
@@ -4202,6 +4203,16 @@ Mmenu.options.keyboardNavigation = {
 
 Mmenu.options.lazySubmenus = {
     load: false
+};
+
+Mmenu.configs.pageScroll = {
+    scrollOffset: 0,
+    updateOffset: 50
+};
+
+Mmenu.options.pageScroll = {
+    scroll: false,
+    update: false
 };
 
 Mmenu.configs.navbars = {
@@ -4449,16 +4460,6 @@ Mmenu.configs.classNames.navbars.panelTitle = 'Title';
 
 Mmenu.options.navbars = [];
 
-Mmenu.configs.pageScroll = {
-    scrollOffset: 0,
-    updateOffset: 50
-};
-
-Mmenu.options.pageScroll = {
-    scroll: false,
-    update: false
-};
-
 Mmenu.configs.searchfield = {
     clear: false,
     form: false,
@@ -4597,7 +4598,7 @@ Mmenu.wrappers.bootstrap4 = function () {
         });
     }
     function cloneLink(anchor) {
-        var link = Mmenu.DOM.create('a');
+        var link = Mmenu.DOM.create(anchor.matches('a') ? 'a' : 'span');
         //	Copy attributes
         var attr = ['href', 'title', 'target'];
         for (var a = 0; a < attr.length; a++) {
