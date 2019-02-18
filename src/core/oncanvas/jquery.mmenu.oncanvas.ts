@@ -1069,7 +1069,7 @@
 
 				//	Extend options
 				var optsCopy = jQuery.extend(true, {}, $[ _PLUGIN_ ].defaults, opts),
-					confCopy = jQuery.extend(true, {}, $[ _PLUGIN_ ].configuration, opts);
+					confCopy = jQuery.extend(true, {}, $[ _PLUGIN_ ].configuration, conf);
 
 				var _menu = new $[ _PLUGIN_ ]( $menu, optsCopy, confCopy );
 				_menu.$menu.data( _PLUGIN_, _menu.__api() );
