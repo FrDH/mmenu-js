@@ -23,7 +23,7 @@
 */
 
 
-var gulp 			= require( 'gulp' ),
+const gulp 			= require( 'gulp' ),
 	sass 			= require( 'gulp-sass' ),
 	autoprefixer 	= require( 'gulp-autoprefixer' ),
 	cleancss		= require( 'gulp-clean-css' ),
@@ -35,21 +35,21 @@ var gulp 			= require( 'gulp' ),
 	fs 				= require( 'fs' );
 
 
-var inputDir 		= 'src',
-	outputDir 		= 'dist',
+const inputDir 		= 'src';
+let outputDir 		= 'dist',
 	customDir 		= null,
 	build 			='./' + inputDir + '/_build.json';
 
 
 function sanitizeNamespaceForUmd( file )
 {
-	path = file.path.split( '\\' ).join( '/' ).split( '/' );
+	let path = file.path.split( '\\' ).join( '/' ).split( '/' );
 	path = path[ path.length - 1 ];
 	return path.split( '.' ).join( '_' );
 }
 function concatUmdJS( files, name )
 {
-	var stream = gulp.src( files )
+	let stream = gulp.src( files )
 		.pipe( concat( name ) );
 
 	if ( build.umd )
@@ -69,11 +69,11 @@ function concatUmdJS( files, name )
 
 
 function getOption( opt ) {
-	var index = process.argv.indexOf( '--' + opt );
+    const index = process.argv.indexOf( '--' + opt );
 	if ( index > -1 )
 	{
 		opt = process.argv[ index + 1 ];
-		return ( opt && opt.slice( 0, 2 ) != '--' ) ? opt : false;
+		return ( opt && opt.slice( 0, 2 ) !== '--' ) ? opt : false;
 	}
 	return false;
 }
@@ -81,7 +81,7 @@ function getOption( opt ) {
 
 function start( callback ) {
 
-	var o = getOption( 'o' ),
+    const o = getOption( 'o' ),
 		c = getOption( 'c' );
 
 	//	Set output dir 
@@ -96,7 +96,7 @@ function start( callback ) {
 		customDir = c;
 
 		//	Try custom _build.json file
-		var b = './' + c + '/_build.json';
+        const b = './' + c + '/_build.json';
 		fs.stat( b, function( err, stat ) {
 			if ( err == null )
 			{
@@ -136,7 +136,7 @@ const watchTask = function( cb ) {
 		gulp.watch( inputDir + '/*/**/*.ts'	, js );
 	});
 	cb();
-};;
+};
 exports.watch = watchTask;
 
 
@@ -149,7 +149,7 @@ exports.watch = watchTask;
 //	1)	Concatenate variables and mixins
 const cssVariables = function() {
 
-	var files  	= {
+    const files  	= {
 		variables: [ 
 			inputDir + '/core/oncanvas/_variables.scss',	//	Oncanvas needs to be first
 			inputDir + '/core/**/_variables.scss',
@@ -167,15 +167,15 @@ const cssVariables = function() {
 
 	if ( customDir )
 	{
-		//	With the globstar, the file does not need to excist
+		//	With the globstar, the file does not need to exist
 		files.variables.unshift( customDir + '/**/_variables.custom.scss' );
 	}
-	
-	var mixins = gulp.src( files.mixins )
+
+    const mixins = gulp.src( files.mixins )
 		.pipe( concat( '_mixins.scss' ) )
 		.pipe( gulp.dest( inputDir ) );
 
-	var variables = gulp.src( files.variables )
+    const variables = gulp.src( files.variables )
 		.pipe( concat( '_variables.scss' ) )
 		.pipe( gulp.dest( inputDir ) );
 
@@ -185,7 +185,7 @@ const cssVariables = function() {
 //	2) 	Compile CSS
 const cssCompile = function() {
 
-	var files = [	//	Without the globstar, all files would be put directly in the outputDir
+    const files = [	//	Without the globstar, all files would be put directly in the outputDir
 		inputDir + '/**/core/@(' + build.files.core.join( '|' ) + ')/*.scss',
 		inputDir + '/**/addons/@(' + build.files.addons.join( '|' ) + ')/*.scss',
 		inputDir + '/**/extensions/@(' + build.files.extensions.join( '|' ) + ')/*.scss',
@@ -203,12 +203,12 @@ const cssCompile = function() {
 const cssConcat = function() {
 
 	//	Core
-	var files = [
+    const files = [
 		outputDir + '/core/oncanvas/*.css',	//	Oncanvas needs to be first
 		outputDir + '/core/**/*.css',
 	];
 
-	var core = gulp.src( files )
+    const core = gulp.src( files )
 		.pipe( concat( 'jquery.mmenu.css' ) )
 		.pipe( gulp.dest( outputDir ) );
 
@@ -217,7 +217,7 @@ const cssConcat = function() {
 	files.push( outputDir + '/extensions/**/*.css' );
 	files.push( outputDir + '/wrappers/**/*.css' );
 
-	var all = gulp.src( files )
+    const all = gulp.src( files )
 		.pipe( concat( build.name + '.css' ) )
 		.pipe( gulp.dest( outputDir ) );
 
@@ -236,7 +236,7 @@ const css = gulp.series( cssVariables, cssCompile, cssConcat );
 //	1) 	Compile core + add-ons
 const jsCompile = function() {
 
-	var files = [	//	Without the globstar, all files would be put directly in the outputDir
+    const files = [	//	Without the globstar, all files would be put directly in the outputDir
 		inputDir + '/**/core/@(' + build.files.core.join( '|' ) + ')/*.ts',
 		inputDir + '/**/addons/@(' + build.files.addons.join( '|' ) + ')/*.ts',
 		inputDir + '/**/wrappers/@(' + build.files.wrappers.join( '|' ) + ')/*.ts'
@@ -256,13 +256,13 @@ const jsCompile = function() {
 //	2)	Compile translations
 const jsTranslations = function() {
 
-	var streams = [],
-		stream;
+    const streams = [];
+    let stream;
 
-	for ( var t = 0; t < build.files.translations.length; t++ )
+	for ( let t = 0; t < build.files.translations.length; t++ )
 	{
-		var lang = build.files.translations[ t ];
-		var files = [
+        const lang = build.files.translations[ t ];
+        const files = [
 			inputDir + '/core/@(' + build.files.core.join( '|' ) + ')/translations/jquery.mmenu.' + lang + '.ts',
 			inputDir + '/addons/@(' + build.files.addons.join( '|' ) + ')/translations/jquery.mmenu.' + lang + '.ts'
 		];
@@ -289,11 +289,11 @@ const jsTranslations = function() {
 const jsConcat = function() {
 
 	//	Core
-	var files = [
+    const files = [
 		outputDir + '/core/oncanvas/*.js',	//	Oncanvas needs to be first
 		outputDir + '/core/**/*.js'
 	];
-	var core = concatUmdJS( files, 'jquery.mmenu.js' );
+    const core = concatUmdJS( files, 'jquery.mmenu.js' );
 
 	//	Add addons, wrappers and translations
 	files.push( outputDir + '/addons/**/[!_]*.js' );	//	Files that are NOT prefixed with an underscore need to be added first.
@@ -301,7 +301,7 @@ const jsConcat = function() {
 	files.push( outputDir + '/wrappers/**/*.js' );
 	files.push( outputDir + '/translations/**/*.js' );
 
-	var all = concatUmdJS( files, build.name + '.js' );
+    const all = concatUmdJS( files, build.name + '.js' );
 
 	return merge.apply( this, [ core, all ] );
 };
