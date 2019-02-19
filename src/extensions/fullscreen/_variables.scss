@@ -1,5 +1,5 @@
 $mm_opt_fullscreen	: true !default;
 
-$mm_fullscreen_full		: 1;
-$mm_fullscreen_min		: 140px;
-$mm_fullscreen_max		: 10000px;
+$mm_fullscreen_full		: 1 !default;
+$mm_fullscreen_min		: 140px !default;
+$mm_fullscreen_max		: 10000px !default;

@@ -18,7 +18,7 @@
 		~ .mm-wrapper__blocker
 		{
 			opacity: $mm_pagedimOpacity;
-			transition: opacity $mm_transitionDuration $mm_transitionFunction $mm_transitionDuration;
+			transition: opacity $mm_transitionDuration $mm_transitionFunction $mm_transitionDelay;
 		}
 	}
 
