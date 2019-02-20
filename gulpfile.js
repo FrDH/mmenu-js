@@ -23,9 +23,9 @@
 */
 
 
-var { src, dest, watch, series, parallel } = require( 'gulp' );
+const { src, dest, watch, series, parallel } = require( 'gulp' );
 
-var sass 			= require( 'gulp-sass' ),
+const sass 			= require( 'gulp-sass' ),
 	autoprefixer 	= require( 'gulp-autoprefixer' ),
 	cleancss		= require( 'gulp-clean-css' ),
 	uglify 			= require( 'gulp-terser' ),
@@ -46,10 +46,10 @@ const getOption = ( opt ) => {
 	if ( index > -1 )
 	{
 		opt = process.argv[ index + 1 ];
-		return ( opt && opt.slice( 0, 2 ) != '--' ) ? opt : false;
+		return ( opt && opt.slice( 0, 2 ) !== '--' ) ? opt : false;
 	}
 	return false;
-}
+};
 
 
 const start = ( cb ) => {
@@ -69,7 +69,7 @@ const start = ( cb ) => {
 		customDir = c;
 
 		//	Try custom _build.json file
-		var b = './' + c + '/_build.json';
+		let b = './' + c + '/_build.json';
 		fs.stat( b, ( err, stat ) => {
 			if ( err == null )
 			{
@@ -87,7 +87,7 @@ const start = ( cb ) => {
 		build = require( build );
 		cb();
 	}
-}
+};
 
 
 
@@ -213,11 +213,11 @@ const js = () => {
   		.pipe( typescript({
 			"target": "es5"
   		}) )
-		// .pipe( uglify({ 
-		// 	output: {
-		// 		comments: "/^!/"
-		// 	}
-		// }) )
+		.pipe( uglify({ 
+			output: {
+				comments: "/^!/"
+			}
+		}) )
 		.on( 'error', ( err ) => { console.log( err ) } )
 		.pipe( concat( build.name + '.js' ) )
 		.pipe( dest( outputDir ) );
