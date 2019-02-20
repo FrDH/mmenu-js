@@ -13,4 +13,4 @@ Mmenu.options = {
 		setSelected			: true
 	},
 	slidingSubmenus		: true
-}
+};

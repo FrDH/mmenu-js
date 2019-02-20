@@ -16,8 +16,8 @@
 
 
 //	Variables
-.mm-menu
-{
+.mm-menu {
+
 	//	sizes
 	--mm-line-height 				: #{$mm_lineHeight};
 	--mm-listitem-size 				: #{$mm_listitemSize};
@@ -43,12 +43,11 @@
 }
 
 
-.mm-hidden
-{
+.mm-hidden {
 	display: none !important;
 }
-.mm-wrapper
-{
+
+.mm-wrapper {
 	overflow-x: hidden;
 	position: relative;
 }

@@ -1,19 +1,16 @@
 (function( $ ) {
 
-	if ( $ )
-	{
+	if ( $ ) {
 		/**
 		 * jQuery plugin mmenu.
 		 */
-	 	$.fn[ 'mmenu' ] = function( options, configs )
-		{
+	 	$.fn[ 'mmenu' ] = function( options, configs ) {
 			var $result = $();
 
 			this.each(( e, element ) => {
 
 				//	Don't proceed if the element already is a mmenu.
-				if ( element[ 'mmenu' ] )
-				{
+				if ( element[ 'mmenu' ] ) {
 					return;
 				}
 

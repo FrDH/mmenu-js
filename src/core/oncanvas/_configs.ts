@@ -14,4 +14,4 @@ Mmenu.configs = {
 	openingInterval		: 25,
 	panelNodetype		: ['ul', 'ol', 'div'],
 	transitionDuration	: 400
-}
+};

@@ -1,5 +1,4 @@
-.mm-navbar
-{
+.mm-navbar {
 	background: var( --mm-color-background );
 	border-color: var( --mm-color-border );
 	color: var( --mm-color-text-dimmed );
@@ -22,8 +21,7 @@
 	opacity: 1;
 	transition: opacity $mm_transitionDuration $mm_transitionFunction;
 
-	> *
-	{
+	> * {
 		box-sizing: border-box;
 		display: block;
 
@@ -31,39 +29,36 @@
 		padding-left: 0;
 		padding-right: 0;
 	}
+
 	a,
-	a:hover
-	{
+	a:hover {
 		text-decoration: none;
 	}
 }
 
-.mm-navbar__title
-{
+.mm-navbar__title {
 	@include mm_ellipsis;
 }
-.mm-navbar__btn
-{
+
+.mm-navbar__btn {
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	z-index: 1;
 
-	&:first-child
-	{
+	&:first-child {
 		text-align: left;
 		left: 0;
 	}
-	&:last-child
-	{
+
+	&:last-child {
 		text-align: right;
 		right: 0;
 	}
 }
-.mm-panel_has-navbar
-{
-	.mm-navbar
-	{
+
+.mm-panel_has-navbar {
+	.mm-navbar {
 		display: block;
 	}
 }

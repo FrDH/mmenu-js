@@ -1,23 +1,19 @@
-.mm-btn
-{
+.mm-btn {
 	box-sizing: border-box;
 	width: $mm_btnSize;
 	padding: 0;
 
 	&:before,
-	&:after
-	{
+	&:after {
 		border-color: var( --mm-color-button );
 		border-width: 2px;
 		border-style: solid;
 	}
 }
 
-.mm-btn_close
-{
+.mm-btn_close {
 	&:before,
-	&:after
-	{
+	&:after {
 		content: '';
 		box-sizing: content-box;
 		display: block;
@@ -30,14 +26,12 @@
 
 		transform: rotate( -45deg );
 	}
-	&:before
-	{
+	&:before {
 		border-right: none;
 		border-bottom: none;
 		right: $mm_listitemIndent - 2;
 	}
-	&:after
-	{
+	&:after {
 		border-left: none;
 		border-top: none;
 		right: $mm_listitemIndent + 5;
@@ -45,8 +39,7 @@
 }
 
 .mm-btn_prev:before,
-.mm-btn_next:after
-{
+.mm-btn_next:after {
 	content: '';
 	border-bottom: none;
 	border-right: none;
@@ -59,11 +52,11 @@
 	top: 0;
 	bottom: 0;
 }
-.mm-btn_prev:before
-{
+
+.mm-btn_prev:before {
 	@include mm_btn_arrow_prev;
 }
-.mm-btn_next:after
-{
+
+.mm-btn_next:after {
 	@include mm_btn_arrow_next;
 }

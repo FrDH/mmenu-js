@@ -1,29 +1,24 @@
-@if ( $mm_opt_rtl )
-{
-	[dir="rtl"]
-	{
-		.mm-btn_next:after
-		{
+@if ( $mm_opt_rtl ) {
+	[dir="rtl"] {
+		.mm-btn_next:after {
 			@include mm_btn_arrow_prev;
 		}
-		.mm-btn_prev:before
-		{
+
+		.mm-btn_prev:before {
 			@include mm_btn_arrow_next;
 		}
 
-		.mm-btn_close
-		{
+		.mm-btn_close {
 			&:before,
-			&:after
-			{
+			&:after {
 				right: auto;
 			}
-			&:before
-			{
+
+			&:before {
 				left: $mm_listitemIndent + 5;
 			}
-			&:after
-			{
+
+			&:after {
 				left: $mm_listitemIndent - 2;
 			}
 		}
