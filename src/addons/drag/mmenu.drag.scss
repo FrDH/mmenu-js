@@ -3,13 +3,10 @@
 	'../../variables';
 
 
-@if ( $mm_opt_drag )
-{
-	.mm-wrapper_dragging
-	{
+@if ( $mm_opt_drag ) {
+	.mm-wrapper_dragging {
 		.mm-menu,
-		.mm-slideout
-		{
+		.mm-slideout {
 			transition-duration: 0s !important;
 		}
 	}

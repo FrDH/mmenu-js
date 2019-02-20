@@ -10,8 +10,7 @@ Mmenu.addons.navbars.breadcrumbs = function(
 	this.bind( 'initNavbar:after', (
 		panel : HTMLElement
 	) => {
-		if ( panel.querySelector( '.mm-navbar__breadcrumbs' ) )
-		{
+		if ( panel.querySelector( '.mm-navbar__breadcrumbs' ) ) {
 			return;
 		}
 
@@ -22,18 +21,14 @@ Mmenu.addons.navbars.breadcrumbs = function(
 			current		: HTMLElement	= panel,
 			first 		: boolean 		= true;
 
-		while ( current )
-		{
-			if ( !current.matches( '.mm-panel' ) )
-			{
+		while ( current ) {
+			if ( !current.matches( '.mm-panel' ) ) {
 				current = (current.closest( '.mm-panel' ) as HTMLElement);
 			}
 
-			if ( !current.parentElement.matches( '.mm-listitem_vertical' ) )
-			{
+			if ( !current.parentElement.matches( '.mm-listitem_vertical' ) ) {
 				var text = Mmenu.DOM.find( current, '.mm-navbar__title' )[ 0 ].textContent;
-				if ( text.length )
-				{
+				if ( text.length ) {
 					crumbs.unshift( first ? '<span>' + text + '</span>' : '<a href="#' + current.id + '">' + text + '</a>' );
 				}
 
@@ -41,8 +36,8 @@ Mmenu.addons.navbars.breadcrumbs = function(
 			}
 			current = current[ 'mmParent' ];
 		}
-		if ( this.conf.navbars.breadcrumbs.removeFirst )
-		{
+
+		if ( this.conf.navbars.breadcrumbs.removeFirst ) {
 			crumbs.shift();
 		}
 
@@ -56,8 +51,7 @@ Mmenu.addons.navbars.breadcrumbs = function(
 		panel : HTMLElement
 	) => {
 		var crumbs = panel.querySelector( '.mm-navbar__breadcrumbs' );
-		if ( crumbs )
-		{
+		if ( crumbs ) {
 			breadcrumbs.innerHTML = crumbs.innerHTML;
 		}
 	});

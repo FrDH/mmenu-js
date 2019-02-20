@@ -10,18 +10,15 @@ Mmenu.addons.navbars.tabs = function(
 	
 	navbar.addEventListener( 'click', ( evnt ) => {
 		var anchor = (evnt.target as HTMLElement);
-		if ( !anchor.matches( 'a' ) )
-		{
+		if ( !anchor.matches( 'a' ) ) {
 			return;
 		}
-		if ( anchor.matches( '.mm-navbar__tab_selected' ) )
-		{
+		if ( anchor.matches( '.mm-navbar__tab_selected' ) ) {
 			evnt.stopImmediatePropagation();
 			return;
 		}
 
-		try
-		{
+		try {
 			this.openPanel( this.node.menu.querySelector( anchor.getAttribute( 'href' ) ), false );
 			evnt.stopImmediatePropagation();
 		}
@@ -37,15 +34,11 @@ Mmenu.addons.navbars.tabs = function(
 		});
 		
 		var anchor = anchors.filter( anchor => anchor.matches( '[href="#' + panel.id + '"]' ) )[ 0 ];
-		if ( anchor )
-		{
+		if ( anchor ) {
 			anchor.classList.add( 'mm-navbar__tab_selected' );
-		}
-		else
-		{
+		} else {
 			var parent : HTMLElement = panel[ 'mmParent' ];
-			if ( parent )
-			{
+			if ( parent ) {
 				selectTab.call( this, parent.closest( '.mm-panel' ) );
 			}
 		}

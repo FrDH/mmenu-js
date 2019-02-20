@@ -1,8 +1,7 @@
 Mmenu.addons.backButton = function(
 	this : Mmenu
 ) {
-	if ( !this.opts.offCanvas )
-	{
+	if ( !this.opts.offCanvas ) {
 		return;
 	}
 
@@ -10,14 +9,12 @@ Mmenu.addons.backButton = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		(options as mmLooseObject) = {
 			close: options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
@@ -29,8 +26,7 @@ Mmenu.addons.backButton = function(
 	var _menu = '#' + this.node.menu.id;
 
 	//	Close menu
-	if ( options.close )
-	{
+	if ( options.close ) {
 
 		var states = [];
 
@@ -56,19 +52,14 @@ Mmenu.addons.backButton = function(
 		});
 
 		window.addEventListener( 'popstate', ( evnt ) => {
-			if ( this.vars.opened )
-			{
-				if ( states.length )
-				{
+			if ( this.vars.opened ) {
+				if ( states.length ) {
 					states = states.slice( 0, -1 );
 					var hash = states[ states.length - 1 ];
 
-					if ( hash == _menu )
-					{
+					if ( hash == _menu ) {
 						this.close();
-					}
-					else
-					{
+					} else {
 						this.openPanel( this.node.menu.querySelector( hash ) );
 						history.pushState( null, document.title, _menu );
 					}
@@ -77,11 +68,9 @@ Mmenu.addons.backButton = function(
 		});
 	}
 
-	if ( options.open )
-	{
+	if ( options.open ) {
 		window.addEventListener( 'popstate', ( evnt ) => {
-			if ( !this.vars.opened && location.hash == _menu )
-			{
+			if ( !this.vars.opened && location.hash == _menu ) {
 				this.open();
 			}
 		});

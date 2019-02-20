@@ -5,15 +5,14 @@ Mmenu.addons.setSelected = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		(options as mmLooseObject) = {
 			hover	: options,
 			parent	: options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
 	//	Extend shorthand options
@@ -23,8 +22,7 @@ Mmenu.addons.setSelected = function(
 
 
 	//	Find current by URL
-	if ( options.current == 'detect' )
-	{
+	if ( options.current == 'detect' ) {
 		function findCurrent( 
 			this : Mmenu,
 			url  : string
@@ -32,15 +30,12 @@ Mmenu.addons.setSelected = function(
 			url = url.split( "?" )[ 0 ].split( "#" )[ 0 ];
 
 			var anchor = this.node.menu.querySelector( 'a[href="'+ url +'"], a[href="'+ url +'/"]' );
-			if ( anchor )
-			{
+			if ( anchor ) {
 				this.setSelected( anchor.parentElement );
-			}
-			else
-			{
+
+			} else {
 				var arr = url.split( '/' ).slice( 0, -1 );
-				if ( arr.length )
-				{
+				if ( arr.length ) {
 					findCurrent.call( this, arr.join( '/' ) );
 				}
 			}
@@ -49,11 +44,8 @@ Mmenu.addons.setSelected = function(
 			findCurrent.call( this, window.location.href );
 		});
 
-	}
-
 	//	Remove current selected item
-	else if ( !options.current )
-	{
+	} else if ( !options.current ) {
 		this.bind( 'initListview:after', ( 
 			panel : HTMLElement
 		) => {
@@ -66,8 +58,7 @@ Mmenu.addons.setSelected = function(
 
 
 	//	Add :hover effect on items
-	if ( options.hover )
-	{
+	if ( options.hover ) {
 		this.bind( 'initMenu:after', () => {
 			this.node.menu.classList.add( 'mm-menu_selected-hover' );
 		});
@@ -75,8 +66,7 @@ Mmenu.addons.setSelected = function(
 
 
 	//	Set parent item selected for submenus
-	if ( options.parent )
-	{
+	if ( options.parent ) {
 		this.bind( 'openPanel:finish', ( 
 			panel : HTMLElement
 		) => {
@@ -88,10 +78,8 @@ Mmenu.addons.setSelected = function(
 
 			//	Move up the DOM tree
 			var parent : HTMLElement = panel[ 'mmParent' ];
-			while ( parent )
-			{
-				if ( !parent.matches( '.mm-listitem_vertical' ) )
-				{
+			while ( parent ) {
+				if ( !parent.matches( '.mm-listitem_vertical' ) ) {
 					parent.classList.add( 'mm-listitem_selected-parent' );
 				}
 			

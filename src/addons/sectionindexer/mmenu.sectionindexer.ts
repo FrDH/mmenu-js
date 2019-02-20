@@ -5,14 +5,13 @@ Mmenu.addons.sectionIndexer = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		(options as mmLooseObject) = {
 			add: options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
@@ -21,8 +20,7 @@ Mmenu.addons.sectionIndexer = function(
 	this.opts.sectionIndexer = Mmenu.extend( options, Mmenu.options.sectionIndexer );
 
 
-	if ( !options.add )
-	{
+	if ( !options.add ) {
 		return;
 	}
 
@@ -32,8 +30,7 @@ Mmenu.addons.sectionIndexer = function(
 	) => {
 
 		//	Set the panel(s)
-		if ( options.addTo != 'panels' )
-		{
+		if ( options.addTo != 'panels' ) {
 			//	TODO addTo kan ook een HTML element zijn?
 			panels = Mmenu.DOM.find( this.node.menu, options.addTo )
 				.filter( panel => panel.matches( '.mm-panel' ) );
@@ -48,8 +45,7 @@ Mmenu.addons.sectionIndexer = function(
 
 
 		//	Add the indexer, only if it does not allready excists
-		if ( !this.node.indx )
-		{
+		if ( !this.node.indx ) {
 			let buttons = '';
 			'abcdefghijklmnopqrstuvwxyz'.split( '' ).forEach(( letter ) => {
 				buttons += '<a href="#">' + letter + '</a>';
@@ -65,16 +61,14 @@ Mmenu.addons.sectionIndexer = function(
 			this.node.indx.addEventListener( 'click', ( evnt ) => {
 				var anchor = (evnt.target as HTMLElement)
 
-				if ( anchor.matches( 'a' ) )
-				{
+				if ( anchor.matches( 'a' ) ) {
 					evnt.preventDefault();
 				}
 			});
 
 			//	Scroll onMouseOver / onTouchStart
 			let mouseOverEvent = ( evnt ) => {
-				if ( !evnt.target.matches( 'a' ) )
-				{
+				if ( !evnt.target.matches( 'a' ) ) {
 					return;
 				}
 
@@ -99,8 +93,7 @@ Mmenu.addons.sectionIndexer = function(
 			};
 
 			this.node.indx.addEventListener( 'mouseover', mouseOverEvent );
-			if ( Mmenu.support.touch )
-			{
+			if ( Mmenu.support.touch ) {
 				this.node.indx.addEventListener( 'touchstart', mouseOverEvent );
 			}
 		}

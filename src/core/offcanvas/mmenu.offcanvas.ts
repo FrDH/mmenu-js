@@ -2,8 +2,7 @@ Mmenu.addons.offCanvas = function(
 	this : Mmenu
 ) {
 
-	if ( !this.opts.offCanvas )
-	{
+	if ( !this.opts.offCanvas ) {
 		return;
 	}
 
@@ -16,8 +15,7 @@ Mmenu.addons.offCanvas = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options != 'object' )
-	{
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
@@ -53,11 +51,9 @@ Mmenu.addons.offCanvas = function(
 
 		//	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
 		let hash = window.location.hash;
-		if ( hash )
-		{
+		if ( hash ) {
 			let id = this.vars.orgMenuId;
-			if ( id && id == hash.slice( 1 ) )
-			{
+			if ( id && id == hash.slice( 1 ) ) {
 				setTimeout(() => {
 					this.open();
 				}, 1000 );
@@ -70,8 +66,7 @@ Mmenu.addons.offCanvas = function(
 	this.bind( 'setPage:after', ( 
 		page : HTMLElement
 	) => {
-		if ( Mmenu.node.blck )
-		{
+		if ( Mmenu.node.blck ) {
 			Mmenu.DOM.children( Mmenu.node.blck, 'a' )
 				.forEach(( anchor ) => {
 					anchor.setAttribute( 'href', '#' + page.id )
@@ -109,14 +104,11 @@ Mmenu.addons.offCanvas = function(
 	) => {
 		//	Open menu if the clicked anchor links to the menu
 		var id = this.vars.orgMenuId;
-		if ( id )
-		{
-			if ( anchor.matches( '[href="#' + id + '"]' ) )
-			{
+		if ( id ) {
+			if ( anchor.matches( '[href="#' + id + '"]' ) ) {
 				//	Opening this menu from within this menu
 				//		-> Open menu
-				if ( args.inMenu )
-				{
+				if ( args.inMenu ) {
 					this.open();
 					return true;
 				}
@@ -124,11 +116,9 @@ Mmenu.addons.offCanvas = function(
 				//	Opening this menu from within a second menu
 				//		-> Close the second menu before opening this menu
 				var menu = (anchor.closest( '.mm-menu' ) as HTMLElement);
-				if ( menu )
-				{
+				if ( menu ) {
 					var api : mmApi = menu[ 'mmenu' ];
-					if ( api && api.close )
-					{
+					if ( api && api.close ) {
 						api.close();
 						Mmenu.transitionend( menu,
 							() => {
@@ -141,16 +131,15 @@ Mmenu.addons.offCanvas = function(
 
 				//	Opening this menu
 				this.open();
+
 				return true;
 			}
 		}
 
 		//	Close menu
 		id = Mmenu.node.page.id;
-		if ( id )
-		{
-			if ( anchor.matches( '[href="#' + id + '"]' ) )
-			{
+		if ( id ) {
+			if ( anchor.matches( '[href="#' + id + '"]' ) ) {
 				this.close();
 				return true;
 			}
@@ -168,28 +157,26 @@ Mmenu.addons.offCanvas = function(
 Mmenu.prototype.open = function( 
 	this : Mmenu
 ) {
+	//	Invoke "before" hook.
 	this.trigger( 'open:before' );
 
-	if ( this.vars.opened )
-	{
+
+	if ( this.vars.opened ) {
 		return;
 	}
 
 	this._openSetup();
 
 	//	Without the timeout, the animation won't work because the menu had display: none;
-	setTimeout(
-		() => {
-			this._openFinish();
-		}, this.conf.openingInterval
-	);
+	setTimeout(() => {
+		this._openFinish();
+	}, this.conf.openingInterval );
 
+
+	//	Invoke "after" hook.
 	this.trigger( 'open:after' );
 };
 
-/**
- * Setup the menu so it can be opened.
- */
 Mmenu.prototype._openSetup = function(
 	this : Mmenu
 ) {
@@ -207,16 +194,13 @@ Mmenu.prototype._openSetup = function(
 	var clsn = [ 'mm-wrapper_opened' ];
 
 	//	Add options
-	if ( options.blockUI )
-	{
+	if ( options.blockUI ) {
 		clsn.push( 'mm-wrapper_blocking' );
 	}
-	if ( options.blockUI == 'modal' )
-	{
+	if ( options.blockUI == 'modal' ) {
 		clsn.push( 'mm-wrapper_modal' );
 	}
-	if ( options.moveBackground )
-	{
+	if ( options.moveBackground ) {
 		clsn.push( 'mm-wrapper_background' );
 	}
 
@@ -244,19 +228,17 @@ Mmenu.prototype._openFinish = function(
 
 	//	Opening
 	this.trigger( 'open:start' );
-	document.querySelector( 'html' ).classList.add( 'mm-wrapper_opening' );
+	document.documentElement.classList.add( 'mm-wrapper_opening' );
 };
 
-/**
- * Close the menu.
- */
 Mmenu.prototype.close = function(
 	this : Mmenu
 ) {
+	//	Invoke "before" hook.
 	this.trigger( 'close:before' );
 
-	if ( !this.vars.opened )
-	{
+
+	if ( !this.vars.opened ) {
 		return;
 	}
 
@@ -285,8 +267,10 @@ Mmenu.prototype.close = function(
 	//	Closing
 	this.trigger( 'close:start' );
 
-	document.querySelector( 'html' ).classList.remove( 'mm-wrapper_opening' );
+	document.documentElement.classList.remove( 'mm-wrapper_opening' );
 
+
+	//	Invoke "after" hook.
 	this.trigger( 'close:after' );
 };
 
@@ -318,14 +302,14 @@ Mmenu.prototype.setPage = function(
 	this : Mmenu,
 	page : HTMLElement
 ) {
-
+	//	Invoke "before" hook.
 	this.trigger( 'setPage:before', [ page ] );
+
 
 	var configs = this.conf.offCanvas;
 
 	//	If no page was specified, find it.
-	if ( !page )
-	{
+	if ( !page ) {
 		/** Array of elements that are / could be "the page". */
 		let pages = ( typeof configs.page.selector == 'string' )
 			? Mmenu.DOM.find( document.body, configs.page.selector )
@@ -335,14 +319,12 @@ Mmenu.prototype.setPage = function(
 		pages = pages.filter( page => !page.matches( '.mm-menu, .mm-wrapper__blocker' ) );
 
 		//	Filter out elements that are configured to not be "the page".
-		if ( configs.page.noSelector.length )
-		{
+		if ( configs.page.noSelector.length ) {
 			pages = pages.filter( page => !page.matches( configs.page.noSelector.join( ', ' ) ) );
 		}
 
 		//	Wrap multiple pages in a single element.
-		if ( pages.length > 1 )
-		{
+		if ( pages.length > 1 ) {
 			let wrapper = Mmenu.DOM.create( 'div' );
 			pages[ 0 ].before( wrapper );
 			pages.forEach(( page ) => { 
@@ -359,6 +341,8 @@ Mmenu.prototype.setPage = function(
 
 	Mmenu.node.page = page;
 
+
+	//	Invoke "after" hook.
 	this.trigger( 'setPage:after', [ page ] );
 };
 
@@ -372,15 +356,12 @@ Mmenu.prototype._initWindow_offCanvas = function(
 	//	Prevent tabbing
 	//	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
 	//	In other words: The menu would move out of view.
-	if ( !Mmenu.evnt.windowKeydownOffCanvasTab )
-	{
+	if ( !Mmenu.evnt.windowKeydownOffCanvasTab ) {
 		Mmenu.evnt.windowKeydownOffCanvasTab = ( 
 			evnt : KeyboardEvent
 		) => {
-			if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
-			{
-				if ( evnt.keyCode == 9 )
-				{
+			if ( document.documentElement.matches( '.mm-wrapper_opened' ) ) {
+				if ( evnt.keyCode == 9 ) {
 					evnt.preventDefault();
 					return false;
 				}
@@ -393,17 +374,14 @@ Mmenu.prototype._initWindow_offCanvas = function(
 	//	Set "page" element min-height to window height
 	var oldHeight, newHeight;
 
-	if ( !Mmenu.evnt.resizeOffCanvas )
-	{
+	if ( !Mmenu.evnt.resizeOffCanvas ) {
 		Mmenu.evnt.windowResizeOffCanvas = ( evnt ) => {
-			if ( Mmenu.node.page )
-			{
+			if ( Mmenu.node.page ) {
 				if ( document.documentElement.matches( '.mm-wrapper_opening' ) 
 					|| (evnt as any).force
 				) {
 					newHeight = window.innerHeight;
-					if ( newHeight != oldHeight )
-					{
+					if ( newHeight != oldHeight ) {
 						oldHeight = newHeight;
 						Mmenu.node.page.style.minHeight = newHeight + 'px';
 					}
@@ -421,21 +399,21 @@ Mmenu.prototype._initWindow_offCanvas = function(
 Mmenu.prototype._initBlocker = function(
 	this : Mmenu
 ) {
-	var options = this.opts.offCanvas,
-		configs = this.conf.offCanvas;
-
+	//	Invoke "before" hook.
 	this.trigger( 'initBlocker:before' );
 
 
-	if ( !options.blockUI )
-	{
+	var options = this.opts.offCanvas,
+		configs = this.conf.offCanvas;
+
+
+	if ( !options.blockUI ) {
 		return;
 	}
 
 
 	//	Create the blocker node.
-	if ( !Mmenu.node.blck )
-	{
+	if ( !Mmenu.node.blck ) {
 		let blck = Mmenu.DOM.create( 'div.mm-wrapper__blocker.mm-slideout' ); 
 			blck.innerHTML = '<a></a>';
 
@@ -455,8 +433,7 @@ Mmenu.prototype._initBlocker = function(
 		evnt.preventDefault();
 		evnt.stopPropagation();
 
-		if ( !document.documentElement.matches( '.mm-wrapper_modal' ) )
-		{
+		if ( !document.documentElement.matches( '.mm-wrapper_modal' ) ) {
 			this.close();
 		}
 	};
@@ -465,5 +442,6 @@ Mmenu.prototype._initBlocker = function(
 	Mmenu.node.blck.addEventListener( 'touchmove'	, closeMenu ); // 3
 
 
+	//	Invoke "after" hook.
 	this.trigger( 'initBlocker:after' );
 };

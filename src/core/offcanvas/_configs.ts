@@ -1,9 +1,9 @@
 Mmenu.configs.offCanvas = {
-	menu 	: {
+	menu : {
 		insertMethod	: 'prepend',
 		insertSelector	: 'body'
 	},
-	page 	: {
+	page : {
 		nodetype		: 'div',
 		selector		: null,
 		noSelector		: []

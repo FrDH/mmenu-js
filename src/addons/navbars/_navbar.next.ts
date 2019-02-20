@@ -20,12 +20,9 @@ Mmenu.addons.navbars.next = function(
 		_url = org ? org.getAttribute( 'href' ) : '';
 		_txt = org ? org.innerHTML : '';
 
-		if ( _url )
-		{
+		if ( _url ) {
 			next.setAttribute( 'href', _url );
-		}
-		else
-		{
+		} else {
 			next.removeAttribute( 'href' );
 		}
 		

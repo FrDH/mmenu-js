@@ -1,8 +1,7 @@
 Mmenu.addons.sidebar = function(
 	this : Mmenu
 ) {
-	if ( !this.opts.offCanvas )
-	{
+	if ( !this.opts.offCanvas ) {
 		return;
 	}
 
@@ -19,18 +18,17 @@ Mmenu.addons.sidebar = function(
 		};
 	}
 
-	if ( typeof options != 'object' )
-	{
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
 
 	//	Extend collapsed shorthand options.
-	if ( typeof options.collapsed == 'boolean' && options.collapsed )
-	{
+	if ( typeof options.collapsed == 'boolean' && options.collapsed ) {
 		(options.collapsed as mmLooseObject) = {
 			use: 'all'
 		};
 	}
+
 	if ( typeof options.collapsed == 'string' ||
 		 typeof options.collapsed == 'number'
 	) {
@@ -38,22 +36,22 @@ Mmenu.addons.sidebar = function(
 			use: options.collapsed
 		};
 	}
-	if ( typeof options.collapsed != 'object' )
-	{
+
+	if ( typeof options.collapsed != 'object' ) {
 		(options.collapsed as mmLooseObject) = {};
 	}
-	if ( typeof options.collapsed.use == 'number' )
-	{
+
+	if ( typeof options.collapsed.use == 'number' ) {
 		options.collapsed.use = '(min-width: ' + options.collapsed.use + 'px)';
 	}
 
 	//	Extend expanded shorthand options.
-	if ( typeof options.expanded == 'boolean' && options.expanded )
-	{
+	if ( typeof options.expanded == 'boolean' && options.expanded ) {
 		options.expanded = {
 			use: 'all'
 		};
 	}
+
 	if ( typeof options.expanded == 'string' ||
 		 typeof options.expanded == 'number'
 	) {
@@ -61,12 +59,12 @@ Mmenu.addons.sidebar = function(
 			use: options.expanded
 		};
 	}
-	if ( typeof options.expanded != 'object' )
-	{
+
+	if ( typeof options.expanded != 'object' ) {
 		(options.expanded as mmLooseObject) = {};
 	}
-	if ( typeof options.expanded.use == 'number' )
-	{
+
+	if ( typeof options.expanded.use == 'number' ) {
 		options.expanded.use = '(min-width: ' + options.expanded.use + 'px)';
 	}
 	//	/Extend shorthand options
@@ -80,8 +78,7 @@ Mmenu.addons.sidebar = function(
 
 
 	//	Collapsed
-	if ( options.collapsed.use )
-	{
+	if ( options.collapsed.use ) {
 		this.bind( 'initMenu:after', () => {
 			this.node.menu.classList.add( 'mm-menu_sidebar-collapsed' );
 
@@ -94,24 +91,22 @@ Mmenu.addons.sidebar = function(
 				
 				this.node.menu.prepend( anchor );
 			}
-			if ( options.collapsed.hideNavbar )
-			{
+
+			if ( options.collapsed.hideNavbar ) {
 				this.node.menu.classList.add( 'mm-menu_hidenavbar' );
 			}
-			if ( options.collapsed.hideDivider )
-			{
+
+			if ( options.collapsed.hideDivider ) {
 				this.node.menu.classList.add( 'mm-menu_hidedivider' );
 			}
 		});
 
-		if ( typeof options.collapsed.use == 'boolean' )
-		{
+		if ( typeof options.collapsed.use == 'boolean' ) {
 			this.bind( 'initMenu:after', () => {
 				document.documentElement.classList.add( clsclpsd );
 			});
-		}
-		else
-		{
+
+		} else {
 			this.matchMedia( options.collapsed.use,
 				() => {
 					document.documentElement.classList.add( clsclpsd );
@@ -125,26 +120,22 @@ Mmenu.addons.sidebar = function(
 
 
 	//	Expanded
-	if ( options.expanded.use )
-	{
+	if ( options.expanded.use ) {
 		this.bind( 'initMenu:after', () => {
 			this.node.menu.classList.add( 'mm-menu_sidebar-expanded' );
 		});
 
-		if ( typeof options.expanded.use == 'boolean' )
-		{
+		if ( typeof options.expanded.use == 'boolean' ) {
 			this.bind( 'initMenu:after', () => {
 				document.documentElement.classList.add( clsxpndd );
 				this.open();
 			});
-		}
-		else
-		{
+
+		} else {
 			this.matchMedia( options.expanded.use,
 				() => {
 					document.documentElement.classList.add( clsxpndd );
-					if ( !document.documentElement.matches( '.mm-wrapper_sidebar-closed' ) )
-					{
+					if ( !document.documentElement.matches( '.mm-wrapper_sidebar-closed' ) ) {
 						this.open();
 					}
 				},
@@ -156,8 +147,7 @@ Mmenu.addons.sidebar = function(
 		}
 
 		this.bind( 'close:start', () => {
-			if ( document.documentElement.matches( '.' + clsxpndd ) )
-			{
+			if ( document.documentElement.matches( '.' + clsxpndd ) ) {
 				document.documentElement.classList.add( 'mm-wrapper_sidebar-closed' );
 			}
 		});
@@ -174,10 +164,8 @@ Mmenu.addons.sidebar = function(
 			args 	: mmClickArguments
 		) => {
 
-			if ( args.inMenu && args.inListview )
-			{
-				if ( document.documentElement.matches( '.mm-wrapper_sidebar-expanded' ) )
-				{
+			if ( args.inMenu && args.inListview ) {
+				if ( document.documentElement.matches( '.mm-wrapper_sidebar-expanded' ) ) {
 					return {
 						close: false
 					};

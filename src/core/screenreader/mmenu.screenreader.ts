@@ -6,15 +6,13 @@ Mmenu.addons.screenReader = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		options = {
 			aria: options,
 			text: options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
@@ -24,8 +22,7 @@ Mmenu.addons.screenReader = function(
 
 
 	//	Add Aria-* attributes
-	if ( options.aria )
-	{
+	if ( options.aria ) {
 
 		//	Add screenreader / aria hooks for add-ons
 		//	In orde to keep this list short, only extend hooks that are actually used by other add-ons
@@ -114,11 +111,9 @@ Mmenu.addons.screenReader = function(
 
 
 		//	Text
-		if ( options.text )
-		{
+		if ( options.text ) {
 			//	Add aria-hidden to titles in navbars
-			if ( this.opts.navbar.titleLink == 'parent' )
-			{
+			if ( this.opts.navbar.titleLink == 'parent' ) {
 				this.bind( 'initNavbar:after', (
 					panel : HTMLElement
 				) => {
@@ -137,8 +132,7 @@ Mmenu.addons.screenReader = function(
 
 
 	//	Add screenreader text
-	if ( options.text )
-	{
+	if ( options.text ) {
 
 		//	Add screenreader / text hooks for add-ons
 		//	In orde to keep this list short, only extend hooks that are actually used by other add-ons
@@ -154,11 +148,9 @@ Mmenu.addons.screenReader = function(
 			panel : HTMLElement
 		) => {
 			let navbar = Mmenu.DOM.children( panel, '.mm-navbar' )[ 0 ];
-			if ( navbar )
-			{
+			if ( navbar ) {
 				let button = Mmenu.DOM.children( navbar, '.mm-btn_prev' )[ 0 ];
-				if ( button )
-				{
+				if ( button ) {
 					button.innerHTML = Mmenu.sr_text( this.i18n( configs.text.closeSubmenu ) );
 				}
 			}
@@ -170,11 +162,9 @@ Mmenu.addons.screenReader = function(
 			panel : HTMLElement
 		) => {
 			let parent : HTMLElement = panel[ 'mmParent' ];
-			if ( parent )
-			{
+			if ( parent ) {
 				let next = Mmenu.DOM.children( parent, '.mm-btn_next' )[ 0 ];
-				if ( next )
-				{
+				if ( next ) {
 					let text = this.i18n( configs.text[ next.parentElement.matches( '.mm-listitem_vertical' ) ? 'toggleSubmenu' : 'openSubmenu' ] );
 					next.innerHTML += Mmenu.sr_text( text );
 				}
@@ -193,12 +183,9 @@ Mmenu.addons.screenReader = function(
 		value	: string | boolean
 	) {
 		element[ attr ] = value;
-		if ( value )
-		{
+		if ( value ) {
 			element.setAttribute( attr, value.toString() );
-		}
-		else
-		{
+		} else {
 			element.removeAttribute( attr );
 		}
 	}

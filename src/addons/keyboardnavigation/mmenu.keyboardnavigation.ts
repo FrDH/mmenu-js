@@ -3,8 +3,7 @@ Mmenu.addons.keyboardNavigation = function(
 ) {
 	//	Keyboard navigation on touchscreens opens the virtual keyboard :/
 	//	Lets prevent that.
-	if ( Mmenu.support.touch )
-	{
+	if ( Mmenu.support.touch ) {
 		return;
 	}
 
@@ -13,14 +12,13 @@ Mmenu.addons.keyboardNavigation = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' || typeof options == 'string' )
-	{
+	if ( typeof options == 'boolean' || typeof options == 'string' ) {
 		(options as mmLooseObject) = {
 			enable: options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
@@ -30,16 +28,14 @@ Mmenu.addons.keyboardNavigation = function(
 
 
 	//	Enable keyboard navigation
-	if ( options.enable )
-	{
+	if ( options.enable ) {
 
 		let menuStart 	= Mmenu.DOM.create( 'button.mm-tabstart' ),
 			menuEnd   	= Mmenu.DOM.create( 'button.mm-tabend' ),
 			blockerEnd 	= Mmenu.DOM.create( 'button.mm-tabend' );
 
 		this.bind( 'initMenu:after', () => {
-			if ( options.enhance )
-			{
+			if ( options.enhance ) {
 				this.node.menu.classList.add( 'mm-menu_keyboardfocus' );
 			}
 
@@ -74,29 +70,24 @@ Mmenu.addons.keyboardNavigation = function(
 
 			//	Focus already is on an element in a navbar in this menu.
 			var navbar = document.activeElement.closest( '.mm-navbar' );
-			if ( navbar )
-			{
-				if ( navbar.closest( '.mm-menu' ) == this.node.menu )
-				{
+			if ( navbar ) {
+				if ( navbar.closest( '.mm-menu' ) == this.node.menu ) {
 					return;
 				}
 			}
 
 			//	Set the focus to the first focusable element by default.
-			if ( options.enable == 'default' )
-			{
+			if ( options.enable == 'default' ) {
 				//	First visible anchor in a listview in the current panel.
 				focus = Mmenu.DOM.find( panel, '.mm-listview a[href]:not(.mm-hidden)' )[ 0 ];
 				
 				//	First focusable and visible element in the current panel.
-				if ( !focus )
-				{
+				if ( !focus ) {
 					focus = Mmenu.DOM.find( panel, focusable + ':not(.mm-hidden)' )[ 0 ];
 				}
 
 				//	First focusable and visible element in a navbar.
-				if ( !focus )
-				{
+				if ( !focus ) {
 					let elements :HTMLElement[] = [];
 					Mmenu.DOM.children( this.node.menu, '.mm-navbars_top, .mm-navbars_bottom' )
 						.forEach(( navbar ) => {
@@ -107,18 +98,16 @@ Mmenu.addons.keyboardNavigation = function(
 			}
 
 			//	Default.
-			if ( !focus )
-			{
+			if ( !focus ) {
 				focus = Mmenu.DOM.children( this.node.menu, '.mm-tabstart' )[ 0 ];
 			}
 
-			if ( focus )
-			{
+			if ( focus ) {
 				focus.focus();
 			}
 		}
-		this.bind( 'open:finish'		, setFocus );
-		this.bind( 'openPanel:finish'	, setFocus );
+		this.bind( 'open:finish', setFocus );
+		this.bind( 'openPanel:finish', setFocus );
 
 
 		//	Add screenreader / aria support.
@@ -143,47 +132,38 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 	enhance	: boolean
 ) {
 
-	if ( Mmenu.evnt.windowKeydownOffCanvasTab )
-	{
+	if ( Mmenu.evnt.windowKeydownOffCanvasTab ) {
 		//	Re-enable tabbing in general
 		window.removeEventListener( 'keydown', Mmenu.evnt.windowKeydownOffCanvasTab );
 	}
 
 
-	if ( !Mmenu.evnt.windowFocusinKeyboardNavigationTab )
-	{
+	if ( !Mmenu.evnt.windowFocusinKeyboardNavigationTab ) {
 		Mmenu.evnt.windowFocusinKeyboardNavigationTab = ( evnt : KeyboardEvent ) => {
-			if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
-			{
+			if ( document.documentElement.matches( '.mm-wrapper_opened' ) ) {
 				let target = (evnt.target as HTMLElement);
 
-				if ( target.matches( '.mm-tabend' ) )
-				{
+				if ( target.matches( '.mm-tabend' ) ) {
 					let next;
 
 					//	Jump from menu to blocker.
-					if ( target.parentElement.matches( '.mm-menu' ) )
-					{
-						if ( Mmenu.node.blck )
-						{
+					if ( target.parentElement.matches( '.mm-menu' ) ) {
+						if ( Mmenu.node.blck ) {
 							next = Mmenu.node.blck;
 						}
 					}
 
 					//	Jump to opened menu.
-					if ( target.parentElement.matches( '.mm-wrapper__blocker' ) )
-					{
+					if ( target.parentElement.matches( '.mm-wrapper__blocker' ) ) {
 						next = Mmenu.DOM.find( document.body, '.mm-menu_offcanvas.mm-menu_opened' )[ 0 ];
 					}
 
 					//	If no available element found, stay in current element.
-					if ( !next )
-					{
+					if ( !next ) {
 						next = target.parentElement;
 					}
 
-					if ( next )
-					{
+					if ( next ) {
 						Mmenu.DOM.children( next, '.mm-tabstart' )[ 0 ].focus();
 					}
 				}
@@ -192,24 +172,16 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 		window.addEventListener( 'focusin', Mmenu.evnt.windowFocusinKeyboardNavigationTab );
 	}
 
-	if ( !Mmenu.evnt.windowKeydownKeyboardNavigationKeys )
-	{
+	if ( !Mmenu.evnt.windowKeydownKeyboardNavigationKeys ) {
 		Mmenu.evnt.windowKeydownKeyboardNavigationKeys = ( evnt : KeyboardEvent ) => {
 			var target 	= (evnt.target as HTMLElement);
 			var menu	= (target.closest( '.mm-menu' ) as HTMLElement);
 
-			if ( menu )
-			{
+			if ( menu ) {
 				let api : mmApi = menu[ 'mmenu' ];
 
-				//	special case for input and textarea
-				if ( target.matches( 'input, textarea' ) )
-				{
-				}
-				else
-				{
-					switch( evnt.keyCode )
-					{
+				if ( !target.matches( 'input, textarea' ) ) {
+					switch( evnt.keyCode ) {
 						//	press enter to toggle and check
 						case 13: 
 							if ( target.matches( '.mm-toggle' ) || 
@@ -230,38 +202,31 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 					}
 				}
 
-				if ( enhance )
-				{
-					//	special case for input and textarea
-					if ( target.matches( 'input' ) )
-					{
-						switch( evnt.keyCode )
-						{
+				if ( enhance ) {
+					//	special case for input
+					if ( target.matches( 'input' ) ) {
+						switch( evnt.keyCode ){
 							//	empty searchfield with esc
 							case 27:
 								(target as HTMLInputElement).value = '';
 								break;
 						}
-					}
-					else
-					{
+
+					} else{
 						let api : mmApi = menu[ 'mmenu' ];
 
-						switch( evnt.keyCode )
-						{
+						switch( evnt.keyCode ) {
 							//	close submenu with backspace
 							case 8: 
 								let parent : HTMLElement = Mmenu.DOM.find( menu, '.mm-panel_opened' )[ 0 ][ 'mmParent' ];
-								if ( parent )
-								{
+								if ( parent ) {
 									api.openPanel( parent.closest( '.mm-panel' ) );
 								}
 								break;
 
 							//	close menu with esc
 							case 27:
-								if ( menu.matches( '.mm-menu_offcanvas' ) )
-								{
+								if ( menu.matches( '.mm-menu_offcanvas' ) ) {
 									api.close();
 								}
 								break;
@@ -270,6 +235,7 @@ Mmenu.prototype._initWindow_keyboardNavigation = function(
 				}
 			}
 		};
+
 		window.addEventListener( 'keydown', Mmenu.evnt.windowKeydownKeyboardNavigationKeys );
 	}
 };

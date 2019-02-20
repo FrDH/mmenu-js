@@ -3,36 +3,32 @@
 	'../../variables';
 
 
-@if ( $mm_opt_columns )
-{
-	[class*="mm-menu_columns-"]
-	{
+@if ( $mm_opt_columns ) {
+	[class*="mm-menu_columns-"] {
 		transition-property: width;
 
-		.mm-panels 
-		{
-			> .mm-panel
-			{
+		.mm-panels {
+			> .mm-panel {
 				right: auto;
 				transition-property: width, transform;
 			}
+
 			> .mm-panel_opened,
-			> .mm-panel_opened-parent
-			{
+			> .mm-panel_opened-parent {
 				display: block !important;
 			}
 		}
 	}
-	[class*="mm-panel_columns-"]
-	{
+
+	[class*="mm-panel_columns-"] {
 		border-right: 1px solid;
 		border-color: inherit;
 	}
+
 	.mm-menu_columns-1 .mm-panel_columns-0,
 	.mm-menu_columns-2 .mm-panel_columns-1,
 	.mm-menu_columns-3 .mm-panel_columns-2,
-	.mm-menu_columns-4 .mm-panel_columns-3
-	{
+	.mm-menu_columns-4 .mm-panel_columns-3 {
 		border-right: none;
 	}
 
@@ -43,13 +39,10 @@
 	@include mm_columns_size( 4 );
 
 
-	@if ( $mm_opt_positioning_top or $mm_opt_positioning_bottom )
-	{
-		[class*="mm-menu_columns-"]
-		{
+	@if ( $mm_opt_positioning_top or $mm_opt_positioning_bottom ) {
+		[class*="mm-menu_columns-"] {
 			&.mm-menu_position-bottom,
-			&.mm-menu_position-top
-			{
+			&.mm-menu_position-top {
 				width: 100%;
 				max-width: 100%;
 				min-width: 100%;
@@ -57,12 +50,9 @@
 		}
 	}
 
-	@if ( $mm_opt_positioning_front )
-	{
-		.mm-wrapper_opening [class*="mm-menu_columns-"]
-		{
-			&.mm-menu_position-front
-			{
+	@if ( $mm_opt_positioning_front ) {
+		.mm-wrapper_opening [class*="mm-menu_columns-"] {
+			&.mm-menu_position-front {
 				transition-property: width, min-width, max-width, transform;
 			}
 		}

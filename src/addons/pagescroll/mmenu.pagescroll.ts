@@ -6,8 +6,7 @@ Mmenu.addons.pageScroll = function(
 		configs = this.conf.pageScroll;
 
 	//	Extend shorthand options.
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		(options as mmLooseObject) = {
 			scroll: options
 		};
@@ -23,8 +22,7 @@ Mmenu.addons.pageScroll = function(
 	function scrollTo(
 		offset : number
 	) {
-		if ( section && section.matches( ':visible' ) )
-		{
+		if ( section && section.matches( ':visible' ) ) {
 			//	TODO: animate?
 			document.documentElement.scrollTop = section.offsetTop + offset;
 			document.body.scrollTop = section.offsetTop + offset;
@@ -34,25 +32,22 @@ Mmenu.addons.pageScroll = function(
 	function anchorInPage( 
 		href : string
 	) {
-		try
-		{
+		try {
 			if ( href != '#' &&
 				href.slice( 0, 1 ) == '#'
 			) {
 				return (Mmenu.node.page.querySelector( href ) as HTMLElement);
 			}
 			return null;
-		}
-		catch( err )
-		{
+
+		} catch( err ) {
 			return null;
 		}
 	}
 
 
 	//	Scroll to section after clicking menu item.
-	if ( options.scroll )
-	{
+	if ( options.scroll ) {
 		this.bind( 'close:finish', () => {
 			scrollTo( configs.scrollOffset );
 		});
@@ -60,8 +55,7 @@ Mmenu.addons.pageScroll = function(
 
 	//	Add click behavior.
 	//	Prevents default behavior when clicking an anchor.
-	if ( this.opts.offCanvas && options.scroll )
-	{
+	if ( this.opts.offCanvas && options.scroll ) {
 		this.clck.push((
 			anchor	: HTMLElement,
 			args 	: mmClickArguments
@@ -70,8 +64,7 @@ Mmenu.addons.pageScroll = function(
 			section = null;
 
 			//	Don't continue if the clicked anchor is not in the menu.
-			if ( !args.inMenu )
-			{
+			if ( !args.inMenu ) {
 				return;
 			}
 
@@ -79,8 +72,7 @@ Mmenu.addons.pageScroll = function(
 			var href = anchor.getAttribute( 'href' );
 
 			section = anchorInPage( href );
-			if ( !section )
-			{
+			if ( !section ) {
 				return;
 			}
 
@@ -90,11 +82,9 @@ Mmenu.addons.pageScroll = function(
 			) {
 				//	... scroll the page to the section.
 				scrollTo( this.conf.pageScroll.scrollOffset );
-			}
 
 			//	... otherwise...
-			else
-			{
+			} else {
 				//	... close the menu.
 				return {
 					close: true
@@ -104,8 +94,7 @@ Mmenu.addons.pageScroll = function(
 	}
 
 	//	Update selected menu item after scrolling.
-	if ( options.update )
-	{
+	if ( options.update ) {
 		let scts : HTMLElement[] = [];
 
 		this.bind( 'initListview:after', (
@@ -118,8 +107,7 @@ Mmenu.addons.pageScroll = function(
 					var href = anchor.getAttribute( 'href' );
 					var section = anchorInPage( href );
 
-					if ( section )
-					{
+					if ( section ) {
 						scts.unshift( section );
 					}
 				});
@@ -130,12 +118,9 @@ Mmenu.addons.pageScroll = function(
 		window.addEventListener( 'scroll', ( evnt ) => {
 			var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
 
-			for ( var s = 0; s < scts.length; s++ )
-			{
-				if ( scts[ s ].offsetTop < scrollTop + configs.updateOffset )
-				{
-					if ( _selected !== s )
-					{
+			for ( var s = 0; s < scts.length; s++ ) {
+				if ( scts[ s ].offsetTop < scrollTop + configs.updateOffset ) {
+					if ( _selected !== s ) {
 						_selected = s;
 
 						let panel 		= Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ],
@@ -144,8 +129,7 @@ Mmenu.addons.pageScroll = function(
 
 						anchors = anchors.filter( anchor => anchor.matches( '[href="#' + scts[ s ].id + '"]' ) );
 
-						if ( anchors.length )
-						{
+						if ( anchors.length ) {
 							this.setSelected( anchors[ 0 ].parentElement );
 						}
 					}

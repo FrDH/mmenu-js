@@ -5,26 +5,24 @@ Mmenu.addons.columns = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		(options as mmLooseObject) = {
 			add 	: options
 		};
 	}
-	if ( typeof options == 'number' )
-	{
+
+	if ( typeof options == 'number' ) {
 		options = {
 			add 	: true,
 			visible : options
 		};
 	}
 
-	if ( typeof options != 'object' )
-	{
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
-	if ( typeof options.visible == 'number' )
-	{
+
+	if ( typeof options.visible == 'number' ) {
 		options.visible = {
 			min 	: options.visible,
 			max 	: options.visible
@@ -37,8 +35,7 @@ Mmenu.addons.columns = function(
 
 
 	//	Add the columns
-	if ( options.add )
-	{
+	if ( options.add ) {
 		options.visible.min = Math.max( 1, Math.min( 6, options.visible.min ) );
 		options.visible.max = Math.max( options.visible.min, Math.min( 6, options.visible.max ) );
 
@@ -46,13 +43,11 @@ Mmenu.addons.columns = function(
 		var colm = '',
 			colp = '';
 
-		for ( var i = 0; i <= options.visible.max; i++ )
-		{
+		for ( var i = 0; i <= options.visible.max; i++ ) {
 			colm += ' mm-menu_columns-' + i;
 			colp += ' mm-panel_columns-' + i;
 		}
-		if ( colm.length )
-		{
+		if ( colm.length ) {
 			colm = colm.slice( 1 );
 			colp = colp.slice( 1 );
 		}
@@ -66,46 +61,37 @@ Mmenu.addons.columns = function(
 		) => {
 			var parent : HTMLElement;
 
-			if ( panel )
-			{
+			if ( panel ) {
 				parent = panel[ 'mmParent' ];
 			}
 
-			if ( !parent )
-			{
+			if ( !parent ) {
 				return;
 			}
 
 			parent = (parent.closest( '.mm-panel' ) as HTMLElement);
-			if ( !parent )
-			{
+			if ( !parent ) {
 				return;
 			}
 
 			var classname = parent.className;
-			if ( !classname.length )
-			{
+			if ( !classname.length ) {
 				return;
 			}
 
 			classname = classname.split( 'mm-panel_columns-' )[ 1 ];
-			if ( !classname )
-			{
+			if ( !classname ) {
 				return;
 			}
 
 			var colnr = parseInt( classname.split( ' ' )[ 0 ], 10 ) + 1;
-			while( colnr > 0 )
-			{
+			while( colnr > 0 ) {
 				panel = Mmenu.DOM.children( this.node.pnls, '.mm-panel_columns-' + colnr )[ 0 ];
-				if ( panel )
-				{
+				if ( panel ) {
 					colnr++;
 					panel.classList.remove( rmvc );
 					panel.classList.add( 'mm-hidden' );
-				}
-				else
-				{
+				} else {
 					colnr = -1;
 					break;
 				}
@@ -116,8 +102,7 @@ Mmenu.addons.columns = function(
 			panel : HTMLElement
 		) => {
 			var _num = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' ).length;
-			if ( !panel.matches( '.mm-panel_opened-parent' ) )
-			{
+			if ( !panel.matches( '.mm-panel_opened-parent' ) ) {
 				_num++;
 			}
 			_num = Math.min( options.visible.max, Math.max( options.visible.min, _num ) );
@@ -129,8 +114,7 @@ Mmenu.addons.columns = function(
 			Mmenu.DOM.children( this.node.pnls, '.mm-panel' )
 				.forEach(( panel ) => {
 					panel.classList.remove( ...colp.split( ' ' ) );
-					if ( panel.matches( '.mm-panel_opened-parent' ) )
-					{
+					if ( panel.matches( '.mm-panel_opened-parent' ) ) {
 						panels.push( panel );
 					}
 				});

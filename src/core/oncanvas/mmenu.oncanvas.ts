@@ -95,8 +95,12 @@ class Mmenu {
 
 	//	offCanvas add-on
 	open 					: Function
+
+	/** Setup the menu so it can be opened. */
 	_openSetup 				: Function
 	_openFinish 			: Function
+
+	/** Close the menu. */
 	close 					: Function
 	closeAllOthers 			: Function
 	setPage 				: Function

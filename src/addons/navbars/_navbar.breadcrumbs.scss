@@ -1,7 +1,5 @@
-@if ( $mm_opt_navbars_breadcrumbs )
-{
-	.mm-navbar__breadcrumbs
-	{
+@if ( $mm_opt_navbars_breadcrumbs ) {
+	.mm-navbar__breadcrumbs {
 		@include mm_ellipsis;
 
 		-webkit-overflow-scrolling: touch;
@@ -10,28 +8,24 @@
 		text-align: left;
 		padding: 0 0 0 $mm_panelPadding;
 
-		> *
-		{
+		> * {
 			display: inline-block;
 			padding-right: 6px;
 			padding-top: calc( (var( --mm-navbar-size ) - var( --mm-line-height )) * .5 );
 			padding-bottom: calc( (var( --mm-navbar-size ) - var( --mm-line-height )) * .5 );
 		}
-		> a
-		{
+
+		> a {
 			text-decoration: underline;
 		}
 	}
 
-	.mm-navbar_has-btns 
-	{
-		.mm-navbar__breadcrumbs
-		{
+	.mm-navbar_has-btns {
+		.mm-navbar__breadcrumbs {
 			margin-left: -$mm_btnSize;
 		}
 
-		.mm-btn:not( .mm-hidden ) + .mm-navbar__breadcrumbs
-		{
+		.mm-btn:not( .mm-hidden ) + .mm-navbar__breadcrumbs {
 			margin-left: 0;
 			padding-left: 0;
 		}

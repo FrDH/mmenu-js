@@ -6,46 +6,42 @@ Mmenu.addons.searchfield = function(
 
 
 	//	Extend shorthand options.
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		(options as mmLooseObject) = {
 			add: options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
-	if ( typeof options.panel == 'boolean' )
-	{
+
+	if ( typeof options.panel == 'boolean' ) {
 		(options.panel as mmLooseObject) = {
 			add: options.panel
 		};
 	}
-	if ( typeof options.panel != 'object' )
-	{
+
+	if ( typeof options.panel != 'object' ) {
 		(options.panel as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options.
 
 
-	if ( !options.add )
-	{
+	if ( !options.add ) {
 		return;
 	}
 
 
 	//	Extend logical options.
-	if ( options.addTo == 'panel' )
-	{
+	if ( options.addTo == 'panel' ) {
 		options.panel.add = true;
 	}
-	if ( options.panel.add )
-	{
+
+	if ( options.panel.add ) {
 		options.showSubPanels = false;
 
-		if ( options.panel.splash )
-		{
+		if ( options.panel.splash ) {
 			options.cancel = true;
 		}
 	}
@@ -71,15 +67,13 @@ Mmenu.addons.searchfield = function(
 		var searchpanel : HTMLElement = null;
 
 		//	Add the search panel
-		if ( options.panel.add )
-		{
+		if ( options.panel.add ) {
 			searchpanel = this._initSearchPanel( panels );
 		}
 
 		//	Add the searchfield
 		var addTo : HTMLElement[] = null;
-		switch( options.addTo )
-		{
+		switch( options.addTo ) {
 			case 'panels':
 				addTo = panels;
 				break;
@@ -89,12 +83,10 @@ Mmenu.addons.searchfield = function(
 				break;
 
 			default:
-				if ( typeof options.addTo == 'string' )
-				{
+				if ( typeof options.addTo == 'string' ) {
 					addTo = Mmenu.DOM.find( this.node.menu, options.addTo );
-				}
-				else if ( Mmenu.typeof( options.addTo ) == 'array' )
-				{
+
+				} else if ( Mmenu.typeof( options.addTo ) == 'array' ) {
 					addTo = options.addTo;
 				}
 				break;
@@ -102,16 +94,14 @@ Mmenu.addons.searchfield = function(
 
 		addTo.forEach(( form ) => {
 			form = this._initSearchfield( form );
-			if ( options.search && form )
-			{
+			if ( options.search && form ) {
 				this._initSearching( form );
 			}
 		});
 
 
 		//	Add the no-results message
-		if ( options.noResults )
-		{
+		if ( options.noResults ) {
 			( options.panel.add ? [ searchpanel ] : panels ).forEach(( panel ) => {
 				this._initNoResultsMsg( panel );
 			});
@@ -125,14 +115,11 @@ Mmenu.addons.searchfield = function(
 		anchor	: HTMLElement,
 		args 	: mmClickArguments
 	) => {
-		if ( args.inMenu )
-		{
-			if ( anchor.matches( '.mm-searchfield__btn' ) )
-			{
+		if ( args.inMenu ) {
+			if ( anchor.matches( '.mm-searchfield__btn' ) ) {
 
 				//	Clicking the clear button
-				if ( anchor.matches( '.mm-btn_close' ) )
-				{
+				if ( anchor.matches( '.mm-btn_close' ) ) {
 					let form  = (anchor.closest( '.mm-searchfield' ) as HTMLElement),
 						input = (Mmenu.DOM.find( form, 'input' )[ 0 ] as HTMLInputElement);
 					
@@ -143,11 +130,9 @@ Mmenu.addons.searchfield = function(
 				}
 
 				//	Clicking the submit button
-				if ( anchor.matches( '.mm-btn_next' ) )
-				{
+				if ( anchor.matches( '.mm-btn_next' ) ) {
 					let form = anchor.closest( 'form' );
-					if ( form )
-					{
+					if ( form ) {
 						form.submit();
 					}
 
@@ -169,8 +154,7 @@ Mmenu.prototype._initSearchPanel = function(
 
 
 	//	Only once
-	if (  Mmenu.DOM.children( this.node.pnls, '.mm-panel_search' ).length )
-	{
+	if (  Mmenu.DOM.children( this.node.pnls, '.mm-panel_search' ).length ) {
 		return null;
 	}
 
@@ -180,17 +164,15 @@ Mmenu.prototype._initSearchPanel = function(
 	searchpanel.append( listview );
 	this.node.pnls.append( searchpanel )
 
-	if ( options.panel.id )
-	{
+	if ( options.panel.id ) {
 		searchpanel.id = options.panel.id;
 	}
-	if ( options.panel.title )
-	{
+
+	if ( options.panel.title ) {
 		searchpanel.setAttribute( 'data-mm-title', options.panel.title );
 	}
 
-	switch ( options.panel.fx )
-	{
+	switch ( options.panel.fx ) {
 		case false:
 			break;
 
@@ -204,8 +186,7 @@ Mmenu.prototype._initSearchPanel = function(
 	}
 
 	//	Add splash content
-	if ( options.panel.splash )
-	{
+	if ( options.panel.splash ) {
 		let splash = Mmenu.DOM.create( 'div.mm-panel__searchsplash' );
 			splash.innerHTML = options.panel.splash;
 
@@ -226,15 +207,13 @@ Mmenu.prototype._initSearchfield = function(
 
 
 	//	No searchfield in vertical submenus	
-	if ( wrapper.parentElement.matches( '.mm-listitem_vertical' ) )
-	{
+	if ( wrapper.parentElement.matches( '.mm-listitem_vertical' ) ) {
 		return null;
 	}
 
 	//	Only one searchfield per panel
 	var form = Mmenu.DOM.find( wrapper, '.mm-searchfield' )[ 0 ];
-	if ( form )
-	{
+	if ( form ) {
 		return form;
 	}
 
@@ -243,10 +222,8 @@ Mmenu.prototype._initSearchfield = function(
 		element	: HTMLElement,
 		attr	: mmLooseObject | boolean
 	) {
-		if ( attr )
-		{
-			for ( var a in (attr as mmLooseObject) )
-			{
+		if ( attr ) {
+			for ( var a in (attr as mmLooseObject) ) {
 				element.setAttribute( a, attr[ a ] );
 			}
 		}
@@ -265,8 +242,7 @@ Mmenu.prototype._initSearchfield = function(
 	form.append( field );
 
 	wrapper.prepend( form );
-	if ( wrapper.matches( '.mm-panel' ) )
-	{
+	if ( wrapper.matches( '.mm-panel' ) ) {
 		wrapper.classList.add( 'mm-panel_has-searchfield' );
 	}
 
@@ -276,8 +252,7 @@ Mmenu.prototype._initSearchfield = function(
 	
 
 	//	Add the clear button
-	if ( configs.clear )
-	{
+	if ( configs.clear ) {
 		let anchor = Mmenu.DOM.create( 'a.mm-btn.mm-btn_close.mm-searchfield__btn' );
 			anchor.setAttribute( 'href', '#' );
 
@@ -287,16 +262,14 @@ Mmenu.prototype._initSearchfield = function(
 
 	//	Add attributes and submit to the form
 	addAttributes( form, configs.form );
-	if ( configs.form && configs.submit && !configs.clear )
-	{
+	if ( configs.form && configs.submit && !configs.clear ) {
 		let anchor = Mmenu.DOM.create( 'a.mm-btn.mm-btn_next.mm-searchfield__btn' );
 			anchor.setAttribute( 'href', '#' );
 
 		field.append( anchor );
 	}
 
-	if ( options.cancel )
-	{
+	if ( options.cancel ) {
 		let anchor = Mmenu.DOM.create( 'a.mm-searchfield__cancel' );
 			anchor.setAttribute( 'href', '#' );
 			anchor.textContent =  (this.i18n( 'cancel' ) as string);
@@ -318,22 +291,17 @@ Mmenu.prototype._initSearching = function(
 	var data : mmLooseObject = {};
 
 	//	In the searchpanel.
-	if ( form.closest( '.mm-panel_search' ) )
-	{
+	if ( form.closest( '.mm-panel_search' ) ) {
 		data.panels 	= Mmenu.DOM.find( this.node.pnls, '.mm-panel' );
 		data.noresults 	= [ form.closest( '.mm-panel' ) ];
-	}
 
 	//	In a panel
-	else if ( form.closest( '.mm-panel' ) )
-	{
+	} else if ( form.closest( '.mm-panel' ) ) {
 		data.panels 	= [ form.closest( '.mm-panel' ) ];
 		data.noresults 	= data.panels;
-	}
 
 	//	Not in a panel, global
-	else
-	{
+	} else {
 		data.panels 	= Mmenu.DOM.find( this.node.pnls, '.mm-panel' );
 		data.noresults 	= [ this.node.menu ];
 	}
@@ -363,11 +331,9 @@ Mmenu.prototype._initSearching = function(
 
 
 	//	Open the splash panel when focussing the input.
-	if ( options.panel.add && options.panel.splash )
-	{
+	if ( options.panel.add && options.panel.splash ) {
 		//	Remove the focus eventlistener from the input.
-		if ( this.evnt.inputFocusSearchfieldSplash )
-		{
+		if ( this.evnt.inputFocusSearchfieldSplash ) {
 			input.removeEventListener( 'focus', this.evnt.inputFocusSearchfieldSplash );
 		}
 			
@@ -382,11 +348,9 @@ Mmenu.prototype._initSearching = function(
 
 
 	//	Handle the cancel button.
-	if ( options.cancel )
-	{
+	if ( options.cancel ) {
 		//	Remove the focus eventlistener from the input.
-		if ( this.evnt.inputFocusSearchfieldCancel )
-		{
+		if ( this.evnt.inputFocusSearchfieldCancel ) {
 			input.removeEventListener( 'focus', this.evnt.inputFocusSearchfieldCancel );
 		}
 
@@ -400,8 +364,7 @@ Mmenu.prototype._initSearching = function(
 
 
 		//	Remove the focus eventlistener from the input.
-		if ( this.evnt.cancelClickSearchfieldSplash )
-		{
+		if ( this.evnt.cancelClickSearchfieldSplash ) {
 			cancel.removeEventListener( 'click', this.evnt.cancelClickSearchfieldSplash );
 		}
 
@@ -410,11 +373,9 @@ Mmenu.prototype._initSearching = function(
 			evnt.preventDefault();
 			cancel.classList.remove( 'mm-searchfield__cancel-active' );
 
-			if ( searchpanel.matches( '.mm-panel_opened' ) )
-			{
+			if ( searchpanel.matches( '.mm-panel_opened' ) ) {
 				let parents = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' );
-				if ( parents.length )
-				{
+				if ( parents.length ) {
 					this.openPanel( parents[ parents.length - 1 ] );
 				}
 			}
@@ -424,13 +385,11 @@ Mmenu.prototype._initSearching = function(
 		cancel.addEventListener( 'click', this.evnt.cancelClickSearchfieldSplash );
 	}
 
-	if ( options.panel.add && options.addTo == 'panel' )
-	{
+	if ( options.panel.add && options.addTo == 'panel' ) {
 		this.bind( 'openPanel:finish', ( 
 			panel : HTMLElement
 		) => {
-			if ( panel === searchpanel )
-			{
+			if ( panel === searchpanel ) {
 				input.focus();
 			}
 		});
@@ -438,8 +397,7 @@ Mmenu.prototype._initSearching = function(
 
 
 	//	Remove the focus eventlistener from the input.
-	if ( this.evnt.inputInputSearchfieldSearch )
-	{
+	if ( this.evnt.inputInputSearchfieldSearch ) {
 		input.removeEventListener( 'input', this.evnt.inputInputSearchfieldSearch );
 	}
 
@@ -447,8 +405,7 @@ Mmenu.prototype._initSearching = function(
 	this.evnt.inputInputSearchfieldSearch = ( 
 		evnt : KeyboardEvent
 	) => {
-		switch( evnt.keyCode )
-		{
+		switch( evnt.keyCode ) {
 			case 9:		//	tab
 			case 16:	//	shift
 			case 17:	//	control
@@ -481,14 +438,12 @@ Mmenu.prototype._initNoResultsMsg = function(
 		configs = this.conf.searchfield;
 
 	//	Not in a panel
-	if ( !wrapper.closest( '.mm-panel' ) )
-	{
+	if ( !wrapper.closest( '.mm-panel' ) ) {
 		wrapper = Mmenu.DOM.children( this.node.pnls, '.mm-panel' )[ 0 ];
 	}
 
 	//	Only once
-	if ( Mmenu.DOM.children( wrapper, '.mm-panel__noresultsmsg' ).length )
-	{
+	if ( Mmenu.DOM.children( wrapper, '.mm-panel__noresultsmsg' ).length ) {
 		return;
 	}
 
@@ -524,7 +479,6 @@ Mmenu.prototype.search = function(
 
 
 
-
 	//	Reset previous results
 	listitems.forEach(( listitem ) => {
 		listitem.classList.remove( 'mm-listitem_nosubitems' );
@@ -533,8 +487,7 @@ Mmenu.prototype.search = function(
 	//	TODO: dit klopt niet meer	
 		// Mmenu.$(listitems).find( '.mm-btn_fullwidth-search' )
 		// .removeClass( 'mm-btn_fullwidth-search mm-btn_fullwidth' );
-	if ( searchpanel )
-	{
+	if ( searchpanel ) {
 		Mmenu.DOM.children( searchpanel, '.mm-listview' )[ 0 ].innerHTML = '';
 	}
 
@@ -544,8 +497,7 @@ Mmenu.prototype.search = function(
 
 
 	//	Search
-	if ( query.length )
-	{
+	if ( query.length ) {
 
 		//	Initially hide all listitems
 		listitems.forEach(( listitem ) => {
@@ -560,39 +512,33 @@ Mmenu.prototype.search = function(
 		listitems.forEach(( listitem ) => {
 			var _search = '.mm-listitem__text'; // 'a'
 
-			if ( options.showTextItems || ( options.showSubPanels && listitem.querySelector( '.mm-btn_next' ) ) )
-			{
+			if ( options.showTextItems || ( options.showSubPanels && listitem.querySelector( '.mm-btn_next' ) ) ) {
 				// _search = 'a, span';
-			}
-			else
-			{
+			} else {
 				_search = 'a' + _search;
 			}
 
-			if ( Mmenu.DOM.children( listitem, _search )[ 0 ].textContent.toLowerCase().indexOf( query ) > -1 )
-			{
+			if ( Mmenu.DOM.children( listitem, _search )[ 0 ].textContent.toLowerCase().indexOf( query ) > -1 ) {
 				listitem.classList.remove( 'mm-hidden' );
 			}
 		});
 
 
 		//	Show all mached listitems in the search panel
-		if ( options.panel.add )
-		{
+		if ( options.panel.add ) {
 			//	Clone all matched listitems into the search panel
 			let allitems : HTMLElement[] = [];
 			panels.forEach(( panel ) => {
 				let listitems = Mmenu.filterListItems( Mmenu.DOM.find( panel, '.mm-listitem' ) );
 
-				if ( listitems.length )
-				{
-					if ( options.panel.dividers )
-					{
+				if ( listitems.length ) {
+					if ( options.panel.dividers ) {
 						let divider = Mmenu.DOM.create( 'li.mm-listitem.mm-listitem_divider' );
 							divider.innerHTML = panel.querySelector( '.mm-navbar__title' ).innerHTML;
 
 						listitems.push( divider );
 					}
+
 					listitems.forEach(( listitem ) => {
 						allitems.push( (listitem.cloneNode( true ) as HTMLElement) );
 					});
@@ -615,14 +561,11 @@ Mmenu.prototype.search = function(
 
 			//	Open the search panel
 			this.openPanel( searchpanel );
-		}
 
-		else
-		{
+		} else {
 
 			//	Also show listitems in sub-panels for matched listitems
-			if ( options.showSubPanels )
-			{
+			if ( options.showSubPanels ) {
 				panels.forEach(( panel ) => {
 					let listitems = Mmenu.DOM.find( panel, '.mm-listitem' );
 
@@ -646,15 +589,12 @@ Mmenu.prototype.search = function(
 				.forEach(( panel, p ) => {
 					let parent : HTMLElement = panel[ 'mmParent' ];
 
-					if ( parent )
-					{
+					if ( parent ) {
 						//	The current panel has mached listitems
 						let listitems = Mmenu.DOM.find( panel, '.mm-listitem' );
-						if ( Mmenu.filterListItems( listitems ).length )
-						{
+						if ( Mmenu.filterListItems( listitems ).length ) {
 							//	Show parent
-							if ( parent.matches( '.mm-hidden' ) )
-							{
+							if ( parent.matches( '.mm-hidden' ) ) {
 								parent.classList.remove( 'mm-hidden' );
 								//	TODO: dit klopt niet meer...
 								//	Het idee was een btn tijdelijk fullwidth te laten zijn omdat het zelf geen resultaat is, maar zn submenu wel.
@@ -665,10 +605,8 @@ Mmenu.prototype.search = function(
 								// 	.addClass( 'mm-btn_fullwidth' )
 								// 	.addClass( 'mm-btn_fullwidth-search' );
 							}
-						}
 
-						else if ( !input.closest( '.mm-panel' ) )
-						{
+						} else if ( !input.closest( '.mm-panel' ) ) {
 							if ( panel.matches( '.mm-panel_opened' ) || 
 								panel.matches( '.mm-panel_opened-parent' )
 							) {
@@ -689,8 +627,7 @@ Mmenu.prototype.search = function(
 				Mmenu.filterListItems( listitems )
 					.forEach(( listitem ) => {
 						let divider = Mmenu.DOM.prevAll( listitem, '.mm-listitem_divider' )[ 0 ];
-						if ( divider )
-						{
+						if ( divider ) {
 							divider.classList.remove( 'mm-hidden' );
 						}
 					});
@@ -710,11 +647,9 @@ Mmenu.prototype.search = function(
 		});
 
 
-		if ( options.panel.add )
-		{
+		if ( options.panel.add ) {
 			//	Hide splash
-			if ( options.panel.splash )
-			{
+			if ( options.panel.splash ) {
 				Mmenu.DOM.find( searchpanel, '.mm-panel__searchsplash' )
 					.forEach( splash => splash.classList.add( 'mm-hidden' ) );
 			}
@@ -723,12 +658,9 @@ Mmenu.prototype.search = function(
 			listitems.forEach( listitem => listitem.classList.remove( 'mm-hidden' ) );
 			dividers.forEach( divider => divider.classList.remove( 'mm-hidden' ) );
 		}
-	}
-
 
 	//	Don't search
-	else
-	{
+	} else {
 
 		//	Show all items
 		listitems.forEach( listitem => listitem.classList.remove( 'mm-hidden' ) );
@@ -744,18 +676,14 @@ Mmenu.prototype.search = function(
 		});
 
 
-		if ( options.panel.add )
-		{
+		if ( options.panel.add ) {
 			//	Show splash
-			if ( options.panel.splash )
-			{
+			if ( options.panel.splash ) {
 				Mmenu.DOM.find( searchpanel, '.mm-panel__searchsplash' )
 					.forEach( splash => splash.classList.remove( 'mm-hidden' ) );
-			}
 
 			//	Close panel 
-			else if ( !input.closest( '.mm-panel_search' ) )
-			{
+			} else if ( !input.closest( '.mm-panel_search' ) ) {
 				let opened = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' );
 				this.openPanel( opened.slice( -1 )[ 0 ] );
 			}

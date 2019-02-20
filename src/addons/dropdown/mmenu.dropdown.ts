@@ -1,8 +1,7 @@
 Mmenu.addons.dropdown = function(
 	this : Mmenu
 ) {
-	if ( !this.opts.offCanvas )
-	{
+	if ( !this.opts.offCanvas ) {
 		return;
 	}
 
@@ -11,18 +10,17 @@ Mmenu.addons.dropdown = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' && options )
-	{
+	if ( typeof options == 'boolean' && options ) {
 		(options as mmLooseObject) = {
 			drop: options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
-	if ( typeof options.position == 'string' )
-	{
+
+	if ( typeof options.position == 'string' ) {
 		options.position = {
 			of: options.position
 		};
@@ -33,8 +31,7 @@ Mmenu.addons.dropdown = function(
 	this.opts.dropdown = Mmenu.extend( options, Mmenu.options.dropdown );
 
 
-	if ( !options.drop )
-	{
+	if ( !options.drop ) {
 		return;
 	}
 
@@ -44,16 +41,14 @@ Mmenu.addons.dropdown = function(
 	this.bind( 'initMenu:after', () => {
 		this.node.menu.classList.add( 'mm-menu_dropdown' );
 
-		if ( typeof options.position.of != 'string' )
-		{
+		if ( typeof options.position.of != 'string' ) {
 			let id = this.vars.orgMenuId;
-			if ( id && id.length )
-			{
+			if ( id && id.length ) {
 				options.position.of = '[href="#' + id + '"]';
 			}
 		}
-		if ( typeof options.position.of != 'string' )
-		{
+
+		if ( typeof options.position.of != 'string' ) {
 			return;
 		}
 
@@ -63,18 +58,17 @@ Mmenu.addons.dropdown = function(
 
 		//	Emulate hover effect
 		var events = options.event.split( ' ' );
-		if ( events.length == 1 )
-		{
+		if ( events.length == 1 ) {
 			events[ 1 ] = events[ 0 ];
 		}
-		if ( events[ 0 ] == 'hover' )
-		{
+
+		if ( events[ 0 ] == 'hover' ) {
 			button.addEventListener( 'mouseenter', ( evnt ) => {
 				this.open();
 			}, { passive: true });
 		}
-		if ( events[ 1 ] == 'hover' )
-		{
+
+		if ( events[ 1 ] == 'hover' ) {
 			this.node.menu.addEventListener( 'mouseleave', ( evnt ) => {
 				this.close();
 			}, { passive: true });
@@ -121,10 +115,8 @@ Mmenu.addons.dropdown = function(
 		var offs = configs.offset.button[ dir ] + configs.offset.viewport[ dir ];
 
 		//	Position set in option
-		if ( options.position[ dir ] )
-		{
-			switch ( options.position[ dir ] )
-			{
+		if ( options.position[ dir ] ) {
+			switch ( options.position[ dir ] ) {
 				case 'left':
 				case 'bottom':
 					_position = 'after';
@@ -138,42 +130,36 @@ Mmenu.addons.dropdown = function(
 		}
 
 		//	Position not set in option, find most space
-		if ( _position === null )
-		{
+		if ( _position === null ) {
 			_position = ( startPos + ( ( stopPos - startPos ) / 2 ) < windowSize / 2 ) ? 'after' : 'before';
 		}
 
 		//	Set position and max
 		var val, max;
-		if ( _position == 'after' )
-		{
+		if ( _position == 'after' ) {
 			val = ( dir == 'x' ) ? startPos : stopPos;
 			max = windowSize - ( val + offs );
 
 			css[ _startPos ] = ( val + configs.offset.button[ dir ] ) + 'px';
 			css[ _stopPos ]  = 'auto';
 
-			if ( options.tip )
-			{
+			if ( options.tip ) {
 				cls.push( 'mm-menu_tip-' + ( dir == 'x' ? 'left' : 'top' ) );
 			}
-		}
-		else
-		{
+
+		} else {
 			val = ( dir == 'x' ) ? stopPos : startPos;
 			max = val - offs;
 
 			css[ _stopPos ]  = 'calc( 100% - ' + ( val - configs.offset.button[ dir ] ) + 'px )';
 			css[ _startPos ] = 'auto';
 
-			if ( options.tip )
-			{
+			if ( options.tip ) {
 				cls.push( 'mm-menu_tip-' + ( dir == 'x' ? 'right' : 'bottom' ) );
 			}
 		}
 
-		if ( options.fitViewport )
-		{
+		if ( options.fitViewport ) {
 			css[ _maxSize ] = Math.min( configs[ _size ].max, max ) + 'px';
 		}
 
@@ -182,8 +168,7 @@ Mmenu.addons.dropdown = function(
 	function position( 
 		this : Mmenu
 	) {
-		if ( !this.vars.opened )
-		{
+		if ( !this.vars.opened ) {
 			return;
 		}
 
@@ -193,13 +178,11 @@ Mmenu.addons.dropdown = function(
 			obj = getPosition.call( this, 'y', obj );
 			obj = getPosition.call( this, 'x', obj );
 
-		for ( let s in obj[ 0 ] )
-		{
+		for ( let s in obj[ 0 ] ) {
 			this.node.menu.style[ s ] = obj[ 0 ][ s ];
 		}
 
-		if ( options.tip )
-		{
+		if ( options.tip ) {
 			this.node.menu.classList.remove( 'mm-menu_tip-left', 'mm-menu_tip-right', 'mm-menu_tip-top', 'mm-menu_tip-bottom' );
 			this.node.menu.classList.add( ...obj[ 1 ] );
 		}
@@ -211,8 +194,7 @@ Mmenu.addons.dropdown = function(
 		position.call( this );
 	}, { passive: true });
 
-	if ( !this.opts.offCanvas.blockUI )
-	{
+	if ( !this.opts.offCanvas.blockUI ) {
 		window.addEventListener( 'scroll', ( evnt ) => {
 			position.call( this );
 		}, { passive: true });

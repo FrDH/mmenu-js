@@ -21,26 +21,21 @@ Mmenu.addons.navbars.prev = function(
 	this.bind( 'openPanel:start', (
 		panel : HTMLElement
 	) => {
-		if ( panel.parentElement.matches( '.mm-listitem_vertical' ) )
-		{
+		if ( panel.parentElement.matches( '.mm-listitem_vertical' ) ) {
 			return;
 		}
 
 		org = panel.querySelector( '.' + this.conf.classNames.navbars.panelPrev );
-		if ( !org )
-		{
+		if ( !org ) {
 			org = panel.querySelector( '.mm-navbar__btn.mm-btn_prev' );
 		}
 
 		_url = org ? org.getAttribute( 'href' ) : '';
 		_txt = org ? org.innerHTML : '';
 
-		if ( _url )
-		{
+		if ( _url ) {
 			prev.setAttribute( 'href', _url );
-		}
-		else
-		{
+		} else {
 			prev.removeAttribute( 'href' );
 		}
 

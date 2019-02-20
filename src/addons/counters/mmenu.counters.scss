@@ -3,10 +3,8 @@
 	'../../variables';
 
 
-@if ( $mm_opt_counters )
-{
-	.mm-counter
-	{
+@if ( $mm_opt_counters ) {
+	.mm-counter {
 		color: var( --mm-color-text-dimmed );
 		text-align: right;
 		display: block;
@@ -14,10 +12,8 @@
 		float: right;
 	}
 
-	@if ( $mm_opt_searchfield )
-	{
-		.mm-listitem_nosubitems > .mm-counter
-		{
+	@if ( $mm_opt_searchfield ) {
+		.mm-listitem_nosubitems > .mm-counter {
 			display: none;
 		}
 	}

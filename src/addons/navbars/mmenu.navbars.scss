@@ -3,13 +3,10 @@
 	'../../variables';
 
 
-@if ( $mm_opt_navbars )
-{
-	@if ( $mm_opt_navbars_top or $mm_opt_navbars_bottom )
-	{
+@if ( $mm_opt_navbars ) {
+	@if ( $mm_opt_navbars_top or $mm_opt_navbars_bottom ) {
 		.mm-navbars_top,
-		.mm-navbars_bottom
-		{
+		.mm-navbars_bottom {
 			background: inherit;
 			border-color: inherit;
 			border-width: 0;
@@ -18,29 +15,24 @@
 		    right: 0;
 			z-index: 1;
 
-			> .mm-navbar
-			{
+			> .mm-navbar {
 				border-width: 0;
 				display: flex;
 				position: relative;
 
-				&:not( .mm-navbar_has-btns )
-				{
+				&:not( .mm-navbar_has-btns ) {
 					padding: 0;
 				}
 
-				> :not( img ):not( .mm-btn )
-				{
+				> :not( img ):not( .mm-btn ) {
 					flex: 1;
 				}
 			}
 		}
 	}
 
-	@if ( $mm_opt_navbars_top )
-	{
-		.mm-navbars_top
-		{
+	@if ( $mm_opt_navbars_top ) {
+		.mm-navbars_top {
 			border-bottom-style: solid;
 			border-bottom-width: 1px;
 			top: 0;
@@ -53,10 +45,8 @@
 		@include mm_navbar_position( 'top', 4 );
 	}
 
-	@if ( $mm_opt_navbars_bottom )
-	{
-		.mm-navbars_bottom
-		{
+	@if ( $mm_opt_navbars_bottom ) {
+		.mm-navbars_bottom {
 			border-top-style: solid;
 			border-top-width: 1px;
 			bottom: 0;

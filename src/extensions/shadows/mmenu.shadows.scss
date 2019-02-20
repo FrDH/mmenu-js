@@ -3,12 +3,9 @@
 	'../../variables';
 
 
-@if ( $mm_opt_shadows_page )
-{
-	.mm-menu_shadow-page
-	{
-		&:after
-		{
+@if ( $mm_opt_shadows_page ) {
+	.mm-menu_shadow-page {
+		&:after {
 			box-shadow: var( --mm-shadow );
 			content: "";
 			display: block;
@@ -21,19 +18,16 @@
 			clip-path: polygon(-20px 0, 0 0, 0 100%, -20px 100%);
 		}
 		
-		@if ( $mm_opt_positioning_right )
-		{
-			&.mm-menu_position-right:after
-			{
+		@if ( $mm_opt_positioning_right ) {
+			&.mm-menu_position-right:after {
 				left: auto;
 				right: 100%;
 				clip-path: polygon(20px 0, 40px 0, 40px 100%, 20px 100%);
 			}
 		}
-		@if ( $mm_opt_positioning_front )
-		{
-			&.mm-menu_position-front:after
-			{
+
+		@if ( $mm_opt_positioning_front ) {
+			&.mm-menu_position-front:after {
 				content: none;
 				display: none;
 			}
@@ -41,19 +35,15 @@
 	}
 }
 
-@if ( $mm_opt_shadows_menu )
-{
-	.mm-menu_shadow-menu
-	{
+@if ( $mm_opt_shadows_menu ) {
+	.mm-menu_shadow-menu {
 		box-shadow: var( --mm-shadow );
 	}
 }
 
 
-@if ( $mm_opt_shadows_panels )
-{
-	.mm-menu_shadow-panels .mm-panels > .mm-panel
-	{
+@if ( $mm_opt_shadows_panels ) {
+	.mm-menu_shadow-panels .mm-panels > .mm-panel {
 		box-shadow: var( --mm-shadow );
 	}
 }

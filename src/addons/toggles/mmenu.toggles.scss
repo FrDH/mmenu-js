@@ -3,10 +3,8 @@
 	'../../variables';
 
 
-@if ( $mm_opt_toggles )
-{
-	label.mm-toggle
-	{
+@if ( $mm_opt_toggles ) {
+	label.mm-toggle {
 		border-radius: $mm_toggleHeight;
 		min-width: $mm_toggleWidth;
 		width: $mm_toggleWidth;
@@ -15,8 +13,7 @@
 		margin-top: ($mm_btnSize - $mm_toggleHeight) / 2;
 		margin-top: calc( ( var( --mm-listitem-size ) - #{$mm_toggleHeight} ) / 2 );
 
-		&:before
-		{
+		&:before {
 			content: '';
 			display: block;
 			border-radius: $mm_toggleHeight;
@@ -25,40 +22,35 @@
 			margin: 1px;
 		}
 	}
-	input.mm-toggle
-	{
+
+	input.mm-toggle {
 		position: absolute;
 		left: -10000px;
 	}
-	input.mm-toggle:checked ~ label.mm-toggle:before
-	{
+
+	input.mm-toggle:checked ~ label.mm-toggle:before {
 		float: right;
 	}
 
-	label.mm-toggle
-	{
+	label.mm-toggle {
 		background: var( --mm-color-border );
 	
-		&:before
-		{
+		&:before {
 			background: var( --mm-color-background );
 		}
 	}
-	input.mm-toggle:checked ~ label.mm-toggle
-	{
+
+	input.mm-toggle:checked ~ label.mm-toggle {
 		background: $mm_toggleCheckedColor;
 	}
 }
 
-@if ( $mm_opt_checks )
-{
-	label.mm-check
-	{
+@if ( $mm_opt_checks ) {
+	label.mm-check {
 		width: $mm_checkWidth;
 		height: $mm_checkHeight;
 
-		&:before
-		{
+		&:before {
 			border-color: var( --mm-color-text );
 			content: '';
 			display: block;
@@ -72,13 +64,13 @@
 			transform: rotate( -45deg );
 		}
 	}
-	input.mm-check
-	{
+
+	input.mm-check {
 		position: absolute;
 		left: -10000px;
 	}
-	input.mm-check:checked ~ label.mm-check:before
-	{
+
+	input.mm-check:checked ~ label.mm-check:before {
 		opacity: 1;
 	}
 }

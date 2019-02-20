@@ -3,8 +3,7 @@
 	'../../variables';
 
 
-@if ( $mm_opt_fullscreen )
-{
+@if ( $mm_opt_fullscreen ) {
 	@include mm_offcanvas_size( ".mm-menu_fullscreen",
 		$mm_fullscreen_full, $mm_fullscreen_min, $mm_fullscreen_max );
 

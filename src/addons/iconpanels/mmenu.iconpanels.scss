@@ -3,10 +3,8 @@
 	'../../variables';
 
 
-@if ( $mm_opt_iconpanels )
-{
-	.mm-menu
-	{
+@if ( $mm_opt_iconpanels ) {
+	.mm-menu {
 		--mm-iconpanel-size: #{$mm_iconpanelSize};
 	}
 
@@ -14,53 +12,44 @@
 	@include mm_iconpanel_size( 2 );
 	@include mm_iconpanel_size( 3 );
 
-	.mm-panel_iconpanel-first
-	{
+	.mm-panel_iconpanel-first {
 		~ .mm-panel,
-		~ .mm-panel_opened ~ .mm-listview_fixeddivider
-		{
+		~ .mm-panel_opened ~ .mm-listview_fixeddivider {
 			width: calc( 100% - var( --mm-iconpanel-size ) );
 		}
 	}
 
-	.mm-menu_iconpanel .mm-panels 
-	{
+	.mm-menu_iconpanel .mm-panels  {
 		> .mm-panel,
-		> .mm-listview_fixeddivider
-		{
+		> .mm-listview_fixeddivider {
 			left: auto;
 			transition-property: transform, width;
 		}
 
-		> .mm-panel:not( .mm-panel_iconpanel-first ):not( .mm-panel_iconpanel-0 ),
-		{
+		> .mm-panel:not( .mm-panel_iconpanel-first ):not( .mm-panel_iconpanel-0 ) {
 			border-left-width: 1px;
 			border-left-style: solid;
 		}
 
 		> .mm-panel_opened,
-		> .mm-panel_opened-parent
-		{
+		> .mm-panel_opened-parent {
 			display: block !important;
 		}
-		> .mm-panel_opened-parent
-		{
+
+		> .mm-panel_opened-parent {
 			overflow-y: hidden;
 			transform: unset;
 		}
 	}
 
 	.mm-menu_hidenavbar .mm-panel_opened-parent .mm-navbar,
-	.mm-menu_hidedivider .mm-panel_opened-parent .mm-listitem_divider
-	{
+	.mm-menu_hidedivider .mm-panel_opened-parent .mm-listitem_divider {
 		opacity: 0;
 	}
 }
 
-@if ( $mm_opt_iconpanels_blocker )
-{
-	.mm-panel__blocker
-	{
+@if ( $mm_opt_iconpanels_blocker ) {
+	.mm-panel__blocker {
 		background: inherit;
 		opacity: 0;
 		display: block;
@@ -74,8 +63,7 @@
 		transition: opacity $mm_transitionDuration $mm_transitionFunction;
 	}
 
-	.mm-panel_opened-parent .mm-panel__blocker
-	{
+	.mm-panel_opened-parent .mm-panel__blocker {
 		opacity: 0.6;
 		bottom: -100000px;
 	}

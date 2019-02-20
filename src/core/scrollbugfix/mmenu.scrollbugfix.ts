@@ -17,14 +17,12 @@ Mmenu.addons.scrollBugFix = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		options = {
 			fix: options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
 	//	Extend shorthand options
@@ -33,8 +31,7 @@ Mmenu.addons.scrollBugFix = function(
 	this.opts.scrollBugFix = Mmenu.extend( options, Mmenu.options.scrollBugFix );
 
 
-	if ( !options.fix )
-	{
+	if ( !options.fix ) {
 		return;
 	}
 
@@ -47,14 +44,12 @@ Mmenu.addons.scrollBugFix = function(
 	this.bind( 'initMenu:after', () => {
 
 	    //	Only needs to be done once per page.
-	    if ( !this.vars.scrollBugFixed )
-	    {
+	    if ( !this.vars.scrollBugFixed ) {
 		    let scrolling = false;
 
 	    	//	Prevent the body from scrolling.
 		    document.addEventListener( 'touchmove', ( evnt ) => {
-		    	if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
-				{
+		    	if ( document.documentElement.matches( '.mm-wrapper_opened' ) ) {
 					evnt.preventDefault();
 				}
 		    });
@@ -62,25 +57,19 @@ Mmenu.addons.scrollBugFix = function(
 		    document.body.addEventListener( 'touchstart', ( evnt ) => {
 		    	var panel = (evnt.target as HTMLElement);
 
-				if ( !panel.matches( '.mm-panels > .mm-panel' ) )
-				{
+				if ( !panel.matches( '.mm-panels > .mm-panel' ) ) {
 					return;
 				}
 
-		        if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
-		        {
-		        	if ( !scrolling )
-					{
+		        if ( document.documentElement.matches( '.mm-wrapper_opened' ) ) {
+		        	if ( !scrolling ) {
 						//	Since we're potentially scrolling the panel in the onScroll event, 
 						//	this little hack prevents an infinite loop.
 					    scrolling = true;   
 
-				        if ( panel.scrollTop === 0 )
-				        {
+				        if ( panel.scrollTop === 0 ) {
 				            panel.scrollTop = 1;
-				        }
-				        else if ( panel.scrollHeight === panel.scrollTop + panel.offsetHeight )
-				        {
+				        } else if ( panel.scrollHeight === panel.scrollTop + panel.offsetHeight ) {
 				            panel.scrollTop -= 1;
 				        }
 
@@ -93,15 +82,12 @@ Mmenu.addons.scrollBugFix = function(
 		    document.body.addEventListener( 'touchmove', ( evnt ) => {
 		    	var panel = (evnt.target as HTMLElement);
 
-		    	if ( !panel.matches( '.mm-panels > .mm-panel' ) )
-				{
+		    	if ( !panel.matches( '.mm-panels > .mm-panel' ) ) {
 					return;
 				}
 
-				if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
-		        {
-			        if ( panel.scrollHeight > panel.clientHeight )
-			        {
+				if ( document.documentElement.matches( '.mm-wrapper_opened' ) ) {
+			        if ( panel.scrollHeight > panel.clientHeight ) {
 			        	evnt.stopPropagation();
 			        }
 		        }

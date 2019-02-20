@@ -7,8 +7,7 @@ Mmenu.addons.iconPanels = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		(options as mmLooseObject) = {
 			add : options
 		};
@@ -22,13 +21,11 @@ Mmenu.addons.iconPanels = function(
 		};
 	}
 
-	if ( typeof options != 'object' )
-	{
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
 
-	if ( options.visible == 'first' )
-	{
+	if ( options.visible == 'first' ) {
 		keepFirst = true;
 		options.visible = 1;
 	}
@@ -43,17 +40,15 @@ Mmenu.addons.iconPanels = function(
 
 
 	//	Add the iconpanels
-	if ( options.add )
-	{
+	if ( options.add ) {
 		this.bind( 'initMenu:after', () => {
 			var cls = [ 'mm-menu_iconpanel' ];
 
-			if ( options.hideNavbar )
-			{
+			if ( options.hideNavbar ) {
 				cls.push( 'mm-menu_hidenavbar' );
 			}
-			if ( options.hideDivider )
-			{
+
+			if ( options.hideDivider ) {
 				cls.push( 'mm-menu_hidedivider' );
 			}
 
@@ -61,14 +56,12 @@ Mmenu.addons.iconPanels = function(
 		});
 
 		var cls = '';
-		if ( !keepFirst )
-		{
-			for ( var i = 0; i <= options.visible; i++ )
-			{
+		if ( !keepFirst ) {
+			for ( var i = 0; i <= options.visible; i++ ) {
 				cls += ' mm-panel_iconpanel-' + i;
 			}
-			if ( cls.length )
-			{
+
+			if ( cls.length ) {
 				cls = cls.slice( 1 );
 			}
 		}
@@ -76,21 +69,18 @@ Mmenu.addons.iconPanels = function(
 			this	: Mmenu,
 			panel	: HTMLElement
 		) {
-			if ( panel.parentElement.matches( '.mm-listitem_vertical' ) )
-			{
+			if ( panel.parentElement.matches( '.mm-listitem_vertical' ) ) {
 				return;
 			}
 
 			var panels = Mmenu.DOM.children( this.node.pnls, '.mm-panels' );
 
-			if ( keepFirst )
-			{
+			if ( keepFirst ) {
 				panels.forEach(( panel, p ) => {
 					panel.classList[ p == 0 ? 'add' : 'remove' ]( 'mm-panel_iconpanel-first' );
 				});
-			}
-			else
-			{
+
+			} else {
 				//	Remove the "iconpanel" classnames from all panels.
 				panels.forEach(( panel ) => {
 					panel.classList.remove( cls );

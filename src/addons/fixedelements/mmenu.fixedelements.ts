@@ -1,8 +1,7 @@
 Mmenu.addons.fixedElements = function(
 	this : Mmenu
 ) {
-	if ( !this.opts.offCanvas )
-	{
+	if ( !this.opts.offCanvas ) {
 		return;
 	}
 
@@ -41,10 +40,8 @@ Mmenu.addons.fixedElements = function(
 	});
 	
 	this.bind( 'open:start', () => {
-		if ( stick.length )
-		{
-			if ( window.getComputedStyle( document.documentElement ).overflow == 'hidden' )
-			{
+		if ( stick.length ) {
+			if ( window.getComputedStyle( document.documentElement ).overflow == 'hidden' ) {
 				let scrollTop = (document.documentElement.scrollTop || document.body.scrollTop) + configs.sticky.offset;
 				stick.forEach(( element ) => {
 					element.style.top = ( parseInt( window.getComputedStyle( element ).top, 10 ) + scrollTop ) + 'px';

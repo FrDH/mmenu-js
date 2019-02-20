@@ -1,7 +1,5 @@
-@if ( $mm_opt_counters and $mm_opt_rtl )
-{
-	[dir="rtl"] .mm-counter
-	{
+@if ( $mm_opt_counters and $mm_opt_rtl ) {
+	[dir="rtl"] .mm-counter {
 		text-align: left;
 		float: left;
 		padding-left: 0;

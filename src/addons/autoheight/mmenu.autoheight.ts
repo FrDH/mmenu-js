@@ -6,20 +6,17 @@ Mmenu.addons.autoHeight = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' && options )
-	{
+	if ( typeof options == 'boolean' && options ) {
 		options = {
 			height: 'auto'
 		};
 	}
-	if ( typeof options == 'string' )
-	{
+	if ( typeof options == 'string' ) {
 		options = {
 			height: options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
@@ -28,8 +25,7 @@ Mmenu.addons.autoHeight = function(
 	this.opts.autoHeight = Mmenu.extend( options, Mmenu.options.autoHeight );
 
 
-	if ( options.height != 'auto' && options.height != 'highest' )
-	{
+	if ( options.height != 'auto' && options.height != 'highest' ) {
 		return;
 	}
 
@@ -45,8 +41,7 @@ Mmenu.addons.autoHeight = function(
 		 this	: Mmenu,
 		 panel ?: HTMLElement
 	) {
-		if ( this.opts.offCanvas && !this.vars.opened )
-		{
+		if ( this.opts.offCanvas && !this.vars.opened ) {
 			return;
 		}
 
@@ -59,35 +54,28 @@ Mmenu.addons.autoHeight = function(
 		this.node.menu.classList.add( 'mm-menu_autoheight-measuring' );
 
 
-		if ( options.height == 'auto' )
-		{
-			if ( !panel )
-			{
+		if ( options.height == 'auto' ) {
+			if ( !panel ) {
 				panel = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
 			}
-			if ( panel )
-			{
+			if ( panel ) {
 				let parent = panel.parentElement;
-				if ( parent.matches( '.mm-listitem_vertical' ) )
-				{
+				if ( parent.matches( '.mm-listitem_vertical' ) ) {
 					panel = Mmenu.DOM.parents( panel, '.mm-panel' )
 						.filter( panel => !panel.parentElement.matches( '.mm-listitem_vertical' ) )[ 0 ];
 				}
 			}
-			if ( !panel )
-			{
+			if ( !panel ) {
 				panel = Mmenu.DOM.children( this.node.pnls, '.mm-panel' )[ 0 ];
 			}
 
 			_hgh = panel.offsetHeight;
-		}
-		else if ( options.height == 'highest' )
-		{
+
+		} else if ( options.height == 'highest' ){
 			Mmenu.DOM.children( this.node.pnls, '.mm-panel' )
 				.forEach(( panel ) => {
 					let parent = panel.parentElement;
-					if ( parent.matches( '.mm-listitem_vertical' ) )
-					{
+					if ( parent.matches( '.mm-listitem_vertical' ) ) {
 						panel = Mmenu.DOM.parents( panel, '.mm-panel' )
 							.filter( panel => !panel.parentElement.matches( '.mm-listitem_vertical' ) )[ 0 ];
 					}
@@ -99,20 +87,17 @@ Mmenu.addons.autoHeight = function(
 		this.node.menu.classList.remove( 'mm-menu_autoheight-measuring' );
 	};
 
-	if ( this.opts.offCanvas )
-	{
-		this.bind( 'open:start'			, setHeight );
+	if ( this.opts.offCanvas ) {
+		this.bind( 'open:start', setHeight );
 	}
 
-	if ( options.height == 'highest' )
-	{
-		this.bind( 'initPanels:after' 	, setHeight );	//	TODO: passes array for "panel" argument
+	if ( options.height == 'highest' ) {
+		this.bind( 'initPanels:after', setHeight );	//	TODO: passes array for "panel" argument
 	}
 
-	if ( options.height == 'auto' )
-	{
-		this.bind( 'updateListview'		, setHeight );	//	TODO? does not pass "panel" argument
-		this.bind( 'openPanel:start'	, setHeight );
-		this.bind( 'closePanel'			, setHeight );
+	if ( options.height == 'auto' ) {
+		this.bind( 'updateListview', setHeight );	//	TODO? does not pass "panel" argument
+		this.bind( 'openPanel:start', setHeight );
+		this.bind( 'closePanel', setHeight );
 	}
 };

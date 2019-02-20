@@ -3,16 +3,13 @@
 	'../../variables';
 
 
-@if ( $mm_opt_searchfield )
-{
-	.mm-searchfield
-	{
+@if ( $mm_opt_searchfield ) {
+	.mm-searchfield {
 		height: var( --mm-navbar-size );
 		padding: 0;
 		display: flex;
 
-		input
-		{
+		input {
 			border: none !important;
 			outline: none !important;
 			box-shadow: none !important;
@@ -32,36 +29,32 @@
 
 			&,
 			&:hover,
-			&:focus
-			{
+			&:focus {
 				background: var( --mm-color-background-highlight );
 				color: var( --mm-color-text );
 			}
 		}
-		input::-ms-clear
-		{
+
+		input::-ms-clear {
 			display: none;
 		}
 	}
-	.mm-searchfield__input
-	{
+
+	.mm-searchfield__input {
 		padding: ($mm_navbarSize * 0.15) $mm_padding 0 $mm_padding;
 		padding-top: calc( var( --mm-navbar-size ) * 0.15 );
 		position: relative;
 	}
 
-	.mm-panel__noresultsmsg
-	{
+	.mm-panel__noresultsmsg {
 		color: var( --mm-color-text-dimmed );
 		text-align: center;
 		font-size: 150%;
 		padding: $mm_btnSize 0;
 	}
 
-	@if ( $mm_opt_searchfield_btn )
-	{
-		.mm-searchfield__btn
-		{
+	@if ( $mm_opt_searchfield_btn ) {
+		.mm-searchfield__btn {
 			position: absolute;
 			right: 0;
 			top: 0;
@@ -69,24 +62,22 @@
 		}
 	}
 
-	@if ( $mm_opt_searchfield_searchpanel )
-	{
-		.mm-panel_search
-		{
+	@if ( $mm_opt_searchfield_searchpanel ) {
+		.mm-panel_search {
 			left: 0 !important;
 			right: 0 !important;
 			width: 100% !important;
 			border-left: none !important;
 		}
-		.mm-searchfield__input
-		{
+
+		.mm-searchfield__input {
 			flex: 1;
 			box-sizing: border-box;
 			width: 100%;
 			max-width: 100%;
 		}
-		.mm-searchfield__cancel
-		{
+
+		.mm-searchfield__cancel {
 			line-height: var( --mm-navbar-size );
 			text-decoration: none;
 			display: block;
@@ -95,46 +86,39 @@
 
 			transition: margin $mm_transitionDuration $mm_transitionFunction;
 		}
-		.mm-searchfield__cancel-active
-		{
+
+		.mm-searchfield__cancel-active {
 			margin-right: 0;
 		}
 	}
 
-	@if ( $mm_opt_searchfield_panel )
-	{
-		.mm-panel > .mm-searchfield
-		{
+	@if ( $mm_opt_searchfield_panel ) {
+		.mm-panel > .mm-searchfield {
 			width: 100%;
 			position: absolute;
 			top: 0;
 			left: 0;
 		}
 
-		.mm-panel_has-searchfield
-		{
+		.mm-panel_has-searchfield {
 			padding-top: var( --mm-navbar-size );
 		}
-		.mm-panel_has-navbar.mm-panel_has-searchfield
-		{
+
+		.mm-panel_has-navbar.mm-panel_has-searchfield {
 			padding-top: calc( var( --mm-navbar-size ) * 2 );
 			
-			> .mm-searchfield
-			{
+			> .mm-searchfield {
 				top: var( --mm-navbar-size );
 			}
 		}
 	}
 
-	.mm-listitem_nosubitems 
-	{
-		> .mm-listitem__btn
-		{
+	.mm-listitem_nosubitems  {
+		> .mm-listitem__btn {
 			display: none;
 		}
 
-		> .mm-listitem__text
-		{
+		> .mm-listitem__text {
 			padding-right: $mm_padding;
 		}
 	}

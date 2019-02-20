@@ -5,19 +5,18 @@ Mmenu.addons.counters = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		(options as mmLooseObject) = {
 			add		: options,
 			count	: options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
-	if ( options.addTo == 'panels' )
-	{
+
+	if ( options.addTo == 'panels' ) {
 		options.addTo = '.mm-panel';
 	}
 	//	/Extend shorthand options
@@ -40,28 +39,23 @@ Mmenu.addons.counters = function(
 
 
 	//	Add the counters after a listview is initiated.
-	if ( options.add )
-	{
+	if ( options.add ) {
 		this.bind( 'initListview:after', (
 			panel : HTMLElement
 		) => {
 
-			if ( !panel.matches( options.addTo ) )
-			{
+			if ( !panel.matches( options.addTo ) ) {
 				return;
 			}
 
 			var parent : HTMLElement = panel[ 'mmParent' ];
-			if ( parent )
-			{
+			if ( parent ) {
 				//	Check if no counter already excists.
-				if ( !parent.querySelector( '.mm-counter' ) )
-				{
+				if ( !parent.querySelector( '.mm-counter' ) ) {
 					let counter = Mmenu.DOM.create( 'span.mm-counter' );
 
 					let btn = Mmenu.DOM.children( parent, '.mm-btn' )[ 0 ];
-					if ( btn )
-					{
+					if ( btn ) {
 						btn.prepend( counter );
 					}
 				}
@@ -69,8 +63,7 @@ Mmenu.addons.counters = function(
 		});
 	}
 
-	if ( options.count )
-	{
+	if ( options.count ) {
 		function count(
 			this 	 : Mmenu,
 			panel	?: HTMLElement
@@ -79,14 +72,12 @@ Mmenu.addons.counters = function(
 			panels.forEach(( panel ) => {
 				var parent : HTMLElement = panel[ 'mmParent' ];
 
-				if ( !parent )
-				{
+				if ( !parent ) {
 					return;
 				}
 
 				var counter = parent.querySelector( '.mm-counter' );
-				if ( !counter )
-				{
+				if ( !counter ) {
 					return;
 				}
 
@@ -100,7 +91,7 @@ Mmenu.addons.counters = function(
 			});
 		};
 
-		this.bind( 'initListview:after'	, count );
-		this.bind( 'updateListview'		, count );
+		this.bind( 'initListview:after', count );
+		this.bind( 'updateListview', count );
 	}
 };

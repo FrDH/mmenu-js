@@ -27,13 +27,12 @@ Mmenu.addons.toggles = function()
 					var id = input.id || Mmenu.getUniqueId();
 
 					//	Only needs to be done once.
-					if ( !Mmenu.DOM.children( parent, 'label[for="' + id + '"]' ).length )
-					{
+					if ( !Mmenu.DOM.children( parent, 'label[for="' + id + '"]' ).length ) {
 						input.id = id;
 						parent.prepend( input );
 
 						let label = Mmenu.DOM.create( 'label.mm-' + ( input.matches( '.mm-toggle' ) ? 'toggle' : 'check' ) );
-							label.setAttribute( 'for', id );
+						label.setAttribute( 'for', id );
 
 						let text = Mmenu.DOM.children( parent, '.mm-listitem__text' )[ 0 ];
 						text.parentElement.insertBefore(label, text.nextSibling);

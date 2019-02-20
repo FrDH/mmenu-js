@@ -15,26 +15,21 @@ Mmenu.addons.navbars.title = function(
 		panel : HTMLElement
 	) => {
 		//	Do nothing in a vertically expanding panel.
-		if ( panel.parentElement.matches( '.mm-listitem_vertical' ) )
-		{
+		if ( panel.parentElement.matches( '.mm-listitem_vertical' ) ) {
 			return;
 		}
 
 		//	Find the original title in the opened panel.
 		original = panel.querySelector( '.' + this.conf.classNames.navbars.panelTitle );
-		if ( !original )
-		{
+		if ( !original ) {
 			original = panel.querySelector( '.mm-navbar__title' );
 		}
 
 		//	Get the URL for the title.
 		_url = original ? original.getAttribute( 'href' ) : '';
-		if ( _url )
-		{
+		if ( _url ) {
 			title.setAttribute( 'href', _url );
-		}
-		else
-		{
+		} else {
 			title.removeAttribute( 'href' );
 		}
 
@@ -53,10 +48,8 @@ Mmenu.addons.navbars.title = function(
 	this.bind( 'openPanel:start:sr-aria', (
 		panel : HTMLElement
 	) => {
-		if ( this.opts.screenReader.text )
-		{
-			if ( !prev )
-			{
+		if ( this.opts.screenReader.text ) {
+			if ( !prev ) {
 				var navbars = Mmenu.DOM.children( this.node.menu, '.mm-navbars_top, .mm-navbars_bottom' );
 				navbars.forEach(( navbar ) => {
 					let btn = navbar.querySelector( '.mm-btn_prev' );
@@ -66,11 +59,10 @@ Mmenu.addons.navbars.title = function(
 					}
 				});
 			}
-			if ( prev )
-			{
+
+			if ( prev ) {
 				var hidden = true;
-				if ( this.opts.navbar.titleLink == 'parent' )
-				{
+				if ( this.opts.navbar.titleLink == 'parent' ) {
 					hidden = !prev.matches( '.mm-hidden' );
 				}
 				Mmenu.sr_aria( title, 'hidden', hidden );

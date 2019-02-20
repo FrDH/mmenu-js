@@ -5,14 +5,12 @@ Mmenu.addons.lazySubmenus = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		options = {
 			load : options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
@@ -22,8 +20,7 @@ Mmenu.addons.lazySubmenus = function(
 
 
 	//	Sliding submenus
-	if ( options.load )
-	{
+	if ( options.load ) {
 
 		//	prevent all sub panels from initPanels
 		this.bind( 'initMenu:after', () => {
@@ -54,8 +51,7 @@ Mmenu.addons.lazySubmenus = function(
 				var filter = '.mm-panel_lazysubmenu',
 					panels = Mmenu.DOM.find( panel, filter );
 
-				if ( panel.matches( filter ) )
-				{
+				if ( panel.matches( filter ) ) {
 					panels.unshift( panel );
 				}
 				panels.filter( panel => !panel.matches( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' ) )
@@ -74,8 +70,7 @@ Mmenu.addons.lazySubmenus = function(
 					panels.push( ...Mmenu.DOM.parents( listitem, '.mm-panel_lazysubmenu' ) );
 				});
 
-			if ( panels.length )
-			{
+			if ( panels.length ) {
 				panels.forEach(( panel ) => {
 					panel.classList.remove( 'mm-panel_lazysubmenu', 'mm-nolistview mm-nopanel' );
 				});
@@ -89,14 +84,12 @@ Mmenu.addons.lazySubmenus = function(
 		) => {
 			var filter = '.mm-panel_lazysubmenu',
 				panels = Mmenu.DOM.find( panel, filter );
-			if ( panel.matches( filter ) )
-			{
+			if ( panel.matches( filter ) ) {
 				panels.unshift( panel );
 			}
 			panels = panels.filter( panel => !panel.matches( '.mm-panel_lazysubmenu .mm-panel_lazysubmenu' ) );
 
-			if ( panels.length )
-			{
+			if ( panels.length ) {
 				this.initPanels( panels );
 			}
 		});

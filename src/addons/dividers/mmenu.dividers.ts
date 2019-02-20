@@ -5,19 +5,16 @@ Mmenu.addons.dividers = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		(options as mmLooseObject) = {
 			add		: options,
 			fixed	: options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
-	if ( options.addTo == 'panels' )
-	{
+	if ( options.addTo == 'panels' ) {
 		options.addTo = '.mm-panel';
 	}
 	//	/Extend shorthand options
@@ -27,22 +24,19 @@ Mmenu.addons.dividers = function(
 
 
 	//	Add classname to the menu to specify the type of the dividers
-	if ( options.type )
-	{
+	if ( options.type ) {
 		this.bind( 'initMenu:after', () => {
 			this.node.menu.classList.add( 'mm-menu_dividers-' + options.type );
 		});
 	}
 
 	//	Add dividers
-	if ( options.add )
-	{
+	if ( options.add ) {
 		this.bind( 'initListview:after', ( 
 			panel : HTMLElement
 		) => {
 
-			if ( !panel.matches( options.addTo ) )
-			{
+			if ( !panel.matches( options.addTo ) ) {
 				return;
 			}
 
@@ -61,8 +55,7 @@ Mmenu.addons.dividers = function(
 							let letter = Mmenu.DOM.children( listitem, '.mm-listitem__text' )[ 0 ]
 								.textContent.trim().toLowerCase()[ 0 ];
 
-							if ( letter.length && letter != lastletter )
-							{
+							if ( letter.length && letter != lastletter ) {
 								lastletter = letter;
 								let divider = Mmenu.DOM.create( 'li.mm-listitem.mm-listitem_divider' );
 									divider.textContent = letter;
@@ -76,14 +69,12 @@ Mmenu.addons.dividers = function(
 	
 
 	//	Fixed dividers
-	if ( options.fixed )
-	{
+	if ( options.fixed ) {
 		//	Add the fixed divider
 		this.bind( 'initPanels:after', (
 			panels : HTMLElement[]
 		) => {
-			if ( !this.node.fixeddivider )
-			{
+			if ( !this.node.fixeddivider ) {
 				let listview = Mmenu.DOM.create( 'ul.mm-listview.mm-listview_fixeddivider' ),
 					listitem = Mmenu.DOM.create( 'li.mm-listitem.mm-listitem_divider' );
 
@@ -98,8 +89,7 @@ Mmenu.addons.dividers = function(
 			panel	?: HTMLElement
 		) {
 			panel = panel || Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
-			if ( !panel || window.getComputedStyle( panel ).display == 'none' )
-			{
+			if ( !panel || window.getComputedStyle( panel ).display == 'none' ) {
 				return;
 			}
 
@@ -108,10 +98,8 @@ Mmenu.addons.dividers = function(
 
 			Mmenu.DOM.find( panel, '.mm-listitem_divider' )
 				.forEach(( divider ) => {
-					if ( !divider.matches( '.mm-hidden' ) )
-					{
-						if ( divider.offsetTop + scrl < scrl + 1 )
-						{
+					if ( !divider.matches( '.mm-hidden' ) ) {
+						if ( divider.offsetTop + scrl < scrl + 1 ) {
 							text = divider.innerHTML;
 						}
 					}
@@ -133,8 +121,7 @@ Mmenu.addons.dividers = function(
 			panel : HTMLElement
 		) => {
 			panel.addEventListener( 'scroll', () => {
-				if ( panel.matches( '.mm-panel_opened' ) )
-				{
+				if ( panel.matches( '.mm-panel_opened' ) ) {
 					setValue.call( this, panel );
 				}
 			}, { passive: true });

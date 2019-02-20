@@ -1,12 +1,10 @@
 Mmenu.addons.drag = function(
 	this : Mmenu
 ) {
-	if ( !this.opts.offCanvas )
-	{
+	if ( !this.opts.offCanvas ) {
 		return;
 	}
-	if ( typeof Hammer != 'function' || Hammer.VERSION < 2 )
-	{
+	if ( typeof Hammer != 'function' || Hammer.VERSION < 2 ) {
 		return;
 	}
 
@@ -16,35 +14,34 @@ Mmenu.addons.drag = function(
 
 
 	//	Extend shorthand options
-	if ( typeof options == 'boolean' )
-	{
+	if ( typeof options == 'boolean' ) {
 		(options as mmLooseObject) = {
 			menu 	: options,
 			panels 	: options
 		};
 	}
-	if ( typeof options != 'object' )
-	{
+
+	if ( typeof options != 'object' ) {
 		(options as mmLooseObject) = {};
 	}
-	if ( typeof options.menu == 'boolean' )
-	{
+
+	if ( typeof options.menu == 'boolean' ) {
 		(options as mmLooseObject) = {
 			open 	: options.menu
 		};
 	}
-	if ( typeof options.menu != 'object' )
-	{
+
+	if ( typeof options.menu != 'object' ) {
 		(options.menu as mmLooseObject) = {};
 	}
-	if ( typeof options.panels == 'boolean' )
-	{
+
+	if ( typeof options.panels == 'boolean' ) {
 		options.panels = {
 			close 	: options.panels
 		};
 	}
-	if ( typeof options.panels != 'object' )
-	{
+
+	if ( typeof options.panels != 'object' ) {
 		(options.panels as mmLooseObject) = {};
 	}
 	//	/Extend shorthand options
@@ -53,14 +50,11 @@ Mmenu.addons.drag = function(
 	this.opts.drag = Mmenu.extend( options, Mmenu.options.drag );
 
 
-	function minMax( val, min, max )
-	{
-		if ( val < min )
-		{
+	function minMax( val, min, max ) {
+		if ( val < min ) {
 			val = min;
 		}
-		if ( val > max )
-		{
+		if ( val > max ) {
 			val = max;
 		}
 		return val;
@@ -68,8 +62,7 @@ Mmenu.addons.drag = function(
 
 
 	//	Drag open the menu
-	if ( options.menu.open )
-	{
+	if ( options.menu.open ) {
 		this.bind( 'setPage:after', () => {
 			//	defaults for "left"
 			var drag = {
@@ -80,6 +73,7 @@ Mmenu.addons.drag = function(
 				close_dir 	: 'left',
 				negative	: false
 			};
+
 			var _dimension 		= 'width',
 				_winDimension	= 'innerWidth',
 				_direction 		= drag.open_dir;
@@ -88,8 +82,7 @@ Mmenu.addons.drag = function(
 				this	: Mmenu,
 				pos 	: number
 			) {
-				if ( pos <= options.menu.maxStartPos )
-				{
+				if ( pos <= options.menu.maxStartPos ) {
 					_stage = 1;
 				}
 			};
@@ -128,8 +121,7 @@ Mmenu.addons.drag = function(
 					: 'back';
 
 
-			switch( position )
-			{
+			switch( position ) {
 				case 'top':
 				case 'bottom':
 					drag.events		= 'panup pandown';
@@ -141,8 +133,7 @@ Mmenu.addons.drag = function(
 					break;
 			}
 
-			switch( position )
-			{	
+			switch( position ) {	
 				case 'right':
 				case 'bottom':
 					drag.negative 	= true;
@@ -150,16 +141,14 @@ Mmenu.addons.drag = function(
 						this	: Mmenu,
 						pos 	: number
 					) {
-						if ( pos >= window[ _winDimension ] - options.menu.maxStartPos )
-						{
+						if ( pos >= window[ _winDimension ] - options.menu.maxStartPos ) {
 							_stage = 1;
 						}
 					};
 					break;
 			}
 
-			switch( position )
-			{
+			switch( position ) {
 				case 'right':
 					drag.open_dir 	= 'left';
 					drag.close_dir 	= 'right';
@@ -176,8 +165,7 @@ Mmenu.addons.drag = function(
 					break;
 			}
 
-			switch ( zposition )
-			{
+			switch ( zposition ) {
 				case 'front':
 					getSlideNodes = function(
 						this : Mmenu
@@ -190,8 +178,7 @@ Mmenu.addons.drag = function(
 			var slideOutNodes 	: HTMLElement[];
 			var dragNode 		: HTMLElement = Mmenu.valueOrFn( this.node.menu, options.menu.node, Mmenu.node.page );
 
-			if ( typeof dragNode == 'string' )
-			{
+			if ( typeof dragNode == 'string' ) {
 				dragNode = document.querySelector( dragNode );
 			}
 
@@ -199,124 +186,109 @@ Mmenu.addons.drag = function(
 			//	Bind events
 			var _hammer = new Hammer( dragNode, this.opts.drag.vendors.hammer );
 
-			_hammer
-				.on( 'panstart', ( evnt ) => {
-					doPanstart.call( this, evnt.center[ drag.typeLower ] );
-					slideOutNodes = getSlideNodes.call( this );
-					_direction = drag.open_dir;
-				});
+			_hammer.on( 'panstart', ( evnt ) => {
+				doPanstart.call( this, evnt.center[ drag.typeLower ] );
+				slideOutNodes = getSlideNodes.call( this );
+				_direction = drag.open_dir;
+			});
 
-			_hammer
-				.on( drag.events + ' panend', ( evnt ) => {
-					if ( _stage > 0 )
-					{
-						evnt.preventDefault();
-					}
-				});
+			_hammer.on( drag.events + ' panend', ( evnt ) => {
+				if ( _stage > 0 ) {
+					evnt.preventDefault();
+				}
+			});
 
-			_hammer
-				.on( drag.events, ( evnt ) => {
-					new_distance = evnt[ 'delta' + drag.typeUpper ];
-					if ( drag.negative )
-					{
-						new_distance = -new_distance;
-					}
+			_hammer.on( drag.events, ( evnt ) => {
+				new_distance = evnt[ 'delta' + drag.typeUpper ];
 
-					if ( new_distance != _distance )
-					{
-						_direction = ( new_distance >= _distance ) ? drag.open_dir : drag.close_dir;
-					}
+				if ( drag.negative ) {
+					new_distance = -new_distance;
+				}
 
-					_distance = new_distance;
+				if ( new_distance != _distance ) {
+					_direction = ( new_distance >= _distance ) ? drag.open_dir : drag.close_dir;
+				}
 
-					if ( _distance > options.menu.threshold )
-					{
-						if ( _stage == 1 )
-						{
-							if ( document.documentElement.matches( '.mm-wrapper_opened' ) )
-							{
-								return;
-							}
-							_stage = 2;
+				_distance = new_distance;
 
-							this._openSetup();
-							this.trigger( 'open:start' );
-							document.documentElement.classList.add( 'mm-wrapper_dragging' );
-
-							_maxDistance = minMax( 
-								window[ _winDimension ] * configs.menu[ _dimension ].perc, 
-								configs.menu[ _dimension ].min,
-								configs.menu[ _dimension ].max
-							);
+				if ( _distance > options.menu.threshold ) {
+					if ( _stage == 1 ) {
+						if ( document.documentElement.matches( '.mm-wrapper_opened' ) ) {
+							return;
 						}
-					}
-					if ( _stage == 2 )
-					{
-						drag_distance = minMax( _distance, 10, _maxDistance ) - ( zposition == 'front' ? _maxDistance : 0 );
-						if ( drag.negative )
-						{
-							drag_distance = -drag_distance;
-						}
-						let css_value = 'translate' + drag.typeUpper + '(' + drag_distance + 'px )';
+						_stage = 2;
 
-						slideOutNodes.forEach(( node ) => {
-							node.style[ '-webkit-transform' ] = '-webkit-' + css_value;
-							node.style[ 'transform' ] = css_value;
-						});
-					}
-				});
+						this._openSetup();
+						this.trigger( 'open:start' );
+						document.documentElement.classList.add( 'mm-wrapper_dragging' );
 
-			_hammer
-				.on( 'panend', ( evnt ) => {
-					if ( _stage == 2 )
-					{
-						document.documentElement.classList.remove( 'mm-wrapper_dragging' );
-						
-						slideOutNodes.forEach(( node ) => {
-							node.style[ '-webkit-transform' ] = '';
-							node.style[ 'transform' ] = '';
-						});
-
-						this[ _direction == drag.open_dir ? '_openFinish' : 'close' ]();
+						_maxDistance = minMax( 
+							window[ _winDimension ] * configs.menu[ _dimension ].perc, 
+							configs.menu[ _dimension ].min,
+							configs.menu[ _dimension ].max
+						);
 					}
-		        	_stage = 0;
-			    });
+				}
+				if ( _stage == 2 ) {
+					drag_distance = minMax( 
+						_distance, 
+						10, 
+						_maxDistance
+					) - ( zposition == 'front' ? _maxDistance : 0 );
+
+					if ( drag.negative ) {
+						drag_distance = -drag_distance;
+					}
+					let css_value = 'translate' + drag.typeUpper + '(' + drag_distance + 'px )';
+
+					slideOutNodes.forEach(( node ) => {
+						node.style[ '-webkit-transform' ] = '-webkit-' + css_value;
+						node.style[ 'transform' ] = css_value;
+					});
+				}
+			});
+
+			_hammer.on( 'panend', ( evnt ) => {
+				if ( _stage == 2 ) {
+					document.documentElement.classList.remove( 'mm-wrapper_dragging' );
+					
+					slideOutNodes.forEach(( node ) => {
+						node.style[ '-webkit-transform' ] = '';
+						node.style[ 'transform' ] = '';
+					});
+
+					this[ _direction == drag.open_dir ? '_openFinish' : 'close' ]();
+				}
+	        	_stage = 0;
+		    });
 		});
 	}
 
 	//	Drag close panels
-	if ( options.panels.close )
-	{
+	if ( options.panels.close ) {
 		this.bind( 'initPanel:after', (
 			panel : HTMLElement
 		) => {
 			var parent = panel[ 'mmParent '];
 
-			if ( parent )
-			{
+			if ( parent ) {
 				parent = parent.closest( '.mm-panel' );
 
 				var _hammer = new Hammer( panel, this.opts.drag.vendors.hammer ),
 					timeout = null;
 
-				_hammer
-					.on( 'panright',
-						( e ) => {
-							if ( timeout )
-							{
-								return;
-							}
-							this.openPanel( parent );
+				_hammer.on( 'panright', ( evnt ) => {
+					if ( timeout ) {
+						return;
+					}
+					this.openPanel( parent );
 
-							//	prevent dragging while panel still open.
-							timeout = setTimeout(
-								() => {
-									clearTimeout( timeout );
-									timeout = null;
-								}, this.conf.openingInterval + this.conf.transitionDuration
-							);
-						}
-					);
+					//	prevent dragging while panel still open.
+					timeout = setTimeout(() => {
+						clearTimeout( timeout );
+						timeout = null;
+					}, this.conf.openingInterval + this.conf.transitionDuration );
+				});
 			}
 		});
 	}

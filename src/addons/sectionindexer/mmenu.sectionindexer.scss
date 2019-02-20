@@ -3,10 +3,8 @@
 	'../../variables';
 
 
-@if ( $mm_opt_sectionindexer )
-{
-	.mm-sectionindexer
-	{
+@if ( $mm_opt_sectionindexer ) {
+	.mm-sectionindexer {
 		background: inherit;
 		text-align: center;
 		font-size: 12px;
@@ -26,33 +24,28 @@
 		flex-direction: column;
 		justify-content: space-evenly;
 
-		a
-		{
+		a {
 			color: var( --mm-color-text-dimmed );
 			line-height: 1;
 			text-decoration: none;
 			display: block;
 		}
 
-		~ .mm-panels
-		{
+		~ .mm-panels {
 			transition: right $mm_transitionDuration $mm_transitionFunction;
 		}
 	}
-	.mm-menu_has-sectionindexer
-	{
-		.mm-sectionindexer
-		{
+
+	.mm-menu_has-sectionindexer {
+		.mm-sectionindexer {
 			right: 0;
 		}
-		.mm-panels
-		{
+		.mm-panels {
 			right: $mm_sectionIndexerSize;
 		}
 	}
 
-	@if ( $mm_opt_navbars )
-	{
+	@if ( $mm_opt_navbars ) {
 		@include mm_sectionindexer_position( 'top', 1 );
 		@include mm_sectionindexer_position( 'top', 2 );
 		@include mm_sectionindexer_position( 'top', 3 );
