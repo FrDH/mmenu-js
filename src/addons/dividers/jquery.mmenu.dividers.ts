@@ -98,7 +98,7 @@
 			if ( opts.fixed )
 			{
 				//	Add the fixed divider
-				this.bind( 'initPanels:after',
+				this.bind( 'initPanels:before',
 					function()
 					{
 						if ( typeof this.$fixeddivider == 'undefined' )
