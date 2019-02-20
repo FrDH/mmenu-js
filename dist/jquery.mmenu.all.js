@@ -55,8 +55,8 @@ jQuery.mmenu.wrappers.angular=function(){this.opts.onClick={close:!0,preventDefa
 !function(e){e.mmenu.wrappers.jqueryMobile=function(){var n=this;this.opts.onClick.close=!1,this.conf.offCanvas.page.selector="div.ui-page-active",e("body").on("pagecontainerchange",function(e,t){"function"==typeof n.close&&(n.close(),n.setPage(t.toPage))}),this.bind("initAnchors:after",function(){e("body").on("click",".mm-listview a",function(n){n.isDefaultPrevented()||(n.preventDefault(),e("body").pagecontainer("change",e(this).attr("href")))})})}}(jQuery);
 jQuery.mmenu.wrappers.magento=function(){this.conf.classNames.selected="active"};
 jQuery.mmenu.wrappers.olark=function(){this.conf.offCanvas.page.noSelector.push("#olark")};
-!function(s){s.mmenu.wrappers.wordpress=function(){this.conf.classNames.selected="current-menu-item",s("#wpadminbar").css("position","fixed").addClass("mm-slideout")}}(jQuery);
 !function(n){n.mmenu.wrappers.turbolinks=function(){var t,o;n(document).on("turbolinks:before-visit",function(){o=n("html"),t=o.attr("class"),t=n.grep(t.split(/\s+/),function(n){return!/mm-/.test(n)}).join(" ")}).on("turbolinks:load",function(){void 0!==o&&(o.attr("class",t),n.mmenu.glbl=!1)})}}(jQuery);
+!function(s){s.mmenu.wrappers.wordpress=function(){this.conf.classNames.selected="current-menu-item",s("#wpadminbar").css("position","fixed").addClass("mm-slideout")}}(jQuery);
 jQuery.mmenu.i18n({Menu:"Menü"},"de");
 jQuery.mmenu.i18n({"Close menu":"Menü schließen","Close submenu":"Untermenü schließen","Open submenu":"Untermenü öffnen","Toggle submenu":"Untermenü wechseln"},"de");
 jQuery.mmenu.i18n({Search:"Suche","No results found.":"Keine Ergebnisse gefunden.",cancel:"beenden"},"de");
