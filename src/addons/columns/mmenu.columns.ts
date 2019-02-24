@@ -101,14 +101,14 @@ Mmenu.addons.columns = function(
 		this.bind( 'openPanel:start', (
 			panel : HTMLElement
 		) => {
-			var _num = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' ).length;
+			var columns = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' ).length;
 			if ( !panel.matches( '.mm-panel_opened-parent' ) ) {
-				_num++;
+				columns++;
 			}
-			_num = Math.min( options.visible.max, Math.max( options.visible.min, _num ) );
+			columns = Math.min( options.visible.max, Math.max( options.visible.min, columns ) );
 
 			this.node.menu.classList.remove( ...colm.split( ' ' ) );
-			this.node.menu.classList.add( 'mm-menu_columns-' + _num );
+			this.node.menu.classList.add( 'mm-menu_columns-' + columns );
 
 			var panels : HTMLElement[] = [];
 			Mmenu.DOM.children( this.node.pnls, '.mm-panel' )
@@ -119,7 +119,6 @@ Mmenu.addons.columns = function(
 					}
 				});
 
-//	TODO: check if not in array?
 			panels.push( panel );
 			panels.slice( -options.visible.max )
 				.forEach(( panel, p ) => {

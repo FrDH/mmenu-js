@@ -70,7 +70,8 @@ Mmenu.addons.dividers = function(
 
 	//	Fixed dividers
 	if ( options.fixed ) {
-		//	Add the fixed divider
+
+		//	Add the fixed divider.
 		this.bind( 'initPanels:after', (
 			panels : HTMLElement[]
 		) => {
@@ -84,12 +85,14 @@ Mmenu.addons.dividers = function(
 			}
 		});
 
-		function setValue( 
-			this	 : Mmenu,
-			panel	?: HTMLElement
-		) {
-			panel = panel || Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
-			if ( !panel || window.getComputedStyle( panel ).display == 'none' ) {
+		//	Set the text for the fixed divider.
+		const setValue = () => {
+			if ( this.opts.offCanvas && !this.vars.opened ) {
+				return;
+			}
+
+			var panel = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
+			if ( !panel || panel.matches( '.mm-hidden' ) ) {
 				return;
 			}
 
@@ -116,7 +119,7 @@ Mmenu.addons.dividers = function(
 		//		4) after scrolling a panel
 		this.bind( 'open:start'			, setValue );	// 1
 		this.bind( 'openPanel:start'	, setValue );	// 2
-		this.bind( 'updateListview'		, setValue );	// 3	//	TODO? does not pass "panel" argument.
+		this.bind( 'updateListview'		, setValue );	// 3
 		this.bind( 'initPanel:after', (
 			panel : HTMLElement
 		) => {

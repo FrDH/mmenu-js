@@ -521,16 +521,13 @@ class Mmenu {
 	_initMatchMedia()
 	{
 		for ( var mediaquery in this.mtch ) {
-			//	TODO: is the closure still needed as it now is a let?
-			//(() => {
-				let mqstring = mediaquery,
-					mqlist   = window.matchMedia( mqstring );
+			let mqstring = mediaquery,
+				mqlist   = window.matchMedia( mqstring );
 
+			this._fireMatchMedia( mqstring, mqlist );
+			mqlist.addListener(( mqlist ) => {
 				this._fireMatchMedia( mqstring, mqlist );
-				mqlist.addListener(( mqlist ) => {
-					this._fireMatchMedia( mqstring, mqlist );
-				});
-			//})();
+			});
 		}
 	}
 
@@ -643,15 +640,13 @@ class Mmenu {
 		//	Loop over object.
 		for ( let mediaquery in this.opts.extensions ) {
 			this.opts.extensions[ mediaquery ] = this.opts[ 'extensions' ][ mediaquery ].length ? 'mm-menu_' + this.opts[ 'extensions' ][ mediaquery ].join( ' mm-menu_' ) : '';
+
 			if ( this.opts.extensions[ mediaquery ] ) {
-				//	TODO: is the closure still needed as it now is a let?
-			//	(( mediaquery ) => {
 				this.matchMedia( mediaquery, () => {
 					this.node.menu.classList.add( this.opts.extensions[ mediaquery ] );
 				}, () => {
 					this.node.menu.classList.remove( this.opts.extensions[ mediaquery ] );
 				});
-			//	})( mediaquery );
 			}
 		}
 

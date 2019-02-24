@@ -65,15 +65,16 @@ Mmenu.addons.iconPanels = function(
 				cls = cls.slice( 1 );
 			}
 		}
-		function setPanels(
-			this	: Mmenu,
-			panel	: HTMLElement
-		) {
+		const setPanels = (
+			panel ?: HTMLElement
+		) => {
+
+			var panels = Mmenu.DOM.children( this.node.pnls, '.mm-panels' );
+			panel = panel || panels[ 0 ];
+
 			if ( panel.parentElement.matches( '.mm-listitem_vertical' ) ) {
 				return;
 			}
-
-			var panels = Mmenu.DOM.children( this.node.pnls, '.mm-panels' );
 
 			if ( keepFirst ) {
 				panels.forEach(( panel, p ) => {
@@ -108,12 +109,8 @@ Mmenu.addons.iconPanels = function(
 			}
 		};
 
-		this.bind( 'openPanel:start', setPanels );
-		this.bind( 'initPanels:after', (
-			panels : HTMLElement[]
-		) => {
-			setPanels.call( this, Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ] );
-		});
+		this.bind( 'openPanel:start', 	setPanels );
+		this.bind( 'initPanels:after', 	setPanels );
 
 		this.bind( 'initListview:after', (
 			panel : HTMLElement

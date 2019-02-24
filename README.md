@@ -6,7 +6,7 @@ The best javascript plugin for app look-alike on- and off-canvas menus with slid
 Need help? Have a look at [the documentation](https://mmenujs.com) for demos, tutorials, documentation and support.<br />
 Working on a WordPress site? Check out [the mmenu WordPress plugin](https://mmenujs.com/wordpress-plugin).
 
-<img src="https://mmenujs.com/img/preview-3.png" alt="mmenu.js" width="100%" />
+<img src="https://mmenujs.com/img/preview-mmenu.png" alt="mmenu.js" width="100%" />
 
 ### Licence
 The mmenu javascript plugin is licensed under the [CC-BY-NC-4.0 license](http://creativecommons.org/licenses/by-nc/4.0/).<br />
