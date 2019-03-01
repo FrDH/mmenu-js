@@ -1,4 +1,12 @@
-Mmenu.addons.dropdown = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+import configs from './_configs';
+
+Mmenu.options.dropdown = options;
+Mmenu.configs.dropdown = configs;
+
+
+export default function(
 	this : Mmenu
 ) {
 	if ( !this.opts.offCanvas ) {

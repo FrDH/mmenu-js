@@ -1,4 +1,10 @@
-Mmenu.addons.keyboardNavigation = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+
+Mmenu.options.keyboardNavigation = options;
+
+
+export default function(
 	this : Mmenu
 ) {
 	//	Keyboard navigation on touchscreens opens the virtual keyboard :/

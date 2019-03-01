@@ -1,4 +1,6 @@
-Mmenu.addons.navbars.next = function( 
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+
+export default function( 
 	this	: Mmenu,
 	navbar	: HTMLElement
 ) {
@@ -39,5 +41,3 @@ Mmenu.addons.navbars.next = function(
 		Mmenu.sr_aria( next, 'owns', ( next.getAttribute( 'href' ) || '' ).slice( 1 ) );
 	});
 };
-
-Mmenu.configs.classNames.navbars.panelNext = 'Next';

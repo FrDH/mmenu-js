@@ -1,4 +1,11 @@
-Mmenu.addons.toggles = function()
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+
+Mmenu.configs.classNames.toggles = {
+	toggle	: 'Toggle',
+	check	: 'Check'
+};
+
+export default function()
 {
 	this.bind( 'initPanels:after', ( 
 		panels	: HTMLElement[]

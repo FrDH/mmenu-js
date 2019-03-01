@@ -1,4 +1,10 @@
-Mmenu.addons.scrollBugFix = function( 
+import Mmenu from './../oncanvas/mmenu.oncanvas';
+import options from './_options';
+
+Mmenu.options.scrollBugFix = options;
+
+
+export default function( 
 	this: Mmenu
 ) {
 	//	The scrollBugFix add-on fixes a scrolling bug

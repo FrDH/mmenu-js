@@ -1,4 +1,4 @@
-Mmenu.options.searchfield = {
+const options : mmOptionsSearchfield = {
 	add 			: false,
 	addTo			: 'panels',
 	cancel 			: false,
@@ -16,3 +16,4 @@ Mmenu.options.searchfield = {
 	showTextItems	: false,
 	showSubPanels	: true
 };
+export default options;

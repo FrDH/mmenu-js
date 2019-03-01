@@ -1,4 +1,4 @@
-Mmenu.configs.offCanvas = {
+const configs : mmConfigsOffcanvas = {
 	menu : {
 		insertMethod	: 'prepend',
 		insertSelector	: 'body'
@@ -9,3 +9,4 @@ Mmenu.configs.offCanvas = {
 		noSelector		: []
 	}
 };
+export default configs;

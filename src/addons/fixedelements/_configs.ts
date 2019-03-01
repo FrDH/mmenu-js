@@ -1,4 +1,4 @@
-Mmenu.configs.fixedElements = {
+const configs : mmConfigsFixedelements = {
 	fixed	: {
 		insertMethod	: 'append',
 		insertSelector	: 'body'
@@ -7,8 +7,4 @@ Mmenu.configs.fixedElements = {
 		offset : 0
 	}
 };
-
-Mmenu.configs.classNames.fixedElements = {
-	fixed 	: 'Fixed',
-	sticky	: 'Sticky'
-};
+export default configs;

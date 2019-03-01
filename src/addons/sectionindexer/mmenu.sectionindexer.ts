@@ -1,4 +1,10 @@
-Mmenu.addons.sectionIndexer = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+
+Mmenu.options.sectionIndexer = options;
+
+
+export default function(
 	this : Mmenu
 ) {
 	var options = this.opts.sectionIndexer;

@@ -1,4 +1,6 @@
-Mmenu.addons.navbars.prev = function( 
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+
+export default function( 
 	this	: Mmenu,
 	navbar	: HTMLElement
 ) {
@@ -57,5 +59,3 @@ Mmenu.addons.navbars.prev = function(
 		Mmenu.sr_aria( prev, 'owns', ( prev.getAttribute( 'href' ) || '' ).slice( 1 ) );
 	});
 };
-
-Mmenu.configs.classNames.navbars.panelPrev = 'Prev';

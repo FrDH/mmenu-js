@@ -1,25 +1,20 @@
 /*
 	Tasks:
 
-	$ gulp 					: Runs "css" and "js" tasks.
-	$ gulp watch			: Starts a watch on "css" and "js" tasks.
+	$ gulp 			: Runs the "css" and "js" tasks.
+	$ gulp watch	: Starts a watch on the "css" and "js" tasks.
 
 
 	Flags:
 
+	--i ../path/to 	: Creat a custom build using "mmenu.module.ts" and "_variables.scss" from the specified directory.
 	--o ../path/to 	: Sets the "output" directory to the specified directory.
-	--c ../path/to 	: Creates a "custom build" using _build.json and _variables.custom.scss from the specified directory.
 
 
 	Examples:
 
-	$ gulp --c ../mmenu-custom --o ../my-custom-build
-	$ gulp watch --c ../mmenu-custom --o ../my-custom-build
-
-
-
-	Generate a _build.json by running:
-	$ php bin/build.php ../path/to
+	$ gulp --i ../mmenu-custom --o ../my-custom-build
+	$ gulp watch --i ../mmenu-custom --o ../my-custom-build
 */
 
 
@@ -28,16 +23,15 @@ const { src, dest, watch, series, parallel } = require( 'gulp' );
 const sass 			= require( 'gulp-sass' ),
 	autoprefixer 	= require( 'gulp-autoprefixer' ),
 	cleancss		= require( 'gulp-clean-css' ),
-	uglify 			= require( 'gulp-terser' ),
 	concat 			= require( 'gulp-concat' ),
 	typescript		= require( 'gulp-typescript' ),
-	fs 				= require( 'fs' );
+	webpack			= require( 'webpack-stream' );
 
 
 var inputDir 		= 'src',
 	outputDir 		= 'dist',
-	customDir 		= null,
-	build 			='./' + inputDir + '/_build.json';
+	binDir			= 'bin',
+	buildInputDir	= null;
 
 
 
@@ -52,50 +46,32 @@ const getOption = ( opt ) => {
 };
 
 
-const start = ( cb ) => {
+const setDirs = () => {
 
-	var o = getOption( 'o' ),
-		c = getOption( 'c' );
+	var i = getOption( 'i' ),
+		o = getOption( 'o' );
 
-	//	Set output dir 
-	if ( o )
+	// Set custom input dir.
+	if ( i )
+	{
+		buildInputDir = i;
+	}
+
+	// Set custom output dir.
+	if ( o && o != inputDir && o != binDir )
 	{
 		outputDir = o;
 	}
-
-	//	Set custom dir
-	if ( c )
-	{
-		customDir = c;
-
-		//	Try custom _build.json file
-		let b = './' + c + '/_build.json';
-		fs.stat( b, ( err, stat ) => {
-			if ( err == null )
-			{
-				build = require( b );
-			}
-			else
-			{
-				build = require( build );
-			}
-			cb();
-		});
-	}
-	else
-	{
-		build = require( build );
-		cb();
-	}
 };
-
 
 
 /*
 	$ gulp
 */
 const defaultTask = ( cb ) => {
-	start( parallel( css, js ) );
+	setDirs();
+	css();
+	js();
 	cb();
 };
 exports.default = defaultTask;
@@ -105,10 +81,9 @@ exports.default = defaultTask;
 	$ gulp watch
 */
 const watchTask = ( cb ) => {
-	start(() => {
-		watch( inputDir + '/**/*.scss'	, css );
-		watch( inputDir + '/**/*.ts'	, js );
-	});
+	setDirs();
+	watch( inputDir + '/**/*.scss'	, css );
+	watch( inputDir + '/**/*.ts'	, js );
 	cb();
 };
 exports.watch = watchTask;
@@ -117,36 +92,37 @@ exports.watch = watchTask;
 
 /*
 	CSS tasks.
+
+		*)  The variables for each part are concatenated into the "bin" dir.
+		**) Before compiling, the variables are copied from either the "bin" dir or the specified "custom input" dir, into the "input" dir.
 */
+//	TODO use watcher.on to see what file changed:
+//		variable: concat variables, compile all and concat.
+//		mixin: concat mixins, compile all and concat.
+//		orhter: compile only changed and concat.
 
-// Concatenate variables.
-const cssVariables = () => {
+//	TODO For gulp default:
+//		do not concat variables or mixins, just compile and concat.
+
+// *) Concatenate variables into a single file.
+const cssConcatVariables = () => {
 	var files  	= [
-		inputDir + '/core/oncanvas/_variables.scss',	//	Oncanvas needs to be first
-		inputDir + '/core/**/_variables.scss',			//	Core needs to be next
-		inputDir + '/addons/**/_variables.scss',
-		inputDir + '/extensions/**/_variables.scss',
-		inputDir + '/wrappers/**/_variables.scss'
+	'!'+inputDir + '/_variables.scss',					// Exclude the variables destination file.
+		inputDir + '/core/oncanvas/_variables.scss',	// Include oncanvas first.
+		inputDir + '/core/**/_variables.scss',			// Include core add-ons next.
+		inputDir + '/**/_variables.scss'				// Include the rest.
 	];
-
-	if ( customDir )
-	{
-		//	Because of the the globstar, the file does not need to excist.
-		files.unshift( customDir + '/**/_variables.custom.scss' );
-	}
 
 	return src( files )
 		.pipe( concat( '_variables.scss' ) )
-    	.pipe( dest( inputDir ) );
+    	.pipe( dest( binDir ) );
 };
 
-// Concatenate mixins.
-const cssMixins = () => {
+// Concatenate mixins into a single file.
+const cssConcatMixins = () => {
 	var files = [
-		inputDir + '/core/**/_mixins.scss',
-		inputDir + '/addons/**/_mixins.scss',
-		inputDir + '/extensions/**/_mixins.scss',
-		inputDir + '/wrappers/**/_mixins.scss'
+	'!'+inputDir + '/_mixins.scss',		// Exclude the mixins destination file.
+		inputDir + '/**/_mixins.scss'	// Include all other mixins.
 	];
 
 	return src( files )
@@ -154,72 +130,82 @@ const cssMixins = () => {
 		.pipe( dest( inputDir ) );
 };
 
-// Compile and concatenate all SCSS files to CSS.
-const cssCompile = () => {
-	var files = [
-		inputDir + '/core/oncanvas/*.scss',
-		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 			+ ')/*.scss',
-		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 		+ ')/*.scss',
-		inputDir + '/extensions/@(' + build.files.extensions.join( '|' ) 	+ ')/*.scss',
-		inputDir + '/wrappers/@(' 	+ build.files.wrappers.join( '|' ) 		+ ')/*.scss'
-	];
+// **) Copy variables from bin or custom input into input.
+const cssCopyVariables = () => {
+	var dir = buildInputDir || binDir;
 
-	return src( files )
+	return src( dir + '/_variables.scss' )
+		.pipe( dest( inputDir ) );
+};
+
+// Compile all SCSS files to CSS.
+const cssCompileAll = () => {
+	return src( inputDir + '/**/*.scss' )
 		.pipe( sass().on( 'error', sass.logError ) )
 		.pipe( autoprefixer( [ '> 5%', 'last 5 versions' ] ) )
 		.pipe( cleancss() )
-		.pipe( concat( build.name + '.css' ) )
+		.pipe( dest( outputDir ) );
+};
+
+// Concat all CSS files into a single file.
+const cssConcatAll = () => {
+	var files = [
+	'!'+outputDir + '/mmenu.css',				// Exclude the CSS destination file.
+		outputDir + '/core/oncanvas/*.css',		// Include oncanvas first.
+		outputDir + '/core/**/*.css',			// Include core add-ons next.
+		outputDir + '/**/*.css'					// Include the rest.
+	];
+
+	return src( files )
+		.pipe( concat( 'mmenu.css' ) )
 		.pipe( dest( outputDir ) );
 };
 
 const css = series( 
 	parallel( 
-		cssVariables,
-		cssMixins
+		cssConcatVariables,
+		cssConcatMixins
 	),
-	cssCompile
+	cssCopyVariables,
+	cssCompileAll,
+	cssConcatAll
 );
 
 
 
 /*
 	JS tasks.
+		*) The "module" file is transpiled from either the "bin" dir or the specified "custom input" dir.
 */
 
-// 1) Compile and concatenate all TS files to JS.
-const js = () => {
-
-	var files = [];
-
-	//	Add typings.
-	files.push(
-		inputDir + '**/*.d.ts',
-	);
-
-	//	Add files.
-	files.push(
-		inputDir + '/core/oncanvas/[!_]*.ts',
-		inputDir + '/core/oncanvas/[_]*.ts',
-		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/[!_]*.ts',
-		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/[_]*.ts',
-		inputDir + '/core/@(' 		+ build.files.core.join( '|' ) 		+ ')/translations/@(' 	+ build.files.translations.join( '|' ) 	+ ').ts',
-		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/[!_]*.ts',
-		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/[_]*.ts',
-		inputDir + '/addons/@(' 	+ build.files.addons.join( '|' ) 	+ ')/translations/@(' 	+ build.files.translations.join( '|' ) 	+ ').ts',
-		inputDir + '/wrappers/@(' 	+ build.files.wrappers.join( '|' ) 	+ ')/*.ts'
-	);
-
-	return src( files )
+// *) Transpile all TS files to JS.
+const jsTranspile = () => {
+	return src( inputDir + '/**/*.ts' )
   		.pipe( typescript({
-			"target": "es5"
+			"target": "es6",
+			"module": "es6"
   		}) )
-		.pipe( uglify({ 
-			output: {
-				comments: "/^!/"
-			}
-		}) )
-		.on( 'error', ( err ) => { console.log( err ) } )
-		.pipe( concat( build.name + '.js' ) )
 		.pipe( dest( outputDir ) );
 };
 
+// Pack the files.
+const jsPack = () => {
+	var dir = buildInputDir || outputDir;
+
+//	TODO?
+//		./src vervangen voor een goed pad afhankelijk van "dir" + src moet dist worden
+
+console.log(dir + '/mmenu')
+
+	return src( dir + '/mmenu.module.js' )
+	    .pipe( webpack({
+	    	// mode: 'development',
+	    	mode: 'production',
+	    	output: {
+				filename: 'mmenu.js',
+		    },
+	    }) )
+	    .pipe( dest( outputDir ) );
+};
+
+const js = series( jsTranspile, jsPack );

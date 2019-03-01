@@ -1,4 +1,12 @@
-Mmenu.addons.searchfield = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+import configs from './_configs';
+
+Mmenu.options.searchfield = options;
+Mmenu.configs.searchfield = configs;
+
+
+export default function(
 	this : Mmenu
 ) {
 	var options = this.opts.searchfield,
@@ -434,6 +442,10 @@ Mmenu.prototype._initNoResultsMsg = function(
 	this	: Mmenu,
 	wrapper	: HTMLElement
 ) {
+	if ( !wrapper ) {
+		return;
+	}
+
 	var options = this.opts.searchfield,
 		configs = this.conf.searchfield;
 
@@ -518,7 +530,8 @@ Mmenu.prototype.search = function(
 				_search = 'a' + _search;
 			}
 
-			if ( Mmenu.DOM.children( listitem, _search )[ 0 ].textContent.toLowerCase().indexOf( query ) > -1 ) {
+			let text = Mmenu.DOM.children( listitem, _search )[ 0 ];
+			if ( text && text.textContent.toLowerCase().indexOf( query ) > -1 ) {
 				listitem.classList.remove( 'mm-hidden' );
 			}
 		});

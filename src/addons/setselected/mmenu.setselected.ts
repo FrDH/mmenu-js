@@ -1,4 +1,10 @@
-Mmenu.addons.setSelected = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+
+Mmenu.options.setSelected = options;
+
+
+export default function(
 	this : Mmenu
 ) {
 	var options = this.opts.setSelected;

@@ -1,4 +1,10 @@
-Mmenu.addons.sidebar = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+
+Mmenu.options.sidebar = options;
+
+
+export default function(
 	this : Mmenu
 ) {
 	if ( !this.opts.offCanvas ) {

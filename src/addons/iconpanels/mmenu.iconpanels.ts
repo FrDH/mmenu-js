@@ -1,4 +1,10 @@
-Mmenu.addons.iconPanels = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+
+Mmenu.options.iconPanels = options;
+
+
+export default function(
 	this : Mmenu
 ) {
 	var options = this.opts.iconPanels;

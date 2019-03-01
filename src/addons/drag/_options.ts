@@ -1,4 +1,4 @@
-Mmenu.options.drag = {
+const options : mmOptionsDrag = {
 	menu 	: {
 		open 		: false,
 		node		: null,
@@ -12,3 +12,4 @@ Mmenu.options.drag = {
 		hammer	: {}
 	}
 };
+export default options;

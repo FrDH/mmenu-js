@@ -1,4 +1,4 @@
-Mmenu.options.sidebar = {
+const options : mmOptionsSidebar = {
 	collapsed 	: {
 		use 		: false,
 		blockMenu	: true,
@@ -9,3 +9,4 @@ Mmenu.options.sidebar = {
 		use			: false
 	}
 };
+export default options;

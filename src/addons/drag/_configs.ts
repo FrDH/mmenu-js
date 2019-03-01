@@ -1,4 +1,4 @@
-Mmenu.configs.drag = {
+const configs : mmConfigsDrag = {
 	menu : {
 		width	: {
 			perc	: 0.8,
@@ -12,3 +12,4 @@ Mmenu.configs.drag = {
 		}
 	}
 };
+export default configs;

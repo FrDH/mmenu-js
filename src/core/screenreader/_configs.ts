@@ -1,4 +1,4 @@
-Mmenu.configs.screenReader = {
+const configs : mmConfigsScreenreader = {
 	text: {
 		closeMenu       : 'Close menu',
 		closeSubmenu    : 'Close submenu',
@@ -6,3 +6,4 @@ Mmenu.configs.screenReader = {
 		toggleSubmenu   : 'Toggle submenu'
 	}
 };
+export default configs;

@@ -1,4 +1,10 @@
-Mmenu.addons.backButton = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+
+Mmenu.options.backButton = options;
+
+
+export default function(
 	this : Mmenu
 ) {
 	if ( !this.opts.offCanvas ) {
@@ -30,9 +36,7 @@ Mmenu.addons.backButton = function(
 
 		var states = [];
 
-		function setStates(
-			this : Mmenu
-		) {
+		const setStates = () => {
 			states = [ _menu ];
 			Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened, .mm-panel_opened-parent' )
 				.forEach(( panel ) => {

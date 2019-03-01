@@ -1,3 +1,4 @@
-Mmenu.options.scrollBugFix = {
+const options : mmOptionsScrollbugfix = {
 	fix: true
 };
+export default options;

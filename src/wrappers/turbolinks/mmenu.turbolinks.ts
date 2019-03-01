@@ -1,4 +1,6 @@
-Mmenu.wrappers.turbolinks = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+
+export default function(
 	this : Mmenu
 ) {
 	var classnames;

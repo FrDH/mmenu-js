@@ -1,4 +1,6 @@
-Mmenu.addons.navbars.searchfield = function( 
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+
+export default function( 
 	this	: Mmenu,
 	navbar	: HTMLElement
 ) {

@@ -1,4 +1,14 @@
-Mmenu.addons.counters = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+
+Mmenu.options.counters = options;
+
+Mmenu.configs.classNames.counters = {
+	counter: 'Counter'
+};
+
+
+export default function(
 	this : Mmenu
 ) {
 	var options = this.opts.counters;

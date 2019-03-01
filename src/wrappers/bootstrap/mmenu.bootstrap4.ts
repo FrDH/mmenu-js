@@ -1,4 +1,6 @@
-Mmenu.wrappers.bootstrap4 = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+
+export default function(
 	this : Mmenu
 ) {
 

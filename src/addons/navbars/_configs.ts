@@ -1,8 +1,7 @@
-Mmenu.configs.navbars = {
+const configs : mmConfigsNavbars = {
 	breadcrumbs: {
 		separator 	: '/',
 		removeFirst : false
 	}
 };
-
-Mmenu.configs.classNames.navbars = {};
+export default configs;

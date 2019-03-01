@@ -1,3 +1,3 @@
-Mmenu.i18n({
+export default {
 	'Menu': 'Menü'
-}, 'de' );
+};

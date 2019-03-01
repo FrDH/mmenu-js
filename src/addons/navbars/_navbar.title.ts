@@ -1,4 +1,6 @@
-Mmenu.addons.navbars.title = function( 
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+
+export default function( 
 	this	: Mmenu,
 	navbar	: HTMLElement
 ) {
@@ -70,5 +72,3 @@ Mmenu.addons.navbars.title = function(
 		}
 	});
 };
-
-Mmenu.configs.classNames.navbars.panelTitle = 'Title';

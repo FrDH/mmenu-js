@@ -1,4 +1,15 @@
-Mmenu.addons.fixedElements = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import configs from './_configs';
+
+Mmenu.configs.fixedElements = configs;
+
+Mmenu.configs.classNames.fixedElements = {
+	fixed 	: 'Fixed',
+	sticky	: 'Sticky'
+};
+
+
+export default function(
 	this : Mmenu
 ) {
 	if ( !this.opts.offCanvas ) {

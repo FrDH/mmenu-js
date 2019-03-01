@@ -1,4 +1,5 @@
-Mmenu.options.offCanvas = {
+const options : mmOptionsOffcanvas = {
 	blockUI			: true,
 	moveBackground	: true
 };
+export default options;

@@ -1,4 +1,12 @@
-Mmenu.addons.screenReader = function( 
+import Mmenu from './../oncanvas/mmenu.oncanvas';
+import options from './_options';
+import configs from './_configs';
+
+Mmenu.options.screenReader = options;
+Mmenu.configs.screenReader = configs;
+
+
+export default function( 
 	this : Mmenu
 ) {
 	var options = this.opts.screenReader,

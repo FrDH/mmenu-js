@@ -1,4 +1,12 @@
-Mmenu.addons.pageScroll = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+import configs from './_configs';
+
+Mmenu.options.pageScroll = options;
+Mmenu.configs.pageScroll = configs;
+
+
+export default function(
 	this : Mmenu
 ) {
 

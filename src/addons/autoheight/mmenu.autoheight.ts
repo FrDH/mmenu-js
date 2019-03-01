@@ -1,4 +1,10 @@
-Mmenu.addons.autoHeight = function(
+import Mmenu from './../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+
+Mmenu.options.autoHeight = options;
+
+
+export default function(
 	this : Mmenu
 ) {
 

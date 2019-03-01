@@ -1,4 +1,5 @@
-Mmenu.options.screenReader = {
+const options : mmOptionsScreenreader = {
 	aria: true,
 	text: true
 };
+export default options;

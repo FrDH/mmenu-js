@@ -1,4 +1,4 @@
-Mmenu.configs = {
+const configs : mmConfigs = {
 	classNames			: {
 		divider				: 'Divider',
 		inset 				: 'Inset',
@@ -15,3 +15,4 @@ Mmenu.configs = {
 	panelNodetype		: ['ul', 'ol', 'div'],
 	transitionDuration	: 400
 };
+export default configs;

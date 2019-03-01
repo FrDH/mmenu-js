@@ -1,1 +1,2 @@
-Mmenu.options.navbars = [];
+const options : mmOptionsNavbarsNavbar[] = [];
+export default options;

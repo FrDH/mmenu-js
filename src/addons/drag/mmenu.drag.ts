@@ -1,4 +1,12 @@
-Mmenu.addons.drag = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+import configs from './_configs';
+
+Mmenu.options.drag = options;
+Mmenu.configs.drag = configs;
+
+
+export default function(
 	this : Mmenu
 ) {
 	if ( !this.opts.offCanvas ) {

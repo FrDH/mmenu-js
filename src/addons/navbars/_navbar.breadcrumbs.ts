@@ -1,9 +1,10 @@
-Mmenu.addons.navbars.breadcrumbs = function( 
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+
+export default function( 
 	this	: Mmenu,
 	navbar	: HTMLElement
 ) {
 	//	Add content
-
 	var breadcrumbs = Mmenu.DOM.create( 'span.mm-navbar__breadcrumbs' );
 	navbar.append( breadcrumbs );
 

@@ -1,4 +1,4 @@
-Mmenu.configs.dropdown = {
+const configs : mmConfigsDropdown = {
 	offset: {
 		button	: {
 			x 		: -5,
@@ -16,3 +16,4 @@ Mmenu.configs.dropdown = {
 		max		: 440
 	}
 };
+export default configs;

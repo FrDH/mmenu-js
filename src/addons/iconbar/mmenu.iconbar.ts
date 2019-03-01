@@ -1,4 +1,10 @@
-Mmenu.addons.iconbar = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import options from './_options';
+
+Mmenu.options.iconbar = options;
+
+
+export default function(
 	this : Mmenu
 ) {
 
@@ -91,10 +97,9 @@ Mmenu.addons.iconbar = function(
 				catch( err ) {}
 			});
 
-			function selectTab( 
-				this	: Mmenu,
-				panel	: HTMLElement
-			) {
+			const selectTab = ( 
+				panel : HTMLElement
+			) => {
 				Mmenu.DOM.find( iconbar, 'a' )
 					.forEach(( anchor ) => {
 						anchor.classList.remove( 'mm-iconbar__tab_selected' );
@@ -107,10 +112,10 @@ Mmenu.addons.iconbar = function(
 				} else {
 					let parent : HTMLElement = panel[ 'mmParent' ];
 					if ( parent ) {
-						selectTab.call( this, parent.closest( '.mm-panel' ) );
+						selectTab( (parent.closest( '.mm-panel' ) as HTMLElement) );
 					}
 				}
-			}
+			};
 			this.bind( 'openPanel:start', selectTab );
 		}
 	}

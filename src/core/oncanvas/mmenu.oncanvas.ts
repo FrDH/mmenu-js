@@ -9,22 +9,24 @@
  * http://creativecommons.org/licenses/by-nc/4.0/
  */
 
+import options from './_options';
+import configs from './_configs';
 
 
 /**
  * Class for a mobile menu.
  */
-class Mmenu {
+export default class Mmenu {
 
 	/**	Plugin version. */
 	static version : string = '8.0.0'
 
 
 	/**	Default options for menus. */
-	static options : mmOptions
+	static options : mmOptions = options
 
 	/**	Default configuration for menus. */
-	static configs : mmConfigs
+	static configs : mmConfigs = configs
 
 
 	/**	Available add-ons for the plugin. */
@@ -1575,4 +1577,14 @@ class Mmenu {
 	}
 }
 
+
+import nl from './translations/nl';
+import fa from './translations/fa';
+import de from './translations/de';
+import ru from './translations/ru';
+
+Mmenu.i18n( nl, 'nl' );
+Mmenu.i18n( fa, 'fa' );
+Mmenu.i18n( de, 'de' );
+Mmenu.i18n( ru, 'ru' );
 

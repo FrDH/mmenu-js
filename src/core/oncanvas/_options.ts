@@ -1,4 +1,4 @@
-Mmenu.options = {
+const options : mmOptions = {
 	hooks 				: {},
 	extensions			: [],
 	wrappers			: [],
@@ -14,3 +14,4 @@ Mmenu.options = {
 	},
 	slidingSubmenus		: true
 };
+export default options;

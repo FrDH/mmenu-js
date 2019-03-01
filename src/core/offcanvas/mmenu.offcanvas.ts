@@ -1,4 +1,12 @@
-Mmenu.addons.offCanvas = function( 
+import Mmenu from './../oncanvas/mmenu.oncanvas';
+import options from './_options';
+import configs from './_configs';
+
+Mmenu.options.offCanvas = options;
+Mmenu.configs.offCanvas = configs;
+
+
+export default function( 
 	this : Mmenu
 ) {
 
@@ -149,6 +157,7 @@ Mmenu.addons.offCanvas = function(
 	});
 
 };
+
 
 
 /**

@@ -1,4 +1,43 @@
-Mmenu.addons.navbars = function(
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+
+import options from './_options';
+import configs from './_configs';
+
+Mmenu.options.navbars = options;
+Mmenu.configs.navbars = configs;
+
+Mmenu.configs.classNames.navbars = {
+	panelNext : 'Next',
+	panelPrev : 'Prev',
+	panelTitle: 'Title'
+};
+
+
+import breadcrumbs from './_navbar.breadcrumbs';
+import close from './_navbar.close';
+import next from './_navbar.next';
+import prev from './_navbar.prev';
+import searchfield from './_navbar.searchfield';
+import title from './_navbar.title';
+
+const navbarContents = {
+	breadcrumbs,
+	close,
+	next,
+	prev,
+	searchfield,
+	title
+};
+
+
+import tabs from './_navbar.tabs';
+
+const navbarTypes = {
+	tabs
+};
+
+
+export default function(
 	this : Mmenu
 ) {
 	var navs = this.opts.navbars;
@@ -90,7 +129,7 @@ Mmenu.addons.navbars = function(
 			if ( typeof ctnt == 'string' ) {
 
 				//	The content refers to one of the navbar-presets ("prev", "title", etc).
-				let func = Mmenu.addons.navbars[ ctnt ];
+				let func = navbarContents[ ctnt ];
 				if ( typeof func == 'function' ) {
 					//	Call the preset function.
 					func.call( this, navbar );
@@ -115,7 +154,7 @@ Mmenu.addons.navbars = function(
 		//	The type option is set.
 		if ( typeof options.type == 'string' ) {
 			//	The function refers to one of the navbar-presets ("tabs").
-			let func = Mmenu.addons.navbars[ options.type ];
+			let func = navbarTypes[ options.type ];
 			if ( typeof func == 'function' ) {
 				//	Call the preset function.
 				func.call( this, navbar );
