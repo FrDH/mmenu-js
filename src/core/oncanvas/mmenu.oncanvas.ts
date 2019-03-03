@@ -1,5 +1,5 @@
 /*!
- * mmenu.js v8.0.0
+ * mmenu.js v8.0.1
  * mmenujs.com
  *	
  * Copyright (c) Fred Heusschen
@@ -19,7 +19,7 @@ import configs from './_configs';
 export default class Mmenu {
 
 	/**	Plugin version. */
-	static version : string = '8.0.0'
+	static version : string = '8.0.1'
 
 
 	/**	Default options for menus. */
@@ -641,17 +641,16 @@ export default class Mmenu {
 
 		//	Loop over object.
 		for ( let mediaquery in this.opts.extensions ) {
-			this.opts.extensions[ mediaquery ] = this.opts[ 'extensions' ][ mediaquery ].length ? 'mm-menu_' + this.opts[ 'extensions' ][ mediaquery ].join( ' mm-menu_' ) : '';
+			if ( this.opts.extensions[ mediaquery ].length ) {
+				let classnames = this.opts.extensions[ mediaquery ].map(( query ) => 'mm-menu_' + query );
 
-			if ( this.opts.extensions[ mediaquery ] ) {
 				this.matchMedia( mediaquery, () => {
-					this.node.menu.classList.add( this.opts.extensions[ mediaquery ] );
+					this.node.menu.classList.add( ...classnames );
 				}, () => {
-					this.node.menu.classList.remove( this.opts.extensions[ mediaquery ] );
+					this.node.menu.classList.remove( ...classnames );
 				});
 			}
 		}
-
 
 		//	Invoke "after" hook.
 		this.trigger( 'initExtensions:after' );
@@ -1101,8 +1100,7 @@ export default class Mmenu {
 		//	Invoke "before" hook.
 		this.trigger( 'initAnchors:before' );
 
-
-		document.body.addEventListener( 'click', ( evnt ) => {
+		document.addEventListener( 'click', ( evnt ) => {
 
 			var target = (evnt.target as HTMLElement);
 
@@ -1130,7 +1128,7 @@ export default class Mmenu {
 			for ( let c = 0; c < this.clck.length; c++ ) {
 				let click = this.clck[ c ].call( this, target, args );
 				if ( click ) {
-					if ( Mmenu.typeof( click ) == 'boolean' ) {
+					if ( typeof click == 'boolean' ) {
 						evnt.preventDefault();
 						return;
 					}
@@ -1163,7 +1161,7 @@ export default class Mmenu {
 				}
 			}
 
-		});
+		}, true);
 
 
 		//	Invoke "after" hook.

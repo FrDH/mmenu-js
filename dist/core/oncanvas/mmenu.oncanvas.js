@@ -1,5 +1,5 @@
 /*!
- * mmenu.js v8.0.0
+ * mmenu.js v8.0.1
  * mmenujs.com
  *
  * Copyright (c) Fred Heusschen
@@ -385,12 +385,12 @@ export default class Mmenu {
         }
         //	Loop over object.
         for (let mediaquery in this.opts.extensions) {
-            this.opts.extensions[mediaquery] = this.opts['extensions'][mediaquery].length ? 'mm-menu_' + this.opts['extensions'][mediaquery].join(' mm-menu_') : '';
-            if (this.opts.extensions[mediaquery]) {
+            if (this.opts.extensions[mediaquery].length) {
+                let classnames = this.opts.extensions[mediaquery].map((query) => 'mm-menu_' + query);
                 this.matchMedia(mediaquery, () => {
-                    this.node.menu.classList.add(this.opts.extensions[mediaquery]);
+                    this.node.menu.classList.add(...classnames);
                 }, () => {
-                    this.node.menu.classList.remove(this.opts.extensions[mediaquery]);
+                    this.node.menu.classList.remove(...classnames);
                 });
             }
         }
@@ -709,7 +709,7 @@ export default class Mmenu {
     _initAnchors() {
         //	Invoke "before" hook.
         this.trigger('initAnchors:before');
-        document.body.addEventListener('click', (evnt) => {
+        document.addEventListener('click', (evnt) => {
             var target = evnt.target;
             if (!target.matches('a[href]')) {
                 target = target.closest('a[href]');
@@ -731,7 +731,7 @@ export default class Mmenu {
             for (let c = 0; c < this.clck.length; c++) {
                 let click = this.clck[c].call(this, target, args);
                 if (click) {
-                    if (Mmenu.typeof(click) == 'boolean') {
+                    if (typeof click == 'boolean') {
                         evnt.preventDefault();
                         return;
                     }
@@ -758,7 +758,7 @@ export default class Mmenu {
                     }
                 }
             }
-        });
+        }, true);
         //	Invoke "after" hook.
         this.trigger('initAnchors:after');
     }
@@ -930,7 +930,7 @@ export default class Mmenu {
     }
 }
 /**	Plugin version. */
-Mmenu.version = '8.0.0';
+Mmenu.version = '8.0.1';
 /**	Default options for menus. */
 Mmenu.options = options;
 /**	Default configuration for menus. */
