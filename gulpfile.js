@@ -190,12 +190,7 @@ const jsTranspile = () => {
 
 // Pack the files.
 const jsPack = () => {
-	var dir = buildInputDir || outputDir;
-
-//	TODO?
-//		./src vervangen voor een goed pad afhankelijk van "dir" + src moet dist worden
-
-console.log(dir + '/mmenu')
+	var dir = buildInputDir || inputDir;
 
 	return src( dir + '/mmenu.module.js' )
 	    .pipe( webpack({
