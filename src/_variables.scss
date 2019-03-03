@@ -7,6 +7,7 @@ $mm_opt_vertical				: true !default;
 //	Animations
 $mm_transitionDuration 			: 0.4s !default;
 $mm_transitionFunction 			: ease !default;
+$mm_transitionDelay				: 0.4s !default;
 
 //	Colors
 $mm_backgroundColor				: #f3f3f3 !default;
@@ -46,7 +47,7 @@ $mm_menuHeight				: 0.8 !default;
 $mm_menuMinHeight			: 140px !default;
 $mm_menuMaxHeight			: 880px !default;
 
-$mm_opt_screenreader	: true;
+$mm_opt_screenreader	: true !default;
 
 $mm_opt_autoheight	: true !default;
 $mm_opt_columns	: true !default;
@@ -140,9 +141,9 @@ $mm_zoomScaleDown				: 0.7 !default;
 $mm_zoomScaleUp					: 1.5 !default;
 $mm_opt_fullscreen	: true !default;
 
-$mm_fullscreen_full		: 1;
-$mm_fullscreen_min		: 140px;
-$mm_fullscreen_max		: 10000px;
+$mm_fullscreen_full		: 1 !default;
+$mm_fullscreen_min		: 140px !default;
+$mm_fullscreen_max		: 10000px !default;
 $mm_opt_listview			: true !default;
 $mm_opt_listview_justify	: $mm_opt_listview !default;
 $mm_opt_listview_inset		: $mm_opt_listview !default;

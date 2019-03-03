@@ -1,5 +1,5 @@
 /*!
- * jQuery mmenu v7.3.1
+ * jQuery mmenu v7.3.2
  * @requires jQuery 1.7.0 or later
  *
  * mmenujs.com
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	const _PLUGIN_  = 'mmenu';
-	const _VERSION_	= '7.3.1';
+	const _VERSION_	= '7.3.2';
 
 
 	//	Newer version of the plugin already excists
@@ -636,7 +636,7 @@
 				$navbar = $( '<div class="' + _c.navbar + '" />' );
 
 			var title: string = this.__getPanelTitle( $panel, this.opts.navbar.title );
-			var href : string = '';
+			var href = '';
 
 			if ( $parent && $parent.length )
 			{
@@ -670,7 +670,7 @@
 				switch ( this.opts.navbar.titleLink )
 				{
 					case 'anchor':
-						href = $a.attr( 'href' );
+						href = $a.attr( 'href' ) || '';
 						break;
 
 					case 'parent':
@@ -1039,7 +1039,7 @@
 		__getUniqueId: function()
 		{
 			return _c.mm( $[ _PLUGIN_ ].uniqueId++ );
-		},
+		}
 
 		// __hasClass: function( e, c )
 		// {

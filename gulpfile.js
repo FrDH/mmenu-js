@@ -23,7 +23,7 @@
 */
 
 
-var gulp 			= require( 'gulp' ),
+const gulp 			= require( 'gulp' ),
 	sass 			= require( 'gulp-sass' ),
 	autoprefixer 	= require( 'gulp-autoprefixer' ),
 	cleancss		= require( 'gulp-clean-css' ),
@@ -43,7 +43,7 @@ var inputDir 		= 'src',
 
 function sanitizeNamespaceForUmd( file )
 {
-	path = file.path.split( '\\' ).join( '/' ).split( '/' );
+	var path = file.path.split( '\\' ).join( '/' ).split( '/' );
 	path = path[ path.length - 1 ];
 	return path.split( '.' ).join( '_' );
 }
@@ -73,7 +73,7 @@ function getOption( opt ) {
 	if ( index > -1 )
 	{
 		opt = process.argv[ index + 1 ];
-		return ( opt && opt.slice( 0, 2 ) != '--' ) ? opt : false;
+		return ( opt && opt.slice( 0, 2 ) !== '--' ) ? opt : false;
 	}
 	return false;
 }
@@ -136,7 +136,7 @@ const watchTask = function( cb ) {
 		gulp.watch( inputDir + '/*/**/*.ts'	, js );
 	});
 	cb();
-};;
+};
 exports.watch = watchTask;
 
 
@@ -167,7 +167,7 @@ const cssVariables = function() {
 
 	if ( customDir )
 	{
-		//	With the globstar, the file does not need to excist
+		//	With the globstar, the file does not need to exist
 		files.variables.unshift( customDir + '/**/_variables.custom.scss' );
 	}
 	
@@ -261,8 +261,8 @@ const jsTranslations = function() {
 
 	for ( var t = 0; t < build.files.translations.length; t++ )
 	{
-		var lang = build.files.translations[ t ];
-		var files = [
+		let lang = build.files.translations[ t ];
+		let files = [
 			inputDir + '/core/@(' + build.files.core.join( '|' ) + ')/translations/jquery.mmenu.' + lang + '.ts',
 			inputDir + '/addons/@(' + build.files.addons.join( '|' ) + ')/translations/jquery.mmenu.' + lang + '.ts'
 		];
