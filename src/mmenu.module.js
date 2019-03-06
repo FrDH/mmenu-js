@@ -74,7 +74,7 @@ Mmenu.wrappers = {
 
 
 //	Global namespace
-window[ 'Mmenu' ] = Mmenu;
+window.Mmenu = Mmenu;
 
 
 //	jQuery plugin
@@ -104,4 +104,4 @@ window[ 'Mmenu' ] = Mmenu;
 		};
 	}
 
- })( window[ 'jQuery' ] || window[ 'Zepto' ] || null );
+ })( window.jQuery || window.Zepto || null );
