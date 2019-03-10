@@ -1,9 +1,10 @@
 @import
 	'../../mixins',
+	'../../includes',
 	'../../variables';
 
 
-@if ( $mm_opt_effects_menuzoom ) {
+@if ( $mm_include_effects_menuzoom ) {
 	//	Zoom menu
 	.mm-menu_fx-menu-zoom {
 		transition: transform $mm_transitionDuration $mm_transitionFunction;
@@ -31,7 +32,7 @@
 }
 
 
-@if ( $mm_opt_effects_menuslide ) {
+@if ( $mm_include_effects_menuslide ) {
 	//	Slide menu
 	.mm-menu_fx-menu-slide {
 		transition: transform $mm_transitionDuration $mm_transitionFunction;
@@ -58,7 +59,7 @@
 }
 
 
-@if ( $mm_opt_effects_menufade ) {
+@if ( $mm_include_effects_menufade ) {
 	//	Fade menu
 	.mm-menu_fx-menu-fade {
 		opacity: 0;
@@ -71,7 +72,7 @@
 }
 
 
-@if ( $mm_opt_effects_panelsnone ) {
+@if ( $mm_include_effects_panelsnone ) {
 	//	No effect panels
 	.mm-menu_fx-panels-none .mm-panel,
 	.mm-panel_fx-none {
@@ -84,7 +85,7 @@
 }
 
 
-@if ( $mm_opt_effects_panelszoom ) {
+@if ( $mm_include_effects_panelszoom ) {
 	//	Zoom panels
 	.mm-menu_fx-panels-zoom .mm-panel,
 	.mm-panel_fx-zoom {
@@ -102,7 +103,7 @@
 }
 
 
-@if ( $mm_opt_effects_panelsslide ) {
+@if ( $mm_include_effects_panelsslide ) {
 	//	Slide panels
 	.mm-menu_fx-panels-slide-0 .mm-panel_opened-parent,
 	.mm-panel_fx-slide-0.mm-panel_opened-parent {
@@ -140,7 +141,7 @@
 }
 
 
-@if ( $mm_opt_effects_listitemsslide or $mm_opt_effects_listitemsfade or $mm_opt_effects_listitemsdrop ) {
+@if ( $mm_include_effects_listitemsslide or $mm_include_effects_listitemsfade or $mm_include_effects_listitemsdrop ) {
 	//	Listitem delay
 	[class*="mm-menu_fx-listitems-"] .mm-listitem {
 		transition: none $mm_transitionDuration $mm_transitionFunction;
@@ -164,7 +165,7 @@
 }
 
 
-@if ( $mm_opt_effects_listitemsslide ) {
+@if ( $mm_include_effects_listitemsslide ) {
 	//	Slide list items
 	.mm-menu_fx-listitems-slide .mm-listitem {
 		transition-property: transform, opacity;
@@ -178,7 +179,7 @@
 	}
 }
 
-@if ( $mm_opt_effects_listitemsfade ) {
+@if ( $mm_include_effects_listitemsfade ) {
 	//	Fade list items
 	.mm-menu_fx-listitems-fade .mm-listitem {
 		transition-property: opacity;
@@ -190,7 +191,7 @@
 	}
 }
 
-@if ( $mm_opt_effects_listitemsdrop ) {
+@if ( $mm_include_effects_listitemsdrop ) {
 	//	Drop list items
 	.mm-menu_fx-listitems-drop .mm-listitem {
 		transition-property: opacity, top;

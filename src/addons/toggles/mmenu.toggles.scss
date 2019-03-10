@@ -1,9 +1,10 @@
 @import 
 	'../../mixins',
+	'../../includes',
 	'../../variables';
 
 
-@if ( $mm_opt_toggles ) {
+@if ( $mm_include_toggles ) {
 	label.mm-toggle {
 		border-radius: $mm_toggleHeight;
 		min-width: $mm_toggleWidth;
@@ -45,7 +46,7 @@
 	}
 }
 
-@if ( $mm_opt_checks ) {
+@if ( $mm_include_checks ) {
 	label.mm-check {
 		width: $mm_checkWidth;
 		height: $mm_checkHeight;

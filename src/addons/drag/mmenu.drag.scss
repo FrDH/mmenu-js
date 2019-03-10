@@ -1,13 +1,12 @@
 @import
 	'../../mixins',
+	'../../includes',
 	'../../variables';
 
 
-@if ( $mm_opt_drag ) {
-	.mm-wrapper_dragging {
-		.mm-menu,
-		.mm-slideout {
-			transition-duration: 0s !important;
-		}
+.mm-wrapper_dragging {
+	.mm-menu,
+	.mm-slideout {
+		transition-duration: 0s !important;
 	}
 }

@@ -1,9 +1,10 @@
 @import 
 	'../../mixins',
+	'../../includes',
 	'../../variables';
 
 
-@if ( $mm_opt_tileview_xs or $mm_opt_tileview_s or $mm_opt_tileview_m or $mm_opt_tileview_l or $mm_opt_tileview_xl ) {
+@if ( $mm_include_tileview_xs or $mm_include_tileview_s or $mm_include_tileview_m or $mm_include_tileview_l or $mm_include_tileview_xl ) {
 	.mm-menu_tileview,
 	.mm-panel_tileview {
 		.mm-listview {
@@ -25,34 +26,34 @@
 				z-index: -1;
 			}
 
-			@if ( $mm_opt_tileview_m ) {
+			@if ( $mm_include_tileview_m ) {
 				width: 50%;
 				height: 0;
 				padding-top: 50%;
 			}
 
-			@if ( $mm_opt_tileview_xs ) {
+			@if ( $mm_include_tileview_xs ) {
 				&.mm-tile-xs {
 					width: 12.5%;
 					padding-top: 12.5%;
 				}
 			}
 
-			@if ( $mm_opt_tileview_s ) {
+			@if ( $mm_include_tileview_s ) {
 				&.mm-tile-s {
 					width: 25%;
 					padding-top: 25%;
 				}
 			}
 
-			@if ( $mm_opt_tileview_l ) {
+			@if ( $mm_include_tileview_l ) {
 				&.mm-tile-l {
 					width: 75%;
 					padding-top: 75%;
 				}
 			}
 
-			@if ( $mm_opt_tileview_xl ) {
+			@if ( $mm_include_tileview_xl ) {
 				&.mm-tile-xl {
 					width: 100%;
 					padding-top: 100%;

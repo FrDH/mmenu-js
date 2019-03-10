@@ -1,9 +1,10 @@
 @import 
 	'../../mixins',
+	'../../includes',
 	'../../variables';
 
 
-@if ( $mm_opt_shadows_page ) {
+@if ( $mm_include_shadows_page ) {
 	.mm-menu_shadow-page {
 		&:after {
 			box-shadow: var( --mm-shadow );
@@ -18,7 +19,7 @@
 			clip-path: polygon(-20px 0, 0 0, 0 100%, -20px 100%);
 		}
 		
-		@if ( $mm_opt_positioning_right ) {
+		@if ( $mm_include_positioning_right ) {
 			&.mm-menu_position-right:after {
 				left: auto;
 				right: 100%;
@@ -26,7 +27,7 @@
 			}
 		}
 
-		@if ( $mm_opt_positioning_front ) {
+		@if ( $mm_include_positioning_front ) {
 			&.mm-menu_position-front:after {
 				content: none;
 				display: none;
@@ -35,14 +36,14 @@
 	}
 }
 
-@if ( $mm_opt_shadows_menu ) {
+@if ( $mm_include_shadows_menu ) {
 	.mm-menu_shadow-menu {
 		box-shadow: var( --mm-shadow );
 	}
 }
 
 
-@if ( $mm_opt_shadows_panels ) {
+@if ( $mm_include_shadows_panels ) {
 	.mm-menu_shadow-panels .mm-panels > .mm-panel {
 		box-shadow: var( --mm-shadow );
 	}

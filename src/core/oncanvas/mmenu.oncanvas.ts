@@ -1,14 +1,3 @@
-/*!
- * mmenu.js v8.0.1
- * mmenujs.com
- *	
- * Copyright (c) Fred Heusschen
- * www.frebsite.nl
- *
- * License: CC-BY-NC-4.0
- * http://creativecommons.org/licenses/by-nc/4.0/
- */
-
 import options from './_options';
 import configs from './_configs';
 
@@ -1100,6 +1089,7 @@ export default class Mmenu {
 		//	Invoke "before" hook.
 		this.trigger( 'initAnchors:before' );
 
+
 		document.addEventListener( 'click', ( evnt ) => {
 
 			var target = (evnt.target as HTMLElement);
@@ -1127,7 +1117,9 @@ export default class Mmenu {
 			//	Find hooked behavior.
 			for ( let c = 0; c < this.clck.length; c++ ) {
 				let click = this.clck[ c ].call( this, target, args );
+
 				if ( click ) {
+
 					if ( typeof click == 'boolean' ) {
 						evnt.preventDefault();
 						return;
@@ -1153,7 +1145,6 @@ export default class Mmenu {
 				}
 
 				//	Close menu. Default: false
-				//		TODO: option + code should be in offcanvas add-on
 				if ( Mmenu.valueOrFn( target, this.opts.onClick.close, onClick.close ) ) {
 					if ( this.opts.offCanvas && typeof this.close == 'function' ) {
 						this.close();
@@ -1282,13 +1273,14 @@ export default class Mmenu {
 		option	?: any,
 		dfault 	?: any
 	) : any {
+
 		if ( typeof option == 'function' ) {
 			var value = option.call( element );
 			if ( typeof value != 'undefined' ) {
 				return value;
 			}
 		}
-		if ( ( typeof option == 'function' || typeof option == 'undefined' ) 
+		if ( ( option === null || typeof option == 'function' || typeof option == 'undefined' ) 
 			&& typeof dfault != 'undefined'
 		) {
 			return dfault;
@@ -1329,7 +1321,7 @@ export default class Mmenu {
 		 * @return	{array}					Array of elements that match the filter.
 		 */
 		find: (
-			element	: HTMLElement,
+			element	: HTMLElement | Document,
 			filter	: string
 		) : HTMLElement[] => {
 			return Array.prototype.slice.call( element.querySelectorAll( filter ) );

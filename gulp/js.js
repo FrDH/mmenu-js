@@ -1,32 +1,38 @@
 /*
 	JS tasks.
-		*) The "module" file is transpiled from either the "bin" dir or the specified "custom input" dir.
+		*) The "module" file is transpiled from the specified "custom input" dir.
 */
 
 
 const { src, dest, watch, series, parallel } = require( 'gulp' );
 
-const { dirs }		= require( './dirs.js' );
-
 const typescript	= require( 'gulp-typescript' );
 const webpack		= require( 'webpack-stream' );
 
+const dirs			= require( './dirs.js' );
 var dir = {};
+
 
 
 /** Run all scripts. */
 exports.all = JSall = ( cb ) => {
-	dir = dirs();
+	dir = dirs( false );
 
 	series( 
-		JStranspileAll,
+		JStranspile,
 		JSpack
 	)( cb );
 };
 
+exports.custom = JScustom = ( cb ) => {
+	dir = dirs( false );
+
+	JSpack( cb );
+};
+
 /** Put a watch on all files. */
 exports.watch = JSwatch = ( cb ) => {
-	dir = dirs();
+	dir = dirs( false );
 
 	watch( dir.input + '/**/*.ts', {
 		ignored: [ 
@@ -51,7 +57,7 @@ exports.watch = JSwatch = ( cb ) => {
 		var input  = dir.input + '/' + files + '/*.ts',
 			output = dir.output + '/' + files;
 
-		var JStranspileOne = cb => JStranspileAll( cb, input, output );
+		var JStranspileOne = cb => JStranspile( cb, input, output );
 
 		series(
 			JStranspileOne,
@@ -65,7 +71,7 @@ exports.watch = JSwatch = ( cb ) => {
 
 
 // *) Transpile all TS files to JS.
-exports.transpileAll = JStranspileAll = ( cb, input, output ) => {
+const JStranspile = ( cb, input, output ) => {
 	return src([
 			dir.input + '/**/*.d.ts',			//	Include all typings.
 			input || dir.input + '/**/*.ts'		//	Include the needed ts files.
@@ -78,16 +84,16 @@ exports.transpileAll = JStranspileAll = ( cb, input, output ) => {
 };
 
 // Pack the files.
-exports.pack = JSpack = () => {
-	var input = dir.buildInput || dir.input;
+const JSpack = () => {
+	var input = dir.build || dir.input;
 
-	return src( input + '/mmenu.module.js' )
+	return src( input + '/mmenu.js' )
 	    .pipe( webpack({
 	    	// mode: 'development',
 	    	mode: 'production',
 	    	output: {
 				filename: 'mmenu.js',
-		    },
+		    }
 	    }) )
 	    .pipe( dest( dir.output ) );
 };

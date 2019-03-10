@@ -1,4 +1,4 @@
-@if ( $mm_opt_navbars_breadcrumbs ) {
+@if ( $mm_include_navbars_breadcrumbs ) {
 	.mm-navbar__breadcrumbs {
 		@include mm_ellipsis;
 

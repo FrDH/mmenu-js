@@ -1,9 +1,10 @@
 @import
 	'../../mixins',
+	'../../includes',
 	'../../variables';
 
 
-@if ( $mm_opt_borderstyle_none ) {
+@if ( $mm_include_borderstyle_none ) {
 	.mm-menu_border-none,
 	.mm-panel_border-none {
 		.mm-listitem:after {
@@ -12,7 +13,7 @@
 	}
 }
 
-@if ( $mm_opt_borderstyle_full ) {
+@if ( $mm_include_borderstyle_full ) {
 	.mm-menu_border-full,
 	.mm-panel_border-full {
 		.mm-listitem:after {
@@ -21,7 +22,7 @@
 	}
 }
 
-@if ( $mm_opt_borderstyle_offset ) {
+@if ( $mm_include_borderstyle_offset ) {
 	.mm-menu_border-offset,
 	.mm-panel_border-offset {
 		.mm-listitem:after {

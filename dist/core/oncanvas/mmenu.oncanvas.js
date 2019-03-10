@@ -1,13 +1,3 @@
-/*!
- * mmenu.js v8.0.1
- * mmenujs.com
- *
- * Copyright (c) Fred Heusschen
- * www.frebsite.nl
- *
- * License: CC-BY-NC-4.0
- * http://creativecommons.org/licenses/by-nc/4.0/
- */
 import options from './_options';
 import configs from './_configs';
 /**
@@ -751,7 +741,6 @@ export default class Mmenu {
                     evnt.preventDefault();
                 }
                 //	Close menu. Default: false
-                //		TODO: option + code should be in offcanvas add-on
                 if (Mmenu.valueOrFn(target, this.opts.onClick.close, onClick.close)) {
                     if (this.opts.offCanvas && typeof this.close == 'function') {
                         this.close();
@@ -820,7 +809,7 @@ export default class Mmenu {
                 return value;
             }
         }
-        if ((typeof option == 'function' || typeof option == 'undefined')
+        if ((option === null || typeof option == 'function' || typeof option == 'undefined')
             && typeof dfault != 'undefined') {
             return dfault;
         }

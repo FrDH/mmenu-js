@@ -27,13 +27,11 @@ export default function(
 
 	var section : HTMLElement;
 
-	function scrollTo(
-		offset : number
-	) {
-		if ( section && section.matches( ':visible' ) ) {
+	function scrollTo() {
+		if ( section ) {
 			//	TODO: animate?
-			document.documentElement.scrollTop = section.offsetTop + offset;
-			document.body.scrollTop = section.offsetTop + offset;
+			document.documentElement.scrollTop = section.offsetTop + configs.scrollOffset;
+			document.body.scrollTop = section.offsetTop + configs.scrollOffset;
 		}
 		section = null;
 	}
@@ -57,7 +55,7 @@ export default function(
 	//	Scroll to section after clicking menu item.
 	if ( options.scroll ) {
 		this.bind( 'close:finish', () => {
-			scrollTo( configs.scrollOffset );
+			scrollTo();
 		});
 	}
 
@@ -89,7 +87,7 @@ export default function(
 				document.documentElement.matches( '.mm-wrapper_sidebar-expanded' )
 			) {
 				//	... scroll the page to the section.
-				scrollTo( this.conf.pageScroll.scrollOffset );
+				scrollTo();
 
 			//	... otherwise...
 			} else {

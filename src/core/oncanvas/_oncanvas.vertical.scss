@@ -1,4 +1,4 @@
-@if ( $mm_opt_vertical ) {
+@if ( $mm_include_vertical ) {
 
 	.mm-listitem_vertical > .mm-panel {
 		transform: none !important;

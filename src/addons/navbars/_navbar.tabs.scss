@@ -1,4 +1,4 @@
-@if ( $mm_opt_navbars_tabs ) {
+@if ( $mm_include_navbars_tabs ) {
 	.mm-navbar__tab_selected {
 		background: inherit !important;
 		color: inherit !important;
@@ -15,7 +15,7 @@
 		}
 	}
 
-	@if ( $mm_opt_navbars_top ) {
+	@if ( $mm_include_navbars_top ) {
 		.mm-navbars_top.mm-navbars_has-tabs {
 			.mm-navbar_tabs,
 			.mm-navbar_tabs ~ .mm-navbar {
@@ -25,7 +25,7 @@
 		}
 		@include mm_navbar_tabs_borders( 'top', 'bottom', 'last', 'first' );
 	}
-	@if ( $mm_opt_navbars_bottom ) {
+	@if ( $mm_include_navbars_bottom ) {
 		.mm-navbars_bottom.mm-navbars_has-tabs {
 			.mm-navbar {
 				background: inherit;

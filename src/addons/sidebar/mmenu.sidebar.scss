@@ -1,9 +1,10 @@
 @import
 	'../../mixins',
+	'../../includes',
 	'../../variables';
 
 
-@if ( $mm_opt_sidebar_collapsed or $mm_opt_sidebar_expanded ) {
+@if ( $mm_include_sidebar_collapsed or $mm_include_sidebar_expanded ) {
 	.mm-menu,
 	.mm-slideout {
 		--mm-sidebar-collapsed-size: #{$mm_sidebarCollapsedSize};
@@ -37,7 +38,7 @@
 	}
 }
 
-@if ( $mm_opt_sidebar_collapsed ) {
+@if ( $mm_include_sidebar_collapsed ) {
 	.mm-wrapper_sidebar-collapsed:not( .mm-wrapper_opening ) {
 		.mm-menu_hidenavbar .mm-navbar,
 		.mm-menu_hidedivider .mm-listitem_divider {
@@ -53,7 +54,7 @@
 	}
 }
 
-@if ( $mm_opt_sidebar_expanded ) {
+@if ( $mm_include_sidebar_expanded ) {
 	.mm-wrapper_sidebar-expanded {
 		.mm-menu_sidebar-expanded {
 			border-right-width: 1px;
@@ -61,7 +62,7 @@
 			min-width: 0 !important;
 			max-width: 100000px !important;
 
-			@if ( $mm_opt_shadows_page ) {
+			@if ( $mm_include_shadows_page ) {
 				&.mm-menu_pageshadow:after {
 					content: none;
 					display: none;
@@ -69,7 +70,7 @@
 			}
 		}
 
-		@if ( $mm_opt_offcanvas_blocker ) {
+		@if ( $mm_include_offcanvas_blocker ) {
 			&.mm-wrapper_blocking {
 				&,
 				body {
@@ -97,7 +98,7 @@
 	}
 }
 
-@if ( $mm_opt_sidebar_blocker ) {
+@if ( $mm_include_sidebar_blocker ) {
 	.mm-menu__blocker {
 		background: rgba( 3, 2, 1, 0 );
 		display: block;

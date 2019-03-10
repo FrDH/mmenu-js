@@ -1,3 +1,15 @@
+/*!
+ * mmenu.js v8.0.2
+ * mmenujs.com
+ *	
+ * Copyright (c) Fred Heusschen
+ * www.frebsite.nl
+ *
+ * License: CC-BY-NC-4.0
+ * http://creativecommons.org/licenses/by-nc/4.0/
+ */
+
+
 //	Core
 import Mmenu 				from '../dist/core/oncanvas/mmenu.oncanvas';
 
@@ -29,7 +41,7 @@ import toggles				from '../dist/addons/toggles/mmenu.toggles';
 
 //	Wrappers
 import angular 				from '../dist/wrappers/angular/mmenu.angular';
-import bootstrap 			from '../dist/wrappers/bootstrap/mmenu.bootstrap4';
+import bootstrap 			from '../dist/wrappers/bootstrap/mmenu.bootstrap';
 import olark 				from '../dist/wrappers/olark/mmenu.olark';
 import turbolinks			from '../dist/wrappers/turbolinks/mmenu.turbolinks';
 import wordpress			from '../dist/wrappers/wordpress/mmenu.wordpress';
@@ -104,4 +116,4 @@ window.Mmenu = Mmenu;
 		};
 	}
 
- })( window.jQuery || window.Zepto || null );
+})( window.jQuery || window.Zepto || null );

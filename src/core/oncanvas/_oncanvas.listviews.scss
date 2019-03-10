@@ -94,7 +94,7 @@
 
 
 //	Dividers
-@if ( $mm_opt_listviews_divider ) {
+@if ( $mm_include_listviews_divider ) {
 	.mm-listitem_divider {
 		@include mm_ellipsis;
 
@@ -111,7 +111,7 @@
 }
 
 //	Spacers
-@if ( $mm_opt_listviews_spacer ) {
+@if ( $mm_include_listviews_spacer ) {
 	.mm-listitem_spacer {
 		padding-top: $mm_listitemSize;
 		padding-top: var( --mm-listitem-size );

@@ -1,9 +1,10 @@
 @import 
 	'../../mixins',
+	'../../includes',
 	'../../variables';
 
 
-@if ( $mm_opt_themes_white ) {
+@if ( $mm_include_themes_white ) {
 	.mm-menu_theme-white {
 		--mm-color-border 				: rgba( 0,0,0, 0.1 );
 		--mm-color-button				: rgba( 0,0,0, 0.3 );
@@ -16,7 +17,7 @@
 	}
 }
 
-@if ( $mm_opt_themes_dark ) {
+@if ( $mm_include_themes_dark ) {
 	.mm-menu_theme-dark {
 		--mm-color-border 				: rgba( 0,0,0, 0.3 );
 		--mm-color-button				: rgba( 255,255,255, 0.4 );
@@ -29,7 +30,7 @@
 	}
 }
 
-@if ( $mm_opt_themes_black ) {
+@if ( $mm_include_themes_black ) {
 	.mm-menu_theme-black {
 		--mm-color-border 				: rgba( 255,255,255, 0.25 );
 		--mm-color-button				: rgba( 255,255,255, 0.4 );

@@ -1,10 +1,11 @@
 @import
 	'../../mixins',
+	'../../includes',
 	'../../variables';
 
 
 //	Justified listviews
-@if ( $mm_opt_listview_justify ) {
+@if ( $mm_include_listview_justify ) {
 	.mm-menu_listview-justify .mm-panels > .mm-panel,
 	.mm-panels > .mm-panel_listview-justify {
 		&:before,
@@ -42,7 +43,7 @@
 }
 
 //	Inset lists
-@if ( $mm_opt_listview_inset ) {
+@if ( $mm_include_listview_inset ) {
 	.mm-listview_inset {
 		list-style: inside disc;
 		width: 100%;

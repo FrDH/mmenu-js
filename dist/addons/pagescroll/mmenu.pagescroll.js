@@ -14,11 +14,11 @@ export default function () {
     //	/Extend shorthand options.
     this.opts.pageScroll = Mmenu.extend(options, Mmenu.options.pageScroll);
     var section;
-    function scrollTo(offset) {
-        if (section && section.matches(':visible')) {
+    function scrollTo() {
+        if (section) {
             //	TODO: animate?
-            document.documentElement.scrollTop = section.offsetTop + offset;
-            document.body.scrollTop = section.offsetTop + offset;
+            document.documentElement.scrollTop = section.offsetTop + configs.scrollOffset;
+            document.body.scrollTop = section.offsetTop + configs.scrollOffset;
         }
         section = null;
     }
@@ -37,7 +37,7 @@ export default function () {
     //	Scroll to section after clicking menu item.
     if (options.scroll) {
         this.bind('close:finish', () => {
-            scrollTo(configs.scrollOffset);
+            scrollTo();
         });
     }
     //	Add click behavior.
@@ -59,7 +59,7 @@ export default function () {
             if (this.node.menu.matches('.mm-menu_sidebar-expanded') &&
                 document.documentElement.matches('.mm-wrapper_sidebar-expanded')) {
                 //	... scroll the page to the section.
-                scrollTo(this.conf.pageScroll.scrollOffset);
+                scrollTo();
                 //	... otherwise...
             }
             else {

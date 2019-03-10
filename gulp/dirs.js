@@ -1,4 +1,5 @@
 const getOption = ( opt ) => {
+	console.log( process.argv )
 	var index = process.argv.indexOf( '--' + opt );
 	if ( index > -1 )
 	{
@@ -8,13 +9,16 @@ const getOption = ( opt ) => {
 	return false;
 };
 
-exports.dirs = () => {
+module.exports = ( findCustom ) => {
 	var dirs = {
 		input 		: 'src',
 		output 		: 'dist',
-		bin			: 'bin',
-		buildInput	: null
+		build		: null
 	};
+
+	if ( !findCustom ) {
+		return dirs;
+	}
 
 	var i = getOption( 'i' ),
 		o = getOption( 'o' );
@@ -22,11 +26,11 @@ exports.dirs = () => {
 	// Set custom input dir.
 	if ( i )
 	{
-		dirs.buildInput = i;
+		dirs.build = i;
 	}
 
 	// Set custom output dir.
-	if ( o && o != dirs.input && o != dirs.bin )
+	if ( o )
 	{
 		dirs.output = o;
 	}

@@ -19,10 +19,11 @@ export default function(
 
 	var configs = this.conf.fixedElements;
 
-	var _fixd 	: string,
-		_stck 	: string, 
-		fixed	: HTMLElement[],
-		stick 	: HTMLElement[];
+	var _fixd : string,
+		_stck : string, 
+		fixed : HTMLElement[],
+		stick : HTMLElement[],
+		wrppr : HTMLElement;
 
 
 	this.bind( 'setPage:after', ( 
@@ -31,13 +32,12 @@ export default function(
 
 		//	Fixed elements
 		_fixd = this.conf.classNames.fixedElements.fixed;
-
+		wrppr = Mmenu.DOM.find( document, configs.fixed.insertSelector )[ 0 ];
 		fixed = Mmenu.DOM.find( page, '.' + _fixd );
 		fixed.forEach(( fxd ) => {
 			Mmenu.refactorClass( fxd, _fixd, 'mm-slideout' );
+			wrppr[ configs.fixed.insertMethod ]( fxd );
 		});
-
-		document.querySelector( configs.fixed.insertSelector )[ configs.fixed.insertMethod ]( fixed );
 
 		//	Sticky elements
 		_stck = this.conf.classNames.fixedElements.sticky;
@@ -49,7 +49,7 @@ export default function(
 
 		stick = Mmenu.DOM.find( page, '.mm-sticky' );
 	});
-	
+
 	this.bind( 'open:start', () => {
 		if ( stick.length ) {
 			if ( window.getComputedStyle( document.documentElement ).overflow == 'hidden' ) {

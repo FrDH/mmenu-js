@@ -10,15 +10,16 @@ export default function () {
         return;
     }
     var configs = this.conf.fixedElements;
-    var _fixd, _stck, fixed, stick;
+    var _fixd, _stck, fixed, stick, wrppr;
     this.bind('setPage:after', (page) => {
         //	Fixed elements
         _fixd = this.conf.classNames.fixedElements.fixed;
+        wrppr = Mmenu.DOM.find(document, configs.fixed.insertSelector)[0];
         fixed = Mmenu.DOM.find(page, '.' + _fixd);
         fixed.forEach((fxd) => {
             Mmenu.refactorClass(fxd, _fixd, 'mm-slideout');
+            wrppr[configs.fixed.insertMethod](fxd);
         });
-        document.querySelector(configs.fixed.insertSelector)[configs.fixed.insertMethod](fixed);
         //	Sticky elements
         _stck = this.conf.classNames.fixedElements.sticky;
         Mmenu.DOM.find(page, '.' + _stck)

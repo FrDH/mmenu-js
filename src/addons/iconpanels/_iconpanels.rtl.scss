@@ -1,4 +1,4 @@
-@if ( $mm_opt_counters and $mm_opt_iconpanels ) {
+@if ( $mm_include_counters and $mm_include_iconpanels ) {
 	[dir="rtl"] .mm-menu_iconpanel .mm-panels {
 		> .mm-panel,
 		> .mm-listview_fixeddivider {
