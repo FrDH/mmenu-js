@@ -380,20 +380,15 @@ Mmenu.prototype._initWindow_offCanvas = function(
 		window.addEventListener( 'keydown', Mmenu.evnt.windowKeydownOffCanvasTab );
 	}
 
+	
 	//	Set "page" element min-height to window height
-	var oldHeight, newHeight;
-
 	if ( !Mmenu.evnt.resizeOffCanvas ) {
 		Mmenu.evnt.windowResizeOffCanvas = ( evnt ) => {
 			if ( Mmenu.node.page ) {
 				if ( document.documentElement.matches( '.mm-wrapper_opening' ) 
 					|| (evnt as any).force
 				) {
-					newHeight = window.innerHeight;
-					if ( newHeight != oldHeight ) {
-						oldHeight = newHeight;
-						Mmenu.node.page.style.minHeight = newHeight + 'px';
-					}
+					Mmenu.node.page.style.minHeight = window.innerHeight + 'px';
 				}
 			}
 		}
