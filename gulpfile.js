@@ -282,7 +282,7 @@ const jsTranslations = function() {
 
 	return ( build.files.translations.length > 0 )
 		? merge.apply( this, streams )
-		: gulp.src([]); 
+		: gulp.src('.');
 };
 
 //	3) 	Concatenate JS

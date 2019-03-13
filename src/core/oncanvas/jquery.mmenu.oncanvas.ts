@@ -1,5 +1,5 @@
 /*!
- * jQuery mmenu v7.3.2
+ * jQuery mmenu v7.3.3
  * @requires jQuery 1.7.0 or later
  *
  * mmenujs.com
@@ -15,7 +15,7 @@
 (function( $ ) {
 
 	const _PLUGIN_  = 'mmenu';
-	const _VERSION_	= '7.3.2';
+	const _VERSION_	= '7.3.3';
 
 
 	//	Newer version of the plugin already excists

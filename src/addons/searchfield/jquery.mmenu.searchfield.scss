@@ -7,11 +7,11 @@
 {
 	.mm-searchfield
 	{
+		display: flex;
 		height: $mm_navbarSize; //	IE11 fallback
 		height: var( --mm-navbar-size );
-
 		padding: 0;
-		display: flex;
+		overflow: hidden;
 
 		input
 		{
