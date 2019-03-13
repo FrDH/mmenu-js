@@ -733,7 +733,7 @@
 					$b.insertAfter( $a );
 					if ( $a.is( 'span' ) )
 					{
-						$b.addClass( _c.listitem + '__text' ).html( $a.html() );
+						$b.addClass( _c.listitem + '__text ' + $a.attr('class') ).html( $a.html() );
 						$a.remove();
 					}
 				}
