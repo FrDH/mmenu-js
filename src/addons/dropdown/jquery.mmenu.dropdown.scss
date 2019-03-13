@@ -8,7 +8,8 @@
 	.mm-menu_dropdown
 	{
 		box-shadow: $mm_dropdownShadow;
-		height: percentage( $mm_menuHeight );	
+		height: percentage( $mm_menuHeight );
+		overflow: visible;
 	}
 
 	.mm-wrapper_dropdown
