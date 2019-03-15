@@ -24,23 +24,23 @@
 			var setPage = function( $page )
 			{
 				//	Fixed elements
-				var _fixd = this.conf.classNames[ _ADDON_ ].fixed,
+				var _fixd = that.conf.classNames[ _ADDON_ ].fixed,
 					$fixd = $page.find( '.' + _fixd );
 
-				this.__refactorClass( $fixd, _fixd, _c.slideout );
+				that.__refactorClass( $fixd, _fixd, _c.slideout );
 				$fixd[ conf.elemInsertMethod ]( conf.elemInsertSelector );
 
 				//	Sticky elements
-				var _stck = this.conf.classNames[ _ADDON_ ].sticky,
+				var _stck = that.conf.classNames[ _ADDON_ ].sticky,
 					$stck = $page.find( '.' + _stck );
 
-				this.__refactorClass( $stck, _stck, _c.sticky );
+				that.__refactorClass( $stck, _stck, _c.sticky );
 
 				$stck = $page.find( '.' + _c.sticky );
 
 				if ( $stck.length )
 				{
-					this.bind( 
+					that.bind(
 						'open:start',
 						function()
 						{
@@ -56,7 +56,7 @@
 							}
 						}
 					);
-					this.bind(
+					that.bind(
 						'close:finish',
 						function()
 						{
