@@ -265,7 +265,7 @@ export default function(
 						node.style[ 'transform' ] = '';
 					});
 
-					this[ _direction == drag.open_dir ? '_openFinish' : 'close' ]();
+					this[ _direction == drag.open_dir ? '_openStart' : 'close' ]();
 				}
 	        	_stage = 0;
 		    });

@@ -26,7 +26,7 @@ export default function () {
             if (options.enhance) {
                 this.node.menu.classList.add('mm-menu_keyboardfocus');
             }
-            this._initWindow_keyboardNavigation(options.enhance);
+            initWindow.call(this, options.enhance);
         });
         this.bind('initOpened:before', () => {
             this.node.menu.prepend(menuStart);
@@ -44,8 +44,8 @@ export default function () {
             Mmenu.DOM.children(Mmenu.node.blck, 'a')[0]
                 .classList.add('mm-tabstart');
         });
-        var focusable = 'input, select, textarea, button, label, a[href]';
-        function setFocus(panel) {
+        let focusable = 'input, select, textarea, button, label, a[href]';
+        const setFocus = (panel) => {
             panel = panel || Mmenu.DOM.children(this.node.pnls, '.mm-panel_opened')[0];
             var focus = null;
             //	Focus already is on an element in a navbar in this menu.
@@ -80,7 +80,7 @@ export default function () {
             if (focus) {
                 focus.focus();
             }
-        }
+        };
         this.bind('open:finish', setFocus);
         this.bind('openPanel:finish', setFocus);
         //	Add screenreader / aria support.
@@ -97,10 +97,10 @@ export default function () {
 }
 ;
 /**
- * Initialize the window.
+ * Initialize the window for keyboard navigation.
  * @param {boolean} enhance - Whether or not to also rich enhance the keyboard behavior.
  **/
-Mmenu.prototype._initWindow_keyboardNavigation = function (enhance) {
+const initWindow = function (enhance) {
     if (Mmenu.evnt.windowKeydownOffCanvasTab) {
         //	Re-enable tabbing in general
         window.removeEventListener('keydown', Mmenu.evnt.windowKeydownOffCanvasTab);

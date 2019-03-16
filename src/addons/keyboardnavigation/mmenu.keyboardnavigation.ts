@@ -45,7 +45,7 @@ export default function(
 				this.node.menu.classList.add( 'mm-menu_keyboardfocus' );
 			}
 
-			this._initWindow_keyboardNavigation( options.enhance );
+			initWindow.call( this, options.enhance );
 		});
 		this.bind( 'initOpened:before', () => {
 			this.node.menu.prepend( menuStart );
@@ -65,11 +65,10 @@ export default function(
 		});
 
 
-		var focusable = 'input, select, textarea, button, label, a[href]';
-		function setFocus( 
-			this 	 : Mmenu,
+		let focusable = 'input, select, textarea, button, label, a[href]';
+		const setFocus = (
 			panel	?: HTMLElement
-		) {
+		) => {
 			panel = panel || Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
 
 			var focus : HTMLElement = null;
@@ -130,10 +129,10 @@ export default function(
 };
 
 /**
- * Initialize the window.
+ * Initialize the window for keyboard navigation.
  * @param {boolean} enhance - Whether or not to also rich enhance the keyboard behavior.
  **/
-Mmenu.prototype._initWindow_keyboardNavigation = function( 
+const initWindow = function( 
 	this	: Mmenu,
 	enhance	: boolean
 ) {

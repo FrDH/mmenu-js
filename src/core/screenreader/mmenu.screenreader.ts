@@ -33,13 +33,11 @@ export default function(
 	if ( options.aria ) {
 
 		//	Add screenreader / aria hooks for add-ons
-		//	In orde to keep this list short, only extend hooks that are actually used by other add-ons
-		//	TODO: move to the specific add-on
-		//	TODO arguments[ 0 ]?
+		//	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
 		this.bind( 'initAddons:after', () => {
 			this.bind( 'initMenu:after' 	, function( this : Mmenu ) { this.trigger( 'initMenu:after:sr-aria' 	, [].slice.call( arguments )	) });
 			this.bind( 'initNavbar:after'	, function( this : Mmenu ) { this.trigger( 'initNavbar:after:sr-aria'	, [].slice.call( arguments )	) });
-			this.bind( 'openPanel:start'	, function( this : Mmenu ) { this.trigger( 'openPanel:start:sr-aria'	, [].slice.call( arguments )	) });
+			this.bind( 'openPanel:start'	, function( this : Mmenu ) { this.trigger( 'openPanel:start:sr-aria'	, [].slice.call( arguments ) 	) });
 			this.bind( 'close:start'		, function( this : Mmenu ) { this.trigger( 'close:start:sr-aria' 		, [].slice.call( arguments )	) });
 			this.bind( 'close:finish'		, function( this : Mmenu ) { this.trigger( 'close:finish:sr-aria' 		, [].slice.call( arguments )	) });
 			this.bind( 'open:start'			, function( this : Mmenu ) { this.trigger( 'open:start:sr-aria' 		, [].slice.call( arguments )	) });
@@ -143,11 +141,10 @@ export default function(
 	if ( options.text ) {
 
 		//	Add screenreader / text hooks for add-ons
-		//	In orde to keep this list short, only extend hooks that are actually used by other add-ons
-		//	TODO: move to specific add-on
+		//	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
 		this.bind( 'initAddons:after', () => {
-			this.bind( 'setPage:after' 		, function() { this.trigger( 'setPage:after:sr-text' 	, arguments[ 0 ]	) });
-			this.bind( 'initBlocker:after'	, function() { this.trigger( 'initBlocker:after:sr-text' 					) });
+			this.bind( 'setPage:after' 		, function() { this.trigger( 'setPage:after:sr-text' 	, [].slice.call( arguments )	) });
+			this.bind( 'initBlocker:after'	, function() { this.trigger( 'initBlocker:after:sr-text', [].slice.call( arguments ) 	) });
 		});
 
 

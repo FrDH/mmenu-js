@@ -104,7 +104,7 @@
 		text-transform: uppercase;
 
 		min-height: var( --mm-line-height );
-		padding: calc( ((var( --mm-listitem-size ) * .75) - var( --mm-line-height )) * .5 );
+		padding: calc( ((var( --mm-listitem-size ) * .65) - var( --mm-line-height )) * .5 );
 		padding-right: $mm_padding;
 		padding-left: $mm_listitemIndent;
 	}

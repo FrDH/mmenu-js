@@ -20,7 +20,6 @@ export default function () {
     this.bind('initPanels:after', (panels) => {
         //	Set the panel(s)
         if (options.addTo != 'panels') {
-            //	TODO addTo kan ook een HTML element zijn?
             panels = Mmenu.DOM.find(this.node.menu, options.addTo)
                 .filter(panel => panel.matches('.mm-panel'));
         }
@@ -65,19 +64,19 @@ export default function () {
                 });
                 panel.scrollTop = newTop > -1 ? newTop : oldTop;
             };
-            this.node.indx.addEventListener('mouseover', mouseOverEvent);
             if (Mmenu.support.touch) {
                 this.node.indx.addEventListener('touchstart', mouseOverEvent);
+                this.node.indx.addEventListener('touchmove', mouseOverEvent);
+            }
+            else {
+                this.node.indx.addEventListener('mouseover', mouseOverEvent);
             }
         }
         //	Show or hide the indexer
-        function update(panel) {
+        this.bind('openPanel:start', (panel) => {
             panel = panel || Mmenu.DOM.children(this.node.pnls, '.mm-panel_opened')[0];
             this.node.menu.classList[panel.matches('.mm-panel_has-sectionindexer') ? 'add' : 'remove']('mm-menu_has-sectionindexer');
-        }
-        ;
-        this.bind('openPanel:start', update);
-        this.bind('initPanels:after', update); // TODO panel argument is an array
+        });
     });
 }
 ;

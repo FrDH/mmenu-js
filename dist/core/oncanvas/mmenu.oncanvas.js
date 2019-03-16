@@ -41,9 +41,6 @@ export default class Mmenu {
         this._initOpened();
         this._initAnchors();
         this._initMatchMedia();
-        if (typeof this._debug == 'function') {
-            this._debug();
-        }
         return this;
     }
     /**
@@ -250,7 +247,7 @@ export default class Mmenu {
         this.trigger('setSelected:after', [listitem]);
     }
     /**
-     * Bind a function to a hook.
+     * Bind functions to a hook (subscriber).
      *
      * @param {string} 		hook The hook.
      * @param {function} 	func The function.
@@ -262,7 +259,7 @@ export default class Mmenu {
         this.hook[hook].push(func);
     }
     /**
-     * Invoke the functions bound to a hook.
+     * Invoke the functions bound to a hook (publisher).
      *
      * @param {string} 	hook  	The hook.
      * @param {array}	[args] 	Arguments for the function.
@@ -275,7 +272,7 @@ export default class Mmenu {
         }
     }
     /**
-     * Bind functions to a matchMedia listener.
+     * Bind functions to a matchMedia listener (subscriber).
      *
      * @param {string} 		mediaquery 	Media query to match.
      * @param {function} 	yes 		Function to invoke when the media query matches.
@@ -301,7 +298,7 @@ export default class Mmenu {
         }
     }
     /**
-     * Fire the "yes" or "no" function for a matchMedia listener.
+     * Invoke the "yes" or "no" function for a matchMedia listener (publisher).
      *
      * @param {string} 			mqstring 	Media query to check for.
      * @param {MediaQueryList} 	mqlist 		Media query list to check with.
@@ -330,7 +327,7 @@ export default class Mmenu {
         this.node.menu['mmenu'] = this.API;
     }
     /**
-     * Bind the hooks specified in the options.
+     * Bind the hooks specified in the options (publisher).
      */
     _initHooks() {
         for (let hook in this.opts.hooks) {

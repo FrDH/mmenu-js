@@ -74,7 +74,6 @@ export default function () {
     if (options.update) {
         let scts = [];
         this.bind('initListview:after', (panel) => {
-            //	TODO de sections zouden geordend moeten worden op de hoogte in de DOM, niet op volgorde in het menu.
             let listitems = Mmenu.DOM.find(panel, '.mm-listitem');
             Mmenu.filterListItemAnchors(listitems)
                 .forEach((anchor) => {

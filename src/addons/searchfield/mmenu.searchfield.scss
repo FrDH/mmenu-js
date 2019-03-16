@@ -5,9 +5,10 @@
 
 
 .mm-searchfield {
+	display: flex;
 	height: var( --mm-navbar-size );
 	padding: 0;
-	display: flex;
+	overflow: hidden;
 
 	input {
 		border: none !important;

@@ -6,27 +6,29 @@
 
 @if ( $mm_include_effects_menuzoom ) {
 	//	Zoom menu
-	.mm-menu_fx-menu-zoom {
+	$menu: '.mm-menu_fx-menu-zoom';
+	#{$menu} {
 		transition: transform $mm_transitionDuration $mm_transitionFunction;
 	}
 
 	//	Zoom menu Left
-	.mm-wrapper_opened .mm-menu_fx-menu-zoom {
+	.mm-wrapper_opened #{$menu} {
 		transform: scale( $mm_zoomScaleDown, $mm_zoomScaleDown ) translate3d( -$mm_subpanelOffset, 0, 0 );
 		transform-origin: left center;
 	}
 
-	.mm-wrapper_opening .mm-menu_fx-menu-zoom {
+	.mm-wrapper_opening #{$menu} {
 		transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
 	}
 
 	//	Zoom menu Right
-	.mm-wrapper_opened .mm-menu_fx-menu-zoom.mm-menu_position-right {
+	$menuright: '#{$menu}.mm-menu_position-right';
+	.mm-wrapper_opened #{$menuright} {
 		transform: scale( $mm_zoomScaleDown, $mm_zoomScaleDown) translate3d( $mm_subpanelOffset, 0, 0 );
 		transform-origin: right center;
 	}
 
-	.mm-wrapper_opening .mm-menu_fx-menu-zoom.mm-menu_position-right {
+	.mm-wrapper_opening #{$menuright} {
 		transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
 	}
 }
@@ -34,26 +36,27 @@
 
 @if ( $mm_include_effects_menuslide ) {
 	//	Slide menu
-	.mm-menu_fx-menu-slide {
+	$menu: '.mm-menu_fx-menu-slide';
+	#{$menu} {
 		transition: transform $mm_transitionDuration $mm_transitionFunction;
 	}
 
 	//	Slide menu Left
-	.mm-wrapper_opened .mm-menu_fx-menu-slide {
+	.mm-wrapper_opened #{$menu} {
 		transform: translate3d( -$mm_subpanelOffset, 0, 0 );
 	}
 
-	.mm-wrapper_opening .mm-menu_fx-menu-slide {
+	.mm-wrapper_opening #{$menu} {
 		transform: translate3d( 0%, 0, 0 );
 	}
 
-// TODO position
 	//	Slide menu Right
-	.mm-wrapper_opened .mm-menu_fx-menu-slide.mm-menu_position-right {
+	$menuright: '#{$menu}.mm-menu_position-right';
+	.mm-wrapper_opened #{$menuright} {
 		transform: translate3d( $mm_subpanelOffset, 0, 0 );
 	}
 
-	.mm-wrapper_opening .mm-menu_fx-menu-slide.mm-menu_position-right {
+	.mm-wrapper_opening #{$menuright} {
 		transform: translate3d( 0%, 0, 0 );
 	}
 }
@@ -61,12 +64,13 @@
 
 @if ( $mm_include_effects_menufade ) {
 	//	Fade menu
-	.mm-menu_fx-menu-fade {
+	$menu: '.mm-menu_fx-menu-fade';
+	#{$menu} {
 		opacity: 0;
 		transition: opacity $mm_transitionDuration $mm_transitionFunction;
 	}
 
-	.mm-wrapper_opening .mm-menu_fx-menu-fade {
+	.mm-wrapper_opening #{$menu} {
 		opacity: 1;
 	}
 }
@@ -167,13 +171,14 @@
 
 @if ( $mm_include_effects_listitemsslide ) {
 	//	Slide list items
-	.mm-menu_fx-listitems-slide .mm-listitem {
+	$menu: '.mm-menu_fx-listitems-slide';
+	#{$menu} .mm-listitem {
 		transition-property: transform, opacity;
 		transform: translate3d( 50%, 0, 0 );
 		opacity: 0;
 	}
 
-	.mm-wrapper_opening .mm-menu_fx-listitems-slide .mm-panel_opened .mm-listitem {
+	.mm-wrapper_opening #{$menu} .mm-panel_opened .mm-listitem {
 		transform: translate3d( 0, 0, 0 );
 		opacity: 1;
 	}
@@ -181,25 +186,27 @@
 
 @if ( $mm_include_effects_listitemsfade ) {
 	//	Fade list items
-	.mm-menu_fx-listitems-fade .mm-listitem {
+	$menu: '.mm-menu_fx-listitems-fade';
+	#{$menu} .mm-listitem {
 		transition-property: opacity;
 		opacity: 0;
 	}
 
-	.mm-wrapper_opening .mm-menu_fx-listitems-fade .mm-panel_opened .mm-listitem {
+	.mm-wrapper_opening #{$menu} .mm-panel_opened .mm-listitem {
 		opacity: 1;
 	}
 }
 
 @if ( $mm_include_effects_listitemsdrop ) {
 	//	Drop list items
-	.mm-menu_fx-listitems-drop .mm-listitem {
+	$menu: '.mm-menu_fx-listitems-drop';
+	#{$menu} .mm-listitem {
 		transition-property: opacity, top;
 		opacity: 0;
 		top: -25%;
 	}
 
-	.mm-wrapper_opening .mm-menu_fx-listitems-drop .mm-panel_opened .mm-listitem {
+	.mm-wrapper_opening #{$menu} .mm-panel_opened .mm-listitem {
 		opacity: 1;
 		top: 0;
 	}

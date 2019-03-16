@@ -22,11 +22,11 @@ export default function () {
     //	Add off-canvas behavior
     this.bind('initMenu:after', () => {
         //	Setup the UI blocker
-        this._initBlocker();
+        initBlocker.call(this);
         //	Setup the page
         this.setPage(Mmenu.node.page);
         //	Setup window events
-        this._initWindow_offCanvas();
+        initWindow.call(this);
         //	Setup the menu
         this.node.menu.classList.add('mm-menu_offcanvas');
         this.node.menu.parentElement.classList.remove('mm-wrapper');
@@ -124,7 +124,7 @@ Mmenu.prototype.open = function () {
     this._openSetup();
     //	Without the timeout, the animation won't work because the menu had display: none;
     setTimeout(() => {
-        this._openFinish();
+        this._openStart();
     }, this.conf.openingInterval);
     //	Invoke "after" hook.
     this.trigger('open:after');
@@ -159,7 +159,7 @@ Mmenu.prototype._openSetup = function () {
 /**
  * Finish opening the menu.
  */
-Mmenu.prototype._openFinish = function () {
+Mmenu.prototype._openStart = function () {
     //	Callback when the page finishes opening.
     Mmenu.transitionend(Mmenu.node.page, () => {
         this.trigger('open:finish');
@@ -248,9 +248,9 @@ Mmenu.prototype.setPage = function (page) {
     this.trigger('setPage:after', [page]);
 };
 /**
- * Initialize the <window>
+ * Initialize the window.
  */
-Mmenu.prototype._initWindow_offCanvas = function () {
+const initWindow = function () {
     //	Prevent tabbing
     //	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
     //	In other words: The menu would move out of view.
@@ -281,7 +281,7 @@ Mmenu.prototype._initWindow_offCanvas = function () {
 /**
  * Initialize "blocker" node
  */
-Mmenu.prototype._initBlocker = function () {
+const initBlocker = function () {
     //	Invoke "before" hook.
     this.trigger('initBlocker:before');
     var options = this.opts.offCanvas, configs = this.conf.offCanvas;

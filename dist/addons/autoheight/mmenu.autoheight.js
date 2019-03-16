@@ -90,7 +90,6 @@ export default function () {
         this.bind('updateListview', setHeight);
         //	Measure the height when opening a panel.
         this.bind('openPanel:start', setHeight);
-        //	this.bind( 'closePanel', setHeight );	// TODO: test if this is really needed
     }
 }
 ;

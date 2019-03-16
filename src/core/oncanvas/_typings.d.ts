@@ -28,7 +28,6 @@ interface mmHtmlObject {
 	[key: string] 	: HTMLElement
 }
 
-//	TODO	add description for each method
 /** The menu API. */
 interface mmApi {
 	bind 			: Function

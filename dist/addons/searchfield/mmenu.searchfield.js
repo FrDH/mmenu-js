@@ -49,7 +49,7 @@ export default function () {
         var searchpanel = null;
         //	Add the search panel
         if (options.panel.add) {
-            searchpanel = this._initSearchPanel(panels);
+            searchpanel = initSearchPanel.call(this, panels);
         }
         //	Add the searchfield
         var addTo = null;
@@ -70,15 +70,15 @@ export default function () {
                 break;
         }
         addTo.forEach((form) => {
-            form = this._initSearchfield(form);
+            form = initSearchfield.call(this, form);
             if (options.search && form) {
-                this._initSearching(form);
+                initSearching.call(this, form);
             }
         });
         //	Add the no-results message
         if (options.noResults) {
             (options.panel.add ? [searchpanel] : panels).forEach((panel) => {
-                this._initNoResultsMsg(panel);
+                initNoResultsMsg.call(this, panel);
             });
         }
     });
@@ -107,7 +107,7 @@ export default function () {
     });
 }
 ;
-Mmenu.prototype._initSearchPanel = function (panels) {
+const initSearchPanel = function (panels) {
     var options = this.opts.searchfield, configs = this.conf.searchfield;
     //	Only once
     if (Mmenu.DOM.children(this.node.pnls, '.mm-panel_search').length) {
@@ -141,7 +141,7 @@ Mmenu.prototype._initSearchPanel = function (panels) {
     this._initPanels([searchpanel]);
     return searchpanel;
 };
-Mmenu.prototype._initSearchfield = function (wrapper) {
+const initSearchfield = function (wrapper) {
     var options = this.opts.searchfield, configs = this.conf.searchfield;
     //	No searchfield in vertical submenus	
     if (wrapper.parentElement.matches('.mm-listitem_vertical')) {
@@ -192,7 +192,7 @@ Mmenu.prototype._initSearchfield = function (wrapper) {
     }
     return form;
 };
-Mmenu.prototype._initSearching = function (form) {
+const initSearching = function (form) {
     var options = this.opts.searchfield, configs = this.conf.searchfield;
     var data = {};
     //	In the searchpanel.
@@ -298,7 +298,7 @@ Mmenu.prototype._initSearching = function (form) {
     //	Fire once initially
     this.search(input);
 };
-Mmenu.prototype._initNoResultsMsg = function (wrapper) {
+const initNoResultsMsg = function (wrapper) {
     if (!wrapper) {
         return;
     }

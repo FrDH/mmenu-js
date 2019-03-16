@@ -48,27 +48,27 @@ export default function(
 	//	Add the iconpanels
 	if ( options.add ) {
 		this.bind( 'initMenu:after', () => {
-			var cls = [ 'mm-menu_iconpanel' ];
+			var classnames = [ 'mm-menu_iconpanel' ];
 
 			if ( options.hideNavbar ) {
-				cls.push( 'mm-menu_hidenavbar' );
+				classnames.push( 'mm-menu_hidenavbar' );
 			}
 
 			if ( options.hideDivider ) {
-				cls.push( 'mm-menu_hidedivider' );
+				classnames.push( 'mm-menu_hidedivider' );
 			}
 
-			this.node.menu.classList.add( ...cls );
+			this.node.menu.classList.add( ...classnames );
 		});
 
-		var cls = '';
+		var classnames = '';
 		if ( !keepFirst ) {
 			for ( var i = 0; i <= options.visible; i++ ) {
-				cls += ' mm-panel_iconpanel-' + i;
+				classnames += ' mm-panel_iconpanel-' + i;
 			}
 
-			if ( cls.length ) {
-				cls = cls.slice( 1 );
+			if ( classnames.length ) {
+				classnames = classnames.slice( 1 );
 			}
 		}
 		const setPanels = (
@@ -90,15 +90,22 @@ export default function(
 			} else {
 				//	Remove the "iconpanel" classnames from all panels.
 				panels.forEach(( panel ) => {
-					panel.classList.remove( cls );
+					panel.classList.remove( classnames );
 				});
 
 				//	Filter out panels that are not opened.
 				panels = panels.filter( panel => panel.matches( '.mm-panel_opened-parent' ) );
 
 				//	Add the current panel to the list.
-				//	TODO: check for duplicate?
-				panels.push( panel );
+				let panelAdded = false;
+				panels.forEach(( elem ) => {
+					if ( panel === elem ) {
+						panelAdded = true;
+					}
+				});
+				if ( !panelAdded ) {
+					panels.push( panel );
+				}
 
 				//	Remove the "hidden" classname from all opened panels.
 				panels.forEach(( panel ) => {

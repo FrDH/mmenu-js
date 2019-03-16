@@ -41,13 +41,13 @@ export default function(
 	this.bind( 'initMenu:after', () => {
 
 		//	Setup the UI blocker
-		this._initBlocker();
+		initBlocker.call( this );
 
 		//	Setup the page
 		this.setPage( Mmenu.node.page );
 
 		//	Setup window events
-		this._initWindow_offCanvas();
+		initWindow.call( this );
 
 		//	Setup the menu
 		this.node.menu.classList.add( 'mm-menu_offcanvas' );
@@ -178,7 +178,7 @@ Mmenu.prototype.open = function(
 
 	//	Without the timeout, the animation won't work because the menu had display: none;
 	setTimeout(() => {
-		this._openFinish();
+		this._openStart();
 	}, this.conf.openingInterval );
 
 
@@ -227,7 +227,7 @@ Mmenu.prototype._openSetup = function(
 /**
  * Finish opening the menu.
  */
-Mmenu.prototype._openFinish = function(
+Mmenu.prototype._openStart = function(
 	this : Mmenu
 ) {
 	//	Callback when the page finishes opening.
@@ -356,9 +356,9 @@ Mmenu.prototype.setPage = function(
 };
 
 /**
- * Initialize the <window>
+ * Initialize the window.
  */
-Mmenu.prototype._initWindow_offCanvas = function(
+const initWindow = function(
 	this : Mmenu
 ) {
 
@@ -400,7 +400,7 @@ Mmenu.prototype._initWindow_offCanvas = function(
 /**
  * Initialize "blocker" node
  */
-Mmenu.prototype._initBlocker = function(
+const initBlocker = function(
 	this : Mmenu
 ) {
 	//	Invoke "before" hook.

@@ -71,9 +71,6 @@ export default class Mmenu {
 	/** Log deprecated warnings when using the debugger. */
 	_deprecated : Function
 
-	/** Log debug messages when using the debugger. */
-	_debug : Function
-
 
 	//	screenReader add-on
 	static sr_aria	: Function
@@ -81,34 +78,31 @@ export default class Mmenu {
 	static sr_text	: Function
 
 
-	//	TODO: what of the below can be replaced with local functions?
-
-
 	//	offCanvas add-on
+
+	/** Open the menu. */
 	open 					: Function
 
 	/** Setup the menu so it can be opened. */
 	_openSetup 				: Function
-	_openFinish 			: Function
+
+	/** The menu starts opening. */
+	_openStart				: Function
 
 	/** Close the menu. */
 	close 					: Function
+
+	/** Close all other menus. */
 	closeAllOthers 			: Function
+
+	/** Set the page HTML element. */
 	setPage 				: Function
-	_initBlocker 			: Function
-	_initWindow_offCanvas 	: Function
-
-
-	//	keyboardNavigation add-on
-	_initWindow_keyboardNavigation	: Function
 
 
 	//	searchfield add-on
-	search				: Function
-	_initSearchPanel	: Function
-	_initNoResultsMsg	: Function
-	_initSearchfield	: Function
-	_initSearching		: Function
+
+	/** Search the menu */
+	search : Function
 
 
 
@@ -126,19 +120,19 @@ export default class Mmenu {
 	) {
 
 		//	Extend options and configuration from defaults.
-		this.opts 	= Mmenu.extend( options, Mmenu.options );
-		this.conf 	= Mmenu.extend( configs, Mmenu.configs );
+		this.opts = Mmenu.extend( options, Mmenu.options );
+		this.conf = Mmenu.extend( configs, Mmenu.configs );
 
 		//	Methods to expose in the API.
-		this._api	= [ 'bind', 'initPanels', 'openPanel', 'closePanel', 'closeAllPanels', 'setSelected' ];
+		this._api = [ 'bind', 'initPanels', 'openPanel', 'closePanel', 'closeAllPanels', 'setSelected' ];
 
 		//	Storage objects for nodes, variables, hooks, matchmedia and click handlers.
-		this.node	= {};
-		this.vars	= {};
-		this.hook 	= {};
-		this.mtch 	= {};
-		this.evnt 	= {};
-		this.clck 	= [];
+		this.node = {};
+		this.vars = {};
+		this.hook = {};
+		this.mtch = {};
+		this.evnt = {};
+		this.clck = [];
 
 		//	Get menu node from string or element.
 		this.node.menu = ( typeof menu == 'string' )
@@ -162,10 +156,6 @@ export default class Mmenu {
 		this._initOpened();
 		this._initAnchors();
 		this._initMatchMedia();
-
-		if ( typeof this._debug == 'function' ) {
-			this._debug();
-		}
 
 
 		return this;
@@ -451,7 +441,7 @@ export default class Mmenu {
 
 
 	/**
-	 * Bind a function to a hook.
+	 * Bind functions to a hook (subscriber).
 	 *
 	 * @param {string} 		hook The hook.
 	 * @param {function} 	func The function.
@@ -469,7 +459,7 @@ export default class Mmenu {
 
 
 	/**
-	 * Invoke the functions bound to a hook.
+	 * Invoke the functions bound to a hook (publisher).
 	 *
 	 * @param {string} 	hook  	The hook.
 	 * @param {array}	[args] 	Arguments for the function.
@@ -487,7 +477,7 @@ export default class Mmenu {
 
 
 	/**
-	 * Bind functions to a matchMedia listener.
+	 * Bind functions to a matchMedia listener (subscriber).
 	 *
 	 * @param {string} 		mediaquery 	Media query to match.
 	 * @param {function} 	yes 		Function to invoke when the media query matches.
@@ -524,7 +514,7 @@ export default class Mmenu {
 
 
 	/**
-	 * Fire the "yes" or "no" function for a matchMedia listener.
+	 * Invoke the "yes" or "no" function for a matchMedia listener (publisher).
 	 *
 	 * @param {string} 			mqstring 	Media query to check for.
 	 * @param {MediaQueryList} 	mqlist 		Media query list to check with.
@@ -564,7 +554,7 @@ export default class Mmenu {
 
 
 	/**
-	 * Bind the hooks specified in the options.
+	 * Bind the hooks specified in the options (publisher).
 	 */
 	_initHooks()
 	{
@@ -640,6 +630,7 @@ export default class Mmenu {
 				});
 			}
 		}
+
 
 		//	Invoke "after" hook.
 		this.trigger( 'initExtensions:after' );
@@ -813,6 +804,7 @@ export default class Mmenu {
 	_initPanel(
 		panel : HTMLElement
 	) : HTMLElement {
+
 		//	Invoke "before" hook.
 		this.trigger( 'initPanel:before', [ panel ] );
 
@@ -1227,6 +1219,7 @@ export default class Mmenu {
 		panel   : HTMLElement, 
 		dfault ?: string | Function
 	) : string | object {
+
 		var title : string;
 
 		//	Function

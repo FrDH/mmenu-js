@@ -76,7 +76,7 @@ export default function(
 
 		//	Add the search panel
 		if ( options.panel.add ) {
-			searchpanel = this._initSearchPanel( panels );
+			searchpanel = initSearchPanel.call( this, panels );
 		}
 
 		//	Add the searchfield
@@ -101,9 +101,9 @@ export default function(
 		}
 
 		addTo.forEach(( form ) => {
-			form = this._initSearchfield( form );
+			form = initSearchfield.call( this, form );
 			if ( options.search && form ) {
-				this._initSearching( form );
+				initSearching.call( this, form );
 			}
 		});
 
@@ -111,7 +111,7 @@ export default function(
 		//	Add the no-results message
 		if ( options.noResults ) {
 			( options.panel.add ? [ searchpanel ] : panels ).forEach(( panel ) => {
-				this._initNoResultsMsg( panel );
+				initNoResultsMsg.call( this, panel );
 			});
 		}
 	});
@@ -153,7 +153,7 @@ export default function(
 };
 
 	
-Mmenu.prototype._initSearchPanel = function( 
+const initSearchPanel = function( 
 	this	: Mmenu,
 	panels	: HTMLElement[]
 ) : HTMLElement {
@@ -206,7 +206,7 @@ Mmenu.prototype._initSearchPanel = function(
 	return searchpanel;
 };
 
-Mmenu.prototype._initSearchfield = function( 
+const initSearchfield = function( 
 	this	: Mmenu,
 	wrapper	: HTMLElement
 ) : HTMLElement {
@@ -288,7 +288,7 @@ Mmenu.prototype._initSearchfield = function(
 	return form;
 };
 
-Mmenu.prototype._initSearching = function( 
+const initSearching = function( 
 	this	: Mmenu,
 	form	: HTMLElement
 ) {
@@ -438,7 +438,7 @@ Mmenu.prototype._initSearching = function(
 	this.search( input );
 };	
 
-Mmenu.prototype._initNoResultsMsg = function( 
+const initNoResultsMsg = function( 
 	this	: Mmenu,
 	wrapper	: HTMLElement
 ) {
