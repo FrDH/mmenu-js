@@ -1,4 +1,6 @@
 /**	Options for the lazySubmenus add-on. */
 interface mmOptionsLazysubmenus {
-	load : boolean
+
+	/** Whether or not to lazy load submenus. */
+	load ?: boolean
 }

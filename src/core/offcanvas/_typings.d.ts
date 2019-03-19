@@ -2,10 +2,10 @@
 interface mmOptionsOffcanvas {
 
 	/** Whether or not (and how) to block the UI while the menu is opened. */
-	blockUI	: true | false | 'modal'
+	blockUI	?: true | false | 'modal'
 	
 	/** Whether or not to have the "page" inherit its background (from its parent element). */
-	moveBackground : boolean
+	moveBackground ?: boolean
 }
 
 
@@ -14,27 +14,27 @@ interface mmOptionsOffcanvas {
 interface mmConfigsOffcanvas {
 
 	/** Menu configuration for the off-canvas add-on. */
-	menu : mmConfigsOffcanvasMenu
+	menu ?: mmConfigsOffcanvasMenu
 
 	/** Page configuration for the off-canvas add-on. */
-	page : mmConfigsOffcanvasPage
+	page ?: mmConfigsOffcanvasPage
 }
 interface mmConfigsOffcanvasMenu {
 
 	/** How to insert the menu into the DOM. */
-	insertMethod : 'prepend' | 'append'
+	insertMethod ?: 'prepend' | 'append'
 
 	/** Where to insert the menu into the DOM. */
-	insertSelector : string
+	insertSelector ?: string
 }
 interface mmConfigsOffcanvasPage {
 
 	/** The nodetype for the page. */
-	nodetype : string
+	nodetype ?: string
 
 	/** The selector for the page. */
-	selector : string
+	selector ?: string
 
 	/** List of selectors for nodes to exclude from the page. */
-	noSelector : string[]
+	noSelector ?: string[]
 }

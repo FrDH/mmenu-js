@@ -1,4 +1,6 @@
 /**	Options for the autoHeight add-on. */
 interface mmOptionsAutoheight {
-	height : string
+
+	/** What type of height to use. */
+	height ?: 'default' | 'auto' | 'highest'
 }

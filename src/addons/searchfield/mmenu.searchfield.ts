@@ -330,9 +330,9 @@ const initSearching = function(
 	data.dividers	= listitems.filter( listitem => listitem.matches( '.mm-listitem_divider' ) );
 
 
-	var searchpanel : HTMLElement = Mmenu.DOM.children( this.node.pnls, '.mm-panel_search' )[ 0 ],
-		input 		: HTMLElement = Mmenu.DOM.find( form, 'input' )[ 0 ],
-		cancel 		: HTMLElement = Mmenu.DOM.find( form, '.mm-searchfield__cancel' )[ 0 ];
+	var searchpanel = Mmenu.DOM.children( this.node.pnls, '.mm-panel_search' )[ 0 ],
+		input 		= Mmenu.DOM.find( form, 'input' )[ 0 ],
+		cancel 		= Mmenu.DOM.find( form, '.mm-searchfield__cancel' )[ 0 ];
 
 
 	input[ 'mmSearchfield' ] = data;

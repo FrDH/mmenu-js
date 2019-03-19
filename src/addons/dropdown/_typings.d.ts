@@ -1,33 +1,72 @@
 /**	Options for the dropdown add-on. */
 interface mmOptionsDropdown {
-	drop 		: boolean
-	fitViewport	: boolean
-	event		: string
-	position	: mmLooseObject
-	tip			: boolean
+
+	/** Whether or not to open the menu as a dropdown from the menu-button. */
+	drop ?: boolean
+	
+	/** The event to open and close the menu. */
+	event ?: 'click' | 'hover' | 'click hover' | 'hover click'
+
+	/** Whether or not to fit the menu in the viewport. */
+	fitViewport ?: boolean
+	
+	/** Positioning options. */
+	position ?: mmLooseObject
+	
+	/** Whether or not to prepend the menu with a tip pointing to the menu-button. */
+	tip ?: boolean
+}
+
+/** Positioning options for the dropdown add-on. */
+interface mmOptionsDropdownPosition {
+
+	/**  Query selector for the button to click. */
+	of ?: string
+
+	/** How to horizontally position the menu relative to the button. */
+	x ?: 'left' | 'right'
+
+	/** How to vertically position the menu relative to the button. */
+	y ?: 'top' | 'bottom'
 }
 
 
 /**	Configuration for the dropdown add-on. */
 interface mmConfigsDropdown {
-	offset	: mmConfigsDropdownOffset
-	height	: mmConfigsDropdownDimensions
-	width	: mmConfigsDropdownDimensions
+
+	/** Offset confgiuration. */
+	offset ?: mmConfigsDropdownOffset
+
+	/** Height confgiuration. */
+	height ?: mmConfigsDropdownDimensions
+
+	/** Width confgiuration. */
+	width ?: mmConfigsDropdownDimensions
 }
 
-/**	"offset" configuration for the dropdown add-on. */
+/**	Offset configuration for the dropdown add-on. */
 interface mmConfigsDropdownOffset {
-	button	: mmConfigsDropdownOffsetPositions
-	viewport: mmConfigsDropdownOffsetPositions
+
+	/**	Button positioning configuration. */
+	button ?: mmConfigsDropdownOffsetPositions
+
+	/**	Viewport positioning configuration. */
+	viewport ?: mmConfigsDropdownOffsetPositions
 }
 
-/**	"offset positions" configuration for the dropdown add-on. */
+/**	Positioning configuration for the dropdown add-on. */
 interface mmConfigsDropdownOffsetPositions {
-	x : number
-	y : number
+
+	/** The horizontal offset for the menu. */
+	x ?: number
+
+	/** The vertical offset for the menu. */
+	y ?: number
 }
 
-/**	"dimensions" configuration for the dropdown add-on. */
+/**	Dimensions configuration for the dropdown add-on. */
 interface mmConfigsDropdownDimensions {
-	max	: number
+
+	/** The maximum size of the menu. */
+	max ?: number
 }

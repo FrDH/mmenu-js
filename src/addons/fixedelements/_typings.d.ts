@@ -1,16 +1,24 @@
 /**	Configuration for the fixedElements add-on. */
 interface mmConfigsFixedelements {
-	fixed 	: mmConfigsFixedelementsFixed
-	sticky 	: mmConfigsFixedelementsSticky
+
+	/** Fixed configuration. */
+	fixed ?: mmConfigsFixedelementsFixed
+
+	/** Sticky configuration. */
+	sticky ?: mmConfigsFixedelementsSticky
 }
 
-/**	"fixed" configuration for the fixedElements add-on. */
+/**	Fixed configuration for the fixedElements add-on. */
 interface mmConfigsFixedelementsFixed {
-	insertMethod	: string
-	insertSelector	: string
+
+	/** How to insert the fixed element to the DOM. */
+	insertMethod ?: 'prepend' | 'append'
+
+	/** Query selector for the element the fixed element should be inserted in. */
+	insertSelector ?: string
 }
 
-/**	"sticky" configuration for the fixedElements add-on. */
+/**	Sticky configuration for the fixedElements add-on. */
 interface mmConfigsFixedelementsSticky {
-	offset : number
+	offset ?: number
 }

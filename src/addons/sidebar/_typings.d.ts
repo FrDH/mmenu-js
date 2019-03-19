@@ -1,18 +1,32 @@
 /**	Options for the sidebar add-on. */
 interface mmOptionsSidebar {
-	collapsed 	: mmOptionsSidebarCollapsed
-	expanded 	: mmOptionsSidebarExpanded
+
+	/** Collapsed options */
+	collapsed ?: mmOptionsSidebarCollapsed
+
+	/** Expanded options */
+	expanded ?: mmOptionsSidebarExpanded
 }
 
-/**	"collapsed" options for the searchfield add-on. */
+/**	Collapsed options for the searchfield add-on. */
 interface mmOptionsSidebarCollapsed {
-	use 		: boolean | string
-	blockMenu	: boolean
-	hideDivider	: boolean
-	hideNavbar	: boolean
+
+	/** Whether or not to enable the collapsed menu.  */
+	use ?: boolean | string | number
+
+	/** Whether or not to block the collapsed menu from interaction. */
+	blockMenu ?: boolean
+
+	/** Whether or not to hide dividers in a collapsed menu, showing only the listitems. */
+	hideDivider ?: boolean
+
+	/** Whether or not to hide navbars in a collapsed menu, showing only the listviews. */
+	hideNavbar ?: boolean
 }
 
 /**	"expanded" options for the searchfield add-on. */
 interface mmOptionsSidebarExpanded {
-	use			: boolean | string
+
+	/** Whether or not to enable the expanded menu.  */
+	use ?: boolean | string | number
 }

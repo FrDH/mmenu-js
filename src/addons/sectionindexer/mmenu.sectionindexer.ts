@@ -30,7 +30,6 @@ export default function(
 		return;
 	}
 
-
 	this.bind( 'initPanels:after', (
 		panels	: HTMLElement[]
 	) => {

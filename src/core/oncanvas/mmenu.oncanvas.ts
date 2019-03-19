@@ -734,7 +734,7 @@ export default class Mmenu {
 
 
 	/**
-	 * Initialize panels.
+	 * Recursively initialize panels.
 	 *
 	 * @param {array} [panels] The panels to initialize.
 	 */
@@ -745,14 +745,22 @@ export default class Mmenu {
 		this.trigger( 'initPanels:before', [ panels ] );
 
 
+		/** Query selector for possible node-types for panels. */
 		var panelNodetype = this.conf.panelNodetype.join( ', ' );
+
+		/** The created panels. */
+		var newpanels : HTMLElement[] = [];
 
 		//	If no panels provided, use all panels.
 		panels = panels || Mmenu.DOM.children( this.node.pnls, panelNodetype );
 
-		var newpanels : HTMLElement[] = [];
 
-		var init = ( 
+		/**
+		 * Initialize panels.
+		 *
+		 * @param {array} [panels] The panels to initialize.
+		 */
+		const init = ( 
 			panels : HTMLElement[]
 		) => {
 			panels.filter( panel => panel.matches( panelNodetype ) )
@@ -840,16 +848,19 @@ export default class Mmenu {
 		if ( panel.matches( 'ul, ol' ) ) {
 			panel.removeAttribute( 'id' );
 
+			/** The panel. */
 			let wrapper = Mmenu.DOM.create( 'div' );
+
+			//	Wrap the listview in the panel.
 			panel.before( wrapper );
 			wrapper.append( panel );
-
 			panel = wrapper;
 		}
 
 		panel.id = id;
 		panel.classList.add( 'mm-panel', 'mm-hidden' );
 
+		/** The parent listitem. */
 		var parent = [ panel.parentElement ].filter( listitem => listitem.matches( 'li' ) )[ 0 ];
 
 		if ( vertical ) {
@@ -860,7 +871,7 @@ export default class Mmenu {
 			this.node.pnls.append( panel );
 		}
 
-		//	Store parent/child relation
+		//	Store parent/child relation.
 		if ( parent ) {
 			parent[ 'mmChild' ] = panel;
 			panel[ 'mmParent' ] = parent;
@@ -886,15 +897,22 @@ export default class Mmenu {
 		this.trigger( 'initNavbar:before', [ panel ] );
 
 
+		//	Only one navbar per panel.
 		if ( Mmenu.DOM.children( panel, '.mm-navbar' ).length ) {
 			return;
 		}
 
-		var parent : HTMLElement = panel[ 'mmParent' ],
-			navbar : HTMLElement = Mmenu.DOM.create( 'div.mm-navbar' );
+		/** The parent listitem. */
+		var parent : HTMLElement = panel[ 'mmParent' ];
 
-		var title = this._getPanelTitle( panel, this.opts.navbar.title ),
-			href  = '';
+		/** The navbar element. */
+		var navbar : HTMLElement = Mmenu.DOM.create( 'div.mm-navbar' );
+
+		/** Title in the navbar. */
+		var title = this._getPanelTitle( panel, this.opts.navbar.title );
+		
+		/** Href for the title. */
+		var href  = '';
 
 		if ( parent ) {
 
@@ -1045,21 +1063,24 @@ export default class Mmenu {
 		this.trigger( 'initOpened:before' );
 
 
-		//	Find all selected listitems.
+		/** The selected listitem(s). */
 		let listitems = this.node.pnls.querySelectorAll( '.mm-listitem_selected' );
-		
-		//	Deselect the listitems.
+
+		/** The last selected listitem. */		
 		let lastitem = null;
+
+		//	Deselect the listitems.
 		listitems.forEach(( listitem ) => {
 			lastitem = listitem;
 			listitem.classList.remove( 'mm-listitem_selected' );
 		});
 
+		//	Re-select the last listitem.
 		if ( lastitem ) {
 			lastitem.classList.add( 'mm-listitem_selected' );
 		}
 
-		//	Find the current opened panel.
+		/**	The current opened panel. */
 		let current = ( lastitem ) 
 			? lastitem.closest( '.mm-panel' )
 			: Mmenu.DOM.children( this.node.pnls, '.mm-panel' )[ 0 ];
@@ -1084,6 +1105,7 @@ export default class Mmenu {
 
 		document.addEventListener( 'click', ( evnt ) => {
 
+			/** The clicked element. */
 			var target = (evnt.target as HTMLElement);
 
 			if ( !target.matches( 'a[href]' ) ) {
@@ -1093,6 +1115,7 @@ export default class Mmenu {
 				}
 			}
 
+			/** Arguments passed to the bound methods. */
 			var args : mmClickArguments = {
 				inMenu		: target.closest( '.mm-menu' ) === this.node.menu,
 				inListview 	: target.matches( '.mm-listitem > a' ),
@@ -1294,7 +1317,7 @@ export default class Mmenu {
 		create: (
 			selector : string
 		) : HTMLElement => {
-			var elem;
+			var elem : HTMLElement;
 			selector.split( '.' ).forEach(( arg, a ) => {
 				if ( a == 0 ) {
 					elem = document.createElement( arg );
@@ -1534,7 +1557,7 @@ export default class Mmenu {
 	 * @return	{object}			The extended "orignl" object.
 	 */
 	static extend (
-		orignl	: any,	//	Unfortunately, Typescript doesn't allow "object", "mmLooseObject" or anything other than "any".
+		orignl	: mmLooseObject,
 		dfault	: mmLooseObject
 	) {
 		if ( Mmenu.typeof( orignl ) != 'object' ) {
