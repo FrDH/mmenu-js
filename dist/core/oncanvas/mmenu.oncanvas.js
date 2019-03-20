@@ -455,18 +455,25 @@ export default class Mmenu {
         this.initPanels(panels);
     }
     /**
-     * Initialize panels.
+     * Recursively initialize panels.
      *
      * @param {array} [panels] The panels to initialize.
      */
     initPanels(panels) {
         //	Invoke "before" hook.
         this.trigger('initPanels:before', [panels]);
+        /** Query selector for possible node-types for panels. */
         var panelNodetype = this.conf.panelNodetype.join(', ');
+        /** The created panels. */
+        var newpanels = [];
         //	If no panels provided, use all panels.
         panels = panels || Mmenu.DOM.children(this.node.pnls, panelNodetype);
-        var newpanels = [];
-        var init = (panels) => {
+        /**
+         * Initialize panels.
+         *
+         * @param {array} [panels] The panels to initialize.
+         */
+        const init = (panels) => {
             panels.filter(panel => panel.matches(panelNodetype))
                 .forEach((panel) => {
                 var panel = this._initPanel(panel);
@@ -526,13 +533,16 @@ export default class Mmenu {
         var id = panel.id || Mmenu.getUniqueId();
         if (panel.matches('ul, ol')) {
             panel.removeAttribute('id');
+            /** The panel. */
             let wrapper = Mmenu.DOM.create('div');
+            //	Wrap the listview in the panel.
             panel.before(wrapper);
             wrapper.append(panel);
             panel = wrapper;
         }
         panel.id = id;
         panel.classList.add('mm-panel', 'mm-hidden');
+        /** The parent listitem. */
         var parent = [panel.parentElement].filter(listitem => listitem.matches('li'))[0];
         if (vertical) {
             if (parent) {
@@ -542,7 +552,7 @@ export default class Mmenu {
         else {
             this.node.pnls.append(panel);
         }
-        //	Store parent/child relation
+        //	Store parent/child relation.
         if (parent) {
             parent['mmChild'] = panel;
             panel['mmParent'] = parent;
@@ -559,11 +569,18 @@ export default class Mmenu {
     _initNavbar(panel) {
         //	Invoke "before" hook.
         this.trigger('initNavbar:before', [panel]);
+        //	Only one navbar per panel.
         if (Mmenu.DOM.children(panel, '.mm-navbar').length) {
             return;
         }
-        var parent = panel['mmParent'], navbar = Mmenu.DOM.create('div.mm-navbar');
-        var title = this._getPanelTitle(panel, this.opts.navbar.title), href = '';
+        /** The parent listitem. */
+        var parent = panel['mmParent'];
+        /** The navbar element. */
+        var navbar = Mmenu.DOM.create('div.mm-navbar');
+        /** Title in the navbar. */
+        var title = this._getPanelTitle(panel, this.opts.navbar.title);
+        /** Href for the title. */
+        var href = '';
         if (parent) {
             if (parent.matches('.mm-listitem_vertical')) {
                 return;
@@ -670,18 +687,20 @@ export default class Mmenu {
     _initOpened() {
         //	Invoke "before" hook.
         this.trigger('initOpened:before');
-        //	Find all selected listitems.
+        /** The selected listitem(s). */
         let listitems = this.node.pnls.querySelectorAll('.mm-listitem_selected');
-        //	Deselect the listitems.
+        /** The last selected listitem. */
         let lastitem = null;
+        //	Deselect the listitems.
         listitems.forEach((listitem) => {
             lastitem = listitem;
             listitem.classList.remove('mm-listitem_selected');
         });
+        //	Re-select the last listitem.
         if (lastitem) {
             lastitem.classList.add('mm-listitem_selected');
         }
-        //	Find the current opened panel.
+        /**	The current opened panel. */
         let current = (lastitem)
             ? lastitem.closest('.mm-panel')
             : Mmenu.DOM.children(this.node.pnls, '.mm-panel')[0];
@@ -697,6 +716,7 @@ export default class Mmenu {
         //	Invoke "before" hook.
         this.trigger('initAnchors:before');
         document.addEventListener('click', (evnt) => {
+            /** The clicked element. */
             var target = evnt.target;
             if (!target.matches('a[href]')) {
                 target = target.closest('a[href]');
@@ -704,6 +724,7 @@ export default class Mmenu {
                     return;
                 }
             }
+            /** Arguments passed to the bound methods. */
             var args = {
                 inMenu: target.closest('.mm-menu') === this.node.menu,
                 inListview: target.matches('.mm-listitem > a'),
@@ -893,8 +914,7 @@ export default class Mmenu {
      * @param 	{object}	dfault	The object to extend from.
      * @return	{object}			The extended "orignl" object.
      */
-    static extend(orignl, //	Unfortunately, Typescript doesn't allow "object", "mmLooseObject" or anything other than "any".
-    dfault) {
+    static extend(orignl, dfault) {
         if (Mmenu.typeof(orignl) != 'object') {
             orignl = {};
         }

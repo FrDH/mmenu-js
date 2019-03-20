@@ -63,7 +63,7 @@ export default function () {
         }
         else {
             //	Restrict the height between 1 to 4.
-            height = Math.min(4, Math.max(1, height));
+            height = Math.min(4, Math.max(1, height)); // Typescript doesn't understand...
             if (height > 1) {
                 //	Add the height class to the navbar.
                 navbar.classList.add('mm-navbar_size-' + height);

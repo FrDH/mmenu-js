@@ -30,7 +30,10 @@ export default function () {
     if (options.add) {
         options.visible.min = Math.max(1, Math.min(6, options.visible.min));
         options.visible.max = Math.max(options.visible.min, Math.min(6, options.visible.max));
-        var colm = '', colp = '';
+        /** Columns related clasnames for the menu. */
+        var colm = '';
+        /** Columns related clasnames for the panels. */
+        var colp = '';
         for (var i = 0; i <= options.visible.max; i++) {
             colm += ' mm-menu_columns-' + i;
             colp += ' mm-panel_columns-' + i;
@@ -39,9 +42,11 @@ export default function () {
             colm = colm.slice(1);
             colp = colp.slice(1);
         }
+        /** Classnames to remove from panels in favor of showing columns. */
         var rmvc = colp + ' mm-panel_opened mm-panel_opened-parent mm-panel_highest';
         //	Close all later opened panels
         this.bind('openPanel:before', (panel) => {
+            /** The parent panel. */
             var parent;
             if (panel) {
                 parent = panel['mmParent'];

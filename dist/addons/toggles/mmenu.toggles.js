@@ -13,26 +13,6 @@ export default function () {
                 Mmenu.refactorClass(input, this.conf.classNames.toggles.check, 'mm-check');
             });
         });
-        //	Loop over all panels.
-        panels.forEach((panel) => {
-            //	Loop over all toggles and checks.
-            Mmenu.DOM.find(panel, 'input.mm-toggle, input.mm-check')
-                .forEach((input) => {
-                //	Find the listitem the input is in.
-                var parent = input.closest('li');
-                //	Get or create an ID for the input.
-                var id = input.id || Mmenu.getUniqueId();
-                //	Only needs to be done once.
-                if (!Mmenu.DOM.children(parent, 'label[for="' + id + '"]').length) {
-                    input.id = id;
-                    parent.prepend(input);
-                    let label = Mmenu.DOM.create('label.mm-' + (input.matches('.mm-toggle') ? 'toggle' : 'check'));
-                    label.setAttribute('for', id);
-                    let text = Mmenu.DOM.children(parent, '.mm-listitem__text')[0];
-                    text.parentElement.insertBefore(label, text.nextSibling);
-                }
-            });
-        });
     });
 }
 ;

@@ -66,11 +66,18 @@ export default function () {
         this.node.menu.setAttribute('style', this.node.menu['mmStyle']);
         document.documentElement.classList.remove('mm-wrapper_dropdown');
     });
-    //	Update the position and sizes
+    /**
+     * Find the position (x, y) and sizes (width, height) for the menu.
+     *
+     * @param  {string} dir The direction to measure ("x" for horizontal, "y" for vertical)
+     * @param  {object} obj The object where (previously) measured values are stored.
+     * @return {object}		The object where measered values are stored.
+     */
     var getPosition = function (dir, obj) {
         var css = obj[0], cls = obj[1];
         var _scrollPos = dir == 'x' ? 'scrollLeft' : 'scrollTop', _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight', _startPos = dir == 'x' ? 'left' : 'top', _stopPos = dir == 'x' ? 'right' : 'bottom', _size = dir == 'x' ? 'width' : 'height', _winSize = dir == 'x' ? 'innerWidth' : 'innerHeight', _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight', _position = null;
         var scrollPos = document.documentElement[_scrollPos] || document.body[_scrollPos], startPos = Mmenu.DOM.offset(button, _startPos) - scrollPos, stopPos = startPos + button[_outerSize], windowSize = window[_winSize];
+        /** Offset for the menu relative to the button. */
         var offs = configs.offset.button[dir] + configs.offset.viewport[dir];
         //	Position set in option
         if (options.position[dir]) {
