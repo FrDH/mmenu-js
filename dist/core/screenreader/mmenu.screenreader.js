@@ -65,8 +65,11 @@ export default function () {
             panels.forEach((panel) => {
                 Mmenu.DOM.find(panel, '.mm-btn')
                     .forEach((button) => {
-                    Mmenu.sr_aria(button, 'owns', button.getAttribute('href').replace('#', ''));
                     Mmenu.sr_aria(button, 'haspopup', true);
+                    let href = button.getAttribute('href');
+                    if (href) {
+                        Mmenu.sr_aria(button, 'owns', href.replace('#', ''));
+                    }
                 });
             });
         });

@@ -1,15 +1,3 @@
-@mixin mm_navbar_position( $pos, $nr ) {
-	.mm-menu_navbar_#{$pos}-#{$nr} {
-		.mm-panels {
-			#{$pos}: calc( var( --mm-navbar-size ) * #{$nr} );
-		}
-	}
-}
-@mixin mm_navbar_size( $nr ) {
-	.mm-navbar_size-#{$nr} {
-		height: calc( var( --mm-navbar-size ) * #{$nr} );
-	}
-}
 @mixin mm_navbar_tabs_borders( $top, $bottom, $last, $first ) {
 	.mm-navbars_#{$top} {
 		.mm-navbar_tabs:not( :#{$last}-child ) {

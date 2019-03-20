@@ -30,7 +30,7 @@
 
 	.mm-wrapper_sidebar-collapsed .mm-menu_sidebar-collapsed,
 	.mm-wrapper_sidebar-expanded .mm-menu_sidebar-expanded {
-		display: block !important;
+		display: flex !important;
 		top: 0 !important;
 		right: auto !important;
 		bottom: 0 !important;

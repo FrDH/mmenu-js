@@ -51,8 +51,7 @@ export default function(
 		navs = [ navs ];
 	}
 
-	var sizes 	= {},
-		navbars = {};
+	var navbars = {};
 
 	if ( !navs.length ) {
 		return;
@@ -81,23 +80,6 @@ export default function(
 
 		//	Create the navbar element.
 		var navbar = Mmenu.DOM.create( 'div.mm-navbar' );
-			
-
-		//	Get the height for the navbar.
-		var height = options.height;
-		if ( typeof height != 'number' ) {
-			//	Defaults to a height of 1.
-			height = 1;
-
-		} else {
-			//	Restrict the height between 1 to 4.
-			height = (Math.min( 4, Math.max( 1, height ) ) as 1|2|3|4 ); // Typescript doesn't understand...
-			if ( height > 1 )
-			{
-				//	Add the height class to the navbar.
-				navbar.classList.add( 'mm-navbar_size-' + height );
-			}
-		}
 
 		//	Get the position for the navbar.
 		var position = options.position;
@@ -106,12 +88,6 @@ export default function(
 		if ( position !== 'bottom' ) {
 			position = 'top';
 		}
-
-		//	Add up the wrapper height for the navbar position.
-		if ( !sizes[ position ] ) {
-			sizes[ position ] = 0;
-		}
-		sizes[ position ] += height;
 
 		//	Create the wrapper for the navbar position.
 		if ( !navbars[ position ] ) {
@@ -146,11 +122,6 @@ export default function(
 			}
 		}
 
-		//	If buttons were added, tell the navbar.
-		if ( navbar.querySelector( '.mm-navbar__btn' ) ) {
-			navbar.classList.add( 'mm-navbar_has-btns' );
-		}
-
 		//	The type option is set.
 		if ( typeof options.type == 'string' ) {
 			//	The function refers to one of the navbar-presets ("tabs").
@@ -162,10 +133,9 @@ export default function(
 		}
 	});
 
-	//	Add to menu
+	//	Add to menu.
 	this.bind( 'initMenu:after', () => {
 		for ( let position in navbars ) {
-			this.node.menu.classList.add( 'mm-menu_navbar_' + position + '-' + sizes[ position ] );
 			this.node.menu[ position == 'bottom' ? 'append' : 'prepend' ]( navbars[ position ] );
 		}
 	});

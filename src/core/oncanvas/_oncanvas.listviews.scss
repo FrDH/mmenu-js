@@ -81,17 +81,6 @@
 	}
 }
 
-.mm-panels > .mm-panel {
-	> .mm-listview {
-		margin: $mm_panelPadding ( -$mm_panelPadding );
-	}
-
-	> .mm-listview:first-child,
-	> .mm-navbar + .mm-listview {
-		margin-top: -$mm_panelPadding;
-	}
-}
-
 
 //	Dividers
 @if ( $mm_include_listviews_divider ) {

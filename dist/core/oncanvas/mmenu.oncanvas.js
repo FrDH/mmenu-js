@@ -578,7 +578,7 @@ export default class Mmenu {
         /** The navbar element. */
         var navbar = Mmenu.DOM.create('div.mm-navbar');
         /** Title in the navbar. */
-        var title = this._getPanelTitle(panel, this.opts.navbar.title);
+        var text = this._getPanelTitle(panel, this.opts.navbar.title);
         /** Href for the title. */
         var href = '';
         if (parent) {
@@ -596,7 +596,7 @@ export default class Mmenu {
                 opener = Mmenu.DOM.find(opener, 'a[href="#' + panel.id + '"]')[0];
             }
             let id = opener.closest('.mm-panel').id;
-            title = this._getPanelTitle(panel, opener.textContent);
+            text = this._getPanelTitle(panel, opener.textContent);
             switch (this.opts.navbar.titleLink) {
                 case 'anchor':
                     href = opener.getAttribute('href');
@@ -605,9 +605,9 @@ export default class Mmenu {
                     href = '#' + id;
                     break;
             }
-            let anchor = Mmenu.DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
-            anchor.setAttribute('href', '#' + id);
-            navbar.append(anchor);
+            let prev = Mmenu.DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
+            prev.setAttribute('href', '#' + id);
+            navbar.append(prev);
         }
         else if (!this.opts.navbar.title) {
             return;
@@ -615,12 +615,17 @@ export default class Mmenu {
         if (this.opts.navbar.add) {
             panel.classList.add('mm-panel_has-navbar');
         }
-        let anchor = Mmenu.DOM.create('a.mm-navbar__title');
-        anchor.innerHTML = title;
+        let title = Mmenu.DOM.create('a.mm-navbar__title');
+        title.innerHTML = text;
         if (href) {
-            anchor.setAttribute('href', href);
+            title.setAttribute('href', href);
         }
-        navbar.append(anchor);
+        navbar.append(title);
+        //	Just to center the title.
+        if (parent) {
+            let next = Mmenu.DOM.create('span.mm-btn.mm-navbar__btn');
+            navbar.append(next);
+        }
         panel.prepend(navbar);
         //	Invoke "after" hook.
         this.trigger('initNavbar:after', [panel]);

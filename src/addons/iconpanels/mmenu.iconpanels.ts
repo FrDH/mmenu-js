@@ -61,24 +61,22 @@ export default function(
 			this.node.menu.classList.add( ...classnames );
 		});
 
-		var classnames = '';
+		var classnames = [];
 		if ( !keepFirst ) {
 			for ( var i = 0; i <= options.visible; i++ ) {
-				classnames += ' mm-panel_iconpanel-' + i;
-			}
-
-			if ( classnames.length ) {
-				classnames = classnames.slice( 1 );
+				classnames.push( 'mm-panel_iconpanel-' + i );
 			}
 		}
-		const setPanels = (
+
+		this.bind( 'openPanel:start', (
 			panel ?: HTMLElement
 		) => {
 
-			var panels = Mmenu.DOM.children( this.node.pnls, '.mm-panels' );
+			var panels = Mmenu.DOM.children( this.node.pnls, '.mm-panel' );
 			panel = panel || panels[ 0 ];
 
-			if ( panel.parentElement.matches( '.mm-listitem_vertical' ) ) {
+			if ( panel.parentElement.matches( '.mm-listitem_vertical' )
+			) {
 				return;
 			}
 
@@ -90,7 +88,7 @@ export default function(
 			} else {
 				//	Remove the "iconpanel" classnames from all panels.
 				panels.forEach(( panel ) => {
-					panel.classList.remove( classnames );
+					panel.classList.remove( ...classnames );
 				});
 
 				//	Filter out panels that are not opened.
@@ -120,10 +118,7 @@ export default function(
 					panel.classList.add( 'mm-panel_iconpanel-' + p );
 				});
 			}
-		};
-
-		this.bind( 'openPanel:start', 	setPanels );
-		this.bind( 'initPanels:after', 	setPanels );
+		});
 
 		this.bind( 'initListview:after', (
 			panel : HTMLElement
@@ -132,10 +127,10 @@ export default function(
 				!panel.parentElement.matches( '.mm-listitem_vertical' ) &&
 				!Mmenu.DOM.children( panel, '.mm-panel__blocker' )[ 0 ]
 			) {
-				var anchor = Mmenu.DOM.create( 'a.mm-panel__blocker' );
-					anchor.setAttribute( 'href', panel.closest( '.mm-panel' ).id );
+				let blocker = Mmenu.DOM.create( 'a.mm-panel__blocker' );
+					blocker.setAttribute( 'href', '#' + panel.closest( '.mm-panel' ).id );
 
-				panel.prepend( anchor );
+				panel.prepend( blocker );
 			}	
 		});
 	}

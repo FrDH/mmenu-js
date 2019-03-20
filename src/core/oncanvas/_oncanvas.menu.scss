@@ -4,17 +4,17 @@
 	color: var( --mm-color-text );
 	line-height: var( --mm-line-height );
 
+	display: flex;
+	flex-direction: column;
 	box-sizing: border-box;
-	display: block;
 	padding: 0;
 	margin: 0;
 	position: absolute;
-	z-index: 0;
-
 	top: var( --mm-offset-top );
 	right: var( --mm-offset-right );
 	bottom: var( --mm-offset-bottom );
 	left: var( --mm-offset-left );
+	z-index: 0;
 
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;

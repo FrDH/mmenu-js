@@ -1,6 +1,7 @@
 .mm-btn {
 	box-sizing: border-box;
 	width: $mm_btnSize;
+	flex-shrink: 0;
 	padding: 0;
 
 	&:before,

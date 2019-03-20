@@ -4,15 +4,16 @@
 
 		-webkit-overflow-scrolling: touch;
 		overflow-x: auto;
-
 		text-align: left;
-		padding: 0 0 0 $mm_panelPadding;
+		flex-grow: 1;
+		width: 100%;
+		padding: 0;
 
 		> * {
 			display: inline-block;
+			padding: calc( (var( --mm-navbar-size ) - var( --mm-line-height )) * .5 );
+			padding-left: 0;
 			padding-right: 6px;
-			padding-top: calc( (var( --mm-navbar-size ) - var( --mm-line-height )) * .5 );
-			padding-bottom: calc( (var( --mm-navbar-size ) - var( --mm-line-height )) * .5 );
 		}
 
 		> a {
@@ -20,14 +21,7 @@
 		}
 	}
 
-	.mm-navbar_has-btns {
-		.mm-navbar__breadcrumbs {
-			margin-left: -$mm_btnSize;
-		}
-
-		.mm-btn:not( .mm-hidden ) + .mm-navbar__breadcrumbs {
-			margin-left: 0;
-			padding-left: 0;
-		}
+	.mm-btn.mm-hidden + .mm-navbar__breadcrumbs {
+		padding-left: $mm_panelPadding;
 	}
 }

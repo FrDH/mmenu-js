@@ -909,10 +909,10 @@ export default class Mmenu {
 		var navbar : HTMLElement = Mmenu.DOM.create( 'div.mm-navbar' );
 
 		/** Title in the navbar. */
-		var title = this._getPanelTitle( panel, this.opts.navbar.title );
+		var text = this._getPanelTitle( panel, this.opts.navbar.title );
 		
 		/** Href for the title. */
-		var href  = '';
+		var href = '';
 
 		if ( parent ) {
 
@@ -934,7 +934,7 @@ export default class Mmenu {
 
 
 			let id = opener.closest( '.mm-panel' ).id;
-			title = this._getPanelTitle( panel, opener.textContent );
+			text = this._getPanelTitle( panel, opener.textContent );
 
 			switch ( this.opts.navbar.titleLink ) {
 				case 'anchor':
@@ -946,10 +946,10 @@ export default class Mmenu {
 					break;
 			}
 
-			let anchor = Mmenu.DOM.create( 'a.mm-btn.mm-btn_prev.mm-navbar__btn' );
-				anchor.setAttribute( 'href', '#' + id );
+			let prev = Mmenu.DOM.create( 'a.mm-btn.mm-btn_prev.mm-navbar__btn' );
+				prev.setAttribute( 'href', '#' + id );
 
-			navbar.append( anchor );
+			navbar.append( prev );
 		
 		} else if ( !this.opts.navbar.title ) {
 			return;
@@ -959,14 +959,22 @@ export default class Mmenu {
 			panel.classList.add( 'mm-panel_has-navbar' );
 		}
 
-		let anchor = Mmenu.DOM.create( 'a.mm-navbar__title' );
-			anchor.innerHTML = (title as string);
+		let title = Mmenu.DOM.create( 'a.mm-navbar__title' );
+			title.innerHTML = (text as string);
 
 		if ( href ) {
-			anchor.setAttribute( 'href', href );
+			title.setAttribute( 'href', href );
 		}
 
-		navbar.append( anchor );
+		navbar.append( title );
+
+		//	Just to center the title.
+		if ( parent ) {
+			let next = Mmenu.DOM.create( 'span.mm-btn.mm-navbar__btn' );
+
+			navbar.append( next );
+		}
+
 		panel.prepend( navbar );
 
 
