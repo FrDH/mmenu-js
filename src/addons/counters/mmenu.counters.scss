@@ -4,7 +4,9 @@
 	'../../variables';
 
 
-.mm-counter {
+$mm_module: '.mm-counter';
+
+#{$mm_module} {
 	color: var( --mm-color-text-dimmed );
 	text-align: right;
 	display: block;
@@ -13,9 +15,10 @@
 }
 
 @if ( $mm_include_searchfield ) {
-	.mm-listitem_nosubitems > .mm-counter {
+	.mm-listitem_nosubitems > #{$mm_module} {
 		display: none;
 	}
 }
+
 
 @import 'counters.rtl';

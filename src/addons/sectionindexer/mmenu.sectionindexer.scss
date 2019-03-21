@@ -4,7 +4,9 @@
 	'../../variables';
 
 
-.mm-sectionindexer {
+$mm_module: '.mm-sectionindexer';
+
+#{$mm_module} {
 	background: inherit;
 	text-align: center;
 	font-size: 12px;
@@ -16,7 +18,7 @@
 	top: 0;
 	bottom: 0;
 	right: -$mm_sectionIndexerSize;
-	z-index: 15;
+	z-index: 5;
 	
 	transition: right $mm_transitionDuration $mm_transitionFunction;
 
@@ -31,28 +33,16 @@
 		display: block;
 	}
 
-	~ .mm-panels {
-		transition: right $mm_transitionDuration $mm_transitionFunction;
+	~ .mm-panels > .mm-panel {
+		transition: padding-right $mm_transitionDuration $mm_transitionFunction;
 	}
 }
 
 .mm-menu_has-sectionindexer {
-	.mm-sectionindexer {
+	#{$mm_module} {
 		right: 0;
 	}
-	.mm-panels {
-		right: $mm_sectionIndexerSize;
+	.mm-panels > .mm-panel {
+		padding-right: $mm_sectionIndexerSize;
 	}
-}
-
-@if ( $mm_include_navbars ) {
-	@include mm_sectionindexer_position( 'top', 1 );
-	@include mm_sectionindexer_position( 'top', 2 );
-	@include mm_sectionindexer_position( 'top', 3 );
-	@include mm_sectionindexer_position( 'top', 4 );
-
-	@include mm_sectionindexer_position( 'bottom', 1 );
-	@include mm_sectionindexer_position( 'bottom', 2 );
-	@include mm_sectionindexer_position( 'bottom', 3 );
-	@include mm_sectionindexer_position( 'bottom', 4 );
 }

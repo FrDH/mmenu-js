@@ -1,33 +1,36 @@
+$mm_module: '.mm-panel';
+
 .mm-panels {
+	background: var( --mm-color-background );
+	border-color: var( --mm-color-border );
+	color: var( --mm-color-text );
+
 	position: relative;
 	height: 100%;
 	flex-grow: 1;
 	overflow: hidden;
 }
 
-.mm-panels,
-.mm-panel {
-	box-sizing: border-box;
-
+#{$mm_module} {
 	background: var( --mm-color-background );
 	border-color: var( --mm-color-border );
 	color: var( --mm-color-text );
-}
 
-.mm-panel {
 	-webkit-overflow-scrolling: touch;
 	overflow: scroll;
 	overflow-x: hidden;
 	overflow-y: auto;
+
+	box-sizing: border-box;
 	width: 100%;
+
+	transform: translate3d( 100%, 0, 0 );
+	transition: transform $mm_transitionDuration $mm_transitionFunction;
 
 	//	Fixes css from other styles hiding submenus
 	&:not( .mm-hidden ) {
 		display: block;
 	}
-
-	transform: translate3d( 100%, 0, 0 );
-	transition: transform $mm_transitionDuration $mm_transitionFunction;
 
 	//	Because padding-bottom is ignored when a DIV is scrollable
 	&:after {
@@ -37,7 +40,7 @@
 	}
 }
 
-.mm-panels > .mm-panel {
+.mm-panels > #{$mm_module} {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -46,23 +49,25 @@
 	z-index: 0;
 }
 
-.mm-panel_opened {
-	z-index: 1;
-	transform: translate3d( 0%, 0, 0 );
-}
+#{$mm_module} {
+	&_opened {
+		z-index: 1;
+		transform: translate3d( 0%, 0, 0 );
+	}
 
-.mm-panel_opened-parent {
-	transform: translate3d( -$mm_subpanelOffset, 0, 0 );
-}
+	&_opened-parent {
+		transform: translate3d( -$mm_subpanelOffset, 0, 0 );
+	}
 
-.mm-panel_highest {
-	z-index: 2;
-}
+	&_highest {
+		z-index: 2;
+	}
 
-.mm-panel_noanimation {
-	transition: none !important;
+	&_noanimation {
+		transition: none !important;
 
-	&.mm-panel_opened-parent {
-		transform: translate3d( 0, 0, 0 );
+		&#{$mm_module}_opened-parent {
+			transform: translate3d( 0, 0, 0 );
+		}
 	}
 }

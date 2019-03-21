@@ -1,19 +1,19 @@
 const configs : mmConfigsDropdown = {
 	offset: {
-		button	: {
-			x 		: -5,
-			y		: 5
+		button: {
+			x: -5,
+			y: 5
 		},
 		viewport: {
-			x 		: 20,
-			y 		: 20
+			x: 20,
+			y: 20
 		}
 	},
-	height	: {
-		max		: 880
+	height: {
+		max: 880
 	},
-	width	: {
-		max		: 440
+	width: {
+		max: 440
 	}
 };
 export default configs;

@@ -56,3 +56,46 @@
 	}
 }
 
+//	Dividers
+@if ( $mm_include_listview_divider ) {
+	.mm-listitem_divider {
+		@include mm_ellipsis;
+
+		font-size: 75%;
+		text-transform: uppercase;
+		background: var( --mm-color-background );
+
+		position: sticky;
+		z-index: 1;
+		top: 0;
+
+		min-height: var( --mm-line-height );
+		padding: calc( ((var( --mm-listitem-size ) * .65) - var( --mm-line-height )) * .5 );
+		padding-right: $mm_padding;
+		padding-left: $mm_listitemIndent;
+
+		&:before {
+			content: '';
+			background: var( --mm-color-background-highlight );
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+		}
+	}
+}
+
+//	Spacers
+@if ( $mm_include_listview_spacer ) {
+	.mm-listitem_spacer {
+		padding-top: $mm_listitemSize;
+		padding-top: var( --mm-listitem-size );
+
+		> .mm-btn_next {
+			top: $mm_listitemSize;
+			top: var( --mm-listitem-size );
+		}
+	}
+}
+

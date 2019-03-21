@@ -1,12 +1,12 @@
 const configs : mmConfigsOffcanvas = {
-	menu : {
-		insertMethod	: 'prepend',
-		insertSelector	: 'body'
+	menu: {
+		insertMethod: 'prepend',
+		insertSelector: 'body'
 	},
-	page : {
-		nodetype		: 'div',
-		selector		: null,
-		noSelector		: []
+	page: {
+		nodetype: 'div',
+		selector: null,
+		noSelector: []
 	}
 };
 export default configs;

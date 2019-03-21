@@ -1,7 +1,7 @@
 const configs : mmConfigsNavbars = {
 	breadcrumbs: {
-		separator 	: '/',
-		removeFirst : false
+		separator: '/',
+		removeFirst: false
 	}
 };
 export default configs;

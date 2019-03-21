@@ -1,5 +1,5 @@
 const options : mmOptionsKeyboardnavigation = {
-	enable 	: false,
-	enhance	: false
+	enable: false,
+	enhance: false
 };
 export default options;

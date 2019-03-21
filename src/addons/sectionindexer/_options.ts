@@ -1,5 +1,5 @@
 const options : mmOptionsSectionindexer = {
-	add		: false,
-	addTo	: 'panels'
+	add: false,
+	addTo: 'panels'
 };
 export default options;

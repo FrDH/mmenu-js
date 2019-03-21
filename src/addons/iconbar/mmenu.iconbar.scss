@@ -4,11 +4,13 @@
 	'../../variables';
 
 
+$mm_module: '.mm-iconbar';
+
 .mm-menu {
 	--mm-iconbar-size: #{$mm_iconbarSize};
 }
 
-.mm-iconbar {
+#{$mm_module} {
 	background: var( --mm-color-background );
 	color: var( --mm-color-text-dimmed );
 	border: 0 solid $mm_borderColor;
@@ -32,12 +34,11 @@
 	.mm-panels,
 	.mm-navbars_top,
 	.mm-navbars_bottom {
-		left: var( --mm-iconbar-size );
+		margin-left: var( --mm-iconbar-size );
 	}
 }
 
-.mm-iconbar__top,
-.mm-iconbar__bottom {
+%mm_iconbar_part {
 	width: inherit;
 	position: absolute;
 
@@ -52,17 +53,18 @@
 		text-decoration: none;
 	}
 }
-
-.mm-iconbar__top {
+#{$mm_module}__top {
+	@extend %mm_iconbar_part;
 	top: 0;
 }
 
-.mm-iconbar__bottom {
+#{$mm_module}__bottom {
+	@extend %mm_iconbar_part;
 	bottom: 0;
 }
 
 @if ( $mm_include_iconbar_tabs ) {
-	.mm-iconbar__tab_selected {
+	#{$mm_module}__tab_selected {
 		background: var( --mm-color-background-emphasis	); 
 	}
 }

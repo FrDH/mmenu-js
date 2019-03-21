@@ -1,12 +1,12 @@
 const options : mmOptionsSidebar = {
-	collapsed 	: {
-		use 		: false,
-		blockMenu	: true,
-		hideDivider	: false,
-		hideNavbar	: true
+	collapsed: {
+		use: false,
+		blockMenu: true,
+		hideDivider: false,
+		hideNavbar: true
 	},
-	expanded 	: {
-		use			: false
+	expanded: {
+		use: false
 	}
 };
 export default options;

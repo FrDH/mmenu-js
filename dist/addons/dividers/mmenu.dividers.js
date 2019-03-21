@@ -6,8 +6,7 @@ export default function () {
     //	Extend shorthand options
     if (typeof options == 'boolean') {
         options = {
-            add: options,
-            fixed: options
+            add: options
         };
     }
     if (typeof options != 'object') {
@@ -49,54 +48,6 @@ export default function () {
                     }
                 });
             });
-        });
-    }
-    //	Fixed dividers
-    if (options.fixed) {
-        //	Add the fixed divider.
-        this.bind('initPanels:after', (panels) => {
-            if (!this.node.fixeddivider) {
-                let listview = Mmenu.DOM.create('ul.mm-listview.mm-listview_fixeddivider'), listitem = Mmenu.DOM.create('li.mm-listitem.mm-listitem_divider');
-                listview.append(listitem);
-                this.node.pnls.append(listview);
-                this.node.fixeddivider = listitem;
-            }
-        });
-        //	Set the text for the fixed divider.
-        const setValue = () => {
-            if (this.opts.offCanvas && !this.vars.opened) {
-                return;
-            }
-            var panel = Mmenu.DOM.children(this.node.pnls, '.mm-panel_opened')[0];
-            if (!panel || panel.matches('.mm-hidden')) {
-                return;
-            }
-            var scrl = panel.scrollTop, text = '';
-            Mmenu.DOM.find(panel, '.mm-listitem_divider')
-                .forEach((divider) => {
-                if (!divider.matches('.mm-hidden')) {
-                    if (divider.offsetTop + scrl < scrl + 1) {
-                        text = divider.innerHTML;
-                    }
-                }
-            });
-            this.node.fixeddivider.innerHTML = text;
-            this.node.pnls.classList[text.length ? 'add' : 'remove']('mm-panels_dividers');
-        };
-        //	Set correct value when 
-        //		1) opening the menu,
-        //		2) opening a panel,
-        //		3) after updating listviews and
-        //		4) after scrolling a panel
-        this.bind('open:start', setValue); // 1
-        this.bind('openPanel:start', setValue); // 2
-        this.bind('updateListview', setValue); // 3
-        this.bind('initPanel:after', (panel) => {
-            panel.addEventListener('scroll', () => {
-                if (panel.matches('.mm-panel_opened')) {
-                    setValue.call(this, panel);
-                }
-            }, { passive: true });
         });
     }
 }

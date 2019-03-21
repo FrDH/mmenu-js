@@ -1,10 +1,12 @@
+$mm_module: '.mm-navbar';
+
 @if ( $mm_include_rtl ) {
 	[dir="rtl"] {
-		.mm-navbar {
+		#{$mm_module} {
 			flex-direction: row-reverse;
 		}
 
-		.mm-navbar__btn {
+		#{$mm_module}__btn {
 
 			&:first-child {
 				text-align: right;

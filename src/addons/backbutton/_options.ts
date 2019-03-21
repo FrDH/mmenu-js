@@ -1,5 +1,5 @@
 const options : mmOptionsBackbutton = {
-	close 	: false,
-	open 	: false
+	close: false,
+	open: false
 };
 export default options;

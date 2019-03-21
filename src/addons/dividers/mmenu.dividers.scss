@@ -4,13 +4,15 @@
 	'../../variables';
 
 
-.mm-listitem_divider {
+$mm_module: '.mm-listitem_divider';
+
+#{$mm_module} {
 	opacity: 1;
 	transition: opacity $mm_transitionDuration $mm_transitionFunction;
 }
 
 @if ( $mm_include_dividers_light ) {
-	.mm-menu_dividers-light .mm-listitem_divider {
+	.mm-menu_dividers-light #{$mm_module} {
 		background: inherit;
 		font-size: inherit;
 		color: var( --mm-color-text-dimmed );
@@ -20,32 +22,8 @@
 }
 
 @if ( $mm_include_borderstyle_none ) {
-	.mm-menu_border-none .mm-listitem_divider {
+	.mm-menu_border-none #{$mm_module} {
 		border-top-width: 1px;
 		border-top-style: solid;
-	}
-}
-
-
-//	Fixed
-@if ( $mm_include_dividers_fixed ) {
-	.mm-listview_fixeddivider {
-		background: inherit;
-		display: none;
-		width: 100%;
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		z-index: 10;
-		
-		&:after {
-			content: none !important;
-			display: none !important;
-		}
-	}
-
-	.mm-panels_dividers .mm-listview_fixeddivider {
-		display: block;
 	}
 }

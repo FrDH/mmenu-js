@@ -1,25 +1,30 @@
+$mm_module: '.mm-btn';
+
 @if ( $mm_include_rtl ) {
 	[dir="rtl"] {
-		.mm-btn_next:after {
-			@include mm_btn_arrow_prev;
-		}
+		#{$mm_module} {
+			&_next:after {
+				@include mm_btn_arrow_prev;
+			}
+		
 
-		.mm-btn_prev:before {
-			@include mm_btn_arrow_next;
-		}
-
-		.mm-btn_close {
-			&:before,
-			&:after {
-				right: auto;
+			&_prev:before {
+				@include mm_btn_arrow_next;
 			}
 
-			&:before {
-				left: $mm_listitemIndent + 5;
-			}
+			&_close {
+				&:before,
+				&:after {
+					right: auto;
+				}
 
-			&:after {
-				left: $mm_listitemIndent - 2;
+				&:before {
+					left: $mm_listitemIndent + 5;
+				}
+
+				&:after {
+					left: $mm_listitemIndent - 2;
+				}
 			}
 		}
 	}

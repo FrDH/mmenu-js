@@ -1,4 +1,3 @@
-/**	Options for the counters add-on. */
 const options = {
     add: false,
     addTo: 'panels',

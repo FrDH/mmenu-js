@@ -3,10 +3,12 @@
 	'../../includes',
 	'../../variables';
 
-%navbars_base {
+
+%mm_navbars {
 	background: inherit;
 	border-color: inherit;
 	border-width: 0;
+	position: relative;
 	flex-shrink: 0;
 
 	> .mm-navbar {
@@ -20,7 +22,7 @@
 
 @if ( $mm_include_navbars_top ) {
 	.mm-navbars_top {
-		@extend %navbars_base;
+		@extend %mm_navbars;
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
 	}
@@ -28,13 +30,13 @@
 
 @if ( $mm_include_navbars_bottom ) {
 	.mm-navbars_bottom {
-		@extend %navbars_base;
+		@extend %mm_navbars;
 		border-top-style: solid;
 		border-top-width: 1px;
 	}
 }
 
+
 @import 
 	'navbar.breadcrumbs',
 	'navbar.tabs';
-

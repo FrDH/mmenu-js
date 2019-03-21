@@ -1,4 +1,6 @@
-.mm-navbar {
+$mm_module: '.mm-navbar';
+
+#{$mm_module} {
 	background: var( --mm-color-background );
 	border-color: var( --mm-color-border );
 	color: var( --mm-color-text-dimmed );
@@ -25,13 +27,13 @@
 	}
 }
 
-.mm-navbar__title {
+#{$mm_module}__title {
 	@include mm_ellipsis;
 	flex-grow: 1;
 	width: 100%;
 }
 
-.mm-navbar__btn {
+#{$mm_module}__btn {
 	position: relative;
 
 	&:first-child {
@@ -44,7 +46,7 @@
 }
 
 .mm-panel:not( .mm-panel_has-navbar ) {
-	.mm-navbar {
+	#{$mm_module} {
 		display: none;
 	}
 }

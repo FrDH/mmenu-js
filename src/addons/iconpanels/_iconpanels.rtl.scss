@@ -1,7 +1,6 @@
 @if ( $mm_include_counters and $mm_include_iconpanels ) {
 	[dir="rtl"] .mm-menu_iconpanel .mm-panels {
-		> .mm-panel,
-		> .mm-listview_fixeddivider {
+		> .mm-panel {
 			left: 0;
 			right: auto;
 			transition-property: transform, width;

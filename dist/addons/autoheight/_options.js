@@ -1,4 +1,4 @@
 const opts = {
-    height: 'default' // 'default/highest/auto'
+    height: 'default'
 };
 export default opts;

@@ -1,8 +1,5 @@
 @mixin mm_iconpanel_size( $nr ) {
 	.mm-panel_iconpanel-#{$nr} {
-		&,
-		&.mm-panel_opened ~ .mm-listview_fixeddivider {
-			width: calc( 100% - ( var( --mm-iconpanel-size ) * #{$nr} ) );
-		}
+		width: calc( 100% - ( var( --mm-iconpanel-size ) * #{$nr} ) );	
 	}
 }

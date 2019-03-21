@@ -13,15 +13,13 @@
 @include mm_iconpanel_size( 3 );
 
 .mm-panel_iconpanel-first {
-	~ .mm-panel,
-	~ .mm-panel_opened ~ .mm-listview_fixeddivider {
+	~ .mm-panel {
 		width: calc( 100% - var( --mm-iconpanel-size ) );
 	}
 }
 
 .mm-menu_iconpanel .mm-panels  {
-	> .mm-panel,
-	> .mm-listview_fixeddivider {
+	> .mm-panel {
 		left: auto;
 		transition-property: transform, width;
 	}

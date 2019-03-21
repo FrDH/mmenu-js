@@ -58,7 +58,7 @@ export default function(
 			let indexer = Mmenu.DOM.create( 'div.mm-sectionindexer' );
 				indexer.innerHTML = buttons;
 
-			this.node.menu.prepend( indexer );
+			this.node.pnls.prepend( indexer );
 			this.node.indx = indexer;
 
 			//	Prevent default behavior when clicking an anchor

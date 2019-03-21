@@ -1,50 +1,50 @@
 /** An object with any value. */
 interface mmLooseObject {
-	[key: string] 	: any
+	[key: string] : any
 }
 
 /** An object with string values. */
 interface mmStringObject {
-	[key: string] 	: string
+	[key: string] : string
 }
 
 /** An object with boolean values. */
 interface mmBooleanObject {
-	[key: string]	: boolean
+	[key: string] : boolean
 }
 
 /** An object with function values. */
 interface mmFunctionObject {
-	[key: string] 	: Function
+	[key: string] : Function
 }
 
 /** An object with even listeners. */
 interface mmEventObject {
-	[key: string]	: EventListener
+	[key: string] : EventListener
 }
 
 /** An object with HTMLElement values. */
 interface mmHtmlObject {
-	[key: string] 	: HTMLElement
+	[key: string] : HTMLElement
 }
 
 
 /** The menu API. */
 interface mmApi {
-	bind 			: Function
-	initPanels		: Function
-	openPanel 		: Function
-	closePanel		: Function
-	closeAllPanels	: Function
-	setSelected		: Function
+	bind : Function
+	initPanels : Function
+	openPanel : Function
+	closePanel : Function
+	closeAllPanels : Function
+	setSelected : Function
 
 	//	offCanvas add-on
-	open			: Function
-	close			: Function
-	setPage			: Function
+	open : Function
+	close : Function
+	setPage : Function
 
 	//	searchfield add-on
-	search			: Function
+	search : Function
 }
 
 
@@ -54,8 +54,8 @@ interface mmMethodUniqueid {
 }
 interface mmMethodI18n {
 	(
-		text		?: string | object,
-		language	?: string
+		text ?: string | object,
+		language ?: string
 	) : string | object
 }
 

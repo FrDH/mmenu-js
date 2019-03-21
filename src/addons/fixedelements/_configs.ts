@@ -1,9 +1,9 @@
 const configs : mmConfigsFixedelements = {
-	fixed	: {
-		insertMethod	: 'append',
-		insertSelector	: 'body'
+	fixed: {
+		insertMethod: 'append',
+		insertSelector: 'body'
 	},
-	sticky 	: {
+	sticky: {
 		offset : 0
 	}
 };

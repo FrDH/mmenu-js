@@ -26,12 +26,6 @@
 				z-index: -1;
 			}
 
-			@if ( $mm_include_tileview_m ) {
-				width: 50%;
-				height: 0;
-				padding-top: 50%;
-			}
-
 			@if ( $mm_include_tileview_xs ) {
 				&.mm-tile-xs {
 					width: 12.5%;
@@ -44,6 +38,12 @@
 					width: 25%;
 					padding-top: 25%;
 				}
+			}
+
+			@if ( $mm_include_tileview_m ) {
+				width: 50%;
+				height: 0;
+				padding-top: 50%;
 			}
 
 			@if ( $mm_include_tileview_l ) {
