@@ -1,7 +1,8 @@
 const options : mmOptionsIconbar = {
-	add: false,
+	use: false,
 	top: [],
 	bottom : [],
+	position: 'left',
 	type: 'default'
 };
 export default options;

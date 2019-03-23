@@ -10,6 +10,9 @@ interface mmOptionsNavbarsNavbar {
 	/** The position for the navbar. */
 	position ?: 'top' | 'bottom'
 
+	/** Whether or not to enable the navbar. */
+	use ?: boolean | string | number
+
 	/** The type of navbar. */
 	type ?: 'tabs'
 }

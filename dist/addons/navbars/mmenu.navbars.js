@@ -43,7 +43,7 @@ export default function () {
         if (typeof options == 'boolean' && options) {
             options = {};
         }
-        if (typeof options != 'object') {
+        if (Mmenu.typeof(options) != 'object') {
             options = {};
         }
         if (typeof options.content == 'undefined') {
@@ -52,7 +52,19 @@ export default function () {
         if (!(options.content instanceof Array)) {
             options.content = [options.content];
         }
+        if (typeof options.use == 'undefined') {
+            options.use = true;
+        }
+        if (typeof options.use == 'boolean' && options.use) {
+            options.use = true;
+        }
+        if (typeof options.use == 'number') {
+            options.use = '(min-width: ' + options.use + 'px)';
+        }
         //	/Extend shorthand options.
+        if (!options.use) {
+            return false;
+        }
         //	Create the navbar element.
         var navbar = Mmenu.DOM.create('div.mm-navbar');
         //	Get the position for the navbar.
@@ -96,6 +108,14 @@ export default function () {
                 //	Call the preset function.
                 func.call(this, navbar);
             }
+        }
+        //	en-/disable the navbar for media queries.
+        if (typeof options.use != 'boolean') {
+            this.matchMedia(options.use, () => {
+                navbar.classList.remove('mm-hidden');
+            }, () => {
+                navbar.classList.add('mm-hidden');
+            });
         }
     });
     //	Add to menu.

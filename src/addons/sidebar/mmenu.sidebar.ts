@@ -30,8 +30,8 @@ export default function(
 
 	//	Extend collapsed shorthand options.
 	if ( typeof options.collapsed == 'boolean' && options.collapsed ) {
-		(options.collapsed as mmLooseObject) = {
-			use: 'all'
+		options.collapsed = {
+			use: true
 		};
 	}
 
@@ -44,7 +44,7 @@ export default function(
 	}
 
 	if ( typeof options.collapsed != 'object' ) {
-		(options.collapsed as mmLooseObject) = {};
+		options.collapsed = {};
 	}
 
 	if ( typeof options.collapsed.use == 'number' ) {
@@ -54,7 +54,7 @@ export default function(
 	//	Extend expanded shorthand options.
 	if ( typeof options.expanded == 'boolean' && options.expanded ) {
 		options.expanded = {
-			use: 'all'
+			use: true
 		};
 	}
 

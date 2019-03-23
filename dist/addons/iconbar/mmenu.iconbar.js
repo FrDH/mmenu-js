@@ -6,12 +6,24 @@ export default function () {
     //	Extend shorthand options
     if (Mmenu.typeof(options) == 'array') {
         options = {
-            add: true,
+            use: true,
             top: options
         };
     }
+    if (Mmenu.typeof(options) != 'object') {
+        options = {};
+    }
+    if (typeof options.use == 'undefined') {
+        options.use = true;
+    }
+    if (typeof options.use == 'boolean' && options.use) {
+        options.use = true;
+    }
+    if (typeof options.use == 'number') {
+        options.use = '(min-width: ' + options.use + 'px)';
+    }
     //	/Extend shorthand options
-    if (!options.add) {
+    if (!options.use) {
         return;
     }
     var iconbar;
@@ -22,27 +34,27 @@ export default function () {
             ctnt = [ctnt];
         }
         //	Create node
-        var ibar = Mmenu.DOM.create('div.mm-iconbar__' + position);
+        var part = Mmenu.DOM.create('div.mm-iconbar__' + position);
         //	Add content
         for (let c = 0, l = ctnt.length; c < l; c++) {
             if (typeof ctnt[c] == 'string') {
-                ibar.innerHTML += ctnt[c];
+                part.innerHTML += ctnt[c];
             }
             else {
-                ibar.append(ctnt[c]);
+                part.append(ctnt[c]);
             }
         }
-        if (ibar.children.length) {
+        if (part.children.length) {
             if (!iconbar) {
                 iconbar = Mmenu.DOM.create('div.mm-iconbar');
             }
-            iconbar.append(ibar);
+            iconbar.append(part);
         }
     });
     //	Add to menu
     if (iconbar) {
         this.bind('initMenu:after', () => {
-            this.node.menu.classList.add('mm-menu_iconbar');
+            this.node.menu.classList.add('mm-menu_iconbar-' + options.position);
             this.node.menu.prepend(iconbar);
         });
         //	Tabs
@@ -84,6 +96,14 @@ export default function () {
                 }
             };
             this.bind('openPanel:start', selectTab);
+        }
+        //	En-/disable the iconbar for media queries.
+        if (typeof options.use != 'boolean') {
+            this.matchMedia(options.use, () => {
+                this.node.menu.classList.add('mm-menu_iconbar-' + options.position);
+            }, () => {
+                this.node.menu.classList.remove('mm-menu_iconbar-' + options.position);
+            });
         }
     }
 }

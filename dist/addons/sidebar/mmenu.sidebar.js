@@ -20,7 +20,7 @@ export default function () {
     //	Extend collapsed shorthand options.
     if (typeof options.collapsed == 'boolean' && options.collapsed) {
         options.collapsed = {
-            use: 'all'
+            use: true
         };
     }
     if (typeof options.collapsed == 'string' ||
@@ -38,7 +38,7 @@ export default function () {
     //	Extend expanded shorthand options.
     if (typeof options.expanded == 'boolean' && options.expanded) {
         options.expanded = {
-            use: 'all'
+            use: true
         };
     }
     if (typeof options.expanded == 'string' ||
