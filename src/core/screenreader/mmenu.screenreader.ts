@@ -2,6 +2,8 @@ import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.screenReader = options;
 Mmenu.configs.screenReader = configs;
 
@@ -9,24 +11,13 @@ Mmenu.configs.screenReader = configs;
 export default function( 
 	this : Mmenu
 ) {
-	var options = this.opts.screenReader,
-		configs = this.conf.screenReader;
 
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' ) {
-		options = {
-			aria: options,
-			text: options
-		};
-	}
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-	//	/Extend shorthand options
-
-
+	//	Extend options.
+	var options = extendShorthandOptions( this.opts.screenReader );
 	this.opts.screenReader = Mmenu.extend( options, Mmenu.options.screenReader );
+
+	//	Extend configs.
+	var configs = this.conf.screenReader;
 
 
 	//	Add Aria-* attributes

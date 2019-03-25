@@ -1,42 +1,15 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.columns = options;
 
 
 export default function(
 	this : Mmenu
 ) {
-	var options = this.opts.columns;
-
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' ) {
-		(options as mmLooseObject) = {
-			add 	: options
-		};
-	}
-
-	if ( typeof options == 'number' ) {
-		options = {
-			add 	: true,
-			visible : options
-		};
-	}
-
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-
-	if ( typeof options.visible == 'number' ) {
-		options.visible = {
-			min 	: options.visible,
-			max 	: options.visible
-		};
-	}
-	//	/Extend shorthand options
-
-
+	var options = extendShorthandOptions( this.opts.columns );
 	this.opts.columns = Mmenu.extend( options, Mmenu.options.columns );
 
 

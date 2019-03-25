@@ -2,7 +2,7 @@
 interface mmOptionsDrag {
 
 	/** Map of options for the menu. */
-	menu ?: mmOptionsDragMenu
+	menu ?: mmOptionsDragMenu | boolean
 
 	/** Map of options for the panels. */
 	panels ?: mmOptionsDragPanels

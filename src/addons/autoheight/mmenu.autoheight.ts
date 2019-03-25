@@ -1,6 +1,8 @@
 import Mmenu from './../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.autoHeight = options;
 
 
@@ -8,26 +10,7 @@ export default function(
 	this : Mmenu
 ) {
 
-	var options = this.opts.autoHeight;
-
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' && options ) {
-		options = {
-			height: 'auto'
-		};
-	}
-	if ( typeof options == 'string' ) {
-		options = {
-			height: options
-		};
-	}
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-	//	/Extend shorthand options
-
-
+	var options = extendShorthandOptions( this.opts.autoHeight );
 	this.opts.autoHeight = Mmenu.extend( options, Mmenu.options.autoHeight );
 
 

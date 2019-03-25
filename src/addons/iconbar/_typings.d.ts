@@ -10,7 +10,7 @@ interface mmOptionsIconbar {
 	/** An array of strings (for text or HTML) or HTML elements for icons to put in the bottom of the iconbar. */
 	bottom ?: string[] | HTMLElement[],
 
-	/** Where to position the iconbar, on the left or right. */
+	/** Where to position the iconbar in the menu. */
 	position ?: 'left' | 'right'
 
 	/** The type of iconbar. */

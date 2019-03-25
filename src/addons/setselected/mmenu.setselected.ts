@@ -1,38 +1,23 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.setSelected = options;
 
 
 export default function(
 	this : Mmenu
 ) {
-	var options = this.opts.setSelected;
-
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' ) {
-		(options as mmLooseObject) = {
-			hover	: options,
-			parent	: options
-		};
-	}
-
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-	//	Extend shorthand options
-
-
+	var options = extendShorthandOptions( this.opts.setSelected );
 	this.opts.setSelected = Mmenu.extend( options, Mmenu.options.setSelected );
 
 
 	//	Find current by URL
 	if ( options.current == 'detect' ) {
-		function findCurrent( 
-			this : Mmenu,
-			url  : string
-		) {
+		const findCurrent = (
+			url : string
+		) => {
 			url = url.split( "?" )[ 0 ].split( "#" )[ 0 ];
 
 			var anchor = this.node.menu.querySelector( 'a[href="'+ url +'"], a[href="'+ url +'/"]' );
@@ -42,7 +27,7 @@ export default function(
 			} else {
 				var arr = url.split( '/' ).slice( 0, -1 );
 				if ( arr.length ) {
-					findCurrent.call( this, arr.join( '/' ) );
+					findCurrent( arr.join( '/' ) );
 				}
 			}
 		};

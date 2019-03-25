@@ -2,6 +2,8 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.drag = options;
 Mmenu.configs.drag = configs;
 
@@ -17,45 +19,10 @@ export default function(
 	}
 
 
-	var options = this.opts.drag,
-		configs = this.conf.drag;
-
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' ) {
-		(options as mmLooseObject) = {
-			menu 	: options,
-			panels 	: options
-		};
-	}
-
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-
-	if ( typeof options.menu == 'boolean' ) {
-		(options as mmLooseObject) = {
-			open 	: options.menu
-		};
-	}
-
-	if ( typeof options.menu != 'object' ) {
-		(options.menu as mmLooseObject) = {};
-	}
-
-	if ( typeof options.panels == 'boolean' ) {
-		options.panels = {
-			close 	: options.panels
-		};
-	}
-
-	if ( typeof options.panels != 'object' ) {
-		(options.panels as mmLooseObject) = {};
-	}
-	//	/Extend shorthand options
-
-
+	var options = extendShorthandOptions( this.opts.drag );
 	this.opts.drag = Mmenu.extend( options, Mmenu.options.drag );
+
+	var configs = this.conf.drag;
 
 
 	function minMax( val, min, max ) {

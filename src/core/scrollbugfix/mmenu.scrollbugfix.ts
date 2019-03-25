@@ -1,6 +1,8 @@
 import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.scrollBugFix = options;
 
 
@@ -18,22 +20,8 @@ export default function(
 		return;
 	}
 
-
-	var options = this.opts.scrollBugFix;
-
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' ) {
-		options = {
-			fix: options
-		};
-	}
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-	//	Extend shorthand options
-
-
+	//	Extend options.
+	var options = extendShorthandOptions( this.opts.scrollBugFix );
 	this.opts.scrollBugFix = Mmenu.extend( options, Mmenu.options.scrollBugFix );
 
 

@@ -28,8 +28,8 @@ export default class Mmenu {
         this.node.menu = (typeof menu == 'string')
             ? document.querySelector(menu)
             : menu;
-        if (typeof this._deprecated == 'function') {
-            this._deprecated();
+        if (typeof this._deprecatedWarnings == 'function') {
+            this._deprecatedWarnings();
         }
         this._initWrappers();
         this._initAddons();

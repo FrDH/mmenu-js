@@ -1,6 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.backButton = options;
 
 
@@ -11,21 +13,7 @@ export default function(
 		return;
 	}
 
-	var options = this.opts.backButton;
-
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' ) {
-		(options as mmLooseObject) = {
-			close: options
-		};
-	}
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-	//	/Extend shorthand options
-
-
+	var options = extendShorthandOptions( this.opts.backButton );
 	this.opts.backButton = Mmenu.extend( options, Mmenu.options.backButton );
 
 

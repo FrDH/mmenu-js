@@ -32,10 +32,12 @@
 
 		/**
 		 * ----------------------------
-		 * Version 8.0
+		 * Version 7.3 > 8.0
 		 * ----------------------------
 		 */
 
+
+		/* API */
 
 		//	These methods no longer accept a jQuery object as an argument, 
 		//		they now only accept a HTMLElement.
@@ -64,7 +66,7 @@
 					) {
 						deprecated( 
 							'Passing a jQuery object as an argument to the "' + method + '" API method',
-							'an array of HTMLElement',
+							'a HTMLElement array',
 							'8.0.0'
 						);
 					}
@@ -72,10 +74,57 @@
 			});
 
 
-		//	conf.fixedElements.elemInsertMethod was changed to conf.fixedElements.fixed.insertMethod
+		/* OPTIONS */
+
+		//	opts.navbars.navbar.height is removed in favor of specifying a different CSS variable (--mm-navbar-size ) for each navbar.
+		if ( this.opts.navbars ) {
+			this.opts.navbars.forEach(( navbar ) => {
+				if ( typeof navbar.height !== 'undefined' ) {
+					deprecated( 
+						'The "height" option in the "navbars" options.',
+						'the CSS variable "--mm-navbar-size"',
+						'8.0.0'
+					);
+				}
+			});
+		}
+
+		//	opts.dividers.fixed is removed, all dividers are now sticky by default.
+		if ( this.opts.dividers ) {
+			 if ( Mmenu.typeof( this.opts.dividers ) == 'object' &&
+			 	typeof this.opts.dividers.fixed !== 'undefined'
+			) {
+				deprecated( 
+					'The "fixed" option in the "dividers" options.',
+					null,
+					'8.0.0'
+				);
+			}
+		}
+
+		//	opts.iconbar.add is renamed to opts.iconbar.use.
+		if ( this.opts.iconbar ) {
+			if ( Mmenu.typeof( this.opts.iconbar ) == 'object' &&
+				typeof this.opts.iconbar.add !== 'undefined'
+			) {
+				deprecated( 
+					'The "add" option in the "iconbar" options.',
+					'use',
+					'8.0.0'
+				);
+
+				//	Try to fix it.
+				this.opts.iconbar.use = this.opts.iconbar.add;
+			}
+		}
+
+
+		/* CONFIGURATION */
+
+		//	conf.fixedElements.elemInsertMethod is changed to conf.fixedElements.fixed.insertMethod.
 		if ( typeof this.conf.fixedElements.elemInsertMethod != 'undefined' ) {
 			deprecated(
-				'The "elemInsertMethod" option in the "fixedElements" configuration object',
+				'The "elemInsertMethod" option in the "fixedElements" configuration',
 				'fixed.insertMethod',
 				'8.0.0'
 			);
@@ -86,10 +135,10 @@
 			}
 		}
 
-		//	conf.fixedElements.elemInsertSelector was changed to conf.fixedElements.fixed.insertSelector
+		//	conf.fixedElements.elemInsertSelector is changed to conf.fixedElements.fixed.insertSelector.
 		if ( typeof this.conf.fixedElements.elemInsertMethod != 'undefined' ) {
 			deprecated(
-				'The "elemInsertSelector" option in the "fixedElements" configuration object',
+				'The "elemInsertSelector" option in the "fixedElements" configuration',
 				'fixed.insertSelector',
 				'8.0.0'
 			);

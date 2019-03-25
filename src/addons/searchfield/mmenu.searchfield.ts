@@ -2,6 +2,8 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.searchfield = options;
 Mmenu.configs.searchfield = configs;
 
@@ -9,54 +11,14 @@ Mmenu.configs.searchfield = configs;
 export default function(
 	this : Mmenu
 ) {
-	var options = this.opts.searchfield,
-		configs = this.conf.searchfield;
+	var options = extendShorthandOptions( this.opts.searchfield );
+	this.opts.searchfield = Mmenu.extend( options, Mmenu.options.searchfield );
 
-
-	//	Extend shorthand options.
-	if ( typeof options == 'boolean' ) {
-		(options as mmLooseObject) = {
-			add: options
-		};
-	}
-
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-
-	if ( typeof options.panel == 'boolean' ) {
-		(options.panel as mmLooseObject) = {
-			add: options.panel
-		};
-	}
-
-	if ( typeof options.panel != 'object' ) {
-		(options.panel as mmLooseObject) = {};
-	}
-	//	/Extend shorthand options.
-
+	var configs = this.conf.searchfield;
 
 	if ( !options.add ) {
 		return;
 	}
-
-
-	//	Extend logical options.
-	if ( options.addTo == 'panel' ) {
-		options.panel.add = true;
-	}
-
-	if ( options.panel.add ) {
-		options.showSubPanels = false;
-
-		if ( options.panel.splash ) {
-			options.cancel = true;
-		}
-	}
-	//	/Extend logical options.
-
-
-	this.opts.searchfield = Mmenu.extend( options, Mmenu.options.searchfield );
 
 
 	//	Blur searchfield

@@ -1,6 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.keyboardNavigation = options;
 
 
@@ -14,22 +16,7 @@ export default function(
 	}
 
 
-	var options = this.opts.keyboardNavigation;
-
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' || typeof options == 'string' ) {
-		(options as mmLooseObject) = {
-			enable: options
-		};
-	}
-
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-	//	/Extend shorthand options
-
-
+	var options = extendShorthandOptions( this.opts.keyboardNavigation );
 	this.opts.keyboardNavigation = Mmenu.extend( options, Mmenu.options.keyboardNavigation );
 
 

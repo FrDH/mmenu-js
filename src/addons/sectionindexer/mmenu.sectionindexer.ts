@@ -1,34 +1,21 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.sectionIndexer = options;
 
 
 export default function(
 	this : Mmenu
 ) {
-	var options = this.opts.sectionIndexer;
-
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' ) {
-		(options as mmLooseObject) = {
-			add: options
-		};
-	}
-
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-	//	/Extend shorthand options
-
-
+	var options = extendShorthandOptions( this.opts.sectionIndexer );
 	this.opts.sectionIndexer = Mmenu.extend( options, Mmenu.options.sectionIndexer );
-
 
 	if ( !options.add ) {
 		return;
 	}
+
 
 	this.bind( 'initPanels:after', (
 		panels	: HTMLElement[]

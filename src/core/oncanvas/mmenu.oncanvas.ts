@@ -19,84 +19,84 @@ export default class Mmenu {
 
 
 	/**	Available add-ons for the plugin. */
-	static addons  	: mmLooseObject	= {}
+	static addons : mmLooseObject	= {}
 
 	/** Available wrappers for the plugin. */
 	static wrappers : mmFunctionObject	= {}
 
 	/**	Globally used HTML elements. */
-	static node 	: mmHtmlObject = {}
+	static node : mmHtmlObject = {}
 
 	/** Globally used EventListeners. */
-	static evnt		: mmEventObject = {}
+	static evnt	: mmEventObject = {}
 
 	/**	Features supported by the browser. */
-	static support 	: mmBooleanObject = {
+	static support : mmBooleanObject = {
 		touch: 'ontouchstart' in window || (navigator.msMaxTouchPoints ? true : false) || false
 	}
 
 
 	/**	Options for the menu. */
-	opts 	: mmOptions
+	opts : mmOptions
 
 	/** Configuration for the menu. */
-	conf 	: mmConfigs
+	conf : mmConfigs
 
 	/**	Mmethods to expose in the API. */
-	_api	: string[]
+	_api : string[]
 
 	/** The menu API. */
-	API		: mmApi
+	API	: mmApi
 
 
 	/** HTML elements used for the menu. */
-	node 	: mmHtmlObject
+	node : mmHtmlObject
 
 	/** Variables used for the menu. */
-	vars	: mmLooseObject
+	vars : mmLooseObject
 
 	/** Callback hooks used for the menu. */
-	hook	: mmLooseObject
+	hook : mmLooseObject
 
 	/** MatchMedia hooks used for the menu. */
-	mtch	: mmLooseObject
+	mtch : mmLooseObject
 
 	/** EventListeners used for the menu. */
-	evnt	: mmEventObject;
+	evnt : mmEventObject;
 
 	/** Click handlers used for the menu. */
-	clck	: Function[]
+	clck : Function[]
 
 
 	/** Log deprecated warnings when using the debugger. */
-	_deprecated : Function
+	_deprecatedWarnings : Function
 
 
 	//	screenReader add-on
-	static sr_aria	: Function
-	static sr_role	: Function
-	static sr_text	: Function
+	static sr_aria : Function
+	static sr_role : Function
+	static sr_text : Function
 
 
 	//	offCanvas add-on
 
 	/** Open the menu. */
-	open 					: Function
+	open : Function
 
 	/** Setup the menu so it can be opened. */
-	_openSetup 				: Function
+	_openSetup : Function
 
 	/** The menu starts opening. */
-	_openStart				: Function
+	_openStart : Function
 
 	/** Close the menu. */
-	close 					: Function
+	close : Function
 
 	/** Close all other menus. */
-	closeAllOthers 			: Function
+	closeAllOthers : Function
 
 	/** Set the page HTML element. */
-	setPage 				: Function
+	setPage : Function
 
 
 	//	searchfield add-on
@@ -140,8 +140,8 @@ export default class Mmenu {
 			: menu;
 
 
-		if ( typeof this._deprecated == 'function' ) {
-			this._deprecated();
+		if ( typeof this._deprecatedWarnings == 'function' ) {
+			this._deprecatedWarnings();
 		}
 
 		this._initWrappers();

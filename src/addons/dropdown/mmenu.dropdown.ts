@@ -2,6 +2,8 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.dropdown = options;
 Mmenu.configs.dropdown = configs;
 
@@ -13,30 +15,10 @@ export default function(
 		return;
 	}
 
-	var options = this.opts.dropdown,
-		configs = this.conf.dropdown;
-
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' && options ) {
-		(options as mmLooseObject) = {
-			drop: options
-		};
-	}
-
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-
-	if ( typeof options.position == 'string' ) {
-		options.position = {
-			of: options.position
-		};
-	}
-	//	/Extend shorthand options
-
-
+	var options = extendShorthandOptions( this.opts.dropdown );
 	this.opts.dropdown = Mmenu.extend( options, Mmenu.options.dropdown );
+
+	var configs = this.conf.dropdown;
 
 
 	if ( !options.drop ) {

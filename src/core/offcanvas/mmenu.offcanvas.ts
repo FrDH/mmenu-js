@@ -2,6 +2,8 @@ import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.offCanvas = options;
 Mmenu.configs.offCanvas = configs;
 
@@ -14,42 +16,36 @@ export default function(
 		return;
 	}
 
-	var options = this.opts.offCanvas,
-		configs = this.conf.offCanvas;
-
-
-	//	Add methods to the API
-	this._api.push( 'open', 'close', 'setPage' );
-
-
-	//	Extend shorthand options
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-	//	/Extend shorthand options
-
-
+	//	Extend options.
+	var options = extendShorthandOptions( this.opts.offCanvas );
 	this.opts.offCanvas = Mmenu.extend( options, Mmenu.options.offCanvas );
+
+	//	Extend configs.
+	var configs = this.conf.offCanvas;
 	this.conf.offCanvas = Mmenu.extend( configs, Mmenu.configs.offCanvas );
 
 
-	//	Setup the menu
+	//	Add methods to the API.
+	this._api.push( 'open', 'close', 'setPage' );
+
+
+	//	Setup the menu.
 	this.vars.opened = false;
 
 
-	//	Add off-canvas behavior
+	//	Add off-canvas behavior.
 	this.bind( 'initMenu:after', () => {
 
-		//	Setup the UI blocker
+		//	Setup the UI blocker.
 		initBlocker.call( this );
 
-		//	Setup the page
+		//	Setup the page.
 		this.setPage( Mmenu.node.page );
 
-		//	Setup window events
+		//	Setup window events.
 		initWindow.call( this );
 
-		//	Setup the menu
+		//	Setup the menu.
 		this.node.menu.classList.add( 'mm-menu_offcanvas' );
 		this.node.menu.parentElement.classList.remove( 'mm-wrapper' );
 		

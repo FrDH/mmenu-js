@@ -1,47 +1,25 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.iconPanels = options;
 
 
 export default function(
 	this : Mmenu
 ) {
-	var options = this.opts.iconPanels;
+	var options = extendShorthandOptions( this.opts.iconPanels );
+	this.opts.iconPanels = Mmenu.extend( options, Mmenu.options.iconPanels );
 
 	var keepFirst = false;
-
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' ) {
-		(options as mmLooseObject) = {
-			add : options
-		};
-	}
-	if ( typeof options == 'number' ||
-		 typeof options == 'string'
-	) {
-		(options as mmLooseObject) = {
-			add 	: true,
-			visible : options
-		};
-	}
-
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
 
 	if ( options.visible == 'first' ) {
 		keepFirst = true;
 		options.visible = 1;
 	}
-	//	/Extend shorthand options
 
-
-	this.opts.iconPanels = Mmenu.extend( options, Mmenu.options.iconPanels );
-
-
-	options.visible = Math.min( 3, Math.max( 1, (options.visible as number) ) );
+	options.visible = Math.min( 3, Math.max( 1, options.visible ) );
 	options.visible++;
 
 

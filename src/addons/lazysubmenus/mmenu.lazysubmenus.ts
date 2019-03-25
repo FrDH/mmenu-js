@@ -1,27 +1,15 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.lazySubmenus = options;
 
 
 export default function(
 	this : Mmenu
 ) {
-	var options = this.opts.lazySubmenus;
-
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' ) {
-		options = {
-			load : options
-		};
-	}
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-	//	/Extend shorthand options
-
-
+	var options = extendShorthandOptions( this.opts.lazySubmenus );
 	this.opts.lazySubmenus = Mmenu.extend( options, Mmenu.options.lazySubmenus );
 
 

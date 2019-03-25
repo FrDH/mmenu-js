@@ -1,7 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-
 import options from './_options';
 import configs from './_configs';
+
+import { extendShorthandOptions } from './_options';
 
 Mmenu.options.navbars = options;
 Mmenu.configs.navbars = configs;
@@ -59,36 +60,7 @@ export default function(
 
 	navs.forEach(( options ) => {
 
-		//	Extend shorthand options.
-		if ( typeof options == 'boolean' && options ) {
-			options = {};
-		}
-
-		if ( Mmenu.typeof( options ) != 'object' ) {
-			options = {};
-		}
-
-		if ( typeof options.content == 'undefined' ) {
-			options.content = [ 'prev', 'title' ];
-		}
-
-		if ( !( options.content instanceof Array ) ) {
-			options.content = [ options.content ];
-		}
-
-		if ( typeof options.use == 'undefined' ) {
-			options.use = true;
-		}
-
-		if ( typeof options.use == 'boolean' && options.use ) {
-			options.use = true;
-		}
-
-		if ( typeof options.use == 'number' ) {
-			options.use = '(min-width: ' + options.use + 'px)';
-		}
-		//	/Extend shorthand options.
-
+		options = extendShorthandOptions( options );
 
 		if ( !options.use ) {
 			return false;

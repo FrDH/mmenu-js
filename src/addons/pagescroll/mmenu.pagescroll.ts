@@ -2,6 +2,8 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.pageScroll = options;
 Mmenu.configs.pageScroll = configs;
 
@@ -10,19 +12,10 @@ export default function(
 	this : Mmenu
 ) {
 
-	var options = this.opts.pageScroll,
-		configs = this.conf.pageScroll;
-
-	//	Extend shorthand options.
-	if ( typeof options == 'boolean' ) {
-		(options as mmLooseObject) = {
-			scroll: options
-		};
-	}
-	//	/Extend shorthand options.
-
-
+	var options = extendShorthandOptions( this.opts.pageScroll );
 	this.opts.pageScroll = Mmenu.extend( options, Mmenu.options.pageScroll );
+
+	var configs = this.conf.pageScroll;
 
 
 	var section : HTMLElement;

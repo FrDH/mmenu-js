@@ -17,3 +17,49 @@ const options : mmOptionsSearchfield = {
 	showSubPanels: true
 };
 export default options;
+
+/**
+ * Extend shorthand options.
+ *
+ * @param  {object} options The options to extend.
+ * @return {object}			The extended options.
+ */
+export function extendShorthandOptions( 
+	options : mmOptionsSearchfield
+) : mmOptionsSearchfield {
+
+	if ( typeof options == 'boolean' ) {
+		options = {
+			add: options
+		};
+	}
+
+	if ( typeof options != 'object' ) {
+		options = {};
+	}
+
+	if ( typeof options.panel == 'boolean' ) {
+		options.panel = {
+			add: options.panel
+		};
+	}
+
+	if ( typeof options.panel != 'object' ) {
+		options.panel = {};
+	}
+
+	//	Extend logical options.
+	if ( options.addTo == 'panel' ) {
+		options.panel.add = true;
+	}
+
+	if ( options.panel.add ) {
+		options.showSubPanels = false;
+
+		if ( options.panel.splash ) {
+			options.cancel = true;
+		}
+	}
+
+	return options;
+};

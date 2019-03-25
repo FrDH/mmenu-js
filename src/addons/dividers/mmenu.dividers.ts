@@ -1,30 +1,15 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
+import { extendShorthandOptions } from './_options';
+
 Mmenu.options.dividers = options;
 
 
 export default function(
 	this : Mmenu
 ) {
-	var options = this.opts.dividers;
-
-
-	//	Extend shorthand options
-	if ( typeof options == 'boolean' ) {
-		(options as mmLooseObject) = {
-			add	: options
-		};
-	}
-	if ( typeof options != 'object' ) {
-		(options as mmLooseObject) = {};
-	}
-	if ( options.addTo == 'panels' ) {
-		options.addTo = '.mm-panel';
-	}
-	//	/Extend shorthand options
-
-
+	var options = extendShorthandOptions( this.opts.dividers );
 	this.opts.dividers = Mmenu.extend( options, Mmenu.options.dividers );
 
 
