@@ -2,6 +2,8 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
 import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 
 Mmenu.options.lazySubmenus = options;
 
@@ -10,7 +12,7 @@ export default function(
 	this : Mmenu
 ) {
 	var options = extendShorthandOptions( this.opts.lazySubmenus );
-	this.opts.lazySubmenus = Mmenu.extend( options, Mmenu.options.lazySubmenus );
+	this.opts.lazySubmenus = extend( options, Mmenu.options.lazySubmenus );
 
 
 	//	Sliding submenus
@@ -21,9 +23,9 @@ export default function(
 			var panels : HTMLElement[] = [];
 
 			//	Find all potential subpanels
-			Mmenu.DOM.find( this.node.pnls, 'li' )
+			DOM.find( this.node.pnls, 'li' )
 				.forEach(( listitem ) => {
-					panels.push( ...Mmenu.DOM.children( listitem, this.conf.panelNodetype.join( ', ' ) ) )
+					panels.push( ...DOM.children( listitem, this.conf.panelNodetype.join( ', ' ) ) )
 				});
 
 			//	Filter out all non-panels and add the lazyload classes
@@ -39,11 +41,11 @@ export default function(
 		this.bind( 'initPanels:before', ( 
 			panels	?: HTMLElement[]
 		) => {
-			panels = panels || Mmenu.DOM.children( this.node.pnls, this.conf.panelNodetype.join( ', ' ) );
+			panels = panels || DOM.children( this.node.pnls, this.conf.panelNodetype.join( ', ' ) );
 
 			panels.forEach(( panel ) => {
 				var filter = '.mm-panel_lazysubmenu',
-					panels = Mmenu.DOM.find( panel, filter );
+					panels = DOM.find( panel, filter );
 
 				if ( panel.matches( filter ) ) {
 					panels.unshift( panel );
@@ -59,9 +61,9 @@ export default function(
 		this.bind( 'initOpened:before', () => {
 
 			var panels : HTMLElement[] = [];
-			Mmenu.DOM.find( this.node.pnls, '.' + this.conf.classNames.selected )
+			DOM.find( this.node.pnls, '.' + this.conf.classNames.selected )
 				.forEach(( listitem ) => {
-					panels.push( ...Mmenu.DOM.parents( listitem, '.mm-panel_lazysubmenu' ) );
+					panels.push( ...DOM.parents( listitem, '.mm-panel_lazysubmenu' ) );
 				});
 
 			if ( panels.length ) {
@@ -77,7 +79,7 @@ export default function(
 			panel : HTMLElement
 		) => {
 			var filter = '.mm-panel_lazysubmenu',
-				panels = Mmenu.DOM.find( panel, filter );
+				panels = DOM.find( panel, filter );
 			if ( panel.matches( filter ) ) {
 				panels.unshift( panel );
 			}

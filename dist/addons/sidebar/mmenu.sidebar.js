@@ -1,60 +1,15 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 Mmenu.options.sidebar = options;
 export default function () {
     if (!this.opts.offCanvas) {
         return;
     }
-    var options = this.opts.sidebar;
-    //	Extend shorthand options
-    if (typeof options == 'string' ||
-        (typeof options == 'boolean' && options) ||
-        typeof options == 'number') {
-        options = {
-            expanded: options
-        };
-    }
-    if (typeof options != 'object') {
-        options = {};
-    }
-    //	Extend collapsed shorthand options.
-    if (typeof options.collapsed == 'boolean' && options.collapsed) {
-        options.collapsed = {
-            use: true
-        };
-    }
-    if (typeof options.collapsed == 'string' ||
-        typeof options.collapsed == 'number') {
-        options.collapsed = {
-            use: options.collapsed
-        };
-    }
-    if (typeof options.collapsed != 'object') {
-        options.collapsed = {};
-    }
-    if (typeof options.collapsed.use == 'number') {
-        options.collapsed.use = '(min-width: ' + options.collapsed.use + 'px)';
-    }
-    //	Extend expanded shorthand options.
-    if (typeof options.expanded == 'boolean' && options.expanded) {
-        options.expanded = {
-            use: true
-        };
-    }
-    if (typeof options.expanded == 'string' ||
-        typeof options.expanded == 'number') {
-        options.expanded = {
-            use: options.expanded
-        };
-    }
-    if (typeof options.expanded != 'object') {
-        options.expanded = {};
-    }
-    if (typeof options.expanded.use == 'number') {
-        options.expanded.use = '(min-width: ' + options.expanded.use + 'px)';
-    }
-    //	/Extend shorthand options
-    this.opts.sidebar = Mmenu.extend(options, Mmenu.options.sidebar);
+    var options = extendShorthandOptions(this.opts.sidebar);
+    this.opts.sidebar = extend(options, Mmenu.options.sidebar);
     var clsclpsd = 'mm-wrapper_sidebar-collapsed', clsxpndd = 'mm-wrapper_sidebar-expanded';
     //	Collapsed
     if (options.collapsed.use) {
@@ -62,8 +17,8 @@ export default function () {
             this.node.menu.classList.add('mm-menu_sidebar-collapsed');
             if (options.collapsed.blockMenu &&
                 this.opts.offCanvas &&
-                !Mmenu.DOM.children(this.node.menu, '.mm-menu__blocker')[0]) {
-                let anchor = Mmenu.DOM.create('a.mm-menu__blocker');
+                !DOM.children(this.node.menu, '.mm-menu__blocker')[0]) {
+                let anchor = DOM.create('a.mm-menu__blocker');
                 anchor.setAttribute('href', '#' + this.node.menu.id);
                 this.node.menu.prepend(anchor);
             }
@@ -79,7 +34,7 @@ export default function () {
                 document.documentElement.classList.add(clsclpsd);
             });
         }
-        else {
+        else if (typeof options.collapsed.use == 'string') {
             this.matchMedia(options.collapsed.use, () => {
                 document.documentElement.classList.add(clsclpsd);
             }, () => {
@@ -98,7 +53,7 @@ export default function () {
                 this.open();
             });
         }
-        else {
+        else if (typeof options.expanded.use == 'string') {
             this.matchMedia(options.expanded.use, () => {
                 document.documentElement.classList.add(clsxpndd);
                 if (!document.documentElement.matches('.mm-wrapper_sidebar-closed')) {

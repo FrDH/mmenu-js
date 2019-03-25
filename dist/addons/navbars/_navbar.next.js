@@ -1,7 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import * as DOM from '../../core/_dom';
 export default function (navbar) {
     //	Add content
-    var next = Mmenu.DOM.create('a.mm-btn.mm-btn_next.mm-navbar__btn');
+    var next = DOM.create('a.mm-btn.mm-btn_next.mm-navbar__btn');
     navbar.append(next);
     //	Update to opened panel
     var org;

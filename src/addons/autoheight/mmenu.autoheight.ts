@@ -2,6 +2,8 @@ import Mmenu from './../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
 import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 
 Mmenu.options.autoHeight = options;
 
@@ -11,7 +13,7 @@ export default function(
 ) {
 
 	var options = extendShorthandOptions( this.opts.autoHeight );
-	this.opts.autoHeight = Mmenu.extend( options, Mmenu.options.autoHeight );
+	this.opts.autoHeight = extend( options, Mmenu.options.autoHeight );
 
 
 	if ( options.height != 'auto' && options.height != 'highest' ) {
@@ -22,7 +24,7 @@ export default function(
 	const setHeight = (() => {
 
 		const getCurrent = () : number => {
-			var panel = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
+			var panel = DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
 
 			if ( panel ) {
 				panel = measurablePanel( panel );
@@ -30,7 +32,7 @@ export default function(
 
 			//	Fallback, just to be sure we have a panel.
 			if ( !panel ) {
-				panel = Mmenu.DOM.children( this.node.pnls, '.mm-panel' )[ 0 ];
+				panel = DOM.children( this.node.pnls, '.mm-panel' )[ 0 ];
 			}
 
 			return panel.offsetHeight;
@@ -38,7 +40,7 @@ export default function(
 
 		const getHighest = () : number => {
 			var highest = 0;
-			Mmenu.DOM.children( this.node.pnls, '.mm-panel' )
+			DOM.children( this.node.pnls, '.mm-panel' )
 				.forEach(( panel ) => {
 					panel = measurablePanel( panel );
 					highest = Math.max( highest, panel.offsetHeight );
@@ -55,7 +57,7 @@ export default function(
 			if ( panel.parentElement.matches( '.mm-listitem_vertical' ) ) {
 				
 				//	...find the first parent panel that isn't.
-				panel = Mmenu.DOM.parents( panel, '.mm-panel' )
+				panel = DOM.parents( panel, '.mm-panel' )
 					.filter( panel => !panel.parentElement.matches( '.mm-listitem_vertical' ) )[ 0 ];
 			}
 			return panel;

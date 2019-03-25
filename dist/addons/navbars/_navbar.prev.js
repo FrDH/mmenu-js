@@ -1,7 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import * as DOM from '../../core/_dom';
 export default function (navbar) {
     //	Add content.
-    var prev = Mmenu.DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
+    var prev = DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
     navbar.append(prev);
     this.bind('initNavbar:after', (panel) => {
         panel.classList.remove('mm-panel_has-navbar');

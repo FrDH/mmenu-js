@@ -91,7 +91,7 @@
 
 		//	opts.dividers.fixed is removed, all dividers are now sticky by default.
 		if ( this.opts.dividers ) {
-			 if ( Mmenu.typeof( this.opts.dividers ) == 'object' &&
+			 if ( typeof this.opts.dividers == 'object' &&
 			 	typeof this.opts.dividers.fixed !== 'undefined'
 			) {
 				deprecated( 
@@ -104,7 +104,7 @@
 
 		//	opts.iconbar.add is renamed to opts.iconbar.use.
 		if ( this.opts.iconbar ) {
-			if ( Mmenu.typeof( this.opts.iconbar ) == 'object' &&
+			if ( typeof this.opts.iconbar == 'object' &&
 				typeof this.opts.iconbar.add !== 'undefined'
 			) {
 				deprecated( 

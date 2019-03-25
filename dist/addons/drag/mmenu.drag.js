@@ -1,6 +1,9 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
+import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 Mmenu.options.drag = options;
 Mmenu.configs.drag = configs;
 export default function () {
@@ -10,35 +13,9 @@ export default function () {
     if (typeof Hammer != 'function' || Hammer.VERSION < 2) {
         return;
     }
-    var options = this.opts.drag, configs = this.conf.drag;
-    //	Extend shorthand options
-    if (typeof options == 'boolean') {
-        options = {
-            menu: options,
-            panels: options
-        };
-    }
-    if (typeof options != 'object') {
-        options = {};
-    }
-    if (typeof options.menu == 'boolean') {
-        options = {
-            open: options.menu
-        };
-    }
-    if (typeof options.menu != 'object') {
-        options.menu = {};
-    }
-    if (typeof options.panels == 'boolean') {
-        options.panels = {
-            close: options.panels
-        };
-    }
-    if (typeof options.panels != 'object') {
-        options.panels = {};
-    }
-    //	/Extend shorthand options
-    this.opts.drag = Mmenu.extend(options, Mmenu.options.drag);
+    var options = extendShorthandOptions(this.opts.drag);
+    this.opts.drag = extend(options, Mmenu.options.drag);
+    var configs = this.conf.drag;
     function minMax(val, min, max) {
         if (val < min) {
             val = min;
@@ -67,7 +44,7 @@ export default function () {
                 }
             };
             var getSlideNodes = function () {
-                return Mmenu.DOM.find(document.body, '.mm-slideout');
+                return DOM.find(document.body, '.mm-slideout');
             };
             var _stage = 0, _distance = 0, _maxDistance = 0;
             var new_distance, drag_distance;

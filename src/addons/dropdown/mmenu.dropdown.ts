@@ -3,6 +3,8 @@ import options from './_options';
 import configs from './_configs';
 
 import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 
 Mmenu.options.dropdown = options;
 Mmenu.configs.dropdown = configs;
@@ -16,7 +18,7 @@ export default function(
 	}
 
 	var options = extendShorthandOptions( this.opts.dropdown );
-	this.opts.dropdown = Mmenu.extend( options, Mmenu.options.dropdown );
+	this.opts.dropdown = extend( options, Mmenu.options.dropdown );
 
 	var configs = this.conf.dropdown;
 
@@ -44,7 +46,7 @@ export default function(
 
 
 		//	Get the button to put the menu next to
-		button = Mmenu.DOM.find( document.body, options.position.of )[ 0 ];
+		button = DOM.find( document.body, options.position.of )[ 0 ];
 
 		//	Emulate hover effect
 		var events = options.event.split( ' ' );
@@ -103,7 +105,7 @@ export default function(
 			_position 	= null;
 
 		var scrollPos 	= document.documentElement[ _scrollPos ] || document.body[ _scrollPos ],
-			startPos 	= Mmenu.DOM.offset( button, _startPos ) - scrollPos,
+			startPos 	= DOM.offset( button, _startPos ) - scrollPos,
 			stopPos 	= startPos + button[ _outerSize ],
 			windowSize 	= window[ _winSize ];
 

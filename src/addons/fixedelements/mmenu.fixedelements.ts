@@ -1,6 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import configs from './_configs';
 
+import * as DOM from '../../core/_dom';
+
 Mmenu.configs.fixedElements = configs;
 
 Mmenu.configs.classNames.fixedElements = {
@@ -32,8 +34,8 @@ export default function(
 
 		//	Fixed elements
 		_fixd = this.conf.classNames.fixedElements.fixed;
-		wrppr = Mmenu.DOM.find( document, configs.fixed.insertSelector )[ 0 ];
-		fixed = Mmenu.DOM.find( page, '.' + _fixd );
+		wrppr = DOM.find( document, configs.fixed.insertSelector )[ 0 ];
+		fixed = DOM.find( page, '.' + _fixd );
 		fixed.forEach(( fxd ) => {
 			Mmenu.refactorClass( fxd, _fixd, 'mm-slideout' );
 			wrppr[ configs.fixed.insertMethod ]( fxd );
@@ -42,12 +44,12 @@ export default function(
 		//	Sticky elements
 		_stck = this.conf.classNames.fixedElements.sticky;
 
-		Mmenu.DOM.find( page, '.' + _stck )
+		DOM.find( page, '.' + _stck )
 			.forEach(( stick ) => {
 				Mmenu.refactorClass( (stick as HTMLElement), _stck, 'mm-sticky' );
 			});
 
-		stick = Mmenu.DOM.find( page, '.mm-sticky' );
+		stick = DOM.find( page, '.mm-sticky' );
 	});
 
 	this.bind( 'open:start', () => {

@@ -1,3 +1,5 @@
+import { type } from '../../core/_helpers';
+
 const options : mmOptionsIconbar = {
 	use: false,
 	top: [],
@@ -17,15 +19,14 @@ export function extendShorthandOptions(
 	options : mmOptionsIconbar
 ) : mmOptionsIconbar {
 
-	//	TODO
-	if ( Mmenu.typeof( options ) == 'array' ) {
+	if ( type( options ) == 'array' ) {
 		options = {
 			use: true,
-			top: options
+			top: (options as any)
 		};
 	}
 
-	if ( typeof options != 'object' ) {
+	if ( type( options ) != 'object' ) {
 		options = {};
 	}
 

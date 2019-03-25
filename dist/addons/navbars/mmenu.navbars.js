@@ -1,6 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
+import { extendShorthandOptions } from './_options';
+import * as DOM from '../../core/_dom';
 Mmenu.options.navbars = options;
 Mmenu.configs.navbars = configs;
 Mmenu.configs.classNames.navbars = {
@@ -39,34 +41,12 @@ export default function () {
         return;
     }
     navs.forEach((options) => {
-        //	Extend shorthand options.
-        if (typeof options == 'boolean' && options) {
-            options = {};
-        }
-        if (Mmenu.typeof(options) != 'object') {
-            options = {};
-        }
-        if (typeof options.content == 'undefined') {
-            options.content = ['prev', 'title'];
-        }
-        if (!(options.content instanceof Array)) {
-            options.content = [options.content];
-        }
-        if (typeof options.use == 'undefined') {
-            options.use = true;
-        }
-        if (typeof options.use == 'boolean' && options.use) {
-            options.use = true;
-        }
-        if (typeof options.use == 'number') {
-            options.use = '(min-width: ' + options.use + 'px)';
-        }
-        //	/Extend shorthand options.
+        options = extendShorthandOptions(options);
         if (!options.use) {
             return false;
         }
         //	Create the navbar element.
-        var navbar = Mmenu.DOM.create('div.mm-navbar');
+        var navbar = DOM.create('div.mm-navbar');
         //	Get the position for the navbar.
         var position = options.position;
         //	Restrict the position to either "bottom" or "top" (default).
@@ -75,7 +55,7 @@ export default function () {
         }
         //	Create the wrapper for the navbar position.
         if (!navbars[position]) {
-            navbars[position] = Mmenu.DOM.create('div.mm-navbars_' + position);
+            navbars[position] = DOM.create('div.mm-navbars_' + position);
         }
         navbars[position].append(navbar);
         //	Add content to the navbar.
@@ -110,7 +90,7 @@ export default function () {
             }
         }
         //	en-/disable the navbar for media queries.
-        if (typeof options.use != 'boolean') {
+        if (typeof options.use == 'string') {
             this.matchMedia(options.use, () => {
                 navbar.classList.remove('mm-hidden');
             }, () => {

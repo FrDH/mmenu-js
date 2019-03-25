@@ -3,6 +3,7 @@ import options from './_options';
 import configs from './_configs';
 
 import { extendShorthandOptions } from './_options';
+import * as DOM from '../../core/_dom';
 
 Mmenu.options.navbars = options;
 Mmenu.configs.navbars = configs;
@@ -68,7 +69,7 @@ export default function(
 
 
 		//	Create the navbar element.
-		var navbar = Mmenu.DOM.create( 'div.mm-navbar' );
+		var navbar = DOM.create( 'div.mm-navbar' );
 
 		//	Get the position for the navbar.
 		var position = options.position;
@@ -80,7 +81,7 @@ export default function(
 
 		//	Create the wrapper for the navbar position.
 		if ( !navbars[ position ] ) {
-			navbars[ position ] = Mmenu.DOM.create( 'div.mm-navbars_' + position );
+			navbars[ position ] = DOM.create( 'div.mm-navbars_' + position );
 		}
 		navbars[ position ].append( navbar );
 
@@ -122,7 +123,7 @@ export default function(
 		}
 
 		//	en-/disable the navbar for media queries.
-		if ( typeof options.use != 'boolean' ) {
+		if ( typeof options.use == 'string' ) {
 			this.matchMedia( options.use,
 				() => {
 					navbar.classList.remove( 'mm-hidden' );

@@ -1,29 +1,22 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 Mmenu.options.backButton = options;
 export default function () {
     if (!this.opts.offCanvas) {
         return;
     }
-    var options = this.opts.backButton;
-    //	Extend shorthand options
-    if (typeof options == 'boolean') {
-        options = {
-            close: options
-        };
-    }
-    if (typeof options != 'object') {
-        options = {};
-    }
-    //	/Extend shorthand options
-    this.opts.backButton = Mmenu.extend(options, Mmenu.options.backButton);
+    var options = extendShorthandOptions(this.opts.backButton);
+    this.opts.backButton = extend(options, Mmenu.options.backButton);
     var _menu = '#' + this.node.menu.id;
     //	Close menu
     if (options.close) {
         var states = [];
         const setStates = () => {
             states = [_menu];
-            Mmenu.DOM.children(this.node.pnls, '.mm-panel_opened, .mm-panel_opened-parent')
+            DOM.children(this.node.pnls, '.mm-panel_opened, .mm-panel_opened-parent')
                 .forEach((panel) => {
                 states.push('#' + panel.id);
             });

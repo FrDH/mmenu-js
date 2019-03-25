@@ -1,42 +1,30 @@
 import Mmenu from './../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 Mmenu.options.autoHeight = options;
 export default function () {
-    var options = this.opts.autoHeight;
-    //	Extend shorthand options
-    if (typeof options == 'boolean' && options) {
-        options = {
-            height: 'auto'
-        };
-    }
-    if (typeof options == 'string') {
-        options = {
-            height: options
-        };
-    }
-    if (typeof options != 'object') {
-        options = {};
-    }
-    //	/Extend shorthand options
-    this.opts.autoHeight = Mmenu.extend(options, Mmenu.options.autoHeight);
+    var options = extendShorthandOptions(this.opts.autoHeight);
+    this.opts.autoHeight = extend(options, Mmenu.options.autoHeight);
     if (options.height != 'auto' && options.height != 'highest') {
         return;
     }
     const setHeight = (() => {
         const getCurrent = () => {
-            var panel = Mmenu.DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+            var panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
             if (panel) {
                 panel = measurablePanel(panel);
             }
             //	Fallback, just to be sure we have a panel.
             if (!panel) {
-                panel = Mmenu.DOM.children(this.node.pnls, '.mm-panel')[0];
+                panel = DOM.children(this.node.pnls, '.mm-panel')[0];
             }
             return panel.offsetHeight;
         };
         const getHighest = () => {
             var highest = 0;
-            Mmenu.DOM.children(this.node.pnls, '.mm-panel')
+            DOM.children(this.node.pnls, '.mm-panel')
                 .forEach((panel) => {
                 panel = measurablePanel(panel);
                 highest = Math.max(highest, panel.offsetHeight);
@@ -47,7 +35,7 @@ export default function () {
             //	If it's a vertically expanding panel...
             if (panel.parentElement.matches('.mm-listitem_vertical')) {
                 //	...find the first parent panel that isn't.
-                panel = Mmenu.DOM.parents(panel, '.mm-panel')
+                panel = DOM.parents(panel, '.mm-panel')
                     .filter(panel => !panel.parentElement.matches('.mm-listitem_vertical'))[0];
             }
             return panel;

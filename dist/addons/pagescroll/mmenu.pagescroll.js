@@ -1,18 +1,15 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
+import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 Mmenu.options.pageScroll = options;
 Mmenu.configs.pageScroll = configs;
 export default function () {
-    var options = this.opts.pageScroll, configs = this.conf.pageScroll;
-    //	Extend shorthand options.
-    if (typeof options == 'boolean') {
-        options = {
-            scroll: options
-        };
-    }
-    //	/Extend shorthand options.
-    this.opts.pageScroll = Mmenu.extend(options, Mmenu.options.pageScroll);
+    var options = extendShorthandOptions(this.opts.pageScroll);
+    this.opts.pageScroll = extend(options, Mmenu.options.pageScroll);
+    var configs = this.conf.pageScroll;
     var section;
     function scrollTo() {
         if (section) {
@@ -74,7 +71,7 @@ export default function () {
     if (options.update) {
         let scts = [];
         this.bind('initListview:after', (panel) => {
-            let listitems = Mmenu.DOM.find(panel, '.mm-listitem');
+            let listitems = DOM.find(panel, '.mm-listitem');
             Mmenu.filterListItemAnchors(listitems)
                 .forEach((anchor) => {
                 var href = anchor.getAttribute('href');
@@ -91,7 +88,7 @@ export default function () {
                 if (scts[s].offsetTop < scrollTop + configs.updateOffset) {
                     if (_selected !== s) {
                         _selected = s;
-                        let panel = Mmenu.DOM.children(this.node.pnls, '.mm-panel_opened')[0], listitems = Mmenu.DOM.find(panel, '.mm-listitem'), anchors = Mmenu.filterListItemAnchors(listitems);
+                        let panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0], listitems = DOM.find(panel, '.mm-listitem'), anchors = Mmenu.filterListItemAnchors(listitems);
                         anchors = anchors.filter(anchor => anchor.matches('[href="#' + scts[s].id + '"]'));
                         if (anchors.length) {
                             this.setSelected(anchors[0].parentElement);

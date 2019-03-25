@@ -1,23 +1,15 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 Mmenu.options.setSelected = options;
 export default function () {
-    var options = this.opts.setSelected;
-    //	Extend shorthand options
-    if (typeof options == 'boolean') {
-        options = {
-            hover: options,
-            parent: options
-        };
-    }
-    if (typeof options != 'object') {
-        options = {};
-    }
-    //	Extend shorthand options
-    this.opts.setSelected = Mmenu.extend(options, Mmenu.options.setSelected);
+    var options = extendShorthandOptions(this.opts.setSelected);
+    this.opts.setSelected = extend(options, Mmenu.options.setSelected);
     //	Find current by URL
     if (options.current == 'detect') {
-        function findCurrent(url) {
+        const findCurrent = (url) => {
             url = url.split("?")[0].split("#")[0];
             var anchor = this.node.menu.querySelector('a[href="' + url + '"], a[href="' + url + '/"]');
             if (anchor) {
@@ -26,11 +18,10 @@ export default function () {
             else {
                 var arr = url.split('/').slice(0, -1);
                 if (arr.length) {
-                    findCurrent.call(this, arr.join('/'));
+                    findCurrent(arr.join('/'));
                 }
             }
-        }
-        ;
+        };
         this.bind('initMenu:after', () => {
             findCurrent.call(this, window.location.href);
         });
@@ -38,7 +29,7 @@ export default function () {
     }
     else if (!options.current) {
         this.bind('initListview:after', (panel) => {
-            Mmenu.DOM.find(panel, '.mm-listitem_selected')
+            DOM.find(panel, '.mm-listitem_selected')
                 .forEach((listitem) => {
                 listitem.classList.remove('mm-listitem_selected');
             });
@@ -54,7 +45,7 @@ export default function () {
     if (options.parent) {
         this.bind('openPanel:finish', (panel) => {
             //	Remove all
-            Mmenu.DOM.find(this.node.pnls, '.mm-listitem_selected-parent')
+            DOM.find(this.node.pnls, '.mm-listitem_selected-parent')
                 .forEach((listitem) => {
                 listitem.classList.remove('mm-listitem_selected-parent');
             });

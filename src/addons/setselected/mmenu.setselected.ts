@@ -2,6 +2,8 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
 import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 
 Mmenu.options.setSelected = options;
 
@@ -10,7 +12,7 @@ export default function(
 	this : Mmenu
 ) {
 	var options = extendShorthandOptions( this.opts.setSelected );
-	this.opts.setSelected = Mmenu.extend( options, Mmenu.options.setSelected );
+	this.opts.setSelected = extend( options, Mmenu.options.setSelected );
 
 
 	//	Find current by URL
@@ -40,7 +42,7 @@ export default function(
 		this.bind( 'initListview:after', ( 
 			panel : HTMLElement
 		) => {
-			Mmenu.DOM.find( panel, '.mm-listitem_selected' )
+			DOM.find( panel, '.mm-listitem_selected' )
 				.forEach(( listitem ) => {
 					listitem.classList.remove( 'mm-listitem_selected' );
 				});
@@ -62,7 +64,7 @@ export default function(
 			panel : HTMLElement
 		) => {
 			//	Remove all
-			Mmenu.DOM.find( this.node.pnls, '.mm-listitem_selected-parent' )
+			DOM.find( this.node.pnls, '.mm-listitem_selected-parent' )
 				.forEach(( listitem ) => {
 					listitem.classList.remove( 'mm-listitem_selected-parent' );
 				});

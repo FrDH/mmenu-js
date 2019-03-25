@@ -1,28 +1,12 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import { extendShorthandOptions } from './_options';
+import { type, extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 Mmenu.options.iconbar = options;
 export default function () {
-    var options = this.opts.iconbar;
-    //	Extend shorthand options
-    if (Mmenu.typeof(options) == 'array') {
-        options = {
-            use: true,
-            top: options
-        };
-    }
-    if (Mmenu.typeof(options) != 'object') {
-        options = {};
-    }
-    if (typeof options.use == 'undefined') {
-        options.use = true;
-    }
-    if (typeof options.use == 'boolean' && options.use) {
-        options.use = true;
-    }
-    if (typeof options.use == 'number') {
-        options.use = '(min-width: ' + options.use + 'px)';
-    }
-    //	/Extend shorthand options
+    var options = extendShorthandOptions(this.opts.iconbar);
+    this.opts.iconbar = extend(options, Mmenu.options.iconbar);
     if (!options.use) {
         return;
     }
@@ -30,11 +14,11 @@ export default function () {
     ['top', 'bottom'].forEach((position, n) => {
         var ctnt = options[position];
         //	Extend shorthand options
-        if (Mmenu.typeof(ctnt) != 'array') {
+        if (type(ctnt) != 'array') {
             ctnt = [ctnt];
         }
         //	Create node
-        var part = Mmenu.DOM.create('div.mm-iconbar__' + position);
+        var part = DOM.create('div.mm-iconbar__' + position);
         //	Add content
         for (let c = 0, l = ctnt.length; c < l; c++) {
             if (typeof ctnt[c] == 'string') {
@@ -46,7 +30,7 @@ export default function () {
         }
         if (part.children.length) {
             if (!iconbar) {
-                iconbar = Mmenu.DOM.create('div.mm-iconbar');
+                iconbar = DOM.create('div.mm-iconbar');
             }
             iconbar.append(part);
         }
@@ -80,11 +64,11 @@ export default function () {
                 catch (err) { }
             });
             const selectTab = (panel) => {
-                Mmenu.DOM.find(iconbar, 'a')
+                DOM.find(iconbar, 'a')
                     .forEach((anchor) => {
                     anchor.classList.remove('mm-iconbar__tab_selected');
                 });
-                var anchor = Mmenu.DOM.find(iconbar, '[href="#' + panel.id + '"]')[0];
+                var anchor = DOM.find(iconbar, '[href="#' + panel.id + '"]')[0];
                 if (anchor) {
                     anchor.classList.add('mm-iconbar__tab_selected');
                 }
@@ -98,7 +82,7 @@ export default function () {
             this.bind('openPanel:start', selectTab);
         }
         //	En-/disable the iconbar for media queries.
-        if (typeof options.use != 'boolean') {
+        if (typeof options.use == 'string') {
             this.matchMedia(options.use, () => {
                 this.node.menu.classList.add('mm-menu_iconbar-' + options.position);
             }, () => {

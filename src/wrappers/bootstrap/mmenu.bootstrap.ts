@@ -1,5 +1,7 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 
+import * as DOM from '../../core/_dom';
+
 export default function(
 	this : Mmenu
 ) {
@@ -13,12 +15,12 @@ export default function(
 
 
 		//	... We'll create a new menu
-		var nav 	= Mmenu.DOM.create( 'nav' ),
-			panel 	= Mmenu.DOM.create( 'div' );
+		var nav 	= DOM.create( 'nav' ),
+			panel 	= DOM.create( 'div' );
 
 		nav.append( panel );
 
-		Mmenu.DOM.children( this.node.menu )
+		DOM.children( this.node.menu )
 			.forEach(( child ) => {
 				switch( true )
 				{
@@ -73,7 +75,7 @@ export default function(
 	function cloneLink( 
 		anchor : HTMLElement
 	) {
-		var link = Mmenu.DOM.create( anchor.matches( 'a' ) ? 'a' : 'span' );
+		var link = DOM.create( anchor.matches( 'a' ) ? 'a' : 'span' );
 
 		//	Copy attributes
 		var attr = ['href', 'title', 'target'];
@@ -89,7 +91,7 @@ export default function(
 		link.innerHTML = anchor.innerHTML;
 
 		//	Remove Screen reader text.
-		Mmenu.DOM.find( link, '.sr-only' )
+		DOM.find( link, '.sr-only' )
 			.forEach(( sro ) => {
 				sro.remove();	
 			})
@@ -99,10 +101,10 @@ export default function(
 	function cloneDropdown( 
 		dropdown : HTMLElement
 	) {
-		var list = Mmenu.DOM.create( 'ul' );
-		Mmenu.DOM.children( dropdown )
+		var list = DOM.create( 'ul' );
+		DOM.children( dropdown )
 			.forEach(( anchor ) => {
-				var item = Mmenu.DOM.create( 'li' );
+				var item = DOM.create( 'li' );
 
 				if ( anchor.matches( '.dropdown-divider' ) )
 				{
@@ -120,11 +122,11 @@ export default function(
 	function cloneNav( 
 		nav : HTMLElement
 	) {
-		var list = Mmenu.DOM.create( 'ul' );
+		var list = DOM.create( 'ul' );
 
-		Mmenu.DOM.find( nav, '.nav-item' )
+		DOM.find( nav, '.nav-item' )
 			.forEach(( anchor ) => {
-				var item = Mmenu.DOM.create( 'li' );
+				var item = DOM.create( 'li' );
 
 				if ( anchor.matches( '.active' ) )
 				{
@@ -132,12 +134,12 @@ export default function(
 				}
 				if ( !anchor.matches( '.nav-link' ) )
 				{
-					let dropdown = Mmenu.DOM.children( anchor, '.dropdown-menu' )[ 0 ];
+					let dropdown = DOM.children( anchor, '.dropdown-menu' )[ 0 ];
 					if ( dropdown )
 					{
 						item.append( cloneDropdown( dropdown ) );
 					}
-					anchor = Mmenu.DOM.children( anchor, '.nav-link' )[ 0 ];
+					anchor = DOM.children( anchor, '.nav-link' )[ 0 ];
 				}
 				item.prepend( cloneLink( anchor ) );
 

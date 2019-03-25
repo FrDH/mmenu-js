@@ -1,5 +1,7 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 
+import * as DOM from '../../core/_dom';
+
 export default function( 
 	this	: Mmenu,
 	navbar	: HTMLElement
@@ -8,7 +10,7 @@ export default function(
 	navbar.classList.add( 'mm-navbar_tabs' );
 	navbar.parentElement.classList.add( 'mm-navbars_has-tabs' );
 
-	var anchors = Mmenu.DOM.children( navbar, 'a' );
+	var anchors = DOM.children( navbar, 'a' );
 	
 	navbar.addEventListener( 'click', ( evnt ) => {
 		var anchor = (evnt.target as HTMLElement);

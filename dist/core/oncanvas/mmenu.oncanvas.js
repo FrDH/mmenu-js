@@ -1,5 +1,7 @@
 import options from './_options';
 import configs from './_configs';
+import { type, extend, transitionend } from '../_helpers';
+import * as DOM from '../_dom';
 /**
  * Class for a mobile menu.
  */
@@ -13,8 +15,8 @@ export default class Mmenu {
      */
     constructor(menu, options, configs) {
         //	Extend options and configuration from defaults.
-        this.opts = Mmenu.extend(options, Mmenu.options);
-        this.conf = Mmenu.extend(configs, Mmenu.configs);
+        this.opts = extend(options, Mmenu.options);
+        this.conf = extend(configs, Mmenu.configs);
         //	Methods to expose in the API.
         this._api = ['bind', 'initPanels', 'openPanel', 'closePanel', 'closeAllPanels', 'setSelected'];
         //	Storage objects for nodes, variables, hooks, matchmedia and click handlers.
@@ -69,16 +71,16 @@ export default class Mmenu {
         //	Open a "vertical" panel.
         if (panel.parentElement.matches('.mm-listitem_vertical')) {
             //	Open current and all vertical parent panels.
-            Mmenu.DOM.parents(panel, '.mm-listitem_vertical')
+            DOM.parents(panel, '.mm-listitem_vertical')
                 .forEach((listitem) => {
                 panel.classList.add('mm-listitem_opened');
-                Mmenu.DOM.children(listitem, '.mm-panel')
+                DOM.children(listitem, '.mm-panel')
                     .forEach((panel) => {
                     panel.classList.remove('mm-hidden');
                 });
             });
             //	Open first non-vertical parent panel.
-            let parents = Mmenu.DOM.parents(panel, '.mm-panel')
+            let parents = DOM.parents(panel, '.mm-panel')
                 .filter(panel => !panel.parentElement.matches('.mm-listitem_vertical'));
             this.trigger('openPanel:start', [panel]);
             if (parents.length) {
@@ -91,7 +93,7 @@ export default class Mmenu {
             if (panel.matches('.mm-panel_opened')) {
                 return;
             }
-            let panels = Mmenu.DOM.children(this.node.pnls, '.mm-panel'), current = Mmenu.DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+            let panels = DOM.children(this.node.pnls, '.mm-panel'), current = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
             //	Close all child panels.
             panels.filter(parent => parent !== panel)
                 .forEach((parent) => {
@@ -154,7 +156,7 @@ export default class Mmenu {
                 //	RequestAnimationFrame would be nice here.
                 setTimeout(() => {
                     //	Callback
-                    Mmenu.transitionend(panel, () => {
+                    transitionend(panel, () => {
                         openPanelFinish();
                     }, this.conf.transitionDuration);
                     openPanelStart();
@@ -201,8 +203,8 @@ export default class Mmenu {
             listitem.classList.remove('mm-listitem_selected', 'mm-listitem_opened');
         });
         //	Close all "horizontal" panels.
-        var panels = Mmenu.DOM.children(this.node.pnls, '.mm-panel'), opened = (panel) ? panel : panels[0];
-        Mmenu.DOM.children(this.node.pnls, '.mm-panel')
+        var panels = DOM.children(this.node.pnls, '.mm-panel'), opened = (panel) ? panel : panels[0];
+        DOM.children(this.node.pnls, '.mm-panel')
             .forEach((panel) => {
             if (panel !== opened) {
                 panel.classList.remove('mm-panel_opened');
@@ -237,7 +239,7 @@ export default class Mmenu {
         //	Invoke "before" hook.
         this.trigger('setSelected:before', [listitem]);
         //	First, remove the selected class from all listitems.
-        Mmenu.DOM.find(this.node.menu, '.mm-listitem_selected')
+        DOM.find(this.node.menu, '.mm-listitem_selected')
             .forEach((li) => {
             li.classList.remove('mm-listitem_selected');
         });
@@ -280,10 +282,7 @@ export default class Mmenu {
      */
     matchMedia(mediaquery, yes, no) {
         this.mtch[mediaquery] = this.mtch[mediaquery] || [];
-        this.mtch[mediaquery].push({
-            'yes': yes,
-            'no': no
-        });
+        this.mtch[mediaquery].push({ yes, no });
     }
     /**
      * Initialize the matchMedia listener.
@@ -365,7 +364,7 @@ export default class Mmenu {
         //	Invoke "before" hook.
         this.trigger('initExtensions:before');
         //	Convert array to object with array.
-        if (Mmenu.typeof(this.opts.extensions) == 'array') {
+        if (type(this.opts.extensions) == 'array') {
             this.opts.extensions = {
                 'all': this.opts.extensions
             };
@@ -402,14 +401,14 @@ export default class Mmenu {
             this.node.menu = this.node.orig.cloneNode(true);
             //	Prefix all ID's in the cloned menu.
             this.node.menu.id = 'mm-' + this.node.menu.id;
-            Mmenu.DOM.find(this.node.menu, '[id]')
+            DOM.find(this.node.menu, '[id]')
                 .forEach((elem) => {
                 elem.id = 'mm-' + elem.id;
             });
         }
         //	Wrap the panels in a node.
-        let panels = Mmenu.DOM.create('div.mm-panels');
-        Mmenu.DOM.children(this.node.menu)
+        let panels = DOM.create('div.mm-panels');
+        DOM.children(this.node.menu)
             .forEach((panel) => {
             if (this.conf.panelNodetype.indexOf(panel.nodeName.toLowerCase()) > -1) {
                 panels.append(panel);
@@ -436,7 +435,7 @@ export default class Mmenu {
                 var href = anchor.getAttribute('href');
                 if (href && href.length > 1 && href.slice(0, 1) == '#') {
                     try {
-                        let panel = Mmenu.DOM.find(this.node.menu, href)[0];
+                        let panel = DOM.find(this.node.menu, href)[0];
                         if (panel && panel.matches('.mm-panel')) {
                             if (anchor.parentElement.matches('.mm-listitem_vertical')) {
                                 this.togglePanel(panel);
@@ -467,7 +466,7 @@ export default class Mmenu {
         /** The created panels. */
         var newpanels = [];
         //	If no panels provided, use all panels.
-        panels = panels || Mmenu.DOM.children(this.node.pnls, panelNodetype);
+        panels = panels || DOM.children(this.node.pnls, panelNodetype);
         /**
          * Initialize panels.
          *
@@ -484,13 +483,13 @@ export default class Mmenu {
                     //	Init subpanels.
                     var children = [];
                     //	Find panel > panel
-                    children.push(...Mmenu.DOM.children(panel, '.' + this.conf.classNames.panel));
+                    children.push(...DOM.children(panel, '.' + this.conf.classNames.panel));
                     //	Find panel listitem > panel
-                    Mmenu.DOM.children(panel, '.mm-listview')
+                    DOM.children(panel, '.mm-listview')
                         .forEach((listview) => {
-                        Mmenu.DOM.children(listview, '.mm-listitem')
+                        DOM.children(listview, '.mm-listitem')
                             .forEach((listitem) => {
-                            children.push(...Mmenu.DOM.children(listitem, panelNodetype));
+                            children.push(...DOM.children(listitem, panelNodetype));
                         });
                     });
                     if (children.length) {
@@ -534,7 +533,7 @@ export default class Mmenu {
         if (panel.matches('ul, ol')) {
             panel.removeAttribute('id');
             /** The panel. */
-            let wrapper = Mmenu.DOM.create('div');
+            let wrapper = DOM.create('div');
             //	Wrap the listview in the panel.
             panel.before(wrapper);
             wrapper.append(panel);
@@ -570,13 +569,13 @@ export default class Mmenu {
         //	Invoke "before" hook.
         this.trigger('initNavbar:before', [panel]);
         //	Only one navbar per panel.
-        if (Mmenu.DOM.children(panel, '.mm-navbar').length) {
+        if (DOM.children(panel, '.mm-navbar').length) {
             return;
         }
         /** The parent listitem. */
         var parent = panel['mmParent'];
         /** The navbar element. */
-        var navbar = Mmenu.DOM.create('div.mm-navbar');
+        var navbar = DOM.create('div.mm-navbar');
         /** Title in the navbar. */
         var text = this._getPanelTitle(panel, this.opts.navbar.title);
         /** Href for the title. */
@@ -588,12 +587,12 @@ export default class Mmenu {
             let opener;
             //	Listview, the panel wrapping this panel
             if (parent.matches('.mm-listitem')) {
-                opener = Mmenu.DOM.children(parent, '.mm-listitem__text')[0];
+                opener = DOM.children(parent, '.mm-listitem__text')[0];
                 //	Non-listview, the first anchor in the parent panel that links to this panel
             }
             else {
                 opener = panel.closest('.mm-panel');
-                opener = Mmenu.DOM.find(opener, 'a[href="#' + panel.id + '"]')[0];
+                opener = DOM.find(opener, 'a[href="#' + panel.id + '"]')[0];
             }
             let id = opener.closest('.mm-panel').id;
             text = this._getPanelTitle(panel, opener.textContent);
@@ -605,7 +604,7 @@ export default class Mmenu {
                     href = '#' + id;
                     break;
             }
-            let prev = Mmenu.DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
+            let prev = DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
             prev.setAttribute('href', '#' + id);
             navbar.append(prev);
         }
@@ -615,7 +614,7 @@ export default class Mmenu {
         if (this.opts.navbar.add) {
             panel.classList.add('mm-panel_has-navbar');
         }
-        let title = Mmenu.DOM.create('a.mm-navbar__title');
+        let title = DOM.create('a.mm-navbar__title');
         title.innerHTML = text;
         if (href) {
             title.setAttribute('href', href);
@@ -623,7 +622,7 @@ export default class Mmenu {
         navbar.append(title);
         //	Just to center the title.
         if (parent) {
-            let next = Mmenu.DOM.create('span.mm-btn.mm-navbar__btn');
+            let next = DOM.create('span.mm-btn.mm-navbar__btn');
             navbar.append(next);
         }
         panel.prepend(navbar);
@@ -639,7 +638,7 @@ export default class Mmenu {
         //	Invoke "before" hook.
         this.trigger('initListview:before', [panel]);
         //	Refactor listviews classnames.
-        var filter = 'ul, ol', listviews = Mmenu.DOM.children(panel, filter);
+        var filter = 'ul, ol', listviews = DOM.children(panel, filter);
         if (panel.matches(filter)) {
             listviews.unshift(panel);
         }
@@ -651,13 +650,13 @@ export default class Mmenu {
         listviews.forEach((listview) => {
             if (!listview.matches('.mm-nolistview')) {
                 listview.classList.add('mm-listview');
-                Mmenu.DOM.children(listview)
+                DOM.children(listview)
                     .forEach((listitem) => {
                     listitem.classList.add('mm-listitem');
                     Mmenu.refactorClass(listitem, this.conf.classNames.selected, 'mm-listitem_selected');
                     Mmenu.refactorClass(listitem, this.conf.classNames.divider, 'mm-listitem_divider');
                     Mmenu.refactorClass(listitem, this.conf.classNames.spacer, 'mm-listitem_spacer');
-                    Mmenu.DOM.children(listitem, 'a, span')
+                    DOM.children(listitem, 'a, span')
                         .forEach((item) => {
                         if (!item.matches('.mm-btn')) {
                             item.classList.add('mm-listitem__text');
@@ -669,10 +668,10 @@ export default class Mmenu {
         //	Add open link to parent listitem
         var parent = panel['mmParent'];
         if (parent && parent.matches('.mm-listitem')) {
-            if (!Mmenu.DOM.children(parent, '.mm-btn').length) {
-                let item = Mmenu.DOM.children(parent, 'a, span')[0];
+            if (!DOM.children(parent, '.mm-btn').length) {
+                let item = DOM.children(parent, 'a, span')[0];
                 if (item) {
-                    let button = Mmenu.DOM.create('a.mm-btn.mm-btn_next.mm-listitem__btn');
+                    let button = DOM.create('a.mm-btn.mm-btn_next.mm-listitem__btn');
                     button.setAttribute('href', '#' + panel.id);
                     item.parentElement.insertBefore(button, item.nextSibling);
                     if (item.matches('span')) {
@@ -708,7 +707,7 @@ export default class Mmenu {
         /**	The current opened panel. */
         let current = (lastitem)
             ? lastitem.closest('.mm-panel')
-            : Mmenu.DOM.children(this.node.pnls, '.mm-panel')[0];
+            : DOM.children(this.node.pnls, '.mm-panel')[0];
         //	Open the current opened panel.
         this.openPanel(current, false);
         //	Invoke "after" hook.
@@ -748,8 +747,8 @@ export default class Mmenu {
                         evnt.preventDefault();
                         return;
                     }
-                    if (Mmenu.typeof(click) == 'object') {
-                        onClick = Mmenu.extend(click, onClick);
+                    if (type(click) == 'object') {
+                        onClick = extend(click, onClick);
                     }
                 }
             }
@@ -872,72 +871,9 @@ export default class Mmenu {
         var anchors = [];
         Mmenu.filterListItems(listitems)
             .forEach((listitem) => {
-            anchors.push(...Mmenu.DOM.children(listitem, 'a.mm-listitem__text'));
+            anchors.push(...DOM.children(listitem, 'a.mm-listitem__text'));
         });
         return anchors.filter(anchor => !anchor.matches('.mm-btn_next'));
-    }
-    /**
-     * Set and invoke a (single) transition-end function with fallback.
-     *
-     * @param {HTMLElement} 	eelement 	Scope for the function.
-     * @param {function}		func		Function to invoke.
-     * @param {number}			duration	The duration of the animation (for the fallback).
-     */
-    static transitionend(element, func, duration) {
-        var guid = Mmenu.getUniqueId();
-        var _ended = false, _fn = function (evnt) {
-            if (typeof evnt !== 'undefined') {
-                if (evnt.target !== element) {
-                    return;
-                }
-            }
-            if (!_ended) {
-                element.removeEventListener('transitionend', _fn);
-                element.removeEventListener('webkitTransitionEnd', _fn);
-                func.call(element);
-            }
-            _ended = true;
-        };
-        element.addEventListener('transitionend', _fn);
-        element.addEventListener('webkitTransitionEnd', _fn);
-        setTimeout(_fn, duration * 1.1);
-    }
-    /**
-     * Get the type of any given variable. Improvement of "typeof".
-     *
-     * @param 	{any}		variable	The variable.
-     * @return	{string}				The type of the variable in lowercase.
-     */
-    static typeof(variable) {
-        return ({}).toString.call(variable).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
-    }
-    /**
-     * Deep extend an object with the given defaults.
-     * Note that the extended object is not a clone, meaning the original object will also be updated.
-     *
-     * @param 	{object}	orignl	The object to extend to.
-     * @param 	{object}	dfault	The object to extend from.
-     * @return	{object}			The extended "orignl" object.
-     */
-    static extend(orignl, dfault) {
-        if (Mmenu.typeof(orignl) != 'object') {
-            orignl = {};
-        }
-        if (Mmenu.typeof(dfault) != 'object') {
-            dfault = {};
-        }
-        for (let k in dfault) {
-            if (!dfault.hasOwnProperty(k)) {
-                continue;
-            }
-            if (typeof orignl[k] == 'undefined') {
-                orignl[k] = dfault[k];
-            }
-            else if (Mmenu.typeof(orignl[k]) == 'object') {
-                Mmenu.extend(orignl[k], dfault[k]);
-            }
-        }
-        return orignl;
     }
 }
 /**	Plugin version. */
@@ -969,18 +905,18 @@ Mmenu.support = {
 Mmenu.i18n = (function () {
     var translations = {};
     return (text, language) => {
-        switch (Mmenu.typeof(text)) {
+        switch (type(text)) {
             case 'object':
                 if (typeof language == 'string') {
                     if (typeof translations[language] == 'undefined') {
                         translations[language] = {};
                     }
-                    Mmenu.extend(translations[language], text);
+                    extend(translations[language], text);
                 }
                 return translations;
             case 'string':
                 if (typeof language == 'string' &&
-                    Mmenu.typeof(translations[language]) == 'object') {
+                    type(translations[language]) == 'object') {
                     return translations[language][text] || text;
                 }
                 return text;
@@ -990,101 +926,6 @@ Mmenu.i18n = (function () {
         }
     };
 })();
-/** Set of DOM-traversing, -manupulation and -measuring methods. */
-Mmenu.DOM = {
-    /**
-     * Create an element with classname.
-     *
-     * @param 	{string}		selector	The nodeName and classnames for the element to create.
-     * @return	{HTMLElement}				The created element.
-     */
-    create: (selector) => {
-        var elem;
-        selector.split('.').forEach((arg, a) => {
-            if (a == 0) {
-                elem = document.createElement(arg);
-            }
-            else {
-                elem.classList.add(arg);
-            }
-        });
-        return elem;
-    },
-    /**
-     * Find all elements matching the selector.
-     * Basically the same as element.querySelectorAll() but it returns an actuall array.
-     *
-     * @param 	{HTMLElement} 	element Element to search in.
-     * @param 	{string}		filter	The filter to match.
-     * @return	{array}					Array of elements that match the filter.
-     */
-    find: (element, filter) => {
-        return Array.prototype.slice.call(element.querySelectorAll(filter));
-    },
-    /**
-     * Find all child elements matching the (optional) selector.
-     *
-     * @param 	{HTMLElement} 	element Element to search in.
-     * @param 	{string}		filter	The filter to match.
-     * @return	{array}					Array of child elements that match the filter.
-     */
-    children: (element, filter) => {
-        var children = Array.prototype.slice.call(element.children);
-        return filter
-            ? children.filter(child => child.matches(filter))
-            : children;
-    },
-    /**
-     * Find all preceding elements matching the selector.
-     *
-     * @param 	{HTMLElement} 	element Element to start searching from.
-     * @param 	{string}		filter	The filter to match.
-     * @return	{array}					Array of preceding elements that match the selector.
-     */
-    parents: (element, filter) => {
-        /** Array of preceding elements that match the selector. */
-        var parents = [];
-        /** Array of preceding elements that match the selector. */
-        var parent = element.parentElement;
-        while (parent) {
-            parents.push(parent);
-            parent = parent.parentElement;
-        }
-        return filter
-            ? parents.filter(parent => parent.matches(filter))
-            : parents;
-    },
-    /**
-     * Find all previous siblings matching the selecotr.
-     *
-     * @param 	{HTMLElement} 	element Element to start searching from.
-     * @param 	{string}		filter	The filter to match.
-     * @return	{array}					Array of previous siblings that match the selector.
-     */
-    prevAll: (element, filter) => {
-        /** Array of previous siblings that match the selector. */
-        var previous = [];
-        /** Current element in the loop */
-        var current = element.previousElementSibling;
-        while (current) {
-            if (!filter || current.matches(filter)) {
-                previous.push(current);
-            }
-            current = current.previousElementSibling;
-        }
-        return previous;
-    },
-    /**
-     * Get an element offset relative to the document.
-     *
-     * @param 	{HTMLElement}	 element 			Element to start measuring from.
-     * @param 	{string}		 [direction=top] 	Offset top or left.
-     * @return	{number}							The element offset relative to the document.
-     */
-    offset: (element, direction) => {
-        return element.getBoundingClientRect()[direction] + document.body[(direction === 'left') ? 'scrollLeft' : 'scrollTop'];
-    }
-};
 /**
  * Get an unique ID.
  *

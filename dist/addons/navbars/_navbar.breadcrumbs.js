@@ -1,20 +1,21 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import * as DOM from '../../core/_dom';
 export default function (navbar) {
     //	Add content
-    var breadcrumbs = Mmenu.DOM.create('span.mm-navbar__breadcrumbs');
+    var breadcrumbs = DOM.create('span.mm-navbar__breadcrumbs');
     navbar.append(breadcrumbs);
     this.bind('initNavbar:after', (panel) => {
         if (panel.querySelector('.mm-navbar__breadcrumbs')) {
             return;
         }
         panel.classList.remove('mm-panel_has-navbar');
-        var crumbs = [], breadcrumbs = Mmenu.DOM.create('span.mm-navbar__breadcrumbs'), current = panel, first = true;
+        var crumbs = [], breadcrumbs = DOM.create('span.mm-navbar__breadcrumbs'), current = panel, first = true;
         while (current) {
             if (!current.matches('.mm-panel')) {
                 current = current.closest('.mm-panel');
             }
             if (!current.parentElement.matches('.mm-listitem_vertical')) {
-                var text = Mmenu.DOM.find(current, '.mm-navbar__title')[0].textContent;
+                var text = DOM.find(current, '.mm-navbar__title')[0].textContent;
                 if (text.length) {
                     crumbs.unshift(first ? '<span>' + text + '</span>' : '<a href="#' + current.id + '">' + text + '</a>');
                 }
@@ -26,7 +27,7 @@ export default function (navbar) {
             crumbs.shift();
         }
         breadcrumbs.innerHTML = crumbs.join('<span class="mm-separator">' + this.conf.navbars.breadcrumbs.separator + '</span>');
-        Mmenu.DOM.children(panel, '.mm-navbar')[0].append(breadcrumbs);
+        DOM.children(panel, '.mm-navbar')[0].append(breadcrumbs);
     });
     //	Update for to opened panel
     this.bind('openPanel:start', (panel) => {
@@ -37,7 +38,7 @@ export default function (navbar) {
     });
     //	Add screenreader / aria support
     this.bind('initNavbar:after:sr-aria', (panel) => {
-        Mmenu.DOM.find(panel, '.mm-breadcrumbs a')
+        DOM.find(panel, '.mm-breadcrumbs a')
             .forEach((anchor) => {
             Mmenu.sr_aria(anchor, 'owns', anchor.getAttribute('href').slice(1));
         });

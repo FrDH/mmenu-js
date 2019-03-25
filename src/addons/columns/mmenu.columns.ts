@@ -2,6 +2,8 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
 import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 
 Mmenu.options.columns = options;
 
@@ -10,7 +12,7 @@ export default function(
 	this : Mmenu
 ) {
 	var options = extendShorthandOptions( this.opts.columns );
-	this.opts.columns = Mmenu.extend( options, Mmenu.options.columns );
+	this.opts.columns = extend( options, Mmenu.options.columns );
 
 
 	//	Add the columns
@@ -71,7 +73,7 @@ export default function(
 
 			var colnr = parseInt( classname.split( ' ' )[ 0 ], 10 ) + 1;
 			while( colnr > 0 ) {
-				panel = Mmenu.DOM.children( this.node.pnls, '.mm-panel_columns-' + colnr )[ 0 ];
+				panel = DOM.children( this.node.pnls, '.mm-panel_columns-' + colnr )[ 0 ];
 				if ( panel ) {
 					colnr++;
 					panel.classList.remove( rmvc );
@@ -86,7 +88,7 @@ export default function(
 		this.bind( 'openPanel:start', (
 			panel : HTMLElement
 		) => {
-			var columns = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' ).length;
+			var columns = DOM.children( this.node.pnls, '.mm-panel_opened-parent' ).length;
 			if ( !panel.matches( '.mm-panel_opened-parent' ) ) {
 				columns++;
 			}
@@ -96,7 +98,7 @@ export default function(
 			this.node.menu.classList.add( 'mm-menu_columns-' + columns );
 
 			var panels : HTMLElement[] = [];
-			Mmenu.DOM.children( this.node.pnls, '.mm-panel' )
+			DOM.children( this.node.pnls, '.mm-panel' )
 				.forEach(( panel ) => {
 					panel.classList.remove( ...colp.split( ' ' ) );
 					if ( panel.matches( '.mm-panel_opened-parent' ) ) {

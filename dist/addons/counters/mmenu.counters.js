@@ -1,26 +1,15 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 Mmenu.options.counters = options;
 Mmenu.configs.classNames.counters = {
     counter: 'Counter'
 };
 export default function () {
-    var options = this.opts.counters;
-    //	Extend shorthand options
-    if (typeof options == 'boolean') {
-        options = {
-            add: options,
-            count: options
-        };
-    }
-    if (typeof options != 'object') {
-        options = {};
-    }
-    if (options.addTo == 'panels') {
-        options.addTo = '.mm-panel';
-    }
-    //	/Extend shorthand options
-    this.opts.counters = Mmenu.extend(options, Mmenu.options.counters);
+    var options = extendShorthandOptions(this.opts.counters);
+    this.opts.counters = extend(options, Mmenu.options.counters);
     //	Refactor counter class
     this.bind('initListview:after', (panel) => {
         var cntrclss = this.conf.classNames.counters.counter, counters = panel.querySelectorAll('.' + cntrclss);
@@ -38,8 +27,8 @@ export default function () {
             if (parent) {
                 //	Check if no counter already excists.
                 if (!parent.querySelector('.mm-counter')) {
-                    let counter = Mmenu.DOM.create('span.mm-counter');
-                    let btn = Mmenu.DOM.children(parent, '.mm-btn')[0];
+                    let counter = DOM.create('span.mm-counter');
+                    let btn = DOM.children(parent, '.mm-btn')[0];
                     if (btn) {
                         btn.prepend(counter);
                     }
@@ -49,7 +38,7 @@ export default function () {
     }
     if (options.count) {
         function count(panel) {
-            var panels = panel ? [panel] : Mmenu.DOM.children(this.node.pnls, '.mm-panel');
+            var panels = panel ? [panel] : DOM.children(this.node.pnls, '.mm-panel');
             panels.forEach((panel) => {
                 var parent = panel['mmParent'];
                 if (!parent) {
@@ -60,9 +49,9 @@ export default function () {
                     return;
                 }
                 var listitems = [];
-                Mmenu.DOM.children(panel, '.mm-listview')
+                DOM.children(panel, '.mm-listview')
                     .forEach((listview) => {
-                    listitems.push(...Mmenu.DOM.children(listview));
+                    listitems.push(...DOM.children(listview));
                 });
                 counter.innerHTML = Mmenu.filterListItems(listitems).length.toString();
             });

@@ -3,6 +3,8 @@ import options from './_options';
 import configs from './_configs';
 
 import { extendShorthandOptions } from './_options';
+import { type, extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 
 Mmenu.options.searchfield = options;
 Mmenu.configs.searchfield = configs;
@@ -12,7 +14,7 @@ export default function(
 	this : Mmenu
 ) {
 	var options = extendShorthandOptions( this.opts.searchfield );
-	this.opts.searchfield = Mmenu.extend( options, Mmenu.options.searchfield );
+	this.opts.searchfield = extend( options, Mmenu.options.searchfield );
 
 	var configs = this.conf.searchfield;
 
@@ -23,7 +25,7 @@ export default function(
 
 	//	Blur searchfield
 	this.bind( 'close:start', () => {
-		Mmenu.DOM.find( this.node.menu, '.mm-searchfield' )
+		DOM.find( this.node.menu, '.mm-searchfield' )
 			.forEach(( input ) => {
 				input.blur();
 			});
@@ -54,9 +56,9 @@ export default function(
 
 			default:
 				if ( typeof options.addTo == 'string' ) {
-					addTo = Mmenu.DOM.find( this.node.menu, options.addTo );
+					addTo = DOM.find( this.node.menu, options.addTo );
 
-				} else if ( Mmenu.typeof( options.addTo ) == 'array' ) {
+				} else if ( type( options.addTo ) == 'array' ) {
 					addTo = options.addTo;
 				}
 				break;
@@ -91,7 +93,7 @@ export default function(
 				//	Clicking the clear button
 				if ( anchor.matches( '.mm-btn_close' ) ) {
 					let form  = (anchor.closest( '.mm-searchfield' ) as HTMLElement),
-						input = (Mmenu.DOM.find( form, 'input' )[ 0 ] as HTMLInputElement);
+						input = (DOM.find( form, 'input' )[ 0 ] as HTMLInputElement);
 					
 					input.value = '';
 					this.search( input );
@@ -124,12 +126,12 @@ const initSearchPanel = function(
 
 
 	//	Only once
-	if (  Mmenu.DOM.children( this.node.pnls, '.mm-panel_search' ).length ) {
+	if (  DOM.children( this.node.pnls, '.mm-panel_search' ).length ) {
 		return null;
 	}
 
-	var searchpanel = Mmenu.DOM.create( 'div.mm-panel_search' ),
-		listview 	= Mmenu.DOM.create( 'ul' );
+	var searchpanel = DOM.create( 'div.mm-panel_search' ),
+		listview 	= DOM.create( 'ul' );
 	
 	searchpanel.append( listview );
 	this.node.pnls.append( searchpanel )
@@ -157,7 +159,7 @@ const initSearchPanel = function(
 
 	//	Add splash content
 	if ( options.panel.splash ) {
-		let splash = Mmenu.DOM.create( 'div.mm-panel__searchsplash' );
+		let splash = DOM.create( 'div.mm-panel__searchsplash' );
 			splash.innerHTML = options.panel.splash;
 
 		searchpanel.append( splash );
@@ -182,7 +184,7 @@ const initSearchfield = function(
 	}
 
 	//	Only one searchfield per panel
-	var form = Mmenu.DOM.find( wrapper, '.mm-searchfield' )[ 0 ];
+	var form = DOM.find( wrapper, '.mm-searchfield' )[ 0 ];
 	if ( form ) {
 		return form;
 	}
@@ -200,9 +202,9 @@ const initSearchfield = function(
 	}
 
 
-	var form  = Mmenu.DOM.create( ( configs.form ? 'form' : 'div' ) + '.mm-searchfield' ),
-		field = Mmenu.DOM.create( 'div.mm-searchfield__input' ),
-		input = (Mmenu.DOM.create( 'input' ) as HTMLInputElement);
+	var form  = DOM.create( ( configs.form ? 'form' : 'div' ) + '.mm-searchfield' ),
+		field = DOM.create( 'div.mm-searchfield__input' ),
+		input = (DOM.create( 'input' ) as HTMLInputElement);
 	
 	input.type = 'text';
 	input.autocomplete = 'off';
@@ -223,7 +225,7 @@ const initSearchfield = function(
 
 	//	Add the clear button
 	if ( configs.clear ) {
-		let anchor = Mmenu.DOM.create( 'a.mm-btn.mm-btn_close.mm-searchfield__btn' );
+		let anchor = DOM.create( 'a.mm-btn.mm-btn_close.mm-searchfield__btn' );
 			anchor.setAttribute( 'href', '#' );
 
 		field.append( anchor );
@@ -233,14 +235,14 @@ const initSearchfield = function(
 	//	Add attributes and submit to the form
 	addAttributes( form, configs.form );
 	if ( configs.form && configs.submit && !configs.clear ) {
-		let anchor = Mmenu.DOM.create( 'a.mm-btn.mm-btn_next.mm-searchfield__btn' );
+		let anchor = DOM.create( 'a.mm-btn.mm-btn_next.mm-searchfield__btn' );
 			anchor.setAttribute( 'href', '#' );
 
 		field.append( anchor );
 	}
 
 	if ( options.cancel ) {
-		let anchor = Mmenu.DOM.create( 'a.mm-searchfield__cancel' );
+		let anchor = DOM.create( 'a.mm-searchfield__cancel' );
 			anchor.setAttribute( 'href', '#' );
 			anchor.textContent =  (this.i18n( 'cancel' ) as string);
 
@@ -262,7 +264,7 @@ const initSearching = function(
 
 	//	In the searchpanel.
 	if ( form.closest( '.mm-panel_search' ) ) {
-		data.panels 	= Mmenu.DOM.find( this.node.pnls, '.mm-panel' );
+		data.panels 	= DOM.find( this.node.pnls, '.mm-panel' );
 		data.noresults 	= [ form.closest( '.mm-panel' ) ];
 
 	//	In a panel
@@ -272,7 +274,7 @@ const initSearching = function(
 
 	//	Not in a panel, global
 	} else {
-		data.panels 	= Mmenu.DOM.find( this.node.pnls, '.mm-panel' );
+		data.panels 	= DOM.find( this.node.pnls, '.mm-panel' );
 		data.noresults 	= [ this.node.menu ];
 	}
 
@@ -285,16 +287,16 @@ const initSearching = function(
 
 	var listitems : HTMLElement[] = [];
 	data.panels.forEach(( panel ) => {
-		listitems.push( ...Mmenu.DOM.find( panel, '.mm-listitem' ) );
+		listitems.push( ...DOM.find( panel, '.mm-listitem' ) );
 	});
 
 	data.listitems  = listitems.filter( listitem => !listitem.matches( '.mm-listitem_divider' ) );
 	data.dividers	= listitems.filter( listitem => listitem.matches( '.mm-listitem_divider' ) );
 
 
-	var searchpanel = Mmenu.DOM.children( this.node.pnls, '.mm-panel_search' )[ 0 ],
-		input 		= Mmenu.DOM.find( form, 'input' )[ 0 ],
-		cancel 		= Mmenu.DOM.find( form, '.mm-searchfield__cancel' )[ 0 ];
+	var searchpanel = DOM.children( this.node.pnls, '.mm-panel_search' )[ 0 ],
+		input 		= DOM.find( form, 'input' )[ 0 ],
+		cancel 		= DOM.find( form, '.mm-searchfield__cancel' )[ 0 ];
 
 
 	input[ 'mmSearchfield' ] = data;
@@ -344,7 +346,7 @@ const initSearching = function(
 			cancel.classList.remove( 'mm-searchfield__cancel-active' );
 
 			if ( searchpanel.matches( '.mm-panel_opened' ) ) {
-				let parents = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' );
+				let parents = DOM.children( this.node.pnls, '.mm-panel_opened-parent' );
 				if ( parents.length ) {
 					this.openPanel( parents[ parents.length - 1 ] );
 				}
@@ -413,16 +415,16 @@ const initNoResultsMsg = function(
 
 	//	Not in a panel
 	if ( !wrapper.closest( '.mm-panel' ) ) {
-		wrapper = Mmenu.DOM.children( this.node.pnls, '.mm-panel' )[ 0 ];
+		wrapper = DOM.children( this.node.pnls, '.mm-panel' )[ 0 ];
 	}
 
 	//	Only once
-	if ( Mmenu.DOM.children( wrapper, '.mm-panel__noresultsmsg' ).length ) {
+	if ( DOM.children( wrapper, '.mm-panel__noresultsmsg' ).length ) {
 		return;
 	}
 
 	//	Add no-results message
-	var message = Mmenu.DOM.create( 'div.mm-panel__noresultsmsg.mm-hidden' );
+	var message = DOM.create( 'div.mm-panel__noresultsmsg.mm-hidden' );
 		message.innerHTML = (this.i18n( options.noResults ) as string);
 
 	wrapper.prepend( message );
@@ -443,8 +445,8 @@ Mmenu.prototype.search = function(
 	var data  = input[ 'mmSearchfield' ];
 
 	var form 		: HTMLElement 	= (input.closest( '.mm-searchfield' ) as HTMLElement),
-		buttons 	: HTMLElement[] = Mmenu.DOM.find( (form as HTMLElement), '.mm-btn' ),
-		searchpanel : HTMLElement 	= Mmenu.DOM.children( this.node.pnls, '.mm-panel_search' )[ 0 ];
+		buttons 	: HTMLElement[] = DOM.find( (form as HTMLElement), '.mm-btn' ),
+		searchpanel : HTMLElement 	= DOM.children( this.node.pnls, '.mm-panel_search' )[ 0 ];
 
 	var panels 		: HTMLElement[] = data.panels,
 		noresults 	: HTMLElement[] = data.noresults,
@@ -462,7 +464,7 @@ Mmenu.prototype.search = function(
 		// Mmenu.$(listitems).find( '.mm-btn_fullwidth-search' )
 		// .removeClass( 'mm-btn_fullwidth-search mm-btn_fullwidth' );
 	if ( searchpanel ) {
-		Mmenu.DOM.children( searchpanel, '.mm-listview' )[ 0 ].innerHTML = '';
+		DOM.children( searchpanel, '.mm-listview' )[ 0 ].innerHTML = '';
 	}
 
 	panels.forEach(( panel ) => {
@@ -492,7 +494,7 @@ Mmenu.prototype.search = function(
 				_search = 'a' + _search;
 			}
 
-			let text = Mmenu.DOM.children( listitem, _search )[ 0 ];
+			let text = DOM.children( listitem, _search )[ 0 ];
 			if ( text && text.textContent.toLowerCase().indexOf( query ) > -1 ) {
 				listitem.classList.remove( 'mm-hidden' );
 			}
@@ -504,11 +506,11 @@ Mmenu.prototype.search = function(
 			//	Clone all matched listitems into the search panel
 			let allitems : HTMLElement[] = [];
 			panels.forEach(( panel ) => {
-				let listitems = Mmenu.filterListItems( Mmenu.DOM.find( panel, '.mm-listitem' ) );
+				let listitems = Mmenu.filterListItems( DOM.find( panel, '.mm-listitem' ) );
 
 				if ( listitems.length ) {
 					if ( options.panel.dividers ) {
-						let divider = Mmenu.DOM.create( 'li.mm-listitem.mm-listitem_divider' );
+						let divider = DOM.create( 'li.mm-listitem.mm-listitem_divider' );
 							divider.innerHTML = panel.querySelector( '.mm-navbar__title' ).innerHTML;
 
 						listitems.push( divider );
@@ -531,7 +533,7 @@ Mmenu.prototype.search = function(
 
 
 			//	Add to the search panel
-			Mmenu.DOM.children( searchpanel, '.mm-listview' )[ 0 ].append( ...listitems );
+			DOM.children( searchpanel, '.mm-listview' )[ 0 ].append( ...listitems );
 
 
 			//	Open the search panel
@@ -542,14 +544,14 @@ Mmenu.prototype.search = function(
 			//	Also show listitems in sub-panels for matched listitems
 			if ( options.showSubPanels ) {
 				panels.forEach(( panel ) => {
-					let listitems = Mmenu.DOM.find( panel, '.mm-listitem' );
+					let listitems = DOM.find( panel, '.mm-listitem' );
 
 					Mmenu.filterListItems( listitems )
 						.forEach(( listitem ) => {
 							let child : HTMLElement = listitem [ 'mmChild' ];
 							if ( child )
 							{
-								Mmenu.DOM.find( child, '.mm-listitem' )
+								DOM.find( child, '.mm-listitem' )
 									.forEach(( listitem ) => {
 										listitem.classList.remove( 'mm-hidden' );
 									});
@@ -566,7 +568,7 @@ Mmenu.prototype.search = function(
 
 					if ( parent ) {
 						//	The current panel has mached listitems
-						let listitems = Mmenu.DOM.find( panel, '.mm-listitem' );
+						let listitems = DOM.find( panel, '.mm-listitem' );
 						if ( Mmenu.filterListItems( listitems ).length ) {
 							//	Show parent
 							if ( parent.matches( '.mm-hidden' ) ) {
@@ -598,10 +600,10 @@ Mmenu.prototype.search = function(
 
 			//	Show first preceeding divider of parent
 			panels.forEach(( panel ) => {
-				let listitems = Mmenu.DOM.find( panel, '.mm-listitem' );
+				let listitems = DOM.find( panel, '.mm-listitem' );
 				Mmenu.filterListItems( listitems )
 					.forEach(( listitem ) => {
-						let divider = Mmenu.DOM.prevAll( listitem, '.mm-listitem_divider' )[ 0 ];
+						let divider = DOM.prevAll( listitem, '.mm-listitem_divider' )[ 0 ];
 						if ( divider ) {
 							divider.classList.remove( 'mm-hidden' );
 						}
@@ -617,7 +619,7 @@ Mmenu.prototype.search = function(
 
 		//	Show/hide no results message
 		noresults.forEach( wrapper => {
-			Mmenu.DOM.find( wrapper, '.mm-panel__noresultsmsg' )
+			DOM.find( wrapper, '.mm-panel__noresultsmsg' )
 				.forEach( message => message.classList[ listitems.filter( listitem => !listitem.matches( '.mm-hidden' ) ).length ? 'add' : 'remove' ]( 'mm-hidden' ) );
 		});
 
@@ -625,7 +627,7 @@ Mmenu.prototype.search = function(
 		if ( options.panel.add ) {
 			//	Hide splash
 			if ( options.panel.splash ) {
-				Mmenu.DOM.find( searchpanel, '.mm-panel__searchsplash' )
+				DOM.find( searchpanel, '.mm-panel__searchsplash' )
 					.forEach( splash => splash.classList.add( 'mm-hidden' ) );
 			}
 
@@ -646,7 +648,7 @@ Mmenu.prototype.search = function(
 
 		//	Hide no results message
 		noresults.forEach( wrapper => {
-			Mmenu.DOM.find( wrapper, '.mm-panel__noresultsmsg' )
+			DOM.find( wrapper, '.mm-panel__noresultsmsg' )
 				.forEach( message => message.classList.add( 'mm-hidden' ) );
 		});
 
@@ -654,12 +656,12 @@ Mmenu.prototype.search = function(
 		if ( options.panel.add ) {
 			//	Show splash
 			if ( options.panel.splash ) {
-				Mmenu.DOM.find( searchpanel, '.mm-panel__searchsplash' )
+				DOM.find( searchpanel, '.mm-panel__searchsplash' )
 					.forEach( splash => splash.classList.remove( 'mm-hidden' ) );
 
 			//	Close panel 
 			} else if ( !input.closest( '.mm-panel_search' ) ) {
-				let opened = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened-parent' );
+				let opened = DOM.children( this.node.pnls, '.mm-panel_opened-parent' );
 				this.openPanel( opened.slice( -1 )[ 0 ] );
 			}
 		}

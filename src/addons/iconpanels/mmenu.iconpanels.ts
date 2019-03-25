@@ -2,6 +2,8 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
 import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 
 Mmenu.options.iconPanels = options;
 
@@ -10,7 +12,7 @@ export default function(
 	this : Mmenu
 ) {
 	var options = extendShorthandOptions( this.opts.iconPanels );
-	this.opts.iconPanels = Mmenu.extend( options, Mmenu.options.iconPanels );
+	this.opts.iconPanels = extend( options, Mmenu.options.iconPanels );
 
 	var keepFirst = false;
 
@@ -50,7 +52,7 @@ export default function(
 			panel ?: HTMLElement
 		) => {
 
-			var panels = Mmenu.DOM.children( this.node.pnls, '.mm-panel' );
+			var panels = DOM.children( this.node.pnls, '.mm-panel' );
 			panel = panel || panels[ 0 ];
 
 			if ( panel.parentElement.matches( '.mm-listitem_vertical' )
@@ -103,9 +105,9 @@ export default function(
 		) => {
 			if ( options.blockPanel &&
 				!panel.parentElement.matches( '.mm-listitem_vertical' ) &&
-				!Mmenu.DOM.children( panel, '.mm-panel__blocker' )[ 0 ]
+				!DOM.children( panel, '.mm-panel__blocker' )[ 0 ]
 			) {
-				let blocker = Mmenu.DOM.create( 'a.mm-panel__blocker' );
+				let blocker = DOM.create( 'a.mm-panel__blocker' );
 					blocker.setAttribute( 'href', '#' + panel.closest( '.mm-panel' ).id );
 
 				panel.prepend( blocker );

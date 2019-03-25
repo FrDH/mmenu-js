@@ -2,6 +2,8 @@ import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 
 import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../_dom';
 
 Mmenu.options.scrollBugFix = options;
 
@@ -22,7 +24,7 @@ export default function(
 
 	//	Extend options.
 	var options = extendShorthandOptions( this.opts.scrollBugFix );
-	this.opts.scrollBugFix = Mmenu.extend( options, Mmenu.options.scrollBugFix );
+	this.opts.scrollBugFix = extend( options, Mmenu.options.scrollBugFix );
 
 
 	if ( !options.fix ) {
@@ -32,7 +34,7 @@ export default function(
 
 	//	When opening the menu, scroll to the top of the current opened panel.
 	this.bind( 'open:start', () => {
-		Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ].scrollTop = 0;
+		DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ].scrollTop = 0;
 	});
 
 	this.bind( 'initMenu:after', () => {
@@ -92,7 +94,7 @@ export default function(
 
 		//	Fix issue after device rotation change.
 		window.addEventListener( 'orientationchange', ( evnt ) => {
-			var panel = Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
+			var panel = DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
 			panel.scrollTop = 0;
 
 			//	Apparently, changing the overflow-scrolling property triggers some event :)

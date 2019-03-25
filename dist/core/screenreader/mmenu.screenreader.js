@@ -2,12 +2,14 @@ import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../_dom';
 Mmenu.options.screenReader = options;
 Mmenu.configs.screenReader = configs;
 export default function () {
     //	Extend options.
     var options = extendShorthandOptions(this.opts.screenReader);
-    this.opts.screenReader = Mmenu.extend(options, Mmenu.options.screenReader);
+    this.opts.screenReader = extend(options, Mmenu.options.screenReader);
     //	Extend configs.
     var configs = this.conf.screenReader;
     //	Add Aria-* attributes
@@ -33,14 +35,14 @@ export default function () {
         //	Update aria-hidden for the panels when opening and closing a panel.
         this.bind('openPanel:start', (panel) => {
             /** Panels that should be considered "hidden". */
-            var hidden = Mmenu.DOM.find(this.node.pnls, '.mm-panel')
+            var hidden = DOM.find(this.node.pnls, '.mm-panel')
                 .filter(hide => hide !== panel)
                 .filter(hide => !hide.parentElement.matches('.mm-panel'));
             /** Panels that should be considered "visible". */
             var visible = [panel];
-            Mmenu.DOM.find(panel, '.mm-listitem_vertical .mm-listitem_opened')
+            DOM.find(panel, '.mm-listitem_vertical .mm-listitem_opened')
                 .forEach((listitem) => {
-                visible.push(...Mmenu.DOM.children(listitem, '.mm-panel'));
+                visible.push(...DOM.children(listitem, '.mm-panel'));
             });
             //	Set the panels to be considered "hidden" or "visible".
             hidden.forEach((panel) => {
@@ -56,7 +58,7 @@ export default function () {
         //	Add aria-haspopup and aria-owns to prev- and next buttons.
         this.bind('initPanels:after', (panels) => {
             panels.forEach((panel) => {
-                Mmenu.DOM.find(panel, '.mm-btn')
+                DOM.find(panel, '.mm-btn')
                     .forEach((button) => {
                     Mmenu.sr_aria(button, 'haspopup', true);
                     let href = button.getAttribute('href');
@@ -69,7 +71,7 @@ export default function () {
         //	Add aria-hidden for navbars in panels.
         this.bind('initNavbar:after', (panel) => {
             /** The navbar in the panel. */
-            var navbar = Mmenu.DOM.children(panel, '.mm-navbar')[0];
+            var navbar = DOM.children(panel, '.mm-navbar')[0];
             /** Whether or not the navbar should be considered "hidden". */
             var hidden = !panel.matches('.mm-panel_has-navbar');
             //	Set the navbar to be considered "hidden" or "visible".
@@ -81,11 +83,11 @@ export default function () {
             if (this.opts.navbar.titleLink == 'parent') {
                 this.bind('initNavbar:after', (panel) => {
                     /** The navbar in the panel. */
-                    var navbar = Mmenu.DOM.children(panel, '.mm-navbar')[0];
+                    var navbar = DOM.children(panel, '.mm-navbar')[0];
                     /** Whether or not the navbar should be considered "hidden". */
                     var hidden = navbar.querySelector('.mm-btn_prev') ? true : false;
                     //	Set the navbar-title to be considered "hidden" or "visible".
-                    Mmenu.sr_aria(Mmenu.DOM.find(navbar, '.mm-navbar__title')[0], 'hidden', hidden);
+                    Mmenu.sr_aria(DOM.find(navbar, '.mm-navbar__title')[0], 'hidden', hidden);
                 });
             }
         }
@@ -100,9 +102,9 @@ export default function () {
         });
         //	Add text to the prev-buttons.
         this.bind('initNavbar:after', (panel) => {
-            let navbar = Mmenu.DOM.children(panel, '.mm-navbar')[0];
+            let navbar = DOM.children(panel, '.mm-navbar')[0];
             if (navbar) {
-                let button = Mmenu.DOM.children(navbar, '.mm-btn_prev')[0];
+                let button = DOM.children(navbar, '.mm-btn_prev')[0];
                 if (button) {
                     button.innerHTML = Mmenu.sr_text(this.i18n(configs.text.closeSubmenu));
                 }
@@ -112,7 +114,7 @@ export default function () {
         this.bind('initListview:after', (panel) => {
             let parent = panel['mmParent'];
             if (parent) {
-                let next = Mmenu.DOM.children(parent, '.mm-btn_next')[0];
+                let next = DOM.children(parent, '.mm-btn_next')[0];
                 if (next) {
                     let text = this.i18n(configs.text[next.parentElement.matches('.mm-listitem_vertical') ? 'toggleSubmenu' : 'openSubmenu']);
                     next.innerHTML += Mmenu.sr_text(text);

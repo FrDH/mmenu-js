@@ -2,6 +2,8 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
 import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 
 Mmenu.options.sidebar = options;
 
@@ -14,7 +16,7 @@ export default function(
 	}
 
 	var options = extendShorthandOptions( this.opts.sidebar );
-	this.opts.sidebar = Mmenu.extend( options, Mmenu.options.sidebar );
+	this.opts.sidebar = extend( options, Mmenu.options.sidebar );
 
 
 	var clsclpsd = 'mm-wrapper_sidebar-collapsed',
@@ -28,9 +30,9 @@ export default function(
 
 			if ( options.collapsed.blockMenu &&
 				this.opts.offCanvas &&
-				!Mmenu.DOM.children( this.node.menu, '.mm-menu__blocker' )[ 0 ]
+				!DOM.children( this.node.menu, '.mm-menu__blocker' )[ 0 ]
 			) {
-				let anchor = Mmenu.DOM.create( 'a.mm-menu__blocker' );
+				let anchor = DOM.create( 'a.mm-menu__blocker' );
 					anchor.setAttribute( 'href', '#' + this.node.menu.id );
 				
 				this.node.menu.prepend( anchor );
@@ -50,7 +52,7 @@ export default function(
 				document.documentElement.classList.add( clsclpsd );
 			});
 
-		} else {
+		} else if ( typeof options.collapsed.use == 'string' ) {
 			this.matchMedia( options.collapsed.use,
 				() => {
 					document.documentElement.classList.add( clsclpsd );
@@ -75,7 +77,7 @@ export default function(
 				this.open();
 			});
 
-		} else {
+		} else if ( typeof options.expanded.use == 'string' ) {
 			this.matchMedia( options.expanded.use,
 				() => {
 					document.documentElement.classList.add( clsxpndd );

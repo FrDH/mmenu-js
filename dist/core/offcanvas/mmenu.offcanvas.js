@@ -2,18 +2,17 @@ import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 import { extendShorthandOptions } from './_options';
+import { extend, transitionend } from '../../core/_helpers';
+import * as DOM from '../_dom';
 Mmenu.options.offCanvas = options;
 Mmenu.configs.offCanvas = configs;
 export default function () {
     if (!this.opts.offCanvas) {
         return;
     }
-    //	Extend options.
     var options = extendShorthandOptions(this.opts.offCanvas);
-    this.opts.offCanvas = Mmenu.extend(options, Mmenu.options.offCanvas);
-    //	Extend configs.
+    this.opts.offCanvas = extend(options, Mmenu.options.offCanvas);
     var configs = this.conf.offCanvas;
-    this.conf.offCanvas = Mmenu.extend(configs, Mmenu.configs.offCanvas);
     //	Add methods to the API.
     this._api.push('open', 'close', 'setPage');
     //	Setup the menu.
@@ -45,7 +44,7 @@ export default function () {
     //	Sync the blocker to target the page.
     this.bind('setPage:after', (page) => {
         if (Mmenu.node.blck) {
-            Mmenu.DOM.children(Mmenu.node.blck, 'a')
+            DOM.children(Mmenu.node.blck, 'a')
                 .forEach((anchor) => {
                 anchor.setAttribute('href', '#' + page.id);
             });
@@ -63,7 +62,7 @@ export default function () {
     });
     //	Add screenreader / text support
     this.bind('initBlocker:after:sr-text', () => {
-        Mmenu.DOM.children(Mmenu.node.blck, 'a')
+        DOM.children(Mmenu.node.blck, 'a')
             .forEach((anchor) => {
             anchor.innerHTML = Mmenu.sr_text(this.i18n(this.conf.screenReader.text.closeMenu));
         });
@@ -88,7 +87,7 @@ export default function () {
                     var api = menu['mmenu'];
                     if (api && api.close) {
                         api.close();
-                        Mmenu.transitionend(menu, () => {
+                        transitionend(menu, () => {
                             this.open();
                         }, this.conf.transitionDuration);
                         return true;
@@ -160,7 +159,7 @@ Mmenu.prototype._openSetup = function () {
  */
 Mmenu.prototype._openStart = function () {
     //	Callback when the page finishes opening.
-    Mmenu.transitionend(Mmenu.node.page, () => {
+    transitionend(Mmenu.node.page, () => {
         this.trigger('open:finish');
     }, this.conf.transitionDuration);
     //	Opening
@@ -174,7 +173,7 @@ Mmenu.prototype.close = function () {
         return;
     }
     //	Callback when the page finishes closing.
-    Mmenu.transitionend(Mmenu.node.page, () => {
+    transitionend(Mmenu.node.page, () => {
         this.node.menu.classList.remove('mm-menu_opened');
         var clsn = [
             'mm-wrapper_opened',
@@ -198,7 +197,7 @@ Mmenu.prototype.close = function () {
  * Close all other menus.
  */
 Mmenu.prototype.closeAllOthers = function () {
-    Mmenu.DOM.find(document.body, '.mm-menu_offcanvas')
+    DOM.find(document.body, '.mm-menu_offcanvas')
         .forEach((menu) => {
         if (menu !== this.node.menu) {
             let api = menu['mmenu'];
@@ -221,8 +220,8 @@ Mmenu.prototype.setPage = function (page) {
     if (!page) {
         /** Array of elements that are / could be "the page". */
         let pages = (typeof configs.page.selector == 'string')
-            ? Mmenu.DOM.find(document.body, configs.page.selector)
-            : Mmenu.DOM.children(document.body, configs.page.nodetype);
+            ? DOM.find(document.body, configs.page.selector)
+            : DOM.children(document.body, configs.page.nodetype);
         //	Filter out elements that are absolutely not "the page".
         pages = pages.filter(page => !page.matches('.mm-menu, .mm-wrapper__blocker'));
         //	Filter out elements that are configured to not be "the page".
@@ -231,7 +230,7 @@ Mmenu.prototype.setPage = function (page) {
         }
         //	Wrap multiple pages in a single element.
         if (pages.length > 1) {
-            let wrapper = Mmenu.DOM.create('div');
+            let wrapper = DOM.create('div');
             pages[0].before(wrapper);
             pages.forEach((page) => {
                 wrapper.append(page);
@@ -289,7 +288,7 @@ const initBlocker = function () {
     }
     //	Create the blocker node.
     if (!Mmenu.node.blck) {
-        let blck = Mmenu.DOM.create('div.mm-wrapper__blocker.mm-slideout');
+        let blck = DOM.create('div.mm-wrapper__blocker.mm-slideout');
         blck.innerHTML = '<a></a>';
         //	Append the blocker node to the body.
         document.querySelector(configs.menu.insertSelector)

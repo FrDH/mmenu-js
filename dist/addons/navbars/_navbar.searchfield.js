@@ -1,6 +1,6 @@
-import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import { type } from '../../core/_helpers';
 export default function (navbar) {
-    if (Mmenu.typeof(this.opts.searchfield) != 'object') {
+    if (type(this.opts.searchfield) != 'object') {
         this.opts.searchfield = {};
     }
     this.opts.searchfield.add = true;

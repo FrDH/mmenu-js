@@ -1,29 +1,18 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
+import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 Mmenu.options.dropdown = options;
 Mmenu.configs.dropdown = configs;
 export default function () {
     if (!this.opts.offCanvas) {
         return;
     }
-    var options = this.opts.dropdown, configs = this.conf.dropdown;
-    //	Extend shorthand options
-    if (typeof options == 'boolean' && options) {
-        options = {
-            drop: options
-        };
-    }
-    if (typeof options != 'object') {
-        options = {};
-    }
-    if (typeof options.position == 'string') {
-        options.position = {
-            of: options.position
-        };
-    }
-    //	/Extend shorthand options
-    this.opts.dropdown = Mmenu.extend(options, Mmenu.options.dropdown);
+    var options = extendShorthandOptions(this.opts.dropdown);
+    this.opts.dropdown = extend(options, Mmenu.options.dropdown);
+    var configs = this.conf.dropdown;
     if (!options.drop) {
         return;
     }
@@ -40,7 +29,7 @@ export default function () {
             return;
         }
         //	Get the button to put the menu next to
-        button = Mmenu.DOM.find(document.body, options.position.of)[0];
+        button = DOM.find(document.body, options.position.of)[0];
         //	Emulate hover effect
         var events = options.event.split(' ');
         if (events.length == 1) {
@@ -76,7 +65,7 @@ export default function () {
     var getPosition = function (dir, obj) {
         var css = obj[0], cls = obj[1];
         var _scrollPos = dir == 'x' ? 'scrollLeft' : 'scrollTop', _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight', _startPos = dir == 'x' ? 'left' : 'top', _stopPos = dir == 'x' ? 'right' : 'bottom', _size = dir == 'x' ? 'width' : 'height', _winSize = dir == 'x' ? 'innerWidth' : 'innerHeight', _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight', _position = null;
-        var scrollPos = document.documentElement[_scrollPos] || document.body[_scrollPos], startPos = Mmenu.DOM.offset(button, _startPos) - scrollPos, stopPos = startPos + button[_outerSize], windowSize = window[_winSize];
+        var scrollPos = document.documentElement[_scrollPos] || document.body[_scrollPos], startPos = DOM.offset(button, _startPos) - scrollPos, stopPos = startPos + button[_outerSize], windowSize = window[_winSize];
         /** Offset for the menu relative to the button. */
         var offs = configs.offset.button[dir] + configs.offset.viewport[dir];
         //	Position set in option

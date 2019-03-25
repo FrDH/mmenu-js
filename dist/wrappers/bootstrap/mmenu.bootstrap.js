@@ -1,13 +1,13 @@
-import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import * as DOM from '../../core/_dom';
 export default function () {
     //	Create the menu
     if (this.node.menu.matches('.navbar-collapse')) {
         //	No need for cloning the menu...
         this.conf.clone = false;
         //	... We'll create a new menu
-        var nav = Mmenu.DOM.create('nav'), panel = Mmenu.DOM.create('div');
+        var nav = DOM.create('nav'), panel = DOM.create('div');
         nav.append(panel);
-        Mmenu.DOM.children(this.node.menu)
+        DOM.children(this.node.menu)
             .forEach((child) => {
             switch (true) {
                 case child.matches('.navbar-nav'):
@@ -50,7 +50,7 @@ export default function () {
         });
     }
     function cloneLink(anchor) {
-        var link = Mmenu.DOM.create(anchor.matches('a') ? 'a' : 'span');
+        var link = DOM.create(anchor.matches('a') ? 'a' : 'span');
         //	Copy attributes
         var attr = ['href', 'title', 'target'];
         for (var a = 0; a < attr.length; a++) {
@@ -61,17 +61,17 @@ export default function () {
         //	Copy contents
         link.innerHTML = anchor.innerHTML;
         //	Remove Screen reader text.
-        Mmenu.DOM.find(link, '.sr-only')
+        DOM.find(link, '.sr-only')
             .forEach((sro) => {
             sro.remove();
         });
         return link;
     }
     function cloneDropdown(dropdown) {
-        var list = Mmenu.DOM.create('ul');
-        Mmenu.DOM.children(dropdown)
+        var list = DOM.create('ul');
+        DOM.children(dropdown)
             .forEach((anchor) => {
-            var item = Mmenu.DOM.create('li');
+            var item = DOM.create('li');
             if (anchor.matches('.dropdown-divider')) {
                 item.classList.add('Divider');
             }
@@ -83,19 +83,19 @@ export default function () {
         return list;
     }
     function cloneNav(nav) {
-        var list = Mmenu.DOM.create('ul');
-        Mmenu.DOM.find(nav, '.nav-item')
+        var list = DOM.create('ul');
+        DOM.find(nav, '.nav-item')
             .forEach((anchor) => {
-            var item = Mmenu.DOM.create('li');
+            var item = DOM.create('li');
             if (anchor.matches('.active')) {
                 item.classList.add('Selected');
             }
             if (!anchor.matches('.nav-link')) {
-                let dropdown = Mmenu.DOM.children(anchor, '.dropdown-menu')[0];
+                let dropdown = DOM.children(anchor, '.dropdown-menu')[0];
                 if (dropdown) {
                     item.append(cloneDropdown(dropdown));
                 }
-                anchor = Mmenu.DOM.children(anchor, '.nav-link')[0];
+                anchor = DOM.children(anchor, '.nav-link')[0];
             }
             item.prepend(cloneLink(anchor));
             list.append(item);

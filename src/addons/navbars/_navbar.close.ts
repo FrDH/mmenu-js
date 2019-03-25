@@ -1,11 +1,13 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 
+import * as DOM from '../../core/_dom';
+
 export default function( 
 	this	: Mmenu,
 	navbar	: HTMLElement
 ) {
 	//	Add content
-	var close = Mmenu.DOM.create( 'a.mm-btn.mm-btn_close.mm-navbar__btn' );
+	var close = DOM.create( 'a.mm-btn.mm-btn_close.mm-navbar__btn' );
 	navbar.append( close );
 
 

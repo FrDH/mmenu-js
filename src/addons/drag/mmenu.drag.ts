@@ -3,6 +3,8 @@ import options from './_options';
 import configs from './_configs';
 
 import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 
 Mmenu.options.drag = options;
 Mmenu.configs.drag = configs;
@@ -20,7 +22,7 @@ export default function(
 
 
 	var options = extendShorthandOptions( this.opts.drag );
-	this.opts.drag = Mmenu.extend( options, Mmenu.options.drag );
+	this.opts.drag = extend( options, Mmenu.options.drag );
 
 	var configs = this.conf.drag;
 
@@ -64,7 +66,7 @@ export default function(
 			var getSlideNodes = function(
 				this : Mmenu
 			) : HTMLElement[] {
-				return Mmenu.DOM.find( document.body, '.mm-slideout' );
+				return DOM.find( document.body, '.mm-slideout' );
 			};
 
 			var _stage 			= 0,

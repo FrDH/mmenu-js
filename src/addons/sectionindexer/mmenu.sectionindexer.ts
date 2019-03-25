@@ -2,6 +2,8 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 
 import { extendShorthandOptions } from './_options';
+import { extend } from '../../core/_helpers';
+import * as DOM from '../../core/_dom';
 
 Mmenu.options.sectionIndexer = options;
 
@@ -10,7 +12,7 @@ export default function(
 	this : Mmenu
 ) {
 	var options = extendShorthandOptions( this.opts.sectionIndexer );
-	this.opts.sectionIndexer = Mmenu.extend( options, Mmenu.options.sectionIndexer );
+	this.opts.sectionIndexer = extend( options, Mmenu.options.sectionIndexer );
 
 	if ( !options.add ) {
 		return;
@@ -23,12 +25,12 @@ export default function(
 
 		//	Set the panel(s)
 		if ( options.addTo != 'panels' ) {
-			panels = Mmenu.DOM.find( this.node.menu, options.addTo )
+			panels = DOM.find( this.node.menu, options.addTo )
 				.filter( panel => panel.matches( '.mm-panel' ) );
 		}
 
 		panels.forEach(( panel ) => {
-			Mmenu.DOM.find( panel, '.mm-listitem_divider' )
+			DOM.find( panel, '.mm-listitem_divider' )
 				.forEach(( listitem ) => {
 					listitem.closest( '.mm-panel' ).classList.add( 'mm-panel_has-sectionindexer' );
 				});
@@ -42,7 +44,7 @@ export default function(
 				buttons += '<a href="#">' + letter + '</a>';
 			});
 
-			let indexer = Mmenu.DOM.create( 'div.mm-sectionindexer' );
+			let indexer = DOM.create( 'div.mm-sectionindexer' );
 				indexer.innerHTML = buttons;
 
 			this.node.pnls.prepend( indexer );
@@ -64,13 +66,13 @@ export default function(
 				}
 
 				var letter  = evnt.target.textContent,
-					panel 	= Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
+					panel 	= DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
 
 				var newTop = -1,
 					oldTop = panel.scrollTop;
 
 				panel.scrollTop = 0;
-				Mmenu.DOM.find( panel, '.mm-listitem_divider' )
+				DOM.find( panel, '.mm-listitem_divider' )
 					.filter( divider => !divider.matches( '.mm-hidden' ) )
 					.forEach(( divider ) => {
 						if ( newTop < 0 &&
@@ -96,7 +98,7 @@ export default function(
 		this.bind( 'openPanel:start', (
 			panel ?: HTMLElement
 		) => {
-			panel = panel || Mmenu.DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
+			panel = panel || DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
 			this.node.menu.classList[ panel.matches( '.mm-panel_has-sectionindexer' ) ? 'add' : 'remove' ]( 'mm-menu_has-sectionindexer' );
 		});
 	});
