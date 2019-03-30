@@ -1,8 +1,10 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import * as DOM from '../../core/_dom';
+import * as media from '../../core/_matchmedia';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
+//  Add the options.
 Mmenu.options.sidebar = options;
 export default function () {
     if (!this.opts.offCanvas) {
@@ -13,6 +15,7 @@ export default function () {
     var clsclpsd = 'mm-wrapper_sidebar-collapsed', clsxpndd = 'mm-wrapper_sidebar-expanded';
     //	Collapsed
     if (options.collapsed.use) {
+        //	Make the menu collapsable.
         this.bind('initMenu:after', () => {
             this.node.menu.classList.add('mm-menu_sidebar-collapsed');
             if (options.collapsed.blockMenu &&
@@ -29,32 +32,32 @@ export default function () {
                 this.node.menu.classList.add('mm-menu_hidedivider');
             }
         });
-        if (typeof options.collapsed.use == 'boolean') {
-            this.bind('initMenu:after', () => {
-                document.documentElement.classList.add(clsclpsd);
-            });
-        }
-        else if (typeof options.collapsed.use == 'string') {
-            this.matchMedia(options.collapsed.use, () => {
+        //	En-/disable the collapsed sidebar for media queries.
+        if (typeof options.collapsed.use == 'string' ||
+            typeof options.collapsed.use == 'number') {
+            media.add(options.collapsed.use, () => {
                 document.documentElement.classList.add(clsclpsd);
             }, () => {
                 document.documentElement.classList.remove(clsclpsd);
+            });
+            //	Always enable the collapsed sidebar.
+        }
+        else {
+            this.bind('initMenu:after', () => {
+                document.documentElement.classList.add(clsclpsd);
             });
         }
     }
     //	Expanded
     if (options.expanded.use) {
+        //	Make the menu expandable
         this.bind('initMenu:after', () => {
             this.node.menu.classList.add('mm-menu_sidebar-expanded');
         });
-        if (typeof options.expanded.use == 'boolean') {
-            this.bind('initMenu:after', () => {
-                document.documentElement.classList.add(clsxpndd);
-                this.open();
-            });
-        }
-        else if (typeof options.expanded.use == 'string') {
-            this.matchMedia(options.expanded.use, () => {
+        //	En-/disable the expanded sidebar for media queries.
+        if (typeof options.expanded.use == 'string' ||
+            typeof options.expanded.use == 'number') {
+            media.add(options.expanded.use, () => {
                 document.documentElement.classList.add(clsxpndd);
                 if (!document.documentElement.matches('.mm-wrapper_sidebar-closed')) {
                     this.open();
@@ -62,6 +65,13 @@ export default function () {
             }, () => {
                 document.documentElement.classList.remove(clsxpndd);
                 this.close();
+            });
+            //	Always enable the expanded sidebar.
+        }
+        else {
+            this.bind('initMenu:after', () => {
+                document.documentElement.classList.add(clsxpndd);
+                this.open();
             });
         }
         this.bind('close:start', () => {
@@ -85,4 +95,3 @@ export default function () {
         });
     }
 }
-;

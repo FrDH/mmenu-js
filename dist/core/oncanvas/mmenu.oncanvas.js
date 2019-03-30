@@ -1,14 +1,18 @@
 import options from './_options';
 import configs from './_configs';
-import { type, extend, transitionend } from '../_helpers';
+import translate from './translations/translate';
 import * as DOM from '../_dom';
+import * as i18n from '../_i18n';
+import * as media from '../_matchmedia';
+import { type, extend, transitionend, uniqueId } from '../_helpers';
+//  Add the translations.
+translate();
 /**
  * Class for a mobile menu.
  */
 export default class Mmenu {
     /**
      * Create a mobile menu.
-     *
      * @param {HTMLElement|string} 	menu						The menu node.
      * @param {object} 				[options=Mmenu.options]		Options for the menu.
      * @param {object} 				[configs=Mmenu.configs]		Configuration options for the menu.
@@ -18,18 +22,22 @@ export default class Mmenu {
         this.opts = extend(options, Mmenu.options);
         this.conf = extend(configs, Mmenu.configs);
         //	Methods to expose in the API.
-        this._api = ['bind', 'initPanels', 'openPanel', 'closePanel', 'closeAllPanels', 'setSelected'];
-        //	Storage objects for nodes, variables, hooks, matchmedia and click handlers.
+        this._api = [
+            'bind',
+            'initPanels',
+            'openPanel',
+            'closePanel',
+            'closeAllPanels',
+            'setSelected'
+        ];
+        //	Storage objects for nodes, variables, hooks and click handlers.
         this.node = {};
         this.vars = {};
         this.hook = {};
-        this.mtch = {};
-        this.evnt = {};
         this.clck = [];
         //	Get menu node from string or element.
-        this.node.menu = (typeof menu == 'string')
-            ? document.querySelector(menu)
-            : menu;
+        this.node.menu =
+            typeof menu == 'string' ? document.querySelector(menu) : menu;
         if (typeof this._deprecatedWarnings == 'function') {
             this._deprecatedWarnings();
         }
@@ -42,12 +50,11 @@ export default class Mmenu {
         this._initPanels();
         this._initOpened();
         this._initAnchors();
-        this._initMatchMedia();
+        media.watch();
         return this;
     }
     /**
      * Open a panel.
-     *
      * @param {HTMLElement} panel				Panel to open.
      * @param {boolean}		[animation=true]	Whether or not to open the panel with an animation.
      */
@@ -71,17 +78,14 @@ export default class Mmenu {
         //	Open a "vertical" panel.
         if (panel.parentElement.matches('.mm-listitem_vertical')) {
             //	Open current and all vertical parent panels.
-            DOM.parents(panel, '.mm-listitem_vertical')
-                .forEach((listitem) => {
+            DOM.parents(panel, '.mm-listitem_vertical').forEach(listitem => {
                 panel.classList.add('mm-listitem_opened');
-                DOM.children(listitem, '.mm-panel')
-                    .forEach((panel) => {
+                DOM.children(listitem, '.mm-panel').forEach(panel => {
                     panel.classList.remove('mm-hidden');
                 });
             });
             //	Open first non-vertical parent panel.
-            let parents = DOM.parents(panel, '.mm-panel')
-                .filter(panel => !panel.parentElement.matches('.mm-listitem_vertical'));
+            let parents = DOM.parents(panel, '.mm-panel').filter(panel => !panel.parentElement.matches('.mm-listitem_vertical'));
             this.trigger('openPanel:start', [panel]);
             if (parents.length) {
                 this.openPanel(parents[0]);
@@ -95,8 +99,9 @@ export default class Mmenu {
             }
             let panels = DOM.children(this.node.pnls, '.mm-panel'), current = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
             //	Close all child panels.
-            panels.filter(parent => parent !== panel)
-                .forEach((parent) => {
+            panels
+                .filter(parent => parent !== panel)
+                .forEach(parent => {
                 parent.classList.remove('mm-panel_opened-parent');
             });
             //	Open all parent panels.
@@ -111,12 +116,13 @@ export default class Mmenu {
                 }
             }
             //	Add classes for animation.
-            panels.forEach((panel) => {
+            panels.forEach(panel => {
                 panel.classList.remove('mm-panel_highest');
             });
-            panels.filter(hidden => hidden !== current)
+            panels
+                .filter(hidden => hidden !== current)
                 .filter(hidden => hidden !== panel)
-                .forEach((hidden) => {
+                .forEach(hidden => {
                 hidden.classList.add('mm-hidden');
             });
             panel.classList.remove('mm-hidden');
@@ -172,7 +178,6 @@ export default class Mmenu {
     }
     /**
      * Close a panel.
-     *
      * @param {HTMLElement} panel Panel to close.
      */
     closePanel(panel) {
@@ -191,7 +196,6 @@ export default class Mmenu {
     }
     /**
      * Close all opened panels.
-     *
      * @param {HTMLElement} panel Panel to open after closing all other panels.
      */
     closeAllPanels(panel) {
@@ -199,13 +203,12 @@ export default class Mmenu {
         this.trigger('closeAllPanels:before');
         //	Close all "vertical" panels.
         let listitems = this.node.pnls.querySelectorAll('.mm-listitem');
-        listitems.forEach((listitem) => {
+        listitems.forEach(listitem => {
             listitem.classList.remove('mm-listitem_selected', 'mm-listitem_opened');
         });
         //	Close all "horizontal" panels.
-        var panels = DOM.children(this.node.pnls, '.mm-panel'), opened = (panel) ? panel : panels[0];
-        DOM.children(this.node.pnls, '.mm-panel')
-            .forEach((panel) => {
+        var panels = DOM.children(this.node.pnls, '.mm-panel'), opened = panel ? panel : panels[0];
+        DOM.children(this.node.pnls, '.mm-panel').forEach(panel => {
             if (panel !== opened) {
                 panel.classList.remove('mm-panel_opened');
                 panel.classList.remove('mm-panel_opened-parent');
@@ -220,27 +223,26 @@ export default class Mmenu {
     }
     /**
      * Toggle a panel opened/closed.
-     *
      * @param {HTMLElement} panel Panel to open or close.
      */
     togglePanel(panel) {
         let listitem = panel.parentElement;
         //	Only works for "vertical" panels.
         if (listitem.matches('.mm-listitem_vertical')) {
-            this[listitem.matches('.mm-listitem_opened') ? 'closePanel' : 'openPanel'](panel);
+            this[listitem.matches('.mm-listitem_opened')
+                ? 'closePanel'
+                : 'openPanel'](panel);
         }
     }
     /**
      * Display a listitem as being "selected".
-     *
      * @param {HTMLElement} listitem Listitem to mark.
      */
     setSelected(listitem) {
         //	Invoke "before" hook.
         this.trigger('setSelected:before', [listitem]);
         //	First, remove the selected class from all listitems.
-        DOM.find(this.node.menu, '.mm-listitem_selected')
-            .forEach((li) => {
+        DOM.find(this.node.menu, '.mm-listitem_selected').forEach(li => {
             li.classList.remove('mm-listitem_selected');
         });
         //	Next, add the selected class to the provided listitem.
@@ -250,7 +252,6 @@ export default class Mmenu {
     }
     /**
      * Bind functions to a hook (subscriber).
-     *
      * @param {string} 		hook The hook.
      * @param {function} 	func The function.
      */
@@ -262,7 +263,6 @@ export default class Mmenu {
     }
     /**
      * Invoke the functions bound to a hook (publisher).
-     *
      * @param {string} 	hook  	The hook.
      * @param {array}	[args] 	Arguments for the function.
      */
@@ -274,41 +274,6 @@ export default class Mmenu {
         }
     }
     /**
-     * Bind functions to a matchMedia listener (subscriber).
-     *
-     * @param {string} 		mediaquery 	Media query to match.
-     * @param {function} 	yes 		Function to invoke when the media query matches.
-     * @param {function} 	no 			Function to invoke when the media query doesn't match.
-     */
-    matchMedia(mediaquery, yes, no) {
-        this.mtch[mediaquery] = this.mtch[mediaquery] || [];
-        this.mtch[mediaquery].push({ yes, no });
-    }
-    /**
-     * Initialize the matchMedia listener.
-     */
-    _initMatchMedia() {
-        for (var mediaquery in this.mtch) {
-            let mqstring = mediaquery, mqlist = window.matchMedia(mqstring);
-            this._fireMatchMedia(mqstring, mqlist);
-            mqlist.addListener((mqlist) => {
-                this._fireMatchMedia(mqstring, mqlist);
-            });
-        }
-    }
-    /**
-     * Invoke the "yes" or "no" function for a matchMedia listener (publisher).
-     *
-     * @param {string} 			mqstring 	Media query to check for.
-     * @param {MediaQueryList} 	mqlist 		Media query list to check with.
-     */
-    _fireMatchMedia(mqstring, mqlist) {
-        var fn = mqlist.matches ? 'yes' : 'no';
-        for (let m = 0; m < this.mtch[mqstring].length; m++) {
-            this.mtch[mqstring][m][fn].call(this);
-        }
-    }
-    /**
      * Create the API.
      */
     _initAPI() {
@@ -316,10 +281,10 @@ export default class Mmenu {
         //	1) the "arguments" object can not be referenced in an arrow function in ES3 and ES5.
         var that = this;
         this.API = {};
-        this._api.forEach((fn) => {
+        this._api.forEach(fn => {
             this.API[fn] = function () {
                 var re = that[fn].apply(that, arguments); // 1)
-                return (typeof re == 'undefined') ? that.API : re;
+                return typeof re == 'undefined' ? that.API : re;
             };
         });
         //	Store the API in the HTML node for external usage.
@@ -366,14 +331,14 @@ export default class Mmenu {
         //	Convert array to object with array.
         if (type(this.opts.extensions) == 'array') {
             this.opts.extensions = {
-                'all': this.opts.extensions
+                all: this.opts.extensions
             };
         }
         //	Loop over object.
-        for (let mediaquery in this.opts.extensions) {
-            if (this.opts.extensions[mediaquery].length) {
-                let classnames = this.opts.extensions[mediaquery].map((query) => 'mm-menu_' + query);
-                this.matchMedia(mediaquery, () => {
+        for (let query in this.opts.extensions) {
+            if (this.opts.extensions[query].length) {
+                let classnames = this.opts.extensions[query].map(query => 'mm-menu_' + query);
+                media.add(query, () => {
                     this.node.menu.classList.add(...classnames);
                 }, () => {
                     this.node.menu.classList.remove(...classnames);
@@ -390,7 +355,7 @@ export default class Mmenu {
         //	Invoke "before" hook.
         this.trigger('initMenu:before');
         //	Add an ID to the menu if it does not yet have one.
-        this.node.menu.id = this.node.menu.id || Mmenu.getUniqueId();
+        this.node.menu.id = this.node.menu.id || uniqueId();
         //	Store the original menu ID.
         this.vars.orgMenuId = this.node.menu.id;
         //	Clone if needed.
@@ -401,16 +366,15 @@ export default class Mmenu {
             this.node.menu = this.node.orig.cloneNode(true);
             //	Prefix all ID's in the cloned menu.
             this.node.menu.id = 'mm-' + this.node.menu.id;
-            DOM.find(this.node.menu, '[id]')
-                .forEach((elem) => {
+            DOM.find(this.node.menu, '[id]').forEach(elem => {
                 elem.id = 'mm-' + elem.id;
             });
         }
         //	Wrap the panels in a node.
         let panels = DOM.create('div.mm-panels');
-        DOM.children(this.node.menu)
-            .forEach((panel) => {
-            if (this.conf.panelNodetype.indexOf(panel.nodeName.toLowerCase()) > -1) {
+        DOM.children(this.node.menu).forEach(panel => {
+            if (this.conf.panelNodetype.indexOf(panel.nodeName.toLowerCase()) >
+                -1) {
                 panels.append(panel);
             }
         });
@@ -425,7 +389,6 @@ export default class Mmenu {
     }
     /**
      * Initialize panels.
-     *
      * @param {array} [panels] Panels to initialize.
      */
     _initPanels(panels) {
@@ -455,7 +418,6 @@ export default class Mmenu {
     }
     /**
      * Recursively initialize panels.
-     *
      * @param {array} [panels] The panels to initialize.
      */
     initPanels(panels) {
@@ -473,8 +435,9 @@ export default class Mmenu {
          * @param {array} [panels] The panels to initialize.
          */
         const init = (panels) => {
-            panels.filter(panel => panel.matches(panelNodetype))
-                .forEach((panel) => {
+            panels
+                .filter(panel => panel.matches(panelNodetype))
+                .forEach(panel => {
                 var panel = this._initPanel(panel);
                 if (panel) {
                     this._initNavbar(panel);
@@ -485,10 +448,8 @@ export default class Mmenu {
                     //	Find panel > panel
                     children.push(...DOM.children(panel, '.' + this.conf.classNames.panel));
                     //	Find panel listitem > panel
-                    DOM.children(panel, '.mm-listview')
-                        .forEach((listview) => {
-                        DOM.children(listview, '.mm-listitem')
-                            .forEach((listitem) => {
+                    DOM.children(panel, '.mm-listview').forEach(listview => {
+                        DOM.children(listview, '.mm-listitem').forEach(listitem => {
                             children.push(...DOM.children(listitem, panelNodetype));
                         });
                     });
@@ -504,7 +465,6 @@ export default class Mmenu {
     }
     /**
      * Initialize a single panel.
-     *
      * @param  {HTMLElement} 		panel 	Panel to initialize.
      * @return {HTMLElement|null} 			Initialized panel.
      */
@@ -527,9 +487,10 @@ export default class Mmenu {
             return null;
         }
         //	Wrap UL/OL in DIV
-        var vertical = (panel.matches('.' + this.conf.classNames.vertical) || !this.opts.slidingSubmenus);
+        var vertical = panel.matches('.' + this.conf.classNames.vertical) ||
+            !this.opts.slidingSubmenus;
         panel.classList.remove(this.conf.classNames.vertical);
-        var id = panel.id || Mmenu.getUniqueId();
+        var id = panel.id || uniqueId();
         if (panel.matches('ul, ol')) {
             panel.removeAttribute('id');
             /** The panel. */
@@ -562,7 +523,6 @@ export default class Mmenu {
     }
     /**
      * Initialize a navbar.
-     *
      * @param {HTMLElement} panel Panel for the navbar.
      */
     _initNavbar(panel) {
@@ -631,7 +591,6 @@ export default class Mmenu {
     }
     /**
      * Initialize a listview.
-     *
      * @param {HTMLElement} panel Panel for the listview(s).
      */
     _initListview(panel) {
@@ -642,22 +601,20 @@ export default class Mmenu {
         if (panel.matches(filter)) {
             listviews.unshift(panel);
         }
-        listviews.forEach((listview) => {
+        listviews.forEach(listview => {
             Mmenu.refactorClass(listview, this.conf.classNames.nolistview, 'mm-nolistview');
         });
         var listitems = [];
         //	Refactor listitems classnames
-        listviews.forEach((listview) => {
+        listviews.forEach(listview => {
             if (!listview.matches('.mm-nolistview')) {
                 listview.classList.add('mm-listview');
-                DOM.children(listview)
-                    .forEach((listitem) => {
+                DOM.children(listview).forEach(listitem => {
                     listitem.classList.add('mm-listitem');
                     Mmenu.refactorClass(listitem, this.conf.classNames.selected, 'mm-listitem_selected');
                     Mmenu.refactorClass(listitem, this.conf.classNames.divider, 'mm-listitem_divider');
                     Mmenu.refactorClass(listitem, this.conf.classNames.spacer, 'mm-listitem_spacer');
-                    DOM.children(listitem, 'a, span')
-                        .forEach((item) => {
+                    DOM.children(listitem, 'a, span').forEach(item => {
                         if (!item.matches('.mm-btn')) {
                             item.classList.add('mm-listitem__text');
                         }
@@ -696,7 +653,7 @@ export default class Mmenu {
         /** The last selected listitem. */
         let lastitem = null;
         //	Deselect the listitems.
-        listitems.forEach((listitem) => {
+        listitems.forEach(listitem => {
             lastitem = listitem;
             listitem.classList.remove('mm-listitem_selected');
         });
@@ -705,7 +662,7 @@ export default class Mmenu {
             lastitem.classList.add('mm-listitem_selected');
         }
         /**	The current opened panel. */
-        let current = (lastitem)
+        let current = lastitem
             ? lastitem.closest('.mm-panel')
             : DOM.children(this.node.pnls, '.mm-panel')[0];
         //	Open the current opened panel.
@@ -719,7 +676,7 @@ export default class Mmenu {
     _initAnchors() {
         //	Invoke "before" hook.
         this.trigger('initAnchors:before');
-        document.addEventListener('click', (evnt) => {
+        document.addEventListener('click', evnt => {
             /** The clicked element. */
             var target = evnt.target;
             if (!target.matches('a[href]')) {
@@ -732,7 +689,8 @@ export default class Mmenu {
             var args = {
                 inMenu: target.closest('.mm-menu') === this.node.menu,
                 inListview: target.matches('.mm-listitem > a'),
-                toExternal: target.matches('[rel="external"]') || target.matches('[target="_blank"]')
+                toExternal: target.matches('[rel="external"]') ||
+                    target.matches('[target="_blank"]')
             };
             var onClick = {
                 close: null,
@@ -764,7 +722,8 @@ export default class Mmenu {
                 }
                 //	Close menu. Default: false
                 if (Mmenu.valueOrFn(target, this.opts.onClick.close, onClick.close)) {
-                    if (this.opts.offCanvas && typeof this.close == 'function') {
+                    if (this.opts.offCanvas &&
+                        typeof this.close == 'function') {
                         this.close();
                     }
                 }
@@ -773,19 +732,16 @@ export default class Mmenu {
         //	Invoke "after" hook.
         this.trigger('initAnchors:after');
     }
-    //	TODO: interface that tells what will be returned based on input
     /**
      * Get the translation for a text.
-     *
      * @param  {string} text 	Text to translate.
      * @return {string}			The translated text.
      */
     i18n(text) {
-        return Mmenu.i18n(text, this.conf.language);
+        return i18n.get(text, this.conf.language);
     }
     /**
      * Find the title for a panel.
-     *
      * @param 	{HTMLElement}			panel 		Panel to search in.
      * @param 	{string|Function} 		[dfault] 	Fallback/default title.
      * @return	{string}							The title for the panel.
@@ -818,7 +774,6 @@ export default class Mmenu {
     }
     /**
      * Find the value from an option or function.
-     *
      * @param 	{HTMLElement} 	element 	Scope for the function.
      * @param 	{any} 			[option] 	Value or function.
      * @param 	{any} 			[dfault] 	Default fallback value.
@@ -831,15 +786,16 @@ export default class Mmenu {
                 return value;
             }
         }
-        if ((option === null || typeof option == 'function' || typeof option == 'undefined')
-            && typeof dfault != 'undefined') {
+        if ((option === null ||
+            typeof option == 'function' ||
+            typeof option == 'undefined') &&
+            typeof dfault != 'undefined') {
             return dfault;
         }
         return option;
     }
     /**
      * Refactor a classname on multiple elements.
-     *
      * @param {HTMLElement} element 	Element to refactor.
      * @param {string}		oldClass 	Classname to remove.
      * @param {string}		newClass 	Classname to add.
@@ -852,7 +808,6 @@ export default class Mmenu {
     }
     /**
      * Filter out non-listitem listitems.
-     *
      * @param  {array} listitems 	Elements to filter.
      * @return {array}				The filtered set of listitems.
      */
@@ -863,14 +818,12 @@ export default class Mmenu {
     }
     /**
      * Find anchors in listitems (excluding anchor that open a sub-panel).
-     *
      * @param  {array} 	listitems 	Elements to filter.
      * @return {array}				The found set of anchors.
      */
     static filterListItemAnchors(listitems) {
         var anchors = [];
-        Mmenu.filterListItems(listitems)
-            .forEach((listitem) => {
+        Mmenu.filterListItems(listitems).forEach(listitem => {
             anchors.push(...DOM.children(listitem, 'a.mm-listitem__text'));
         });
         return anchors.filter(anchor => !anchor.matches('.mm-btn_next'));
@@ -888,61 +841,3 @@ Mmenu.addons = {};
 Mmenu.wrappers = {};
 /**	Globally used HTML elements. */
 Mmenu.node = {};
-/** Globally used EventListeners. */
-Mmenu.evnt = {};
-/**	Features supported by the browser. */
-Mmenu.support = {
-    touch: 'ontouchstart' in window || (navigator.msMaxTouchPoints ? true : false) || false
-};
-//	TODO: interface that tells what will be returned based on input
-/**
- * get or set a translated / translatable text.
- *
- * @param  {string|object} 	[text] 		The translated text to add or get.
- * @param  {string} 		[language] 	The language for the translated text.
- * @return {string|object}				The translated text.
- */
-Mmenu.i18n = (function () {
-    var translations = {};
-    return (text, language) => {
-        switch (type(text)) {
-            case 'object':
-                if (typeof language == 'string') {
-                    if (typeof translations[language] == 'undefined') {
-                        translations[language] = {};
-                    }
-                    extend(translations[language], text);
-                }
-                return translations;
-            case 'string':
-                if (typeof language == 'string' &&
-                    type(translations[language]) == 'object') {
-                    return translations[language][text] || text;
-                }
-                return text;
-            case 'undefined':
-            default:
-                return translations;
-        }
-    };
-})();
-/**
- * Get an unique ID.
- *
- * @return {string} An unique ID.
- */
-Mmenu.getUniqueId = (() => {
-    var id = 0;
-    //	Using a factory for the "id" local var.
-    return () => {
-        return 'mm-' + id++;
-    };
-})();
-import nl from './translations/nl';
-import fa from './translations/fa';
-import de from './translations/de';
-import ru from './translations/ru';
-Mmenu.i18n(nl, 'nl');
-Mmenu.i18n(fa, 'fa');
-Mmenu.i18n(de, 'de');
-Mmenu.i18n(ru, 'ru');

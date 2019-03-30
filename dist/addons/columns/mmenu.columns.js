@@ -1,8 +1,9 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
+//	Add the options.
 Mmenu.options.columns = options;
 export default function () {
     var options = extendShorthandOptions(this.opts.columns);
@@ -70,19 +71,16 @@ export default function () {
             this.node.menu.classList.remove(...colm.split(' '));
             this.node.menu.classList.add('mm-menu_columns-' + columns);
             var panels = [];
-            DOM.children(this.node.pnls, '.mm-panel')
-                .forEach((panel) => {
+            DOM.children(this.node.pnls, '.mm-panel').forEach(panel => {
                 panel.classList.remove(...colp.split(' '));
                 if (panel.matches('.mm-panel_opened-parent')) {
                     panels.push(panel);
                 }
             });
             panels.push(panel);
-            panels.slice(-options.visible.max)
-                .forEach((panel, p) => {
+            panels.slice(-options.visible.max).forEach((panel, p) => {
                 panel.classList.add('mm-panel_columns-' + p);
             });
         });
     }
 }
-;

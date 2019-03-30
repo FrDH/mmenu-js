@@ -1,202 +1,216 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
-
+import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
 
+//	Add the options and configs.
 Mmenu.options.dropdown = options;
 Mmenu.configs.dropdown = configs;
 
+export default function(this: Mmenu) {
+    if (!this.opts.offCanvas) {
+        return;
+    }
 
-export default function(
-	this : Mmenu
-) {
-	if ( !this.opts.offCanvas ) {
-		return;
-	}
+    var options = extendShorthandOptions(this.opts.dropdown);
+    this.opts.dropdown = extend(options, Mmenu.options.dropdown);
 
-	var options = extendShorthandOptions( this.opts.dropdown );
-	this.opts.dropdown = extend( options, Mmenu.options.dropdown );
+    var configs = this.conf.dropdown;
 
-	var configs = this.conf.dropdown;
+    if (!options.drop) {
+        return;
+    }
 
+    var button: HTMLElement;
 
-	if ( !options.drop ) {
-		return;
-	}
+    this.bind('initMenu:after', () => {
+        this.node.menu.classList.add('mm-menu_dropdown');
 
+        if (typeof options.position.of != 'string') {
+            let id = this.vars.orgMenuId;
+            if (id && id.length) {
+                options.position.of = '[href="#' + id + '"]';
+            }
+        }
 
-	var button : HTMLElement;
+        if (typeof options.position.of != 'string') {
+            return;
+        }
 
-	this.bind( 'initMenu:after', () => {
-		this.node.menu.classList.add( 'mm-menu_dropdown' );
+        //	Get the button to put the menu next to
+        button = DOM.find(document.body, options.position.of)[0];
 
-		if ( typeof options.position.of != 'string' ) {
-			let id = this.vars.orgMenuId;
-			if ( id && id.length ) {
-				options.position.of = '[href="#' + id + '"]';
-			}
-		}
+        //	Emulate hover effect
+        var events = options.event.split(' ');
+        if (events.length == 1) {
+            events[1] = events[0];
+        }
 
-		if ( typeof options.position.of != 'string' ) {
-			return;
-		}
+        if (events[0] == 'hover') {
+            button.addEventListener(
+                'mouseenter',
+                evnt => {
+                    this.open();
+                },
+                { passive: true }
+            );
+        }
 
+        if (events[1] == 'hover') {
+            this.node.menu.addEventListener(
+                'mouseleave',
+                evnt => {
+                    this.close();
+                },
+                { passive: true }
+            );
+        }
+    });
 
-		//	Get the button to put the menu next to
-		button = DOM.find( document.body, options.position.of )[ 0 ];
+    //	Add/remove classname and style when opening/closing the menu
+    this.bind('open:start', () => {
+        this.node.menu['mmStyle'] = this.node.menu.getAttribute('style');
+        document.documentElement.classList.add('mm-wrapper_dropdown');
+    });
 
-		//	Emulate hover effect
-		var events = options.event.split( ' ' );
-		if ( events.length == 1 ) {
-			events[ 1 ] = events[ 0 ];
-		}
+    this.bind('close:finish', () => {
+        this.node.menu.setAttribute('style', this.node.menu['mmStyle']);
+        document.documentElement.classList.remove('mm-wrapper_dropdown');
+    });
 
-		if ( events[ 0 ] == 'hover' ) {
-			button.addEventListener( 'mouseenter', ( evnt ) => {
-				this.open();
-			}, { passive: true });
-		}
+    /**
+     * Find the position (x, y) and sizes (width, height) for the menu.
+     *
+     * @param  {string} dir The direction to measure ("x" for horizontal, "y" for vertical)
+     * @param  {object} obj The object where (previously) measured values are stored.
+     * @return {object}		The object where measered values are stored.
+     */
+    var getPosition = function(
+        this: Mmenu,
+        dir: string,
+        obj: mmLooseObject
+    ): mmLooseObject {
+        var css = obj[0],
+            cls = obj[1];
 
-		if ( events[ 1 ] == 'hover' ) {
-			this.node.menu.addEventListener( 'mouseleave', ( evnt ) => {
-				this.close();
-			}, { passive: true });
-		}
-	});
+        var _scrollPos = dir == 'x' ? 'scrollLeft' : 'scrollTop',
+            _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight',
+            _startPos = dir == 'x' ? 'left' : 'top',
+            _stopPos = dir == 'x' ? 'right' : 'bottom',
+            _size = dir == 'x' ? 'width' : 'height',
+            _winSize = dir == 'x' ? 'innerWidth' : 'innerHeight',
+            _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight',
+            _position = null;
 
+        var scrollPos =
+                document.documentElement[_scrollPos] ||
+                document.body[_scrollPos],
+            startPos = DOM.offset(button, _startPos) - scrollPos,
+            stopPos = startPos + button[_outerSize],
+            windowSize = window[_winSize];
 
-	//	Add/remove classname and style when opening/closing the menu
-	this.bind( 'open:start', () => {
-		this.node.menu[ 'mmStyle' ] = this.node.menu.getAttribute( 'style' );
-		document.documentElement.classList.add( 'mm-wrapper_dropdown' );
-	});
+        /** Offset for the menu relative to the button. */
+        var offs = configs.offset.button[dir] + configs.offset.viewport[dir];
 
-	this.bind( 'close:finish', () => {
-		this.node.menu.setAttribute( 'style', this.node.menu[ 'mmStyle' ] );
-		document.documentElement.classList.remove( 'mm-wrapper_dropdown' );
-	});
+        //	Position set in option
+        if (options.position[dir]) {
+            switch (options.position[dir]) {
+                case 'left':
+                case 'bottom':
+                    _position = 'after';
+                    break;
 
+                case 'right':
+                case 'top':
+                    _position = 'before';
+                    break;
+            }
+        }
 
-	/**
-	 * Find the position (x, y) and sizes (width, height) for the menu.
-	 *
-	 * @param  {string} dir The direction to measure ("x" for horizontal, "y" for vertical)
-	 * @param  {object} obj The object where (previously) measured values are stored.
-	 * @return {object}		The object where measered values are stored.
-	 */
-	var getPosition = function( 
-		this	: Mmenu,
-		dir		: string,
-		obj		: mmLooseObject
-	) : mmLooseObject {
-		var css = obj[ 0 ],
-			cls = obj[ 1 ];
+        //	Position not set in option, find most space
+        if (_position === null) {
+            _position =
+                startPos + (stopPos - startPos) / 2 < windowSize / 2
+                    ? 'after'
+                    : 'before';
+        }
 
-		var _scrollPos 	= dir == 'x' ? 'scrollLeft' 	: 'scrollTop',
-			_outerSize 	= dir == 'x' ? 'offsetWidth' 	: 'offsetHeight',
-			_startPos 	= dir == 'x' ? 'left' 			: 'top',
-			_stopPos 	= dir == 'x' ? 'right' 			: 'bottom',
-			_size 		= dir == 'x' ? 'width' 			: 'height',
-			_winSize	= dir == 'x' ? 'innerWidth'		: 'innerHeight',
-			_maxSize 	= dir == 'x' ? 'maxWidth' 		: 'maxHeight',
-			_position 	= null;
+        //	Set position and max
+        var val, max;
+        if (_position == 'after') {
+            val = dir == 'x' ? startPos : stopPos;
+            max = windowSize - (val + offs);
 
-		var scrollPos 	= document.documentElement[ _scrollPos ] || document.body[ _scrollPos ],
-			startPos 	= DOM.offset( button, _startPos ) - scrollPos,
-			stopPos 	= startPos + button[ _outerSize ],
-			windowSize 	= window[ _winSize ];
+            css[_startPos] = val + configs.offset.button[dir] + 'px';
+            css[_stopPos] = 'auto';
 
+            if (options.tip) {
+                cls.push('mm-menu_tip-' + (dir == 'x' ? 'left' : 'top'));
+            }
+        } else {
+            val = dir == 'x' ? stopPos : startPos;
+            max = val - offs;
 
-		/** Offset for the menu relative to the button. */
-		var offs = configs.offset.button[ dir ] + configs.offset.viewport[ dir ];
+            css[_stopPos] =
+                'calc( 100% - ' + (val - configs.offset.button[dir]) + 'px )';
+            css[_startPos] = 'auto';
 
-		//	Position set in option
-		if ( options.position[ dir ] ) {
-			switch ( options.position[ dir ] ) {
-				case 'left':
-				case 'bottom':
-					_position = 'after';
-					break;
+            if (options.tip) {
+                cls.push('mm-menu_tip-' + (dir == 'x' ? 'right' : 'bottom'));
+            }
+        }
 
-				case 'right':
-				case 'top':
-					_position = 'before';
-					break;
-			}
-		}
+        if (options.fitViewport) {
+            css[_maxSize] = Math.min(configs[_size].max, max) + 'px';
+        }
 
-		//	Position not set in option, find most space
-		if ( _position === null ) {
-			_position = ( startPos + ( ( stopPos - startPos ) / 2 ) < windowSize / 2 ) ? 'after' : 'before';
-		}
+        return [css, cls];
+    };
+    function position(this: Mmenu) {
+        if (!this.vars.opened) {
+            return;
+        }
 
-		//	Set position and max
-		var val, max;
-		if ( _position == 'after' ) {
-			val = ( dir == 'x' ) ? startPos : stopPos;
-			max = windowSize - ( val + offs );
+        this.node.menu.setAttribute('style', this.node.menu['mmStyle']);
 
-			css[ _startPos ] = ( val + configs.offset.button[ dir ] ) + 'px';
-			css[ _stopPos ]  = 'auto';
+        var obj: [mmLooseObject, string[]] = [{}, []];
+        obj = getPosition.call(this, 'y', obj);
+        obj = getPosition.call(this, 'x', obj);
 
-			if ( options.tip ) {
-				cls.push( 'mm-menu_tip-' + ( dir == 'x' ? 'left' : 'top' ) );
-			}
+        for (let s in obj[0]) {
+            this.node.menu.style[s] = obj[0][s];
+        }
 
-		} else {
-			val = ( dir == 'x' ) ? stopPos : startPos;
-			max = val - offs;
+        if (options.tip) {
+            this.node.menu.classList.remove(
+                'mm-menu_tip-left',
+                'mm-menu_tip-right',
+                'mm-menu_tip-top',
+                'mm-menu_tip-bottom'
+            );
+            this.node.menu.classList.add(...obj[1]);
+        }
+    }
 
-			css[ _stopPos ]  = 'calc( 100% - ' + ( val - configs.offset.button[ dir ] ) + 'px )';
-			css[ _startPos ] = 'auto';
+    this.bind('open:start', position);
 
-			if ( options.tip ) {
-				cls.push( 'mm-menu_tip-' + ( dir == 'x' ? 'right' : 'bottom' ) );
-			}
-		}
+    window.addEventListener(
+        'resize',
+        evnt => {
+            position.call(this);
+        },
+        { passive: true }
+    );
 
-		if ( options.fitViewport ) {
-			css[ _maxSize ] = Math.min( configs[ _size ].max, max ) + 'px';
-		}
-
-		return [ css, cls ];
-	};
-	function position( 
-		this : Mmenu
-	) {
-		if ( !this.vars.opened ) {
-			return;
-		}
-
-		this.node.menu.setAttribute( 'style', this.node.menu[ 'mmStyle' ] );
-
-		var obj : [ mmLooseObject, string[] ] = [{}, []];
-			obj = getPosition.call( this, 'y', obj );
-			obj = getPosition.call( this, 'x', obj );
-
-		for ( let s in obj[ 0 ] ) {
-			this.node.menu.style[ s ] = obj[ 0 ][ s ];
-		}
-
-		if ( options.tip ) {
-			this.node.menu.classList.remove( 'mm-menu_tip-left', 'mm-menu_tip-right', 'mm-menu_tip-top', 'mm-menu_tip-bottom' );
-			this.node.menu.classList.add( ...obj[ 1 ] );
-		}
-	};
-
-	this.bind( 'open:start', position );
-
-	window.addEventListener( 'resize', ( evnt ) => {
-		position.call( this );
-	}, { passive: true });
-
-	if ( !this.opts.offCanvas.blockUI ) {
-		window.addEventListener( 'scroll', ( evnt ) => {
-			position.call( this );
-		}, { passive: true });
-	}
-
-};
+    if (!this.opts.offCanvas.blockUI) {
+        window.addEventListener(
+            'scroll',
+            evnt => {
+                position.call(this);
+            },
+            { passive: true }
+        );
+    }
+}

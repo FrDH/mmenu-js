@@ -1,8 +1,10 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import * as DOM from '../../core/_dom';
+import * as media from '../../core/_matchmedia';
 import { extendShorthandOptions } from './_options';
 import { type, extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
+//  Add the options.
 Mmenu.options.iconbar = options;
 export default function () {
     var options = extendShorthandOptions(this.opts.iconbar);
@@ -37,14 +39,28 @@ export default function () {
     });
     //	Add to menu
     if (iconbar) {
+        //	Add the iconbar.
         this.bind('initMenu:after', () => {
-            this.node.menu.classList.add('mm-menu_iconbar-' + options.position);
             this.node.menu.prepend(iconbar);
         });
+        //	En-/disable the iconbar for media queries.
+        if (typeof options.use == 'string' || typeof options.use == 'number') {
+            media.add(options.use, () => {
+                this.node.menu.classList.add('mm-menu_iconbar-' + options.position);
+            }, () => {
+                this.node.menu.classList.remove('mm-menu_iconbar-' + options.position);
+            });
+            //	Always enable the iconbar.
+        }
+        else {
+            this.bind('initMenu:after', () => {
+                this.node.menu.classList.add('mm-menu_iconbar-' + options.position);
+            });
+        }
         //	Tabs
         if (options.type == 'tabs') {
             iconbar.classList.add('mm-iconbar_tabs');
-            iconbar.addEventListener('click', (evnt) => {
+            iconbar.addEventListener('click', evnt => {
                 var anchor = evnt.target;
                 if (!anchor.matches('a')) {
                     return;
@@ -64,8 +80,7 @@ export default function () {
                 catch (err) { }
             });
             const selectTab = (panel) => {
-                DOM.find(iconbar, 'a')
-                    .forEach((anchor) => {
+                DOM.find(iconbar, 'a').forEach(anchor => {
                     anchor.classList.remove('mm-iconbar__tab_selected');
                 });
                 var anchor = DOM.find(iconbar, '[href="#' + panel.id + '"]')[0];
@@ -81,14 +96,5 @@ export default function () {
             };
             this.bind('openPanel:start', selectTab);
         }
-        //	En-/disable the iconbar for media queries.
-        if (typeof options.use == 'string') {
-            this.matchMedia(options.use, () => {
-                this.node.menu.classList.add('mm-menu_iconbar-' + options.position);
-            }, () => {
-                this.node.menu.classList.remove('mm-menu_iconbar-' + options.position);
-            });
-        }
     }
 }
-;

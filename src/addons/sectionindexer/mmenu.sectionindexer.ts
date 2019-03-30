@@ -1,105 +1,105 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
-
+import * as DOM from '../../core/_dom';
+import * as support from '../../core/_support';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
 
+//  Add the options.
 Mmenu.options.sectionIndexer = options;
 
+export default function(this: Mmenu) {
+    var options = extendShorthandOptions(this.opts.sectionIndexer);
+    this.opts.sectionIndexer = extend(options, Mmenu.options.sectionIndexer);
 
-export default function(
-	this : Mmenu
-) {
-	var options = extendShorthandOptions( this.opts.sectionIndexer );
-	this.opts.sectionIndexer = extend( options, Mmenu.options.sectionIndexer );
+    if (!options.add) {
+        return;
+    }
 
-	if ( !options.add ) {
-		return;
-	}
+    this.bind('initPanels:after', (panels: HTMLElement[]) => {
+        //	Set the panel(s)
+        if (options.addTo != 'panels') {
+            panels = DOM.find(this.node.menu, options.addTo).filter(panel =>
+                panel.matches('.mm-panel')
+            );
+        }
 
+        panels.forEach(panel => {
+            DOM.find(panel, '.mm-listitem_divider').forEach(listitem => {
+                listitem
+                    .closest('.mm-panel')
+                    .classList.add('mm-panel_has-sectionindexer');
+            });
+        });
 
-	this.bind( 'initPanels:after', (
-		panels	: HTMLElement[]
-	) => {
+        //	Add the indexer, only if it does not allready excists
+        if (!this.node.indx) {
+            let buttons = '';
+            'abcdefghijklmnopqrstuvwxyz'.split('').forEach(letter => {
+                buttons += '<a href="#">' + letter + '</a>';
+            });
 
-		//	Set the panel(s)
-		if ( options.addTo != 'panels' ) {
-			panels = DOM.find( this.node.menu, options.addTo )
-				.filter( panel => panel.matches( '.mm-panel' ) );
-		}
+            let indexer = DOM.create('div.mm-sectionindexer');
+            indexer.innerHTML = buttons;
 
-		panels.forEach(( panel ) => {
-			DOM.find( panel, '.mm-listitem_divider' )
-				.forEach(( listitem ) => {
-					listitem.closest( '.mm-panel' ).classList.add( 'mm-panel_has-sectionindexer' );
-				});
-		});
+            this.node.pnls.prepend(indexer);
+            this.node.indx = indexer;
 
+            //	Prevent default behavior when clicking an anchor
+            this.node.indx.addEventListener('click', evnt => {
+                var anchor = evnt.target as HTMLElement;
 
-		//	Add the indexer, only if it does not allready excists
-		if ( !this.node.indx ) {
-			let buttons = '';
-			'abcdefghijklmnopqrstuvwxyz'.split( '' ).forEach(( letter ) => {
-				buttons += '<a href="#">' + letter + '</a>';
-			});
+                if (anchor.matches('a')) {
+                    evnt.preventDefault();
+                }
+            });
 
-			let indexer = DOM.create( 'div.mm-sectionindexer' );
-				indexer.innerHTML = buttons;
+            //	Scroll onMouseOver / onTouchStart
+            let mouseOverEvent = evnt => {
+                if (!evnt.target.matches('a')) {
+                    return;
+                }
 
-			this.node.pnls.prepend( indexer );
-			this.node.indx = indexer;
+                var letter = evnt.target.textContent,
+                    panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
 
-			//	Prevent default behavior when clicking an anchor
-			this.node.indx.addEventListener( 'click', ( evnt ) => {
-				var anchor = (evnt.target as HTMLElement)
+                var newTop = -1,
+                    oldTop = panel.scrollTop;
 
-				if ( anchor.matches( 'a' ) ) {
-					evnt.preventDefault();
-				}
-			});
+                panel.scrollTop = 0;
+                DOM.find(panel, '.mm-listitem_divider')
+                    .filter(divider => !divider.matches('.mm-hidden'))
+                    .forEach(divider => {
+                        if (
+                            newTop < 0 &&
+                            letter ==
+                                divider.textContent
+                                    .trim()
+                                    .slice(0, 1)
+                                    .toLowerCase()
+                        ) {
+                            newTop = divider.offsetTop;
+                        }
+                    });
 
-			//	Scroll onMouseOver / onTouchStart
-			let mouseOverEvent = ( evnt ) => {
-				if ( !evnt.target.matches( 'a' ) ) {
-					return;
-				}
+                panel.scrollTop = newTop > -1 ? newTop : oldTop;
+            };
 
-				var letter  = evnt.target.textContent,
-					panel 	= DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
+            if (support.touch) {
+                this.node.indx.addEventListener('touchstart', mouseOverEvent);
+                this.node.indx.addEventListener('touchmove', mouseOverEvent);
+            } else {
+                this.node.indx.addEventListener('mouseover', mouseOverEvent);
+            }
+        }
 
-				var newTop = -1,
-					oldTop = panel.scrollTop;
-
-				panel.scrollTop = 0;
-				DOM.find( panel, '.mm-listitem_divider' )
-					.filter( divider => !divider.matches( '.mm-hidden' ) )
-					.forEach(( divider ) => {
-						if ( newTop < 0 &&
-							letter == divider.textContent.trim().slice( 0, 1 ).toLowerCase()
-						) {
-							newTop = divider.offsetTop;
-						}
-					});
-
-				panel.scrollTop = newTop > -1 ? newTop : oldTop;
-			};
-
-			if ( Mmenu.support.touch ) {
-				this.node.indx.addEventListener( 'touchstart', mouseOverEvent );
-				this.node.indx.addEventListener( 'touchmove', mouseOverEvent );
-			} else {
-				this.node.indx.addEventListener( 'mouseover', mouseOverEvent );
-			}
-		}
-
-
-		//	Show or hide the indexer
-		this.bind( 'openPanel:start', (
-			panel ?: HTMLElement
-		) => {
-			panel = panel || DOM.children( this.node.pnls, '.mm-panel_opened' )[ 0 ];
-			this.node.menu.classList[ panel.matches( '.mm-panel_has-sectionindexer' ) ? 'add' : 'remove' ]( 'mm-menu_has-sectionindexer' );
-		});
-	});
-};
+        //	Show or hide the indexer
+        this.bind('openPanel:start', (panel?: HTMLElement) => {
+            panel =
+                panel || DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+            this.node.menu.classList[
+                panel.matches('.mm-panel_has-sectionindexer') ? 'add' : 'remove'
+            ]('mm-menu_has-sectionindexer');
+        });
+    });
+}

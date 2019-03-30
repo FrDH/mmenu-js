@@ -1,9 +1,11 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
+//	Add the options.
 Mmenu.options.counters = options;
+//	Add the classnames.
 Mmenu.configs.classNames.counters = {
     counter: 'Counter'
 };
@@ -13,7 +15,7 @@ export default function () {
     //	Refactor counter class
     this.bind('initListview:after', (panel) => {
         var cntrclss = this.conf.classNames.counters.counter, counters = panel.querySelectorAll('.' + cntrclss);
-        counters.forEach((counter) => {
+        counters.forEach(counter => {
             Mmenu.refactorClass(counter, cntrclss, 'mm-counter');
         });
     });
@@ -37,9 +39,11 @@ export default function () {
         });
     }
     if (options.count) {
-        function count(panel) {
-            var panels = panel ? [panel] : DOM.children(this.node.pnls, '.mm-panel');
-            panels.forEach((panel) => {
+        const count = (panel) => {
+            var panels = panel
+                ? [panel]
+                : DOM.children(this.node.pnls, '.mm-panel');
+            panels.forEach(panel => {
                 var parent = panel['mmParent'];
                 if (!parent) {
                     return;
@@ -49,16 +53,13 @@ export default function () {
                     return;
                 }
                 var listitems = [];
-                DOM.children(panel, '.mm-listview')
-                    .forEach((listview) => {
+                DOM.children(panel, '.mm-listview').forEach(listview => {
                     listitems.push(...DOM.children(listview));
                 });
                 counter.innerHTML = Mmenu.filterListItems(listitems).length.toString();
             });
-        }
-        ;
+        };
         this.bind('initListview:after', count);
         this.bind('updateListview', count);
     }
 }
-;

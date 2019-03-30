@@ -1,8 +1,9 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
+//	Add the options.
 Mmenu.options.iconPanels = options;
 export default function () {
     var options = extendShorthandOptions(this.opts.iconPanels);
@@ -45,14 +46,14 @@ export default function () {
             }
             else {
                 //	Remove the "iconpanel" classnames from all panels.
-                panels.forEach((panel) => {
+                panels.forEach(panel => {
                     panel.classList.remove(...classnames);
                 });
                 //	Filter out panels that are not opened.
                 panels = panels.filter(panel => panel.matches('.mm-panel_opened-parent'));
                 //	Add the current panel to the list.
                 let panelAdded = false;
-                panels.forEach((elem) => {
+                panels.forEach(elem => {
                     if (panel === elem) {
                         panelAdded = true;
                     }
@@ -61,7 +62,7 @@ export default function () {
                     panels.push(panel);
                 }
                 //	Remove the "hidden" classname from all opened panels.
-                panels.forEach((panel) => {
+                panels.forEach(panel => {
                     panel.classList.remove('mm-hidden');
                 });
                 //	Slice the opened panels to the max visible amount.
@@ -83,4 +84,3 @@ export default function () {
         });
     }
 }
-;

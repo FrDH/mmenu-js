@@ -1,8 +1,9 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
+//	Add the options.
 Mmenu.options.backButton = options;
 export default function () {
     if (!this.opts.offCanvas) {
@@ -16,8 +17,7 @@ export default function () {
         var states = [];
         const setStates = () => {
             states = [_menu];
-            DOM.children(this.node.pnls, '.mm-panel_opened, .mm-panel_opened-parent')
-                .forEach((panel) => {
+            DOM.children(this.node.pnls, '.mm-panel_opened, .mm-panel_opened-parent').forEach(panel => {
                 states.push('#' + panel.id);
             });
         };
@@ -31,7 +31,7 @@ export default function () {
             history.back();
             history.pushState(null, document.title, location.pathname + location.search);
         });
-        window.addEventListener('popstate', (evnt) => {
+        window.addEventListener('popstate', evnt => {
             if (this.vars.opened) {
                 if (states.length) {
                     states = states.slice(0, -1);
@@ -48,11 +48,10 @@ export default function () {
         });
     }
     if (options.open) {
-        window.addEventListener('popstate', (evnt) => {
+        window.addEventListener('popstate', evnt => {
             if (!this.vars.opened && location.hash == _menu) {
                 this.open();
             }
         });
     }
 }
-;

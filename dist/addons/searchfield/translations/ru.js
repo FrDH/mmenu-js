@@ -1,6 +1,5 @@
-import Mmenu from '../../../core/oncanvas/mmenu.oncanvas';
-Mmenu.i18n({
-    'Search': 'Найти',
+export default {
+    Search: 'Найти',
     'No results found.': 'Ничего не найдено.',
-    'Search results': 'Результаты поиска'
-}, 'ru');
+    cancel: 'отменить'
+};

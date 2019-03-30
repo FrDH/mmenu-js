@@ -1,8 +1,9 @@
 import Mmenu from './../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
+//	Add the options.
 Mmenu.options.autoHeight = options;
 export default function () {
     var options = extendShorthandOptions(this.opts.autoHeight);
@@ -24,8 +25,7 @@ export default function () {
         };
         const getHighest = () => {
             var highest = 0;
-            DOM.children(this.node.pnls, '.mm-panel')
-                .forEach((panel) => {
+            DOM.children(this.node.pnls, '.mm-panel').forEach(panel => {
                 panel = measurablePanel(panel);
                 highest = Math.max(highest, panel.offsetHeight);
             });
@@ -35,8 +35,7 @@ export default function () {
             //	If it's a vertically expanding panel...
             if (panel.parentElement.matches('.mm-listitem_vertical')) {
                 //	...find the first parent panel that isn't.
-                panel = DOM.parents(panel, '.mm-panel')
-                    .filter(panel => !panel.parentElement.matches('.mm-listitem_vertical'))[0];
+                panel = DOM.parents(panel, '.mm-panel').filter(panel => !panel.parentElement.matches('.mm-listitem_vertical'))[0];
             }
             return panel;
         };
@@ -56,7 +55,7 @@ export default function () {
                 _hgh = getHighest();
             }
             //	Set the height.
-            this.node.menu.style.height = (_hgh + _top + _bot) + 'px';
+            this.node.menu.style.height = _hgh + _top + _bot + 'px';
             //	Remove the "measuring" classname.
             this.node.menu.classList.remove('mm-menu_autoheight-measuring');
         };
@@ -80,4 +79,3 @@ export default function () {
         this.bind('openPanel:start', setHeight);
     }
 }
-;

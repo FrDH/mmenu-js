@@ -1,7 +1,9 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import configs from './_configs';
 import * as DOM from '../../core/_dom';
+//	Add the configs.
 Mmenu.configs.fixedElements = configs;
+//	Add the classnames.
 Mmenu.configs.classNames.fixedElements = {
     fixed: 'Fixed',
     sticky: 'Sticky'
@@ -17,32 +19,35 @@ export default function () {
         _fixd = this.conf.classNames.fixedElements.fixed;
         wrppr = DOM.find(document, configs.fixed.insertSelector)[0];
         fixed = DOM.find(page, '.' + _fixd);
-        fixed.forEach((fxd) => {
+        fixed.forEach(fxd => {
             Mmenu.refactorClass(fxd, _fixd, 'mm-slideout');
             wrppr[configs.fixed.insertMethod](fxd);
         });
         //	Sticky elements
         _stck = this.conf.classNames.fixedElements.sticky;
-        DOM.find(page, '.' + _stck)
-            .forEach((stick) => {
+        DOM.find(page, '.' + _stck).forEach(stick => {
             Mmenu.refactorClass(stick, _stck, 'mm-sticky');
         });
         stick = DOM.find(page, '.mm-sticky');
     });
     this.bind('open:start', () => {
         if (stick.length) {
-            if (window.getComputedStyle(document.documentElement).overflow == 'hidden') {
-                let scrollTop = (document.documentElement.scrollTop || document.body.scrollTop) + configs.sticky.offset;
-                stick.forEach((element) => {
-                    element.style.top = (parseInt(window.getComputedStyle(element).top, 10) + scrollTop) + 'px';
+            if (window.getComputedStyle(document.documentElement).overflow ==
+                'hidden') {
+                let scrollTop = (document.documentElement.scrollTop ||
+                    document.body.scrollTop) + configs.sticky.offset;
+                stick.forEach(element => {
+                    element.style.top =
+                        parseInt(window.getComputedStyle(element).top, 10) +
+                            scrollTop +
+                            'px';
                 });
             }
         }
     });
     this.bind('close:finish', () => {
-        stick.forEach((element) => {
+        stick.forEach(element => {
             element.style.top = '';
         });
     });
 }
-;

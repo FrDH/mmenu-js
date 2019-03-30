@@ -1,9 +1,11 @@
 import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
-import { extendShorthandOptions } from './_options';
-import { extend, transitionend } from '../../core/_helpers';
 import * as DOM from '../_dom';
+import * as events from '../_eventlisteners';
+import { extendShorthandOptions } from './_options';
+import { extend, transitionend, uniqueId } from '../../core/_helpers';
+//  Add the options and configs.
 Mmenu.options.offCanvas = options;
 Mmenu.configs.offCanvas = configs;
 export default function () {
@@ -29,7 +31,8 @@ export default function () {
         this.node.menu.classList.add('mm-menu_offcanvas');
         this.node.menu.parentElement.classList.remove('mm-wrapper');
         //	Append to the <body>
-        document.querySelector(configs.menu.insertSelector)[configs.menu.insertMethod](this.node.menu);
+        document
+            .querySelector(configs.menu.insertSelector)[configs.menu.insertMethod](this.node.menu);
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         let hash = window.location.hash;
         if (hash) {
@@ -44,8 +47,7 @@ export default function () {
     //	Sync the blocker to target the page.
     this.bind('setPage:after', (page) => {
         if (Mmenu.node.blck) {
-            DOM.children(Mmenu.node.blck, 'a')
-                .forEach((anchor) => {
+            DOM.children(Mmenu.node.blck, 'a').forEach(anchor => {
                 anchor.setAttribute('href', '#' + page.id);
             });
         }
@@ -62,8 +64,7 @@ export default function () {
     });
     //	Add screenreader / text support
     this.bind('initBlocker:after:sr-text', () => {
-        DOM.children(Mmenu.node.blck, 'a')
-            .forEach((anchor) => {
+        DOM.children(Mmenu.node.blck, 'a').forEach(anchor => {
             anchor.innerHTML = Mmenu.sr_text(this.i18n(this.conf.screenReader.text.closeMenu));
         });
     });
@@ -109,7 +110,6 @@ export default function () {
         return;
     });
 }
-;
 /**
  * Open the menu.
  */
@@ -134,7 +134,7 @@ Mmenu.prototype._openSetup = function () {
     //	Store style and position
     Mmenu.node.page['mmStyle'] = Mmenu.node.page.getAttribute('style') || '';
     //	Trigger window-resize to measure height
-    Mmenu.evnt.windowResizeOffCanvas({ force: true });
+    events.trigger(window, 'resize.page', { force: true });
     var clsn = ['mm-wrapper_opened'];
     //	Add options
     if (options.blockUI) {
@@ -197,8 +197,7 @@ Mmenu.prototype.close = function () {
  * Close all other menus.
  */
 Mmenu.prototype.closeAllOthers = function () {
-    DOM.find(document.body, '.mm-menu_offcanvas')
-        .forEach((menu) => {
+    DOM.find(document.body, '.mm-menu_offcanvas').forEach(menu => {
         if (menu !== this.node.menu) {
             let api = menu['mmenu'];
             if (api && api.close) {
@@ -219,7 +218,7 @@ Mmenu.prototype.setPage = function (page) {
     //	If no page was specified, find it.
     if (!page) {
         /** Array of elements that are / could be "the page". */
-        let pages = (typeof configs.page.selector == 'string')
+        let pages = typeof configs.page.selector == 'string'
             ? DOM.find(document.body, configs.page.selector)
             : DOM.children(document.body, configs.page.nodetype);
         //	Filter out elements that are absolutely not "the page".
@@ -232,7 +231,7 @@ Mmenu.prototype.setPage = function (page) {
         if (pages.length > 1) {
             let wrapper = DOM.create('div');
             pages[0].before(wrapper);
-            pages.forEach((page) => {
+            pages.forEach(page => {
                 wrapper.append(page);
             });
             pages = [wrapper];
@@ -240,7 +239,7 @@ Mmenu.prototype.setPage = function (page) {
         page = pages[0];
     }
     page.classList.add('mm-page', 'mm-slideout');
-    page.id = page.id || Mmenu.getUniqueId();
+    page.id = page.id || uniqueId();
     Mmenu.node.page = page;
     //	Invoke "after" hook.
     this.trigger('setPage:after', [page]);
@@ -252,29 +251,24 @@ const initWindow = function () {
     //	Prevent tabbing
     //	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
     //	In other words: The menu would move out of view.
-    if (!Mmenu.evnt.windowKeydownOffCanvasTab) {
-        Mmenu.evnt.windowKeydownOffCanvasTab = (evnt) => {
-            if (document.documentElement.matches('.mm-wrapper_opened')) {
-                if (evnt.keyCode == 9) {
-                    evnt.preventDefault();
-                    return false;
-                }
+    events.off(document.body, 'keydown.tabguard');
+    events.on(document.body, 'keydown.tabguard', (evnt) => {
+        if (document.documentElement.matches('.mm-wrapper_opened')) {
+            if (evnt.keyCode == 9) {
+                evnt.preventDefault();
             }
-        };
-        window.addEventListener('keydown', Mmenu.evnt.windowKeydownOffCanvasTab);
-    }
+        }
+    });
     //	Set "page" element min-height to window height
-    if (!Mmenu.evnt.resizeOffCanvas) {
-        Mmenu.evnt.windowResizeOffCanvas = (evnt) => {
-            if (Mmenu.node.page) {
-                if (document.documentElement.matches('.mm-wrapper_opening')
-                    || evnt.force) {
-                    Mmenu.node.page.style.minHeight = window.innerHeight + 'px';
-                }
+    events.off(window, 'resize.page');
+    events.on(window, 'resize.page', evnt => {
+        if (Mmenu.node.page) {
+            if (document.documentElement.matches('.mm-wrapper_opening') ||
+                evnt.force) {
+                Mmenu.node.page.style.minHeight = window.innerHeight + 'px';
             }
-        };
-        window.addEventListener('resize', Mmenu.evnt.windowResizeOffCanvas);
-    }
+        }
+    });
 };
 /**
  * Initialize "blocker" node
@@ -291,14 +285,13 @@ const initBlocker = function () {
         let blck = DOM.create('div.mm-wrapper__blocker.mm-slideout');
         blck.innerHTML = '<a></a>';
         //	Append the blocker node to the body.
-        document.querySelector(configs.menu.insertSelector)
-            .append(blck);
+        document.querySelector(configs.menu.insertSelector).append(blck);
         //	Store the blocker node.
         Mmenu.node.blck = blck;
     }
-    //	Close the menu when 
-    //		1) clicking, 
-    //		2) touching or 
+    //	Close the menu when
+    //		1) clicking,
+    //		2) touching or
     //		3) dragging the blocker node.
     var closeMenu = (evnt) => {
         evnt.preventDefault();

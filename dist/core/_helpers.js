@@ -33,7 +33,10 @@ export function extend(orignl, dfault) {
  * @return	{string}				The type of the variable in lowercase.
  */
 export function type(variable) {
-    return ({}).toString.call(variable).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+    return {}.toString
+        .call(variable)
+        .match(/\s([a-zA-Z]+)/)[1]
+        .toLowerCase();
 }
 /**
  * Set and invoke a (single) transition-end function with fallback.
@@ -60,3 +63,10 @@ export function transitionend(element, func, duration) {
     element.addEventListener('webkitTransitionEnd', _fn);
     setTimeout(_fn, duration * 1.1);
 }
+/**
+ * Get a (page wide) unique ID.
+ */
+export function uniqueId() {
+    return 'mm-' + __id++;
+}
+var __id = 0;

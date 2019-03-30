@@ -1,8 +1,9 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
+//	Add the options.
 Mmenu.options.dividers = options;
 export default function () {
     var options = extendShorthandOptions(this.opts.dividers);
@@ -19,17 +20,15 @@ export default function () {
             if (!panel.matches(options.addTo)) {
                 return;
             }
-            DOM.find(panel, '.mm-listitem_divider')
-                .forEach((divider) => {
+            DOM.find(panel, '.mm-listitem_divider').forEach(divider => {
                 divider.remove();
             });
-            DOM.find(panel, '.mm-listview')
-                .forEach((listview) => {
+            DOM.find(panel, '.mm-listview').forEach(listview => {
                 var lastletter = '', listitems = DOM.children(listview);
-                Mmenu.filterListItems(listitems)
-                    .forEach((listitem) => {
+                Mmenu.filterListItems(listitems).forEach(listitem => {
                     let letter = DOM.children(listitem, '.mm-listitem__text')[0]
-                        .textContent.trim().toLowerCase()[0];
+                        .textContent.trim()
+                        .toLowerCase()[0];
                     if (letter.length && letter != lastletter) {
                         lastletter = letter;
                         let divider = DOM.create('li.mm-listitem.mm-listitem_divider');
@@ -41,4 +40,3 @@ export default function () {
         });
     }
 }
-;

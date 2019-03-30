@@ -1,9 +1,10 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
+import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
+//	Add the options and configs.
 Mmenu.options.pageScroll = options;
 Mmenu.configs.pageScroll = configs;
 export default function () {
@@ -14,15 +15,15 @@ export default function () {
     function scrollTo() {
         if (section) {
             //	TODO: animate?
-            document.documentElement.scrollTop = section.offsetTop + configs.scrollOffset;
+            document.documentElement.scrollTop =
+                section.offsetTop + configs.scrollOffset;
             document.body.scrollTop = section.offsetTop + configs.scrollOffset;
         }
         section = null;
     }
     function anchorInPage(href) {
         try {
-            if (href != '#' &&
-                href.slice(0, 1) == '#') {
+            if (href != '#' && href.slice(0, 1) == '#') {
                 return Mmenu.node.page.querySelector(href);
             }
             return null;
@@ -72,8 +73,7 @@ export default function () {
         let scts = [];
         this.bind('initListview:after', (panel) => {
             let listitems = DOM.find(panel, '.mm-listitem');
-            Mmenu.filterListItemAnchors(listitems)
-                .forEach((anchor) => {
+            Mmenu.filterListItemAnchors(listitems).forEach(anchor => {
                 var href = anchor.getAttribute('href');
                 var section = anchorInPage(href);
                 if (section) {
@@ -82,7 +82,7 @@ export default function () {
             });
         });
         let _selected = -1;
-        window.addEventListener('scroll', (evnt) => {
+        window.addEventListener('scroll', evnt => {
             var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
             for (var s = 0; s < scts.length; s++) {
                 if (scts[s].offsetTop < scrollTop + configs.updateOffset) {
@@ -100,4 +100,3 @@ export default function () {
         });
     }
 }
-;

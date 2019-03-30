@@ -1,9 +1,10 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
+import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
+//	Add the options and configs.
 Mmenu.options.dropdown = options;
 Mmenu.configs.dropdown = configs;
 export default function () {
@@ -36,12 +37,12 @@ export default function () {
             events[1] = events[0];
         }
         if (events[0] == 'hover') {
-            button.addEventListener('mouseenter', (evnt) => {
+            button.addEventListener('mouseenter', evnt => {
                 this.open();
             }, { passive: true });
         }
         if (events[1] == 'hover') {
-            this.node.menu.addEventListener('mouseleave', (evnt) => {
+            this.node.menu.addEventListener('mouseleave', evnt => {
                 this.close();
             }, { passive: true });
         }
@@ -65,7 +66,8 @@ export default function () {
     var getPosition = function (dir, obj) {
         var css = obj[0], cls = obj[1];
         var _scrollPos = dir == 'x' ? 'scrollLeft' : 'scrollTop', _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight', _startPos = dir == 'x' ? 'left' : 'top', _stopPos = dir == 'x' ? 'right' : 'bottom', _size = dir == 'x' ? 'width' : 'height', _winSize = dir == 'x' ? 'innerWidth' : 'innerHeight', _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight', _position = null;
-        var scrollPos = document.documentElement[_scrollPos] || document.body[_scrollPos], startPos = DOM.offset(button, _startPos) - scrollPos, stopPos = startPos + button[_outerSize], windowSize = window[_winSize];
+        var scrollPos = document.documentElement[_scrollPos] ||
+            document.body[_scrollPos], startPos = DOM.offset(button, _startPos) - scrollPos, stopPos = startPos + button[_outerSize], windowSize = window[_winSize];
         /** Offset for the menu relative to the button. */
         var offs = configs.offset.button[dir] + configs.offset.viewport[dir];
         //	Position set in option
@@ -83,23 +85,27 @@ export default function () {
         }
         //	Position not set in option, find most space
         if (_position === null) {
-            _position = (startPos + ((stopPos - startPos) / 2) < windowSize / 2) ? 'after' : 'before';
+            _position =
+                startPos + (stopPos - startPos) / 2 < windowSize / 2
+                    ? 'after'
+                    : 'before';
         }
         //	Set position and max
         var val, max;
         if (_position == 'after') {
-            val = (dir == 'x') ? startPos : stopPos;
+            val = dir == 'x' ? startPos : stopPos;
             max = windowSize - (val + offs);
-            css[_startPos] = (val + configs.offset.button[dir]) + 'px';
+            css[_startPos] = val + configs.offset.button[dir] + 'px';
             css[_stopPos] = 'auto';
             if (options.tip) {
                 cls.push('mm-menu_tip-' + (dir == 'x' ? 'left' : 'top'));
             }
         }
         else {
-            val = (dir == 'x') ? stopPos : startPos;
+            val = dir == 'x' ? stopPos : startPos;
             max = val - offs;
-            css[_stopPos] = 'calc( 100% - ' + (val - configs.offset.button[dir]) + 'px )';
+            css[_stopPos] =
+                'calc( 100% - ' + (val - configs.offset.button[dir]) + 'px )';
             css[_startPos] = 'auto';
             if (options.tip) {
                 cls.push('mm-menu_tip-' + (dir == 'x' ? 'right' : 'bottom'));
@@ -126,15 +132,13 @@ export default function () {
             this.node.menu.classList.add(...obj[1]);
         }
     }
-    ;
     this.bind('open:start', position);
-    window.addEventListener('resize', (evnt) => {
+    window.addEventListener('resize', evnt => {
         position.call(this);
     }, { passive: true });
     if (!this.opts.offCanvas.blockUI) {
-        window.addEventListener('scroll', (evnt) => {
+        window.addEventListener('scroll', evnt => {
             position.call(this);
         }, { passive: true });
     }
 }
-;

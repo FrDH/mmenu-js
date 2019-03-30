@@ -1,10 +1,13 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
-import { extendShorthandOptions } from './_options';
 import * as DOM from '../../core/_dom';
+import * as media from '../../core/_matchmedia';
+import { extendShorthandOptions } from './_options';
+//  Add the options and configs.
 Mmenu.options.navbars = options;
 Mmenu.configs.navbars = configs;
+//  Add the classnames.
 Mmenu.configs.classNames.navbars = {
     panelNext: 'Next',
     panelPrev: 'Prev',
@@ -40,7 +43,7 @@ export default function () {
     if (!navs.length) {
         return;
     }
-    navs.forEach((options) => {
+    navs.forEach(options => {
         options = extendShorthandOptions(options);
         if (!options.use) {
             return false;
@@ -89,9 +92,9 @@ export default function () {
                 func.call(this, navbar);
             }
         }
-        //	en-/disable the navbar for media queries.
-        if (typeof options.use == 'string') {
-            this.matchMedia(options.use, () => {
+        //	En-/disable the navbar for media queries.
+        if (typeof options.use == 'string' || typeof options.use == 'number') {
+            media.add(options.use, () => {
                 navbar.classList.remove('mm-hidden');
             }, () => {
                 navbar.classList.add('mm-hidden');
@@ -105,4 +108,3 @@ export default function () {
         }
     });
 }
-;

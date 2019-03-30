@@ -1,9 +1,14 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
+import translate from './translations/translate';
+import * as DOM from '../../core/_dom';
+import * as events from '../../core/_eventlisteners';
 import { extendShorthandOptions } from './_options';
 import { type, extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
+//  Add the translations.
+translate();
+//  Add the options and configs.
 Mmenu.options.searchfield = options;
 Mmenu.configs.searchfield = configs;
 export default function () {
@@ -15,8 +20,7 @@ export default function () {
     }
     //	Blur searchfield
     this.bind('close:start', () => {
-        DOM.find(this.node.menu, '.mm-searchfield')
-            .forEach((input) => {
+        DOM.find(this.node.menu, '.mm-searchfield').forEach(input => {
             input.blur();
         });
     });
@@ -44,7 +48,7 @@ export default function () {
                 }
                 break;
         }
-        addTo.forEach((form) => {
+        addTo.forEach(form => {
             form = initSearchfield.call(this, form);
             if (options.search && form) {
                 initSearching.call(this, form);
@@ -52,7 +56,7 @@ export default function () {
         });
         //	Add the no-results message
         if (options.noResults) {
-            (options.panel.add ? [searchpanel] : panels).forEach((panel) => {
+            (options.panel.add ? [searchpanel] : panels).forEach(panel => {
                 initNoResultsMsg.call(this, panel);
             });
         }
@@ -81,7 +85,6 @@ export default function () {
         }
     });
 }
-;
 const initSearchPanel = function (panels) {
     var options = this.opts.searchfield, configs = this.conf.searchfield;
     //	Only once
@@ -118,7 +121,7 @@ const initSearchPanel = function (panels) {
 };
 const initSearchfield = function (wrapper) {
     var options = this.opts.searchfield, configs = this.conf.searchfield;
-    //	No searchfield in vertical submenus	
+    //	No searchfield in vertical submenus
     if (wrapper.parentElement.matches('.mm-listitem_vertical')) {
         return null;
     }
@@ -190,7 +193,7 @@ const initSearching = function (form) {
     //	Filter out search panel
     data.panels = data.panels.filter(panel => !panel.matches('.mm-panel_search'));
     var listitems = [];
-    data.panels.forEach((panel) => {
+    data.panels.forEach(panel => {
         listitems.push(...DOM.find(panel, '.mm-listitem'));
     });
     data.listitems = listitems.filter(listitem => !listitem.matches('.mm-listitem_divider'));
@@ -199,35 +202,20 @@ const initSearching = function (form) {
     input['mmSearchfield'] = data;
     //	Open the splash panel when focussing the input.
     if (options.panel.add && options.panel.splash) {
-        //	Remove the focus eventlistener from the input.
-        if (this.evnt.inputFocusSearchfieldSplash) {
-            input.removeEventListener('focus', this.evnt.inputFocusSearchfieldSplash);
-        }
-        //	Create the eventlistener.
-        this.evnt.inputFocusSearchfieldSplash = (evnt) => {
+        events.off(input, 'focus.splash');
+        events.on(input, 'focus.splash', evnt => {
             this.openPanel(searchpanel);
-        };
-        //	Add the focus eventlistener to the input..
-        input.addEventListener('focus', this.evnt.inputFocusSearchfieldSplash);
+        });
     }
-    //	Handle the cancel button.
     if (options.cancel) {
-        //	Remove the focus eventlistener from the input.
-        if (this.evnt.inputFocusSearchfieldCancel) {
-            input.removeEventListener('focus', this.evnt.inputFocusSearchfieldCancel);
-        }
-        //	Create the eventlistener.	
-        this.evnt.inputFocusSearchfieldCancel = (evnt) => {
+        //	Show the cancel button when focussing the input.
+        events.off(input, 'focus.cancel');
+        events.on(input, 'focus.cancel', evnt => {
             cancel.classList.add('mm-searchfield__cancel-active');
-        };
-        //	Add the focus eventlistener to the input.
-        input.addEventListener('focus', this.evnt.inputFocusSearchfieldCancel);
-        //	Remove the focus eventlistener from the input.
-        if (this.evnt.cancelClickSearchfieldSplash) {
-            cancel.removeEventListener('click', this.evnt.cancelClickSearchfieldSplash);
-        }
-        //	Create the eventlistener.	
-        this.evnt.cancelClickSearchfieldSplash = (evnt) => {
+        });
+        //	Close the splash panel when clicking the cancel button.
+        events.off(cancel, 'click.splash');
+        events.on(cancel, 'click.splash', evnt => {
             evnt.preventDefault();
             cancel.classList.remove('mm-searchfield__cancel-active');
             if (searchpanel.matches('.mm-panel_opened')) {
@@ -236,10 +224,9 @@ const initSearching = function (form) {
                     this.openPanel(parents[parents.length - 1]);
                 }
             }
-        };
-        //	Add the focus eventlistener to the input.
-        cancel.addEventListener('click', this.evnt.cancelClickSearchfieldSplash);
+        });
     }
+    //	Focus the input in the searchpanel when opening the searchpanel.
     if (options.panel.add && options.addTo == 'panel') {
         this.bind('openPanel:finish', (panel) => {
             if (panel === searchpanel) {
@@ -247,12 +234,9 @@ const initSearching = function (form) {
             }
         });
     }
-    //	Remove the focus eventlistener from the input.
-    if (this.evnt.inputInputSearchfieldSearch) {
-        input.removeEventListener('input', this.evnt.inputInputSearchfieldSearch);
-    }
-    //	Create the eventlistener.	
-    this.evnt.inputInputSearchfieldSearch = (evnt) => {
+    //	Search while typing.
+    events.off(input, 'input.search');
+    events.on(input, 'input.search', (evnt) => {
         switch (evnt.keyCode) {
             case 9: //	tab
             case 16: //	shift
@@ -267,10 +251,8 @@ const initSearching = function (form) {
                 this.search(input);
                 break;
         }
-    };
-    //	Add the focus eventlistener to the input.
-    input.addEventListener('input', this.evnt.inputInputSearchfieldSearch);
-    //	Fire once initially
+    });
+    //	Search initially.
     this.search(input);
 };
 const initNoResultsMsg = function (wrapper) {
@@ -299,31 +281,33 @@ Mmenu.prototype.search = function (input, query) {
     var form = input.closest('.mm-searchfield'), buttons = DOM.find(form, '.mm-btn'), searchpanel = DOM.children(this.node.pnls, '.mm-panel_search')[0];
     var panels = data.panels, noresults = data.noresults, listitems = data.listitems, dividers = data.dividers;
     //	Reset previous results
-    listitems.forEach((listitem) => {
+    listitems.forEach(listitem => {
         listitem.classList.remove('mm-listitem_nosubitems');
     });
-    //	TODO: dit klopt niet meer	
+    //	TODO: dit klopt niet meer
     // Mmenu.$(listitems).find( '.mm-btn_fullwidth-search' )
     // .removeClass( 'mm-btn_fullwidth-search mm-btn_fullwidth' );
     if (searchpanel) {
         DOM.children(searchpanel, '.mm-listview')[0].innerHTML = '';
     }
-    panels.forEach((panel) => {
+    panels.forEach(panel => {
         panel.scrollTop = 0;
     });
     //	Search
     if (query.length) {
         //	Initially hide all listitems
-        listitems.forEach((listitem) => {
+        listitems.forEach(listitem => {
             listitem.classList.add('mm-hidden');
         });
-        dividers.forEach((divider) => {
+        dividers.forEach(divider => {
             divider.classList.add('mm-hidden');
         });
         //	Re-show only listitems that match
-        listitems.forEach((listitem) => {
+        listitems.forEach(listitem => {
             var _search = '.mm-listitem__text'; // 'a'
-            if (options.showTextItems || (options.showSubPanels && listitem.querySelector('.mm-btn_next'))) {
+            if (options.showTextItems ||
+                (options.showSubPanels &&
+                    listitem.querySelector('.mm-btn_next'))) {
                 // _search = 'a, span';
             }
             else {
@@ -338,7 +322,7 @@ Mmenu.prototype.search = function (input, query) {
         if (options.panel.add) {
             //	Clone all matched listitems into the search panel
             let allitems = [];
-            panels.forEach((panel) => {
+            panels.forEach(panel => {
                 let listitems = Mmenu.filterListItems(DOM.find(panel, '.mm-listitem'));
                 if (listitems.length) {
                     if (options.panel.dividers) {
@@ -346,15 +330,16 @@ Mmenu.prototype.search = function (input, query) {
                         divider.innerHTML = panel.querySelector('.mm-navbar__title').innerHTML;
                         listitems.push(divider);
                     }
-                    listitems.forEach((listitem) => {
+                    listitems.forEach(listitem => {
                         allitems.push(listitem.cloneNode(true));
                     });
                 }
             });
             //	Remove toggles, checks and open buttons
-            allitems.forEach((listitem) => {
-                listitem.querySelectorAll('.mm-toggle, .mm-check, .mm-btn')
-                    .forEach((element) => {
+            allitems.forEach(listitem => {
+                listitem
+                    .querySelectorAll('.mm-toggle, .mm-check, .mm-btn')
+                    .forEach(element => {
                     element.remove();
                 });
             });
@@ -366,14 +351,12 @@ Mmenu.prototype.search = function (input, query) {
         else {
             //	Also show listitems in sub-panels for matched listitems
             if (options.showSubPanels) {
-                panels.forEach((panel) => {
+                panels.forEach(panel => {
                     let listitems = DOM.find(panel, '.mm-listitem');
-                    Mmenu.filterListItems(listitems)
-                        .forEach((listitem) => {
+                    Mmenu.filterListItems(listitems).forEach(listitem => {
                         let child = listitem['mmChild'];
                         if (child) {
-                            DOM.find(child, '.mm-listitem')
-                                .forEach((listitem) => {
+                            DOM.find(child, '.mm-listitem').forEach(listitem => {
                                 listitem.classList.remove('mm-hidden');
                             });
                         }
@@ -381,8 +364,7 @@ Mmenu.prototype.search = function (input, query) {
                 });
             }
             //	Update parent for sub-panel
-            panels.reverse()
-                .forEach((panel, p) => {
+            panels.reverse().forEach((panel, p) => {
                 let parent = panel['mmParent'];
                 if (parent) {
                     //	The current panel has mached listitems
@@ -413,10 +395,9 @@ Mmenu.prototype.search = function (input, query) {
                 }
             });
             //	Show first preceeding divider of parent
-            panels.forEach((panel) => {
+            panels.forEach(panel => {
                 let listitems = DOM.find(panel, '.mm-listitem');
-                Mmenu.filterListItems(listitems)
-                    .forEach((listitem) => {
+                Mmenu.filterListItems(listitems).forEach(listitem => {
                     let divider = DOM.prevAll(listitem, '.mm-listitem_divider')[0];
                     if (divider) {
                         divider.classList.remove('mm-hidden');
@@ -428,14 +409,14 @@ Mmenu.prototype.search = function (input, query) {
         buttons.forEach(button => button.classList.remove('mm-hidden'));
         //	Show/hide no results message
         noresults.forEach(wrapper => {
-            DOM.find(wrapper, '.mm-panel__noresultsmsg')
-                .forEach(message => message.classList[listitems.filter(listitem => !listitem.matches('.mm-hidden')).length ? 'add' : 'remove']('mm-hidden'));
+            DOM.find(wrapper, '.mm-panel__noresultsmsg').forEach(message => message.classList[listitems.filter(listitem => !listitem.matches('.mm-hidden')).length
+                ? 'add'
+                : 'remove']('mm-hidden'));
         });
         if (options.panel.add) {
             //	Hide splash
             if (options.panel.splash) {
-                DOM.find(searchpanel, '.mm-panel__searchsplash')
-                    .forEach(splash => splash.classList.add('mm-hidden'));
+                DOM.find(searchpanel, '.mm-panel__searchsplash').forEach(splash => splash.classList.add('mm-hidden'));
             }
             //	Re-show original listitems when in search panel
             listitems.forEach(listitem => listitem.classList.remove('mm-hidden'));
@@ -451,15 +432,13 @@ Mmenu.prototype.search = function (input, query) {
         buttons.forEach(button => button.classList.add('mm-hidden'));
         //	Hide no results message
         noresults.forEach(wrapper => {
-            DOM.find(wrapper, '.mm-panel__noresultsmsg')
-                .forEach(message => message.classList.add('mm-hidden'));
+            DOM.find(wrapper, '.mm-panel__noresultsmsg').forEach(message => message.classList.add('mm-hidden'));
         });
         if (options.panel.add) {
             //	Show splash
             if (options.panel.splash) {
-                DOM.find(searchpanel, '.mm-panel__searchsplash')
-                    .forEach(splash => splash.classList.remove('mm-hidden'));
-                //	Close panel 
+                DOM.find(searchpanel, '.mm-panel__searchsplash').forEach(splash => splash.classList.remove('mm-hidden'));
+                //	Close panel
             }
             else if (!input.closest('.mm-panel_search')) {
                 let opened = DOM.children(this.node.pnls, '.mm-panel_opened-parent');

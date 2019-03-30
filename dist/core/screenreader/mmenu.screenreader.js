@@ -1,9 +1,13 @@
 import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
+import translate from './translations/translate';
+import * as DOM from '../_dom';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../_dom';
+//  Add the translations.
+translate();
+//  Add the options and configs.
 Mmenu.options.screenReader = options;
 Mmenu.configs.screenReader = configs;
 export default function () {
@@ -17,18 +21,33 @@ export default function () {
         //	Add screenreader / aria hooks for add-ons
         //	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
         this.bind('initAddons:after', () => {
-            this.bind('initMenu:after', function () { this.trigger('initMenu:after:sr-aria', [].slice.call(arguments)); });
-            this.bind('initNavbar:after', function () { this.trigger('initNavbar:after:sr-aria', [].slice.call(arguments)); });
-            this.bind('openPanel:start', function () { this.trigger('openPanel:start:sr-aria', [].slice.call(arguments)); });
-            this.bind('close:start', function () { this.trigger('close:start:sr-aria', [].slice.call(arguments)); });
-            this.bind('close:finish', function () { this.trigger('close:finish:sr-aria', [].slice.call(arguments)); });
-            this.bind('open:start', function () { this.trigger('open:start:sr-aria', [].slice.call(arguments)); });
-            this.bind('initOpened:after', function () { this.trigger('initOpened:after:sr-aria', [].slice.call(arguments)); });
+            this.bind('initMenu:after', function () {
+                this.trigger('initMenu:after:sr-aria', [].slice.call(arguments));
+            });
+            this.bind('initNavbar:after', function () {
+                this.trigger('initNavbar:after:sr-aria', [].slice.call(arguments));
+            });
+            this.bind('openPanel:start', function () {
+                this.trigger('openPanel:start:sr-aria', [].slice.call(arguments));
+            });
+            this.bind('close:start', function () {
+                this.trigger('close:start:sr-aria', [].slice.call(arguments));
+            });
+            this.bind('close:finish', function () {
+                this.trigger('close:finish:sr-aria', [].slice.call(arguments));
+            });
+            this.bind('open:start', function () {
+                this.trigger('open:start:sr-aria', [].slice.call(arguments));
+            });
+            this.bind('initOpened:after', function () {
+                this.trigger('initOpened:after:sr-aria', [].slice.call(arguments));
+            });
         });
         //	Update aria-hidden for hidden / visible listitems
         this.bind('updateListview', () => {
-            this.node.pnls.querySelectorAll('.mm-listitem')
-                .forEach((listitem) => {
+            this.node.pnls
+                .querySelectorAll('.mm-listitem')
+                .forEach(listitem => {
                 Mmenu.sr_aria(listitem, 'hidden', listitem.matches('.mm-hidden'));
             });
         });
@@ -40,15 +59,14 @@ export default function () {
                 .filter(hide => !hide.parentElement.matches('.mm-panel'));
             /** Panels that should be considered "visible". */
             var visible = [panel];
-            DOM.find(panel, '.mm-listitem_vertical .mm-listitem_opened')
-                .forEach((listitem) => {
+            DOM.find(panel, '.mm-listitem_vertical .mm-listitem_opened').forEach(listitem => {
                 visible.push(...DOM.children(listitem, '.mm-panel'));
             });
             //	Set the panels to be considered "hidden" or "visible".
-            hidden.forEach((panel) => {
+            hidden.forEach(panel => {
                 Mmenu.sr_aria(panel, 'hidden', true);
             });
-            visible.forEach((panel) => {
+            visible.forEach(panel => {
                 Mmenu.sr_aria(panel, 'hidden', false);
             });
         });
@@ -57,9 +75,8 @@ export default function () {
         });
         //	Add aria-haspopup and aria-owns to prev- and next buttons.
         this.bind('initPanels:after', (panels) => {
-            panels.forEach((panel) => {
-                DOM.find(panel, '.mm-btn')
-                    .forEach((button) => {
+            panels.forEach(panel => {
+                DOM.find(panel, '.mm-btn').forEach(button => {
                     Mmenu.sr_aria(button, 'haspopup', true);
                     let href = button.getAttribute('href');
                     if (href) {
@@ -85,7 +102,9 @@ export default function () {
                     /** The navbar in the panel. */
                     var navbar = DOM.children(panel, '.mm-navbar')[0];
                     /** Whether or not the navbar should be considered "hidden". */
-                    var hidden = navbar.querySelector('.mm-btn_prev') ? true : false;
+                    var hidden = navbar.querySelector('.mm-btn_prev')
+                        ? true
+                        : false;
                     //	Set the navbar-title to be considered "hidden" or "visible".
                     Mmenu.sr_aria(DOM.find(navbar, '.mm-navbar__title')[0], 'hidden', hidden);
                 });
@@ -97,8 +116,12 @@ export default function () {
         //	Add screenreader / text hooks for add-ons
         //	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
         this.bind('initAddons:after', () => {
-            this.bind('setPage:after', function () { this.trigger('setPage:after:sr-text', [].slice.call(arguments)); });
-            this.bind('initBlocker:after', function () { this.trigger('initBlocker:after:sr-text', [].slice.call(arguments)); });
+            this.bind('setPage:after', function () {
+                this.trigger('setPage:after:sr-text', [].slice.call(arguments));
+            });
+            this.bind('initBlocker:after', function () {
+                this.trigger('initBlocker:after:sr-text', [].slice.call(arguments));
+            });
         });
         //	Add text to the prev-buttons.
         this.bind('initNavbar:after', (panel) => {
@@ -116,14 +139,15 @@ export default function () {
             if (parent) {
                 let next = DOM.children(parent, '.mm-btn_next')[0];
                 if (next) {
-                    let text = this.i18n(configs.text[next.parentElement.matches('.mm-listitem_vertical') ? 'toggleSubmenu' : 'openSubmenu']);
+                    let text = this.i18n(configs.text[next.parentElement.matches('.mm-listitem_vertical')
+                        ? 'toggleSubmenu'
+                        : 'openSubmenu']);
                     next.innerHTML += Mmenu.sr_text(text);
                 }
             }
         });
     }
 }
-;
 //	Methods
 (function () {
     var attr = function (element, attr, value) {

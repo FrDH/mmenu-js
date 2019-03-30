@@ -42,9 +42,6 @@ export function extendShorthandOptions(options) {
     if (typeof options.collapsed != 'object') {
         options.collapsed = {};
     }
-    if (typeof options.collapsed.use == 'number') {
-        options.collapsed.use = '(min-width: ' + options.collapsed.use + 'px)';
-    }
     //	Extend expanded shorthand options.
     if (typeof options.expanded == 'boolean' && options.expanded) {
         options.expanded = {
@@ -59,9 +56,6 @@ export function extendShorthandOptions(options) {
     }
     if (typeof options.expanded != 'object') {
         options.expanded = {};
-    }
-    if (typeof options.expanded.use == 'number') {
-        options.expanded.use = '(min-width: ' + options.expanded.use + 'px)';
     }
     return options;
 }

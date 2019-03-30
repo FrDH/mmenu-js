@@ -1,8 +1,9 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
+import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
 import { extend } from '../../core/_helpers';
-import * as DOM from '../../core/_dom';
+//	Add the options.
 Mmenu.options.setSelected = options;
 export default function () {
     var options = extendShorthandOptions(this.opts.setSelected);
@@ -10,7 +11,7 @@ export default function () {
     //	Find current by URL
     if (options.current == 'detect') {
         const findCurrent = (url) => {
-            url = url.split("?")[0].split("#")[0];
+            url = url.split('?')[0].split('#')[0];
             var anchor = this.node.menu.querySelector('a[href="' + url + '"], a[href="' + url + '/"]');
             if (anchor) {
                 this.setSelected(anchor.parentElement);
@@ -29,8 +30,7 @@ export default function () {
     }
     else if (!options.current) {
         this.bind('initListview:after', (panel) => {
-            DOM.find(panel, '.mm-listitem_selected')
-                .forEach((listitem) => {
+            DOM.find(panel, '.mm-listitem_selected').forEach(listitem => {
                 listitem.classList.remove('mm-listitem_selected');
             });
         });
@@ -45,8 +45,7 @@ export default function () {
     if (options.parent) {
         this.bind('openPanel:finish', (panel) => {
             //	Remove all
-            DOM.find(this.node.pnls, '.mm-listitem_selected-parent')
-                .forEach((listitem) => {
+            DOM.find(this.node.pnls, '.mm-listitem_selected-parent').forEach(listitem => {
                 listitem.classList.remove('mm-listitem_selected-parent');
             });
             //	Move up the DOM tree
@@ -64,4 +63,3 @@ export default function () {
         });
     }
 }
-;

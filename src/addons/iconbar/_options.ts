@@ -38,9 +38,5 @@ export function extendShorthandOptions(
 		options.use = true;
 	}
 
-	if ( typeof options.use == 'number' ) {
-		options.use = '(min-width: ' + options.use + 'px)';
-	}
-
 	return options;
 };
