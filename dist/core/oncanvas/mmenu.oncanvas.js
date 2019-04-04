@@ -4,7 +4,7 @@ import translate from './translations/translate';
 import * as DOM from '../_dom';
 import * as i18n from '../_i18n';
 import * as media from '../_matchmedia';
-import { type, extend, transitionend, uniqueId } from '../_helpers';
+import { type, extend, transitionend, uniqueId, valueOrFn } from '../_helpers';
 //  Add the translations.
 translate();
 /**
@@ -476,9 +476,9 @@ export default class Mmenu {
             return panel;
         }
         //	Refactor panel classnames
-        Mmenu.refactorClass(panel, this.conf.classNames.panel, 'mm-panel');
-        Mmenu.refactorClass(panel, this.conf.classNames.nopanel, 'mm-nopanel');
-        Mmenu.refactorClass(panel, this.conf.classNames.inset, 'mm-listview_inset');
+        DOM.reClass(panel, this.conf.classNames.panel, 'mm-panel');
+        DOM.reClass(panel, this.conf.classNames.nopanel, 'mm-nopanel');
+        DOM.reClass(panel, this.conf.classNames.inset, 'mm-listview_inset');
         if (panel.matches('.mm-listview_inset')) {
             panel.classList.add('mm-nopanel');
         }
@@ -486,11 +486,12 @@ export default class Mmenu {
         if (panel.matches('.mm-nopanel')) {
             return null;
         }
-        //	Wrap UL/OL in DIV
+        var id = panel.id || uniqueId();
+        //  Vertical panel.
         var vertical = panel.matches('.' + this.conf.classNames.vertical) ||
             !this.opts.slidingSubmenus;
         panel.classList.remove(this.conf.classNames.vertical);
-        var id = panel.id || uniqueId();
+        //	Wrap UL/OL in DIV
         if (panel.matches('ul, ol')) {
             panel.removeAttribute('id');
             /** The panel. */
@@ -571,8 +572,8 @@ export default class Mmenu {
         else if (!this.opts.navbar.title) {
             return;
         }
-        if (this.opts.navbar.add) {
-            panel.classList.add('mm-panel_has-navbar');
+        if (!this.opts.navbar.add) {
+            DOM.children(panel, '.mm-navbar')[0].classList.add('mm-hidden');
         }
         let title = DOM.create('a.mm-navbar__title');
         title.innerHTML = text;
@@ -597,23 +598,16 @@ export default class Mmenu {
         //	Invoke "before" hook.
         this.trigger('initListview:before', [panel]);
         //	Refactor listviews classnames.
-        var filter = 'ul, ol', listviews = DOM.children(panel, filter);
-        if (panel.matches(filter)) {
-            listviews.unshift(panel);
-        }
-        listviews.forEach(listview => {
-            Mmenu.refactorClass(listview, this.conf.classNames.nolistview, 'mm-nolistview');
-        });
-        var listitems = [];
+        var listviews = DOM.children(panel, 'ul, ol');
         //	Refactor listitems classnames
         listviews.forEach(listview => {
+            DOM.reClass(listview, this.conf.classNames.nolistview, 'mm-nolistview');
             if (!listview.matches('.mm-nolistview')) {
                 listview.classList.add('mm-listview');
                 DOM.children(listview).forEach(listitem => {
                     listitem.classList.add('mm-listitem');
-                    Mmenu.refactorClass(listitem, this.conf.classNames.selected, 'mm-listitem_selected');
-                    Mmenu.refactorClass(listitem, this.conf.classNames.divider, 'mm-listitem_divider');
-                    Mmenu.refactorClass(listitem, this.conf.classNames.spacer, 'mm-listitem_spacer');
+                    DOM.reClass(listitem, this.conf.classNames.selected, 'mm-listitem_selected');
+                    DOM.reClass(listitem, this.conf.classNames.spacer, 'mm-listitem_spacer');
                     DOM.children(listitem, 'a, span').forEach(item => {
                         if (!item.matches('.mm-btn')) {
                             item.classList.add('mm-listitem__text');
@@ -713,15 +707,15 @@ export default class Mmenu {
             //	Default behavior for anchors in lists.
             if (args.inMenu && args.inListview && !args.toExternal) {
                 //	Set selected item, Default: true
-                if (Mmenu.valueOrFn(target, this.opts.onClick.setSelected, onClick.setSelected)) {
+                if (valueOrFn(target, this.opts.onClick.setSelected, onClick.setSelected)) {
                     this.setSelected(target.parentElement);
                 }
                 //	Prevent default / don't follow link. Default: false.
-                if (Mmenu.valueOrFn(target, this.opts.onClick.preventDefault, onClick.preventDefault)) {
+                if (valueOrFn(target, this.opts.onClick.preventDefault, onClick.preventDefault)) {
                     evnt.preventDefault();
                 }
                 //	Close menu. Default: false
-                if (Mmenu.valueOrFn(target, this.opts.onClick.close, onClick.close)) {
+                if (valueOrFn(target, this.opts.onClick.close, onClick.close)) {
                     if (this.opts.offCanvas &&
                         typeof this.close == 'function') {
                         this.close();
@@ -771,62 +765,6 @@ export default class Mmenu {
             return this.i18n(Mmenu.options.navbar.title);
         }
         return this.i18n('Menu');
-    }
-    /**
-     * Find the value from an option or function.
-     * @param 	{HTMLElement} 	element 	Scope for the function.
-     * @param 	{any} 			[option] 	Value or function.
-     * @param 	{any} 			[dfault] 	Default fallback value.
-     * @return	{any}						The given evaluation of the given option, or the default fallback value.
-     */
-    static valueOrFn(element, option, dfault) {
-        if (typeof option == 'function') {
-            var value = option.call(element);
-            if (typeof value != 'undefined') {
-                return value;
-            }
-        }
-        if ((option === null ||
-            typeof option == 'function' ||
-            typeof option == 'undefined') &&
-            typeof dfault != 'undefined') {
-            return dfault;
-        }
-        return option;
-    }
-    /**
-     * Refactor a classname on multiple elements.
-     * @param {HTMLElement} element 	Element to refactor.
-     * @param {string}		oldClass 	Classname to remove.
-     * @param {string}		newClass 	Classname to add.
-     */
-    static refactorClass(element, oldClass, newClass) {
-        if (element.matches('.' + oldClass)) {
-            element.classList.remove(oldClass);
-            element.classList.add(newClass);
-        }
-    }
-    /**
-     * Filter out non-listitem listitems.
-     * @param  {array} listitems 	Elements to filter.
-     * @return {array}				The filtered set of listitems.
-     */
-    static filterListItems(listitems) {
-        return listitems
-            .filter(listitem => !listitem.matches('.mm-listitem_divider'))
-            .filter(listitem => !listitem.matches('.mm-hidden'));
-    }
-    /**
-     * Find anchors in listitems (excluding anchor that open a sub-panel).
-     * @param  {array} 	listitems 	Elements to filter.
-     * @return {array}				The found set of anchors.
-     */
-    static filterListItemAnchors(listitems) {
-        var anchors = [];
-        Mmenu.filterListItems(listitems).forEach(listitem => {
-            anchors.push(...DOM.children(listitem, 'a.mm-listitem__text'));
-        });
-        return anchors.filter(anchor => !anchor.matches('.mm-btn_next'));
     }
 }
 /**	Plugin version. */

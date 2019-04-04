@@ -24,14 +24,6 @@ export default function(this: Mmenu) {
             );
         }
 
-        panels.forEach(panel => {
-            DOM.find(panel, '.mm-listitem_divider').forEach(listitem => {
-                listitem
-                    .closest('.mm-panel')
-                    .classList.add('mm-panel_has-sectionindexer');
-            });
-        });
-
         //	Add the indexer, only if it does not allready excists
         if (!this.node.indx) {
             let buttons = '';
@@ -67,7 +59,7 @@ export default function(this: Mmenu) {
                     oldTop = panel.scrollTop;
 
                 panel.scrollTop = 0;
-                DOM.find(panel, '.mm-listitem_divider')
+                DOM.find(panel, '.mm-divider')
                     .filter(divider => !divider.matches('.mm-hidden'))
                     .forEach(divider => {
                         if (
@@ -95,11 +87,13 @@ export default function(this: Mmenu) {
 
         //	Show or hide the indexer
         this.bind('openPanel:start', (panel?: HTMLElement) => {
-            panel =
-                panel || DOM.children(this.node.pnls, '.mm-panel_opened')[0];
-            this.node.menu.classList[
-                panel.matches('.mm-panel_has-sectionindexer') ? 'add' : 'remove'
-            ]('mm-menu_has-sectionindexer');
+            var active = DOM.find(panel, '.mm-divider').filter(
+                divider => !divider.matches('.mm-hidden')
+            ).length;
+
+            this.node.indx.classList[active ? 'add' : 'remove'](
+                'mm-sectionindexer_active'
+            );
         });
     });
 }

@@ -16,7 +16,6 @@ export function create(selector) {
     });
     return elem;
 }
-;
 /**
  * Find all elements matching the selector.
  * Basically the same as element.querySelectorAll() but it returns an actuall array.
@@ -28,7 +27,6 @@ export function create(selector) {
 export function find(element, filter) {
     return Array.prototype.slice.call(element.querySelectorAll(filter));
 }
-;
 /**
  * Find all child elements matching the (optional) selector.
  *
@@ -38,11 +36,8 @@ export function find(element, filter) {
  */
 export function children(element, filter) {
     var children = Array.prototype.slice.call(element.children);
-    return filter
-        ? children.filter(child => child.matches(filter))
-        : children;
+    return filter ? children.filter(child => child.matches(filter)) : children;
 }
-;
 /**
  * Find all preceding elements matching the selector.
  *
@@ -59,11 +54,8 @@ export function parents(element, filter) {
         parents.push(parent);
         parent = parent.parentElement;
     }
-    return filter
-        ? parents.filter(parent => parent.matches(filter))
-        : parents;
+    return filter ? parents.filter(parent => parent.matches(filter)) : parents;
 }
-;
 /**
  * Find all previous siblings matching the selecotr.
  *
@@ -84,7 +76,6 @@ export function prevAll(element, filter) {
     }
     return previous;
 }
-;
 /**
  * Get an element offset relative to the document.
  *
@@ -93,6 +84,38 @@ export function prevAll(element, filter) {
  * @return	{number}							The element offset relative to the document.
  */
 export function offset(element, direction) {
-    return element.getBoundingClientRect()[direction] + document.body[(direction === 'left') ? 'scrollLeft' : 'scrollTop'];
+    return (element.getBoundingClientRect()[direction] +
+        document.body[direction === 'left' ? 'scrollLeft' : 'scrollTop']);
 }
-;
+/**
+ * Filter out non-listitem listitems.
+ * @param  {array} listitems 	Elements to filter.
+ * @return {array}				The filtered set of listitems.
+ */
+export function filterLI(listitems) {
+    return listitems.filter(listitem => !listitem.matches('.mm-hidden'));
+}
+/**
+ * Find anchors in listitems (excluding anchor that open a sub-panel).
+ * @param  {array} 	listitems 	Elements to filter.
+ * @return {array}				The found set of anchors.
+ */
+export function filterLIA(listitems) {
+    var anchors = [];
+    filterLI(listitems).forEach(listitem => {
+        anchors.push(...children(listitem, 'a.mm-listitem__text'));
+    });
+    return anchors.filter(anchor => !anchor.matches('.mm-btn_next'));
+}
+/**
+ * Refactor a classname on multiple elements.
+ * @param {HTMLElement} element 	Element to refactor.
+ * @param {string}		oldClass 	Classname to remove.
+ * @param {string}		newClass 	Classname to add.
+ */
+export function reClass(element, oldClass, newClass) {
+    if (element.matches('.' + oldClass)) {
+        element.classList.remove(oldClass);
+        element.classList.add(newClass);
+    }
+}

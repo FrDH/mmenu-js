@@ -16,7 +16,7 @@ export default function () {
     this.bind('initListview:after', (panel) => {
         var cntrclss = this.conf.classNames.counters.counter, counters = panel.querySelectorAll('.' + cntrclss);
         counters.forEach(counter => {
-            Mmenu.refactorClass(counter, cntrclss, 'mm-counter');
+            DOM.reClass(counter, cntrclss, 'mm-counter');
         });
     });
     //	Add the counters after a listview is initiated.
@@ -56,7 +56,7 @@ export default function () {
                 DOM.children(panel, '.mm-listview').forEach(listview => {
                     listitems.push(...DOM.children(listview));
                 });
-                counter.innerHTML = Mmenu.filterListItems(listitems).length.toString();
+                counter.innerHTML = DOM.filterLI(listitems).length.toString();
             });
         };
         this.bind('initListview:after', count);

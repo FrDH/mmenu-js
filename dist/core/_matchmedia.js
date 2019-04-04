@@ -3,7 +3,7 @@ var listeners = {};
 /**
  * Bind functions to a matchMedia listener (subscriber).
  *
- * @param {string|number} 	query 	Media query to match.
+ * @param {string|number} 	query 	Media query to match or number for min-width.
  * @param {function} 		yes 	Function to invoke when the media query matches.
  * @param {function} 		no 		Function to invoke when the media query doesn't match.
  */

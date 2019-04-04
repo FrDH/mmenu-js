@@ -3,7 +3,7 @@ import options from './_options';
 import configs from './_configs';
 import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import { extend, valueOrFn } from '../../core/_helpers';
 //	Add the options and configs.
 Mmenu.options.drag = options;
 Mmenu.configs.drag = configs;
@@ -111,7 +111,7 @@ export default function () {
                     break;
             }
             var slideOutNodes;
-            var dragNode = Mmenu.valueOrFn(this.node.menu, options.menu.node, Mmenu.node.page);
+            var dragNode = valueOrFn(this.node.menu, options.menu.node, Mmenu.node.page);
             if (typeof dragNode == 'string') {
                 dragNode = document.querySelector(dragNode);
             }

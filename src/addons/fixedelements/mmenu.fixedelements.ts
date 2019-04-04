@@ -30,7 +30,7 @@ export default function(this: Mmenu) {
         wrppr = DOM.find(document, configs.fixed.insertSelector)[0];
         fixed = DOM.find(page, '.' + _fixd);
         fixed.forEach(fxd => {
-            Mmenu.refactorClass(fxd, _fixd, 'mm-slideout');
+            DOM.reClass(fxd, _fixd, 'mm-slideout');
             wrppr[configs.fixed.insertMethod](fxd);
         });
 
@@ -38,7 +38,7 @@ export default function(this: Mmenu) {
         _stck = this.conf.classNames.fixedElements.sticky;
 
         DOM.find(page, '.' + _stck).forEach(stick => {
-            Mmenu.refactorClass(stick as HTMLElement, _stck, 'mm-sticky');
+            DOM.reClass(stick as HTMLElement, _stck, 'mm-sticky');
         });
 
         stick = DOM.find(page, '.mm-sticky');

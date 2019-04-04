@@ -73,7 +73,7 @@ export default function () {
         let scts = [];
         this.bind('initListview:after', (panel) => {
             let listitems = DOM.find(panel, '.mm-listitem');
-            Mmenu.filterListItemAnchors(listitems).forEach(anchor => {
+            DOM.filterLIA(listitems).forEach(anchor => {
                 var href = anchor.getAttribute('href');
                 var section = anchorInPage(href);
                 if (section) {
@@ -88,7 +88,7 @@ export default function () {
                 if (scts[s].offsetTop < scrollTop + configs.updateOffset) {
                     if (_selected !== s) {
                         _selected = s;
-                        let panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0], listitems = DOM.find(panel, '.mm-listitem'), anchors = Mmenu.filterListItemAnchors(listitems);
+                        let panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0], listitems = DOM.find(panel, '.mm-listitem'), anchors = DOM.filterLIA(listitems);
                         anchors = anchors.filter(anchor => anchor.matches('[href="#' + scts[s].id + '"]'));
                         if (anchors.length) {
                             this.setSelected(anchors[0].parentElement);

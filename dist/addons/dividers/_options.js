@@ -24,4 +24,3 @@ export function extendShorthandOptions(options) {
     }
     return options;
 }
-;

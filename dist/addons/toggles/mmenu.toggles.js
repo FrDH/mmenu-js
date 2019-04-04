@@ -10,8 +10,8 @@ export default function () {
         //	Refactor toggle classes
         panels.forEach(panel => {
             DOM.find(panel, 'input').forEach(input => {
-                Mmenu.refactorClass(input, this.conf.classNames.toggles.toggle, 'mm-toggle');
-                Mmenu.refactorClass(input, this.conf.classNames.toggles.check, 'mm-check');
+                DOM.reClass(input, this.conf.classNames.toggles.toggle, 'mm-toggle');
+                DOM.reClass(input, this.conf.classNames.toggles.check, 'mm-check');
             });
         });
     });

@@ -5,7 +5,7 @@ export default function (navbar) {
     var prev = DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
     navbar.append(prev);
     this.bind('initNavbar:after', (panel) => {
-        panel.classList.remove('mm-panel_has-navbar');
+        DOM.children(panel, '.mm-navbar')[0].classList.add('mm-hidden');
     });
     //	Update to opened panel.
     var org;
@@ -38,4 +38,3 @@ export default function (navbar) {
         Mmenu.sr_aria(prev, 'owns', (prev.getAttribute('href') || '').slice(1));
     });
 }
-;

@@ -8,16 +8,19 @@ export default function (navbar) {
         if (panel.querySelector('.mm-navbar__breadcrumbs')) {
             return;
         }
-        panel.classList.remove('mm-panel_has-navbar');
+        DOM.children(panel, '.mm-navbar')[0].classList.add('mm-hidden');
         var crumbs = [], breadcrumbs = DOM.create('span.mm-navbar__breadcrumbs'), current = panel, first = true;
         while (current) {
             if (!current.matches('.mm-panel')) {
                 current = current.closest('.mm-panel');
             }
             if (!current.parentElement.matches('.mm-listitem_vertical')) {
-                var text = DOM.find(current, '.mm-navbar__title')[0].textContent;
+                var text = DOM.find(current, '.mm-navbar__title')[0]
+                    .textContent;
                 if (text.length) {
-                    crumbs.unshift(first ? '<span>' + text + '</span>' : '<a href="#' + current.id + '">' + text + '</a>');
+                    crumbs.unshift(first
+                        ? '<span>' + text + '</span>'
+                        : '<a href="#' + current.id + '">' + text + '</a>');
                 }
                 first = false;
             }
@@ -26,7 +29,9 @@ export default function (navbar) {
         if (this.conf.navbars.breadcrumbs.removeFirst) {
             crumbs.shift();
         }
-        breadcrumbs.innerHTML = crumbs.join('<span class="mm-separator">' + this.conf.navbars.breadcrumbs.separator + '</span>');
+        breadcrumbs.innerHTML = crumbs.join('<span class="mm-separator">' +
+            this.conf.navbars.breadcrumbs.separator +
+            '</span>');
         DOM.children(panel, '.mm-navbar')[0].append(breadcrumbs);
     });
     //	Update for to opened panel
@@ -38,10 +43,8 @@ export default function (navbar) {
     });
     //	Add screenreader / aria support
     this.bind('initNavbar:after:sr-aria', (panel) => {
-        DOM.find(panel, '.mm-breadcrumbs a')
-            .forEach((anchor) => {
+        DOM.find(panel, '.mm-breadcrumbs a').forEach(anchor => {
             Mmenu.sr_aria(anchor, 'owns', anchor.getAttribute('href').slice(1));
         });
     });
 }
-;

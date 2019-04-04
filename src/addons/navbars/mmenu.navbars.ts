@@ -113,17 +113,17 @@ export default function(this: Mmenu) {
             }
         }
 
-        //	En-/disable the navbar for media queries.
-        if (typeof options.use == 'string' || typeof options.use == 'number') {
-            media.add(
-                options.use,
-                () => {
-                    navbar.classList.remove('mm-hidden');
-                },
-                () => {
-                    navbar.classList.add('mm-hidden');
-                }
-            );
+        //	En-/disable the navbar.
+        let enable = () => {
+            navbar.classList.remove('mm-hidden');
+            Mmenu.sr_aria(navbar, 'hidden', false);
+        };
+        let disable = () => {
+            navbar.classList.add('mm-hidden');
+            Mmenu.sr_aria(navbar, 'hidden', true);
+        };
+        if (typeof options.use != 'boolean') {
+            media.add(options.use, enable, disable);
         }
     });
 

@@ -1,7 +1,7 @@
-const options : mmOptionsDividers = {
-	add: false,
-	addTo: 'panels',
-	type: null
+const options: mmOptionsDividers = {
+    add: false,
+    addTo: 'panels',
+    type: null
 };
 export default options;
 
@@ -11,23 +11,22 @@ export default options;
  * @param  {object} options The options to extend.
  * @return {object}			The extended options.
  */
-export function extendShorthandOptions( 
-	options : mmOptionsDividers
-) : mmOptionsDividers {
+export function extendShorthandOptions(
+    options: mmOptionsDividers
+): mmOptionsDividers {
+    if (typeof options == 'boolean') {
+        options = {
+            add: options
+        };
+    }
 
-	if ( typeof options == 'boolean' ) {
-		options = {
-			add	: options
-		};
-	}
+    if (typeof options != 'object') {
+        options = {};
+    }
 
-	if ( typeof options != 'object' ) {
-		options = {};
-	}
+    if (options.addTo == 'panels') {
+        options.addTo = '.mm-panel';
+    }
 
-	if ( options.addTo == 'panels' ) {
-		options.addTo = '.mm-panel';
-	}
-
-	return options;
-};
+    return options;
+}

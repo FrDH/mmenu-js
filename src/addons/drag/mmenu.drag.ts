@@ -3,7 +3,7 @@ import options from './_options';
 import configs from './_configs';
 import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import { extend, valueOrFn } from '../../core/_helpers';
 
 //	Add the options and configs.
 Mmenu.options.drag = options;
@@ -140,7 +140,7 @@ export default function(this: Mmenu) {
             }
 
             var slideOutNodes: HTMLElement[];
-            var dragNode: HTMLElement = Mmenu.valueOrFn(
+            var dragNode: HTMLElement = valueOrFn(
                 this.node.menu,
                 options.menu.node,
                 Mmenu.node.page

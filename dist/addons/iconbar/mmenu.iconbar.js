@@ -43,19 +43,21 @@ export default function () {
         this.bind('initMenu:after', () => {
             this.node.menu.prepend(iconbar);
         });
-        //	En-/disable the iconbar for media queries.
-        if (typeof options.use == 'string' || typeof options.use == 'number') {
-            media.add(options.use, () => {
-                this.node.menu.classList.add('mm-menu_iconbar-' + options.position);
-            }, () => {
-                this.node.menu.classList.remove('mm-menu_iconbar-' + options.position);
-            });
-            //	Always enable the iconbar.
+        //	En-/disable the iconbar.
+        let classname = 'mm-menu_iconbar-' + options.position;
+        let enable = () => {
+            this.node.menu.classList.add(classname);
+            Mmenu.sr_aria(iconbar, 'hidden', false);
+        };
+        let disable = () => {
+            this.node.menu.classList.remove(classname);
+            Mmenu.sr_aria(iconbar, 'hidden', true);
+        };
+        if (typeof options.use == 'boolean') {
+            this.bind('initMenu:after', enable);
         }
         else {
-            this.bind('initMenu:after', () => {
-                this.node.menu.classList.add('mm-menu_iconbar-' + options.position);
-            });
+            media.add(options.use, enable, disable);
         }
         //	Tabs
         if (options.type == 'tabs') {

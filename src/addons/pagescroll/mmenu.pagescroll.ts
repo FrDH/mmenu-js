@@ -87,7 +87,7 @@ export default function(this: Mmenu) {
 
         this.bind('initListview:after', (panel: HTMLElement) => {
             let listitems = DOM.find(panel, '.mm-listitem');
-            Mmenu.filterListItemAnchors(listitems).forEach(anchor => {
+            DOM.filterLIA(listitems).forEach(anchor => {
                 var href = anchor.getAttribute('href');
                 var section = anchorInPage(href);
 
@@ -113,7 +113,7 @@ export default function(this: Mmenu) {
                                 '.mm-panel_opened'
                             )[0],
                             listitems = DOM.find(panel, '.mm-listitem'),
-                            anchors = Mmenu.filterListItemAnchors(listitems);
+                            anchors = DOM.filterLIA(listitems);
 
                         anchors = anchors.filter(anchor =>
                             anchor.matches('[href="#' + scts[s].id + '"]')

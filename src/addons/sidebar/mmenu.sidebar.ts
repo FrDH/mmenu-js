@@ -45,26 +45,17 @@ export default function(this: Mmenu) {
             }
         });
 
-        //	En-/disable the collapsed sidebar for media queries.
-        if (
-            typeof options.collapsed.use == 'string' ||
-            typeof options.collapsed.use == 'number'
-        ) {
-            media.add(
-                options.collapsed.use,
-                () => {
-                    document.documentElement.classList.add(clsclpsd);
-                },
-                () => {
-                    document.documentElement.classList.remove(clsclpsd);
-                }
-            );
-
-            //	Always enable the collapsed sidebar.
+        //	En-/disable the collapsed sidebar.
+        let enable = () => {
+            document.documentElement.classList.add(clsclpsd);
+        };
+        let disable = () => {
+            document.documentElement.classList.remove(clsclpsd);
+        };
+        if (typeof options.collapsed.use == 'boolean') {
+            this.bind('initMenu:after', enable);
         } else {
-            this.bind('initMenu:after', () => {
-                document.documentElement.classList.add(clsclpsd);
-            });
+            media.add(options.collapsed.use, enable, disable);
         }
     }
 
@@ -75,35 +66,23 @@ export default function(this: Mmenu) {
             this.node.menu.classList.add('mm-menu_sidebar-expanded');
         });
 
-        //	En-/disable the expanded sidebar for media queries.
-        if (
-            typeof options.expanded.use == 'string' ||
-            typeof options.expanded.use == 'number'
-        ) {
-            media.add(
-                options.expanded.use,
-                () => {
-                    document.documentElement.classList.add(clsxpndd);
-                    if (
-                        !document.documentElement.matches(
-                            '.mm-wrapper_sidebar-closed'
-                        )
-                    ) {
-                        this.open();
-                    }
-                },
-                () => {
-                    document.documentElement.classList.remove(clsxpndd);
-                    this.close();
-                }
-            );
-
-            //	Always enable the expanded sidebar.
-        } else {
-            this.bind('initMenu:after', () => {
-                document.documentElement.classList.add(clsxpndd);
+        //	En-/disable the expanded sidebar.
+        let enable = () => {
+            document.documentElement.classList.add(clsxpndd);
+            if (
+                !document.documentElement.matches('.mm-wrapper_sidebar-closed')
+            ) {
                 this.open();
-            });
+            }
+        };
+        let disable = () => {
+            document.documentElement.classList.remove(clsxpndd);
+            this.close();
+        };
+        if (typeof options.expanded.use == 'boolean') {
+            this.bind('initMenu:after', enable);
+        } else {
+            media.add(options.expanded.use, enable, disable);
         }
 
         this.bind('close:start', () => {

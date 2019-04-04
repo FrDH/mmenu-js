@@ -123,7 +123,7 @@ export default function(this: Mmenu) {
             var navbar = DOM.children(panel, '.mm-navbar')[0];
 
             /** Whether or not the navbar should be considered "hidden". */
-            var hidden = !panel.matches('.mm-panel_has-navbar');
+            var hidden = navbar.matches('.mm-hidden');
 
             //	Set the navbar to be considered "hidden" or "visible".
             Mmenu.sr_aria(navbar, 'hidden', hidden);

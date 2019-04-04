@@ -112,7 +112,7 @@ const initSearchPanel = function (panels) {
     }
     //	Add splash content
     if (options.panel.splash) {
-        let splash = DOM.create('div.mm-panel__searchsplash');
+        let splash = DOM.create('div.mm-panel__content');
         splash.innerHTML = options.panel.splash;
         searchpanel.append(splash);
     }
@@ -144,9 +144,6 @@ const initSearchfield = function (wrapper) {
     field.append(input);
     form.append(field);
     wrapper.prepend(form);
-    if (wrapper.matches('.mm-panel')) {
-        wrapper.classList.add('mm-panel_has-searchfield');
-    }
     //	Add attributes to the input
     addAttributes(input, configs.input);
     //	Add the clear button
@@ -192,12 +189,16 @@ const initSearching = function (form) {
     data.panels = data.panels.filter(panel => !panel.parentElement.matches('.mm-listitem_vertical'));
     //	Filter out search panel
     data.panels = data.panels.filter(panel => !panel.matches('.mm-panel_search'));
-    var listitems = [];
+    //  Find listitems.
+    data.listitems = [];
     data.panels.forEach(panel => {
-        listitems.push(...DOM.find(panel, '.mm-listitem'));
+        data.listitems.push(...DOM.find(panel, '.mm-listitem'));
     });
-    data.listitems = listitems.filter(listitem => !listitem.matches('.mm-listitem_divider'));
-    data.dividers = listitems.filter(listitem => listitem.matches('.mm-listitem_divider'));
+    //  Find dividers.
+    data.dividers = [];
+    data.panels.forEach(panel => {
+        data.dividers.push(...DOM.find(panel, '.mm-divider'));
+    });
     var searchpanel = DOM.children(this.node.pnls, '.mm-panel_search')[0], input = DOM.find(form, 'input')[0], cancel = DOM.find(form, '.mm-searchfield__cancel')[0];
     input['mmSearchfield'] = data;
     //	Open the splash panel when focussing the input.
@@ -271,7 +272,7 @@ const initNoResultsMsg = function (wrapper) {
     //	Add no-results message
     var message = DOM.create('div.mm-panel__noresultsmsg.mm-hidden');
     message.innerHTML = this.i18n(options.noResults);
-    wrapper.prepend(message);
+    wrapper.append(message);
 };
 Mmenu.prototype.search = function (input, query) {
     var options = this.opts.searchfield, configs = this.conf.searchfield;
@@ -295,27 +296,61 @@ Mmenu.prototype.search = function (input, query) {
     });
     //	Search
     if (query.length) {
-        //	Initially hide all listitems
-        listitems.forEach(listitem => {
-            listitem.classList.add('mm-hidden');
-        });
+        //	Initially hide all dividers.
         dividers.forEach(divider => {
             divider.classList.add('mm-hidden');
         });
-        //	Re-show only listitems that match
+        //	Hide listitems that do not match.
         listitems.forEach(listitem => {
-            var _search = '.mm-listitem__text'; // 'a'
-            if (options.showTextItems ||
-                (options.showSubPanels &&
-                    listitem.querySelector('.mm-btn_next'))) {
-                // _search = 'a, span';
-            }
-            else {
-                _search = 'a' + _search;
-            }
-            let text = DOM.children(listitem, _search)[0];
+            // var _search = '.mm-listitem__text'; // 'a'
+            // if (
+            //     options.showTextItems ||
+            //     (options.showSubPanels &&
+            //         listitem.querySelector('.mm-btn_next'))
+            // ) {
+            //     // _search = 'a, span';
+            // } else {
+            //     //  TODO a.mm-listitem__text also targets a.mm-listitem__text.mm-listitem__btn
+            //     _search = 'a' + _search;
+            // }
+            // let text = DOM.children(listitem, _search)[0];
+            // //  TODO textContent also includes sr-only text "open submenu".
+            // if (!text || text.textContent.toLowerCase().indexOf(query) < 0) {
+            //     listitem.classList.add('mm-hidden');
+            // }
+            var text = DOM.children(listitem, '.mm-listitem__text')[0];
+            var add = false;
+            //  The listitem should be shown if:
+            //      1) The text matches the query and
+            //          2a) The text is a open-button and
+            //          2b) the option showSubPanels is set to true.
+            //      or  3a) The text is not an anchor and
+            //          3b) the option showTextItems is set to true.
+            //      or  4)  The text is an anchor.
+            //  TODO textContent also includes sr-only text "open submenu".
+            //  1
             if (text && text.textContent.toLowerCase().indexOf(query) > -1) {
-                listitem.classList.remove('mm-hidden');
+                //  2a
+                if (text.matches('.mm-listitem__btn')) {
+                    //  2b
+                    if (options.showSubPanels) {
+                        add = true;
+                    }
+                    //  3a
+                }
+                else if (!text.matches('a')) {
+                    //  3b
+                    if (options.showTextItems) {
+                        add = true;
+                    }
+                    // 4
+                }
+                else {
+                    add = true;
+                }
+            }
+            if (!add) {
+                listitem.classList.add('mm-hidden');
             }
         });
         //	Show all mached listitems in the search panel
@@ -323,29 +358,31 @@ Mmenu.prototype.search = function (input, query) {
             //	Clone all matched listitems into the search panel
             let allitems = [];
             panels.forEach(panel => {
-                let listitems = Mmenu.filterListItems(DOM.find(panel, '.mm-listitem'));
+                let listitems = DOM.filterLI(DOM.find(panel, '.mm-listitem'));
+                listitems = listitems.filter(listitem => !listitem.matches('.mm-hidden'));
                 if (listitems.length) {
+                    //  Add a divider to indicate in what panel the listitems were.
                     if (options.panel.dividers) {
-                        let divider = DOM.create('li.mm-listitem.mm-listitem_divider');
+                        let divider = DOM.create('li.mm-divider');
                         divider.innerHTML = panel.querySelector('.mm-navbar__title').innerHTML;
-                        listitems.push(divider);
+                        allitems.push(divider);
                     }
                     listitems.forEach(listitem => {
                         allitems.push(listitem.cloneNode(true));
                     });
                 }
             });
-            //	Remove toggles, checks and open buttons
+            //	Remove toggles and checks.
             allitems.forEach(listitem => {
                 listitem
-                    .querySelectorAll('.mm-toggle, .mm-check, .mm-btn')
+                    .querySelectorAll('.mm-toggle, .mm-check')
                     .forEach(element => {
                     element.remove();
                 });
             });
-            //	Add to the search panel
-            DOM.children(searchpanel, '.mm-listview')[0].append(...listitems);
-            //	Open the search panel
+            //	Add to the search panel.
+            DOM.children(searchpanel, '.mm-listview')[0].append(...allitems);
+            //	Open the search panel.
             this.openPanel(searchpanel);
         }
         else {
@@ -353,7 +390,7 @@ Mmenu.prototype.search = function (input, query) {
             if (options.showSubPanels) {
                 panels.forEach(panel => {
                     let listitems = DOM.find(panel, '.mm-listitem');
-                    Mmenu.filterListItems(listitems).forEach(listitem => {
+                    DOM.filterLI(listitems).forEach(listitem => {
                         let child = listitem['mmChild'];
                         if (child) {
                             DOM.find(child, '.mm-listitem').forEach(listitem => {
@@ -369,7 +406,7 @@ Mmenu.prototype.search = function (input, query) {
                 if (parent) {
                     //	The current panel has mached listitems
                     let listitems = DOM.find(panel, '.mm-listitem');
-                    if (Mmenu.filterListItems(listitems).length) {
+                    if (DOM.filterLI(listitems).length) {
                         //	Show parent
                         if (parent.matches('.mm-hidden')) {
                             parent.classList.remove('mm-hidden');
@@ -397,8 +434,8 @@ Mmenu.prototype.search = function (input, query) {
             //	Show first preceeding divider of parent
             panels.forEach(panel => {
                 let listitems = DOM.find(panel, '.mm-listitem');
-                Mmenu.filterListItems(listitems).forEach(listitem => {
-                    let divider = DOM.prevAll(listitem, '.mm-listitem_divider')[0];
+                DOM.filterLI(listitems).forEach(listitem => {
+                    let divider = DOM.prevAll(listitem, '.mm-divider')[0];
                     if (divider) {
                         divider.classList.remove('mm-hidden');
                     }
@@ -416,7 +453,7 @@ Mmenu.prototype.search = function (input, query) {
         if (options.panel.add) {
             //	Hide splash
             if (options.panel.splash) {
-                DOM.find(searchpanel, '.mm-panel__searchsplash').forEach(splash => splash.classList.add('mm-hidden'));
+                DOM.find(searchpanel, '.mm-panel__content').forEach(splash => splash.classList.add('mm-hidden'));
             }
             //	Re-show original listitems when in search panel
             listitems.forEach(listitem => listitem.classList.remove('mm-hidden'));
@@ -437,7 +474,7 @@ Mmenu.prototype.search = function (input, query) {
         if (options.panel.add) {
             //	Show splash
             if (options.panel.splash) {
-                DOM.find(searchpanel, '.mm-panel__searchsplash').forEach(splash => splash.classList.remove('mm-hidden'));
+                DOM.find(searchpanel, '.mm-panel__content').forEach(splash => splash.classList.remove('mm-hidden'));
                 //	Close panel
             }
             else if (!input.closest('.mm-panel_search')) {

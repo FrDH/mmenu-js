@@ -22,7 +22,7 @@ export default function(this: Mmenu) {
             counters = panel.querySelectorAll('.' + cntrclss);
 
         counters.forEach(counter => {
-            Mmenu.refactorClass(counter as HTMLElement, cntrclss, 'mm-counter');
+            DOM.reClass(counter as HTMLElement, cntrclss, 'mm-counter');
         });
     });
 
@@ -70,9 +70,7 @@ export default function(this: Mmenu) {
                     listitems.push(...DOM.children(listview));
                 });
 
-                counter.innerHTML = Mmenu.filterListItems(
-                    listitems
-                ).length.toString();
+                counter.innerHTML = DOM.filterLI(listitems).length.toString();
             });
         };
 
