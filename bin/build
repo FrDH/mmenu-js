@@ -43,7 +43,10 @@ foreach( $parts as $part )
 						break;
 				}
 
-				$lang = end( explode( '.', current( explode( '.ts', $file ) ) ) );
+				$name = explode( '.ts', $file );
+				$name = current( $name );
+				$name = explode( '.', $name );
+				$lang = end( $name );
 				if ( !in_array( $lang, $langs ) )
 				{
 					$langs[] = $lang;
