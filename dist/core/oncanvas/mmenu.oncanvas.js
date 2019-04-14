@@ -768,7 +768,7 @@ export default class Mmenu {
     }
 }
 /**	Plugin version. */
-Mmenu.version = '8.0.1';
+Mmenu.version = '8.0.2';
 /**	Default options for menus. */
 Mmenu.options = options;
 /**	Default configuration for menus. */

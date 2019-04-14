@@ -14,7 +14,7 @@ translate();
  */
 export default class Mmenu {
     /**	Plugin version. */
-    static version: string = '8.0.1';
+    static version: string = '8.0.2';
 
     /**	Default options for menus. */
     static options: mmOptions = options;

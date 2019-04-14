@@ -19,10 +19,11 @@ export default function(this: Mmenu) {
 
     function scrollTo() {
         if (section) {
-            //	TODO: animate?
-            document.documentElement.scrollTop =
-                section.offsetTop + configs.scrollOffset;
-            document.body.scrollTop = section.offsetTop + configs.scrollOffset;
+            section.scrollIntoView({ behavior: 'smooth' });
+
+            // document.documentElement.scrollTop =
+            //     section.offsetTop + configs.scrollOffset;
+            // document.body.scrollTop = section.offsetTop + configs.scrollOffset;
         }
         section = null;
     }

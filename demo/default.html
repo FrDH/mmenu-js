@@ -10,15 +10,8 @@
 		<link type="text/css" rel="stylesheet" href="css/demo.css" />
 		<link type="text/css" rel="stylesheet" href="../dist/mmenu.css" />
 
-		<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-		<script src="../dist/mmenu.js"></script>
-		<script src="../src/mmenu.debugger.js"></script>
-		<script>
-			$(function() {
-				var menu = $('nav#menu').mmenu();
-				var api = menu.data('mmenu');
-			});
-		</script>
+		<!-- IE 10 and 11 polyfills -->
+		<script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Array.prototype.filter%2CArray.prototype.forEach%2CArray.prototype.map%2CElement.prototype.cloneNode%2Cdocument.querySelector"></script>
 	</head>
 	<body>
 		<div id="page">
@@ -54,5 +47,20 @@
 				</ul>
 			</nav>
 		</div>
+
+		<!-- mmenu scripts -->
+		<script src="../dist/mmenu.js"></script>
+		<script src="../src/mmenu.debugger.js"></script>
+		<script>
+			new Mmenu( document.querySelector( '#menu' ) );
+
+			document.addEventListener( 'click', ( evnt ) => {
+				let anchor = evnt.target.closest( 'a[href^="#/"]' );
+				if ( anchor ) {
+					alert('Thank you for clicking, but that\'s a demo link.');
+					evnt.preventDefault();
+				}
+			});
+		</script>
 	</body>
 </html>
