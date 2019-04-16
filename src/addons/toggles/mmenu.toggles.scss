@@ -1,0 +1,75 @@
+@import 
+	'../../mixins',
+	'../../includes',
+	'../../variables';
+
+
+@if ( $mm_include_toggles ) {
+	input.mm-toggle {
+		appearance: none;
+		cursor: pointer;
+		background: var( --mm-color-border );
+		border-radius: $mm_toggleHeight;
+		display: inline-block;
+		min-width: $mm_toggleWidth;
+		width: $mm_toggleWidth;
+		height: $mm_toggleHeight;
+		margin: 0 $mm_padding;
+		margin-top: calc( ( var( --mm-listitem-size ) - #{$mm_toggleHeight} ) / 2 );
+		transition: background-color 0.2s ease;
+
+		&:before {
+			content: '';
+			background: var( --mm-color-background );
+			border-radius: $mm_toggleHeight;
+			display: block;
+			width: $mm_toggleHeight - 2;
+			height: $mm_toggleHeight - 2;
+			margin: 1px;
+			transition: transform 0.2s ease;
+		}
+
+		&:checked {
+			background: $mm_toggleCheckedColor;
+
+			&:before {
+				transform: translateX( $mm_toggleWidth - $mm_toggleHeight );
+			}
+		}
+	}
+}
+
+@if ( $mm_include_checks ) {
+	input.mm-check {
+		appearance: none;
+		cursor: pointer;
+		display: inline-block;
+		width: $mm_checkWidth;
+		height: $mm_checkHeight;
+		margin: 0 $mm_padding;
+		margin-top: calc( ( var( --mm-listitem-size ) - #{$mm_checkHeight} ) / 2 );
+
+		&:before {
+			border-color: var( --mm-color-text );
+			content: '';
+			display: block;
+			border-left: 3px solid;
+			border-bottom: 3px solid;
+			width: 40%;
+			height: 20%;
+			margin: 25% 0 0 20%;
+			opacity: 0.3;
+			transform: rotate( -45deg );
+			transition: opacity 0.2s ease;
+		}
+
+		&:checked {
+			&:before {
+				opacity: 1;
+			}
+		}
+	}
+}
+
+
+@import 'toggles.rtl';

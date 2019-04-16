@@ -1,0 +1,87 @@
+@import '../../mixins', '../../includes', '../../variables';
+
+$mm_module: '.mm-iconbar';
+
+:root {
+    --mm-iconbar-size: #{$mm_iconbarSize};
+}
+
+.mm-menu {
+    &_iconbar-left {
+        .mm-panels,
+        .mm-navbars_top,
+        .mm-navbars_bottom {
+            margin-left: var(--mm-iconbar-size);
+        }
+
+        #{$mm_module} {
+            border-right-width: 1px;
+            display: block;
+            left: 0;
+        }
+    }
+
+    &_iconbar-right {
+        .mm-panels,
+        .mm-navbars_top,
+        .mm-navbars_bottom {
+            margin-right: var(--mm-iconbar-size);
+        }
+
+        #{$mm_module} {
+            border-left-width: 1px;
+            display: block;
+            right: 0;
+        }
+    }
+}
+
+#{$mm_module} {
+    background: var(--mm-color-background);
+    color: var(--mm-color-text-dimmed);
+    border: 0 solid $mm_borderColor;
+    border-color: var(--mm-color-border);
+
+    text-align: center;
+
+    overflow: hidden;
+    display: none;
+    box-sizing: border-box;
+    width: var(--mm-iconbar-size);
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+}
+
+%mm_iconbar_part {
+    width: inherit;
+    position: absolute;
+
+    > * {
+        box-sizing: border-box;
+        display: block;
+        padding: ($mm_btnSize / 4) 0;
+    }
+
+    a,
+    a:hover {
+        text-decoration: none;
+    }
+}
+#{$mm_module}__top {
+    @extend %mm_iconbar_part;
+    top: 0;
+}
+
+#{$mm_module}__bottom {
+    @extend %mm_iconbar_part;
+    bottom: 0;
+}
+
+@if ($mm_include_iconbar_tabs) {
+    #{$mm_module}__tab_selected {
+        background: var(--mm-color-background-emphasis);
+    }
+}

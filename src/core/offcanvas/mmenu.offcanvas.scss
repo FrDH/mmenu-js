@@ -1,0 +1,68 @@
+@import 
+	'../../mixins',
+	'../../includes',
+	'../../variables';
+
+
+//	Animations
+.mm-page {
+	box-sizing: border-box;
+	position: relative;
+}
+
+.mm-slideout {
+	transition: transform $mm_transitionDuration $mm_transitionFunction;
+	z-index: 1;
+}
+
+//	Wrapper
+.mm-wrapper_opened {
+	overflow-x: hidden;
+	position: relative;
+}
+
+.mm-wrapper_background .mm-page {
+	background: inherit;
+}
+
+//	Menu
+.mm-menu_offcanvas {
+	position: fixed;
+	right: auto;
+	z-index: 0;
+
+	&:not(.mm-menu_opened) {
+		display: none;
+	}
+}
+
+@include mm_offcanvas_size;
+
+@if ( $mm_include_offcanvas_blocker ) {
+	.mm-wrapper__blocker {
+		background: rgba( 3, 2, 1, 0 );
+		overflow: hidden;
+		display: none;
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 2;
+	}
+
+	.mm-wrapper_blocking {
+		overflow: hidden;
+
+		body {
+			overflow: hidden;
+		}
+
+		.mm-wrapper__blocker {
+			display: block;
+		}
+	}
+}
+
+
+@import 'offcanvas.rtl';

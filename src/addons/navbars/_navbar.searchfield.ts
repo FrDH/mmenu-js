@@ -1,22 +1,15 @@
-(function( $ ) {
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 
-	const _PLUGIN_ 	= 'mmenu';
-	const _ADDON_  	= 'navbars';
-	const _CONTENT_	= 'searchfield';
+import { type } from '../../core/_helpers';
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ][ _CONTENT_ ] = function( $navbar, opts )
-	{
-		var _c = $[ _PLUGIN_ ]._c;
+export default function( 
+	this	: Mmenu,
+	navbar	: HTMLElement
+) {
+	if ( type( this.opts.searchfield ) != 'object' ) {
+		this.opts.searchfield = {};
+	}
 
-		// var $srch = $('<div class="' + _c.searchfield + '" />')
-		// 	.appendTo( $navbar );
-
-		if ( typeof this.opts.searchfield != 'object' )
-		{
-			this.opts.searchfield = {};
-		}
-		this.opts.searchfield.add = true;
-		this.opts.searchfield.addTo = $navbar;
-	};
-
-})( jQuery );
+	this.opts.searchfield.add 	= true;
+	this.opts.searchfield.addTo = [ navbar ];
+};

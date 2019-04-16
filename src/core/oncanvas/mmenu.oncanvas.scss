@@ -1,0 +1,41 @@
+@import '../../mixins', '../../includes', '../../variables';
+
+//	Variables
+:root {
+    //	sizes
+    --mm-line-height: #{$mm_lineHeight};
+    --mm-listitem-size: #{$mm_listitemSize};
+    --mm-navbar-size: #{$mm_navbarSize};
+
+    //	positioning
+    --mm-offset-top: #{$mm_offsetTop};
+    --mm-offset-right: #{$mm_offsetRight};
+    --mm-offset-bottom: #{$mm_offsetBottom};
+    --mm-offset-left: #{$mm_offsetLeft};
+
+    //	colors
+    --mm-color-border: #{$mm_borderColor};
+    --mm-color-button: #{$mm_dimmedTextColor};
+    --mm-color-text: #{$mm_textColor};
+    --mm-color-text-dimmed: #{$mm_dimmedTextColor};
+    --mm-color-background: #{$mm_backgroundColor};
+    --mm-color-background-highlight: #{$mm_highlightedBackgroundColor};
+    --mm-color-background-emphasis: #{$mm_emphasizedBackgroundColor};
+
+    //	misc
+    --mm-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.mm-hidden {
+    display: none !important;
+}
+
+.mm-wrapper {
+    overflow-x: hidden;
+    position: relative;
+}
+
+@import 'oncanvas.menu', 'oncanvas.menu.rtl', 'oncanvas.panels',
+    'oncanvas.panels.rtl', 'oncanvas.vertical', 'oncanvas.buttons',
+    'oncanvas.buttons.rtl', 'oncanvas.navbar', 'oncanvas.navbar.rtl',
+    'oncanvas.listviews', 'oncanvas.listviews.rtl';

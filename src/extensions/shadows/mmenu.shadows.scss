@@ -1,0 +1,50 @@
+@import 
+	'../../mixins',
+	'../../includes',
+	'../../variables';
+
+
+@if ( $mm_include_shadows_page ) {
+	.mm-menu_shadow-page {
+		&:after {
+			box-shadow: var( --mm-shadow );
+			content: "";
+			display: block;
+			width: 20px;
+			height: 120%;
+			position: absolute;
+			left: 100%;
+			top: -10%;
+			z-index: 100;
+			clip-path: polygon(-20px 0, 0 0, 0 100%, -20px 100%);
+		}
+		
+		@if ( $mm_include_positioning_right ) {
+			&.mm-menu_position-right:after {
+				left: auto;
+				right: 100%;
+				clip-path: polygon(20px 0, 40px 0, 40px 100%, 20px 100%);
+			}
+		}
+
+		@if ( $mm_include_positioning_front ) {
+			&.mm-menu_position-front:after {
+				content: none;
+				display: none;
+			}
+		}
+	}
+}
+
+@if ( $mm_include_shadows_menu ) {
+	.mm-menu_shadow-menu {
+		box-shadow: var( --mm-shadow );
+	}
+}
+
+
+@if ( $mm_include_shadows_panels ) {
+	.mm-menu_shadow-panels .mm-panels > .mm-panel {
+		box-shadow: var( --mm-shadow );
+	}
+}

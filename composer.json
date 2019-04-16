@@ -1,9 +1,14 @@
 {
+<<<<<<< HEAD
 	"name"			: "jQuery.mmenu",
 	"version"		: "7.3.3",
+=======
+	"name"			: "mmenu.js",
+	"version"		: "8.0.2",
+>>>>>>> develop
 	"authors"		: "Fred Heusschen <info@frebsite.nl>",
 	"license"		: "CC-BY-NC-4.0",
-	"description"	: "The best jQuery plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
+	"description"	: "The best javascript plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
 	"keywords"		: [
 		"app",
 		"list",

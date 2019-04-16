@@ -1,8 +1,6 @@
-@if ( $mm_opt_vertical )
-{
+@if ( $mm_include_vertical ) {
 
-	.mm-listitem_vertical > .mm-panel
-	{
+	.mm-listitem_vertical > .mm-panel {
 		transform: none !important;
 
 		display: none;
@@ -10,36 +8,30 @@
 		padding: $mm_padding 0 $mm_padding $mm_padding;
 
 		&:before,
-		&:after
-		{
+		&:after {
 			content: none;
 			display: none;
 		}
 	}
-	.mm-listitem_opened > .mm-panel
-	{
+
+	.mm-listitem_opened > .mm-panel {
 		display: block;
 	}
 
-	.mm-listitem_vertical
-	{
-		> .mm-listitem__btn
-		{
+	.mm-listitem_vertical {
+		> .mm-listitem__btn {
 			height: $mm_listitemSize;
 			height: var( --mm-listitem-size );
 			bottom: auto;
 		}
 
-		.mm-listitem:last-child:after
-		{
+		.mm-listitem:last-child:after {
 			border-color: transparent;
 		}
 	}
 	
-	.mm-listitem_opened
-	{
-		> .mm-listitem__btn:after
-		{
+	.mm-listitem_opened {
+		> .mm-listitem__btn:after {
 			transform: rotate( 225deg );
 			right: $mm_listitemIndent - 1;
 		}

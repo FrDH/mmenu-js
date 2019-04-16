@@ -1,7 +1,5 @@
-@if ( $mm_opt_offcanvas and $mm_opt_rtl )
-{
-	[dir="rtl"] .mm-menu_offcanvas
-	{
+@if ( $mm_include_rtl ) {
+	[dir="rtl"] .mm-menu_offcanvas {
 		/*left: unset;
 		right: 0;*/
 	}

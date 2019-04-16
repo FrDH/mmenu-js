@@ -1,28 +1,25 @@
 /*
 	Tasks:
 
-	$ gulp 					: Runs "css" and "js" tasks
-	$ gulp watch			: Starts a watch on "css" and "js" tasks
+	$ gulp 			: Runs the "js" and "css" tasks.
+	$ gulp js		: Runs the "js" tasks.
+	$ gulp css		: Runs the "css" tasks.
+	$ gulp watch	: Starts a watch on the "js" and "css" tasks.
 
 
-	Flags:
+	Flags for the custom task:
 
-	--o ../path/to 	: Sets the "output" directory to the specified directory
-	--c ../path/to 	: Creates a "custom build" using _build.json and _variables.custom.scss from the specified directory
-
-
-	Examples:
-
-	$ gulp --c ../mmenu-custom --o ../my-custom-build
-	$ gulp watch --c ../mmenu-custom --o ../my-custom-build
+	--i ../path/to 	: Create a custom build using "mmenu.module.ts", "_includes.scss" and "_variables.scss" from the specified directory.
+	--o ../path/to 	: Sets the "output" directory to the specified directory.
 
 
+	Example:
 
-	Generate a _build.json by running:
-	$ php bin/build.php ../path/to
+	$ gulp custom --i ../my-custom-input --o ../my-custom-output
 */
 
 
+<<<<<<< HEAD
 const gulp 			= require( 'gulp' ),
 	sass 			= require( 'gulp-sass' ),
 	autoprefixer 	= require( 'gulp-autoprefixer' ),
@@ -115,13 +112,19 @@ function start( callback ) {
 		callback();
 	}
 }
+=======
+>>>>>>> develop
 
+const { parallel, series } = require( 'gulp' );
 
+const js  	= require( './gulp/js' );
+const css 	= require( './gulp/css' );
 
 
 /*
 	$ gulp
 */
+<<<<<<< HEAD
 
 const defaultTask = function( cb ) {
 	start( gulp.parallel( js, css ) );
@@ -138,13 +141,28 @@ const watchTask = function( cb ) {
 	cb();
 };
 exports.watch = watchTask;
+=======
+exports.default = ( cb ) => {
+	parallel(
+		js.all,
+		css.all
+	)( cb );
+};
+>>>>>>> develop
 
 
+/*
+	$ gulp js
+*/
+exports.js = ( cb ) => {
+	js.all( cb );
+};
 
 
 /*
 	$ gulp css
 */
+<<<<<<< HEAD
 
 //	1)	Concatenate variables and mixins
 const cssVariables = function() {
@@ -227,12 +245,24 @@ const cssConcat = function() {
 const css = gulp.series( cssVariables, cssCompile, cssConcat );
 
 
+=======
+exports.css = ( cb ) => {
+	css.all( cb );
+};
+>>>>>>> develop
 
 
 /*
-	$ gulp js
+	$ gulp custom
 */
+exports.custom = ( cb ) => {
+	parallel(
+		js.custom,
+		css.custom
+	)( cb );
+};
 
+<<<<<<< HEAD
 //	1) 	Compile core + add-ons
 const jsCompile = function() {
 
@@ -307,3 +337,21 @@ const jsConcat = function() {
 };
 
 const js = gulp.series( jsCompile, jsTranslations, jsConcat );
+=======
+
+/*
+	$ gulp watch
+*/
+exports.watch = ( cb ) => {
+	parallel(
+		series(
+			js.all,
+			js.watch
+		),
+		series(
+			css.all,
+			css.watch,
+		)
+	)( cb );
+};
+>>>>>>> develop

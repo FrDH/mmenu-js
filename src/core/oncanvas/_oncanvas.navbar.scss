@@ -1,0 +1,46 @@
+$mm_module: '.mm-navbar';
+
+#{$mm_module} {
+    background: var(--mm-color-background);
+    border-color: var(--mm-color-border);
+    color: var(--mm-color-text-dimmed);
+    text-align: center;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    display: flex;
+    height: var(--mm-navbar-size);
+
+    opacity: 1;
+    transition: opacity $mm_transitionDuration $mm_transitionFunction;
+
+    > * {
+        box-sizing: border-box;
+        display: block;
+        padding: calc((var(--mm-navbar-size) - var(--mm-line-height)) * 0.5);
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    a,
+    a:hover {
+        text-decoration: none;
+    }
+}
+
+#{$mm_module}__title {
+    @include mm_ellipsis;
+    flex-grow: 1;
+    width: 100%;
+}
+
+#{$mm_module}__btn {
+    position: relative;
+
+    &:first-child {
+        text-align: left;
+    }
+
+    &:last-child {
+        text-align: right;
+    }
+}

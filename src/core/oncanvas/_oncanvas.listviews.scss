@@ -1,26 +1,26 @@
-.mm-listview,
-.mm-listitem
-{
+$mm_module: '.mm-listitem';
+
+.mm-listview {
 	list-style: none;
 	display: block;
 	padding: 0;
 	margin: 0;
 }
 
-.mm-listitem
-{
-	color: $mm_textColor;	//	IE11 fallback
+#{$mm_module} {
 	color: var( --mm-color-text );
-
-	border-color: $mm_borderColor;	//	IE11 fallback
 	border-color: var( --mm-color-border );
+
+	list-style: none;
+	display: block;
+	padding: 0;
+	margin: 0;
 
 	position: relative;
 	display: flex;
 	flex-wrap: wrap;
 
-	&:after
-	{
+	&:after {
 		content: '';
 		border-color: inherit;
 		border-bottom-width: 1px;
@@ -33,26 +33,22 @@
 	}
 
 	a,
-	a:hover
-	{
+	a:hover {
 		text-decoration: none;
 	}
 }
 
-.mm-listitem__text,
-.mm-listitem__btn
-{
+%mm_listitem_content {
 	color: inherit;
 	display: block;
 
-	padding-top: ($mm_listitemSize - $mm_lineHeight) / 2; //	IE11 fallback
-	padding-top: calc( (var( --mm-listitem-size ) - var( --mm-line-height )) / 2 );
-
-	padding-bottom: ($mm_listitemSize - $mm_lineHeight) / 2; //	IE11 fallback
-	padding-bottom: calc( (var( --mm-listitem-size ) - var( --mm-line-height )) / 2 );
+	padding: calc( (var( --mm-listitem-size ) - var( --mm-line-height )) / 2 );
+	padding-left: 0;
+	padding-right: 0;
 }
-.mm-listitem__text
-{
+
+#{$mm_module}__text {
+	@extend %mm_listitem_content;
 	@include mm_ellipsis;
 
 	padding-left: $mm_listitemIndent;
@@ -60,10 +56,9 @@
 	flex-grow: 1;
 	flex-basis: 10%;
 }
-.mm-listitem__btn
-{
-	-webkit-tap-highlight-color: $mm_emphasizedBackgroundColor;		//	IE11 fallback
-	tap-highlight-color: $mm_emphasizedBackgroundColor;				//	IE11 fallback
+
+#{$mm_module}__btn {
+	@extend %mm_listitem_content;
 
 	-webkit-tap-highlight-color: var( --mm-color-background-emphasis );	
 	tap-highlight-color: var( --mm-color-background-emphasis );
@@ -81,75 +76,18 @@
 	}
 }
 
-.mm-listitem_selected 
-{
-	> .mm-listitem__text
-	{
-		background: $mm_emphasizedBackgroundColor;	//	IE11 fallback
-		background: var( --mm-color-background-emphasis );
+#{$mm_module} {
+	&_selected  {
+		> #{$mm_module}__text {
+			background: var( --mm-color-background-emphasis );
+		}
 	}
-}
-.mm-listitem_opened
-{
-	> .mm-listitem__btn,
-	> .mm-panel
-	{
-		background: $mm_highlightedBackgroundColor;	//	IE11 fallback
-		background: var( --mm-color-background-highlight );
-	}
-}
 
-
-.mm-panels > .mm-panel 
-{
-	> .mm-listview
-	{
-		margin: $mm_panelPadding ( -$mm_panelPadding );
-	}
-	> .mm-listview:first-child,
-	> .mm-navbar + .mm-listview
-	{
-		margin-top: -$mm_panelPadding;
-	}
-}
-
-
-//	Dividers
-@if ( $mm_opt_listviews_divider )
-{
-	.mm-listitem_divider
-	{
-		@include mm_ellipsis;
-
-		background: $mm_highlightedBackgroundColor;	//	IE11 fallback
-		background: var( --mm-color-background-highlight );
-
-		font-size: 75%;
-		text-transform: uppercase;
-
-		min-height: $mm_lineHeight;	//	IE11 fallback
-		min-height: var( --mm-line-height );
-
-		padding: (($mm_listitemSize * .75) - $mm_lineHeight) / 2; //	IE11 fallback
-		padding: calc( ((var( --mm-listitem-size ) * .75) - var( --mm-line-height )) * .5 );
-
-		padding-right: $mm_padding;
-		padding-left: $mm_listitemIndent;
-	}
-}
-
-//	Spacers
-@if ( $mm_opt_listviews_spacer )
-{
-	.mm-listitem_spacer
-	{
-		padding-top: $mm_listitemSize;
-		padding-top: var( --mm-listitem-size );
-
-		> .mm-btn_next
+	&_opened {
+		> #{$mm_module}__btn,
+		> .mm-panel
 		{
-			top: $mm_listitemSize;
-			top: var( --mm-listitem-size );
+			background: var( --mm-color-background-highlight );
 		}
 	}
 }

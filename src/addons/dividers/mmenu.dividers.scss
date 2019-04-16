@@ -1,0 +1,60 @@
+@import '../../mixins', '../../includes', '../../variables';
+
+$mm_module: '.mm-divider';
+
+#{$mm_module} {
+    @include mm_ellipsis;
+
+    opacity: 1;
+    transition: opacity $mm_transitionDuration $mm_transitionFunction;
+
+    font-size: 75%;
+    text-transform: uppercase;
+    background: var(--mm-color-background);
+
+    position: sticky;
+    z-index: 1;
+    top: 0;
+
+    min-height: var(--mm-line-height);
+    padding: calc(
+        ((var(--mm-listitem-size) * 0.65) - var(--mm-line-height)) * 0.5
+    );
+    padding-right: $mm_padding;
+    padding-left: $mm_listitemIndent;
+
+    &:before {
+        content: '';
+        background: var(--mm-color-background-highlight);
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+    }
+}
+
+@if ($mm_include_dividers_light) {
+    .mm-menu_dividers-light #{$mm_module} {
+        font-size: inherit;
+        color: var(--mm-color-text-dimmed);
+        padding-top: calc(
+            (var(--mm-listitem-size) - var(--mm-line-height)) * 0.75
+        );
+        padding-bottom: calc(
+            (var(--mm-listitem-size) - var(--mm-line-height)) * 0.25
+        );
+
+        &:before {
+            background: inherit;
+        }
+    }
+}
+
+@if ($mm_include_borderstyle_none) {
+    .mm-menu_border-none #{$mm_module} {
+        border-top-width: 1px;
+        border-top-style: solid;
+    }
+}

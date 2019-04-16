@@ -1,0 +1,32 @@
+@import '../../mixins', '../../includes', '../../variables';
+
+.mm-menu_autoheight {
+    transition: none $mm_transitionDuration $mm_transitionFunction;
+    transition-property: transform, height;
+
+    &:not(.mm-menu_offcanvas) {
+        position: relative;
+    }
+
+    &.mm-menu_position-top,
+    &.mm-menu_position-bottom {
+        max-height: percentage($mm_menuHeight);
+    }
+}
+
+.mm-menu_autoheight-measuring {
+    .mm-panel {
+        display: block !important;
+    }
+
+    @if ($mm_include_vertical) {
+        .mm-listitem_vertical:not(.mm-listitem_opened) .mm-panel {
+            display: none !important;
+        }
+    }
+
+    .mm-panels > .mm-panel {
+        bottom: auto !important;
+        height: auto !important;
+    }
+}

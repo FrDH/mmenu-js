@@ -1,0 +1,43 @@
+@import 
+	'../../mixins',
+	'../../includes',
+	'../../variables';
+
+
+.mm-menu_selected-hover,
+.mm-menu_selected-parent {
+	.mm-listitem {
+		> .mm-listitem__text,
+		> .mm-listitem__btn {
+			transition: background $mm_transitionDuration $mm_transitionFunction;
+		}
+	}
+}
+
+.mm-menu_selected-hover {
+	.mm-listview:hover > .mm-listitem_selected {
+		.mm-listitem__text {
+			background: none;
+		}
+	}
+	.mm-listitem__text,
+	.mm-listitem__btn {
+		&:hover {
+			background: var( --mm-color-background-emphasis	);
+		}
+	}
+}
+
+.mm-menu_selected-parent {
+	.mm-panel_opened-parent .mm-listitem:not( .mm-listitem_selected-parent ) {
+		.mm-listitem__text {
+			background: none;
+		}
+	}
+	.mm-listitem_selected-parent {
+		> .mm-listitem__text,
+		> .mm-listitem__btn {
+			background: var( --mm-color-background-emphasis	);
+		}
+	}
+}

@@ -5,11 +5,11 @@
 		<meta name="author" content="www.frebsite.nl" />
 		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
 
-		<title>jQuery.mmenu demo</title>
+		<title>mmenu.js demo</title>
 
 		<link type="text/css" rel="stylesheet" href="css/demo.css" />
-		<link type="text/css" rel="stylesheet" href="../dist/jquery.mmenu.all.css" />
-		
+		<link type="text/css" rel="stylesheet" href="../dist/mmenu.css" />
+
 		<!-- for the one page layout -->
 		<style type="text/css">
 			section
@@ -23,7 +23,7 @@
 				padding-top: 0;
 			}
 		</style>
-		
+
 		<!-- for the fixed header -->
 		<style type="text/css">
 			.header,
@@ -48,29 +48,9 @@
 				}
 			}
 		</style>
-		
-		<script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.js"></script>
-		<script type="text/javascript" src="http://cdn.jsdelivr.net/hammerjs/2.0.8/hammer.min.js"></script>
 
-		<script type="text/javascript" src="../dist/jquery.mmenu.all.js"></script>
-		<script type="text/javascript">
-			$(function() {
-				$('nav#menu').mmenu({
-					drag 		: true,
-					pageScroll 	: {
-						scroll 		: true,
-						update		: true
-					},
-					// extensions: {
-					// 	'all': ['pagedim-white'],
-					// 	'(min-width: 400px)' : ['pagedim-black']
-					// },
-					sidebar 	: {
-						expanded 	: 800
-					}
-				});
-			});
-		</script>
+		<!-- IE 10 and 11 polyfills -->
+		<script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Array.prototype.filter%2CArray.prototype.forEach%2CArray.prototype.map%2CElement.prototype.cloneNode%2Cdocument.querySelector"></script>
 	</head>
 	<body>
 		<div id="page">
@@ -116,5 +96,36 @@
 				</ul>
 			</nav>
 		</div>
+
+		<!-- Hammer.js for dragging -->
+		<script type="text/javascript" src="http://cdn.jsdelivr.net/hammerjs/2.0.8/hammer.min.js"></script>
+
+		<!-- mmenu scripts -->
+		<script src="../dist/mmenu.js"></script>
+		<script src="../src/mmenu.debugger.js"></script>
+
+		<script>
+			new Mmenu(
+				document.querySelector( '#menu' ),
+				{
+					drag 		: true,
+					pageScroll 	: {
+						scroll 		: true,
+						update		: true
+					},
+					sidebar 	: {
+						expanded 	: 800
+					}
+				}
+			);
+
+			document.addEventListener( 'click', ( evnt ) => {
+				let anchor = evnt.target.closest( 'a[href^="#/"]' );
+				if ( anchor ) {
+					alert('Thank you for clicking, but that\'s a demo link.');
+					evnt.preventDefault();
+				}
+			});
+		</script>
 	</body>
 </html>

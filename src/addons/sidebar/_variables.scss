@@ -1,13 +1,2 @@
-$mm_opt_sidebar				: true !default;
-$mm_opt_sidebar_collapsed	: $mm_opt_sidebar !default;
-$mm_opt_sidebar_expanded	: $mm_opt_sidebar !default;
-$mm_opt_sidebar_blocker		: $mm_opt_sidebar !default;
-
-$mm_sidebarCollapsedSize 	: $mm_btnSize !default;
-$mm_sidebarExpandedSize 	: $mm_menuMaxWidth !default;
-
-//	deprecated in favor of usin css var --mm-sidebar-collapsed-size
-$mm_sidebarCollapsedSizes	: [60, 80] !default;
-
-//	deprecated in favor of usin css var --mm-sidebar-expanded-size
-$mm_sidebarExpandedSizes	: [25, 30, 35] !default;
+$mm_sidebarCollapsedSize: $mm_btnSize !default;
+$mm_sidebarExpandedSize: $mm_menuMaxWidth !default;

@@ -1,85 +1,76 @@
-(function( $ ) {
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 
-	const _PLUGIN_ 	= 'mmenu';
-	const _ADDON_  	= 'navbars';
-	const _CONTENT_	= 'title';
+import * as DOM from '../../core/_dom';
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ][ _CONTENT_ ] = function( $navbar, opts )
-	{
-		//	Get vars
-		var _c = $[ _PLUGIN_ ]._c;
-
-
-		//	Add content
-		var $title = $('<a class="' + _c.navbar + '__title" />')
-			.appendTo( $navbar );
+export default function( 
+	this	: Mmenu,
+	navbar	: HTMLElement
+) {
+	//	Add content to the navbar.
+	var title = DOM.create( 'a.mm-navbar__title' );
+	navbar.append( title );
 
 
-		//	Update to opened panel
-		var _url, _txt;
-		var $org;
+	//	Update the title to the opened panel.
+	var _url, _txt;
+	var original : HTMLElement;
 
-		this.bind( 'openPanel:start',
-			function( $panel )
-			{
-				if ( $panel.parent( '.' + _c.listitem + '_vertical' ).length )
-				{
-					return;
-				}
+	this.bind( 'openPanel:start', ( 
+		panel : HTMLElement
+	) => {
+		//	Do nothing in a vertically expanding panel.
+		if ( panel.parentElement.matches( '.mm-listitem_vertical' ) ) {
+			return;
+		}
 
-				$org = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelTitle );
-				if ( !$org.length )
-				{
-					$org = $panel.children( '.' + _c.navbar ).children( '.' + _c.navbar + '__title' );
-				}
+		//	Find the original title in the opened panel.
+		original = panel.querySelector( '.' + this.conf.classNames.navbars.panelTitle );
+		if ( !original ) {
+			original = panel.querySelector( '.mm-navbar__title' );
+		}
 
-				_url = $org.attr( 'href' );
-				_txt = $org.html() || opts.title;
+		//	Get the URL for the title.
+		_url = original ? original.getAttribute( 'href' ) : '';
+		if ( _url ) {
+			title.setAttribute( 'href', _url );
+		} else {
+			title.removeAttribute( 'href' );
+		}
 
-				if ( _url )
-				{
-					$title.attr( 'href', _url );
-				}
-				else
-				{
-					$title.removeAttr( 'href' );
-				}
+		//	Get the text for the title.
+		_txt = original ? original.innerHTML : '';
+		title.innerHTML = _txt;
 
-				$title[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
-				$title.html( _txt );
-			}
-		);
+		//	Show or hide the title.
+		title.classList[ _url || _txt ? 'remove' : 'add' ]( 'mm-hidden' );
+	});
 
 
-		//	Add screenreader / aria support
-		var $prev;
+	//	Add screenreader / aria support
+	var prev : HTMLElement;
 
-		this.bind( 'openPanel:start:sr-aria',
-			function( $panel )
-			{
-				if ( this.opts.screenReader.text )
-				{
-					if ( !$prev )
+	this.bind( 'openPanel:start:sr-aria', (
+		panel : HTMLElement
+	) => {
+		if ( this.opts.screenReader.text ) {
+			if ( !prev ) {
+				var navbars = DOM.children( this.node.menu, '.mm-navbars_top, .mm-navbars_bottom' );
+				navbars.forEach(( navbar ) => {
+					let btn = navbar.querySelector( '.mm-btn_prev' );
+					if ( btn )
 					{
-						$prev = this.$menu
-							.children( '.' + _c.navbars + '_top' + ', .' + _c.navbars + '_bottom' )
-							.children( '.' + _c.navbar )
-							.children( '.' + _c.btn + '_prev' );
+						prev = (btn as HTMLElement);
 					}
-					if ( $prev.length )
-					{
-						var hidden = true;
-						if ( this.opts.navbar.titleLink == 'parent' )
-						{
-							hidden = !$prev.hasClass( _c.hidden );
-						}
-						this.__sr_aria( $title, 'hidden', hidden );
-					}
-				}
+				});
 			}
-		);
-	};
 
-	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ].panelTitle = 'Title';
-
-})( jQuery );
+			if ( prev ) {
+				var hidden = true;
+				if ( this.opts.navbar.titleLink == 'parent' ) {
+					hidden = !prev.matches( '.mm-hidden' );
+				}
+				Mmenu.sr_aria( title, 'hidden', hidden );
+			}
+		}
+	});
+};

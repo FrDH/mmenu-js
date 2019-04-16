@@ -1,0 +1,20 @@
+$mm_module: '.mm-navbar';
+
+@if ( $mm_include_rtl ) {
+	[dir="rtl"] {
+		#{$mm_module} {
+			flex-direction: row-reverse;
+		}
+
+		#{$mm_module}__btn {
+
+			&:first-child {
+				text-align: right;
+			}
+
+			&:last-child {
+				text-align: left;
+			}
+		}
+	}
+}

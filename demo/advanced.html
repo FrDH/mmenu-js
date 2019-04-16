@@ -5,13 +5,18 @@
 		<meta name="author" content="www.frebsite.nl" />
 		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
 
-		<title>jQuery.mmenu demo</title>
+		<title>mmenu.js demo</title>
 
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 		<link rel="stylesheet" href="css/demo.css" />
-		<link rel="stylesheet" href="../dist/jquery.mmenu.all.css" />
+		<link rel="stylesheet" href="../dist/mmenu.css" />
 
 		<style>
+			.mm-menu {
+				--mm-listitem-size: 50px;
+				--mm-navbar-size: 50px;
+			}
+
 			@media (min-width: 992px) {
 				.header a {
 					display: none;
@@ -29,6 +34,7 @@
 			}
 		</style>
 
+<<<<<<< HEAD
 		<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script src="../dist/jquery.mmenu.all.js"></script>
 		<script>
@@ -97,6 +103,10 @@
 				})
 			});
 		</script>
+=======
+		<!-- IE 10 and 11 polyfills -->
+		<script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Array.prototype.filter%2CArray.prototype.forEach%2CArray.prototype.map%2CElement.prototype.cloneNode%2Cdocument.querySelector"></script>
+>>>>>>> develop
 	</head>
 	<body>
 		<div id="page">
@@ -148,5 +158,76 @@
 				</div>
 			</nav>
 		</div>
+
+		<!-- mmenu scripts -->
+		<script src="../dist/mmenu.js"></script>
+		<script src="../src/mmenu.debugger.js"></script>
+		<script>
+			new Mmenu(
+				document.querySelector('#menu'),
+				{
+					extensions	: [ 'theme-dark', 'shadow-page' ],
+					setSelected	: true,
+					counters	: true,
+					searchfield : {
+						placeholder		: 'Search menu items'
+					},
+					iconbar		: {
+						add 		: true,
+						top 		: [
+							'<a href="#/"><span class="fa fa-home"></span></a>'
+						],
+						bottom 		: [
+							'<a href="#/"><span class="fa fa-twitter"></span></a>',
+							'<a href="#/"><span class="fa fa-facebook"></span></a>',
+							'<a href="#/"><span class="fa fa-youtube"></span></a>'
+						]
+					},
+					sidebar		: {
+						collapsed		: {
+							use 			: '(min-width: 450px)',
+							hideNavbar		: false
+						},
+						expanded		: {
+							use 			: '(min-width: 992px)'
+						}
+					},
+					navbars		: [
+						{
+							content		: [ 'searchfield' ]
+						}, {
+							type		: 'tabs',
+							content		: [
+								'<a href="#panel-menu"><i class="fa fa-bars"></i> <span>Menu</span></a>',
+								'<a href="#panel-account"><i class="fa fa-user"></i> <span>Account</span></a>',
+								'<a href="#panel-cart"><i class="fa fa-shopping-cart"></i> <span>Cart</span></a>'
+							]
+						}, {
+							content		: [ 'prev', 'breadcrumbs', 'close' ]
+						}, {
+							position	: 'bottom',
+							content		: [ '<a href="http://mmenu.frebsite.nl/wordpress-plugin" target="_blank">WordPress plugin</a>' ]
+						}
+					]
+				}, {
+					searchfield : {
+						clear 		: true
+					},
+					navbars		: {
+						breadcrumbs	: {
+							removeFirst	: true
+						}
+					}
+				}
+			);
+
+			document.addEventListener( 'click', ( evnt ) => {
+				let anchor = evnt.target.closest( 'a[href^="#/"]' );
+				if ( anchor ) {
+					alert('Thank you for clicking, but that\'s a demo link.');
+					evnt.preventDefault();
+				}
+			});
+		</script>
 	</body>
 </html>

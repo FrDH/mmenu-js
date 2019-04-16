@@ -1,0 +1,19 @@
+@import '../../mixins', '../../includes', '../../variables';
+
+$mm_module: '.mm-counter';
+
+#{$mm_module} {
+    color: var(--mm-color-text-dimmed);
+    text-align: right;
+    display: block;
+    padding-left: $mm_padding * 2;
+    float: right;
+}
+
+@if ($mm_include_searchfield) {
+    .mm-listitem_nosubitems > #{$mm_module} {
+        display: none;
+    }
+}
+
+@import 'counters.rtl';

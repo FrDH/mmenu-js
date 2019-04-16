@@ -1,0 +1,69 @@
+@import
+	'../../mixins',
+	'../../includes',
+	'../../variables';
+
+
+.mm-menu_dropdown {
+	box-shadow: $mm_dropdownShadow;
+	height: percentage( $mm_menuHeight );	
+}
+
+.mm-wrapper_dropdown {
+	.mm-slideout {
+		transform: none !important;
+		z-index: 0;
+	}
+
+	@if ( $mm_include_offcanvas_blocker ) {
+		.mm-wrapper__blocker {
+			transition-delay: 0s !important;
+			z-index: 1;
+		}
+	}
+
+	@if ( $mm_include_dropdown ) {
+		.mm-menu_dropdown {
+			z-index: 2;
+		}
+
+		&.mm-wrapper_opened:not( .mm-wrapper_opening ) .mm-menu_dropdown {
+			display: none;
+		}
+	}
+}
+
+
+//	Tip
+@if ( $mm_include_dropdown_tip ) {
+	[class*="mm-menu_tip-"]:before {
+		content: '';
+		background: inherit;
+		box-shadow: $mm_dropdownShadow;
+
+		display: block;
+		width: 15px;
+		height: 15px;
+
+		position: absolute;
+		z-index: 0;
+
+		transform: rotate( 45deg );
+	}
+
+	.mm-menu_tip-left:before {
+		left: 2 + $mm_dropdownTipX;
+	}
+
+	.mm-menu_tip-right:before {
+		right: 2 + $mm_dropdownTipX;
+	}
+
+	.mm-menu_tip-top:before {
+		top: 2 - $mm_dropdownTipY;
+	}
+
+	.mm-menu_tip-bottom:before {
+		bottom: 2 - $mm_dropdownTipY;
+	}
+}

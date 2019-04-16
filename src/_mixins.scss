@@ -1,50 +1,11 @@
-@mixin mm_offcanvas_size( $cls: ".mm-menu_offcanvas",
-	$width: $mm_menuWidth, $minWidth: $mm_menuMinWidth, $maxWidth: $mm_menuMaxWidth
-) {
-	#{$cls}
-	{
-		width: percentage( $width );
-		min-width: $minWidth;
-		max-width: $maxWidth;
-	}
-	.mm-wrapper_opening
-	{
-		#{$cls}.mm-menu_opened ~ .mm-slideout
-		{
-			transform: translate3d( #{$width * 100}vw, 0, 0 );
-		}
-	}
-
-	//	adjust for min- and max-width
-	@media all and ( max-width: $minWidth / $width ) {
-		.mm-wrapper_opening
-		{
-			#{$cls}.mm-menu_opened ~ .mm-slideout
-			{
-				transform: translate3d( $minWidth, 0, 0 );
-			}
-		}
-	}
-	@media all and ( min-width: $maxWidth / $width ) {
-		.mm-wrapper_opening
-		{
-			#{$cls}.mm-menu_opened ~ .mm-slideout
-			{
-				transform: translate3d( $maxWidth, 0, 0 );
-			}
-		}
-	}
-}
-
 // Arrow buttons
-@mixin mm_btn_arrow_prev
-{
+@mixin mm_btn_arrow_prev {
 	transform: rotate( -45deg );
 	left: $mm_listitemIndent + 3;
 	right: auto;
 }
-@mixin mm_btn_arrow_next
-{
+
+@mixin mm_btn_arrow_next {
 	transform: rotate( 135deg );
 	right: $mm_listitemIndent + 3;
 	left: auto;
@@ -52,155 +13,133 @@
 
 
 //	Misc
-@mixin mm_ellipsis()
-{
+@mixin mm_ellipsis() {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 }
-@mixin mm_clearfix()
-{
-	&:after
-	{
+
+@mixin mm_clearfix() {
+	&:after {
 		content: '';
 		display: block;
 		clear: both;
 	}
 }
-@mixin mm_columns_size( $nr )
-{
-	[class*="mm-menu_columns-"] .mm-panels > .mm-panel_columns-#{$nr}
-	{
-		transform: translate3d( $nr * 100%, 0, 0 );
-//		@include mm_translate( $nr * 100%, 0 );
+@mixin mm_offcanvas_size( $cls: ".mm-menu_offcanvas",
+	$width: $mm_menuWidth, $minWidth: $mm_menuMinWidth, $maxWidth: $mm_menuMaxWidth
+) {
+	#{$cls} {
+		width: percentage( $width );
+		min-width: $minWidth;
+		max-width: $maxWidth;
 	}
 
-	.mm-menu_columns-#{$nr} .mm-panels > .mm-panel
-	{
-		z-index: $nr;
-		@if ( $nr > 0 )
-		{
-			width: ceil( 100% / $nr * 100 ) / 100;
-		}
-		else
-		{
-			width: 100%;
-		}
-
-		&:not( .mm-panel_opened ):not( .mm-panel_opened-parent )
-		{
-			transform: translate3d( ($nr + 1) * 100%, 0, 0 );
-//			@include mm_translate( ($nr + 1) * 100%, 0 );
+	.mm-wrapper_opening {
+		#{$cls} ~ .mm-slideout {
+			transform: translate3d( #{$width * 100}vw, 0, 0 );
 		}
 	}
 
-	@include mm_offcanvas_size( ".mm-menu_columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr );
-	@include mm_position_right( ".mm-menu_columns-#{$nr}", $mm_menuWidth, $mm_menuMinWidth, $mm_menuMaxWidth * $nr );
-}
-@mixin mm_iconpanel_size( $nr )
-{
-	.mm-panel_iconpanel-#{$nr}
-	{
-		&,
-		&.mm-panel_opened ~ .mm-listview_fixeddivider
-		{
-			width: calc( 100% - ( #{$mm_iconpanelSize} * #{$nr} ) );	//	IE11 fallback
-			width: calc( 100% - ( var( --mm-iconpanel-size ) * #{$nr} ) );
+	//	adjust for min- and max-width
+	@media all and ( max-width: $minWidth / $width ) {
+		.mm-wrapper_opening {
+			#{$cls} ~ .mm-slideout {
+				transform: translate3d( $minWidth, 0, 0 );
+			}
+		}
+	}
+
+	@media all and ( min-width: $maxWidth / $width ) {
+		.mm-wrapper_opening {
+			#{$cls} ~ .mm-slideout {
+				transform: translate3d( $maxWidth, 0, 0 );
+			}
 		}
 	}
 }
-@mixin mm_navbar_position( $pos, $nr )
-{
-	.mm-menu_navbar_#{$pos}-#{$nr}
-	{
-		.mm-panels
-		{
-			#{$pos}: $mm_navbarSize * $nr; //	IE11 fallback
-			#{$pos}: calc( var( --mm-navbar-size ) * #{$nr} );
-		}
+
+@mixin mm_columns_size($nr) {
+    [class*='mm-menu_columns-'] .mm-panels > .mm-panel_columns-#{$nr} {
+        transform: translate3d($nr * 100%, 0, 0);
+    }
+
+    .mm-menu_columns-#{$nr} .mm-panels > .mm-panel {
+        z-index: $nr;
+
+        @if ($nr > 0) {
+            width: ceil(100% / $nr * 100) / 100;
+        }
+        else {
+            width: 100%;
+        }
+
+        &:not(.mm-panel_opened):not(.mm-panel_opened-parent) {
+            transform: translate3d(($nr + 1) * 100%, 0, 0);
+        }
+    }
+
+    @include mm_offcanvas_size(
+        '.mm-menu_columns-#{$nr}',
+        $mm_menuWidth,
+        $mm_menuMinWidth,
+        $mm_menuMaxWidth * $nr
+    );
+    @include mm_position_right(
+        '.mm-menu_columns-#{$nr}',
+        $mm_menuWidth,
+        $mm_menuMinWidth,
+        $mm_menuMaxWidth * $nr
+    );
+}
+
+@mixin mm_iconpanel_size( $nr ) {
+	.mm-panel_iconpanel-#{$nr} {
+		width: calc( 100% - ( var( --mm-iconpanel-size ) * #{$nr} ) );	
 	}
 }
-@mixin mm_navbar_size( $nr )
-{
-	.mm-navbar_size-#{$nr}
-	{
-		height: $mm_navbarSize * $nr; //	IE11 fallback
-		height: calc( var( --mm-navbar-size ) * #{$nr} );
-	}
-}
-@mixin mm_navbar_tabs_borders( $top, $bottom, $last, $first )
-{
-	.mm-navbars_#{$top}
-	{
-		.mm-navbar_tabs:not( :#{$last}-child )
-		{
+@mixin mm_navbar_tabs_borders( $top, $bottom, $last, $first ) {
+	.mm-navbars_#{$top} {
+		.mm-navbar_tabs:not( :#{$last}-child ) {
 			border-#{$bottom}-width: 1px;
 			border-#{$bottom}-style: solid;
 		}
-		.mm-navbar__tab_selected
-		{
+		.mm-navbar__tab_selected {
 			border-#{$bottom}: none;
 			margin-#{$bottom}: -1px;
 		}
-		.mm-navbar_tabs:#{$first}-child .mm-navbar__tab_selected
-		{
+		.mm-navbar_tabs:#{$first}-child .mm-navbar__tab_selected {
 			border-#{$top}: none;
 		}
 	}
 }
 
-@mixin mm_sectionindexer_position( $pos, $nr )
-{
-	.mm-menu_navbar_#{$pos}-#{$nr}
-	{
-		.mm-sectionindexer
-		{
-			#{$pos}: ($mm_navbarSize * $nr) + 2;	//	IE11 fallback
-			#{$pos}: calc( ( var( --mm-navbar-size ) * #{$nr} ) + 2px );
-		}
-	}
-}
-
-@mixin mm_setselected_colors( $cls: "",
-	$emphasizedBg: $mm_emphasizedBackgroundColor
-) {
-	
-}
-@mixin mm_effect_listitem_delay( $i )
-{
-	&:nth-child( #{$i} )
-	{
+@mixin mm_effect_listitem_delay( $i ) {
+	&:nth-child( #{$i} ) {
 		transition-delay: ( $i * 50ms );
 	}
 }
-
 //	Position right
 @mixin mm_position_right( $cls: "",
 	$width: $mm_menuWidth, $minWidth: $mm_menuMinWidth, $maxWidth: $mm_menuMaxWidth
 ) {
-	.mm-wrapper_opening
-	{
-		#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
-		{
+	.mm-wrapper_opening {
+		#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout {
 			transform: translate3d( -( #{$width * 100}vw ), 0, 0 );
 		}
 	}
 
 	//	adjust for min- and max-width
 	@media all and ( max-width: $minWidth / $width ) {
-		.mm-wrapper_opening
-		{
-			#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
-			{
+		.mm-wrapper_opening {
+			#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout {
 				transform: translate3d( -$minWidth, 0, 0 );
 			}
 		}
 	}
 	@media all and ( min-width: $maxWidth / $width ) {
-		.mm-wrapper_opening
-		{
-			#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout
-			{
+		.mm-wrapper_opening {
+			#{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout {
 				transform: translate3d( -$maxWidth, 0, 0 );
 			}
 		}
@@ -211,8 +150,7 @@
 @mixin mm_position_top( $cls: "",
 	$height: $mm_menuHeight, $minHeight: $mm_menuMinHeight, $maxHeight: $mm_menuMaxHeight
 ) {
-	#{$cls}.mm-menu_position-top
-	{
+	#{$cls}.mm-menu_position-top {
 		height: #{$height * 100}vh;
 		min-height: $minHeight;
 		max-height: $maxHeight;
@@ -223,8 +161,7 @@
 @mixin mm_position_bottom( $cls: "",
 	$height: $mm_menuHeight, $minHeight: $mm_menuMinHeight, $maxHeight: $mm_menuMaxHeight
 ) {
-	#{$cls}.mm-menu_position-bottom
-	{
+	#{$cls}.mm-menu_position-bottom {
 		height: #{$height * 100}vh;
 		min-height: $minHeight;
 		max-height: $maxHeight;

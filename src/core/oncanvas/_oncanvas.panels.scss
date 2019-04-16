@@ -1,83 +1,75 @@
-.mm-panels,
-.mm-panels > .mm-panel
-{
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	z-index: 0;
-}
-.mm-panels,
-.mm-panel
-{
-	box-sizing: border-box;
-	
-	//	IE11 fallback
-	background: $mm_backgroundColor;
-	border-color: $mm_borderColor;
-	color: $mm_textColor;
+$mm_module: '.mm-panel';
 
-	background: var( --mm-color-background );
-	border-color: var( --mm-color-border );
-	color: var( --mm-color-text );
-}
-.mm-panels
-{
-	overflow: hidden;
-}
-.mm-panel
-{
-	-webkit-overflow-scrolling: touch;
-	overflow: scroll;
-	overflow-x: hidden;
-	overflow-y: auto;
+#{$mm_module} {
+    background: var(--mm-color-background);
+    border-color: var(--mm-color-border);
+    color: var(--mm-color-text);
 
-	width: 100%;
-	padding: 0 $mm_panelPadding;
+    -webkit-overflow-scrolling: touch;
+    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
 
-	//	Fixes css from other styles hiding submenus
-	&:not( .mm-hidden )
-	{
-		display: block;
-	}
+    box-sizing: border-box;
+    width: 100%;
 
-	transform: translate3d( 100%, 0, 0 );
-	transition: transform $mm_transitionDuration $mm_transitionFunction;
+    transform: translate3d(100%, 0, 0);
+    transition: transform $mm_transitionDuration $mm_transitionFunction;
 
-	//	Because padding-bottom is ignored when a DIV is scrollable
-	&:before,
-	&:after
-	{
-		content: '';
-		display: block;
-		height: $mm_panelPadding;
-	}
-}
-.mm-panel_has-navbar
-{
-	padding-top: $mm_navbarSize; //	IE11 fallback
-	padding-top: var( --mm-navbar-size );
-}
-.mm-panel_opened
-{
-	z-index: 1;
-	transform: translate3d( 0%, 0, 0 );
-}
-.mm-panel_opened-parent
-{
-	transform: translate3d( -$mm_subpanelOffset, 0, 0 );
-}
-.mm-panel_highest
-{
-	z-index: 2;
-}
-.mm-panel_noanimation
-{
-	transition: none !important;
+    //	Fixes css from other styles hiding submenus
+    &:not(.mm-hidden) {
+        display: block;
+    }
 
-	&.mm-panel_opened-parent
-	{
-		transform: translate3d( 0, 0, 0 );
-	}
+    //	Because padding-bottom is ignored when a DIV is scrollable
+    &:after {
+        content: '';
+        display: block;
+        height: $mm_panelPadding;
+    }
+
+    &_opened {
+        z-index: 1;
+        transform: translate3d(0%, 0, 0);
+    }
+
+    &_opened-parent {
+        transform: translate3d(-$mm_subpanelOffset, 0, 0);
+    }
+
+    &_highest {
+        z-index: 2;
+    }
+
+    &_noanimation {
+        transition: none !important;
+
+        &#{$mm_module}_opened-parent {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+}
+
+#{$mm_module}__content {
+    padding: $mm_panelPadding;
+}
+
+.mm-panels {
+    background: var(--mm-color-background);
+    border-color: var(--mm-color-border);
+    color: var(--mm-color-text);
+
+    position: relative;
+    height: 100%;
+    flex-grow: 1;
+    overflow: hidden;
+
+    > #{$mm_module} {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 0;
+    }
 }

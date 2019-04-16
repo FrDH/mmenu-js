@@ -1,0 +1,213 @@
+@import
+	'../../mixins',
+	'../../includes',
+	'../../variables';
+
+
+@if ( $mm_include_effects_menuzoom ) {
+	//	Zoom menu
+	$menu: '.mm-menu_fx-menu-zoom';
+	#{$menu} {
+		transition: transform $mm_transitionDuration $mm_transitionFunction;
+	}
+
+	//	Zoom menu Left
+	.mm-wrapper_opened #{$menu} {
+		transform: scale( $mm_zoomScaleDown, $mm_zoomScaleDown ) translate3d( -$mm_subpanelOffset, 0, 0 );
+		transform-origin: left center;
+	}
+
+	.mm-wrapper_opening #{$menu} {
+		transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
+	}
+
+	//	Zoom menu Right
+	$menuright: '#{$menu}.mm-menu_position-right';
+	.mm-wrapper_opened #{$menuright} {
+		transform: scale( $mm_zoomScaleDown, $mm_zoomScaleDown) translate3d( $mm_subpanelOffset, 0, 0 );
+		transform-origin: right center;
+	}
+
+	.mm-wrapper_opening #{$menuright} {
+		transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
+	}
+}
+
+
+@if ( $mm_include_effects_menuslide ) {
+	//	Slide menu
+	$menu: '.mm-menu_fx-menu-slide';
+	#{$menu} {
+		transition: transform $mm_transitionDuration $mm_transitionFunction;
+	}
+
+	//	Slide menu Left
+	.mm-wrapper_opened #{$menu} {
+		transform: translate3d( -$mm_subpanelOffset, 0, 0 );
+	}
+
+	.mm-wrapper_opening #{$menu} {
+		transform: translate3d( 0%, 0, 0 );
+	}
+
+	//	Slide menu Right
+	$menuright: '#{$menu}.mm-menu_position-right';
+	.mm-wrapper_opened #{$menuright} {
+		transform: translate3d( $mm_subpanelOffset, 0, 0 );
+	}
+
+	.mm-wrapper_opening #{$menuright} {
+		transform: translate3d( 0%, 0, 0 );
+	}
+}
+
+
+@if ( $mm_include_effects_menufade ) {
+	//	Fade menu
+	$menu: '.mm-menu_fx-menu-fade';
+	#{$menu} {
+		opacity: 0;
+		transition: opacity $mm_transitionDuration $mm_transitionFunction;
+	}
+
+	.mm-wrapper_opening #{$menu} {
+		opacity: 1;
+	}
+}
+
+
+@if ( $mm_include_effects_panelsnone ) {
+	//	No effect panels
+	.mm-menu_fx-panels-none .mm-panel,
+	.mm-panel_fx-none {
+		transition-property: none;
+		
+		&.mm-panel_opened-parent {
+			transform: translate3d( 0, 0, 0 );
+		}
+	}
+}
+
+
+@if ( $mm_include_effects_panelszoom ) {
+	//	Zoom panels
+	.mm-menu_fx-panels-zoom .mm-panel,
+	.mm-panel_fx-zoom {
+		transform-origin: left center;
+		transform: scale( $mm_zoomScaleUp, $mm_zoomScaleUp ) translate3d( 100%, 0, 0 );
+
+		&.mm-panel_opened {
+			transform: scale( 1, 1 ) translate3d( 0%, 0, 0 );
+		}
+
+		&.mm-panel_opened-parent {
+			transform: scale( $mm_zoomScaleDown, $mm_zoomScaleDown ) translate3d( -$mm_subpanelOffset, 0, 0 );
+		}
+	}
+}
+
+
+@if ( $mm_include_effects_panelsslide ) {
+	//	Slide panels
+	.mm-menu_fx-panels-slide-0 .mm-panel_opened-parent,
+	.mm-panel_fx-slide-0.mm-panel_opened-parent {
+		transform: translate3d( 0, 0, 0);
+	}
+
+	.mm-menu_fx-panels-slide-100 .mm-panel_opened-parent,
+	.mm-panel_fx-slide-100.mm-panel_opened-parent {
+		transform: translate3d( -100%, 0, 0 );
+	}
+
+	//	Slide panels Up
+	.mm-panel_fx-slide-up,
+	.mm-menu_fx-panels-slide-up .mm-panel {
+		transform: translate3d( 0, 100%, 0 );
+	}
+
+	.mm-panel_fx-slide-up.mm-panel_opened,
+	.mm-menu_fx-panels-slide-up .mm-panel_opened,
+	.mm-menu_fx-panels-slide-up .mm-panel_opened-parent {
+		transform: translate3d( 0, 0%, 0 );
+	}
+
+	//	Slide panels Right
+	.mm-panel_fx-slide-right,
+	.mm-menu_fx-panels-slide-right .mm-panel {
+		transform: translate3d( -100%, 0, 0 )
+	}
+
+	.mm-panel_fx-slide-right.mm-panel_opened,
+	.mm-menu_fx-panels-slide-right .mm-panel_opened,
+	.mm-menu_fx-panels-slide-right .mm-panel_opened-parent {
+		transform: translate3d( 0, 0%, 0 );
+	}
+}
+
+
+@if ( $mm_include_effects_listitemsslide or $mm_include_effects_listitemsfade or $mm_include_effects_listitemsdrop ) {
+	//	Listitem delay
+	[class*="mm-menu_fx-listitems-"] .mm-listitem {
+		transition: none $mm_transitionDuration $mm_transitionFunction;
+
+		@include mm_effect_listitem_delay( 1 );
+		@include mm_effect_listitem_delay( 2 );
+		@include mm_effect_listitem_delay( 3 );
+		@include mm_effect_listitem_delay( 4 );
+		@include mm_effect_listitem_delay( 5 );
+		@include mm_effect_listitem_delay( 6 );
+		@include mm_effect_listitem_delay( 7 );
+		@include mm_effect_listitem_delay( 8 );
+		@include mm_effect_listitem_delay( 9 );
+		@include mm_effect_listitem_delay( 10 );
+		@include mm_effect_listitem_delay( 11 );
+		@include mm_effect_listitem_delay( 12 );
+		@include mm_effect_listitem_delay( 13 );
+		@include mm_effect_listitem_delay( 14 );
+		@include mm_effect_listitem_delay( 15 );
+	}
+}
+
+
+@if ( $mm_include_effects_listitemsslide ) {
+	//	Slide list items
+	$menu: '.mm-menu_fx-listitems-slide';
+	#{$menu} .mm-listitem {
+		transition-property: transform, opacity;
+		transform: translate3d( 50%, 0, 0 );
+		opacity: 0;
+	}
+
+	.mm-wrapper_opening #{$menu} .mm-panel_opened .mm-listitem {
+		transform: translate3d( 0, 0, 0 );
+		opacity: 1;
+	}
+}
+
+@if ( $mm_include_effects_listitemsfade ) {
+	//	Fade list items
+	$menu: '.mm-menu_fx-listitems-fade';
+	#{$menu} .mm-listitem {
+		transition-property: opacity;
+		opacity: 0;
+	}
+
+	.mm-wrapper_opening #{$menu} .mm-panel_opened .mm-listitem {
+		opacity: 1;
+	}
+}
+
+@if ( $mm_include_effects_listitemsdrop ) {
+	//	Drop list items
+	$menu: '.mm-menu_fx-listitems-drop';
+	#{$menu} .mm-listitem {
+		transition-property: opacity, top;
+		opacity: 0;
+		top: -25%;
+	}
+
+	.mm-wrapper_opening #{$menu} .mm-panel_opened .mm-listitem {
+		opacity: 1;
+		top: 0;
+	}
+}

@@ -1,0 +1,44 @@
+@import '../../mixins', '../../includes', '../../variables';
+
+$mm_module: '.mm-sectionindexer';
+
+#{$mm_module} {
+    background: inherit;
+    text-align: center;
+    font-size: 12px;
+
+    box-sizing: border-box;
+    width: $mm_sectionIndexerSize;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -$mm_sectionIndexerSize;
+    z-index: 5;
+
+    transition: right $mm_transitionDuration $mm_transitionFunction;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    a {
+        color: var(--mm-color-text-dimmed);
+        line-height: 1;
+        text-decoration: none;
+        display: block;
+    }
+
+    ~ .mm-panel {
+        padding-right: 0;
+        transition: padding-right $mm_transitionDuration $mm_transitionFunction;
+    }
+
+    &_active {
+        right: 0;
+
+        ~ .mm-panel {
+            padding-right: $mm_sectionIndexerSize;
+        }
+    }
+}

@@ -1,53 +1,20 @@
-.mm-btn
-{
+$mm_module: '.mm-btn';
+
+#{$mm_module} {
 	box-sizing: border-box;
 	width: $mm_btnSize;
+	flex-shrink: 0;
 	padding: 0;
 
 	&:before,
-	&:after
-	{
-		border-color: $mm_borderColor;	//	IE11 fallback
+	&:after {
 		border-color: var( --mm-color-button );
 		border-width: 2px;
 		border-style: solid;
 	}
 }
 
-.mm-btn_close
-{
-	&:before,
-	&:after
-	{
-		content: '';
-		box-sizing: content-box;
-		display: block;
-		width: 5px;
-		height: 5px;
-		margin: auto;
-		position: absolute;
-		top: 0;
-		bottom: 0;
-
-		transform: rotate( -45deg );
-	}
-	&:before
-	{
-		border-right: none;
-		border-bottom: none;
-		right: $mm_listitemIndent - 2;
-	}
-	&:after
-	{
-		border-left: none;
-		border-top: none;
-		right: $mm_listitemIndent + 5;
-	}
-}
-
-.mm-btn_prev:before,
-.mm-btn_next:after
-{
+%mm_btn_arrow {
 	content: '';
 	border-bottom: none;
 	border-right: none;
@@ -60,11 +27,42 @@
 	top: 0;
 	bottom: 0;
 }
-.mm-btn_prev:before
-{
-	@include mm_btn_arrow_prev;
-}
-.mm-btn_next:after
-{
-	@include mm_btn_arrow_next;
+
+#{$mm_module} {
+	&_prev:before {
+		@extend %mm_btn_arrow;
+		@include mm_btn_arrow_prev;
+	}
+
+	&_next:after {
+		@extend %mm_btn_arrow;
+		@include mm_btn_arrow_next;
+	}
+
+	&_close {
+		&:before,
+		&:after {
+			content: '';
+			box-sizing: content-box;
+			display: block;
+			width: 5px;
+			height: 5px;
+			margin: auto;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+
+			transform: rotate( -45deg );
+		}
+		&:before {
+			border-right: none;
+			border-bottom: none;
+			right: $mm_listitemIndent - 2;
+		}
+		&:after {
+			border-left: none;
+			border-top: none;
+			right: $mm_listitemIndent + 5;
+		}
+	}
 }

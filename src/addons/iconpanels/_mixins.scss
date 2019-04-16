@@ -1,12 +1,5 @@
-@mixin mm_iconpanel_size( $nr )
-{
-	.mm-panel_iconpanel-#{$nr}
-	{
-		&,
-		&.mm-panel_opened ~ .mm-listview_fixeddivider
-		{
-			width: calc( 100% - ( #{$mm_iconpanelSize} * #{$nr} ) );	//	IE11 fallback
-			width: calc( 100% - ( var( --mm-iconpanel-size ) * #{$nr} ) );
-		}
+@mixin mm_iconpanel_size( $nr ) {
+	.mm-panel_iconpanel-#{$nr} {
+		width: calc( 100% - ( var( --mm-iconpanel-size ) * #{$nr} ) );	
 	}
 }

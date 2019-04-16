@@ -1,38 +1,14 @@
-@mixin mm_navbar_position( $pos, $nr )
-{
-	.mm-menu_navbar_#{$pos}-#{$nr}
-	{
-		.mm-panels
-		{
-			#{$pos}: $mm_navbarSize * $nr; //	IE11 fallback
-			#{$pos}: calc( var( --mm-navbar-size ) * #{$nr} );
-		}
-	}
-}
-@mixin mm_navbar_size( $nr )
-{
-	.mm-navbar_size-#{$nr}
-	{
-		height: $mm_navbarSize * $nr; //	IE11 fallback
-		height: calc( var( --mm-navbar-size ) * #{$nr} );
-	}
-}
-@mixin mm_navbar_tabs_borders( $top, $bottom, $last, $first )
-{
-	.mm-navbars_#{$top}
-	{
-		.mm-navbar_tabs:not( :#{$last}-child )
-		{
+@mixin mm_navbar_tabs_borders( $top, $bottom, $last, $first ) {
+	.mm-navbars_#{$top} {
+		.mm-navbar_tabs:not( :#{$last}-child ) {
 			border-#{$bottom}-width: 1px;
 			border-#{$bottom}-style: solid;
 		}
-		.mm-navbar__tab_selected
-		{
+		.mm-navbar__tab_selected {
 			border-#{$bottom}: none;
 			margin-#{$bottom}: -1px;
 		}
-		.mm-navbar_tabs:#{$first}-child .mm-navbar__tab_selected
-		{
+		.mm-navbar_tabs:#{$first}-child .mm-navbar__tab_selected {
 			border-#{$top}: none;
 		}
 	}

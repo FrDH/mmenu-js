@@ -1,0 +1,39 @@
+@import 
+	'../../mixins',
+	'../../includes',
+	'../../variables';
+
+
+.mm-menu_popup {
+	transition: opacity $mm_transitionDuration $mm_transitionFunction;
+	opacity: 0;
+
+	box-shadow: $mm_popupShadow;
+	height: percentage( $mm_menuHeight );
+	min-height: $mm_menuMinHeight;
+	max-height: $mm_menuMaxHeight;
+
+	top: 50%;
+	left: 50%;
+	bottom: auto;
+	right: auto;
+	z-index: 2;
+	
+	transform: translate3d( -50%, -50%, 0 );
+
+	&.mm-menu_opened {
+		~ .mm-slideout {
+			transform: none !important;
+			z-index: 0;
+		}
+
+		~ .mm-wrapper__blocker {
+			transition-delay: 0s !important;
+			z-index: 1;
+		}
+	}
+}
+
+.mm-wrapper_opening .mm-menu_popup {
+	opacity: 1;
+}

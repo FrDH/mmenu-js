@@ -1,68 +1,52 @@
-(function( $ ) {
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 
-	const _PLUGIN_ 	= 'mmenu';
-	const _ADDON_  	= 'navbars';
-	const _CONTENT_	= 'tabs';
+import * as DOM from '../../core/_dom';
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ][ _CONTENT_ ] = function( $navbar, opts, conf )
-	{
-		var _c = $[ _PLUGIN_ ]._c,
-			_d = $[ _PLUGIN_ ]._d,
-			_e = $[ _PLUGIN_ ]._e;
+export default function( 
+	this	: Mmenu,
+	navbar	: HTMLElement
+) {
 
-		var that = this;
-		var $tabs = $navbar.children( 'a' );
+	navbar.classList.add( 'mm-navbar_tabs' );
+	navbar.parentElement.classList.add( 'mm-navbars_has-tabs' );
 
-		$navbar
-			.addClass( _c.navbar + '_tabs' )
-			.parent()
-			.addClass( _c.navbars + '_has-tabs' );
-
-		//	TODO: better via clickAnchor?
-		$tabs
-			.on( _e.click + '-' + _ADDON_,
-				function( e )
-				{
-					e.preventDefault();
-
-					var $tab = $(this);
-					if ( $tab.hasClass( _c.navbar + '__tab_selected' ) )
-					{
-						e.stopImmediatePropagation();
-						return;
-					}
-
-					try
-					{
-						// that.__openPanelWoAnimation( $( $tab.attr( 'href' ) ) );
-						that.openPanel( $( $tab.attr( 'href' ) ), false );
-						e.stopImmediatePropagation();
-					}
-					catch( err ) {}
-				}
-			);
-
-		function selectTab( $panel )
-		{
-			$tabs.removeClass( _c.navbar + '__tab_selected' );
-
-			var $tab = $tabs.filter( '[href="#' + $panel.attr( 'id' ) + '"]' );
-			if ( $tab.length )
-			{
-				$tab.addClass( _c.navbar + '__tab_selected' );
-			}
-			else
-			{
-				var $parent = $panel.data( _d.parent );
-				if ( $parent && $parent.length )
-				{
-					selectTab( $parent.closest( '.' + _c.panel ) );
-				}
-			}
+	var anchors = DOM.children( navbar, 'a' );
+	
+	navbar.addEventListener( 'click', ( evnt ) => {
+		var anchor = (evnt.target as HTMLElement);
+		if ( !anchor.matches( 'a' ) ) {
+			return;
+		}
+		if ( anchor.matches( '.mm-navbar__tab_selected' ) ) {
+			evnt.stopImmediatePropagation();
+			return;
 		}
 
-		this.bind( 'openPanel:start', selectTab );
-			
-	};
+		try {
+			this.openPanel( this.node.menu.querySelector( anchor.getAttribute( 'href' ) ), false );
+			evnt.stopImmediatePropagation();
+		}
+		catch( err ) {}
+	});
 
-})( jQuery );
+	function selectTab( 
+		this	: Mmenu,
+		panel	: HTMLElement
+	) {
+		anchors.forEach(( anchor ) => {
+			anchor.classList.remove( 'mm-navbar__tab_selected' );
+		});
+		
+		var anchor = anchors.filter( anchor => anchor.matches( '[href="#' + panel.id + '"]' ) )[ 0 ];
+		if ( anchor ) {
+			anchor.classList.add( 'mm-navbar__tab_selected' );
+		} else {
+			var parent : HTMLElement = panel[ 'mmParent' ];
+			if ( parent ) {
+				selectTab.call( this, parent.closest( '.mm-panel' ) );
+			}
+		}
+	}
+
+	this.bind( 'openPanel:start', selectTab );
+};

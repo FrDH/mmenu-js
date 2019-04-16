@@ -1,58 +1,45 @@
-(function( $ ) {
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 
-	const _PLUGIN_ 	= 'mmenu';
-	const _ADDON_  	= 'navbars';
-	const _CONTENT_	= 'next';
+import * as DOM from '../../core/_dom';
 
-	$[ _PLUGIN_ ].addons[ _ADDON_ ][ _CONTENT_ ] = function( $navbar, opts )
-	{
-		//	Get vars
-		var _c = $[ _PLUGIN_ ]._c;
-
-
-		//	Add content
-		var $next = $('<a class="' + _c.btn + ' ' + _c.btn + '_next ' + _c.navbar + '__btn" href="#" />')
-			.appendTo( $navbar );
+export default function( 
+	this	: Mmenu,
+	navbar	: HTMLElement
+) {
+	//	Add content
+	var next = DOM.create( 'a.mm-btn.mm-btn_next.mm-navbar__btn' );
+	navbar.append( next );
 
 
-		//	Update to opened panel
-		var $org;
-		var _url, _txt;
+	//	Update to opened panel
+	var org : HTMLElement;
+	var _url, _txt;
 
 
-		this.bind( 'openPanel:start',
-			function( $panel )
-			{
-				$org = $panel.find( '.' + this.conf.classNames[ _ADDON_ ].panelNext );
+	this.bind( 'openPanel:start', (
+		panel : HTMLElement
+	) => {
+		org = panel.querySelector( '.' + this.conf.classNames.navbars.panelNext );
 
-				_url = $org.attr( 'href' );
-				_txt = $org.html();
+		_url = org ? org.getAttribute( 'href' ) : '';
+		_txt = org ? org.innerHTML : '';
 
-				if ( _url )
-				{
-					$next.attr( 'href', _url );
-				}
-				else
-				{
-					$next.removeAttr( 'href' );
-				}
-				
-				$next[ _url || _txt ? 'removeClass' : 'addClass' ]( _c.hidden );
-				$next.html( _txt );
-			}
-		);
+		if ( _url ) {
+			next.setAttribute( 'href', _url );
+		} else {
+			next.removeAttribute( 'href' );
+		}
+		
+		next.classList[ _url || _txt ? 'remove' : 'add' ]( 'mm-hidden' );
+		next.innerHTML = _txt;
+	});
 
 
-		//	Add screenreader / aria support
-		this.bind( 'openPanel:start:sr-aria',
-			function( $panel )
-			{
-				this.__sr_aria( $next, 'hidden', $next.hasClass( _c.hidden ) );
-				this.__sr_aria( $next, 'owns', ( $next.attr( 'href' ) || '' ).slice( 1 ) );
-			}
-		);
-	};
-
-	$[ _PLUGIN_ ].configuration.classNames[ _ADDON_ ].panelNext	= 'Next';
-
-})( jQuery );
+	//	Add screenreader / aria support
+	this.bind( 'openPanel:start:sr-aria', (
+		panel : HTMLElement
+	) => {
+		Mmenu.sr_aria( next, 'hidden', next.matches( 'mm-hidden' ) );
+		Mmenu.sr_aria( next, 'owns', ( next.getAttribute( 'href' ) || '' ).slice( 1 ) );
+	});
+};

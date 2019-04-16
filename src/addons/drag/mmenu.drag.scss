@@ -1,0 +1,12 @@
+@import
+	'../../mixins',
+	'../../includes',
+	'../../variables';
+
+
+.mm-wrapper_dragging {
+	.mm-menu,
+	.mm-slideout {
+		transition-duration: 0s !important;
+	}
+}
