@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
 	padding: 0;
 	margin: 0;
 }
@@ -48,7 +49,7 @@ nav:not(.mm-menu) {
 	line-height: 40px;
 
 	-moz-box-sizing: border-box;
-	box-sizing: border-box;	
+	box-sizing: border-box;
 	width: 100%;
 	height: 40px;
 	padding: 0 50px;
