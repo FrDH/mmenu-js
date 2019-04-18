@@ -39,9 +39,11 @@ export default function(this: Mmenu) {
 
         //	Setup the menu.
         this.node.menu.classList.add('mm-menu_offcanvas');
-        this.node.menu.parentElement.classList.remove('mm-wrapper');
+        this.node[
+            this.conf.clone ? 'orig' : 'menu'
+        ].parentElement.classList.remove('mm-wrapper');
 
-        //	Append to the <body>
+        //	Prepend to the <body>
         document
             .querySelector(configs.menu.insertSelector)
             [configs.menu.insertMethod](this.node.menu);
