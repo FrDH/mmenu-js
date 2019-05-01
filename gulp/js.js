@@ -19,9 +19,9 @@ exports.all = JSall = cb => {
 };
 
 exports.custom = JScustom = cb => {
-    dir = dirs(false);
+    dir = dirs(true);
 
-    JSpack(cb);
+    series(JSpack)(cb);
 };
 
 /** Put a watch on all files. */
@@ -60,8 +60,8 @@ exports.watch = JSwatch = cb => {
 // *) Transpile all TS files to JS.
 const JStranspile = (cb, input, output) => {
     return src([
-        dir.input + '/**/*.d.ts', //	Include all typings.
-        input || dir.input + '/**/*.ts' //	Include the needed ts files.
+        dir.input + '/**/*.d.ts', // Include all typings.
+        input || dir.input + '/**/*.ts' // Include the needed ts files.
     ])
         .pipe(
             typescript({

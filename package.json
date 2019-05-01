@@ -1,7 +1,8 @@
 {
 	"name": "mmenu-js",
-	"version": "8.0.4",
+	"version": "8.0.5",
 	"main": "dist/mmenu.js",
+	"module": "src/mmenu.js",
 	"author": "Fred Heusschen <info@frebsite.nl>",
 	"license": "CC-BY-NC-4.0",
 	"repository": {
