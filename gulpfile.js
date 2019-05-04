@@ -18,64 +18,42 @@
 	$ gulp custom --i ../my-custom-input --o ../my-custom-output
 */
 
+const { parallel, series } = require('gulp');
 
-
-const { parallel, series } = require( 'gulp' );
-
-const js  	= require( './gulp/js' );
-const css 	= require( './gulp/css' );
-
+const js = require('./gulp/js');
+const css = require('./gulp/css');
 
 /*
 	$ gulp
 */
-exports.default = ( cb ) => {
-	parallel(
-		js.all,
-		css.all
-	)( cb );
+exports.default = cb => {
+    parallel(js.all, css.all)(cb);
 };
-
 
 /*
 	$ gulp js
 */
-exports.js = ( cb ) => {
-	js.all( cb );
+exports.js = cb => {
+    js.all(cb);
 };
-
 
 /*
 	$ gulp css
 */
-exports.css = ( cb ) => {
-	css.all( cb );
+exports.css = cb => {
+    css.all(cb);
 };
-
 
 /*
 	$ gulp custom
 */
-exports.custom = ( cb ) => {
-	parallel(
-		js.custom,
-		css.custom
-	)( cb );
+exports.custom = cb => {
+    parallel(js.custom, css.custom)(cb);
 };
-
 
 /*
 	$ gulp watch
 */
-exports.watch = ( cb ) => {
-	parallel(
-		series(
-			js.all,
-			js.watch
-		),
-		series(
-			css.all,
-			css.watch,
-		)
-	)( cb );
+exports.watch = cb => {
+    parallel(series(js.all, js.watch), series(css.all, css.watch))(cb);
 };

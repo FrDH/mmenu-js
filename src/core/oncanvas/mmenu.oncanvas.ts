@@ -1,3 +1,4 @@
+import version from '../../_version';
 import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
@@ -14,7 +15,7 @@ translate();
  */
 export default class Mmenu {
     /**	Plugin version. */
-    static version: string = '8.0.2';
+    static version: string = version;
 
     /**	Default options for menus. */
     static options: mmOptions = options;
@@ -523,6 +524,9 @@ export default class Mmenu {
         //	Invoke "before" hook.
         this.trigger('initMenu:before');
 
+        //	Add class to the wrapper.
+        this.node.menu.parentElement.classList.add('mm-wrapper');
+
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
 
@@ -561,9 +565,6 @@ export default class Mmenu {
 
         //	Add class to the menu.
         this.node.menu.classList.add('mm-menu');
-
-        //	Add class to the wrapper.
-        this.node.menu.parentElement.classList.add('mm-wrapper');
 
         //	Invoke "after" hook.
         this.trigger('initMenu:after');

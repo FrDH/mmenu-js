@@ -20,9 +20,6 @@ You can [purchase a license](https://mmenujs.com/download.html) if you want to u
 + [API](https://mmenujs.com/documentation/core/api.html)
 
 ### Browser support
-The mmenu javascript plugin uses ES6, meaning IE11 and earlier are not supported. 
-If you need support for IE11, use the legacy (jQuery) version: version 7.3.0.
-
 As of version 8, the mmenu.js plugin only supports [ECMAScript 6 compliant browsers](https://kangax.github.io/compat-table/es6/).<br />
 For Internet Explorer 10 and 11, you''ll need [some polyfills](https://polyfill.io/v3/polyfill.min.js?features=default%2CElement.prototype.matches%2CElement.prototype.prepend%2CElement.prototype.closest).<br />
 [Version 7](https://github.com/FrDH/jQuery.mmenu/releases/tag/v7.2.2) should work to some degree in Internet Explorer 9, but you'll need a [matchMedia polyfill](https://polyfill.io/v3/polyfill.min.js?features=default%2CmatchMedia),

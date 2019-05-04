@@ -29,8 +29,8 @@ export default function () {
         initWindow.call(this);
         //	Setup the menu.
         this.node.menu.classList.add('mm-menu_offcanvas');
-        this.node.menu.parentElement.classList.remove('mm-wrapper');
-        //	Append to the <body>
+        this.node[this.conf.clone ? 'orig' : 'menu'].parentElement.classList.remove('mm-wrapper');
+        //	Prepend to the <body>
         document
             .querySelector(configs.menu.insertSelector)[configs.menu.insertMethod](this.node.menu);
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)

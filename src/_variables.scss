@@ -5,12 +5,12 @@ $mm_transitionFunction: ease !default;
 
 //	Colors
 $mm_backgroundColor: #f3f3f3 !default;
-$mm_borderColor: rgba( #000, 0.1 ) !default;
-$mm_dimmedTextColor: rgba( #000, 0.3 ) !default;
-$mm_emphasizedBackgroundColor: rgba( #fff, 0.4 ) !default;
-$mm_highlightedBackgroundColor: rgba( #000, 0.05 ) !default;
-$mm_navbarColor: rgba( #000, 0.3 ) !default;
-$mm_textColor: rgba( #000, 0.75 ) !default;
+$mm_borderColor: rgba(#000, 0.1) !default;
+$mm_dimmedTextColor: rgba(#000, 0.3) !default;
+$mm_emphasizedBackgroundColor: rgba(#fff, 0.4) !default;
+$mm_highlightedBackgroundColor: rgba(#000, 0.05) !default;
+$mm_navbarColor: rgba(#000, 0.3) !default;
+$mm_textColor: rgba(#000, 0.75) !default;
 
 //	Positioning
 $mm_offsetTop: 0 !default;
@@ -36,6 +36,8 @@ $mm_menuMaxWidth: 440px !default;
 $mm_menuHeight: 0.8 !default;
 $mm_menuMinHeight: 140px !default;
 $mm_menuMaxHeight: 880px !default;
+
+$mm_opt_screenreader	: true !default;
 
 $mm_counterWidth: $mm_btnSize !default;
 
@@ -63,6 +65,7 @@ $mm_zoomScaleUp: 1.5 !default;
 $mm_fullscreen_full: 1 !default;
 $mm_fullscreen_min: 140px !default;
 $mm_fullscreen_max: 10000px !default;
+
 $mm_pagedimOpacity: 0.3 !default;
 $mm_pagedimDelay: 0.4s !default;
 $mm_popupShadow: 0 2px 10px rgba( #000, 0.3 ) !default;

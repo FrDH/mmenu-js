@@ -1,6 +1,5 @@
 /*!
- * mmenu.js v8.0.2
- * mmenujs.com
+ * mmenu.js
  *
  * Copyright (c) Fred Heusschen
  * www.frebsite.nl
