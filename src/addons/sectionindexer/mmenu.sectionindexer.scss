@@ -31,7 +31,6 @@ $mm_module: '.mm-sectionindexer';
 
     ~ .mm-panel {
         padding-right: 0;
-        transition: padding-right $mm_transitionDuration $mm_transitionFunction;
     }
 
     &_active {

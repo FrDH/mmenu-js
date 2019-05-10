@@ -29,6 +29,28 @@
     Mmenu.prototype._deprecatedWarnings = function() {
         /**
          * ----------------------------
+         * Version 8.0 > 8.1
+         * ----------------------------
+         */
+
+        /* CONFIGURATION */
+
+        //	conf.clone is moved to conf.offCanvas.clone.
+        if (typeof this.conf.clone != 'undefined') {
+            deprecated(
+                'The "clone" configuration option',
+                'offCanvas.clone',
+                '8.1.0'
+            );
+
+            //	Try to fix it.
+            if (typeof this.conf.offCanvas.clone == 'undefined') {
+                this.conf.offCanvas.clone = this.conf.clone;
+            }
+        }
+
+        /**
+         * ----------------------------
          * Version 7.3 > 8.0
          * ----------------------------
          */

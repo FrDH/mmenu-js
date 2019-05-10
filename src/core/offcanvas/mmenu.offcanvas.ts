@@ -4,7 +4,12 @@ import configs from './_configs';
 import * as DOM from '../_dom';
 import * as events from '../_eventlisteners';
 import { extendShorthandOptions } from './_options';
-import { extend, transitionend, uniqueId } from '../../core/_helpers';
+import {
+    extend,
+    transitionend,
+    uniqueId,
+    originalId
+} from '../../core/_helpers';
 
 //  Add the options and configs.
 Mmenu.options.offCanvas = options;
@@ -27,6 +32,26 @@ export default function(this: Mmenu) {
     this.vars.opened = false;
 
     //	Add off-canvas behavior.
+    this.bind('initMenu:before', () => {
+        //	Clone if needed.
+        if (configs.clone) {
+            //	Clone the original menu and store it.
+            this.node.menu = this.node.menu.cloneNode(true) as HTMLElement;
+
+            //	Prefix all ID's in the cloned menu.
+            if (this.node.menu.id) {
+                this.node.menu.id = 'mm-' + this.node.menu.id;
+            }
+            DOM.find(this.node.menu, '[id]').forEach(elem => {
+                elem.id = 'mm-' + elem.id;
+            });
+        }
+
+        //	Prepend to the <body>
+        document
+            .querySelector(configs.menu.insertSelector)
+            [configs.menu.insertMethod](this.node.menu);
+    });
     this.bind('initMenu:after', () => {
         //	Setup the UI blocker.
         initBlocker.call(this);
@@ -39,19 +64,11 @@ export default function(this: Mmenu) {
 
         //	Setup the menu.
         this.node.menu.classList.add('mm-menu_offcanvas');
-        this.node[
-            this.conf.clone ? 'orig' : 'menu'
-        ].parentElement.classList.remove('mm-wrapper');
-
-        //	Prepend to the <body>
-        document
-            .querySelector(configs.menu.insertSelector)
-            [configs.menu.insertMethod](this.node.menu);
 
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         let hash = window.location.hash;
         if (hash) {
-            let id = this.vars.orgMenuId;
+            let id = originalId(this.node.menu.id);
             if (id && id == hash.slice(1)) {
                 setTimeout(() => {
                     this.open();
@@ -93,7 +110,7 @@ export default function(this: Mmenu) {
     //	Prevents default behavior when clicking an anchor
     this.clck.push((anchor: HTMLElement, args: mmClickArguments) => {
         //	Open menu if the clicked anchor links to the menu
-        var id = this.vars.orgMenuId;
+        let id = originalId(this.node.menu.id);
         if (id) {
             if (anchor.matches('[href="#' + id + '"]')) {
                 //	Opening this menu from within this menu
@@ -107,7 +124,7 @@ export default function(this: Mmenu) {
                 //		-> Close the second menu before opening this menu
                 var menu = anchor.closest('.mm-menu') as HTMLElement;
                 if (menu) {
-                    var api: mmApi = menu['mmenu'];
+                    var api: mmApi = menu['mmApi'];
                     if (api && api.close) {
                         api.close();
                         transitionend(
@@ -264,7 +281,7 @@ Mmenu.prototype.close = function(this: Mmenu) {
 Mmenu.prototype.closeAllOthers = function(this: Mmenu) {
     DOM.find(document.body, '.mm-menu_offcanvas').forEach(menu => {
         if (menu !== this.node.menu) {
-            let api: mmApi = menu['mmenu'];
+            let api: mmApi = menu['mmApi'];
             if (api && api.close) {
                 api.close();
             }
@@ -334,8 +351,8 @@ const initWindow = function(this: Mmenu) {
     //	In other words: The menu would move out of view.
     events.off(document.body, 'keydown.tabguard');
     events.on(document.body, 'keydown.tabguard', (evnt: KeyboardEvent) => {
-        if (document.documentElement.matches('.mm-wrapper_opened')) {
-            if (evnt.keyCode == 9) {
+        if (evnt.keyCode == 9) {
+            if (document.documentElement.matches('.mm-wrapper_opened')) {
                 evnt.preventDefault();
             }
         }

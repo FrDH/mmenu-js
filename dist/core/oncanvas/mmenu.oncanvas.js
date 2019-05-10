@@ -160,7 +160,6 @@ export default class Mmenu {
             };
             if (animation && !panel.matches('.mm-panel_noanimation')) {
                 //	Without the timeout the animation will not work because the element had display: none;
-                //	RequestAnimationFrame would be nice here.
                 setTimeout(() => {
                     //	Callback
                     transitionend(panel, () => {
@@ -289,7 +288,7 @@ export default class Mmenu {
             };
         });
         //	Store the API in the HTML node for external usage.
-        this.node.menu['mmenu'] = this.API;
+        this.node.menu['mmApi'] = this.API;
     }
     /**
      * Bind the hooks specified in the options (publisher).
@@ -359,20 +358,6 @@ export default class Mmenu {
         this.node.menu.parentElement.classList.add('mm-wrapper');
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
-        //	Store the original menu ID.
-        this.vars.orgMenuId = this.node.menu.id;
-        //	Clone if needed.
-        if (this.conf.clone) {
-            //	Store the original menu.
-            this.node.orig = this.node.menu;
-            //	Clone the original menu and store it.
-            this.node.menu = this.node.orig.cloneNode(true);
-            //	Prefix all ID's in the cloned menu.
-            this.node.menu.id = 'mm-' + this.node.menu.id;
-            DOM.find(this.node.menu, '[id]').forEach(elem => {
-                elem.id = 'mm-' + elem.id;
-            });
-        }
         //	Wrap the panels in a node.
         let panels = DOM.create('div.mm-panels');
         DOM.children(this.node.menu).forEach(panel => {
@@ -673,12 +658,9 @@ export default class Mmenu {
         this.trigger('initAnchors:before');
         document.addEventListener('click', evnt => {
             /** The clicked element. */
-            var target = evnt.target;
-            if (!target.matches('a[href]')) {
-                target = target.closest('a[href]');
-                if (!target) {
-                    return;
-                }
+            var target = evnt.target.closest('a[href]');
+            if (!target) {
+                return;
             }
             /** Arguments passed to the bound methods. */
             var args = {
@@ -780,3 +762,5 @@ Mmenu.addons = {};
 Mmenu.wrappers = {};
 /**	Globally used HTML elements. */
 Mmenu.node = {};
+/** Globally used variables. */
+Mmenu.vars = {};

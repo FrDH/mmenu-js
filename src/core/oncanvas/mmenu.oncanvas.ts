@@ -32,6 +32,9 @@ export default class Mmenu {
     /**	Globally used HTML elements. */
     static node: mmHtmlObject = {};
 
+    /** Globally used variables. */
+    static vars: mmLooseObject = {};
+
     /**	Options for the menu. */
     opts: mmOptions;
 
@@ -274,7 +277,6 @@ export default class Mmenu {
 
             if (animation && !panel.matches('.mm-panel_noanimation')) {
                 //	Without the timeout the animation will not work because the element had display: none;
-                //	RequestAnimationFrame would be nice here.
                 setTimeout(() => {
                     //	Callback
                     transitionend(
@@ -438,7 +440,7 @@ export default class Mmenu {
         });
 
         //	Store the API in the HTML node for external usage.
-        this.node.menu['mmenu'] = this.API;
+        this.node.menu['mmApi'] = this.API;
     }
 
     /**
@@ -529,24 +531,6 @@ export default class Mmenu {
 
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
-
-        //	Store the original menu ID.
-        this.vars.orgMenuId = this.node.menu.id;
-
-        //	Clone if needed.
-        if (this.conf.clone) {
-            //	Store the original menu.
-            this.node.orig = this.node.menu;
-
-            //	Clone the original menu and store it.
-            this.node.menu = this.node.orig.cloneNode(true) as HTMLElement;
-
-            //	Prefix all ID's in the cloned menu.
-            this.node.menu.id = 'mm-' + this.node.menu.id;
-            DOM.find(this.node.menu, '[id]').forEach(elem => {
-                elem.id = 'mm-' + elem.id;
-            });
-        }
 
         //	Wrap the panels in a node.
         let panels = DOM.create('div.mm-panels');
@@ -964,13 +948,11 @@ export default class Mmenu {
             'click',
             evnt => {
                 /** The clicked element. */
-                var target = evnt.target as HTMLElement;
-
-                if (!target.matches('a[href]')) {
-                    target = target.closest('a[href]') as HTMLElement;
-                    if (!target) {
-                        return;
-                    }
+                var target = (evnt.target as HTMLElement).closest(
+                    'a[href]'
+                ) as HTMLElement;
+                if (!target) {
+                    return;
                 }
 
                 /** Arguments passed to the bound methods. */

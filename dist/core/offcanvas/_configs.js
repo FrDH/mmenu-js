@@ -1,4 +1,5 @@
 const configs = {
+    clone: false,
     menu: {
         insertMethod: 'prepend',
         insertSelector: 'body'

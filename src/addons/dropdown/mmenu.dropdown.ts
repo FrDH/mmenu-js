@@ -3,7 +3,7 @@ import options from './_options';
 import configs from './_configs';
 import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import { extend, originalId } from '../../core/_helpers';
 
 //	Add the options and configs.
 Mmenu.options.dropdown = options;
@@ -29,7 +29,7 @@ export default function(this: Mmenu) {
         this.node.menu.classList.add('mm-menu_dropdown');
 
         if (typeof options.position.of != 'string') {
-            let id = this.vars.orgMenuId;
+            let id = originalId(this.node.menu.id);
             if (id && id.length) {
                 options.position.of = '[href="#' + id + '"]';
             }

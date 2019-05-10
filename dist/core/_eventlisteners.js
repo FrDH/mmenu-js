@@ -1,36 +1,12 @@
-const listeners = {};
-var windowData = {};
-var uniqueId = 1;
 /**
- * Find the dataset for an element. Basically a simple fallback for the lack of a dataset on the Window.
- * @param {HTMLElement} element The element.
+ * Make the first letter in a word uppercase.
+ * @param {string} word The word.
  */
-function dataset(element) {
-    if (element === window) {
-        return windowData;
+function ucFirst(word) {
+    if (!word) {
+        return '';
     }
-    return element.dataset;
-}
-/**
- * Get the IDs for an event on an element.
- * @param {HTMLElement} element The element.
- * @param {string}      evnt    The event.
- */
-function getIDs(element, evnt) {
-    var ids = dataset(element)[evnt] || '';
-    if (ids.length) {
-        return ids.split(',');
-    }
-    return [];
-}
-/**
- * Set the IDs for an event on an element.
- * @param {HTMLElement} element The element.
- * @param {string}      evnt    The event.
- * @param {array}       ids     The IDs.
- */
-function setIDs(element, evnt, ids) {
-    dataset(element)[evnt] = ids.join(',');
+    return word.charAt(0).toUpperCase() + word.slice(1);
 }
 /**
  * Bind an event listener to an element.
@@ -39,19 +15,12 @@ function setIDs(element, evnt, ids) {
  * @param {funcion}     handler     The function to invoke.
  */
 export function on(element, evnt, handler) {
-    //  Extract the event name from the event (the event can include a namespace (click.foo)).
-    var evntName = evnt.split('.')[0];
-    //  Add a new ID to the list of IDs for the event for the element.
-    var id = uniqueId;
-    var ids = getIDs(element, evnt);
-    ids.push('' + id);
-    setIDs(element, evnt, ids);
-    //  Store the handler so it can be removed with the "off" function.
-    listeners[id] = handler;
-    //  Add the event listener.
-    element.addEventListener(evntName, handler);
-    // Keep the ID unique.
-    uniqueId++;
+    //  Extract the event name and space from the event (the event can include a namespace (click.foo)).
+    var evntParts = evnt.split('.');
+    evnt = 'mmEvent' + ucFirst(evntParts[0]) + ucFirst(evntParts[1]);
+    element[evnt] = element[evnt] || [];
+    element[evnt].push(handler);
+    element.addEventListener(evntParts[0], handler);
 }
 /**
  * Remove an event listener from an element.
@@ -59,18 +28,12 @@ export function on(element, evnt, handler) {
  * @param {string}      evnt    The event to remove.
  */
 export function off(element, evnt) {
-    //  Extract the event name from the event (the event can include a namespace (click.foo)).
-    var evntName = evnt.split('.')[0];
-    //  Get the list of IDs for the event for the element.
-    var ids = getIDs(element, evnt);
-    ids.forEach(id => {
-        //  Remove the event listener.
-        element.removeEventListener(evntName, listeners[id]);
-        //  Delete the stored handler.
-        delete listeners[id];
+    //  Extract the event name and space from the event (the event can include a namespace (click.foo)).
+    var evntParts = evnt.split('.');
+    evnt = 'mmEvent' + ucFirst(evntParts[0]) + ucFirst(evntParts[1]);
+    (element[evnt] || []).forEach(handler => {
+        element.removeEventListener(evntParts[0], handler);
     });
-    //  Delete the list of IDs for the event for the element.
-    delete dataset(element)[evnt];
 }
 /**
  * Trigger the bound event listeners on an element.
@@ -79,9 +42,9 @@ export function off(element, evnt) {
  * @param {object}      [options]   Options to pass to the handler.
  */
 export function trigger(element, evnt, options) {
-    var ids = getIDs(element, evnt);
-    ids.forEach(id => {
-        //  Invoke the stored handler.
-        listeners[id](options || {});
+    var evntParts = evnt.split('.');
+    evnt = 'mmEvent' + ucFirst(evntParts[0]) + ucFirst(evntParts[1]);
+    (element[evnt] || []).forEach(handler => {
+        handler(options || {});
     });
 }
