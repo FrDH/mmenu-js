@@ -527,7 +527,8 @@ export default class Mmenu {
         this.trigger('initMenu:before');
 
         //	Add class to the wrapper.
-        this.node.menu.parentElement.classList.add('mm-wrapper');
+        this.node.wrpr = this.node.wrpr || this.node.menu.parentElement;
+        this.node.wrpr.classList.add('mm-wrapper');
 
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();

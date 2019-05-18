@@ -47,6 +47,8 @@ export default function(this: Mmenu) {
             });
         }
 
+        this.node.wrpr = document.documentElement;
+
         //	Prepend to the <body>
         document
             .querySelector(configs.menu.insertSelector)
@@ -205,7 +207,7 @@ Mmenu.prototype._openSetup = function(this: Mmenu) {
         clsn.push('mm-wrapper_background');
     }
 
-    document.querySelector('html').classList.add(...clsn);
+    this.node.wrpr.classList.add(...clsn);
 
     //	Open
     //	Without the timeout, the animation won't work because the menu had display: none;
@@ -231,7 +233,7 @@ Mmenu.prototype._openStart = function(this: Mmenu) {
 
     //	Opening
     this.trigger('open:start');
-    document.documentElement.classList.add('mm-wrapper_opening');
+    this.node.wrpr.classList.add('mm-wrapper_opening');
 };
 
 Mmenu.prototype.close = function(this: Mmenu) {
@@ -255,7 +257,7 @@ Mmenu.prototype.close = function(this: Mmenu) {
                 'mm-wrapper_background'
             ];
 
-            document.querySelector('html').classList.remove(...clsn);
+            this.node.wrpr.classList.remove(...clsn);
 
             //	Restore style and position
             Mmenu.node.page.setAttribute('style', Mmenu.node.page['mmStyle']);
@@ -269,7 +271,7 @@ Mmenu.prototype.close = function(this: Mmenu) {
     //	Closing
     this.trigger('close:start');
 
-    document.documentElement.classList.remove('mm-wrapper_opening');
+    this.node.wrpr.classList.remove('mm-wrapper_opening');
 
     //	Invoke "after" hook.
     this.trigger('close:after');
@@ -352,7 +354,7 @@ const initWindow = function(this: Mmenu) {
     events.off(document.body, 'keydown.tabguard');
     events.on(document.body, 'keydown.tabguard', (evnt: KeyboardEvent) => {
         if (evnt.keyCode == 9) {
-            if (document.documentElement.matches('.mm-wrapper_opened')) {
+            if (this.node.wrpr.matches('.mm-wrapper_opened')) {
                 evnt.preventDefault();
             }
         }
@@ -363,7 +365,7 @@ const initWindow = function(this: Mmenu) {
     events.on(window, 'resize.page', evnt => {
         if (Mmenu.node.page) {
             if (
-                document.documentElement.matches('.mm-wrapper_opening') ||
+                this.node.wrpr.matches('.mm-wrapper_opening') ||
                 (evnt as any).force
             ) {
                 Mmenu.node.page.style.minHeight = window.innerHeight + 'px';
@@ -406,7 +408,7 @@ const initBlocker = function(this: Mmenu) {
         evnt.preventDefault();
         evnt.stopPropagation();
 
-        if (!document.documentElement.matches('.mm-wrapper_modal')) {
+        if (!this.node.wrpr.matches('.mm-wrapper_modal')) {
             this.close();
         }
     };

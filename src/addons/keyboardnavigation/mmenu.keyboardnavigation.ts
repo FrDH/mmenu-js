@@ -134,7 +134,7 @@ const initWindow = function(this: Mmenu, enhance: boolean) {
     //	Intersept the target when tabbing.
     events.off(document.body, 'focusin.tabguard');
     events.on(document.body, 'focusin.tabguard', (evnt: KeyboardEvent) => {
-        if (document.documentElement.matches('.mm-wrapper_opened')) {
+        if (this.node.wrpr.matches('.mm-wrapper_opened')) {
             let target = evnt.target as HTMLElement;
 
             if (target.matches('.mm-tabend')) {

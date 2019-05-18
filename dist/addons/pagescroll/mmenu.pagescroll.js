@@ -15,9 +15,6 @@ export default function () {
     function scrollTo() {
         if (section) {
             section.scrollIntoView({ behavior: 'smooth' });
-            // document.documentElement.scrollTop =
-            //     section.offsetTop + configs.scrollOffset;
-            // document.body.scrollTop = section.offsetTop + configs.scrollOffset;
         }
         section = null;
     }
@@ -55,7 +52,7 @@ export default function () {
             }
             //	If the sidebar add-on is "expanded"...
             if (this.node.menu.matches('.mm-menu_sidebar-expanded') &&
-                document.documentElement.matches('.mm-wrapper_sidebar-expanded')) {
+                this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
                 //	... scroll the page to the section.
                 scrollTo();
                 //	... otherwise...
@@ -83,7 +80,7 @@ export default function () {
         });
         let _selected = -1;
         window.addEventListener('scroll', evnt => {
-            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            var scrollTop = window.scrollY;
             for (var s = 0; s < scts.length; s++) {
                 if (scts[s].offsetTop < scrollTop + configs.updateOffset) {
                     if (_selected !== s) {

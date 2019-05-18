@@ -40,7 +40,7 @@ export default function(this: Mmenu) {
 
         //	Prevent the body from scrolling.
         document.addEventListener('touchmove', evnt => {
-            if (document.documentElement.matches('.mm-wrapper_opened')) {
+            if (this.node.wrpr.matches('.mm-wrapper_opened')) {
                 evnt.preventDefault();
             }
         });
@@ -52,7 +52,7 @@ export default function(this: Mmenu) {
                 return;
             }
 
-            if (document.documentElement.matches('.mm-wrapper_opened')) {
+            if (this.node.wrpr.matches('.mm-wrapper_opened')) {
                 if (!scrolling) {
                     //	Since we're potentially scrolling the panel in the onScroll event,
                     //	this little hack prevents an infinite loop.
@@ -80,7 +80,7 @@ export default function(this: Mmenu) {
                 return;
             }
 
-            if (document.documentElement.matches('.mm-wrapper_opened')) {
+            if (this.node.wrpr.matches('.mm-wrapper_opened')) {
                 if (panel.scrollHeight > panel.clientHeight) {
                     evnt.stopPropagation();
                 }

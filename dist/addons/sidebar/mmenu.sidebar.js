@@ -34,10 +34,10 @@ export default function () {
         });
         //	En-/disable the collapsed sidebar.
         let enable = () => {
-            document.documentElement.classList.add(clsclpsd);
+            this.node.wrpr.classList.add(clsclpsd);
         };
         let disable = () => {
-            document.documentElement.classList.remove(clsclpsd);
+            this.node.wrpr.classList.remove(clsclpsd);
         };
         if (typeof options.collapsed.use == 'boolean') {
             this.bind('initMenu:after', enable);
@@ -54,13 +54,13 @@ export default function () {
         });
         //	En-/disable the expanded sidebar.
         let enable = () => {
-            document.documentElement.classList.add(clsxpndd);
-            if (!document.documentElement.matches('.mm-wrapper_sidebar-closed')) {
+            this.node.wrpr.classList.add(clsxpndd);
+            if (!this.node.wrpr.matches('.mm-wrapper_sidebar-closed')) {
                 this.open();
             }
         };
         let disable = () => {
-            document.documentElement.classList.remove(clsxpndd);
+            this.node.wrpr.classList.remove(clsxpndd);
             this.close();
         };
         if (typeof options.expanded.use == 'boolean') {
@@ -70,18 +70,18 @@ export default function () {
             media.add(options.expanded.use, enable, disable);
         }
         this.bind('close:start', () => {
-            if (document.documentElement.matches('.' + clsxpndd)) {
-                document.documentElement.classList.add('mm-wrapper_sidebar-closed');
+            if (this.node.wrpr.matches('.' + clsxpndd)) {
+                this.node.wrpr.classList.add('mm-wrapper_sidebar-closed');
             }
         });
         this.bind('open:start', () => {
-            document.documentElement.classList.remove('mm-wrapper_sidebar-closed');
+            this.node.wrpr.classList.remove('mm-wrapper_sidebar-closed');
         });
         //	Add click behavior.
         //	Prevents default behavior when clicking an anchor
         this.clck.push((anchor, args) => {
             if (args.inMenu && args.inListview) {
-                if (document.documentElement.matches('.mm-wrapper_sidebar-expanded')) {
+                if (this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
                     return {
                         close: false
                     };

@@ -32,7 +32,7 @@ export default function () {
         let scrolling = false;
         //	Prevent the body from scrolling.
         document.addEventListener('touchmove', evnt => {
-            if (document.documentElement.matches('.mm-wrapper_opened')) {
+            if (this.node.wrpr.matches('.mm-wrapper_opened')) {
                 evnt.preventDefault();
             }
         });
@@ -41,7 +41,7 @@ export default function () {
             if (!panel.matches('.mm-panels > .mm-panel')) {
                 return;
             }
-            if (document.documentElement.matches('.mm-wrapper_opened')) {
+            if (this.node.wrpr.matches('.mm-wrapper_opened')) {
                 if (!scrolling) {
                     //	Since we're potentially scrolling the panel in the onScroll event,
                     //	this little hack prevents an infinite loop.
@@ -63,7 +63,7 @@ export default function () {
             if (!panel.matches('.mm-panels > .mm-panel')) {
                 return;
             }
-            if (document.documentElement.matches('.mm-wrapper_opened')) {
+            if (this.node.wrpr.matches('.mm-wrapper_opened')) {
                 if (panel.scrollHeight > panel.clientHeight) {
                     evnt.stopPropagation();
                 }

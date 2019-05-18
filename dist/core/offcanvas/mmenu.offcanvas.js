@@ -33,6 +33,7 @@ export default function () {
                 elem.id = 'mm-' + elem.id;
             });
         }
+        this.node.wrpr = document.documentElement;
         //	Prepend to the <body>
         document
             .querySelector(configs.menu.insertSelector)[configs.menu.insertMethod](this.node.menu);
@@ -46,7 +47,6 @@ export default function () {
         initWindow.call(this);
         //	Setup the menu.
         this.node.menu.classList.add('mm-menu_offcanvas');
-        this.node[this.conf.clone ? 'orig' : 'menu'].parentElement.classList.remove('mm-wrapper');
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         let hash = window.location.hash;
         if (hash) {
@@ -160,7 +160,7 @@ Mmenu.prototype._openSetup = function () {
     if (options.moveBackground) {
         clsn.push('mm-wrapper_background');
     }
-    document.querySelector('html').classList.add(...clsn);
+    this.node.wrpr.classList.add(...clsn);
     //	Open
     //	Without the timeout, the animation won't work because the menu had display: none;
     setTimeout(() => {
@@ -178,7 +178,7 @@ Mmenu.prototype._openStart = function () {
     }, this.conf.transitionDuration);
     //	Opening
     this.trigger('open:start');
-    document.documentElement.classList.add('mm-wrapper_opening');
+    this.node.wrpr.classList.add('mm-wrapper_opening');
 };
 Mmenu.prototype.close = function () {
     //	Invoke "before" hook.
@@ -195,7 +195,7 @@ Mmenu.prototype.close = function () {
             'mm-wrapper_modal',
             'mm-wrapper_background'
         ];
-        document.querySelector('html').classList.remove(...clsn);
+        this.node.wrpr.classList.remove(...clsn);
         //	Restore style and position
         Mmenu.node.page.setAttribute('style', Mmenu.node.page['mmStyle']);
         this.vars.opened = false;
@@ -203,7 +203,7 @@ Mmenu.prototype.close = function () {
     }, this.conf.transitionDuration);
     //	Closing
     this.trigger('close:start');
-    document.documentElement.classList.remove('mm-wrapper_opening');
+    this.node.wrpr.classList.remove('mm-wrapper_opening');
     //	Invoke "after" hook.
     this.trigger('close:after');
 };
@@ -268,7 +268,7 @@ const initWindow = function () {
     events.off(document.body, 'keydown.tabguard');
     events.on(document.body, 'keydown.tabguard', (evnt) => {
         if (evnt.keyCode == 9) {
-            if (document.documentElement.matches('.mm-wrapper_opened')) {
+            if (this.node.wrpr.matches('.mm-wrapper_opened')) {
                 evnt.preventDefault();
             }
         }
@@ -277,7 +277,7 @@ const initWindow = function () {
     events.off(window, 'resize.page');
     events.on(window, 'resize.page', evnt => {
         if (Mmenu.node.page) {
-            if (document.documentElement.matches('.mm-wrapper_opening') ||
+            if (this.node.wrpr.matches('.mm-wrapper_opening') ||
                 evnt.force) {
                 Mmenu.node.page.style.minHeight = window.innerHeight + 'px';
             }
@@ -310,7 +310,7 @@ const initBlocker = function () {
     var closeMenu = (evnt) => {
         evnt.preventDefault();
         evnt.stopPropagation();
-        if (!document.documentElement.matches('.mm-wrapper_modal')) {
+        if (!this.node.wrpr.matches('.mm-wrapper_modal')) {
             this.close();
         }
     };

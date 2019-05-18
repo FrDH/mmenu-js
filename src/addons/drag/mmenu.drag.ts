@@ -183,20 +183,14 @@ export default function(this: Mmenu) {
 
                 if (_distance > options.menu.threshold) {
                     if (_stage == 1) {
-                        if (
-                            document.documentElement.matches(
-                                '.mm-wrapper_opened'
-                            )
-                        ) {
+                        if (this.node.wrpr.matches('.mm-wrapper_opened')) {
                             return;
                         }
                         _stage = 2;
 
                         this._openSetup();
                         this.trigger('open:start');
-                        document.documentElement.classList.add(
-                            'mm-wrapper_dragging'
-                        );
+                        this.node.wrpr.classList.add('mm-wrapper_dragging');
 
                         _maxDistance = minMax(
                             window[_winDimension] *
@@ -231,9 +225,7 @@ export default function(this: Mmenu) {
 
             _hammer.on('panend', evnt => {
                 if (_stage == 2) {
-                    document.documentElement.classList.remove(
-                        'mm-wrapper_dragging'
-                    );
+                    this.node.wrpr.classList.remove('mm-wrapper_dragging');
 
                     slideOutNodes.forEach(node => {
                         node.style['-webkit-transform'] = '';

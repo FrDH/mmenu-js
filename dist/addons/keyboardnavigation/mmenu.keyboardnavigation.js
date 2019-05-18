@@ -97,7 +97,7 @@ const initWindow = function (enhance) {
     //	Intersept the target when tabbing.
     events.off(document.body, 'focusin.tabguard');
     events.on(document.body, 'focusin.tabguard', (evnt) => {
-        if (document.documentElement.matches('.mm-wrapper_opened')) {
+        if (this.node.wrpr.matches('.mm-wrapper_opened')) {
             let target = evnt.target;
             if (target.matches('.mm-tabend')) {
                 let next;

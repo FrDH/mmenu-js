@@ -53,20 +53,23 @@ export default function(this: Mmenu) {
         });
 
         //	Hijack the toggler.
-        var toggler = this.node.menu.parentElement.querySelector(
-            '.navbar-toggler'
-        );
-        toggler.removeAttribute('data-target');
-        toggler.removeAttribute('aria-controls');
+        let parent = this.node.menu.parentElement;
+        if (parent) {
+            let toggler = parent.querySelector('.navbar-toggler');
+            if (toggler) {
+                toggler.removeAttribute('data-target');
+                toggler.removeAttribute('aria-controls');
 
-        //	Remove all bound events.
-        toggler.outerHTML = toggler.outerHTML;
+                //	Remove all bound events.
+                toggler.outerHTML = toggler.outerHTML;
 
-        toggler.addEventListener('click', evnt => {
-            evnt.preventDefault();
-            evnt.stopImmediatePropagation();
-            this[this.vars.opened ? 'close' : 'open']();
-        });
+                toggler.addEventListener('click', evnt => {
+                    evnt.preventDefault();
+                    evnt.stopImmediatePropagation();
+                    this[this.vars.opened ? 'close' : 'open']();
+                });
+            }
+        }
     }
 
     function cloneLink(anchor: HTMLElement) {
