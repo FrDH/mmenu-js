@@ -174,7 +174,7 @@ export default class Mmenu {
         if (panel.parentElement.matches('.mm-listitem_vertical')) {
             //	Open current and all vertical parent panels.
             DOM.parents(panel, '.mm-listitem_vertical').forEach(listitem => {
-                panel.classList.add('mm-listitem_opened');
+                listitem.classList.add('mm-listitem_opened');
                 DOM.children(listitem, '.mm-panel').forEach(panel => {
                     panel.classList.remove('mm-hidden');
                 });
