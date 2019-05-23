@@ -87,6 +87,7 @@ export default function Navbars(this: Mmenu) {
             if (typeof ctnt == 'string') {
                 //	The content refers to one of the navbar-presets ("prev", "title", etc).
                 let func = Navbars.navbarContents[ctnt];
+
                 if (typeof func == 'function') {
                     //	Call the preset function.
                     func.call(this, navbar);
