@@ -460,7 +460,10 @@ export default class Mmenu {
         this.trigger('initWrappers:before');
 
         for (let w = 0; w < this.opts.wrappers.length; w++) {
-            Mmenu.wrappers[this.opts.wrappers[w]].call(this);
+            let wrpr = Mmenu.wrappers[this.opts.wrappers[w]];
+            if (typeof wrpr == 'function') {
+                wrpr.call(this);
+            }
         }
 
         //	Invoke "after" hook.

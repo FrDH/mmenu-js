@@ -184,5 +184,53 @@
                 '8.0.0'
             );
         }
+
+        /* WRAPPERS */
+
+        //	Removed and renamed framework wrappers
+        if (this.opts.wrappers) {
+            this.opts.wrappers.forEach(wrapper => {
+                switch (wrapper) {
+                    //  Bootstrap 3 framework wrapper is removed
+                    case 'bootstrap3':
+                        deprecated('The "bootstrap3" wrapper', null, '8.0.0');
+
+                        //  Try to fix it.
+                        let indexbs3 = this.opts.wrappers.indexOf(wrapper);
+                        if (indexbs3 > -1) {
+                            this.opts.wrappers.splice(indexbs3, 1);
+                        }
+                        break;
+
+                    //  Bootstrap 4 framework wrapper is renamed to "bootstrap"
+                    case 'bootstrap4':
+                        deprecated(
+                            'The "bootstrap4" wrapper',
+                            'bootstrap',
+                            '8.0.0'
+                        );
+
+                        //	Try to fix it.
+                        this.opts.wrappers.push('bootstrap');
+
+                        let indexbs4 = this.opts.wrappers.indexOf(wrapper);
+                        if (indexbs4 > -1) {
+                            this.opts.wrappers.splice(indexbs4, 1);
+                        }
+                        break;
+
+                    //  jQuery Mobile framework wrapper is removed
+                    case 'jqueryMobile':
+                        deprecated('The "jqueryMobile" wrapper', null, '8.0.0');
+
+                        //  Try to fix it.
+                        let indexjqm = this.opts.wrappers.indexOf(wrapper);
+                        if (indexjqm > -1) {
+                            this.opts.wrappers.splice(indexjqm, 1);
+                        }
+                        break;
+                }
+            });
+        }
     };
 })();

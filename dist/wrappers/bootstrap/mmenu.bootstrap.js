@@ -44,10 +44,13 @@ export default function () {
         if (parent) {
             let toggler = parent.querySelector('.navbar-toggler');
             if (toggler) {
-                toggler.removeAttribute('data-target');
+                // toggler.removeAttribute('data-target');
+                delete toggler.dataset.target;
                 toggler.removeAttribute('aria-controls');
                 //	Remove all bound events.
                 toggler.outerHTML = toggler.outerHTML;
+                toggler = parent.querySelector('.navbar-toggler');
+                //  Open the menu on-click.
                 toggler.addEventListener('click', evnt => {
                     evnt.preventDefault();
                     evnt.stopImmediatePropagation();
