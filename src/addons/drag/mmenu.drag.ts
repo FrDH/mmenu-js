@@ -13,7 +13,7 @@ export default function(this: Mmenu) {
     if (!this.opts.offCanvas) {
         return;
     }
-    if (typeof Hammer != 'function' || Hammer.VERSION < 2) {
+    if (typeof window['Hammer'] != 'function' || window['Hammer'].VERSION < 2) {
         return;
     }
 
@@ -151,7 +151,10 @@ export default function(this: Mmenu) {
             }
 
             //	Bind events
-            var _hammer = new Hammer(dragNode, this.opts.drag.vendors.hammer);
+            var _hammer = new window['Hammer'](
+                dragNode,
+                this.opts.drag.vendors.hammer
+            );
 
             _hammer.on('panstart', evnt => {
                 doPanstart.call(this, evnt.center[drag.typeLower]);
@@ -249,7 +252,10 @@ export default function(this: Mmenu) {
             if (parent) {
                 parent = parent.closest('.mm-panel');
 
-                var _hammer = new Hammer(panel, this.opts.drag.vendors.hammer),
+                var _hammer = new window['Hammer'](
+                        panel,
+                        this.opts.drag.vendors.hammer
+                    ),
                     timeout = null;
 
                 _hammer.on('panright', evnt => {
