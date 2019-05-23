@@ -23,7 +23,7 @@ import prev from './_navbar.prev';
 import searchfield from './_navbar.searchfield';
 import title from './_navbar.title';
 
-const navbarContents = {
+Navbars.navbarContents = {
     breadcrumbs,
     close,
     next,
@@ -34,11 +34,11 @@ const navbarContents = {
 
 import tabs from './_navbar.tabs';
 
-const navbarTypes = {
+Navbars.navbarTypes = {
     tabs
 };
 
-export default function(this: Mmenu) {
+export default function Navbars(this: Mmenu) {
     var navs = this.opts.navbars;
 
     if (typeof navs == 'undefined') {
@@ -86,7 +86,7 @@ export default function(this: Mmenu) {
             //	The content is a string.
             if (typeof ctnt == 'string') {
                 //	The content refers to one of the navbar-presets ("prev", "title", etc).
-                let func = navbarContents[ctnt];
+                let func = Navbars.navbarContents[ctnt];
                 if (typeof func == 'function') {
                     //	Call the preset function.
                     func.call(this, navbar);
@@ -106,7 +106,7 @@ export default function(this: Mmenu) {
         //	The type option is set.
         if (typeof options.type == 'string') {
             //	The function refers to one of the navbar-presets ("tabs").
-            let func = navbarTypes[options.type];
+            let func = Navbars.navbarTypes[options.type];
             if (typeof func == 'function') {
                 //	Call the preset function.
                 func.call(this, navbar);
