@@ -11,7 +11,7 @@ export default function () {
     if (!this.opts.offCanvas) {
         return;
     }
-    if (typeof Hammer != 'function' || Hammer.VERSION < 2) {
+    if (typeof window['Hammer'] != 'function' || window['Hammer'].VERSION < 2) {
         return;
     }
     var options = extendShorthandOptions(this.opts.drag);
@@ -116,7 +116,7 @@ export default function () {
                 dragNode = document.querySelector(dragNode);
             }
             //	Bind events
-            var _hammer = new Hammer(dragNode, this.opts.drag.vendors.hammer);
+            var _hammer = new window['Hammer'](dragNode, this.opts.drag.vendors.hammer);
             _hammer.on('panstart', evnt => {
                 doPanstart.call(this, evnt.center[drag.typeLower]);
                 slideOutNodes = getSlideNodes.call(this);
@@ -190,7 +190,7 @@ export default function () {
             var parent = panel['mmParent '];
             if (parent) {
                 parent = parent.closest('.mm-panel');
-                var _hammer = new Hammer(panel, this.opts.drag.vendors.hammer), timeout = null;
+                var _hammer = new window['Hammer'](panel, this.opts.drag.vendors.hammer), timeout = null;
                 _hammer.on('panright', evnt => {
                     if (timeout) {
                         return;
