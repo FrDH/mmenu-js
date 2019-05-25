@@ -14,6 +14,7 @@ export function extendShorthandOptions(options) {
     if (typeof options == 'boolean') {
         options = {
             add: options,
+            addTo: 'panels',
             count: options
         };
     }
@@ -25,4 +26,3 @@ export function extendShorthandOptions(options) {
     }
     return options;
 }
-;

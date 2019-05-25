@@ -1,7 +1,7 @@
-const options : mmOptionsCounters = {
-	add: false,
-	addTo: 'panels',
-	count: false
+const options: mmOptionsCounters = {
+    add: false,
+    addTo: 'panels',
+    count: false
 };
 export default options;
 
@@ -11,24 +11,24 @@ export default options;
  * @param  {object} options The options to extend.
  * @return {object}			The extended options.
  */
-export function extendShorthandOptions( 
-	options : mmOptionsCounters
-) : mmOptionsCounters {
+export function extendShorthandOptions(
+    options: mmOptionsCounters
+): mmOptionsCounters {
+    if (typeof options == 'boolean') {
+        options = {
+            add: options,
+            addTo: 'panels',
+            count: options
+        };
+    }
 
-	if ( typeof options == 'boolean' ) {
-		options = {
-			add		: options,
-			count	: options
-		};
-	}
+    if (typeof options != 'object') {
+        options = {};
+    }
 
-	if ( typeof options != 'object' ) {
-		options = {};
-	}
+    if (options.addTo == 'panels') {
+        options.addTo = '.mm-panel';
+    }
 
-	if ( options.addTo == 'panels' ) {
-		options.addTo = '.mm-panel';
-	}
-
-	return options;
-};
+    return options;
+}
