@@ -39,6 +39,18 @@ export function children(element, filter) {
     return filter ? children.filter(child => child.matches(filter)) : children;
 }
 /**
+ * Find text excluding text from within child elements.
+ * @param   {HTMLElement}   element Element to search in.
+ * @return  {string}                The text.
+ */
+export function text(element) {
+    return Array.prototype.slice
+        .call(element.childNodes)
+        .filter(child => child.nodeType == 3)
+        .map(child => child.textContent)
+        .join(' ');
+}
+/**
  * Find all preceding elements matching the selector.
  *
  * @param 	{HTMLElement} 	element Element to start searching from.

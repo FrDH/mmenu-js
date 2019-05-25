@@ -381,7 +381,7 @@ export default class Mmenu {
      * Initialize panels.
      * @param {array} [panels] Panels to initialize.
      */
-    _initPanels(panels) {
+    _initPanels() {
         //	Open / close panels.
         this.clck.push((anchor, args) => {
             if (args.inMenu) {
@@ -404,7 +404,7 @@ export default class Mmenu {
             }
         });
         //	Actually initialise the panels
-        this.initPanels(panels);
+        this.initPanels();
     }
     /**
      * Recursively initialize panels.
@@ -422,7 +422,7 @@ export default class Mmenu {
         /**
          * Initialize panels.
          *
-         * @param {array} [panels] The panels to initialize.
+         * @param {array} panels The panels to initialize.
          */
         const init = (panels) => {
             panels
