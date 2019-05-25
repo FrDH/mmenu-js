@@ -85,9 +85,9 @@ export default function Navbars(this: Mmenu) {
 
             //	The content is a string.
             if (typeof ctnt == 'string') {
-                //	The content refers to one of the navbar-presets ("prev", "title", etc).
                 let func = Navbars.navbarContents[ctnt];
 
+                //	The content refers to one of the navbar-presets ("prev", "title", etc).
                 if (typeof func == 'function') {
                     //	Call the preset function.
                     func.call(this, navbar);
@@ -95,7 +95,18 @@ export default function Navbars(this: Mmenu) {
                     //	The content is just HTML.
                 } else {
                     //	Add the HTML.
-                    navbar.innerHTML += ctnt;
+
+                    //  Wrap the HTML in a single node
+                    let node = DOM.create('span');
+                    node.innerHTML = ctnt;
+
+                    //  If there was only a single node, use that.
+                    let children = DOM.children(node);
+                    if (children.length == 1) {
+                        node = children[0];
+                    }
+
+                    navbar.append(node);
                 }
 
                 //	The content is not a string, it must be an element.
