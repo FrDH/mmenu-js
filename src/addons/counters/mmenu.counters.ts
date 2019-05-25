@@ -38,7 +38,6 @@ export default function(this: Mmenu) {
                 //	Check if no counter already excists.
                 if (!parent.querySelector('.mm-counter')) {
                     let counter = DOM.create('span.mm-counter');
-
                     let btn = DOM.children(parent, '.mm-btn')[0];
                     if (btn) {
                         btn.prepend(counter);
