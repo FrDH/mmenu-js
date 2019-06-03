@@ -91,6 +91,7 @@ $mm_module: '.mm-searchfield';
     }
 }
 
+// Listitem with no search results in the child panel.
 .mm-listitem_nosubitems {
     > .mm-listitem__btn {
         display: none;
@@ -98,5 +99,13 @@ $mm_module: '.mm-searchfield';
 
     > .mm-listitem__text {
         padding-right: $mm_padding;
+    }
+}
+
+// Listitem with only search results in the child panel (not in the listitem itself).
+.mm-listitem_onlysubitems {
+    > .mm-listitem__text:not(.mm-listitem__btn) {
+        // This should (sort of) disable the anchor in the listitem.
+        z-index: -1;
     }
 }

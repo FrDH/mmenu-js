@@ -3,7 +3,13 @@
  * Include this file after including the mmenu.js plugin to debug your menu.
  */
 (function() {
-    const _console = Mmenu.console || console || { error: function() {} };
+    const _console = Mmenu.console ||
+        console || {
+            warn: function() {},
+            group: function() {},
+            groupEnd: function() {}
+        };
+    const warnings = [];
     const deprecated = (depr, repl, vers) => {
         var msg = 'Mmenu: ' + depr + ' is deprecated';
 
@@ -15,7 +21,8 @@
         }
         msg += '.';
 
-        _console.error(msg);
+        warnings.push(msg);
+        //_console.error(msg);
     };
 
     if (typeof Mmenu == 'undefined') {
@@ -27,6 +34,28 @@
 
     /** Log deprecated warnings. */
     Mmenu.prototype._deprecatedWarnings = function() {
+        /**
+         * ----------------------------
+         * Version 8.0 > 8.1
+         * ----------------------------
+         */
+
+        /* CONFIGURATION */
+
+        //	conf.clone is moved to conf.offCanvas.clone.
+        if (typeof this.conf.clone != 'undefined') {
+            deprecated(
+                'The "clone" configuration option',
+                '"offCanvas.clone"',
+                '8.1.0'
+            );
+
+            //	Try to fix it.
+            if (typeof this.conf.offCanvas.clone == 'undefined') {
+                this.conf.offCanvas.clone = this.conf.clone;
+            }
+        }
+
         /**
          * ----------------------------
          * Version 7.3 > 8.0
@@ -110,7 +139,7 @@
             ) {
                 deprecated(
                     'The "add" option in the "iconbar" options.',
-                    'use',
+                    '"use"',
                     '8.0.0'
                 );
 
@@ -125,7 +154,7 @@
         if (typeof this.conf.fixedElements.elemInsertMethod != 'undefined') {
             deprecated(
                 'The "elemInsertMethod" option in the "fixedElements" configuration',
-                'fixed.insertMethod',
+                '"fixed.insertMethod"',
                 '8.0.0'
             );
 
@@ -141,7 +170,7 @@
         if (typeof this.conf.fixedElements.elemInsertMethod != 'undefined') {
             deprecated(
                 'The "elemInsertSelector" option in the "fixedElements" configuration',
-                'fixed.insertSelector',
+                '"fixed.insertSelector"',
                 '8.0.0'
             );
 
@@ -161,6 +190,62 @@
                 null,
                 '8.0.0'
             );
+        }
+
+        /* WRAPPERS */
+
+        //	Removed and renamed framework wrappers
+        if (this.opts.wrappers) {
+            this.opts.wrappers.forEach(wrapper => {
+                switch (wrapper) {
+                    //  Bootstrap 3 framework wrapper is removed
+                    case 'bootstrap3':
+                        deprecated('The "bootstrap3" wrapper', null, '8.0.0');
+
+                        //  Try to fix it.
+                        let indexbs3 = this.opts.wrappers.indexOf(wrapper);
+                        if (indexbs3 > -1) {
+                            this.opts.wrappers.splice(indexbs3, 1);
+                        }
+                        break;
+
+                    //  Bootstrap 4 framework wrapper is renamed to "bootstrap"
+                    case 'bootstrap4':
+                        deprecated(
+                            'The "bootstrap4" wrapper',
+                            '"bootstrap"',
+                            '8.0.0'
+                        );
+
+                        //	Try to fix it.
+                        this.opts.wrappers.push('bootstrap');
+
+                        let indexbs4 = this.opts.wrappers.indexOf(wrapper);
+                        if (indexbs4 > -1) {
+                            this.opts.wrappers.splice(indexbs4, 1);
+                        }
+                        break;
+
+                    //  jQuery Mobile framework wrapper is removed
+                    case 'jqueryMobile':
+                        deprecated('The "jqueryMobile" wrapper', null, '8.0.0');
+
+                        //  Try to fix it.
+                        let indexjqm = this.opts.wrappers.indexOf(wrapper);
+                        if (indexjqm > -1) {
+                            this.opts.wrappers.splice(indexjqm, 1);
+                        }
+                        break;
+                }
+            });
+        }
+
+        if (warnings.length) {
+            _console.group('Mmenu deprecated warnings.');
+            warnings.forEach(msg => {
+                _console.warn(msg);
+            });
+            _console.groupEnd();
         }
     };
 })();

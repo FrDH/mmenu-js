@@ -17,7 +17,7 @@ export default function () {
     this.opts.keyboardNavigation = extend(options, Mmenu.options.keyboardNavigation);
     //	Enable keyboard navigation
     if (options.enable) {
-        let menuStart = DOM.create('button.mm-tabstart'), menuEnd = DOM.create('button.mm-tabend'), blockerEnd = DOM.create('button.mm-tabend');
+        let menuStart = DOM.create('button.mm-tabstart.mm-sronly'), menuEnd = DOM.create('button.mm-tabend.mm-sronly'), blockerEnd = DOM.create('button.mm-tabend.mm-sronly');
         this.bind('initMenu:after', () => {
             if (options.enhance) {
                 this.node.menu.classList.add('mm-menu_keyboardfocus');
@@ -97,7 +97,7 @@ const initWindow = function (enhance) {
     //	Intersept the target when tabbing.
     events.off(document.body, 'focusin.tabguard');
     events.on(document.body, 'focusin.tabguard', (evnt) => {
-        if (document.documentElement.matches('.mm-wrapper_opened')) {
+        if (this.node.wrpr.matches('.mm-wrapper_opened')) {
             let target = evnt.target;
             if (target.matches('.mm-tabend')) {
                 let next;
@@ -127,7 +127,7 @@ const initWindow = function (enhance) {
         var target = evnt.target;
         var menu = target.closest('.mm-menu');
         if (menu) {
-            let api = menu['mmenu'];
+            let api = menu['mmApi'];
             if (!target.matches('input, textarea')) {
                 switch (evnt.keyCode) {
                     //	press enter to toggle and check
@@ -158,7 +158,7 @@ const initWindow = function (enhance) {
                     }
                 }
                 else {
-                    let api = menu['mmenu'];
+                    let api = menu['mmApi'];
                     switch (evnt.keyCode) {
                         //	close submenu with backspace
                         case 8:

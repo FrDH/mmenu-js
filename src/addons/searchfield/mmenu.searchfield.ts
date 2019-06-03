@@ -151,7 +151,7 @@ const initSearchPanel = function(
         searchpanel.append(splash);
     }
 
-    this._initPanels([searchpanel]);
+    this.initPanels([searchpanel]);
 
     return searchpanel;
 };
@@ -261,15 +261,11 @@ const initSearching = function(this: Mmenu, form: HTMLElement) {
         panel => !panel.matches('.mm-panel_search')
     );
 
-    //  Find listitems.
+    //  Find listitems and dividers.
     data.listitems = [];
-    data.panels.forEach(panel => {
-        data.listitems.push(...DOM.find(panel, '.mm-listitem'));
-    });
-
-    //  Find dividers.
     data.dividers = [];
     data.panels.forEach(panel => {
+        data.listitems.push(...DOM.find(panel, '.mm-listitem'));
         data.dividers.push(...DOM.find(panel, '.mm-divider'));
     });
 
@@ -390,19 +386,26 @@ Mmenu.prototype.search = function(
             '.mm-panel_search'
         )[0];
 
-    var panels: HTMLElement[] = data.panels,
-        noresults: HTMLElement[] = data.noresults,
-        listitems: HTMLElement[] = data.listitems,
-        dividers: HTMLElement[] = data.dividers;
+    /** The panels. */
+    var panels: HTMLElement[] = data.panels;
+
+    /** The "no results" messages in a cloned array. */
+    var noresults: HTMLElement[] = data.noresults;
+
+    /** The listitems in a cloned array. */
+    var listitems: HTMLElement[] = data.listitems;
+
+    /** Tje dividers in a cloned array. */
+    var dividers: HTMLElement[] = data.dividers;
 
     //	Reset previous results
     listitems.forEach(listitem => {
-        listitem.classList.remove('mm-listitem_nosubitems');
+        listitem.classList.remove(
+            'mm-listitem_nosubitems',
+            'mm-listitem_onlysubitems',
+            'mm-hidden'
+        );
     });
-
-    //	TODO: dit klopt niet meer
-    // Mmenu.$(listitems).find( '.mm-btn_fullwidth-search' )
-    // .removeClass( 'mm-btn_fullwidth-search mm-btn_fullwidth' );
 
     if (searchpanel) {
         DOM.children(searchpanel, '.mm-listview')[0].innerHTML = '';
@@ -421,25 +424,6 @@ Mmenu.prototype.search = function(
 
         //	Hide listitems that do not match.
         listitems.forEach(listitem => {
-            // var _search = '.mm-listitem__text'; // 'a'
-
-            // if (
-            //     options.showTextItems ||
-            //     (options.showSubPanels &&
-            //         listitem.querySelector('.mm-btn_next'))
-            // ) {
-            //     // _search = 'a, span';
-            // } else {
-            //     //  TODO a.mm-listitem__text also targets a.mm-listitem__text.mm-listitem__btn
-            //     _search = 'a' + _search;
-            // }
-
-            // let text = DOM.children(listitem, _search)[0];
-            // //  TODO textContent also includes sr-only text "open submenu".
-            // if (!text || text.textContent.toLowerCase().indexOf(query) < 0) {
-            //     listitem.classList.add('mm-hidden');
-            // }
-
             var text = DOM.children(listitem, '.mm-listitem__text')[0];
             var add = false;
 
@@ -451,9 +435,13 @@ Mmenu.prototype.search = function(
             //          3b) the option showTextItems is set to true.
             //      or  4)  The text is an anchor.
 
-            //  TODO textContent also includes sr-only text "open submenu".
             //  1
-            if (text && text.textContent.toLowerCase().indexOf(query) > -1) {
+            if (
+                text &&
+                DOM.text(text)
+                    .toLowerCase()
+                    .indexOf(query) > -1
+            ) {
                 //  2a
                 if (text.matches('.mm-listitem__btn')) {
                     //  2b
@@ -476,6 +464,11 @@ Mmenu.prototype.search = function(
                 listitem.classList.add('mm-hidden');
             }
         });
+
+        /** Whether or not the query yielded results. */
+        var hasResults = listitems.filter(
+            listitem => !listitem.matches('.mm-hidden')
+        ).length;
 
         //	Show all mached listitems in the search panel
         if (options.panel.add) {
@@ -538,7 +531,8 @@ Mmenu.prototype.search = function(
             }
 
             //	Update parent for sub-panel
-            panels.reverse().forEach((panel, p) => {
+            //  .reverse() mutates the original array, therefor we "clone" it first using [...panels].
+            [...panels].reverse().forEach((panel, p) => {
                 let parent: HTMLElement = panel['mmParent'];
 
                 if (parent) {
@@ -548,15 +542,8 @@ Mmenu.prototype.search = function(
                         //	Show parent
                         if (parent.matches('.mm-hidden')) {
                             parent.classList.remove('mm-hidden');
-                            //	TODO: dit klopt niet meer...
-                            //	Het idee was een btn tijdelijk fullwidth te laten zijn omdat het zelf geen resultaat is, maar zn submenu wel.
-                            // Mmenu.$(parent)
-
-                            // 	.children( '.mm-btn_next' )
-                            // 	.not( '.mm-btn_fullwidth' )
-                            // 	.addClass( 'mm-btn_fullwidth' )
-                            // 	.addClass( 'mm-btn_fullwidth-search' );
                         }
+                        parent.classList.add('mm-listitem_onlysubitems');
                     } else if (!input.closest('.mm-panel')) {
                         if (
                             panel.matches('.mm-panel_opened') ||
@@ -592,13 +579,7 @@ Mmenu.prototype.search = function(
         //	Show/hide no results message
         noresults.forEach(wrapper => {
             DOM.find(wrapper, '.mm-panel__noresultsmsg').forEach(message =>
-                message.classList[
-                    listitems.filter(
-                        listitem => !listitem.matches('.mm-hidden')
-                    ).length
-                        ? 'add'
-                        : 'remove'
-                ]('mm-hidden')
+                message.classList[hasResults ? 'add' : 'remove']('mm-hidden')
             );
         });
 

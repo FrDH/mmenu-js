@@ -2,150 +2,135 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 
 import * as DOM from '../../core/_dom';
 
-export default function(
-	this : Mmenu
-) {
+export default function(this: Mmenu) {
+    //	Create the menu
+    if (this.node.menu.matches('.navbar-collapse')) {
+        //	No need for cloning the menu...
+        if (this.conf.offCanvas) {
+            this.conf.offCanvas.clone = false;
+        }
 
-	//	Create the menu
-	if ( this.node.menu.matches( '.navbar-collapse' ) )
-	{
+        //	... We'll create a new menu
+        var nav = DOM.create('nav'),
+            panel = DOM.create('div');
 
-		//	No need for cloning the menu...
-		this.conf.clone = false;
+        nav.append(panel);
 
+        DOM.children(this.node.menu).forEach(child => {
+            switch (true) {
+                case child.matches('.navbar-nav'):
+                    panel.append(cloneNav(child));
+                    break;
 
-		//	... We'll create a new menu
-		var nav 	= DOM.create( 'nav' ),
-			panel 	= DOM.create( 'div' );
+                case child.matches('.dropdown-menu'):
+                    panel.append(cloneDropdown(child));
+                    break;
 
-		nav.append( panel );
+                case child.matches('.form-inline'):
+                    this.conf.searchfield.form = {
+                        action: child.getAttribute('action') || null,
+                        method: child.getAttribute('method') || null
+                    };
+                    this.conf.searchfield.input = {
+                        name:
+                            child.querySelector('input').getAttribute('name') ||
+                            null
+                    };
+                    this.conf.searchfield.clear = false;
+                    this.conf.searchfield.submit = true;
+                    break;
 
-		DOM.children( this.node.menu )
-			.forEach(( child ) => {
-				switch( true )
-				{
-					case child.matches( '.navbar-nav' ):
-						panel.append( cloneNav( child ) );
-						break;
+                default:
+                    panel.append(child.cloneNode(true));
+                    break;
+            }
+        });
 
-					case child.matches( '.dropdown-menu' ):
-						panel.append( cloneDropdown( child ) );
-						break;
+        //	Set the menu
+        this.bind('initMenu:before', () => {
+            document.body.prepend(nav);
+            this.node.menu = nav;
+        });
 
-					case child.matches( '.form-inline' ):
-						this.conf.searchfield.form = {
-							action	: child.getAttribute( 'action' ) 	|| null,
-							method	: child.getAttribute( 'method' ) 	|| null
-						};
-						this.conf.searchfield.input = {
-							name	: child.querySelector( 'input' ).getAttribute( 'name' ) || null
-						};
-						this.conf.searchfield.clear 	= false;
-						this.conf.searchfield.submit	= true;
-						break;
+        //	Hijack the toggler.
+        let parent = this.node.menu.parentElement;
+        if (parent) {
+            let toggler: HTMLElement = parent.querySelector('.navbar-toggler');
 
-					default:
-						panel.append( child.cloneNode( true ) );
-						break;
-				}
-			});
+            if (toggler) {
+                // toggler.removeAttribute('data-target');
+                delete toggler.dataset.target;
+                toggler.removeAttribute('aria-controls');
 
-		//	Set the menu
-		this.bind( 'initMenu:before', () => {
-			document.body.prepend( nav );
-			this.node.menu = nav;
-		});
+                //	Remove all bound events.
+                toggler.outerHTML = toggler.outerHTML;
+                toggler = parent.querySelector('.navbar-toggler');
 
-		//	Hijack the toggler.
-		var toggler = this.node.menu.parentElement.querySelector( '.navbar-toggler' );
-			toggler.removeAttribute( 'data-target' );
-			toggler.removeAttribute( 'aria-controls' );
+                //  Open the menu on-click.
+                toggler.addEventListener('click', evnt => {
+                    evnt.preventDefault();
+                    evnt.stopImmediatePropagation();
+                    this[this.vars.opened ? 'close' : 'open']();
+                });
+            }
+        }
+    }
 
-			//	Remove all bound events.
-		toggler.outerHTML = toggler.outerHTML;
+    function cloneLink(anchor: HTMLElement) {
+        var link = DOM.create(anchor.matches('a') ? 'a' : 'span');
 
-		toggler.addEventListener( 'click', ( evnt ) => {
-			evnt.preventDefault();
-			evnt.stopImmediatePropagation();
-			this[ this.vars.opened ? 'close' : 'open' ]();
-		});
-	}
+        //	Copy attributes
+        var attr = ['href', 'title', 'target'];
+        for (var a = 0; a < attr.length; a++) {
+            if (typeof anchor.getAttribute(attr[a]) != 'undefined') {
+                link.setAttribute(attr[a], anchor.getAttribute(attr[a]));
+            }
+        }
 
+        //	Copy contents
+        link.innerHTML = anchor.innerHTML;
 
-	function cloneLink( 
-		anchor : HTMLElement
-	) {
-		var link = DOM.create( anchor.matches( 'a' ) ? 'a' : 'span' );
+        //	Remove Screen reader text.
+        DOM.find(link, '.sr-only').forEach(sro => {
+            sro.remove();
+        });
 
-		//	Copy attributes
-		var attr = ['href', 'title', 'target'];
-		for ( var a = 0; a < attr.length; a++ )
-		{
-			if ( typeof anchor.getAttribute( attr[ a ] ) != 'undefined' )
-			{
-				link.setAttribute(  attr[ a ], anchor.getAttribute(  attr[ a ] ) );
-			}
-		}
+        return link;
+    }
+    function cloneDropdown(dropdown: HTMLElement) {
+        var list = DOM.create('ul');
+        DOM.children(dropdown).forEach(anchor => {
+            var item = DOM.create('li');
 
-		//	Copy contents
-		link.innerHTML = anchor.innerHTML;
+            if (anchor.matches('.dropdown-divider')) {
+                item.classList.add('Divider');
+            } else if (anchor.matches('.dropdown-item')) {
+                item.append(cloneLink(anchor));
+            }
+            list.append(item);
+        });
+        return list;
+    }
+    function cloneNav(nav: HTMLElement) {
+        var list = DOM.create('ul');
 
-		//	Remove Screen reader text.
-		DOM.find( link, '.sr-only' )
-			.forEach(( sro ) => {
-				sro.remove();	
-			})
+        DOM.find(nav, '.nav-item').forEach(anchor => {
+            var item = DOM.create('li');
 
-		return link;
-	}
-	function cloneDropdown( 
-		dropdown : HTMLElement
-	) {
-		var list = DOM.create( 'ul' );
-		DOM.children( dropdown )
-			.forEach(( anchor ) => {
-				var item = DOM.create( 'li' );
+            if (anchor.matches('.active')) {
+                item.classList.add('Selected');
+            }
+            if (!anchor.matches('.nav-link')) {
+                let dropdown = DOM.children(anchor, '.dropdown-menu')[0];
+                if (dropdown) {
+                    item.append(cloneDropdown(dropdown));
+                }
+                anchor = DOM.children(anchor, '.nav-link')[0];
+            }
+            item.prepend(cloneLink(anchor));
 
-				if ( anchor.matches( '.dropdown-divider' ) )
-				{
-					item.classList.add( 'Divider' );
-				}
-				else if ( anchor.matches( '.dropdown-item' ) )
-				{
-					item.append( cloneLink( anchor ) );
-				}
-				list.append( item );
-			}
-		);
-		return list;
-	}
-	function cloneNav( 
-		nav : HTMLElement
-	) {
-		var list = DOM.create( 'ul' );
-
-		DOM.find( nav, '.nav-item' )
-			.forEach(( anchor ) => {
-				var item = DOM.create( 'li' );
-
-				if ( anchor.matches( '.active' ) )
-				{
-					item.classList.add( 'Selected' );
-				}
-				if ( !anchor.matches( '.nav-link' ) )
-				{
-					let dropdown = DOM.children( anchor, '.dropdown-menu' )[ 0 ];
-					if ( dropdown )
-					{
-						item.append( cloneDropdown( dropdown ) );
-					}
-					anchor = DOM.children( anchor, '.nav-link' )[ 0 ];
-				}
-				item.prepend( cloneLink( anchor ) );
-
-				list.append( item );
-			}
-		);
-		return list;
-	}
-};
+            list.append(item);
+        });
+        return list;
+    }
+}

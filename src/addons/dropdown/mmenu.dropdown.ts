@@ -3,7 +3,7 @@ import options from './_options';
 import configs from './_configs';
 import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import { extend, originalId } from '../../core/_helpers';
 
 //	Add the options and configs.
 Mmenu.options.dropdown = options;
@@ -29,7 +29,7 @@ export default function(this: Mmenu) {
         this.node.menu.classList.add('mm-menu_dropdown');
 
         if (typeof options.position.of != 'string') {
-            let id = this.vars.orgMenuId;
+            let id = originalId(this.node.menu.id);
             if (id && id.length) {
                 options.position.of = '[href="#' + id + '"]';
             }
@@ -72,12 +72,12 @@ export default function(this: Mmenu) {
     //	Add/remove classname and style when opening/closing the menu
     this.bind('open:start', () => {
         this.node.menu['mmStyle'] = this.node.menu.getAttribute('style');
-        document.documentElement.classList.add('mm-wrapper_dropdown');
+        this.node.wrpr.classList.add('mm-wrapper_dropdown');
     });
 
     this.bind('close:finish', () => {
         this.node.menu.setAttribute('style', this.node.menu['mmStyle']);
-        document.documentElement.classList.remove('mm-wrapper_dropdown');
+        this.node.wrpr.classList.remove('mm-wrapper_dropdown');
     });
 
     /**
@@ -95,7 +95,7 @@ export default function(this: Mmenu) {
         var css = obj[0],
             cls = obj[1];
 
-        var _scrollPos = dir == 'x' ? 'scrollLeft' : 'scrollTop',
+        var _scrollPos = dir == 'x' ? 'scrollX' : 'scrollY',
             _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight',
             _startPos = dir == 'x' ? 'left' : 'top',
             _stopPos = dir == 'x' ? 'right' : 'bottom',
@@ -104,9 +104,7 @@ export default function(this: Mmenu) {
             _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight',
             _position = null;
 
-        var scrollPos =
-                document.documentElement[_scrollPos] ||
-                document.body[_scrollPos],
+        var scrollPos = window[_scrollPos],
             startPos = DOM.offset(button, _startPos) - scrollPos,
             stopPos = startPos + button[_outerSize],
             windowSize = window[_winSize];

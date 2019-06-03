@@ -24,9 +24,9 @@ export default function(this: Mmenu) {
 
     //	Enable keyboard navigation
     if (options.enable) {
-        let menuStart = DOM.create('button.mm-tabstart'),
-            menuEnd = DOM.create('button.mm-tabend'),
-            blockerEnd = DOM.create('button.mm-tabend');
+        let menuStart = DOM.create('button.mm-tabstart.mm-sronly'),
+            menuEnd = DOM.create('button.mm-tabend.mm-sronly'),
+            blockerEnd = DOM.create('button.mm-tabend.mm-sronly');
 
         this.bind('initMenu:after', () => {
             if (options.enhance) {
@@ -35,6 +35,7 @@ export default function(this: Mmenu) {
 
             initWindow.call(this, options.enhance);
         });
+
         this.bind('initOpened:before', () => {
             this.node.menu.prepend(menuStart);
             this.node.menu.append(menuEnd);
@@ -47,6 +48,7 @@ export default function(this: Mmenu) {
                 });
             });
         });
+
         this.bind('initBlocker:after', () => {
             Mmenu.node.blck.append(blockerEnd);
             DOM.children(Mmenu.node.blck, 'a')[0].classList.add('mm-tabstart');
@@ -132,7 +134,7 @@ const initWindow = function(this: Mmenu, enhance: boolean) {
     //	Intersept the target when tabbing.
     events.off(document.body, 'focusin.tabguard');
     events.on(document.body, 'focusin.tabguard', (evnt: KeyboardEvent) => {
-        if (document.documentElement.matches('.mm-wrapper_opened')) {
+        if (this.node.wrpr.matches('.mm-wrapper_opened')) {
             let target = evnt.target as HTMLElement;
 
             if (target.matches('.mm-tabend')) {
@@ -172,7 +174,7 @@ const initWindow = function(this: Mmenu, enhance: boolean) {
         var menu = target.closest('.mm-menu') as HTMLElement;
 
         if (menu) {
-            let api: mmApi = menu['mmenu'];
+            let api: mmApi = menu['mmApi'];
 
             if (!target.matches('input, textarea')) {
                 switch (evnt.keyCode) {
@@ -207,7 +209,7 @@ const initWindow = function(this: Mmenu, enhance: boolean) {
                             break;
                     }
                 } else {
-                    let api: mmApi = menu['mmenu'];
+                    let api: mmApi = menu['mmApi'];
 
                     switch (evnt.keyCode) {
                         //	close submenu with backspace

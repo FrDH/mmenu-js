@@ -3,12 +3,13 @@ export default function () {
     //	Create the menu
     if (this.node.menu.matches('.navbar-collapse')) {
         //	No need for cloning the menu...
-        this.conf.clone = false;
+        if (this.conf.offCanvas) {
+            this.conf.offCanvas.clone = false;
+        }
         //	... We'll create a new menu
         var nav = DOM.create('nav'), panel = DOM.create('div');
         nav.append(panel);
-        DOM.children(this.node.menu)
-            .forEach((child) => {
+        DOM.children(this.node.menu).forEach(child => {
             switch (true) {
                 case child.matches('.navbar-nav'):
                     panel.append(cloneNav(child));
@@ -22,7 +23,8 @@ export default function () {
                         method: child.getAttribute('method') || null
                     };
                     this.conf.searchfield.input = {
-                        name: child.querySelector('input').getAttribute('name') || null
+                        name: child.querySelector('input').getAttribute('name') ||
+                            null
                     };
                     this.conf.searchfield.clear = false;
                     this.conf.searchfield.submit = true;
@@ -38,16 +40,24 @@ export default function () {
             this.node.menu = nav;
         });
         //	Hijack the toggler.
-        var toggler = this.node.menu.parentElement.querySelector('.navbar-toggler');
-        toggler.removeAttribute('data-target');
-        toggler.removeAttribute('aria-controls');
-        //	Remove all bound events.
-        toggler.outerHTML = toggler.outerHTML;
-        toggler.addEventListener('click', (evnt) => {
-            evnt.preventDefault();
-            evnt.stopImmediatePropagation();
-            this[this.vars.opened ? 'close' : 'open']();
-        });
+        let parent = this.node.menu.parentElement;
+        if (parent) {
+            let toggler = parent.querySelector('.navbar-toggler');
+            if (toggler) {
+                // toggler.removeAttribute('data-target');
+                delete toggler.dataset.target;
+                toggler.removeAttribute('aria-controls');
+                //	Remove all bound events.
+                toggler.outerHTML = toggler.outerHTML;
+                toggler = parent.querySelector('.navbar-toggler');
+                //  Open the menu on-click.
+                toggler.addEventListener('click', evnt => {
+                    evnt.preventDefault();
+                    evnt.stopImmediatePropagation();
+                    this[this.vars.opened ? 'close' : 'open']();
+                });
+            }
+        }
     }
     function cloneLink(anchor) {
         var link = DOM.create(anchor.matches('a') ? 'a' : 'span');
@@ -61,16 +71,14 @@ export default function () {
         //	Copy contents
         link.innerHTML = anchor.innerHTML;
         //	Remove Screen reader text.
-        DOM.find(link, '.sr-only')
-            .forEach((sro) => {
+        DOM.find(link, '.sr-only').forEach(sro => {
             sro.remove();
         });
         return link;
     }
     function cloneDropdown(dropdown) {
         var list = DOM.create('ul');
-        DOM.children(dropdown)
-            .forEach((anchor) => {
+        DOM.children(dropdown).forEach(anchor => {
             var item = DOM.create('li');
             if (anchor.matches('.dropdown-divider')) {
                 item.classList.add('Divider');
@@ -84,8 +92,7 @@ export default function () {
     }
     function cloneNav(nav) {
         var list = DOM.create('ul');
-        DOM.find(nav, '.nav-item')
-            .forEach((anchor) => {
+        DOM.find(nav, '.nav-item').forEach(anchor => {
             var item = DOM.create('li');
             if (anchor.matches('.active')) {
                 item.classList.add('Selected');
@@ -103,4 +110,3 @@ export default function () {
         return list;
     }
 }
-;

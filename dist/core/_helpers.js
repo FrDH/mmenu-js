@@ -92,3 +92,13 @@ export function uniqueId() {
     return 'mm-' + __id++;
 }
 var __id = 0;
+/**
+ * Get the original ID from a possibly prefixed ID.
+ * @param id The possibly prefixed ID.
+ */
+export function originalId(id) {
+    if (id.slice(0, 3) == 'mm-') {
+        return id.slice(3);
+    }
+    return id;
+}

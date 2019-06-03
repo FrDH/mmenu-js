@@ -4,7 +4,7 @@ import configs from './_configs';
 import * as DOM from '../_dom';
 import * as events from '../_eventlisteners';
 import { extendShorthandOptions } from './_options';
-import { extend, transitionend, uniqueId } from '../../core/_helpers';
+import { extend, transitionend, uniqueId, originalId } from '../../core/_helpers';
 //  Add the options and configs.
 Mmenu.options.offCanvas = options;
 Mmenu.configs.offCanvas = configs;
@@ -20,6 +20,24 @@ export default function () {
     //	Setup the menu.
     this.vars.opened = false;
     //	Add off-canvas behavior.
+    this.bind('initMenu:before', () => {
+        //	Clone if needed.
+        if (configs.clone) {
+            //	Clone the original menu and store it.
+            this.node.menu = this.node.menu.cloneNode(true);
+            //	Prefix all ID's in the cloned menu.
+            if (this.node.menu.id) {
+                this.node.menu.id = 'mm-' + this.node.menu.id;
+            }
+            DOM.find(this.node.menu, '[id]').forEach(elem => {
+                elem.id = 'mm-' + elem.id;
+            });
+        }
+        this.node.wrpr = document.documentElement;
+        //	Prepend to the <body>
+        document
+            .querySelector(configs.menu.insertSelector)[configs.menu.insertMethod](this.node.menu);
+    });
     this.bind('initMenu:after', () => {
         //	Setup the UI blocker.
         initBlocker.call(this);
@@ -29,14 +47,10 @@ export default function () {
         initWindow.call(this);
         //	Setup the menu.
         this.node.menu.classList.add('mm-menu_offcanvas');
-        this.node[this.conf.clone ? 'orig' : 'menu'].parentElement.classList.remove('mm-wrapper');
-        //	Prepend to the <body>
-        document
-            .querySelector(configs.menu.insertSelector)[configs.menu.insertMethod](this.node.menu);
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         let hash = window.location.hash;
         if (hash) {
-            let id = this.vars.orgMenuId;
+            let id = originalId(this.node.menu.id);
             if (id && id == hash.slice(1)) {
                 setTimeout(() => {
                     this.open();
@@ -72,7 +86,7 @@ export default function () {
     //	Prevents default behavior when clicking an anchor
     this.clck.push((anchor, args) => {
         //	Open menu if the clicked anchor links to the menu
-        var id = this.vars.orgMenuId;
+        let id = originalId(this.node.menu.id);
         if (id) {
             if (anchor.matches('[href="#' + id + '"]')) {
                 //	Opening this menu from within this menu
@@ -85,7 +99,7 @@ export default function () {
                 //		-> Close the second menu before opening this menu
                 var menu = anchor.closest('.mm-menu');
                 if (menu) {
-                    var api = menu['mmenu'];
+                    var api = menu['mmApi'];
                     if (api && api.close) {
                         api.close();
                         transitionend(menu, () => {
@@ -146,7 +160,7 @@ Mmenu.prototype._openSetup = function () {
     if (options.moveBackground) {
         clsn.push('mm-wrapper_background');
     }
-    document.querySelector('html').classList.add(...clsn);
+    this.node.wrpr.classList.add(...clsn);
     //	Open
     //	Without the timeout, the animation won't work because the menu had display: none;
     setTimeout(() => {
@@ -164,7 +178,7 @@ Mmenu.prototype._openStart = function () {
     }, this.conf.transitionDuration);
     //	Opening
     this.trigger('open:start');
-    document.documentElement.classList.add('mm-wrapper_opening');
+    this.node.wrpr.classList.add('mm-wrapper_opening');
 };
 Mmenu.prototype.close = function () {
     //	Invoke "before" hook.
@@ -181,7 +195,7 @@ Mmenu.prototype.close = function () {
             'mm-wrapper_modal',
             'mm-wrapper_background'
         ];
-        document.querySelector('html').classList.remove(...clsn);
+        this.node.wrpr.classList.remove(...clsn);
         //	Restore style and position
         Mmenu.node.page.setAttribute('style', Mmenu.node.page['mmStyle']);
         this.vars.opened = false;
@@ -189,7 +203,7 @@ Mmenu.prototype.close = function () {
     }, this.conf.transitionDuration);
     //	Closing
     this.trigger('close:start');
-    document.documentElement.classList.remove('mm-wrapper_opening');
+    this.node.wrpr.classList.remove('mm-wrapper_opening');
     //	Invoke "after" hook.
     this.trigger('close:after');
 };
@@ -199,7 +213,7 @@ Mmenu.prototype.close = function () {
 Mmenu.prototype.closeAllOthers = function () {
     DOM.find(document.body, '.mm-menu_offcanvas').forEach(menu => {
         if (menu !== this.node.menu) {
-            let api = menu['mmenu'];
+            let api = menu['mmApi'];
             if (api && api.close) {
                 api.close();
             }
@@ -253,8 +267,8 @@ const initWindow = function () {
     //	In other words: The menu would move out of view.
     events.off(document.body, 'keydown.tabguard');
     events.on(document.body, 'keydown.tabguard', (evnt) => {
-        if (document.documentElement.matches('.mm-wrapper_opened')) {
-            if (evnt.keyCode == 9) {
+        if (evnt.keyCode == 9) {
+            if (this.node.wrpr.matches('.mm-wrapper_opened')) {
                 evnt.preventDefault();
             }
         }
@@ -263,7 +277,7 @@ const initWindow = function () {
     events.off(window, 'resize.page');
     events.on(window, 'resize.page', evnt => {
         if (Mmenu.node.page) {
-            if (document.documentElement.matches('.mm-wrapper_opening') ||
+            if (this.node.wrpr.matches('.mm-wrapper_opening') ||
                 evnt.force) {
                 Mmenu.node.page.style.minHeight = window.innerHeight + 'px';
             }
@@ -296,7 +310,7 @@ const initBlocker = function () {
     var closeMenu = (evnt) => {
         evnt.preventDefault();
         evnt.stopPropagation();
-        if (!document.documentElement.matches('.mm-wrapper_modal')) {
+        if (!this.node.wrpr.matches('.mm-wrapper_modal')) {
             this.close();
         }
     };

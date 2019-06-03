@@ -88,12 +88,12 @@ window.Mmenu = Mmenu;
 //	jQuery plugin
 (function($) {
     if ($) {
-        $.fn['mmenu'] = function(options, configs) {
+        $.fn.mmenu = function(options, configs) {
             var $result = $();
 
             this.each((e, element) => {
                 //	Don't proceed if the element already is a mmenu.
-                if (element['mmenu']) {
+                if (element['mmApi']) {
                     return;
                 }
 

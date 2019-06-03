@@ -32,6 +32,9 @@ export default class Mmenu {
     /**	Globally used HTML elements. */
     static node: mmHtmlObject = {};
 
+    /** Globally used variables. */
+    static vars: mmLooseObject = {};
+
     /**	Options for the menu. */
     opts: mmOptions;
 
@@ -274,7 +277,6 @@ export default class Mmenu {
 
             if (animation && !panel.matches('.mm-panel_noanimation')) {
                 //	Without the timeout the animation will not work because the element had display: none;
-                //	RequestAnimationFrame would be nice here.
                 setTimeout(() => {
                     //	Callback
                     transitionend(
@@ -438,7 +440,7 @@ export default class Mmenu {
         });
 
         //	Store the API in the HTML node for external usage.
-        this.node.menu['mmenu'] = this.API;
+        this.node.menu['mmApi'] = this.API;
     }
 
     /**
@@ -458,7 +460,10 @@ export default class Mmenu {
         this.trigger('initWrappers:before');
 
         for (let w = 0; w < this.opts.wrappers.length; w++) {
-            Mmenu.wrappers[this.opts.wrappers[w]].call(this);
+            let wrpr = Mmenu.wrappers[this.opts.wrappers[w]];
+            if (typeof wrpr == 'function') {
+                wrpr.call(this);
+            }
         }
 
         //	Invoke "after" hook.
@@ -525,28 +530,11 @@ export default class Mmenu {
         this.trigger('initMenu:before');
 
         //	Add class to the wrapper.
-        this.node.menu.parentElement.classList.add('mm-wrapper');
+        this.node.wrpr = this.node.wrpr || this.node.menu.parentElement;
+        this.node.wrpr.classList.add('mm-wrapper');
 
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
-
-        //	Store the original menu ID.
-        this.vars.orgMenuId = this.node.menu.id;
-
-        //	Clone if needed.
-        if (this.conf.clone) {
-            //	Store the original menu.
-            this.node.orig = this.node.menu;
-
-            //	Clone the original menu and store it.
-            this.node.menu = this.node.orig.cloneNode(true) as HTMLElement;
-
-            //	Prefix all ID's in the cloned menu.
-            this.node.menu.id = 'mm-' + this.node.menu.id;
-            DOM.find(this.node.menu, '[id]').forEach(elem => {
-                elem.id = 'mm-' + elem.id;
-            });
-        }
 
         //	Wrap the panels in a node.
         let panels = DOM.create('div.mm-panels');
@@ -574,7 +562,7 @@ export default class Mmenu {
      * Initialize panels.
      * @param {array} [panels] Panels to initialize.
      */
-    _initPanels(panels?: HTMLElement[]) {
+    _initPanels() {
         //	Open / close panels.
         this.clck.push((anchor: HTMLElement, args: mmClickArguments) => {
             if (args.inMenu) {
@@ -600,7 +588,7 @@ export default class Mmenu {
         });
 
         //	Actually initialise the panels
-        this.initPanels(panels);
+        this.initPanels();
     }
 
     /**
@@ -623,7 +611,7 @@ export default class Mmenu {
         /**
          * Initialize panels.
          *
-         * @param {array} [panels] The panels to initialize.
+         * @param {array} panels The panels to initialize.
          */
         const init = (panels: HTMLElement[]) => {
             panels
@@ -636,8 +624,8 @@ export default class Mmenu {
 
                         newpanels.push(panel);
 
-                        //	Init subpanels.
-                        var children: HTMLElement[] = [];
+                        /** The sub panels. */
+                        let children: HTMLElement[] = [];
 
                         //	Find panel > panel
                         children.push(
@@ -851,7 +839,7 @@ export default class Mmenu {
         //	Invoke "before" hook.
         this.trigger('initListview:before', [panel]);
 
-        //	Refactor listviews classnames.
+        /** Listviews in the panel. */
         var listviews = DOM.children(panel, 'ul, ol');
 
         //	Refactor listitems classnames
@@ -888,24 +876,33 @@ export default class Mmenu {
             }
         });
 
-        //	Add open link to parent listitem
+        /** The parent listitem. */
         var parent: HTMLElement = panel['mmParent'];
+
+        //	Add open link to parent listitem
         if (parent && parent.matches('.mm-listitem')) {
             if (!DOM.children(parent, '.mm-btn').length) {
-                let item = DOM.children(parent, 'a, span')[0];
+                /** The text node. */
+                let item = DOM.children(parent, '.mm-listitem__text')[0];
 
                 if (item) {
+                    /** The open link. */
                     let button = DOM.create(
                         'a.mm-btn.mm-btn_next.mm-listitem__btn'
                     );
                     button.setAttribute('href', '#' + panel.id);
 
-                    item.parentElement.insertBefore(button, item.nextSibling);
-
+                    //  If the item has no link,
+                    //      Replace the item with the open link.
                     if (item.matches('span')) {
                         button.classList.add('mm-listitem__text');
                         button.innerHTML = item.innerHTML;
+                        parent.insertBefore(button, item.nextElementSibling);
                         item.remove();
+
+                        //  Append the button to the listitem.
+                    } else {
+                        parent.append(button);
                     }
                 }
             }
@@ -964,13 +961,11 @@ export default class Mmenu {
             'click',
             evnt => {
                 /** The clicked element. */
-                var target = evnt.target as HTMLElement;
-
-                if (!target.matches('a[href]')) {
-                    target = target.closest('a[href]') as HTMLElement;
-                    if (!target) {
-                        return;
-                    }
+                var target = (evnt.target as HTMLElement).closest(
+                    'a[href]'
+                ) as HTMLElement;
+                if (!target) {
+                    return;
                 }
 
                 /** Arguments passed to the bound methods. */

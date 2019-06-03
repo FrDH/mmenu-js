@@ -19,7 +19,7 @@ import next from './_navbar.next';
 import prev from './_navbar.prev';
 import searchfield from './_navbar.searchfield';
 import title from './_navbar.title';
-const navbarContents = {
+Navbars.navbarContents = {
     breadcrumbs,
     close,
     next,
@@ -28,10 +28,10 @@ const navbarContents = {
     title
 };
 import tabs from './_navbar.tabs';
-const navbarTypes = {
+Navbars.navbarTypes = {
     tabs
 };
-export default function () {
+export default function Navbars() {
     var navs = this.opts.navbars;
     if (typeof navs == 'undefined') {
         return;
@@ -66,8 +66,8 @@ export default function () {
             let ctnt = options.content[c];
             //	The content is a string.
             if (typeof ctnt == 'string') {
+                let func = Navbars.navbarContents[ctnt];
                 //	The content refers to one of the navbar-presets ("prev", "title", etc).
-                let func = navbarContents[ctnt];
                 if (typeof func == 'function') {
                     //	Call the preset function.
                     func.call(this, navbar);
@@ -75,7 +75,15 @@ export default function () {
                 }
                 else {
                     //	Add the HTML.
-                    navbar.innerHTML += ctnt;
+                    //  Wrap the HTML in a single node
+                    let node = DOM.create('span');
+                    node.innerHTML = ctnt;
+                    //  If there was only a single node, use that.
+                    let children = DOM.children(node);
+                    if (children.length == 1) {
+                        node = children[0];
+                    }
+                    navbar.append(node);
                 }
                 //	The content is not a string, it must be an element.
             }
@@ -86,7 +94,7 @@ export default function () {
         //	The type option is set.
         if (typeof options.type == 'string') {
             //	The function refers to one of the navbar-presets ("tabs").
-            let func = navbarTypes[options.type];
+            let func = Navbars.navbarTypes[options.type];
             if (typeof func == 'function') {
                 //	Call the preset function.
                 func.call(this, navbar);
