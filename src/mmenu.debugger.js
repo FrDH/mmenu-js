@@ -3,7 +3,13 @@
  * Include this file after including the mmenu.js plugin to debug your menu.
  */
 (function() {
-    const _console = Mmenu.console || console || { error: function() {} };
+    const _console = Mmenu.console ||
+        console || {
+            warn: function() {},
+            group: function() {},
+            groupEnd: function() {}
+        };
+    const warnings = [];
     const deprecated = (depr, repl, vers) => {
         var msg = 'Mmenu: ' + depr + ' is deprecated';
 
@@ -15,7 +21,8 @@
         }
         msg += '.';
 
-        _console.error(msg);
+        warnings.push(msg);
+        //_console.error(msg);
     };
 
     if (typeof Mmenu == 'undefined') {
@@ -39,7 +46,7 @@
         if (typeof this.conf.clone != 'undefined') {
             deprecated(
                 'The "clone" configuration option',
-                'offCanvas.clone',
+                '"offCanvas.clone"',
                 '8.1.0'
             );
 
@@ -132,7 +139,7 @@
             ) {
                 deprecated(
                     'The "add" option in the "iconbar" options.',
-                    'use',
+                    '"use"',
                     '8.0.0'
                 );
 
@@ -147,7 +154,7 @@
         if (typeof this.conf.fixedElements.elemInsertMethod != 'undefined') {
             deprecated(
                 'The "elemInsertMethod" option in the "fixedElements" configuration',
-                'fixed.insertMethod',
+                '"fixed.insertMethod"',
                 '8.0.0'
             );
 
@@ -163,7 +170,7 @@
         if (typeof this.conf.fixedElements.elemInsertMethod != 'undefined') {
             deprecated(
                 'The "elemInsertSelector" option in the "fixedElements" configuration',
-                'fixed.insertSelector',
+                '"fixed.insertSelector"',
                 '8.0.0'
             );
 
@@ -206,7 +213,7 @@
                     case 'bootstrap4':
                         deprecated(
                             'The "bootstrap4" wrapper',
-                            'bootstrap',
+                            '"bootstrap"',
                             '8.0.0'
                         );
 
@@ -231,6 +238,14 @@
                         break;
                 }
             });
+        }
+
+        if (warnings.length) {
+            _console.group('Mmenu deprecated warnings.');
+            warnings.forEach(msg => {
+                _console.warn(msg);
+            });
+            _console.groupEnd();
         }
     };
 })();

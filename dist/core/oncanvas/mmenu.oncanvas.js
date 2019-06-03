@@ -433,8 +433,8 @@ export default class Mmenu {
                     this._initNavbar(panel);
                     this._initListview(panel);
                     newpanels.push(panel);
-                    //	Init subpanels.
-                    var children = [];
+                    /** The sub panels. */
+                    let children = [];
                     //	Find panel > panel
                     children.push(...DOM.children(panel, '.' + this.conf.classNames.panel));
                     //	Find panel listitem > panel
@@ -587,7 +587,7 @@ export default class Mmenu {
     _initListview(panel) {
         //	Invoke "before" hook.
         this.trigger('initListview:before', [panel]);
-        //	Refactor listviews classnames.
+        /** Listviews in the panel. */
         var listviews = DOM.children(panel, 'ul, ol');
         //	Refactor listitems classnames
         listviews.forEach(listview => {
@@ -606,19 +606,28 @@ export default class Mmenu {
                 });
             }
         });
-        //	Add open link to parent listitem
+        /** The parent listitem. */
         var parent = panel['mmParent'];
+        //	Add open link to parent listitem
         if (parent && parent.matches('.mm-listitem')) {
             if (!DOM.children(parent, '.mm-btn').length) {
-                let item = DOM.children(parent, 'a, span')[0];
+                /** The text node. */
+                let item = DOM.children(parent, '.mm-listitem__text')[0];
                 if (item) {
+                    /** The open link. */
                     let button = DOM.create('a.mm-btn.mm-btn_next.mm-listitem__btn');
                     button.setAttribute('href', '#' + panel.id);
-                    item.parentElement.insertBefore(button, item.nextSibling);
+                    //  If the item has no link,
+                    //      Replace the item with the open link.
                     if (item.matches('span')) {
                         button.classList.add('mm-listitem__text');
                         button.innerHTML = item.innerHTML;
+                        parent.insertBefore(button, item.nextElementSibling);
                         item.remove();
+                        //  Append the button to the listitem.
+                    }
+                    else {
+                        parent.append(button);
                     }
                 }
             }
