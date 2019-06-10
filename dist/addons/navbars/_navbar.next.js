@@ -1,5 +1,7 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../core/_dom';
+//	DEPRECATED
+//	Will be removed in version 8.2
 export default function (navbar) {
     //	Add content
     var next = DOM.create('a.mm-btn.mm-btn_next.mm-navbar__btn');
@@ -26,4 +28,3 @@ export default function (navbar) {
         Mmenu.sr_aria(next, 'owns', (next.getAttribute('href') || '').slice(1));
     });
 }
-;

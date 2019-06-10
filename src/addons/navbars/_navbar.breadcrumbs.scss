@@ -1,27 +1,29 @@
-@if ( $mm_include_navbars_breadcrumbs ) {
-	.mm-navbar__breadcrumbs {
-		@include mm_ellipsis;
+@if ($mm_include_navbars_breadcrumbs) {
+    .mm-navbar__breadcrumbs {
+        @include mm_ellipsis;
 
-		-webkit-overflow-scrolling: touch;
-		overflow-x: auto;
-		text-align: left;
-		flex-grow: 1;
-		width: 100%;
-		padding: 0;
+        -webkit-overflow-scrolling: touch;
+        overflow-x: auto;
+        text-align: left;
+        flex-grow: 1;
+        padding: 0;
+        padding-left: $mm_panelPadding;
 
-		> * {
-			display: inline-block;
-			padding: calc( (var( --mm-navbar-size ) - var( --mm-line-height )) * .5 );
-			padding-left: 0;
-			padding-right: 6px;
-		}
+        > * {
+            display: inline-block;
+            padding: calc(
+                (var(--mm-navbar-size) - var(--mm-line-height)) * 0.5
+            );
+            padding-left: 0;
+            padding-right: 6px;
+        }
 
-		> a {
-			text-decoration: underline;
-		}
-	}
+        > a {
+            text-decoration: underline;
+        }
+    }
 
-	.mm-btn.mm-hidden + .mm-navbar__breadcrumbs {
-		padding-left: $mm_panelPadding;
-	}
+    .mm-btn:not(.mm-hidden) + .mm-navbar__breadcrumbs {
+        padding-left: 0;
+    }
 }
