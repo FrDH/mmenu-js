@@ -74,15 +74,13 @@ export default function () {
             Mmenu.sr_aria(panel, 'hidden', true);
         });
         //	Add aria-haspopup and aria-owns to prev- and next buttons.
-        this.bind('initPanels:after', (panels) => {
-            panels.forEach(panel => {
-                DOM.find(panel, '.mm-btn').forEach(button => {
-                    Mmenu.sr_aria(button, 'haspopup', true);
-                    let href = button.getAttribute('href');
-                    if (href) {
-                        Mmenu.sr_aria(button, 'owns', href.replace('#', ''));
-                    }
-                });
+        this.bind('initPanel:after', (panel) => {
+            DOM.find(panel, '.mm-btn').forEach(button => {
+                Mmenu.sr_aria(button, 'haspopup', true);
+                let href = button.getAttribute('href');
+                if (href) {
+                    Mmenu.sr_aria(button, 'owns', href.replace('#', ''));
+                }
             });
         });
         //	Add aria-hidden for navbars in panels.

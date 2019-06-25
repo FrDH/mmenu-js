@@ -8,12 +8,11 @@ Mmenu.options.lazySubmenus = options;
 export default function () {
     var options = extendShorthandOptions(this.opts.lazySubmenus);
     this.opts.lazySubmenus = extend(options, Mmenu.options.lazySubmenus);
-    //	Sliding submenus
     if (options.load) {
-        //	prevent all sub panels from initPanels
+        //	Prevent all sub panels from being initialized.
         this.bind('initMenu:after', () => {
             var panels = [];
-            //	Find all potential subpanels
+            //	Find all potential subpanels.
             DOM.find(this.node.pnls, 'li').forEach(listitem => {
                 panels.push(...DOM.children(listitem, this.conf.panelNodetype.join(', ')));
             });
@@ -26,20 +25,18 @@ export default function () {
                 panel.classList.add('mm-panel_lazysubmenu', 'mm-nolistview', 'mm-nopanel');
             });
         });
-        //	prepare current and one level sub panels for initPanels
-        this.bind('initPanels:before', (panels) => {
-            panels =
-                panels ||
-                    DOM.children(this.node.pnls, this.conf.panelNodetype.join(', '));
+        //	Prepare current and one level sub panels for initPanels
+        this.bind('initPanels:before', () => {
+            const panels = DOM.children(this.node.pnls, this.conf.panelNodetype.join(', '));
             panels.forEach(panel => {
-                var filter = '.mm-panel_lazysubmenu', panels = DOM.find(panel, filter);
+                var filter = '.mm-panel_lazysubmenu', children = DOM.find(panel, filter);
                 if (panel.matches(filter)) {
-                    panels.unshift(panel);
+                    children.unshift(panel);
                 }
-                panels
-                    .filter(panel => !panel.matches('.mm-panel_lazysubmenu .mm-panel_lazysubmenu'))
-                    .forEach(panel => {
-                    panel.classList.remove('mm-panel_lazysubmenu', 'mm-nolistview', 'mm-nopanel');
+                children
+                    .filter(child => !child.matches('.mm-panel_lazysubmenu .mm-panel_lazysubmenu'))
+                    .forEach(child => {
+                    child.classList.remove('mm-panel_lazysubmenu', 'mm-nolistview', 'mm-nopanel');
                 });
             });
         });
@@ -53,7 +50,7 @@ export default function () {
                 panels.forEach(panel => {
                     panel.classList.remove('mm-panel_lazysubmenu', 'mm-nolistview mm-nopanel');
                 });
-                this.initPanels([panels[panels.length - 1]]);
+                this.initPanel(panels[panels.length - 1]);
             }
         });
         //	initPanels for current- and sub panels before openPanel
@@ -63,9 +60,9 @@ export default function () {
                 panels.unshift(panel);
             }
             panels = panels.filter(panel => !panel.matches('.mm-panel_lazysubmenu .mm-panel_lazysubmenu'));
-            if (panels.length) {
-                this.initPanels(panels);
-            }
+            panels.forEach(panel => {
+                this.initPanel(panel);
+            });
         });
     }
 }

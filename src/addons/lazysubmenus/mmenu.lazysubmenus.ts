@@ -11,13 +11,12 @@ export default function(this: Mmenu) {
     var options = extendShorthandOptions(this.opts.lazySubmenus);
     this.opts.lazySubmenus = extend(options, Mmenu.options.lazySubmenus);
 
-    //	Sliding submenus
     if (options.load) {
-        //	prevent all sub panels from initPanels
+        //	Prevent all sub panels from being initialized.
         this.bind('initMenu:after', () => {
             var panels: HTMLElement[] = [];
 
-            //	Find all potential subpanels
+            //	Find all potential subpanels.
             DOM.find(this.node.pnls, 'li').forEach(listitem => {
                 panels.push(
                     ...DOM.children(
@@ -41,31 +40,29 @@ export default function(this: Mmenu) {
                 });
         });
 
-        //	prepare current and one level sub panels for initPanels
-        this.bind('initPanels:before', (panels?: HTMLElement[]) => {
-            panels =
-                panels ||
-                DOM.children(
-                    this.node.pnls,
-                    this.conf.panelNodetype.join(', ')
-                );
+        //	Prepare current and one level sub panels for initPanels
+        this.bind('initPanels:before', () => {
+            const panels = DOM.children(
+                this.node.pnls,
+                this.conf.panelNodetype.join(', ')
+            );
 
             panels.forEach(panel => {
                 var filter = '.mm-panel_lazysubmenu',
-                    panels = DOM.find(panel, filter);
+                    children = DOM.find(panel, filter);
 
                 if (panel.matches(filter)) {
-                    panels.unshift(panel);
+                    children.unshift(panel);
                 }
-                panels
+                children
                     .filter(
-                        panel =>
-                            !panel.matches(
+                        child =>
+                            !child.matches(
                                 '.mm-panel_lazysubmenu .mm-panel_lazysubmenu'
                             )
                     )
-                    .forEach(panel => {
-                        panel.classList.remove(
+                    .forEach(child => {
+                        child.classList.remove(
                             'mm-panel_lazysubmenu',
                             'mm-nolistview',
                             'mm-nopanel'
@@ -91,7 +88,7 @@ export default function(this: Mmenu) {
                         'mm-nolistview mm-nopanel'
                     );
                 });
-                this.initPanels([panels[panels.length - 1]]);
+                this.initPanel(panels[panels.length - 1]);
             }
         });
 
@@ -109,9 +106,9 @@ export default function(this: Mmenu) {
                     )
             );
 
-            if (panels.length) {
-                this.initPanels(panels);
-            }
+            panels.forEach(panel => {
+                this.initPanel(panel);
+            });
         });
     }
 }

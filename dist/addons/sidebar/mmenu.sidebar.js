@@ -103,16 +103,14 @@ export default function () {
         }
         //	Add click behavior.
         //	Prevents default behavior when clicking an anchor
-        if (options.expanded.initial != 'closed') {
-            this.clck.push((anchor, args) => {
-                if (args.inMenu && args.inListview) {
-                    if (this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
-                        return {
-                            close: false
-                        };
-                    }
+        this.clck.push((anchor, args) => {
+            if (args.inMenu && args.inListview) {
+                if (this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
+                    return {
+                        close: options.expanded.initial == 'closed'
+                    };
                 }
-            });
-        }
+            }
+        });
     }
 }

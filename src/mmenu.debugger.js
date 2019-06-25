@@ -42,6 +42,11 @@
          * ----------------------------
          */
 
+        /* API */
+        this.bind('initPanels:deprecated', method => {
+            deprecated('The "initPanels" API method', '"initPanel"', '8.2.0');
+        });
+
         /* ADD-ONS */
 
         //  navbars "next" content is removed.

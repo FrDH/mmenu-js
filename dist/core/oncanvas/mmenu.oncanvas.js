@@ -26,6 +26,7 @@ export default class Mmenu {
         this._api = [
             'bind',
             'initPanels',
+            'initPanel',
             'openPanel',
             'closePanel',
             'closeAllPanels',
@@ -378,10 +379,22 @@ export default class Mmenu {
         this.trigger('initMenu:after');
     }
     /**
+     * @deprecated
+     */
+    initPanels(panels) {
+        this.trigger('initPanels:deprecated');
+        panels = panels || DOM.children(this.node.pnls);
+        panels.forEach(panel => {
+            this.initPanel(panel);
+        });
+    }
+    /**
      * Initialize panels.
      * @param {array} [panels] Panels to initialize.
      */
     _initPanels() {
+        //	Invoke "before" hook.
+        this.trigger('initPanels:before');
         //	Open / close panels.
         this.clck.push((anchor, args) => {
             if (args.inMenu) {
@@ -403,55 +416,43 @@ export default class Mmenu {
                 }
             }
         });
-        //	Actually initialise the panels
-        this.initPanels();
+        /** The panels to initiate */
+        const panels = DOM.children(this.node.pnls);
+        panels.forEach(panel => {
+            this.initPanel(panel);
+        });
+        //	Invoke "after" hook.
+        this.trigger('initPanels:after');
     }
     /**
-     * Recursively initialize panels.
-     * @param {array} [panels] The panels to initialize.
+     * Initialize a single panel and its children.
+     * @param {HTMLElement} panel The panel to initialize.
      */
-    initPanels(panels) {
-        //	Invoke "before" hook.
-        this.trigger('initPanels:before', [panels]);
+    initPanel(panel) {
         /** Query selector for possible node-types for panels. */
         var panelNodetype = this.conf.panelNodetype.join(', ');
-        /** The created panels. */
-        var newpanels = [];
-        //	If no panels provided, use all panels.
-        panels = panels || DOM.children(this.node.pnls, panelNodetype);
-        /**
-         * Initialize panels.
-         *
-         * @param {array} panels The panels to initialize.
-         */
-        const init = (panels) => {
-            panels
-                .filter(panel => panel.matches(panelNodetype))
-                .forEach(panel => {
-                var panel = this._initPanel(panel);
-                if (panel) {
-                    this._initNavbar(panel);
-                    this._initListview(panel);
-                    newpanels.push(panel);
-                    /** The sub panels. */
-                    let children = [];
-                    //	Find panel > panel
-                    children.push(...DOM.children(panel, '.' + this.conf.classNames.panel));
-                    //	Find panel listitem > panel
-                    DOM.children(panel, '.mm-listview').forEach(listview => {
-                        DOM.children(listview, '.mm-listitem').forEach(listitem => {
-                            children.push(...DOM.children(listitem, panelNodetype));
-                        });
+        if (panel.matches(panelNodetype)) {
+            //  Only once
+            if (!panel.matches('.mm-panel')) {
+                panel = this._initPanel(panel);
+            }
+            if (panel) {
+                /** The sub panels. */
+                let children = [];
+                //	Find panel > panel
+                children.push(...DOM.children(panel, '.' + this.conf.classNames.panel));
+                //	Find panel listitem > panel
+                DOM.children(panel, '.mm-listview').forEach(listview => {
+                    DOM.children(listview, '.mm-listitem').forEach(listitem => {
+                        children.push(...DOM.children(listitem, panelNodetype));
                     });
-                    if (children.length) {
-                        init(children);
-                    }
-                }
-            });
-        };
-        init(panels);
-        //	Invoke "after" hook.
-        this.trigger('initPanels:after', [newpanels]);
+                });
+                //  Initiate subpanel(s).
+                children.forEach(child => {
+                    this.initPanel(child);
+                });
+            }
+        }
     }
     /**
      * Initialize a single panel.
@@ -461,10 +462,6 @@ export default class Mmenu {
     _initPanel(panel) {
         //	Invoke "before" hook.
         this.trigger('initPanel:before', [panel]);
-        //	Stop if already a panel.
-        if (panel.matches('.mm-panel')) {
-            return panel;
-        }
         //	Refactor panel classnames
         DOM.reClass(panel, this.conf.classNames.panel, 'mm-panel');
         DOM.reClass(panel, this.conf.classNames.nopanel, 'mm-nopanel');
@@ -508,6 +505,8 @@ export default class Mmenu {
             parent['mmChild'] = panel;
             panel['mmParent'] = parent;
         }
+        this._initNavbar(panel);
+        this._initListview(panel);
         //	Invoke "after" hook.
         this.trigger('initPanel:after', [panel]);
         return panel;

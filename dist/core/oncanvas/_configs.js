@@ -8,7 +8,6 @@ const configs = {
         spacer: 'Spacer',
         vertical: 'Vertical'
     },
-    clone: false,
     language: null,
     openingInterval: 25,
     panelNodetype: ['ul', 'ol', 'div'],

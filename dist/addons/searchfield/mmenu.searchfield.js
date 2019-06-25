@@ -24,17 +24,17 @@ export default function () {
             input.blur();
         });
     });
-    this.bind('initPanels:after', (panels) => {
+    this.bind('initPanel:after', (panel) => {
         var searchpanel = null;
         //	Add the search panel
         if (options.panel.add) {
-            searchpanel = initSearchPanel.call(this, panels);
+            searchpanel = initSearchPanel.call(this);
         }
         //	Add the searchfield
         var addTo = null;
         switch (options.addTo) {
             case 'panels':
-                addTo = panels;
+                addTo = [panel];
                 break;
             case 'panel':
                 addTo = [searchpanel];
@@ -56,9 +56,7 @@ export default function () {
         });
         //	Add the no-results message
         if (options.noResults) {
-            (options.panel.add ? [searchpanel] : panels).forEach(panel => {
-                initNoResultsMsg.call(this, panel);
-            });
+            initNoResultsMsg.call(this, options.panel.add ? searchpanel : panel);
         }
     });
     //	Add click behavior.
@@ -85,7 +83,7 @@ export default function () {
         }
     });
 }
-const initSearchPanel = function (panels) {
+const initSearchPanel = function () {
     var options = this.opts.searchfield, configs = this.conf.searchfield;
     //	Only once
     if (DOM.children(this.node.pnls, '.mm-panel_search').length) {
@@ -116,7 +114,7 @@ const initSearchPanel = function (panels) {
         splash.innerHTML = options.panel.splash;
         searchpanel.append(splash);
     }
-    this.initPanels([searchpanel]);
+    this.initPanel(searchpanel);
     return searchpanel;
 };
 const initSearchfield = function (wrapper) {
