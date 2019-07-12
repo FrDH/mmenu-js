@@ -1,15 +1,15 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-
+import * as DOM from '../../core/_dom';
 import { type } from '../../core/_helpers';
 
-export default function( 
-	this	: Mmenu,
-	navbar	: HTMLElement
-) {
-	if ( type( this.opts.searchfield ) != 'object' ) {
-		this.opts.searchfield = {};
-	}
+export default function(this: Mmenu, navbar: HTMLElement) {
+    if (type(this.opts.searchfield) != 'object') {
+        this.opts.searchfield = {};
+    }
 
-	this.opts.searchfield.add 	= true;
-	this.opts.searchfield.addTo = [ navbar ];
-};
+    var searchfield = DOM.create('div.mm-navbar__searchfield');
+    navbar.append(searchfield);
+
+    this.opts.searchfield.add = true;
+    this.opts.searchfield.addTo = [searchfield];
+}

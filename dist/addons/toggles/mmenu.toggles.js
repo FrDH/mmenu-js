@@ -6,13 +6,11 @@ Mmenu.configs.classNames.toggles = {
     check: 'Check'
 };
 export default function () {
-    this.bind('initPanels:after', (panels) => {
+    this.bind('initPanel:after', (panel) => {
         //	Refactor toggle classes
-        panels.forEach(panel => {
-            DOM.find(panel, 'input').forEach(input => {
-                DOM.reClass(input, this.conf.classNames.toggles.toggle, 'mm-toggle');
-                DOM.reClass(input, this.conf.classNames.toggles.check, 'mm-check');
-            });
+        DOM.find(panel, 'input').forEach(input => {
+            DOM.reClass(input, this.conf.classNames.toggles.toggle, 'mm-toggle');
+            DOM.reClass(input, this.conf.classNames.toggles.check, 'mm-check');
         });
     });
 }

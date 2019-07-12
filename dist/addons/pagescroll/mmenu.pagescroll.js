@@ -11,10 +11,15 @@ export default function () {
     var options = extendShorthandOptions(this.opts.pageScroll);
     this.opts.pageScroll = extend(options, Mmenu.options.pageScroll);
     var configs = this.conf.pageScroll;
+    /** The currently "active" section */
     var section;
     function scrollTo() {
         if (section) {
-            section.scrollIntoView({ behavior: 'smooth' });
+            // section.scrollIntoView({ behavior: 'smooth' });
+            window.scrollTo({
+                top: section.getBoundingClientRect().top - configs.scrollOffset,
+                behavior: 'smooth'
+            });
         }
         section = null;
     }
@@ -85,7 +90,9 @@ export default function () {
                 if (scts[s].offsetTop < scrollTop + configs.updateOffset) {
                     if (_selected !== s) {
                         _selected = s;
-                        let panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0], listitems = DOM.find(panel, '.mm-listitem'), anchors = DOM.filterLIA(listitems);
+                        let panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+                        let listitems = DOM.find(panel, '.mm-listitem');
+                        let anchors = DOM.filterLIA(listitems);
                         anchors = anchors.filter(anchor => anchor.matches('[href="#' + scts[s].id + '"]'));
                         if (anchors.length) {
                             this.setSelected(anchors[0].parentElement);

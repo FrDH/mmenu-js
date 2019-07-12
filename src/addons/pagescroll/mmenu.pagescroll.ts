@@ -15,11 +15,16 @@ export default function(this: Mmenu) {
 
     var configs = this.conf.pageScroll;
 
+    /** The currently "active" section */
     var section: HTMLElement;
 
     function scrollTo() {
         if (section) {
-            section.scrollIntoView({ behavior: 'smooth' });
+            // section.scrollIntoView({ behavior: 'smooth' });
+            window.scrollTo({
+                top: section.getBoundingClientRect().top - configs.scrollOffset,
+                behavior: 'smooth'
+            });
         }
         section = null;
     }
@@ -105,11 +110,12 @@ export default function(this: Mmenu) {
                         _selected = s;
 
                         let panel = DOM.children(
-                                this.node.pnls,
-                                '.mm-panel_opened'
-                            )[0],
-                            listitems = DOM.find(panel, '.mm-listitem'),
-                            anchors = DOM.filterLIA(listitems);
+                            this.node.pnls,
+                            '.mm-panel_opened'
+                        )[0];
+
+                        let listitems = DOM.find(panel, '.mm-listitem');
+                        let anchors = DOM.filterLIA(listitems);
 
                         anchors = anchors.filter(anchor =>
                             anchor.matches('[href="#' + scts[s].id + '"]')

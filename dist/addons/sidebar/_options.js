@@ -6,7 +6,8 @@ const options = {
         hideNavbar: true
     },
     expanded: {
-        use: false
+        use: false,
+        initial: 'open'
     }
 };
 export default options;
@@ -59,4 +60,3 @@ export function extendShorthandOptions(options) {
     }
     return options;
 }
-;

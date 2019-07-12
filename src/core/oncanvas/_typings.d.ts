@@ -31,7 +31,7 @@ interface mmHtmlObject {
 /** The menu API. */
 interface mmApi {
     bind: Function;
-    initPanels: Function;
+    initPanel: Function;
     openPanel: Function;
     closePanel: Function;
     closeAllPanels: Function;
@@ -174,9 +174,6 @@ interface mmOptionsOnclick {
 interface mmConfigs {
     /** Object with classnames to refactor. */
     classNames?: mmLooseObject;
-
-    /** Whether or not the menu should be cloned (and the original menu kept intact). */
-    clone?: boolean;
 
     /** The language to translate the menu to. */
     language?: 'en' | 'nl' | 'de' | 'ru' | 'fa';

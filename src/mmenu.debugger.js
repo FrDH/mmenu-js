@@ -5,10 +5,13 @@
 (function() {
     const _console = Mmenu.console ||
         console || {
+            log: function() {},
             warn: function() {},
+            error: function() {},
             group: function() {},
             groupEnd: function() {}
         };
+
     const warnings = [];
     const deprecated = (depr, repl, vers) => {
         var msg = 'Mmenu: ' + depr + ' is deprecated';
@@ -22,11 +25,10 @@
         msg += '.';
 
         warnings.push(msg);
-        //_console.error(msg);
     };
 
     if (typeof Mmenu == 'undefined') {
-        _console.warn(
+        _console.error(
             'Global variable "Mmenu" (needed for the debugger) not found!'
         );
         return;
@@ -34,6 +36,32 @@
 
     /** Log deprecated warnings. */
     Mmenu.prototype._deprecatedWarnings = function() {
+        /**
+         * ----------------------------
+         * Version 8.1 > 8.2
+         * ----------------------------
+         */
+
+        /* API */
+        this.bind('initPanels:deprecated', method => {
+            deprecated('The "initPanels" API method', '"initPanel"', '8.2.0');
+        });
+
+        /* ADD-ONS */
+
+        //  navbars "next" content is removed.
+        if (this.opts.navbars) {
+            this.opts.navbars.forEach(navbar => {
+                if (navbar.content.includes('next')) {
+                    deprecated(
+                        'The "next" content for the "navbars" add-on',
+                        null,
+                        '8.2.0'
+                    );
+                }
+            });
+        }
+
         /**
          * ----------------------------
          * Version 8.0 > 8.1
@@ -181,15 +209,6 @@
             ) {
                 this.conf.fixedElements.fixed.insertSelector = this.conf.fixedElements.elemInsertSelector;
             }
-        }
-
-        //  conf.pageScroll.scrollOffset is deprecated in favor of using native element.scrollIntoView.
-        if (typeof this.conf.pageScroll.scrollOffset != 'undefined') {
-            deprecated(
-                'The "scrollOffset" option in the "pageScroll" configuration',
-                null,
-                '8.0.0'
-            );
         }
 
         /* WRAPPERS */

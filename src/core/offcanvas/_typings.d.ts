@@ -9,7 +9,7 @@ interface mmOptionsOffcanvas {
 
 //	Add-on configs interfaces.
 interface mmConfigsOffcanvas {
-    /** Whether or not the menu node should be cloned. */
+    /** Whether or not the menu should be cloned (and the original menu kept intact). */
     clone?: boolean;
 
     /** Menu configuration for the off-canvas add-on. */

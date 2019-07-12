@@ -12,7 +12,6 @@ export default function () {
     }
     var options = extendShorthandOptions(this.opts.sidebar);
     this.opts.sidebar = extend(options, Mmenu.options.sidebar);
-    var clsclpsd = 'mm-wrapper_sidebar-collapsed', clsxpndd = 'mm-wrapper_sidebar-expanded';
     //	Collapsed
     if (options.collapsed.use) {
         //	Make the menu collapsable.
@@ -34,10 +33,10 @@ export default function () {
         });
         //	En-/disable the collapsed sidebar.
         let enable = () => {
-            this.node.wrpr.classList.add(clsclpsd);
+            this.node.wrpr.classList.add('mm-wrapper_sidebar-collapsed');
         };
         let disable = () => {
-            this.node.wrpr.classList.remove(clsclpsd);
+            this.node.wrpr.classList.remove('mm-wrapper_sidebar-collapsed');
         };
         if (typeof options.collapsed.use == 'boolean') {
             this.bind('initMenu:after', enable);
@@ -54,13 +53,13 @@ export default function () {
         });
         //	En-/disable the expanded sidebar.
         let enable = () => {
-            this.node.wrpr.classList.add(clsxpndd);
+            this.node.wrpr.classList.add('mm-wrapper_sidebar-expanded');
             if (!this.node.wrpr.matches('.mm-wrapper_sidebar-closed')) {
                 this.open();
             }
         };
         let disable = () => {
-            this.node.wrpr.classList.remove(clsxpndd);
+            this.node.wrpr.classList.remove('mm-wrapper_sidebar-expanded');
             this.close();
         };
         if (typeof options.expanded.use == 'boolean') {
@@ -69,21 +68,46 @@ export default function () {
         else {
             media.add(options.expanded.use, enable, disable);
         }
+        //  Manually en-/disable the expanded sidebar (open / close the menu)
         this.bind('close:start', () => {
-            if (this.node.wrpr.matches('.' + clsxpndd)) {
+            if (this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
                 this.node.wrpr.classList.add('mm-wrapper_sidebar-closed');
+                if (options.expanded.initial == 'remember') {
+                    window.localStorage.setItem('mmenuExpandedState', 'closed');
+                }
             }
         });
         this.bind('open:start', () => {
-            this.node.wrpr.classList.remove('mm-wrapper_sidebar-closed');
+            if (this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
+                this.node.wrpr.classList.remove('mm-wrapper_sidebar-closed');
+                if (options.expanded.initial == 'remember') {
+                    window.localStorage.setItem('mmenuExpandedState', 'open');
+                }
+            }
         });
+        //  Set the initial state
+        var initialState = options.expanded.initial;
+        if (options.expanded.initial == 'remember') {
+            let state = window.localStorage.getItem('mmenuExpandedState');
+            switch (state) {
+                case 'open':
+                case 'closed':
+                    initialState = state;
+                    break;
+            }
+        }
+        if (initialState == 'closed') {
+            this.bind('initMenu:after', () => {
+                this.node.wrpr.classList.add('mm-wrapper_sidebar-closed');
+            });
+        }
         //	Add click behavior.
         //	Prevents default behavior when clicking an anchor
         this.clck.push((anchor, args) => {
             if (args.inMenu && args.inListview) {
                 if (this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
                     return {
-                        close: false
+                        close: options.expanded.initial == 'closed'
                     };
                 }
             }

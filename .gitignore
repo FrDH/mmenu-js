@@ -8,3 +8,6 @@
 
 # Ignore Gulp modules
 node_modules
+
+# Ignore TODO
+TODO.rtf

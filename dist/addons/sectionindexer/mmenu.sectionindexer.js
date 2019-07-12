@@ -12,11 +12,7 @@ export default function () {
     if (!options.add) {
         return;
     }
-    this.bind('initPanels:after', (panels) => {
-        //	Set the panel(s)
-        if (options.addTo != 'panels') {
-            panels = DOM.find(this.node.menu, options.addTo).filter(panel => panel.matches('.mm-panel'));
-        }
+    this.bind('initPanels:after', () => {
         //	Add the indexer, only if it does not allready excists
         if (!this.node.indx) {
             let buttons = '';

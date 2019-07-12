@@ -31,19 +31,19 @@ export default function(this: Mmenu) {
         });
     });
 
-    this.bind('initPanels:after', (panels: HTMLElement[]) => {
+    this.bind('initPanel:after', (panel: HTMLElement) => {
         var searchpanel: HTMLElement = null;
 
         //	Add the search panel
         if (options.panel.add) {
-            searchpanel = initSearchPanel.call(this, panels);
+            searchpanel = initSearchPanel.call(this);
         }
 
         //	Add the searchfield
         var addTo: HTMLElement[] = null;
         switch (options.addTo) {
             case 'panels':
-                addTo = panels;
+                addTo = [panel];
                 break;
 
             case 'panel':
@@ -68,9 +68,10 @@ export default function(this: Mmenu) {
 
         //	Add the no-results message
         if (options.noResults) {
-            (options.panel.add ? [searchpanel] : panels).forEach(panel => {
-                initNoResultsMsg.call(this, panel);
-            });
+            initNoResultsMsg.call(
+                this,
+                options.panel.add ? searchpanel : panel
+            );
         }
     });
 
@@ -104,10 +105,7 @@ export default function(this: Mmenu) {
     });
 }
 
-const initSearchPanel = function(
-    this: Mmenu,
-    panels: HTMLElement[]
-): HTMLElement {
+const initSearchPanel = function(this: Mmenu): HTMLElement {
     var options = this.opts.searchfield,
         configs = this.conf.searchfield;
 
@@ -151,7 +149,7 @@ const initSearchPanel = function(
         searchpanel.append(splash);
     }
 
-    this.initPanels([searchpanel]);
+    this.initPanel(searchpanel);
 
     return searchpanel;
 };

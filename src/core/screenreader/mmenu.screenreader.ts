@@ -104,16 +104,14 @@ export default function(this: Mmenu) {
         });
 
         //	Add aria-haspopup and aria-owns to prev- and next buttons.
-        this.bind('initPanels:after', (panels: HTMLElement[]) => {
-            panels.forEach(panel => {
-                DOM.find(panel, '.mm-btn').forEach(button => {
-                    Mmenu.sr_aria(button, 'haspopup', true);
+        this.bind('initPanel:after', (panel: HTMLElement) => {
+            DOM.find(panel, '.mm-btn').forEach(button => {
+                Mmenu.sr_aria(button, 'haspopup', true);
 
-                    let href = button.getAttribute('href');
-                    if (href) {
-                        Mmenu.sr_aria(button, 'owns', href.replace('#', ''));
-                    }
-                });
+                let href = button.getAttribute('href');
+                if (href) {
+                    Mmenu.sr_aria(button, 'owns', href.replace('#', ''));
+                }
             });
         });
 

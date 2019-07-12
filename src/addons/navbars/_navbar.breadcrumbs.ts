@@ -4,7 +4,7 @@ import * as DOM from '../../core/_dom';
 
 export default function(this: Mmenu, navbar: HTMLElement) {
     //	Add content
-    var breadcrumbs = DOM.create('span.mm-navbar__breadcrumbs');
+    var breadcrumbs = DOM.create('div.mm-navbar__breadcrumbs');
     navbar.append(breadcrumbs);
 
     this.bind('initNavbar:after', (panel: HTMLElement) => {

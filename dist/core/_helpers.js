@@ -27,6 +27,27 @@ export function extend(orignl, dfault) {
     return orignl;
 }
 /**
+ * Detect the touch / dragging direction on a touch device.
+ *
+ * @param   {HTMLElement} surface   The element to monitor for touch events.
+ * @return  {object}                Object with "get" function.
+ */
+export function touchDirection(surface) {
+    var direction = '';
+    var position = -1;
+    surface.addEventListener('touchstart', evnt => {
+        position = evnt.changedTouches[0].pageY;
+    });
+    surface.addEventListener('touchmove', evnt => {
+        var newPosition = evnt.changedTouches[0].pageY;
+        direction = newPosition > position ? 'down' : 'up';
+        position = newPosition;
+    });
+    return {
+        get: () => direction
+    };
+}
+/**
  * Get the type of any given variable. Improvement of "typeof".
  *
  * @param 	{any}		variable	The variable.

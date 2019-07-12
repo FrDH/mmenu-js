@@ -16,14 +16,7 @@ export default function(this: Mmenu) {
         return;
     }
 
-    this.bind('initPanels:after', (panels: HTMLElement[]) => {
-        //	Set the panel(s)
-        if (options.addTo != 'panels') {
-            panels = DOM.find(this.node.menu, options.addTo).filter(panel =>
-                panel.matches('.mm-panel')
-            );
-        }
-
+    this.bind('initPanels:after', () => {
         //	Add the indexer, only if it does not allready excists
         if (!this.node.indx) {
             let buttons = '';
@@ -86,7 +79,7 @@ export default function(this: Mmenu) {
         }
 
         //	Show or hide the indexer
-        this.bind('openPanel:start', (panel?: HTMLElement) => {
+        this.bind('openPanel:start', (panel: HTMLElement) => {
             var active = DOM.find(panel, '.mm-divider').filter(
                 divider => !divider.matches('.mm-hidden')
             ).length;

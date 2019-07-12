@@ -1,44 +1,54 @@
-@if ( $mm_include_navbars_tabs ) {
-	.mm-navbar__tab_selected {
-		background: inherit !important;
-		color: inherit !important;
-		border-width: 1px;
-		border-style: solid;
-		border-color: inherit;
+$module: '.mm-navbar';
 
-		&:first-child {
-			border-left: none;
-		}
+@if ($mm_include_navbars_tabs) {
+    #{$module}_tabs {
+        text-align: center;
 
-		&:last-child {
-			border-right: none;
-		}
-	}
+        > * {
+            flex-grow: 1;
+        }
+    }
 
-	@if ( $mm_include_navbars_top ) {
-		.mm-navbars_top.mm-navbars_has-tabs {
-			.mm-navbar_tabs,
-			.mm-navbar_tabs ~ .mm-navbar {
-				background: inherit !important;
-				color: inherit !important;
-			}
-		}
-		@include mm_navbar_tabs_borders( 'top', 'bottom', 'last', 'first' );
-	}
-	@if ( $mm_include_navbars_bottom ) {
-		.mm-navbars_bottom.mm-navbars_has-tabs {
-			.mm-navbar {
-				background: inherit;
-				color: inherit;
-			}
-		}
-		@include mm_navbar_tabs_borders( 'bottom', 'top', 'first', 'last' );
-	}
+    #{$module}__tab_selected {
+        background: inherit !important;
+        color: inherit !important;
+        border-width: 1px;
+        border-style: solid;
+        border-color: inherit;
 
-	.mm-navbars_top.mm-navbars_has-tabs > .mm-navbar:not( .mm-navbar_tabs ),
-	.mm-navbars_bottom.mm-navbars_has-tabs .mm-navbar_tabs ~ .mm-navbar,
-	.mm-navbar_tabs > a:not( .mm-navbar__tab_selected ) {
-		background: var( --mm-color-background-emphasis );
-		color: var( --mm-color-text-dimmed );
-	}
+        &:first-child {
+            border-left: none;
+        }
+
+        &:last-child {
+            border-right: none;
+        }
+    }
+
+    @if ($mm_include_navbars_top) {
+        .mm-navbars_top.mm-navbars_has-tabs {
+            #{$module}_tabs,
+            #{$module}_tabs ~ #{$module} {
+                background: inherit !important;
+                color: inherit !important;
+            }
+        }
+        @include mm_navbar_tabs_borders('top', 'bottom', 'last', 'first');
+    }
+    @if ($mm_include_navbars_bottom) {
+        .mm-navbars_bottom.mm-navbars_has-tabs {
+            #{$module} {
+                background: inherit;
+                color: inherit;
+            }
+        }
+        @include mm_navbar_tabs_borders('bottom', 'top', 'first', 'last');
+    }
+
+    .mm-navbars_top.mm-navbars_has-tabs > #{$module}:not(#{$module}_tabs),
+    .mm-navbars_bottom.mm-navbars_has-tabs #{$module}_tabs ~ #{$module},
+    #{$module}_tabs > a:not(#{$module}__tab_selected) {
+        background: var(--mm-color-background-emphasis);
+        color: var(--mm-color-text-dimmed);
+    }
 }

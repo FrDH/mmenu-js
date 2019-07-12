@@ -9,6 +9,9 @@ interface mmOptionsPagescroll {
 
 /**	Configuration for the pageScroll add-on. */
 interface mmConfigsPagescroll {
+    /** Amount of pixels to scroll past the top of a section after clicking a menu item. */
+    scrollOffset?: number;
+
     /** Amount of pixels to scroll past the top of a section before its menu item will appear "selected". */
     updateOffset?: number;
 }
