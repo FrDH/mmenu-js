@@ -211,15 +211,6 @@
             }
         }
 
-        //  conf.pageScroll.scrollOffset is deprecated in favor of using native element.scrollIntoView.
-        if (typeof this.conf.pageScroll.scrollOffset != 'undefined') {
-            deprecated(
-                'The "scrollOffset" option in the "pageScroll" configuration',
-                null,
-                '8.0.0'
-            );
-        }
-
         /* WRAPPERS */
 
         //	Removed and renamed framework wrappers
