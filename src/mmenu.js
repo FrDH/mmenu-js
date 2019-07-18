@@ -82,6 +82,9 @@ Mmenu.wrappers = {
     wordpress
 };
 
+//  Export module
+export default Mmenu;
+
 //	Global namespace
 window.Mmenu = Mmenu;
 
