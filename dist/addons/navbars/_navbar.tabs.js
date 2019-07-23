@@ -1,9 +1,9 @@
-import * as DOM from '../../core/_dom';
+import * as DOM from '../../_modules/dom';
 export default function (navbar) {
     navbar.classList.add('mm-navbar_tabs');
     navbar.parentElement.classList.add('mm-navbars_has-tabs');
     var anchors = DOM.children(navbar, 'a');
-    navbar.addEventListener('click', (evnt) => {
+    navbar.addEventListener('click', evnt => {
         var anchor = evnt.target;
         if (!anchor.matches('a')) {
             return;
@@ -19,7 +19,7 @@ export default function (navbar) {
         catch (err) { }
     });
     function selectTab(panel) {
-        anchors.forEach((anchor) => {
+        anchors.forEach(anchor => {
             anchor.classList.remove('mm-navbar__tab_selected');
         });
         var anchor = anchors.filter(anchor => anchor.matches('[href="#' + panel.id + '"]'))[0];
@@ -35,4 +35,3 @@ export default function (navbar) {
     }
     this.bind('openPanel:start', selectTab);
 }
-;

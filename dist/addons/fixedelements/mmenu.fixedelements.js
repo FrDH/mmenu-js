@@ -1,6 +1,6 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import configs from './_configs';
-import * as DOM from '../../core/_dom';
+import * as DOM from '../../_modules/dom';
 //	Add the configs.
 Mmenu.configs.fixedElements = configs;
 //	Add the classnames.

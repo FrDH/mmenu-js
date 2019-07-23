@@ -1,5 +1,5 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import * as DOM from '../../core/_dom';
+import * as DOM from '../../_modules/dom';
 export default function (navbar) {
     //	Add content to the navbar.
     var title = DOM.create('a.mm-navbar__title');
@@ -37,7 +37,7 @@ export default function (navbar) {
         if (this.opts.screenReader.text) {
             if (!prev) {
                 var navbars = DOM.children(this.node.menu, '.mm-navbars_top, .mm-navbars_bottom');
-                navbars.forEach((navbar) => {
+                navbars.forEach(navbar => {
                     let btn = navbar.querySelector('.mm-btn_prev');
                     if (btn) {
                         prev = btn;
@@ -54,4 +54,3 @@ export default function (navbar) {
         }
     });
 }
-;

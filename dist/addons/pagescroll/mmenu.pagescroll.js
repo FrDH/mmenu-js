@@ -1,9 +1,9 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
-import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import { extend } from '../../_modules/helpers';
 //	Add the options and configs.
 Mmenu.options.pageScroll = options;
 Mmenu.configs.pageScroll = configs;

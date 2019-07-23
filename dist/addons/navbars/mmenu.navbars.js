@@ -1,9 +1,9 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
-import * as DOM from '../../core/_dom';
-import * as media from '../../core/_matchmedia';
 import { extendShorthandOptions } from './_options';
+import * as DOM from '../../_modules/dom';
+import * as media from '../../_modules/matchmedia';
 //  Add the options and configs.
 Mmenu.options.navbars = options;
 Mmenu.configs.navbars = configs;

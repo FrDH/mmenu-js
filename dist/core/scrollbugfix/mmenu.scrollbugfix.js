@@ -1,9 +1,9 @@
 import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
-import * as DOM from '../_dom';
-import * as support from '../../core/_support';
 import { extendShorthandOptions } from './_options';
-import { extend, touchDirection } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import * as support from '../../_modules/support';
+import { extend, touchDirection } from '../../_modules/helpers';
 //  Add the options.
 Mmenu.options.scrollBugFix = options;
 export default function () {

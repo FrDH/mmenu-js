@@ -3,9 +3,9 @@ import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
 import { extendShorthandOptions } from './_options';
-import * as DOM from '../../_modules/_dom';
-import * as events from '../../_modules/_eventlisteners';
-import { type, extend } from '../../_modules/_helpers';
+import * as DOM from '../../_modules/dom';
+import * as events from '../../_modules/eventlisteners';
+import { type, extend } from '../../_modules/helpers';
 
 //  Add the translations.
 translate();

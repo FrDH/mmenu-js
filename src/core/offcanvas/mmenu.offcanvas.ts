@@ -2,14 +2,14 @@ import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 import { extendShorthandOptions } from './_options';
-import * as DOM from '../../_modules/_dom';
-import * as events from '../../_modules/_eventlisteners';
+import * as DOM from '../../_modules/dom';
+import * as events from '../../_modules/eventlisteners';
 import {
     extend,
     transitionend,
     uniqueId,
     originalId
-} from '../../_modules/_helpers';
+} from '../../_modules/helpers';
 
 //  Add the options and configs.
 Mmenu.options.offCanvas = options;

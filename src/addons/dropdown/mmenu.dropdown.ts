@@ -2,8 +2,8 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 import { extendShorthandOptions } from './_options';
-import * as DOM from '../../_modules/_dom';
-import { extend, originalId } from '../../_modules/_helpers';
+import * as DOM from '../../_modules/dom';
+import { extend, originalId } from '../../_modules/helpers';
 
 //	Add the options and configs.
 Mmenu.options.dropdown = options;

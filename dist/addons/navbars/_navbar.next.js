@@ -1,5 +1,5 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import * as DOM from '../../core/_dom';
+import * as DOM from '../../_modules/dom';
 //	DEPRECATED
 //	Will be removed in version 8.2
 export default function (navbar) {

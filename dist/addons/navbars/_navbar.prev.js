@@ -1,5 +1,5 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import * as DOM from '../../core/_dom';
+import * as DOM from '../../_modules/dom';
 export default function (navbar) {
     //	Add content.
     var prev = DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');

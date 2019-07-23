@@ -197,9 +197,6 @@ interface mmConfigs {
 
     //	Add-ons
 
-    /** Configuration for the drag add-on. */
-    drag?: mmConfigsDrag;
-
     /** Configuration for the dropdown add-on. */
     dropdown?: mmConfigsDropdown;
 

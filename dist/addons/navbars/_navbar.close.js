@@ -1,5 +1,5 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import * as DOM from '../../core/_dom';
+import * as DOM from '../../_modules/dom';
 export default function (navbar) {
     //	Add content
     var close = DOM.create('a.mm-btn.mm-btn_close.mm-navbar__btn');
@@ -14,4 +14,3 @@ export default function (navbar) {
         Mmenu.sr_aria(close, 'owns', close.getAttribute('href').slice(1));
     });
 }
-;

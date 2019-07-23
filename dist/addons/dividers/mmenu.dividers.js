@@ -1,8 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
-import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import { extend } from '../../_modules/helpers';
 //	Add the options.
 Mmenu.options.dividers = options;
 //  Add the classnames.

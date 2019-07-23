@@ -1,4 +1,4 @@
-import * as DOM from '../../core/_dom';
+import * as DOM from '../../_modules/dom';
 export default function () {
     //	Create the menu
     if (this.node.menu.matches('.navbar-collapse')) {

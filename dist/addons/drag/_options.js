@@ -1,15 +1,10 @@
 const options = {
     menu: {
         open: false,
-        node: null,
-        maxStartPos: 100,
-        threshold: 50
+        node: null
     },
     panels: {
         close: false
-    },
-    vendors: {
-        hammer: {}
     }
 };
 export default options;
@@ -47,4 +42,3 @@ export function extendShorthandOptions(options) {
     }
     return options;
 }
-;

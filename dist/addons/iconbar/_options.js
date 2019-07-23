@@ -1,4 +1,4 @@
-import { type } from '../../core/_helpers';
+import { type } from '../../_modules/helpers';
 const options = {
     use: false,
     top: [],
@@ -31,4 +31,3 @@ export function extendShorthandOptions(options) {
     }
     return options;
 }
-;

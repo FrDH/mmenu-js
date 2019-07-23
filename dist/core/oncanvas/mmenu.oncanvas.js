@@ -2,10 +2,10 @@ import version from '../../_version';
 import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
-import * as DOM from '../_dom';
-import * as i18n from '../_i18n';
-import * as media from '../_matchmedia';
-import { type, extend, transitionend, uniqueId, valueOrFn } from '../_helpers';
+import * as DOM from '../../_modules/dom';
+import * as i18n from '../../_modules/i18n';
+import * as media from '../../_modules/matchmedia';
+import { type, extend, transitionend, uniqueId, valueOrFn } from '../../_modules/helpers';
 //  Add the translations.
 translate();
 /**

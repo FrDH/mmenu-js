@@ -1,10 +1,10 @@
 import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
-import * as DOM from '../_dom';
-import * as events from '../_eventlisteners';
 import { extendShorthandOptions } from './_options';
-import { extend, transitionend, uniqueId, originalId } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import * as events from '../../_modules/eventlisteners';
+import { extend, transitionend, uniqueId, originalId } from '../../_modules/helpers';
 //  Add the options and configs.
 Mmenu.options.offCanvas = options;
 Mmenu.configs.offCanvas = configs;

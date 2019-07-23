@@ -3,8 +3,8 @@ import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
 import { extendShorthandOptions } from './_options';
-import * as DOM from '../../_modules/_dom';
-import { extend } from '../../_modules/_helpers';
+import * as DOM from '../../_modules/dom';
+import { extend } from '../../_modules/helpers';
 
 //  Add the translations.
 translate();

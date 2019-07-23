@@ -1,76 +1,70 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+import * as DOM from '../../_modules/dom';
 
-import * as DOM from '../../core/_dom';
+export default function(this: Mmenu, navbar: HTMLElement) {
+    //	Add content to the navbar.
+    var title = DOM.create('a.mm-navbar__title');
+    navbar.append(title);
 
-export default function( 
-	this	: Mmenu,
-	navbar	: HTMLElement
-) {
-	//	Add content to the navbar.
-	var title = DOM.create( 'a.mm-navbar__title' );
-	navbar.append( title );
+    //	Update the title to the opened panel.
+    var _url, _txt;
+    var original: HTMLElement;
 
+    this.bind('openPanel:start', (panel: HTMLElement) => {
+        //	Do nothing in a vertically expanding panel.
+        if (panel.parentElement.matches('.mm-listitem_vertical')) {
+            return;
+        }
 
-	//	Update the title to the opened panel.
-	var _url, _txt;
-	var original : HTMLElement;
+        //	Find the original title in the opened panel.
+        original = panel.querySelector(
+            '.' + this.conf.classNames.navbars.panelTitle
+        );
+        if (!original) {
+            original = panel.querySelector('.mm-navbar__title');
+        }
 
-	this.bind( 'openPanel:start', ( 
-		panel : HTMLElement
-	) => {
-		//	Do nothing in a vertically expanding panel.
-		if ( panel.parentElement.matches( '.mm-listitem_vertical' ) ) {
-			return;
-		}
+        //	Get the URL for the title.
+        _url = original ? original.getAttribute('href') : '';
+        if (_url) {
+            title.setAttribute('href', _url);
+        } else {
+            title.removeAttribute('href');
+        }
 
-		//	Find the original title in the opened panel.
-		original = panel.querySelector( '.' + this.conf.classNames.navbars.panelTitle );
-		if ( !original ) {
-			original = panel.querySelector( '.mm-navbar__title' );
-		}
+        //	Get the text for the title.
+        _txt = original ? original.innerHTML : '';
+        title.innerHTML = _txt;
 
-		//	Get the URL for the title.
-		_url = original ? original.getAttribute( 'href' ) : '';
-		if ( _url ) {
-			title.setAttribute( 'href', _url );
-		} else {
-			title.removeAttribute( 'href' );
-		}
+        //	Show or hide the title.
+        title.classList[_url || _txt ? 'remove' : 'add']('mm-hidden');
+    });
 
-		//	Get the text for the title.
-		_txt = original ? original.innerHTML : '';
-		title.innerHTML = _txt;
+    //	Add screenreader / aria support
+    var prev: HTMLElement;
 
-		//	Show or hide the title.
-		title.classList[ _url || _txt ? 'remove' : 'add' ]( 'mm-hidden' );
-	});
+    this.bind('openPanel:start:sr-aria', (panel: HTMLElement) => {
+        if (this.opts.screenReader.text) {
+            if (!prev) {
+                var navbars = DOM.children(
+                    this.node.menu,
+                    '.mm-navbars_top, .mm-navbars_bottom'
+                );
+                navbars.forEach(navbar => {
+                    let btn = navbar.querySelector('.mm-btn_prev');
+                    if (btn) {
+                        prev = btn as HTMLElement;
+                    }
+                });
+            }
 
-
-	//	Add screenreader / aria support
-	var prev : HTMLElement;
-
-	this.bind( 'openPanel:start:sr-aria', (
-		panel : HTMLElement
-	) => {
-		if ( this.opts.screenReader.text ) {
-			if ( !prev ) {
-				var navbars = DOM.children( this.node.menu, '.mm-navbars_top, .mm-navbars_bottom' );
-				navbars.forEach(( navbar ) => {
-					let btn = navbar.querySelector( '.mm-btn_prev' );
-					if ( btn )
-					{
-						prev = (btn as HTMLElement);
-					}
-				});
-			}
-
-			if ( prev ) {
-				var hidden = true;
-				if ( this.opts.navbar.titleLink == 'parent' ) {
-					hidden = !prev.matches( '.mm-hidden' );
-				}
-				Mmenu.sr_aria( title, 'hidden', hidden );
-			}
-		}
-	});
-};
+            if (prev) {
+                var hidden = true;
+                if (this.opts.navbar.titleLink == 'parent') {
+                    hidden = !prev.matches('.mm-hidden');
+                }
+                Mmenu.sr_aria(title, 'hidden', hidden);
+            }
+        }
+    });
+}

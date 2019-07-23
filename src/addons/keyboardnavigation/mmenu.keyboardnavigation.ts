@@ -1,10 +1,10 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import { extendShorthandOptions } from './_options';
-import * as DOM from '../../_modules/_dom';
-import * as events from '../../_modules/_eventlisteners';
-import * as support from '../../_modules/_support';
-import { extend } from '../../_modules/_helpers';
+import * as DOM from '../../_modules/dom';
+import * as events from '../../_modules/eventlisteners';
+import * as support from '../../_modules/support';
+import { extend } from '../../_modules/helpers';
 
 //  Add the options.
 Mmenu.options.keyboardNavigation = options;
