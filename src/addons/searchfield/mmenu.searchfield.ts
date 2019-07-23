@@ -2,10 +2,10 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
-import * as DOM from '../../core/_dom';
-import * as events from '../../core/_eventlisteners';
 import { extendShorthandOptions } from './_options';
-import { type, extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/_dom';
+import * as events from '../../_modules/_eventlisteners';
+import { type, extend } from '../../_modules/_helpers';
 
 //  Add the translations.
 translate();

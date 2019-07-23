@@ -36,16 +36,9 @@ export function extend(orignl: mmLooseObject, dfault: mmLooseObject) {
  */
 export function touchDirection(surface) {
     var direction = '';
-    var position = -1;
-
-    surface.addEventListener('touchstart', evnt => {
-        position = evnt.changedTouches[0].pageY;
-    });
 
     surface.addEventListener('touchmove', evnt => {
-        var newPosition = evnt.changedTouches[0].pageY;
-        direction = newPosition > position ? 'down' : 'up';
-        position = newPosition;
+        direction = evnt.movementY > 0 ? 'down' : 'up';
     });
 
     return {

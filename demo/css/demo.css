@@ -46,12 +46,12 @@ nav:not(.mm-menu) {
 	font-size: 16px;
 	font-weight: bold;
 	color: #fff;
-	line-height: 40px;
+	line-height: 44px;
 
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	width: 100%;
-	height: 40px;
+	height: 44px;
 	padding: 0 50px;
 }
 .header.fixed {
@@ -69,6 +69,7 @@ nav:not(.mm-menu) {
 	width: 28px;
 	height: 18px;
 	padding: 11px;
+	margin: 2px;
 	position: absolute;
 	top: 0;
 	left: 0;

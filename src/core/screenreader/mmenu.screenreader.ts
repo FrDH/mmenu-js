@@ -2,9 +2,9 @@ import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
-import * as DOM from '../_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/_dom';
+import { extend } from '../../_modules/_helpers';
 
 //  Add the translations.
 translate();
