@@ -1,4 +1,4 @@
-const options = [];
+var options = [];
 export default options;
 /**
  * Extend shorthand options.

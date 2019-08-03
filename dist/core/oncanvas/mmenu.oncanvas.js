@@ -11,14 +11,14 @@ translate();
 /**
  * Class for a mobile menu.
  */
-export default class Mmenu {
+var Mmenu = /** @class */ (function () {
     /**
      * Create a mobile menu.
      * @param {HTMLElement|string} 	menu						The menu node.
      * @param {object} 				[options=Mmenu.options]		Options for the menu.
      * @param {object} 				[configs=Mmenu.configs]		Configuration options for the menu.
      */
-    constructor(menu, options, configs) {
+    function Mmenu(menu, options, configs) {
         //	Extend options and configuration from defaults.
         this.opts = extend(options, Mmenu.options);
         this.conf = extend(configs, Mmenu.configs);
@@ -60,7 +60,8 @@ export default class Mmenu {
      * @param {HTMLElement} panel				Panel to open.
      * @param {boolean}		[animation=true]	Whether or not to open the panel with an animation.
      */
-    openPanel(panel, animation) {
+    Mmenu.prototype.openPanel = function (panel, animation) {
+        var _this = this;
         //	Invoke "before" hook.
         this.trigger('openPanel:before', [panel]);
         //	Find panel.
@@ -80,14 +81,14 @@ export default class Mmenu {
         //	Open a "vertical" panel.
         if (panel.parentElement.matches('.mm-listitem_vertical')) {
             //	Open current and all vertical parent panels.
-            DOM.parents(panel, '.mm-listitem_vertical').forEach(listitem => {
+            DOM.parents(panel, '.mm-listitem_vertical').forEach(function (listitem) {
                 listitem.classList.add('mm-listitem_opened');
-                DOM.children(listitem, '.mm-panel').forEach(panel => {
+                DOM.children(listitem, '.mm-panel').forEach(function (panel) {
                     panel.classList.remove('mm-hidden');
                 });
             });
             //	Open first non-vertical parent panel.
-            let parents = DOM.parents(panel, '.mm-panel').filter(panel => !panel.parentElement.matches('.mm-listitem_vertical'));
+            var parents = DOM.parents(panel, '.mm-panel').filter(function (panel) { return !panel.parentElement.matches('.mm-listitem_vertical'); });
             this.trigger('openPanel:start', [panel]);
             if (parents.length) {
                 this.openPanel(parents[0]);
@@ -99,89 +100,89 @@ export default class Mmenu {
             if (panel.matches('.mm-panel_opened')) {
                 return;
             }
-            let panels = DOM.children(this.node.pnls, '.mm-panel'), current = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+            var panels = DOM.children(this.node.pnls, '.mm-panel'), current_1 = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
             //	Close all child panels.
             panels
-                .filter(parent => parent !== panel)
-                .forEach(parent => {
+                .filter(function (parent) { return parent !== panel; })
+                .forEach(function (parent) {
                 parent.classList.remove('mm-panel_opened-parent');
             });
             //	Open all parent panels.
-            let parent = panel['mmParent'];
-            while (parent) {
-                parent = parent.closest('.mm-panel');
-                if (parent) {
-                    if (!parent.parentElement.matches('.mm-listitem_vertical')) {
-                        parent.classList.add('mm-panel_opened-parent');
+            var parent_1 = panel['mmParent'];
+            while (parent_1) {
+                parent_1 = parent_1.closest('.mm-panel');
+                if (parent_1) {
+                    if (!parent_1.parentElement.matches('.mm-listitem_vertical')) {
+                        parent_1.classList.add('mm-panel_opened-parent');
                     }
-                    parent = parent['mmParent'];
+                    parent_1 = parent_1['mmParent'];
                 }
             }
             //	Add classes for animation.
-            panels.forEach(panel => {
+            panels.forEach(function (panel) {
                 panel.classList.remove('mm-panel_highest');
             });
             panels
-                .filter(hidden => hidden !== current)
-                .filter(hidden => hidden !== panel)
-                .forEach(hidden => {
+                .filter(function (hidden) { return hidden !== current_1; })
+                .filter(function (hidden) { return hidden !== panel; })
+                .forEach(function (hidden) {
                 hidden.classList.add('mm-hidden');
             });
             panel.classList.remove('mm-hidden');
             /**	Start opening the panel. */
-            let openPanelStart = () => {
-                if (current) {
-                    current.classList.remove('mm-panel_opened');
+            var openPanelStart_1 = function () {
+                if (current_1) {
+                    current_1.classList.remove('mm-panel_opened');
                 }
                 panel.classList.add('mm-panel_opened');
                 if (panel.matches('.mm-panel_opened-parent')) {
-                    if (current) {
-                        current.classList.add('mm-panel_highest');
+                    if (current_1) {
+                        current_1.classList.add('mm-panel_highest');
                     }
                     panel.classList.remove('mm-panel_opened-parent');
                 }
                 else {
-                    if (current) {
-                        current.classList.add('mm-panel_opened-parent');
+                    if (current_1) {
+                        current_1.classList.add('mm-panel_opened-parent');
                     }
                     panel.classList.add('mm-panel_highest');
                 }
                 //	Invoke "start" hook.
-                this.trigger('openPanel:start', [panel]);
+                _this.trigger('openPanel:start', [panel]);
             };
             /**	Finish opening the panel. */
-            let openPanelFinish = () => {
-                if (current) {
-                    current.classList.remove('mm-panel_highest');
-                    current.classList.add('mm-hidden');
+            var openPanelFinish_1 = function () {
+                if (current_1) {
+                    current_1.classList.remove('mm-panel_highest');
+                    current_1.classList.add('mm-hidden');
                 }
                 panel.classList.remove('mm-panel_highest');
                 //	Invoke "finish" hook.
-                this.trigger('openPanel:finish', [panel]);
+                _this.trigger('openPanel:finish', [panel]);
             };
             if (animation && !panel.matches('.mm-panel_noanimation')) {
                 //	Without the timeout the animation will not work because the element had display: none;
-                setTimeout(() => {
+                setTimeout(function () {
                     //	Callback
-                    transitionend(panel, () => {
-                        openPanelFinish();
-                    }, this.conf.transitionDuration);
-                    openPanelStart();
+                    transitionend(panel, function () {
+                        openPanelFinish_1();
+                    }, _this.conf.transitionDuration);
+                    openPanelStart_1();
                 }, this.conf.openingInterval);
             }
             else {
-                openPanelStart();
-                openPanelFinish();
+                openPanelStart_1();
+                openPanelFinish_1();
             }
         }
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel]);
-    }
+    };
     /**
      * Close a panel.
      * @param {HTMLElement} panel Panel to close.
      */
-    closePanel(panel) {
+    Mmenu.prototype.closePanel = function (panel) {
         //	Invoke "before" hook.
         this.trigger('closePanel:before', [panel]);
         var li = panel.parentElement;
@@ -194,22 +195,22 @@ export default class Mmenu {
         }
         //	Invoke "after" hook.
         this.trigger('closePanel:after', [panel]);
-    }
+    };
     /**
      * Close all opened panels.
      * @param {HTMLElement} panel Panel to open after closing all other panels.
      */
-    closeAllPanels(panel) {
+    Mmenu.prototype.closeAllPanels = function (panel) {
         //	Invoke "before" hook.
         this.trigger('closeAllPanels:before');
         //	Close all "vertical" panels.
-        let listitems = this.node.pnls.querySelectorAll('.mm-listitem');
-        listitems.forEach(listitem => {
+        var listitems = this.node.pnls.querySelectorAll('.mm-listitem');
+        listitems.forEach(function (listitem) {
             listitem.classList.remove('mm-listitem_selected', 'mm-listitem_opened');
         });
         //	Close all "horizontal" panels.
         var panels = DOM.children(this.node.pnls, '.mm-panel'), opened = panel ? panel : panels[0];
-        DOM.children(this.node.pnls, '.mm-panel').forEach(panel => {
+        DOM.children(this.node.pnls, '.mm-panel').forEach(function (panel) {
             if (panel !== opened) {
                 panel.classList.remove('mm-panel_opened');
                 panel.classList.remove('mm-panel_opened-parent');
@@ -221,115 +222,117 @@ export default class Mmenu {
         this.openPanel(opened, false);
         //	Invoke "after" hook.
         this.trigger('closeAllPanels:after');
-    }
+    };
     /**
      * Toggle a panel opened/closed.
      * @param {HTMLElement} panel Panel to open or close.
      */
-    togglePanel(panel) {
-        let listitem = panel.parentElement;
+    Mmenu.prototype.togglePanel = function (panel) {
+        var listitem = panel.parentElement;
         //	Only works for "vertical" panels.
         if (listitem.matches('.mm-listitem_vertical')) {
             this[listitem.matches('.mm-listitem_opened')
                 ? 'closePanel'
                 : 'openPanel'](panel);
         }
-    }
+    };
     /**
      * Display a listitem as being "selected".
      * @param {HTMLElement} listitem Listitem to mark.
      */
-    setSelected(listitem) {
+    Mmenu.prototype.setSelected = function (listitem) {
         //	Invoke "before" hook.
         this.trigger('setSelected:before', [listitem]);
         //	First, remove the selected class from all listitems.
-        DOM.find(this.node.menu, '.mm-listitem_selected').forEach(li => {
+        DOM.find(this.node.menu, '.mm-listitem_selected').forEach(function (li) {
             li.classList.remove('mm-listitem_selected');
         });
         //	Next, add the selected class to the provided listitem.
         listitem.classList.add('mm-listitem_selected');
         //	Invoke "after" hook.
         this.trigger('setSelected:after', [listitem]);
-    }
+    };
     /**
      * Bind functions to a hook (subscriber).
      * @param {string} 		hook The hook.
      * @param {function} 	func The function.
      */
-    bind(hook, func) {
+    Mmenu.prototype.bind = function (hook, func) {
         //	Create an array for the hook if it does not yet excist.
         this.hook[hook] = this.hook[hook] || [];
         //	Push the function to the array.
         this.hook[hook].push(func);
-    }
+    };
     /**
      * Invoke the functions bound to a hook (publisher).
      * @param {string} 	hook  	The hook.
      * @param {array}	[args] 	Arguments for the function.
      */
-    trigger(hook, args) {
+    Mmenu.prototype.trigger = function (hook, args) {
         if (this.hook[hook]) {
             for (var h = 0, l = this.hook[hook].length; h < l; h++) {
                 this.hook[hook][h].apply(this, args);
             }
         }
-    }
+    };
     /**
      * Create the API.
      */
-    _initAPI() {
+    Mmenu.prototype._initAPI = function () {
+        var _this = this;
         //	We need this=that because:
         //	1) the "arguments" object can not be referenced in an arrow function in ES3 and ES5.
         var that = this;
         this.API = {};
-        this._api.forEach(fn => {
-            this.API[fn] = function () {
+        this._api.forEach(function (fn) {
+            _this.API[fn] = function () {
                 var re = that[fn].apply(that, arguments); // 1)
                 return typeof re == 'undefined' ? that.API : re;
             };
         });
         //	Store the API in the HTML node for external usage.
         this.node.menu['mmApi'] = this.API;
-    }
+    };
     /**
      * Bind the hooks specified in the options (publisher).
      */
-    _initHooks() {
-        for (let hook in this.opts.hooks) {
+    Mmenu.prototype._initHooks = function () {
+        for (var hook in this.opts.hooks) {
             this.bind(hook, this.opts.hooks[hook]);
         }
-    }
+    };
     /**
      * Initialize the wrappers specified in the options.
      */
-    _initWrappers() {
+    Mmenu.prototype._initWrappers = function () {
         //	Invoke "before" hook.
         this.trigger('initWrappers:before');
-        for (let w = 0; w < this.opts.wrappers.length; w++) {
-            let wrpr = Mmenu.wrappers[this.opts.wrappers[w]];
+        for (var w = 0; w < this.opts.wrappers.length; w++) {
+            var wrpr = Mmenu.wrappers[this.opts.wrappers[w]];
             if (typeof wrpr == 'function') {
                 wrpr.call(this);
             }
         }
         //	Invoke "after" hook.
         this.trigger('initWrappers:after');
-    }
+    };
     /**
      * Initialize all available add-ons.
      */
-    _initAddons() {
+    Mmenu.prototype._initAddons = function () {
         //	Invoke "before" hook.
         this.trigger('initAddons:before');
-        for (let addon in Mmenu.addons) {
+        for (var addon in Mmenu.addons) {
             Mmenu.addons[addon].call(this);
         }
         //	Invoke "after" hook.
         this.trigger('initAddons:after');
-    }
+    };
     /**
      * Initialize the extensions specified in the options.
      */
-    _initExtensions() {
+    Mmenu.prototype._initExtensions = function () {
+        var _this = this;
         //	Invoke "before" hook.
         this.trigger('initExtensions:before');
         //	Convert array to object with array.
@@ -338,24 +341,31 @@ export default class Mmenu {
                 all: this.opts.extensions
             };
         }
-        //	Loop over object.
-        for (let query in this.opts.extensions) {
-            if (this.opts.extensions[query].length) {
-                let classnames = this.opts.extensions[query].map(query => 'mm-menu_' + query);
-                media.add(query, () => {
-                    this.node.menu.classList.add(...classnames);
-                }, () => {
-                    this.node.menu.classList.remove(...classnames);
+        var _loop_1 = function (query) {
+            if (this_1.opts.extensions[query].length) {
+                var classnames_1 = this_1.opts.extensions[query].map(function (query) { return 'mm-menu_' + query; });
+                media.add(query, function () {
+                    var _a;
+                    (_a = _this.node.menu.classList).add.apply(_a, classnames_1);
+                }, function () {
+                    var _a;
+                    (_a = _this.node.menu.classList).remove.apply(_a, classnames_1);
                 });
             }
+        };
+        var this_1 = this;
+        //	Loop over object.
+        for (var query in this.opts.extensions) {
+            _loop_1(query);
         }
         //	Invoke "after" hook.
         this.trigger('initExtensions:after');
-    }
+    };
     /**
      * Initialize the menu.
      */
-    _initMenu() {
+    Mmenu.prototype._initMenu = function () {
+        var _this = this;
         //	Invoke "before" hook.
         this.trigger('initMenu:before');
         //	Add class to the wrapper.
@@ -364,9 +374,9 @@ export default class Mmenu {
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
         //	Wrap the panels in a node.
-        let panels = DOM.create('div.mm-panels');
-        DOM.children(this.node.menu).forEach(panel => {
-            if (this.conf.panelNodetype.indexOf(panel.nodeName.toLowerCase()) >
+        var panels = DOM.create('div.mm-panels');
+        DOM.children(this.node.menu).forEach(function (panel) {
+            if (_this.conf.panelNodetype.indexOf(panel.nodeName.toLowerCase()) >
                 -1) {
                 panels.append(panel);
             }
@@ -377,37 +387,39 @@ export default class Mmenu {
         this.node.menu.classList.add('mm-menu');
         //	Invoke "after" hook.
         this.trigger('initMenu:after');
-    }
+    };
     /**
      * @deprecated
      */
-    initPanels(panels) {
+    Mmenu.prototype.initPanels = function (panels) {
+        var _this = this;
         this.trigger('initPanels:deprecated');
         panels = panels || DOM.children(this.node.pnls);
-        panels.forEach(panel => {
-            this.initPanel(panel);
+        panels.forEach(function (panel) {
+            _this.initPanel(panel);
         });
-    }
+    };
     /**
      * Initialize panels.
      * @param {array} [panels] Panels to initialize.
      */
-    _initPanels() {
+    Mmenu.prototype._initPanels = function () {
+        var _this = this;
         //	Invoke "before" hook.
         this.trigger('initPanels:before');
         //	Open / close panels.
-        this.clck.push((anchor, args) => {
+        this.clck.push(function (anchor, args) {
             if (args.inMenu) {
                 var href = anchor.getAttribute('href');
                 if (href && href.length > 1 && href.slice(0, 1) == '#') {
                     try {
-                        let panel = DOM.find(this.node.menu, href)[0];
+                        var panel = DOM.find(_this.node.menu, href)[0];
                         if (panel && panel.matches('.mm-panel')) {
                             if (anchor.parentElement.matches('.mm-listitem_vertical')) {
-                                this.togglePanel(panel);
+                                _this.togglePanel(panel);
                             }
                             else {
-                                this.openPanel(panel);
+                                _this.openPanel(panel);
                             }
                             return true;
                         }
@@ -417,18 +429,19 @@ export default class Mmenu {
             }
         });
         /** The panels to initiate */
-        const panels = DOM.children(this.node.pnls);
-        panels.forEach(panel => {
-            this.initPanel(panel);
+        var panels = DOM.children(this.node.pnls);
+        panels.forEach(function (panel) {
+            _this.initPanel(panel);
         });
         //	Invoke "after" hook.
         this.trigger('initPanels:after');
-    }
+    };
     /**
      * Initialize a single panel and its children.
      * @param {HTMLElement} panel The panel to initialize.
      */
-    initPanel(panel) {
+    Mmenu.prototype.initPanel = function (panel) {
+        var _this = this;
         /** Query selector for possible node-types for panels. */
         var panelNodetype = this.conf.panelNodetype.join(', ');
         if (panel.matches(panelNodetype)) {
@@ -438,28 +451,28 @@ export default class Mmenu {
             }
             if (panel) {
                 /** The sub panels. */
-                let children = [];
+                var children_1 = [];
                 //	Find panel > panel
-                children.push(...DOM.children(panel, '.' + this.conf.classNames.panel));
+                children_1.push.apply(children_1, DOM.children(panel, '.' + this.conf.classNames.panel));
                 //	Find panel listitem > panel
-                DOM.children(panel, '.mm-listview').forEach(listview => {
-                    DOM.children(listview, '.mm-listitem').forEach(listitem => {
-                        children.push(...DOM.children(listitem, panelNodetype));
+                DOM.children(panel, '.mm-listview').forEach(function (listview) {
+                    DOM.children(listview, '.mm-listitem').forEach(function (listitem) {
+                        children_1.push.apply(children_1, DOM.children(listitem, panelNodetype));
                     });
                 });
                 //  Initiate subpanel(s).
-                children.forEach(child => {
-                    this.initPanel(child);
+                children_1.forEach(function (child) {
+                    _this.initPanel(child);
                 });
             }
         }
-    }
+    };
     /**
      * Initialize a single panel.
      * @param  {HTMLElement} 		panel 	Panel to initialize.
      * @return {HTMLElement|null} 			Initialized panel.
      */
-    _initPanel(panel) {
+    Mmenu.prototype._initPanel = function (panel) {
         //	Invoke "before" hook.
         this.trigger('initPanel:before', [panel]);
         //	Refactor panel classnames
@@ -482,7 +495,7 @@ export default class Mmenu {
         if (panel.matches('ul, ol')) {
             panel.removeAttribute('id');
             /** The panel. */
-            let wrapper = DOM.create('div');
+            var wrapper = DOM.create('div');
             //	Wrap the listview in the panel.
             panel.before(wrapper);
             wrapper.append(panel);
@@ -491,7 +504,9 @@ export default class Mmenu {
         panel.id = id;
         panel.classList.add('mm-panel', 'mm-hidden');
         /** The parent listitem. */
-        var parent = [panel.parentElement].filter(listitem => listitem.matches('li'))[0];
+        var parent = [panel.parentElement].filter(function (listitem) {
+            return listitem.matches('li');
+        })[0];
         if (vertical) {
             if (parent) {
                 parent.classList.add('mm-listitem_vertical');
@@ -510,12 +525,12 @@ export default class Mmenu {
         //	Invoke "after" hook.
         this.trigger('initPanel:after', [panel]);
         return panel;
-    }
+    };
     /**
      * Initialize a navbar.
      * @param {HTMLElement} panel Panel for the navbar.
      */
-    _initNavbar(panel) {
+    Mmenu.prototype._initNavbar = function (panel) {
         //	Invoke "before" hook.
         this.trigger('initNavbar:before', [panel]);
         //	Only one navbar per panel.
@@ -534,27 +549,27 @@ export default class Mmenu {
             if (parent.matches('.mm-listitem_vertical')) {
                 return;
             }
-            let opener;
+            var opener_1;
             //	Listview, the panel wrapping this panel
             if (parent.matches('.mm-listitem')) {
-                opener = DOM.children(parent, '.mm-listitem__text')[0];
+                opener_1 = DOM.children(parent, '.mm-listitem__text')[0];
                 //	Non-listview, the first anchor in the parent panel that links to this panel
             }
             else {
-                opener = panel.closest('.mm-panel');
-                opener = DOM.find(opener, 'a[href="#' + panel.id + '"]')[0];
+                opener_1 = panel.closest('.mm-panel');
+                opener_1 = DOM.find(opener_1, 'a[href="#' + panel.id + '"]')[0];
             }
-            let id = opener.closest('.mm-panel').id;
-            text = this._getPanelTitle(panel, opener.textContent);
+            var id = opener_1.closest('.mm-panel').id;
+            text = this._getPanelTitle(panel, opener_1.textContent);
             switch (this.opts.navbar.titleLink) {
                 case 'anchor':
-                    href = opener.getAttribute('href');
+                    href = opener_1.getAttribute('href');
                     break;
                 case 'parent':
                     href = '#' + id;
                     break;
             }
-            let prev = DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
+            var prev = DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
             prev.setAttribute('href', '#' + id);
             navbar.append(prev);
         }
@@ -564,7 +579,7 @@ export default class Mmenu {
         if (!this.opts.navbar.add) {
             DOM.children(panel, '.mm-navbar')[0].classList.add('mm-hidden');
         }
-        let title = DOM.create('a.mm-navbar__title');
+        var title = DOM.create('a.mm-navbar__title');
         title.innerHTML = text;
         if (href) {
             title.setAttribute('href', href);
@@ -572,32 +587,33 @@ export default class Mmenu {
         navbar.append(title);
         //	Just to center the title.
         if (parent) {
-            let next = DOM.create('span.mm-btn.mm-navbar__btn');
+            var next = DOM.create('span.mm-btn.mm-navbar__btn');
             navbar.append(next);
         }
         panel.prepend(navbar);
         //	Invoke "after" hook.
         this.trigger('initNavbar:after', [panel]);
-    }
+    };
     /**
      * Initialize a listview.
      * @param {HTMLElement} panel Panel for the listview(s).
      */
-    _initListview(panel) {
+    Mmenu.prototype._initListview = function (panel) {
+        var _this = this;
         //	Invoke "before" hook.
         this.trigger('initListview:before', [panel]);
         /** Listviews in the panel. */
         var listviews = DOM.children(panel, 'ul, ol');
         //	Refactor listitems classnames
-        listviews.forEach(listview => {
-            DOM.reClass(listview, this.conf.classNames.nolistview, 'mm-nolistview');
+        listviews.forEach(function (listview) {
+            DOM.reClass(listview, _this.conf.classNames.nolistview, 'mm-nolistview');
             if (!listview.matches('.mm-nolistview')) {
                 listview.classList.add('mm-listview');
-                DOM.children(listview).forEach(listitem => {
+                DOM.children(listview).forEach(function (listitem) {
                     listitem.classList.add('mm-listitem');
-                    DOM.reClass(listitem, this.conf.classNames.selected, 'mm-listitem_selected');
-                    DOM.reClass(listitem, this.conf.classNames.spacer, 'mm-listitem_spacer');
-                    DOM.children(listitem, 'a, span').forEach(item => {
+                    DOM.reClass(listitem, _this.conf.classNames.selected, 'mm-listitem_selected');
+                    DOM.reClass(listitem, _this.conf.classNames.spacer, 'mm-listitem_spacer');
+                    DOM.children(listitem, 'a, span').forEach(function (item) {
                         if (!item.matches('.mm-btn')) {
                             item.classList.add('mm-listitem__text');
                         }
@@ -611,10 +627,10 @@ export default class Mmenu {
         if (parent && parent.matches('.mm-listitem')) {
             if (!DOM.children(parent, '.mm-btn').length) {
                 /** The text node. */
-                let item = DOM.children(parent, '.mm-listitem__text')[0];
+                var item = DOM.children(parent, '.mm-listitem__text')[0];
                 if (item) {
                     /** The open link. */
-                    let button = DOM.create('a.mm-btn.mm-btn_next.mm-listitem__btn');
+                    var button = DOM.create('a.mm-btn.mm-btn_next.mm-listitem__btn');
                     button.setAttribute('href', '#' + panel.id);
                     //  If the item has no link,
                     //      Replace the item with the open link.
@@ -633,19 +649,19 @@ export default class Mmenu {
         }
         //	Invoke "after" hook.
         this.trigger('initListview:after', [panel]);
-    }
+    };
     /**
      * Find and open the correct panel after creating the menu.
      */
-    _initOpened() {
+    Mmenu.prototype._initOpened = function () {
         //	Invoke "before" hook.
         this.trigger('initOpened:before');
         /** The selected listitem(s). */
-        let listitems = this.node.pnls.querySelectorAll('.mm-listitem_selected');
+        var listitems = this.node.pnls.querySelectorAll('.mm-listitem_selected');
         /** The last selected listitem. */
-        let lastitem = null;
+        var lastitem = null;
         //	Deselect the listitems.
-        listitems.forEach(listitem => {
+        listitems.forEach(function (listitem) {
             lastitem = listitem;
             listitem.classList.remove('mm-listitem_selected');
         });
@@ -654,21 +670,22 @@ export default class Mmenu {
             lastitem.classList.add('mm-listitem_selected');
         }
         /**	The current opened panel. */
-        let current = lastitem
+        var current = lastitem
             ? lastitem.closest('.mm-panel')
             : DOM.children(this.node.pnls, '.mm-panel')[0];
         //	Open the current opened panel.
         this.openPanel(current, false);
         //	Invoke "after" hook.
         this.trigger('initOpened:after');
-    }
+    };
     /**
      * Initialize anchors in / for the menu.
      */
-    _initAnchors() {
+    Mmenu.prototype._initAnchors = function () {
+        var _this = this;
         //	Invoke "before" hook.
         this.trigger('initAnchors:before');
-        document.addEventListener('click', evnt => {
+        document.addEventListener('click', function (evnt) {
             /** The clicked element. */
             var target = evnt.target.closest('a[href]');
             if (!target) {
@@ -676,7 +693,7 @@ export default class Mmenu {
             }
             /** Arguments passed to the bound methods. */
             var args = {
-                inMenu: target.closest('.mm-menu') === this.node.menu,
+                inMenu: target.closest('.mm-menu') === _this.node.menu,
                 inListview: target.matches('.mm-listitem > a'),
                 toExternal: target.matches('[rel="external"]') ||
                     target.matches('[target="_blank"]')
@@ -687,8 +704,8 @@ export default class Mmenu {
                 preventDefault: target.getAttribute('href').slice(0, 1) == '#'
             };
             //	Find hooked behavior.
-            for (let c = 0; c < this.clck.length; c++) {
-                let click = this.clck[c].call(this, target, args);
+            for (var c = 0; c < _this.clck.length; c++) {
+                var click = _this.clck[c].call(_this, target, args);
                 if (click) {
                     if (typeof click == 'boolean') {
                         evnt.preventDefault();
@@ -702,40 +719,40 @@ export default class Mmenu {
             //	Default behavior for anchors in lists.
             if (args.inMenu && args.inListview && !args.toExternal) {
                 //	Set selected item, Default: true
-                if (valueOrFn(target, this.opts.onClick.setSelected, onClick.setSelected)) {
-                    this.setSelected(target.parentElement);
+                if (valueOrFn(target, _this.opts.onClick.setSelected, onClick.setSelected)) {
+                    _this.setSelected(target.parentElement);
                 }
                 //	Prevent default / don't follow link. Default: false.
-                if (valueOrFn(target, this.opts.onClick.preventDefault, onClick.preventDefault)) {
+                if (valueOrFn(target, _this.opts.onClick.preventDefault, onClick.preventDefault)) {
                     evnt.preventDefault();
                 }
                 //	Close menu. Default: false
-                if (valueOrFn(target, this.opts.onClick.close, onClick.close)) {
-                    if (this.opts.offCanvas &&
-                        typeof this.close == 'function') {
-                        this.close();
+                if (valueOrFn(target, _this.opts.onClick.close, onClick.close)) {
+                    if (_this.opts.offCanvas &&
+                        typeof _this.close == 'function') {
+                        _this.close();
                     }
                 }
             }
         }, true);
         //	Invoke "after" hook.
         this.trigger('initAnchors:after');
-    }
+    };
     /**
      * Get the translation for a text.
      * @param  {string} text 	Text to translate.
      * @return {string}			The translated text.
      */
-    i18n(text) {
+    Mmenu.prototype.i18n = function (text) {
         return i18n.get(text, this.conf.language);
-    }
+    };
     /**
      * Find the title for a panel.
      * @param 	{HTMLElement}			panel 		Panel to search in.
      * @param 	{string|Function} 		[dfault] 	Fallback/default title.
      * @return	{string}							The title for the panel.
      */
-    _getPanelTitle(panel, dfault) {
+    Mmenu.prototype._getPanelTitle = function (panel, dfault) {
         var title;
         //	Function
         if (typeof this.opts.navbar.title == 'function') {
@@ -760,19 +777,21 @@ export default class Mmenu {
             return this.i18n(Mmenu.options.navbar.title);
         }
         return this.i18n('Menu');
-    }
-}
-/**	Plugin version. */
-Mmenu.version = version;
-/**	Default options for menus. */
-Mmenu.options = options;
-/**	Default configuration for menus. */
-Mmenu.configs = configs;
-/**	Available add-ons for the plugin. */
-Mmenu.addons = {};
-/** Available wrappers for the plugin. */
-Mmenu.wrappers = {};
-/**	Globally used HTML elements. */
-Mmenu.node = {};
-/** Globally used variables. */
-Mmenu.vars = {};
+    };
+    /**	Plugin version. */
+    Mmenu.version = version;
+    /**	Default options for menus. */
+    Mmenu.options = options;
+    /**	Default configuration for menus. */
+    Mmenu.configs = configs;
+    /**	Available add-ons for the plugin. */
+    Mmenu.addons = {};
+    /** Available wrappers for the plugin. */
+    Mmenu.wrappers = {};
+    /**	Globally used HTML elements. */
+    Mmenu.node = {};
+    /** Globally used variables. */
+    Mmenu.vars = {};
+    return Mmenu;
+}());
+export default Mmenu;

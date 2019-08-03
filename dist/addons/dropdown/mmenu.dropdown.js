@@ -8,6 +8,7 @@ import { extend, originalId } from '../../_modules/helpers';
 Mmenu.options.dropdown = options;
 Mmenu.configs.dropdown = configs;
 export default function () {
+    var _this = this;
     if (!this.opts.offCanvas) {
         return;
     }
@@ -18,10 +19,10 @@ export default function () {
         return;
     }
     var button;
-    this.bind('initMenu:after', () => {
-        this.node.menu.classList.add('mm-menu_dropdown');
+    this.bind('initMenu:after', function () {
+        _this.node.menu.classList.add('mm-menu_dropdown');
         if (typeof options.position.of != 'string') {
-            let id = originalId(this.node.menu.id);
+            var id = originalId(_this.node.menu.id);
             if (id && id.length) {
                 options.position.of = '[href="#' + id + '"]';
             }
@@ -37,24 +38,24 @@ export default function () {
             events[1] = events[0];
         }
         if (events[0] == 'hover') {
-            button.addEventListener('mouseenter', evnt => {
-                this.open();
+            button.addEventListener('mouseenter', function (evnt) {
+                _this.open();
             }, { passive: true });
         }
         if (events[1] == 'hover') {
-            this.node.menu.addEventListener('mouseleave', evnt => {
-                this.close();
+            _this.node.menu.addEventListener('mouseleave', function (evnt) {
+                _this.close();
             }, { passive: true });
         }
     });
     //	Add/remove classname and style when opening/closing the menu
-    this.bind('open:start', () => {
-        this.node.menu['mmStyle'] = this.node.menu.getAttribute('style');
-        this.node.wrpr.classList.add('mm-wrapper_dropdown');
+    this.bind('open:start', function () {
+        _this.node.menu['mmStyle'] = _this.node.menu.getAttribute('style');
+        _this.node.wrpr.classList.add('mm-wrapper_dropdown');
     });
-    this.bind('close:finish', () => {
-        this.node.menu.setAttribute('style', this.node.menu['mmStyle']);
-        this.node.wrpr.classList.remove('mm-wrapper_dropdown');
+    this.bind('close:finish', function () {
+        _this.node.menu.setAttribute('style', _this.node.menu['mmStyle']);
+        _this.node.wrpr.classList.remove('mm-wrapper_dropdown');
     });
     /**
      * Find the position (x, y) and sizes (width, height) for the menu.
@@ -116,6 +117,7 @@ export default function () {
         return [css, cls];
     };
     function position() {
+        var _a;
         if (!this.vars.opened) {
             return;
         }
@@ -123,21 +125,21 @@ export default function () {
         var obj = [{}, []];
         obj = getPosition.call(this, 'y', obj);
         obj = getPosition.call(this, 'x', obj);
-        for (let s in obj[0]) {
+        for (var s in obj[0]) {
             this.node.menu.style[s] = obj[0][s];
         }
         if (options.tip) {
             this.node.menu.classList.remove('mm-menu_tip-left', 'mm-menu_tip-right', 'mm-menu_tip-top', 'mm-menu_tip-bottom');
-            this.node.menu.classList.add(...obj[1]);
+            (_a = this.node.menu.classList).add.apply(_a, obj[1]);
         }
     }
     this.bind('open:start', position);
-    window.addEventListener('resize', evnt => {
-        position.call(this);
+    window.addEventListener('resize', function (evnt) {
+        position.call(_this);
     }, { passive: true });
     if (!this.opts.offCanvas.blockUI) {
-        window.addEventListener('scroll', evnt => {
-            position.call(this);
+        window.addEventListener('scroll', function (evnt) {
+            position.call(_this);
         }, { passive: true });
     }
 }

@@ -1,4 +1,4 @@
-const options = {
+var options = {
     fix: true
 };
 export default options;

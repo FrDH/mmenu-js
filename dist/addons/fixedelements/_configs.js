@@ -1,4 +1,4 @@
-const configs = {
+var configs = {
     fixed: {
         insertMethod: 'append',
         insertSelector: 'body'

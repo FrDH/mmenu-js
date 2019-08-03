@@ -4,6 +4,7 @@
     .mm-menu,
     .mm-slideout {
         transition-duration: 0s !important;
+        user-select: none !important;
     }
 
     .mm-menu {

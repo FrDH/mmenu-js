@@ -1,5 +1,5 @@
 import { type } from '../../_modules/helpers';
-const options = {
+var options = {
     use: false,
     top: [],
     bottom: [],

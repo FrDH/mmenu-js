@@ -13,7 +13,7 @@ export function extend(orignl, dfault) {
     if (type(dfault) != 'object') {
         dfault = {};
     }
-    for (let k in dfault) {
+    for (var k in dfault) {
         if (!dfault.hasOwnProperty(k)) {
             continue;
         }
@@ -34,11 +34,11 @@ export function extend(orignl, dfault) {
  */
 export function touchDirection(surface) {
     var direction = '';
-    surface.addEventListener('touchmove', evnt => {
+    surface.addEventListener('touchmove', function (evnt) {
         direction = evnt.movementY > 0 ? 'down' : 'up';
     });
     return {
-        get: () => direction
+        get: function () { return direction; }
     };
 }
 /**

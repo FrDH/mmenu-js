@@ -1,10 +1,11 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
 export default function (navbar) {
+    var _this = this;
     //	Add content
     var breadcrumbs = DOM.create('div.mm-navbar__breadcrumbs');
     navbar.append(breadcrumbs);
-    this.bind('initNavbar:after', (panel) => {
+    this.bind('initNavbar:after', function (panel) {
         if (panel.querySelector('.mm-navbar__breadcrumbs')) {
             return;
         }
@@ -26,24 +27,24 @@ export default function (navbar) {
             }
             current = current['mmParent'];
         }
-        if (this.conf.navbars.breadcrumbs.removeFirst) {
+        if (_this.conf.navbars.breadcrumbs.removeFirst) {
             crumbs.shift();
         }
         breadcrumbs.innerHTML = crumbs.join('<span class="mm-separator">' +
-            this.conf.navbars.breadcrumbs.separator +
+            _this.conf.navbars.breadcrumbs.separator +
             '</span>');
         DOM.children(panel, '.mm-navbar')[0].append(breadcrumbs);
     });
     //	Update for to opened panel
-    this.bind('openPanel:start', (panel) => {
+    this.bind('openPanel:start', function (panel) {
         var crumbs = panel.querySelector('.mm-navbar__breadcrumbs');
         if (crumbs) {
             breadcrumbs.innerHTML = crumbs.innerHTML;
         }
     });
     //	Add screenreader / aria support
-    this.bind('initNavbar:after:sr-aria', (panel) => {
-        DOM.find(panel, '.mm-breadcrumbs a').forEach(anchor => {
+    this.bind('initNavbar:after:sr-aria', function (panel) {
+        DOM.find(panel, '.mm-breadcrumbs a').forEach(function (anchor) {
             Mmenu.sr_aria(anchor, 'owns', anchor.getAttribute('href').slice(1));
         });
     });

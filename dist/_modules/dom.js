@@ -6,7 +6,7 @@
  */
 export function create(selector) {
     var elem;
-    selector.split('.').forEach((arg, a) => {
+    selector.split('.').forEach(function (arg, a) {
         if (a == 0) {
             elem = document.createElement(arg);
         }
@@ -36,7 +36,7 @@ export function find(element, filter) {
  */
 export function children(element, filter) {
     var children = Array.prototype.slice.call(element.children);
-    return filter ? children.filter(child => child.matches(filter)) : children;
+    return filter ? children.filter(function (child) { return child.matches(filter); }) : children;
 }
 /**
  * Find text excluding text from within child elements.
@@ -46,8 +46,8 @@ export function children(element, filter) {
 export function text(element) {
     return Array.prototype.slice
         .call(element.childNodes)
-        .filter(child => child.nodeType == 3)
-        .map(child => child.textContent)
+        .filter(function (child) { return child.nodeType == 3; })
+        .map(function (child) { return child.textContent; })
         .join(' ');
 }
 /**
@@ -66,7 +66,7 @@ export function parents(element, filter) {
         parents.push(parent);
         parent = parent.parentElement;
     }
-    return filter ? parents.filter(parent => parent.matches(filter)) : parents;
+    return filter ? parents.filter(function (parent) { return parent.matches(filter); }) : parents;
 }
 /**
  * Find all previous siblings matching the selecotr.
@@ -105,7 +105,7 @@ export function offset(element, direction) {
  * @return {array}				The filtered set of listitems.
  */
 export function filterLI(listitems) {
-    return listitems.filter(listitem => !listitem.matches('.mm-hidden'));
+    return listitems.filter(function (listitem) { return !listitem.matches('.mm-hidden'); });
 }
 /**
  * Find anchors in listitems (excluding anchor that open a sub-panel).
@@ -114,10 +114,10 @@ export function filterLI(listitems) {
  */
 export function filterLIA(listitems) {
     var anchors = [];
-    filterLI(listitems).forEach(listitem => {
-        anchors.push(...children(listitem, 'a.mm-listitem__text'));
+    filterLI(listitems).forEach(function (listitem) {
+        anchors.push.apply(anchors, children(listitem, 'a.mm-listitem__text'));
     });
-    return anchors.filter(anchor => !anchor.matches('.mm-btn_next'));
+    return anchors.filter(function (anchor) { return !anchor.matches('.mm-btn_next'); });
 }
 /**
  * Refactor a classname on multiple elements.

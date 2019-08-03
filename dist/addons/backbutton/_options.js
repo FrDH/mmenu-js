@@ -1,4 +1,4 @@
-const options = {
+var options = {
     close: false,
     open: false
 };

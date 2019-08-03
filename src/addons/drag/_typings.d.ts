@@ -13,7 +13,7 @@ interface mmOptionsDragMenu {
     open?: boolean;
 
     /** The element on which the user can drag to open the menu. */
-    node?: string | HTMLElement | Function;
+    node?: HTMLElement;
 }
 
 /**	"panels" options for the drag add-on. */

@@ -1,4 +1,4 @@
-const options = {
+var options = {
     menu: {
         open: false,
         node: null

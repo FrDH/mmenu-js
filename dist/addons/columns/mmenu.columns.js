@@ -6,6 +6,7 @@ import { extend } from '../../_modules/helpers';
 //	Add the options.
 Mmenu.options.columns = options;
 export default function () {
+    var _this = this;
     var options = extendShorthandOptions(this.opts.columns);
     this.opts.columns = extend(options, Mmenu.options.columns);
     //	Add the columns
@@ -26,9 +27,10 @@ export default function () {
             colm.push('mm-menu_columns-' + i);
             colp.push('mm-panel_columns-' + i);
         }
-        rmvc.push(...colp);
+        rmvc.push.apply(rmvc, colp);
         //	Close all later opened panels
-        this.bind('openPanel:before', (panel) => {
+        this.bind('openPanel:before', function (panel) {
+            var _a;
             /** The parent panel. */
             var parent;
             if (panel) {
@@ -51,11 +53,11 @@ export default function () {
             }
             var colnr = parseInt(classname.split(' ')[0], 10) + 1;
             while (colnr > 0) {
-                panel = DOM.children(this.node.pnls, '.mm-panel_columns-' + colnr)[0];
+                panel = DOM.children(_this.node.pnls, '.mm-panel_columns-' + colnr)[0];
                 if (panel) {
                     console.log(panel);
                     colnr++;
-                    panel.classList.remove(...rmvc);
+                    (_a = panel.classList).remove.apply(_a, rmvc);
                     panel.classList.add('mm-hidden');
                 }
                 else {
@@ -64,23 +66,25 @@ export default function () {
                 }
             }
         });
-        this.bind('openPanel:start', (panel) => {
-            var columns = DOM.children(this.node.pnls, '.mm-panel_opened-parent').length;
+        this.bind('openPanel:start', function (panel) {
+            var _a;
+            var columns = DOM.children(_this.node.pnls, '.mm-panel_opened-parent').length;
             if (!panel.matches('.mm-panel_opened-parent')) {
                 columns++;
             }
             columns = Math.min(options.visible.max, Math.max(options.visible.min, columns));
-            this.node.menu.classList.remove(...colm);
-            this.node.menu.classList.add('mm-menu_columns-' + columns);
+            (_a = _this.node.menu.classList).remove.apply(_a, colm);
+            _this.node.menu.classList.add('mm-menu_columns-' + columns);
             var panels = [];
-            DOM.children(this.node.pnls, '.mm-panel').forEach(panel => {
-                panel.classList.remove(...colp);
+            DOM.children(_this.node.pnls, '.mm-panel').forEach(function (panel) {
+                var _a;
+                (_a = panel.classList).remove.apply(_a, colp);
                 if (panel.matches('.mm-panel_opened-parent')) {
                     panels.push(panel);
                 }
             });
             panels.push(panel);
-            panels.slice(-options.visible.max).forEach((panel, p) => {
+            panels.slice(-options.visible.max).forEach(function (panel, p) {
                 panel.classList.add('mm-panel_columns-' + p);
             });
         });

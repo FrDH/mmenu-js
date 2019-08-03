@@ -1,4 +1,4 @@
-const options = {
+var options = {
     load: false
 };
 export default options;

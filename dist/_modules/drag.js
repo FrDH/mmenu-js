@@ -1,6 +1,6 @@
 import { touch } from './support';
-export default class DragEngine {
-    constructor(surface, area) {
+var DragEngine = /** @class */ (function () {
+    function DragEngine(surface, area) {
         this.surface = surface;
         this.area = area;
         //	Set the mouse/touch events.
@@ -12,7 +12,7 @@ export default class DragEngine {
     /**
      * Starting the touch gesture.
      */
-    start(event) {
+    DragEngine.prototype.start = function (event) {
         var passed = 0;
         var width = this.surface.clientWidth;
         var height = this.surface.clientHeight;
@@ -55,32 +55,32 @@ export default class DragEngine {
             //	Set the state of the gesture to "watching".
             this.state = DragEngine.state.watching;
         }
-    }
+    };
     /**
      * Stopping the touch gesture.
      */
-    stop(event) {
+    DragEngine.prototype.stop = function (event) {
         //	Dispatch the "dragEnd" events.
         if (this.state == DragEngine.state.dragging) {
             /** The event information. */
-            const detail = this._eventDetail();
+            var detail = this._eventDetail();
             /** The direction. */
-            const dragDirection = DragEngine.directionNames[this.axis][this.distance[this.axis] > 0 ? 0 : 1];
+            var dragDirection = DragEngine.directionNames[this.axis][this.distance[this.axis] > 0 ? 0 : 1];
             this._dispatchEvents('drag*End', detail, dragDirection);
             //	Dispatch the "swipe" events.
             if (Math.abs(this.movement[this.axis]) > DragEngine.treshold.swipe) {
                 /** The direction. */
-                const swipeDirection = DragEngine.directionNames[this.axis][this.movement[this.axis] > 0 ? 0 : 1];
+                var swipeDirection = DragEngine.directionNames[this.axis][this.movement[this.axis] > 0 ? 0 : 1];
                 this._dispatchEvents('swipe*', detail, swipeDirection);
             }
         }
         //	Set the state of the gesture to "inactive".
         this.state = DragEngine.state.inactive;
-    }
+    };
     /**
      * Doing the touch gesture.
      */
-    move(event) {
+    DragEngine.prototype.move = function (event) {
         switch (this.state) {
             case DragEngine.state.watching:
             case DragEngine.state.dragging:
@@ -97,9 +97,9 @@ export default class DragEngine {
                         ? 'x'
                         : 'y';
                 /** The event information. */
-                const detail = this._eventDetail();
+                var detail = this._eventDetail();
                 /** The direction. */
-                const dragDirection = DragEngine.directionNames[this.axis][this.movement[this.axis] > 0 ? 0 : 1];
+                var dragDirection = DragEngine.directionNames[this.axis][this.movement[this.axis] > 0 ? 0 : 1];
                 //	Watching for the gesture to go past the treshold.
                 if (this.state == DragEngine.state.watching) {
                     if (Math.abs(this.distance[this.axis]) >
@@ -115,8 +115,8 @@ export default class DragEngine {
                 }
                 break;
         }
-    }
-    _eventDetail() {
+    };
+    DragEngine.prototype._eventDetail = function () {
         return {
             movementX: this.movement.x,
             movementY: this.movement.y,
@@ -125,21 +125,21 @@ export default class DragEngine {
             distanceY: this.distance.y -
                 (this.axis == 'y' ? DragEngine.treshold.start : 0)
         };
-    }
-    _dispatchEvents(eventName, detail, dir) {
+    };
+    DragEngine.prototype._dispatchEvents = function (eventName, detail, dir) {
         /** General event, e.g. "drag" */
-        const event = new CustomEvent(eventName.replace('*', ''), { detail });
+        var event = new CustomEvent(eventName.replace('*', ''), { detail: detail });
         this.surface.dispatchEvent(event);
         /** Axis event, e.g. "dragX" */
-        const axis = new CustomEvent(eventName.replace('*', this.axis.toUpperCase()), { detail });
+        var axis = new CustomEvent(eventName.replace('*', this.axis.toUpperCase()), { detail: detail });
         this.surface.dispatchEvent(axis);
         /** Direction event, e.g. "dragLeft" */
-        const direction = new CustomEvent(eventName.replace('*', dir), {
-            detail
+        var direction = new CustomEvent(eventName.replace('*', dir), {
+            detail: detail
         });
         this.surface.dispatchEvent(direction);
-    }
-    _getArea(position, size) {
+    };
+    DragEngine.prototype._getArea = function (position, size) {
         if (typeof position == 'string') {
             if (position.slice(-1) == '%') {
                 position = parseInt(position.slice(0, -1), 10);
@@ -147,18 +147,20 @@ export default class DragEngine {
             }
         }
         return position;
-    }
-}
-DragEngine.directionNames = {
-    x: ['Right', 'Left'],
-    y: ['Down', 'Up']
-};
-DragEngine.treshold = {
-    start: 25,
-    swipe: 15
-};
-DragEngine.state = {
-    inactive: 0,
-    watching: 1,
-    dragging: 2
-};
+    };
+    DragEngine.directionNames = {
+        x: ['Right', 'Left'],
+        y: ['Down', 'Up']
+    };
+    DragEngine.treshold = {
+        start: 25,
+        swipe: 15
+    };
+    DragEngine.state = {
+        inactive: 0,
+        watching: 1,
+        dragging: 2
+    };
+    return DragEngine;
+}());
+export default DragEngine;
