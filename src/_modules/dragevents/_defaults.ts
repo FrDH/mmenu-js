@@ -8,6 +8,6 @@ export const area: dragArea = {
 
 /** Tresholds for gestures. */
 export const treshold: dragTreshold = {
-    start: 25,
+    start: 15,
     swipe: 15
 };

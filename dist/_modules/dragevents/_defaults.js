@@ -7,6 +7,6 @@ export var area = {
 };
 /** Tresholds for gestures. */
 export var treshold = {
-    start: 25,
+    start: 15,
     swipe: 15
 };

@@ -129,20 +129,21 @@ export default class DragEvents {
     stop(event) {
         //	Dispatch the "dragEnd" events.
         if (this.state == settings.state.dragging) {
-            /** The event information. */
-            const detail = this._eventDetail();
-
             /** The direction. */
             const dragDirection = this._dragDirection();
 
-            this._dispatchEvents('drag*End', detail, dragDirection);
+            /** The event information. */
+            const detail = this._eventDetail(dragDirection);
+
+            this._dispatchEvents('drag*End', detail);
 
             //	Dispatch the "swipe" events.
             if (Math.abs(this.movement[this.axis]) > this.treshold.swipe) {
                 /** The direction. */
                 const swipeDirection = this._swipeDirection();
+                detail.direction = swipeDirection;
 
-                this._dispatchEvents('swipe*', detail, swipeDirection);
+                this._dispatchEvents('swipe*', detail);
             }
         }
 
@@ -173,22 +174,18 @@ export default class DragEvents {
                         ? 'x'
                         : 'y';
 
-                /** The event information. */
-                const detail = this._eventDetail();
-
                 /** The direction. */
                 const dragDirection = this._dragDirection();
+
+                /** The event information. */
+                const detail = this._eventDetail(dragDirection);
 
                 //	Watching for the gesture to go past the treshold.
                 if (this.state == settings.state.watching) {
                     if (
                         Math.abs(this.distance[this.axis]) > this.treshold.start
                     ) {
-                        this._dispatchEvents(
-                            'drag*Start',
-                            detail,
-                            dragDirection
-                        );
+                        this._dispatchEvents('drag*Start', detail);
 
                         //	Set the state of the gesture to "inactive".
                         this.state = settings.state.dragging;
@@ -197,7 +194,7 @@ export default class DragEvents {
 
                 //	Dispatch the "drag" events.
                 if (this.state == settings.state.dragging) {
-                    this._dispatchEvents('drag*Move', detail, dragDirection);
+                    this._dispatchEvents('drag*Move', detail);
                 }
                 break;
         }
@@ -205,9 +202,10 @@ export default class DragEvents {
 
     /**
      * Get the event details.
-     * @return {bject} The event details.
+     * @param {string}  direction   Direction for the event (up, right, down, left).
+     * @return {object}             The event details.
      */
-    _eventDetail() {
+    _eventDetail(direction: string) {
         var distX = this.distance.x;
         var distY = this.distance.y;
 
@@ -220,6 +218,8 @@ export default class DragEvents {
         }
 
         return {
+            axis: this.axis,
+            direction: direction,
             movementX: this.movement.x,
             movementY: this.movement.y,
             distanceX: distX,
@@ -231,9 +231,8 @@ export default class DragEvents {
      * Dispatch the events
      * @param {string} eventName    The name for the events to dispatch.
      * @param {object} detail       The event details.
-     * @param {string} dir          The direction of the gesture.
      */
-    _dispatchEvents(eventName: string, detail, dir) {
+    _dispatchEvents(eventName: string, detail) {
         /** General event, e.g. "drag" */
         var event = new CustomEvent(eventName.replace('*', ''), { detail });
         this.surface.dispatchEvent(event);
@@ -246,9 +245,12 @@ export default class DragEvents {
         this.surface.dispatchEvent(axis);
 
         /** Direction event, e.g. "dragLeft" */
-        var direction = new CustomEvent(eventName.replace('*', dir), {
-            detail
-        });
+        var direction = new CustomEvent(
+            eventName.replace('*', detail.direction),
+            {
+                detail
+            }
+        );
         this.surface.dispatchEvent(direction);
     }
 

@@ -507,23 +507,21 @@ export default class Mmenu {
         }
 
         //	Loop over object.
-        for (let query in this.opts.extensions) {
-            if (this.opts.extensions[query].length) {
-                let classnames = this.opts.extensions[query].map(
-                    query => 'mm-menu_' + query
-                );
+        Object.keys(this.opts.extensions).forEach(query => {
+            let classnames = this.opts.extensions[query].map(
+                query => 'mm-menu_' + query
+            );
 
-                media.add(
-                    query,
-                    () => {
-                        this.node.menu.classList.add(...classnames);
-                    },
-                    () => {
-                        this.node.menu.classList.remove(...classnames);
-                    }
-                );
-            }
-        }
+            media.add(
+                query,
+                () => {
+                    this.node.menu.classList.add(...classnames);
+                },
+                () => {
+                    this.node.menu.classList.remove(...classnames);
+                }
+            );
+        });
 
         //	Invoke "after" hook.
         this.trigger('initExtensions:after');

@@ -341,23 +341,17 @@ var Mmenu = /** @class */ (function () {
                 all: this.opts.extensions
             };
         }
-        var _loop_1 = function (query) {
-            if (this_1.opts.extensions[query].length) {
-                var classnames_1 = this_1.opts.extensions[query].map(function (query) { return 'mm-menu_' + query; });
-                media.add(query, function () {
-                    var _a;
-                    (_a = _this.node.menu.classList).add.apply(_a, classnames_1);
-                }, function () {
-                    var _a;
-                    (_a = _this.node.menu.classList).remove.apply(_a, classnames_1);
-                });
-            }
-        };
-        var this_1 = this;
         //	Loop over object.
-        for (var query in this.opts.extensions) {
-            _loop_1(query);
-        }
+        Object.keys(this.opts.extensions).forEach(function (query) {
+            var classnames = _this.opts.extensions[query].map(function (query) { return 'mm-menu_' + query; });
+            media.add(query, function () {
+                var _a;
+                (_a = _this.node.menu.classList).add.apply(_a, classnames);
+            }, function () {
+                var _a;
+                (_a = _this.node.menu.classList).remove.apply(_a, classnames);
+            });
+        });
         //	Invoke "after" hook.
         this.trigger('initExtensions:after');
     };
