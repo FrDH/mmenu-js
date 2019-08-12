@@ -631,10 +631,10 @@ var Mmenu = /** @class */ (function () {
                         button.innerHTML = item.innerHTML;
                         parent.insertBefore(button, item.nextElementSibling);
                         item.remove();
-                        //  Append the button to the listitem.
+                        //  Append the button to the listitem, before the (optionally) submenu.
                     }
                     else {
-                        parent.append(button);
+                        parent.insertBefore(button, DOM.children(parent, '.mm-panel')[0]);
                     }
                 }
             }
