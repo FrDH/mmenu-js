@@ -2,9 +2,7 @@
 
 //	Justified listviews
 @if ($mm_include_listview_justify) {
-    .mm-menu_listview-justify .mm-panels > .mm-panel,
-    .mm-panels > .mm-panel_listview-justify {
-        &:before,
+    .mm-menu_listview-justify .mm-panels > .mm-panel {
         &:after {
             content: none;
             display: none;

@@ -25,7 +25,7 @@ $mm_module: '.mm-panel';
     &:after {
         content: '';
         display: block;
-        height: $mm_panelPadding;
+        height: var(--mm-listitem-size);
     }
 
     &_opened {
@@ -48,10 +48,19 @@ $mm_module: '.mm-panel';
             transform: translate3d(0, 0, 0);
         }
     }
+
+    .mm-panels > & {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 0;
+    }
 }
 
 #{$mm_module}__content {
-    padding: $mm_panelPadding;
+    padding: $mm_panelPadding $mm_panelPadding 0;
 }
 
 .mm-panels {
@@ -63,13 +72,4 @@ $mm_module: '.mm-panel';
     height: 100%;
     flex-grow: 1;
     overflow: hidden;
-
-    > #{$mm_module} {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        z-index: 0;
-    }
 }

@@ -156,6 +156,9 @@ interface mmOptionsNavbar {
 
     /** The type of link to set for the title. */
     titleLink?: 'parent' | 'anchor' | 'none';
+
+    /** Whether or not the navbars should be sticky. */
+    sticky?: boolean;
 }
 
 /**	onClick options for the menu. */

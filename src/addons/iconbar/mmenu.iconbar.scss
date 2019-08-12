@@ -6,8 +6,8 @@ $mm_module: '.mm-iconbar';
     --mm-iconbar-size: #{$mm_iconbarSize};
 }
 
-.mm-menu {
-    &_iconbar-left {
+.mm-menu_iconbar {
+    &-left {
         .mm-panels,
         .mm-navbars_top,
         .mm-navbars_bottom {
@@ -21,7 +21,7 @@ $mm_module: '.mm-iconbar';
         }
     }
 
-    &_iconbar-right {
+    &-right {
         .mm-panels,
         .mm-navbars_top,
         .mm-navbars_bottom {

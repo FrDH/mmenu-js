@@ -1,54 +1,99 @@
-$module: '.mm-navbar';
+$mm_module: '.mm-navbar';
 
 @if ($mm_include_navbars_tabs) {
-    #{$module}_tabs {
-        text-align: center;
-
+    //  All tabs.
+    #{$mm_module}_tabs {
         > * {
-            flex-grow: 1;
+            padding-top: calc(
+                (var(--mm-navbar-size) - var(--mm-line-height)) * 0.5
+            );
+            padding-left: $mm_padding;
+            padding-right: $mm_padding;
+            border: 1px solid transparent;
         }
     }
 
-    #{$module}__tab_selected {
-        background: inherit !important;
-        color: inherit !important;
-        border-width: 1px;
-        border-style: solid;
-        border-color: inherit;
+    //  Selected tab.
+    #{$mm_module}__tab_selected {
+        background: var(--mm-color-background);
 
-        &:first-child {
-            border-left: none;
+        // TODO: not specific enough :/ overriden by .mm-menu a :/ :/ :/
+        color: var(--mm-color-text);
+        // /TODO
+        &:not(:first-child) {
+            border-left-color: var(--mm-color-border);
         }
 
-        &:last-child {
-            border-right: none;
+        &:not(:last-child) {
+            border-right-color: var(--mm-color-border);
         }
-    }
-
-    @if ($mm_include_navbars_top) {
-        .mm-navbars_top.mm-navbars_has-tabs {
-            #{$module}_tabs,
-            #{$module}_tabs ~ #{$module} {
-                background: inherit !important;
-                color: inherit !important;
-            }
-        }
-        @include mm_navbar_tabs_borders('top', 'bottom', 'last', 'first');
-    }
-    @if ($mm_include_navbars_bottom) {
-        .mm-navbars_bottom.mm-navbars_has-tabs {
-            #{$module} {
-                background: inherit;
-                color: inherit;
-            }
-        }
-        @include mm_navbar_tabs_borders('bottom', 'top', 'first', 'last');
-    }
-
-    .mm-navbars_top.mm-navbars_has-tabs > #{$module}:not(#{$module}_tabs),
-    .mm-navbars_bottom.mm-navbars_has-tabs #{$module}_tabs ~ #{$module},
-    #{$module}_tabs > a:not(#{$module}__tab_selected) {
-        background: var(--mm-color-background-emphasis);
-        color: var(--mm-color-text-dimmed);
     }
 }
+
+//  Navbars at the top.
+@if ($mm_include_navbars_top) {
+    .mm-navbars_top {
+        #{$mm_module}_tabs {
+            border-bottom: none;
+        }
+
+        //  Borders.
+        #{$mm_module}_tabs > * {
+            border-bottom-color: var(--mm-color-border);
+        }
+
+        #{$mm_module}__tab_selected {
+            border-bottom-color: transparent;
+            border-top-color: var(--mm-color-border);
+        }
+
+        //  Backgrounds
+        &.mm-navbars_has-tabs {
+            #{$mm_module} {
+                background: var(--mm-color-background-emphasis);
+            }
+
+            #{$mm_module}_tabs ~ #{$mm_module} {
+                background: var(--mm-color-background);
+            }
+        }
+    }
+}
+
+@if ($mm_include_navbars_bottom) {
+    .mm-navbars_bottom {
+        #{$mm_module}_tabs {
+            &:first-child {
+                border-top: none;
+            }
+        }
+
+        //  Borders.
+        #{$mm_module}_tabs > * {
+            border-top-color: var(--mm-color-border);
+        }
+
+        #{$mm_module}__tab_selected {
+            border-top-color: transparent;
+            border-bottom-color: var(--mm-color-border);
+        }
+        //  Backgrounds
+        &.mm-navbars_has-tabs {
+            #{$mm_module} {
+                background: var(--mm-color-background);
+            }
+
+            #{$mm_module}_tabs,
+            #{$mm_module}_tabs ~ #{$mm_module} {
+                background: var(--mm-color-background-emphasis);
+            }
+        }
+    }
+}
+
+// .mm-navbars_top.mm-navbars_has-tabs > #{$mm_module}:not(#{$mm_module}_tabs),
+// .mm-navbars_bottom.mm-navbars_has-tabs #{$mm_module}_tabs ~ #{$mm_module},
+// #{$mm_module}_tabs > a:not(#{$mm_module}__tab_selected) {
+//     background: var(--mm-color-background-emphasis);
+//     color: var(--mm-color-text-dimmed);
+// }

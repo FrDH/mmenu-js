@@ -107,5 +107,6 @@ $mm_module: '.mm-searchfield';
     > .mm-listitem__text:not(.mm-listitem__btn) {
         // This should (sort of) disable the anchor in the listitem.
         z-index: -1;
+        pointer-events: none;
     }
 }

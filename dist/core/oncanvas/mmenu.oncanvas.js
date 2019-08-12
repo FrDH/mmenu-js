@@ -535,6 +535,9 @@ var Mmenu = /** @class */ (function () {
         var parent = panel['mmParent'];
         /** The navbar element. */
         var navbar = DOM.create('div.mm-navbar');
+        if (this.opts.navbar.sticky) {
+            navbar.classList.add('mm-navbar_sticky');
+        }
         /** Title in the navbar. */
         var text = this._getPanelTitle(panel, this.opts.navbar.title);
         /** Href for the title. */
@@ -571,7 +574,7 @@ var Mmenu = /** @class */ (function () {
             return;
         }
         if (!this.opts.navbar.add) {
-            DOM.children(panel, '.mm-navbar')[0].classList.add('mm-hidden');
+            navbar.classList.add('mm-hidden');
         }
         var title = DOM.create('a.mm-navbar__title');
         title.innerHTML = text;
@@ -579,11 +582,6 @@ var Mmenu = /** @class */ (function () {
             title.setAttribute('href', href);
         }
         navbar.append(title);
-        //	Just to center the title.
-        if (parent) {
-            var next = DOM.create('span.mm-btn.mm-navbar__btn');
-            navbar.append(next);
-        }
         panel.prepend(navbar);
         //	Invoke "after" hook.
         this.trigger('initNavbar:after', [panel]);

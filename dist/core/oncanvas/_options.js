@@ -5,7 +5,8 @@ var options = {
     navbar: {
         add: true,
         title: 'Menu',
-        titleLink: 'parent'
+        titleLink: 'parent',
+        sticky: true
     },
     onClick: {
         close: null,

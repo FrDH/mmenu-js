@@ -8,25 +8,27 @@
         position: relative;
     }
 
-    &.mm-menu_position-top,
-    &.mm-menu_position-bottom {
-        max-height: percentage($mm_menuHeight);
-    }
-}
-
-.mm-menu_autoheight-measuring {
-    .mm-panel {
-        display: block !important;
-    }
-
-    @if ($mm_include_vertical) {
-        .mm-listitem_vertical:not(.mm-listitem_opened) .mm-panel {
-            display: none !important;
+    &.mm-menu_position {
+        &-top,
+        &-bottom {
+            max-height: percentage($mm_menuHeight);
         }
     }
 
-    .mm-panels > .mm-panel {
-        bottom: auto !important;
-        height: auto !important;
+    &-measuring {
+        .mm-panel {
+            display: block !important;
+        }
+
+        .mm-panels > .mm-panel {
+            bottom: auto !important;
+            height: auto !important;
+        }
+
+        @if ($mm_include_vertical) {
+            .mm-listitem_vertical:not(.mm-listitem_opened) .mm-panel {
+                display: none !important;
+            }
+        }
     }
 }

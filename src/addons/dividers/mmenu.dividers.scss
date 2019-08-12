@@ -13,8 +13,12 @@ $mm_module: '.mm-divider';
     background: var(--mm-color-background);
 
     position: sticky;
-    z-index: 1;
+    z-index: 2;
     top: 0;
+
+    .mm-navbar_sticky:not(.mm-hidden) ~ .mm-listview & {
+        top: var(--mm-navbar-size);
+    }
 
     min-height: var(--mm-line-height);
     padding: calc(
@@ -33,28 +37,28 @@ $mm_module: '.mm-divider';
         left: 0;
         z-index: -1;
     }
-}
 
-@if ($mm_include_dividers_light) {
-    .mm-menu_dividers-light #{$mm_module} {
-        font-size: inherit;
-        color: var(--mm-color-text-dimmed);
-        padding-top: calc(
-            (var(--mm-listitem-size) - var(--mm-line-height)) * 0.75
-        );
-        padding-bottom: calc(
-            (var(--mm-listitem-size) - var(--mm-line-height)) * 0.25
-        );
+    @if ($mm_include_dividers_light) {
+        .mm-menu_dividers-light & {
+            font-size: inherit;
+            color: var(--mm-color-text-dimmed);
+            padding-top: calc(
+                (var(--mm-listitem-size) - var(--mm-line-height)) * 0.75
+            );
+            padding-bottom: calc(
+                (var(--mm-listitem-size) - var(--mm-line-height)) * 0.25
+            );
 
-        &:before {
-            background: inherit;
+            &:before {
+                background: inherit;
+            }
         }
     }
-}
 
-@if ($mm_include_borderstyle_none) {
-    .mm-menu_border-none #{$mm_module} {
-        border-top-width: 1px;
-        border-top-style: solid;
+    @if ($mm_include_borderstyle_none) {
+        .mm-menu_border-none & {
+            border-top-width: 1px;
+            border-top-style: solid;
+        }
     }
 }

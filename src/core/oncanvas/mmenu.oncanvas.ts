@@ -751,6 +751,10 @@ export default class Mmenu {
         /** The navbar element. */
         var navbar: HTMLElement = DOM.create('div.mm-navbar');
 
+        if (this.opts.navbar.sticky) {
+            navbar.classList.add('mm-navbar_sticky');
+        }
+
         /** Title in the navbar. */
         var text = this._getPanelTitle(panel, this.opts.navbar.title);
 
@@ -796,7 +800,7 @@ export default class Mmenu {
         }
 
         if (!this.opts.navbar.add) {
-            DOM.children(panel, '.mm-navbar')[0].classList.add('mm-hidden');
+            navbar.classList.add('mm-hidden');
         }
 
         let title = DOM.create('a.mm-navbar__title');
@@ -807,13 +811,6 @@ export default class Mmenu {
         }
 
         navbar.append(title);
-
-        //	Just to center the title.
-        if (parent) {
-            let next = DOM.create('span.mm-btn.mm-navbar__btn');
-
-            navbar.append(next);
-        }
 
         panel.prepend(navbar);
 
