@@ -38,6 +38,54 @@
     Mmenu.prototype._deprecatedWarnings = function() {
         /**
          * ----------------------------
+         * Version 8.2 > 8.3
+         * ----------------------------
+         */
+
+        /* EXTENSIONS */
+
+        // Removed panel-scoped extensions.
+        [
+            'mm-panel-border-none',
+            'mm-panel-border-full',
+            'mm-panel_listview-justify',
+            'mm-panel-slide-0',
+            'mm-panel-slide-100'
+        ].forEach(ext => {
+            if (this.node.menu.querySelector(ext)) {
+                deprecated(
+                    'Using the classname ' + ext + ' on a specific panel.',
+                    'custom CSS',
+                    '8.3.0'
+                );
+            }
+        });
+
+        //  Removed (parts of) extensions.
+        [
+            'border-offset',
+            'fx-menu-fade',
+            'fx-menu-zoom',
+            'fx-panels-slide-up',
+            'fx-panels-slide-right',
+            'fx-panels-zoom',
+            'fx-listitems-drop',
+            'fx-listitems-fade',
+            'fx-listitems-slide'
+        ].forEach(ext => {
+            Object.keys(this.opts.extensions).forEach(key => {
+                if (this.opts.extensions[key].includes(ext)) {
+                    deprecated(
+                        'The "' + ext + '" extension',
+                        'custom CSS',
+                        '8.3.0'
+                    );
+                }
+            });
+        });
+
+        /**
+         * ----------------------------
          * Version 8.1 > 8.2
          * ----------------------------
          */

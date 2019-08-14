@@ -109,13 +109,15 @@ const initSearchPanel = function(this: Mmenu): HTMLElement {
     var options = this.opts.searchfield,
         configs = this.conf.searchfield;
 
+    var searchpanel = DOM.children(this.node.pnls, '.mm-panel_search')[0];
+
     //	Only once
-    if (DOM.children(this.node.pnls, '.mm-panel_search').length) {
-        return null;
+    if (searchpanel) {
+        return searchpanel;
     }
 
-    var searchpanel = DOM.create('div.mm-panel_search'),
-        listview = DOM.create('ul');
+    var listview = DOM.create('ul.mm-listview');
+    searchpanel = DOM.create('div.mm-panel_search');
 
     searchpanel.append(listview);
     this.node.pnls.append(searchpanel);
@@ -125,7 +127,7 @@ const initSearchPanel = function(this: Mmenu): HTMLElement {
     }
 
     if (options.panel.title) {
-        searchpanel.setAttribute('data-mm-title', options.panel.title);
+        searchpanel.dataset.mmTitle = options.panel.title;
     }
 
     switch (options.panel.fx) {
@@ -149,7 +151,8 @@ const initSearchPanel = function(this: Mmenu): HTMLElement {
         searchpanel.append(splash);
     }
 
-    this.initPanel(searchpanel);
+    searchpanel.classList.add('mm-panel', 'mm-hidden');
+    this.node.pnls.append(searchpanel);
 
     return searchpanel;
 };
@@ -266,7 +269,6 @@ const initSearching = function(this: Mmenu, form: HTMLElement) {
         data.listitems.push(...DOM.find(panel, '.mm-listitem'));
         data.dividers.push(...DOM.find(panel, '.mm-divider'));
     });
-
     var searchpanel = DOM.children(this.node.pnls, '.mm-panel_search')[0],
         input = DOM.find(form, 'input')[0],
         cancel = DOM.find(form, '.mm-searchfield__cancel')[0];
@@ -376,7 +378,6 @@ Mmenu.prototype.search = function(
     query = query.toLowerCase().trim();
 
     var data = input['mmSearchfield'];
-
     var form: HTMLElement = input.closest('.mm-searchfield') as HTMLElement,
         buttons: HTMLElement[] = DOM.find(form as HTMLElement, '.mm-btn'),
         searchpanel: HTMLElement = DOM.children(

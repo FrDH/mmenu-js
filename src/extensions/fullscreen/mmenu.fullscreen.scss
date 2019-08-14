@@ -1,19 +1,31 @@
-@import 
-	'../../mixins',
-	'../../includes',
-	'../../variables';
+@import '../../mixins', '../../includes', '../../variables';
 
+@if ($mm_include_fullscreen) {
+    @include mm_offcanvas_size(
+        '.mm-menu_fullscreen',
+        $mm_fullscreen_full,
+        $mm_fullscreen_min,
+        $mm_fullscreen_max
+    );
 
-@if ( $mm_include_offcanvas ) {
-	@include mm_offcanvas_size( ".mm-menu_fullscreen",
-		$mm_fullscreen_full, $mm_fullscreen_min, $mm_fullscreen_max );
+    @include mm_position_right(
+        '.mm-menu_fullscreen',
+        $mm_fullscreen_full,
+        $mm_fullscreen_min,
+        $mm_fullscreen_max
+    );
 
-	@include mm_position_right( ".mm-menu_fullscreen",
-		$mm_fullscreen_full, $mm_fullscreen_min, $mm_fullscreen_max);
+    @include mm_position_top(
+        '.mm-menu_fullscreen',
+        $mm_fullscreen_full,
+        $mm_fullscreen_min,
+        $mm_fullscreen_max
+    );
 
-	@include mm_position_top( ".mm-menu_fullscreen",
-		$mm_fullscreen_full, $mm_fullscreen_min, $mm_fullscreen_max );
-
-	@include mm_position_bottom( ".mm-menu_fullscreen",
-		$mm_fullscreen_full, $mm_fullscreen_min, $mm_fullscreen_max );
+    @include mm_position_bottom(
+        '.mm-menu_fullscreen',
+        $mm_fullscreen_full,
+        $mm_fullscreen_min,
+        $mm_fullscreen_max
+    );
 }
