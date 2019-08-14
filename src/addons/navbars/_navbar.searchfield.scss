@@ -1,7 +1,5 @@
 @if ($mm_include_navbars_searchfield) {
     .mm-navbar__searchfield {
-        flex-grow: 1;
-
         .mm-btn:not(.mm-hidden) + & .mm-searchfield__input {
             padding-left: 0;
         }

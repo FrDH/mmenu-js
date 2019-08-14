@@ -15,11 +15,3 @@
         }
     }
 }
-
-@if ($mm_include_borderstyle_offset) {
-    .mm-menu_border-offset {
-        .mm-listitem:after {
-            right: $mm_listitemIndent;
-        }
-    }
-}

@@ -4,6 +4,7 @@ $mm_module: '.mm-searchfield';
 
 #{$mm_module} {
     display: flex;
+    flex-grow: 1;
     height: var(--mm-navbar-size);
     padding: 0;
     overflow: hidden;
@@ -40,9 +41,14 @@ $mm_module: '.mm-searchfield';
 }
 
 #{$mm_module}__input {
-    padding: ($mm_navbarSize * 0.15) $mm_padding 0 $mm_padding;
-    padding-top: calc(var(--mm-navbar-size) * 0.15);
+    display: flex;
+    flex: 1;
+    align-items: center;
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 $mm_padding;
+    box-sizing: border-box;
 }
 
 .mm-panel__noresultsmsg {
@@ -67,13 +73,6 @@ $mm_module: '.mm-searchfield';
         right: 0 !important;
         width: 100% !important;
         border-left: none !important;
-    }
-
-    #{$mm_module}__input {
-        flex: 1;
-        box-sizing: border-box;
-        width: 100%;
-        max-width: 100%;
     }
 
     #{$mm_module}__cancel {

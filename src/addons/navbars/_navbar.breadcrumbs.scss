@@ -9,9 +9,9 @@
         -webkit-overflow-scrolling: touch;
 
         > * {
-            padding-top: calc(
-                (var(--mm-navbar-size) - var(--mm-line-height)) * 0.5
-            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding-right: 6px;
         }
 

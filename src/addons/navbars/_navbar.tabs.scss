@@ -4,11 +4,8 @@ $mm_module: '.mm-navbar';
     //  All tabs.
     #{$mm_module}_tabs {
         > * {
-            padding-top: calc(
-                (var(--mm-navbar-size) - var(--mm-line-height)) * 0.5
-            );
-            padding-left: $mm_padding;
-            padding-right: $mm_padding;
+            justify-content: center;
+            padding: 0 $mm_padding;
             border: 1px solid transparent;
         }
     }
@@ -90,10 +87,3 @@ $mm_module: '.mm-navbar';
         }
     }
 }
-
-// .mm-navbars_top.mm-navbars_has-tabs > #{$mm_module}:not(#{$mm_module}_tabs),
-// .mm-navbars_bottom.mm-navbars_has-tabs #{$mm_module}_tabs ~ #{$mm_module},
-// #{$mm_module}_tabs > a:not(#{$mm_module}__tab_selected) {
-//     background: var(--mm-color-background-emphasis);
-//     color: var(--mm-color-text-dimmed);
-// }

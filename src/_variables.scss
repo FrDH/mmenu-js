@@ -27,7 +27,7 @@ $mm_lineHeight: 20px !default;
 $mm_listitemIndent: $mm_padding * 2 !default;
 $mm_navbarSize: $mm_listitemSize !default;
 $mm_panelPadding: $mm_padding * 2 !default;
-$mm_subopenWidth: $mm_btnSize + $mm_padding !default;
+$mm_subopenWidth: $mm_btnSize !default;
 $mm_subpanelOffset: 30% !default;
 
 $mm_menuWidth: 0.8 !default;
@@ -60,8 +60,6 @@ $mm_toggleWidth: ($mm_toggleHeight * 2) - $mm_padding !default;
 $mm_checkHeight: $mm_btnSize - $mm_padding !default;
 $mm_checkWidth: $mm_btnSize - $mm_padding !default;
 
-$mm_zoomScaleDown: 0.7 !default;
-$mm_zoomScaleUp: 1.5 !default;
 $mm_fullscreen_full: 1 !default;
 $mm_fullscreen_min: 140px !default;
 $mm_fullscreen_max: 10000px !default;

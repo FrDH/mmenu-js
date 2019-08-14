@@ -3,7 +3,7 @@
 		*) The "module" file is transpiled from the specified "custom input" dir.
 */
 
-const { src, dest, watch, series, parallel } = require('gulp');
+const { src, dest, watch, series } = require('gulp');
 
 const typescript = require('gulp-typescript');
 const webpack = require('webpack-stream');

@@ -19,6 +19,8 @@ $mm_module: '.mm-navbar';
 
     > * {
         flex-grow: 1;
+        display: flex;
+        align-items: center;
         box-sizing: border-box;
     }
 
@@ -31,9 +33,10 @@ $mm_module: '.mm-navbar';
     @include mm_ellipsis;
 
     flex: 1 1 50%;
+    display: flex;
+    justify-content: center;
     padding-left: $mm_panelPadding;
     padding-right: $mm_panelPadding;
-    padding-top: calc((var(--mm-navbar-size) - var(--mm-line-height)) / 2);
 
     // Center the content.
     &:not(:last-child) {
