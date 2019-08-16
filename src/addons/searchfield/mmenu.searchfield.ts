@@ -151,7 +151,9 @@ const initSearchPanel = function(this: Mmenu): HTMLElement {
         searchpanel.append(splash);
     }
 
-    searchpanel.classList.add('mm-panel', 'mm-hidden');
+    searchpanel.classList.add('mm-panel');
+    searchpanel.classList.add('mm-hidden');
+
     this.node.pnls.append(searchpanel);
 
     return searchpanel;
@@ -399,11 +401,9 @@ Mmenu.prototype.search = function(
 
     //	Reset previous results
     listitems.forEach(listitem => {
-        listitem.classList.remove(
-            'mm-listitem_nosubitems',
-            'mm-listitem_onlysubitems',
-            'mm-hidden'
-        );
+        listitem.classList.remove('mm-listitem_nosubitems');
+        listitem.classList.remove('mm-listitem_onlysubitems');
+        listitem.classList.remove('mm-hidden');
     });
 
     if (searchpanel) {

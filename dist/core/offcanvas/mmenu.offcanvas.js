@@ -145,7 +145,6 @@ Mmenu.prototype.open = function () {
 };
 Mmenu.prototype._openSetup = function () {
     var _this = this;
-    var _a;
     var options = this.opts.offCanvas;
     //	Close other menus
     this.closeAllOthers();
@@ -164,7 +163,12 @@ Mmenu.prototype._openSetup = function () {
     if (options.moveBackground) {
         clsn.push('mm-wrapper_background');
     }
-    (_a = this.node.wrpr.classList).add.apply(_a, clsn);
+    //  IE11:
+    clsn.forEach(function (classname) {
+        _this.node.wrpr.classList.add(classname);
+    });
+    //  Better browsers:
+    // this.node.wrpr.classList.add(...clsn);
     //	Open
     //	Without the timeout, the animation won't work because the menu had display: none;
     setTimeout(function () {
@@ -194,15 +198,19 @@ Mmenu.prototype.close = function () {
     }
     //	Callback when the page finishes closing.
     transitionend(Mmenu.node.page, function () {
-        var _a;
         _this.node.menu.classList.remove('mm-menu_opened');
-        var clsn = [
+        var classnames = [
             'mm-wrapper_opened',
             'mm-wrapper_blocking',
             'mm-wrapper_modal',
             'mm-wrapper_background'
         ];
-        (_a = _this.node.wrpr.classList).remove.apply(_a, clsn);
+        //  IE11:
+        classnames.forEach(function (classname) {
+            _this.node.wrpr.classList.remove(classname);
+        });
+        //  Better browsers:
+        // this.node.wrpr.classList.remove(...classnames);
         //	Restore style and position
         Mmenu.node.page.setAttribute('style', Mmenu.node.page['mmStyle']);
         _this.vars.opened = false;
@@ -260,7 +268,8 @@ Mmenu.prototype.setPage = function (page) {
         }
         page = pages[0];
     }
-    page.classList.add('mm-page', 'mm-slideout');
+    page.classList.add('mm-page');
+    page.classList.add('mm-slideout');
     page.id = page.id || uniqueId();
     Mmenu.node.page = page;
     //	Invoke "after" hook.

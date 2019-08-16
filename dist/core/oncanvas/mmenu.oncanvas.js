@@ -206,7 +206,8 @@ var Mmenu = /** @class */ (function () {
         //	Close all "vertical" panels.
         var listitems = this.node.pnls.querySelectorAll('.mm-listitem');
         listitems.forEach(function (listitem) {
-            listitem.classList.remove('mm-listitem_selected', 'mm-listitem_opened');
+            listitem.classList.remove('mm-listitem_selected');
+            listitem.classList.remove('mm-listitem_opened');
         });
         //	Close all "horizontal" panels.
         var panels = DOM.children(this.node.pnls, '.mm-panel'), opened = panel ? panel : panels[0];
@@ -343,14 +344,24 @@ var Mmenu = /** @class */ (function () {
         }
         //	Loop over object.
         Object.keys(this.opts.extensions).forEach(function (query) {
-            var classnames = _this.opts.extensions[query].map(function (query) { return 'mm-menu_' + query; });
-            media.add(query, function () {
-                var _a;
-                (_a = _this.node.menu.classList).add.apply(_a, classnames);
-            }, function () {
-                var _a;
-                (_a = _this.node.menu.classList).remove.apply(_a, classnames);
-            });
+            var classnames = _this.opts.extensions[query].map(function (extension) { return 'mm-menu_' + extension; });
+            if (classnames.length) {
+                media.add(query, function () {
+                    //  IE11:
+                    classnames.forEach(function (classname) {
+                        _this.node.menu.classList.add(classname);
+                    });
+                    //  Better browsers:
+                    // this.node.menu.classList.add(...classnames);
+                }, function () {
+                    //  IE11:
+                    classnames.forEach(function (classname) {
+                        _this.node.menu.classList.remove(classname);
+                    });
+                    //  Better browsers:
+                    // this.node.menu.classList.remove(...classnames);
+                });
+            }
         });
         //	Invoke "after" hook.
         this.trigger('initExtensions:after');
@@ -496,7 +507,8 @@ var Mmenu = /** @class */ (function () {
             panel = wrapper;
         }
         panel.id = id;
-        panel.classList.add('mm-panel', 'mm-hidden');
+        panel.classList.add('mm-panel');
+        panel.classList.add('mm-hidden');
         /** The parent listitem. */
         var parent = [panel.parentElement].filter(function (listitem) {
             return listitem.matches('li');

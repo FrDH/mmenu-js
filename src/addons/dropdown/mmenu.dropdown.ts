@@ -182,13 +182,24 @@ export default function(this: Mmenu) {
         }
 
         if (options.tip) {
-            this.node.menu.classList.remove(
+            var classnames = [
                 'mm-menu_tip-left',
                 'mm-menu_tip-right',
                 'mm-menu_tip-top',
                 'mm-menu_tip-bottom'
-            );
-            this.node.menu.classList.add(...obj[1]);
+            ];
+
+            //  IE11:
+            classnames.forEach(classname => {
+                this.node.menu.classList.remove(classname);
+            });
+            obj[1].forEach(classname => {
+                this.node.menu.classList.add(classname);
+            });
+
+            //  Better browsers:
+            // this.node.menu.classList.remove(...classnames);
+            // this.node.menu.classList.add(...obj[1]);
         }
     }
 

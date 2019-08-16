@@ -21,12 +21,13 @@ $mm_module: '.mm-navbar';
         flex-grow: 1;
         display: flex;
         align-items: center;
+        min-height: var(--mm-navbar-size);
         box-sizing: border-box;
     }
+}
 
-    > .mm-btn {
-        flex-grow: 0;
-    }
+#{$mm_module}__btn {
+    flex-grow: 0;
 }
 
 #{$mm_module}__title {

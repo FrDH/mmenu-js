@@ -14,12 +14,14 @@ module.exports = cb => {
     //  Some polyfills might rely on others,
     //      therefor we include 'em in a fixed order.
     return src([
-        dir.input + '/_polyfills/css.variables.js',
         dir.input + '/_polyfills/api.foreach.js',
+        dir.input + '/_polyfills/api.matches.js',
+        dir.input + '/_polyfills/api.closest.js',
         dir.input + '/_polyfills/dom.prepend.js',
         dir.input + '/_polyfills/dom.append.js',
         dir.input + '/_polyfills/dom.before.js',
-        dir.input + '/_polyfills/dom.remove.js'
+        dir.input + '/_polyfills/dom.remove.js',
+        dir.input + '/_polyfills/css.variables.js'
     ])
         .pipe(concat('mmenu.polyfills.js'))
         .pipe(dest(dir.output));

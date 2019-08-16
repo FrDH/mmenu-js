@@ -48,9 +48,6 @@
 				}
 			}
 		</style>
-
-		<!-- IE 10 and 11 polyfills -->
-		<script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Array.prototype.filter%2CArray.prototype.forEach%2CArray.prototype.map%2CElement.prototype.cloneNode%2Cdocument.querySelector"></script>
 	</head>
 	<body>
 		<div id="page">
@@ -101,8 +98,8 @@
 		<script type="text/javascript" src="http://cdn.jsdelivr.net/hammerjs/2.0.8/hammer.min.js"></script>
 
 		<!-- mmenu scripts -->
+		<script src="../dist/mmenu.polyfills.js"></script>
 		<script src="../dist/mmenu.js"></script>
-		<script src="../src/mmenu.debugger.js"></script>
 
 		<script>
 			new Mmenu(
@@ -119,7 +116,7 @@
 				}
 			);
 
-			document.addEventListener( 'click', ( evnt ) => {
+			document.addEventListener( 'click', function( evnt ) {
 				let anchor = evnt.target.closest( 'a[href^="#/"]' );
 				if ( anchor ) {
 					alert('Thank you for clicking, but that\'s a demo link.');

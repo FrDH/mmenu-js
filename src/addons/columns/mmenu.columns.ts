@@ -73,10 +73,16 @@ export default function(this: Mmenu) {
                     '.mm-panel_columns-' + colnr
                 )[0];
                 if (panel) {
-                    console.log(panel);
                     colnr++;
-                    panel.classList.remove(...rmvc);
                     panel.classList.add('mm-hidden');
+
+                    //  IE11:
+                    rmvc.forEach(classname => {
+                        panel.classList.remove(classname);
+                    });
+
+                    //  Better browsers:
+                    // panel.classList.remove(...rmvc);
                 } else {
                     colnr = -1;
                     break;
@@ -97,12 +103,26 @@ export default function(this: Mmenu) {
                 Math.max(options.visible.min, columns)
             );
 
-            this.node.menu.classList.remove(...colm);
+            //  IE11:
+            colm.forEach(classname => {
+                this.node.menu.classList.remove(classname);
+            });
+
+            //  Better browsers:
+            // this.node.menu.classList.remove(...colm);
+
             this.node.menu.classList.add('mm-menu_columns-' + columns);
 
             var panels: HTMLElement[] = [];
             DOM.children(this.node.pnls, '.mm-panel').forEach(panel => {
-                panel.classList.remove(...colp);
+                //  IE11:
+                colp.forEach(classname => {
+                    panel.classList.remove(classname);
+                });
+
+                //  Better browsers:
+                // panel.classList.remove(...colp);
+
                 if (panel.matches('.mm-panel_opened-parent')) {
                     panels.push(panel);
                 }

@@ -5,14 +5,17 @@
  * @return	{HTMLElement}				The created element.
  */
 export function create(selector: string): HTMLElement {
-    var elem: HTMLElement;
-    selector.split('.').forEach((arg, a) => {
-        if (a == 0) {
-            elem = document.createElement(arg);
-        } else {
-            elem.classList.add(arg);
-        }
+    var args = selector.split('.');
+    var elem = document.createElement(args.shift());
+
+    //  IE11:
+    args.forEach(classname => {
+        elem.classList.add(classname);
     });
+
+    //  Better browsers:
+    // elem.classList.add(...args);
+
     return elem;
 }
 

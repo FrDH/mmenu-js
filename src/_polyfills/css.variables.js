@@ -17,16 +17,7 @@ let cssVarPoly = {
             window.CSS.supports('(--foo: red)')
         ) {
             // this browser does support variables, abort
-            console.log(
-                'your browser supports CSS variables, aborting and letting the native support handle things.'
-            );
             return;
-        } else {
-            // edge barfs on console statements if the console is not open... lame!
-            console.log(
-                'no support for you! polyfill all (some of) the things!!'
-            );
-            document.querySelector('body').classList.add('cssvars-polyfilled');
         }
 
         cssVarPoly.ratifiedVars = {};

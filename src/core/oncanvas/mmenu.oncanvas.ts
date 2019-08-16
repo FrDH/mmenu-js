@@ -340,10 +340,8 @@ export default class Mmenu {
         //	Close all "vertical" panels.
         let listitems = this.node.pnls.querySelectorAll('.mm-listitem');
         listitems.forEach(listitem => {
-            listitem.classList.remove(
-                'mm-listitem_selected',
-                'mm-listitem_opened'
-            );
+            listitem.classList.remove('mm-listitem_selected');
+            listitem.classList.remove('mm-listitem_opened');
         });
 
         //	Close all "horizontal" panels.
@@ -509,18 +507,32 @@ export default class Mmenu {
         //	Loop over object.
         Object.keys(this.opts.extensions).forEach(query => {
             let classnames = this.opts.extensions[query].map(
-                query => 'mm-menu_' + query
+                extension => 'mm-menu_' + extension
             );
 
-            media.add(
-                query,
-                () => {
-                    this.node.menu.classList.add(...classnames);
-                },
-                () => {
-                    this.node.menu.classList.remove(...classnames);
-                }
-            );
+            if (classnames.length) {
+                media.add(
+                    query,
+                    () => {
+                        //  IE11:
+                        classnames.forEach(classname => {
+                            this.node.menu.classList.add(classname);
+                        });
+
+                        //  Better browsers:
+                        // this.node.menu.classList.add(...classnames);
+                    },
+                    () => {
+                        //  IE11:
+                        classnames.forEach(classname => {
+                            this.node.menu.classList.remove(classname);
+                        });
+
+                        //  Better browsers:
+                        // this.node.menu.classList.remove(...classnames);
+                    }
+                );
+            }
         });
 
         //	Invoke "after" hook.
@@ -702,7 +714,8 @@ export default class Mmenu {
         }
 
         panel.id = id;
-        panel.classList.add('mm-panel', 'mm-hidden');
+        panel.classList.add('mm-panel');
+        panel.classList.add('mm-hidden');
 
         /** The parent listitem. */
         var parent = [panel.parentElement].filter(listitem =>

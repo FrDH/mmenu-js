@@ -23,7 +23,17 @@ export default function () {
                 .filter(function (panel) { return !panel.matches('.mm-nolistview'); })
                 .filter(function (panel) { return !panel.matches('.mm-nopanel'); })
                 .forEach(function (panel) {
-                panel.classList.add('mm-panel_lazysubmenu', 'mm-nolistview', 'mm-nopanel');
+                var classnames = [
+                    'mm-panel_lazysubmenu',
+                    'mm-nolistview',
+                    'mm-nopanel'
+                ];
+                //  IE11:
+                classnames.forEach(function (classname) {
+                    panel.classList.add(classname);
+                });
+                //  Better browsers:
+                // panel.classList.add(...classnames);
             });
         });
         //	Prepare current and one level sub panels for initPanels
@@ -39,7 +49,17 @@ export default function () {
                     return !child.matches('.mm-panel_lazysubmenu .mm-panel_lazysubmenu');
                 })
                     .forEach(function (child) {
-                    child.classList.remove('mm-panel_lazysubmenu', 'mm-nolistview', 'mm-nopanel');
+                    var classnames = [
+                        'mm-panel_lazysubmenu',
+                        'mm-nolistview',
+                        'mm-nopanel'
+                    ];
+                    //  IE11:
+                    classnames.forEach(function (classname) {
+                        child.classList.remove(classname);
+                    });
+                    //  Better browsers:
+                    // child.classList.remove(...classnames);
                 });
             });
         });
@@ -51,7 +71,17 @@ export default function () {
             });
             if (panels.length) {
                 panels.forEach(function (panel) {
-                    panel.classList.remove('mm-panel_lazysubmenu', 'mm-nolistview mm-nopanel');
+                    var classnames = [
+                        'mm-panel_lazysubmenu',
+                        'mm-nolistview',
+                        'mm-nopanel'
+                    ];
+                    //  IE11:
+                    classnames.forEach(function (classname) {
+                        panel.classList.remove(classname);
+                    });
+                    //  Better browsers:
+                    // panel.classList.remove(...classnames);
                 });
                 _this.initPanel(panels[panels.length - 1]);
             }
