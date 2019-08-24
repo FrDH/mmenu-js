@@ -12,6 +12,19 @@ $mm_module: '.mm-navbar';
 
     //  Selected tab.
     #{$mm_module}__tab_selected {
+        @if ($mm_IE11Fallbacks) {
+            background: $mm_backgroundColor;
+            color: $mm_textColor;
+
+            &:not(:first-child) {
+                border-left-color: $mm_borderColor;
+            }
+
+            &:not(:last-child) {
+                border-right-color: $mm_borderColor;
+            }
+        }
+
         background: var(--mm-color-background);
 
         // TODO: not specific enough :/ overriden by .mm-menu a :/ :/ :/
@@ -36,21 +49,37 @@ $mm_module: '.mm-navbar';
 
         //  Borders.
         #{$mm_module}_tabs > * {
+            @if ($mm_IE11Fallbacks) {
+                border-bottom-color: $mm_borderColor;
+            }
+
             border-bottom-color: var(--mm-color-border);
         }
 
         #{$mm_module}__tab_selected {
-            border-bottom-color: transparent;
+            @if ($mm_IE11Fallbacks) {
+                border-top-color: $mm_borderColor;
+            }
+
             border-top-color: var(--mm-color-border);
+            border-bottom-color: transparent;
         }
 
         //  Backgrounds
         &.mm-navbars_has-tabs {
             #{$mm_module} {
+                @if ($mm_IE11Fallbacks) {
+                    background: $mm_emphasizedBackgroundColor;
+                }
+
                 background: var(--mm-color-background-emphasis);
             }
 
             #{$mm_module}_tabs ~ #{$mm_module} {
+                @if ($mm_IE11Fallbacks) {
+                    background: $mm_backgroundColor;
+                }
+
                 background: var(--mm-color-background);
             }
         }
@@ -67,21 +96,37 @@ $mm_module: '.mm-navbar';
 
         //  Borders.
         #{$mm_module}_tabs > * {
+            @if ($mm_IE11Fallbacks) {
+                border-top-color: $mm_borderColor;
+            }
+
             border-top-color: var(--mm-color-border);
         }
 
         #{$mm_module}__tab_selected {
-            border-top-color: transparent;
+            @if ($mm_IE11Fallbacks) {
+                border-bottom-color: $mm_borderColor;
+            }
+
             border-bottom-color: var(--mm-color-border);
+            border-top-color: transparent;
         }
         //  Backgrounds
         &.mm-navbars_has-tabs {
             #{$mm_module} {
+                @if ($mm_IE11Fallbacks) {
+                    background: $mm_backgroundColor;
+                }
+
                 background: var(--mm-color-background);
             }
 
             #{$mm_module}_tabs,
             #{$mm_module}_tabs ~ #{$mm_module} {
+                @if ($mm_IE11Fallbacks) {
+                    background: $mm_emphasizedBackgroundColor;
+                }
+
                 background: var(--mm-color-background-emphasis);
             }
         }

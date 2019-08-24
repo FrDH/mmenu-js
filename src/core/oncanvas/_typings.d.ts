@@ -151,14 +151,14 @@ interface mmOptionsNavbar {
     /** Whether or not to add a navbar above the panels. */
     add?: boolean;
 
+    /** Whether or not the navbars should be sticky. */
+    sticky?: boolean;
+
     /** The title above the panels. */
-    title?: string | Function;
+    title?: string;
 
     /** The type of link to set for the title. */
     titleLink?: 'parent' | 'anchor' | 'none';
-
-    /** Whether or not the navbars should be sticky. */
-    sticky?: boolean;
 }
 
 /**	onClick options for the menu. */

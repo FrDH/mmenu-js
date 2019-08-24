@@ -1,17 +1,27 @@
 $mm_module: '.mm-panel';
 
 #{$mm_module} {
-    background: var(--mm-color-background);
-    border-color: var(--mm-color-border);
-    color: var(--mm-color-text);
+    @if ($mm_IE11Fallbacks) {
+        background: $mm_backgroundColor;
+        border-color: $mm_borderColor;
+        color: $mm_textColor;
+
+        &:after {
+            height: $mm_listitemSize;
+        }
+    }
+
+    box-sizing: border-box;
+    width: 100%;
 
     -webkit-overflow-scrolling: touch;
     overflow: scroll;
     overflow-x: hidden;
     overflow-y: auto;
 
-    box-sizing: border-box;
-    width: 100%;
+    background: var(--mm-color-background);
+    border-color: var(--mm-color-border);
+    color: var(--mm-color-text);
 
     transform: translate3d(100%, 0, 0);
     transition: transform $mm_transitionDuration $mm_transitionFunction;
@@ -64,12 +74,18 @@ $mm_module: '.mm-panel';
 }
 
 .mm-panels {
-    background: var(--mm-color-background);
-    border-color: var(--mm-color-border);
-    color: var(--mm-color-text);
+    @if ($mm_IE11Fallbacks) {
+        background: $mm_backgroundColor;
+        border-color: $mm_borderColor;
+        color: $mm_textColor;
+    }
 
     position: relative;
     height: 100%;
     flex-grow: 1;
     overflow: hidden;
+
+    background: var(--mm-color-background);
+    border-color: var(--mm-color-border);
+    color: var(--mm-color-text);
 }

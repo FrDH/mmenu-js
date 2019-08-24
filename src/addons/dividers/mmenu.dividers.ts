@@ -32,13 +32,6 @@ export default function(this: Mmenu) {
         });
     });
 
-    //	Add classname to the menu to specify the type of the dividers
-    if (options.type) {
-        this.bind('initMenu:after', () => {
-            this.node.menu.classList.add('mm-menu_dividers-' + options.type);
-        });
-    }
-
     //	Add dividers
     if (options.add) {
         this.bind('initListview:after', (panel: HTMLElement) => {

@@ -4,9 +4,9 @@ const options: mmOptions = {
     wrappers: [],
     navbar: {
         add: true,
+        sticky: true,
         title: 'Menu',
-        titleLink: 'parent',
-        sticky: true
+        titleLink: 'parent'
     },
     onClick: {
         close: null,

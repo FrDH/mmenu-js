@@ -42,6 +42,33 @@
          * ----------------------------
          */
 
+        /* OPTIONS */
+
+        //  The navbar.title option can no longer be a function.
+        if (typeof this.opts.navbar.title == 'function') {
+            deprecated(
+                'A function for the "navbar.title" option',
+                'a custom JS loop',
+                '8.3.0'
+            );
+
+            //  Prevent an error.
+            this.opts.navbar.title = Mmenu.options.navbar.title;
+        }
+
+        /* ADD-ONS */
+
+        // The dividers.type option is removed.
+        if (this.opts.dividers) {
+            if (this.opts.dividers.type == 'light') {
+                deprecated(
+                    'The "type" option for the "dividers" add-on',
+                    'custom CSS',
+                    '8.3.0'
+                );
+            }
+        }
+
         /* EXTENSIONS */
 
         // Removed panel-scoped extensions.
@@ -97,7 +124,7 @@
 
         /* ADD-ONS */
 
-        //  navbars "next" content is removed.
+        //  Navbars "next" content is removed.
         if (this.opts.navbars) {
             this.opts.navbars.forEach(navbar => {
                 if (navbar.content.includes('next')) {

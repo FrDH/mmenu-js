@@ -39,6 +39,11 @@
     .mm-wrapper_sidebar {
         &-collapsed {
             .mm-slideout {
+                @if ($mm_IE11Fallbacks) {
+                    width: calc(100% - #{$mm_sidebarCollapsedSize});
+                    transform: translate3d($mm_sidebarCollapsedSize, 0, 0);
+                }
+
                 width: calc(100% - var(--mm-sidebar-collapsed-size));
                 transform: translate3d(var(--mm-sidebar-collapsed-size), 0, 0);
             }
@@ -57,11 +62,15 @@
     .mm-wrapper_sidebar {
         &-expanded {
             .mm-menu_sidebar-expanded {
-                border-right-width: 1px;
-                border-right-style: solid;
+                @if ($mm_IE11Fallbacks) {
+                    width: $mm_sidebarExpandedSize;
+                }
+
                 width: var(--mm-sidebar-expanded-size);
                 min-width: 0 !important;
                 max-width: 100000px !important;
+                border-right-width: 1px;
+                border-right-style: solid;
 
                 @if ($mm_include_shadows_page) {
                     &.mm-menu_pageshadow:after {
@@ -87,6 +96,15 @@
             &:not(.mm-wrapper_sidebar-closed) {
                 .mm-menu_sidebar-expanded.mm-menu_opened {
                     ~ .mm-slideout {
+                        @if ($mm_IE11Fallbacks) {
+                            width: calc(100% - #{$mm_sidebarExpandedSize});
+                            transform: translate3d(
+                                $mm_sidebarExpandedSize,
+                                0,
+                                0
+                            );
+                        }
+
                         width: calc(100% - var(--mm-sidebar-expanded-size));
                         transform: translate3d(
                             var(--mm-sidebar-expanded-size),

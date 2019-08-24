@@ -29,8 +29,6 @@ export default function (navbar) {
         //	Get the text for the title.
         _txt = original ? original.innerHTML : '';
         title.innerHTML = _txt;
-        //	Show or hide the title.
-        title.classList[_url || _txt ? 'remove' : 'add']('mm-hidden');
     });
     //	Add screenreader / aria support
     var prev;

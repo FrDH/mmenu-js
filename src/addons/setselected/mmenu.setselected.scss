@@ -19,6 +19,10 @@
         .mm-listitem__text,
         .mm-listitem__btn {
             &:hover {
+                @if ($mm_IE11Fallbacks) {
+                    background: $mm_emphasizedBackgroundColor;
+                }
+
                 background: var(--mm-color-background-emphasis);
             }
         }
@@ -33,6 +37,10 @@
         .mm-listitem_selected-parent {
             > .mm-listitem__text,
             > .mm-listitem__btn {
+                @if ($mm_IE11Fallbacks) {
+                    background: $mm_emphasizedBackgroundColor;
+                }
+
                 background: var(--mm-color-background-emphasis);
             }
         }

@@ -11,6 +11,10 @@ $mm_module: '.mm-iconbar';
         .mm-panels,
         .mm-navbars_top,
         .mm-navbars_bottom {
+            @if ($mm_IE11Fallbacks) {
+                margin-left: $mm_iconbarSize;
+            }
+
             margin-left: var(--mm-iconbar-size);
         }
 
@@ -25,6 +29,10 @@ $mm_module: '.mm-iconbar';
         .mm-panels,
         .mm-navbars_top,
         .mm-navbars_bottom {
+            @if ($mm_IE11Fallbacks) {
+                margin-right: $mm_iconbarSize;
+            }
+
             margin-right: var(--mm-iconbar-size);
         }
 
@@ -37,22 +45,28 @@ $mm_module: '.mm-iconbar';
 }
 
 #{$mm_module} {
-    background: var(--mm-color-background);
-    color: var(--mm-color-text-dimmed);
-    border: 0 solid $mm_borderColor;
-    border-color: var(--mm-color-border);
+    @if ($mm_IE11Fallbacks) {
+        width: $mm_iconbarSize;
+        border-color: $mm_borderColor;
+        background: $mm_backgroundColor;
+        color: $mm_dimmedTextColor;
+    }
 
-    text-align: center;
-
-    overflow: hidden;
     display: none;
-    box-sizing: border-box;
     width: var(--mm-iconbar-size);
+    overflow: hidden;
+    box-sizing: border-box;
 
     position: absolute;
     top: 0;
     bottom: 0;
     z-index: 2;
+
+    border: 0 solid;
+    border-color: var(--mm-color-border);
+    background: var(--mm-color-background);
+    color: var(--mm-color-text-dimmed);
+    text-align: center;
 }
 
 %mm_iconbar_part {
@@ -82,6 +96,10 @@ $mm_module: '.mm-iconbar';
 
 @if ($mm_include_iconbar_tabs) {
     #{$mm_module}__tab_selected {
+        @if ($mm_IE11Fallbacks) {
+            background: $mm_emphasizedBackgroundColor;
+        }
+
         background: var(--mm-color-background-emphasis);
     }
 }

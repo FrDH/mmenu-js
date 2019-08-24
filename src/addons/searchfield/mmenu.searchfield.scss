@@ -3,6 +3,22 @@
 $mm_module: '.mm-searchfield';
 
 #{$mm_module} {
+    @if ($mm_IE11Fallbacks) {
+        height: $mm_navbarSize;
+
+        input {
+            height: $mm_navbarSize * 0.7;
+            line-height: $mm_navbarSize * 0.7;
+
+            &,
+            &:hover,
+            &:focus {
+                background: $mm_highlightedBackgroundColor;
+                color: $mm_textColor;
+            }
+        }
+    }
+
     display: flex;
     flex-grow: 1;
     height: var(--mm-navbar-size);
@@ -10,15 +26,7 @@ $mm_module: '.mm-searchfield';
     overflow: hidden;
 
     input {
-        border: none !important;
-        outline: none !important;
-        box-shadow: none !important;
-        border-radius: 4px;
-        font: inherit;
-        font-size: inherit;
-        line-height: calc(var(--mm-navbar-size) * 0.7);
         display: block;
-        box-sizing: border-box;
         width: 100%;
         max-width: 100%;
         height: calc(var(--mm-navbar-size) * 0.7);
@@ -26,6 +34,14 @@ $mm_module: '.mm-searchfield';
         max-height: unset;
         margin: 0;
         padding: 0 $mm_padding;
+        box-sizing: border-box;
+        border: none !important;
+        border-radius: 4px;
+        line-height: calc(var(--mm-navbar-size) * 0.7);
+        box-shadow: none !important;
+        outline: none !important;
+        font: inherit;
+        font-size: inherit;
 
         &,
         &:hover,
@@ -52,10 +68,14 @@ $mm_module: '.mm-searchfield';
 }
 
 .mm-panel__noresultsmsg {
+    @if ($mm_IE11Fallbacks) {
+        color: $mm_dimmedTextColor;
+    }
+
+    padding: $mm_btnSize 0;
     color: var(--mm-color-text-dimmed);
     text-align: center;
     font-size: 150%;
-    padding: $mm_btnSize 0;
 }
 
 @if ($mm_include_searchfield_btn) {
@@ -76,11 +96,15 @@ $mm_module: '.mm-searchfield';
     }
 
     #{$mm_module}__cancel {
-        line-height: var(--mm-navbar-size);
-        text-decoration: none;
+        @if ($mm_IE11Fallbacks) {
+            line-height: $mm_navbarSize;
+        }
+
         display: block;
         padding-right: $mm_padding;
         margin-right: -100px;
+        line-height: var(--mm-navbar-size);
+        text-decoration: none;
 
         transition: margin $mm_transitionDuration $mm_transitionFunction;
     }

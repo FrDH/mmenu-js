@@ -3,21 +3,27 @@
 $mm_module: '.mm-divider';
 
 #{$mm_module} {
+    @if ($mm_IE11Fallbacks) {
+        position: relative;
+        min-height: $mm_lineHeight;
+        padding: (($mm_listitemSize * 0.65) - $mm_lineHeight) * 0.5;
+        background: $mm_backgroundColor;
+
+        &:before {
+            background: $mm_highlightedBackgroundColor;
+        }
+    }
+
     @include mm_ellipsis;
 
-    opacity: 1;
-    transition: opacity $mm_transitionDuration $mm_transitionFunction;
+    @supports (position: sticky) {
+        position: sticky;
+        z-index: 2;
+        top: 0;
 
-    font-size: 75%;
-    text-transform: uppercase;
-    background: var(--mm-color-background);
-
-    position: sticky;
-    z-index: 2;
-    top: 0;
-
-    .mm-navbar_sticky:not(.mm-hidden) ~ .mm-listview & {
-        top: var(--mm-navbar-size);
+        .mm-navbar_sticky:not(.mm-hidden) ~ .mm-listview & {
+            top: var(--mm-navbar-size);
+        }
     }
 
     min-height: var(--mm-line-height);
@@ -27,38 +33,21 @@ $mm_module: '.mm-divider';
     padding-right: $mm_padding;
     padding-left: $mm_listitemIndent;
 
+    font-size: 75%;
+    text-transform: uppercase;
+    background: var(--mm-color-background);
+
+    opacity: 1;
+    transition: opacity $mm_transitionDuration $mm_transitionFunction;
+
     &:before {
         content: '';
-        background: var(--mm-color-background-highlight);
         position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
         left: 0;
         z-index: -1;
-    }
-
-    @if ($mm_include_dividers_light) {
-        .mm-menu_dividers-light & {
-            font-size: inherit;
-            color: var(--mm-color-text-dimmed);
-            padding-top: calc(
-                (var(--mm-listitem-size) - var(--mm-line-height)) * 0.75
-            );
-            padding-bottom: calc(
-                (var(--mm-listitem-size) - var(--mm-line-height)) * 0.25
-            );
-
-            &:before {
-                background: inherit;
-            }
-        }
-    }
-
-    @if ($mm_include_borderstyle_none) {
-        .mm-menu_border-none & {
-            border-top-width: 1px;
-            border-top-style: solid;
-        }
+        background: var(--mm-color-background-highlight);
     }
 }

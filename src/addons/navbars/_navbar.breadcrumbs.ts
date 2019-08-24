@@ -14,28 +14,29 @@ export default function(this: Mmenu, navbar: HTMLElement) {
         DOM.children(panel, '.mm-navbar')[0].classList.add('mm-hidden');
 
         var crumbs: string[] = [],
-            breadcrumbs: HTMLElement = DOM.create(
-                'span.mm-navbar__breadcrumbs'
-            ),
-            current: HTMLElement = panel,
-            first: boolean = true;
+            breadcrumbs = DOM.create('span.mm-navbar__breadcrumbs'),
+            current = panel,
+            first = true;
 
         while (current) {
-            if (!current.matches('.mm-panel')) {
-                current = current.closest('.mm-panel') as HTMLElement;
-            }
+            current = current.closest('.mm-panel') as HTMLElement;
 
             if (!current.parentElement.matches('.mm-listitem_vertical')) {
-                var text = DOM.find(current, '.mm-navbar__title')[0]
-                    .textContent;
-                if (text.length) {
-                    crumbs.unshift(
-                        first
-                            ? '<span>' + text + '</span>'
-                            : '<a href="#' + current.id + '">' + text + '</a>'
-                    );
+                let title = DOM.find(current, '.mm-navbar__title')[0];
+                if (title) {
+                    let text = title.textContent;
+                    if (text.length) {
+                        crumbs.unshift(
+                            first
+                                ? '<span>' + text + '</span>'
+                                : '<a href="#' +
+                                      current.id +
+                                      '">' +
+                                      text +
+                                      '</a>'
+                        );
+                    }
                 }
-
                 first = false;
             }
             current = current['mmParent'];
@@ -56,9 +57,7 @@ export default function(this: Mmenu, navbar: HTMLElement) {
     //	Update for to opened panel
     this.bind('openPanel:start', (panel: HTMLElement) => {
         var crumbs = panel.querySelector('.mm-navbar__breadcrumbs');
-        if (crumbs) {
-            breadcrumbs.innerHTML = crumbs.innerHTML;
-        }
+        breadcrumbs.innerHTML = crumbs ? crumbs.innerHTML : '';
     });
 
     //	Add screenreader / aria support

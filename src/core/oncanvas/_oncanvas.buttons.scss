@@ -10,9 +10,11 @@ $mm_module: '.mm-btn';
 
     &:before,
     &:after {
-        border-color: var(--mm-color-button);
-        border-width: 2px;
-        border-style: solid;
+        @if ($mm_IE11Fallbacks) {
+            border: 2px solid $mm_dimmedTextColor;
+        }
+
+        border: 2px solid var(--mm-color-button);
     }
 }
 

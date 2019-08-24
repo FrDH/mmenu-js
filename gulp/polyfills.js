@@ -20,8 +20,8 @@ module.exports = cb => {
         dir.input + '/_polyfills/dom.prepend.js',
         dir.input + '/_polyfills/dom.append.js',
         dir.input + '/_polyfills/dom.before.js',
-        dir.input + '/_polyfills/dom.remove.js',
-        dir.input + '/_polyfills/css.variables.js'
+        dir.input + '/_polyfills/dom.remove.js'
+        // dir.input + '/_polyfills/css.variables.js'
     ])
         .pipe(concat('mmenu.polyfills.js'))
         .pipe(dest(dir.output));

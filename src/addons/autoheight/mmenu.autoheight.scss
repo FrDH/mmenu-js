@@ -1,9 +1,6 @@
 @import '../../mixins', '../../includes', '../../variables';
 
 .mm-menu_autoheight {
-    transition: none $mm_transitionDuration $mm_transitionFunction;
-    transition-property: transform, height;
-
     &:not(.mm-menu_offcanvas) {
         position: relative;
     }

@@ -21,6 +21,10 @@
             border-bottom: none;
 
             &:first-child {
+                @if ($mm_IE11Fallbacks) {
+                    border-top: 1px solid $mm_borderColor;
+                }
+
                 border-top: 1px solid var(--mm-color-border);
             }
         }

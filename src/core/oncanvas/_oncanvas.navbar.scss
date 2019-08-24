@@ -1,6 +1,17 @@
 $mm_module: '.mm-navbar';
 
 #{$mm_module} {
+    @if ($mm_IE11Fallbacks) {
+        min-height: $mm_navbarSize;
+        border-bottom: 1px solid $mm_borderColor;
+        background: $mm_backgroundColor;
+        color: $mm_dimmedTextColor;
+
+        > * {
+            min-height: $mm_navbarSize;
+        }
+    }
+
     display: flex;
     min-height: var(--mm-navbar-size);
     border-bottom: 1px solid var(--mm-color-border);
@@ -11,17 +22,18 @@ $mm_module: '.mm-navbar';
     opacity: 1;
     transition: opacity $mm_transitionDuration $mm_transitionFunction;
 
-    &_sticky {
-        position: sticky;
-        top: 0;
-        z-index: 1;
+    @supports (position: sticky) {
+        &_sticky {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
     }
 
     > * {
         flex-grow: 1;
         display: flex;
         align-items: center;
-        min-height: var(--mm-navbar-size);
         box-sizing: border-box;
     }
 }

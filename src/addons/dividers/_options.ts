@@ -1,7 +1,6 @@
 const options: mmOptionsDividers = {
     add: false,
-    addTo: 'panels',
-    type: null
+    addTo: 'panels'
 };
 export default options;
 

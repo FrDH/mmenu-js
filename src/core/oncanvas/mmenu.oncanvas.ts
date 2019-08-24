@@ -759,68 +759,92 @@ export default class Mmenu {
         }
 
         /** The parent listitem. */
-        var parent: HTMLElement = panel['mmParent'];
+        let parentListitem: HTMLElement = null;
 
-        /** The navbar element. */
-        var navbar: HTMLElement = DOM.create('div.mm-navbar');
+        /** The parent panel. */
+        let parentPanel: HTMLElement = null;
 
-        if (this.opts.navbar.sticky) {
-            navbar.classList.add('mm-navbar_sticky');
+        //  The parent panel was specified in the data-mm-parent attribute.
+        if (panel.dataset.mmParent) {
+            parentPanel = DOM.find(this.node.pnls, panel.dataset.mmParent)[0];
         }
 
-        /** Title in the navbar. */
-        var text = this._getPanelTitle(panel, this.opts.navbar.title);
+        //  The parent panel from a listitem.
+        else {
+            parentListitem = panel['mmParent'];
 
-        /** Href for the title. */
-        var href = '';
-
-        if (parent) {
-            if (parent.matches('.mm-listitem_vertical')) {
-                return;
+            if (parentListitem) {
+                parentPanel = parentListitem.closest(
+                    '.mm-panel'
+                ) as HTMLElement;
             }
+        }
 
-            let opener: HTMLElement;
-
-            //	Listview, the panel wrapping this panel
-            if (parent.matches('.mm-listitem')) {
-                opener = DOM.children(parent, '.mm-listitem__text')[0];
-
-                //	Non-listview, the first anchor in the parent panel that links to this panel
-            } else {
-                opener = panel.closest('.mm-panel') as HTMLElement;
-                opener = DOM.find(opener, 'a[href="#' + panel.id + '"]')[0];
-            }
-
-            let id = opener.closest('.mm-panel').id;
-            text = this._getPanelTitle(panel, opener.textContent);
-
-            switch (this.opts.navbar.titleLink) {
-                case 'anchor':
-                    href = opener.getAttribute('href');
-                    break;
-
-                case 'parent':
-                    href = '#' + id;
-                    break;
-            }
-
-            let prev = DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
-            prev.setAttribute('href', '#' + id);
-
-            navbar.append(prev);
-        } else if (!this.opts.navbar.title) {
+        //  No navbar needed for vertical submenus.
+        if (parentListitem && parentListitem.matches('.mm-listitem_vertical')) {
             return;
         }
 
+        //  No navbar needed if no parent AND no title.
+        if (!parentPanel && !this.opts.navbar.title) {
+            return;
+        }
+
+        /** The navbar element. */
+        let navbar = DOM.create('div.mm-navbar');
+
+        //  Hide navbar if specified in options.
         if (!this.opts.navbar.add) {
             navbar.classList.add('mm-hidden');
         }
 
-        let title = DOM.create('a.mm-navbar__title');
-        title.innerHTML = text as string;
+        //  Sticky navbars.
+        else if (this.opts.navbar.sticky) {
+            navbar.classList.add('mm-navbar_sticky');
+        }
 
-        if (href) {
-            title.setAttribute('href', href);
+        //  Add the back button.
+        if (parentPanel) {
+            /** The back button. */
+            let prev = DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
+            prev.setAttribute('href', '#' + parentPanel.id);
+
+            navbar.append(prev);
+        }
+
+        /** The anchor that opens the panel. */
+        let opener: HTMLElement = null;
+
+        //  The anchor is in a listitem.
+        if (parentListitem) {
+            opener = DOM.children(parentListitem, '.mm-listitem__text')[0];
+        }
+
+        //  The anchor is in a panel.
+        else if (parentPanel) {
+            opener = DOM.find(parentPanel, 'a[href="#' + panel.id + '"]')[0];
+        }
+
+        //  Add the title.
+        let title = DOM.create('a.mm-navbar__title');
+        title.innerHTML =
+            panel.dataset.mmTitle ||
+            (opener ? opener.textContent : '') ||
+            this.i18n(this.opts.navbar.title) ||
+            this.i18n('Menu');
+
+        switch (this.opts.navbar.titleLink) {
+            case 'anchor':
+                if (opener) {
+                    title.setAttribute('href', opener.getAttribute('href'));
+                }
+                break;
+
+            case 'parent':
+                if (parentPanel) {
+                    title.setAttribute('href', '#' + parentPanel.id);
+                }
+                break;
         }
 
         navbar.append(title);
@@ -1057,46 +1081,5 @@ export default class Mmenu {
      */
     i18n(text: string): string {
         return i18n.get(text, this.conf.language);
-    }
-
-    /**
-     * Find the title for a panel.
-     * @param 	{HTMLElement}			panel 		Panel to search in.
-     * @param 	{string|Function} 		[dfault] 	Fallback/default title.
-     * @return	{string}							The title for the panel.
-     */
-    _getPanelTitle(
-        panel: HTMLElement,
-        dfault?: string | Function
-    ): string | object {
-        var title: string;
-
-        //	Function
-        if (typeof this.opts.navbar.title == 'function') {
-            title = (this.opts.navbar.title as Function).call(panel);
-        }
-
-        //	Data attr
-        if (typeof title == 'undefined') {
-            title = panel.getAttribute('mm-data-title');
-        }
-
-        if (typeof title == 'string' && title.length) {
-            return title;
-        }
-
-        //	Fallback
-        if (typeof dfault == 'string') {
-            return this.i18n(dfault);
-        } else if (typeof dfault == 'function') {
-            return this.i18n((dfault as Function).call(panel));
-        }
-
-        //	Default
-        if (typeof Mmenu.options.navbar.title == 'string') {
-            return this.i18n(Mmenu.options.navbar.title);
-        }
-
-        return this.i18n('Menu');
     }
 }

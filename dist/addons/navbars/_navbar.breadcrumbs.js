@@ -12,16 +12,20 @@ export default function (navbar) {
         DOM.children(panel, '.mm-navbar')[0].classList.add('mm-hidden');
         var crumbs = [], breadcrumbs = DOM.create('span.mm-navbar__breadcrumbs'), current = panel, first = true;
         while (current) {
-            if (!current.matches('.mm-panel')) {
-                current = current.closest('.mm-panel');
-            }
+            current = current.closest('.mm-panel');
             if (!current.parentElement.matches('.mm-listitem_vertical')) {
-                var text = DOM.find(current, '.mm-navbar__title')[0]
-                    .textContent;
-                if (text.length) {
-                    crumbs.unshift(first
-                        ? '<span>' + text + '</span>'
-                        : '<a href="#' + current.id + '">' + text + '</a>');
+                var title = DOM.find(current, '.mm-navbar__title')[0];
+                if (title) {
+                    var text = title.textContent;
+                    if (text.length) {
+                        crumbs.unshift(first
+                            ? '<span>' + text + '</span>'
+                            : '<a href="#' +
+                                current.id +
+                                '">' +
+                                text +
+                                '</a>');
+                    }
                 }
                 first = false;
             }
@@ -38,9 +42,7 @@ export default function (navbar) {
     //	Update for to opened panel
     this.bind('openPanel:start', function (panel) {
         var crumbs = panel.querySelector('.mm-navbar__breadcrumbs');
-        if (crumbs) {
-            breadcrumbs.innerHTML = crumbs.innerHTML;
-        }
+        breadcrumbs.innerHTML = crumbs ? crumbs.innerHTML : '';
     });
     //	Add screenreader / aria support
     this.bind('initNavbar:after:sr-aria', function (panel) {

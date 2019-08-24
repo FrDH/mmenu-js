@@ -23,12 +23,6 @@ export default function () {
             });
         });
     });
-    //	Add classname to the menu to specify the type of the dividers
-    if (options.type) {
-        this.bind('initMenu:after', function () {
-            _this.node.menu.classList.add('mm-menu_dividers-' + options.type);
-        });
-    }
     //	Add dividers
     if (options.add) {
         this.bind('initListview:after', function (panel) {

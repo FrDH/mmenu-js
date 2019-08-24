@@ -2,27 +2,36 @@
 
 @if ($mm_include_toggles) {
     input.mm-toggle {
-        appearance: none !important;
-        border: none !important;
-        background: var(--mm-color-border);
-        border-radius: $mm_toggleHeight;
-        cursor: pointer;
+        @if ($mm_IE11Fallbacks) {
+            margin-top: ($mm_listitemSize - $mm_toggleHeight) / 2;
+            background: $mm_borderColor;
+
+            &:before {
+                background: $mm_backgroundColor;
+            }
+        }
+
         display: inline-block;
         min-width: $mm_toggleWidth;
         width: $mm_toggleWidth;
         height: $mm_toggleHeight;
         margin: 0 $mm_padding;
         margin-top: calc((var(--mm-listitem-size) - #{$mm_toggleHeight}) / 2);
+        border: none !important;
+        background: var(--mm-color-border);
+        border-radius: $mm_toggleHeight;
+        appearance: none !important;
+        cursor: pointer;
         transition: background-color 0.2s ease;
 
         &:before {
             content: '';
-            background: var(--mm-color-background);
-            border-radius: $mm_toggleHeight;
             display: block;
             width: $mm_toggleHeight - 2;
             height: $mm_toggleHeight - 2;
             margin: 1px;
+            border-radius: $mm_toggleHeight;
+            background: var(--mm-color-background);
             transition: transform 0.2s ease;
         }
 
@@ -38,6 +47,10 @@
 
 @if ($mm_include_checks) {
     input.mm-check {
+        @if ($mm_IE11Fallbacks) {
+            margin-top: ($mm_listitemSize - $mm_checkHeight) / 2;
+        }
+
         appearance: none !important;
         border: none !important;
         background: none !important;
@@ -49,14 +62,14 @@
         margin-top: calc((var(--mm-listitem-size) - #{$mm_checkHeight}) / 2);
 
         &:before {
-            border-color: var(--mm-color-text);
             content: '';
             display: block;
-            border-left: 3px solid;
-            border-bottom: 3px solid;
             width: 40%;
             height: 20%;
             margin: 25% 0 0 20%;
+            border-left: 3px solid;
+            border-bottom: 3px solid;
+            border-color: var(--mm-color-text);
             opacity: 0.3;
             transform: rotate(-45deg);
             transition: opacity 0.2s ease;

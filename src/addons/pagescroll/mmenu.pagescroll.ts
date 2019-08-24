@@ -22,7 +22,10 @@ export default function(this: Mmenu) {
         if (section) {
             // section.scrollIntoView({ behavior: 'smooth' });
             window.scrollTo({
-                top: section.getBoundingClientRect().top - configs.scrollOffset,
+                top:
+                    section.getBoundingClientRect().top +
+                    document.scrollingElement.scrollTop -
+                    configs.scrollOffset,
                 behavior: 'smooth'
             });
         }

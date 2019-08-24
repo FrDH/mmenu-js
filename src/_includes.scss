@@ -1,6 +1,8 @@
 $mm_include_rtl: true !default;
 $mm_include_vertical: true !default;
 
+$mm_IE11Fallbacks: true !default;
+
 $mm_include_offcanvas: true !default;
 $mm_include_offcanvas_blocker: $mm_include_offcanvas !default;
 
@@ -13,7 +15,6 @@ $mm_include_columns: true !default;
 $mm_include_counters: true !default;
 
 $mm_include_dividers: true !default;
-$mm_include_dividers_light: true !default;
 
 $mm_include_drag: true !default;
 
