@@ -589,7 +589,6 @@ export default class Mmenu {
 
     /**
      * Initialize panels.
-     * @param {array} [panels] Panels to initialize.
      */
     _initPanels() {
         //	Invoke "before" hook.
@@ -691,6 +690,7 @@ export default class Mmenu {
             return null;
         }
 
+        /** The original ID on the node. */
         var id = panel.id || uniqueId();
 
         //  Vertical panel.

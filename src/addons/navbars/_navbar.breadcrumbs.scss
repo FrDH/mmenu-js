@@ -4,6 +4,7 @@
 
         flex: 1 1 50%;
         display: flex;
+        justify-content: flex-start;
         padding: 0 $mm_panelPadding;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;

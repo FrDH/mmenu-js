@@ -58,6 +58,27 @@
 
         /* ADD-ONS */
 
+        //  New Drag add-on with lesser options.
+        if (this.opts.drag) {
+            //  Swiping to close panels no longer supported.
+            if (this.opts.drag.panels) {
+                deprecated(
+                    'Swiping to close panels using the "drag" add-on',
+                    null,
+                    '8.3.0'
+                );
+            }
+
+            //  "drag.menu" Suboptions now are the "drag" options.
+            if (this.opts.drag.menu) {
+                deprecated(
+                    'The "drag.menu" options for the "drag" add-on',
+                    'the "drag" option',
+                    '8.3.0'
+                );
+            }
+        }
+
         // The dividers.type option is removed.
         if (this.opts.dividers) {
             if (this.opts.dividers.type == 'light') {

@@ -11,6 +11,7 @@ $mm_module: '.mm-panel';
         }
     }
 
+    z-index: 0;
     box-sizing: border-box;
     width: 100%;
 
@@ -65,7 +66,6 @@ $mm_module: '.mm-panel';
         right: 0;
         top: 0;
         bottom: 0;
-        z-index: 0;
     }
 }
 

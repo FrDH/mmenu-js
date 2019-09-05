@@ -1,7 +1,7 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import { extendShorthandOptions } from './_options';
-import dragMenu from './_drag.menu';
+import dragOpen from './_drag.open';
 import { extend } from '../../_modules/helpers';
 
 //	Add the options and configs.
@@ -16,9 +16,9 @@ export default function(this: Mmenu) {
     this.opts.drag = extend(options, Mmenu.options.drag);
 
     //	Drag open the menu
-    if (options.menu.open) {
+    if (options.open) {
         this.bind('setPage:after', page => {
-            dragMenu.call(this, options.menu.node || page);
+            dragOpen.call(this, options.node || page);
         });
     }
 }

@@ -406,7 +406,6 @@ var Mmenu = /** @class */ (function () {
     };
     /**
      * Initialize panels.
-     * @param {array} [panels] Panels to initialize.
      */
     Mmenu.prototype._initPanels = function () {
         var _this = this;
@@ -491,6 +490,7 @@ var Mmenu = /** @class */ (function () {
         if (panel.matches('.mm-nopanel')) {
             return null;
         }
+        /** The original ID on the node. */
         var id = panel.id || uniqueId();
         //  Vertical panel.
         var vertical = panel.matches('.' + this.conf.classNames.vertical) ||

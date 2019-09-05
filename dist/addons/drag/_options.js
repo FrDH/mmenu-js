@@ -1,11 +1,6 @@
 var options = {
-    menu: {
-        open: false,
-        node: null
-    },
-    panels: {
-        close: false
-    }
+    open: false,
+    node: null
 };
 export default options;
 /**
@@ -17,28 +12,11 @@ export default options;
 export function extendShorthandOptions(options) {
     if (typeof options == 'boolean') {
         options = {
-            menu: options,
-            panels: options
+            open: options
         };
     }
     if (typeof options != 'object') {
         options = {};
-    }
-    if (typeof options.menu == 'boolean') {
-        options.menu = {
-            open: options.menu
-        };
-    }
-    if (typeof options.menu != 'object') {
-        options.menu = {};
-    }
-    if (typeof options.panels == 'boolean') {
-        options.panels = {
-            close: options.panels
-        };
-    }
-    if (typeof options.panels != 'object') {
-        options.panels = {};
     }
     return options;
 }

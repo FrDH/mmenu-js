@@ -23,7 +23,7 @@ export default function () {
         _this.node.menu.classList.add('mm-menu_dropdown');
         if (typeof options.position.of != 'string') {
             var id = originalId(_this.node.menu.id);
-            if (id && id.length) {
+            if (id) {
                 options.position.of = '[href="#' + id + '"]';
             }
         }
@@ -38,12 +38,12 @@ export default function () {
             events[1] = events[0];
         }
         if (events[0] == 'hover') {
-            button.addEventListener('mouseenter', function (evnt) {
+            button.addEventListener('mouseenter', function () {
                 _this.open();
             }, { passive: true });
         }
         if (events[1] == 'hover') {
-            _this.node.menu.addEventListener('mouseleave', function (evnt) {
+            _this.node.menu.addEventListener('mouseleave', function () {
                 _this.close();
             }, { passive: true });
         }
@@ -66,8 +66,8 @@ export default function () {
      */
     var getPosition = function (dir, obj) {
         var css = obj[0], cls = obj[1];
-        var _scrollPos = dir == 'x' ? 'scrollX' : 'scrollY', _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight', _startPos = dir == 'x' ? 'left' : 'top', _stopPos = dir == 'x' ? 'right' : 'bottom', _size = dir == 'x' ? 'width' : 'height', _winSize = dir == 'x' ? 'innerWidth' : 'innerHeight', _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight', _position = null;
-        var scrollPos = window[_scrollPos], startPos = DOM.offset(button, _startPos) - scrollPos, stopPos = startPos + button[_outerSize], windowSize = window[_winSize];
+        var _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight', _startPos = dir == 'x' ? 'left' : 'top', _stopPos = dir == 'x' ? 'right' : 'bottom', _size = dir == 'x' ? 'width' : 'height', _winSize = dir == 'x' ? 'innerWidth' : 'innerHeight', _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight', _position = null;
+        var startPos = DOM.offset(button, _startPos), stopPos = startPos + button[_outerSize], windowSize = window[_winSize];
         /** Offset for the menu relative to the button. */
         var offs = configs.offset.button[dir] + configs.offset.viewport[dir];
         //	Position set in option

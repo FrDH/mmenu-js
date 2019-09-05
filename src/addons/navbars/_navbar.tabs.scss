@@ -4,7 +4,6 @@ $mm_module: '.mm-navbar';
     //  All tabs.
     #{$mm_module}_tabs {
         > * {
-            justify-content: center;
             padding: 0 $mm_padding;
             border: 1px solid transparent;
         }

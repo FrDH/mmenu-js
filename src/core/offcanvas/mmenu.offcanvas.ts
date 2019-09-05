@@ -47,7 +47,7 @@ export default function(this: Mmenu) {
             });
         }
 
-        this.node.wrpr = document.documentElement;
+        this.node.wrpr = document.body;
 
         //	Prepend to the <body>
         document
@@ -370,19 +370,6 @@ const initWindow = function(this: Mmenu) {
         if (evnt.keyCode == 9) {
             if (this.node.wrpr.matches('.mm-wrapper_opened')) {
                 evnt.preventDefault();
-            }
-        }
-    });
-
-    //	Set "page" element min-height to window height
-    events.off(window, 'resize.page');
-    events.on(window, 'resize.page', evnt => {
-        if (Mmenu.node.page) {
-            if (
-                this.node.wrpr.matches('.mm-wrapper_opening') ||
-                (evnt as any).force
-            ) {
-                Mmenu.node.page.style.minHeight = window.innerHeight + 'px';
             }
         }
     });

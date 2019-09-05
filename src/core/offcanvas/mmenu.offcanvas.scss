@@ -16,9 +16,15 @@
     &_opened {
         overflow-x: hidden;
         position: relative;
+
+        .mm-page {
+            min-height: 100vh;
+        }
     }
-    &_background .mm-page {
-        background: inherit;
+    &_background {
+        .mm-page {
+            background: inherit;
+        }
     }
 }
 

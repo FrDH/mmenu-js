@@ -34,6 +34,7 @@ $mm_module: '.mm-navbar';
         flex-grow: 1;
         display: flex;
         align-items: center;
+        justify-content: center;
         box-sizing: border-box;
     }
 }
@@ -47,7 +48,6 @@ $mm_module: '.mm-navbar';
 
     flex: 1 1 50%;
     display: flex;
-    justify-content: center;
     padding-left: $mm_panelPadding;
     padding-right: $mm_panelPadding;
 

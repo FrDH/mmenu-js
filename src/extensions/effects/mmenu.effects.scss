@@ -48,13 +48,4 @@
     .mm-menu_fx-panels-slide-100 .mm-panel_opened-parent {
         transform: translate3d(-100%, 0, 0);
     }
-
-    //	Slide panels Up
-    .mm-panel_fx-slide-up {
-        transform: translate3d(0, 100%, 0);
-
-        &.mm-panel_opened {
-            transform: translate3d(0, 0%, 0);
-        }
-    }
 }

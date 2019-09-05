@@ -34,7 +34,7 @@ export default function () {
                 elem.id = 'mm-' + elem.id;
             });
         }
-        _this.node.wrpr = document.documentElement;
+        _this.node.wrpr = document.body;
         //	Prepend to the <body>
         document
             .querySelector(configs.menu.insertSelector)[configs.menu.insertMethod](_this.node.menu);
@@ -288,16 +288,6 @@ var initWindow = function () {
         if (evnt.keyCode == 9) {
             if (_this.node.wrpr.matches('.mm-wrapper_opened')) {
                 evnt.preventDefault();
-            }
-        }
-    });
-    //	Set "page" element min-height to window height
-    events.off(window, 'resize.page');
-    events.on(window, 'resize.page', function (evnt) {
-        if (Mmenu.node.page) {
-            if (_this.node.wrpr.matches('.mm-wrapper_opening') ||
-                evnt.force) {
-                Mmenu.node.page.style.minHeight = window.innerHeight + 'px';
             }
         }
     });

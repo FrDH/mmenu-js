@@ -1,24 +1,24 @@
 @import '../../mixins', '../../includes', '../../variables';
 
-.mm-menu_dropdown {
-    box-shadow: $mm_dropdownShadow;
-    height: percentage($mm_menuHeight);
-}
-
-.mm-wrapper_dropdown {
-    .mm-slideout {
-        transform: none !important;
-        z-index: 0;
+@if ($mm_include_dropdown) {
+    .mm-menu_dropdown {
+        box-shadow: $mm_dropdownShadow;
+        height: percentage($mm_menuHeight);
     }
 
-    @if ($mm_include_offcanvas_blocker) {
-        .mm-wrapper__blocker {
-            transition-delay: 0s !important;
-            z-index: 1;
+    .mm-wrapper_dropdown {
+        .mm-slideout {
+            transform: none !important;
+            z-index: 0;
         }
-    }
 
-    @if ($mm_include_dropdown) {
+        @if ($mm_include_offcanvas_blocker) {
+            .mm-wrapper__blocker {
+                transition-delay: 0s !important;
+                z-index: 1;
+            }
+        }
+
         .mm-menu_dropdown {
             z-index: 2;
         }
@@ -46,7 +46,7 @@
                 height: 15px;
 
                 position: absolute;
-                z-index: 0;
+                z-index: -1;
 
                 transform: rotate(45deg);
             }

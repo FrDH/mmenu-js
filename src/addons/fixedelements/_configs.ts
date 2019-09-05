@@ -1,10 +1,5 @@
-const configs : mmConfigsFixedelements = {
-	fixed: {
-		insertMethod: 'append',
-		insertSelector: 'body'
-	},
-	sticky: {
-		offset : 0
-	}
+const configs: mmConfigsFixedelements = {
+    insertMethod: 'append',
+    insertSelector: 'body'
 };
 export default configs;

@@ -427,7 +427,7 @@ Mmenu.prototype.search = function(
             var add = false;
 
             //  The listitem should be shown if:
-            //      1) The text matches the query and
+            //          1) The text matches the query and
             //          2a) The text is a open-button and
             //          2b) the option showSubPanels is set to true.
             //      or  3a) The text is not an anchor and
@@ -447,14 +447,16 @@ Mmenu.prototype.search = function(
                     if (options.showSubPanels) {
                         add = true;
                     }
-                    //  3a
-                } else if (!text.matches('a')) {
+                }
+                //  3a
+                else if (!text.matches('a')) {
                     //  3b
                     if (options.showTextItems) {
                         add = true;
                     }
-                    // 4
-                } else {
+                }
+                // 4
+                else {
                     add = true;
                 }
             }
@@ -483,11 +485,11 @@ Mmenu.prototype.search = function(
                     //  Add a divider to indicate in what panel the listitems were.
                     if (options.panel.dividers) {
                         let divider = DOM.create('li.mm-divider');
-                        divider.innerHTML = panel.querySelector(
-                            '.mm-navbar__title'
-                        ).innerHTML;
-
-                        allitems.push(divider);
+                        let title = DOM.find(panel, '.mm-navbar__title')[0];
+                        if (title) {
+                            divider.innerHTML = title.innerHTML;
+                            allitems.push(divider);
+                        }
                     }
 
                     listitems.forEach(listitem => {

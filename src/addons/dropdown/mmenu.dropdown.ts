@@ -30,7 +30,7 @@ export default function(this: Mmenu) {
 
         if (typeof options.position.of != 'string') {
             let id = originalId(this.node.menu.id);
-            if (id && id.length) {
+            if (id) {
                 options.position.of = '[href="#' + id + '"]';
             }
         }
@@ -51,7 +51,7 @@ export default function(this: Mmenu) {
         if (events[0] == 'hover') {
             button.addEventListener(
                 'mouseenter',
-                evnt => {
+                () => {
                     this.open();
                 },
                 { passive: true }
@@ -61,7 +61,7 @@ export default function(this: Mmenu) {
         if (events[1] == 'hover') {
             this.node.menu.addEventListener(
                 'mouseleave',
-                evnt => {
+                () => {
                     this.close();
                 },
                 { passive: true }
@@ -95,8 +95,7 @@ export default function(this: Mmenu) {
         var css = obj[0],
             cls = obj[1];
 
-        var _scrollPos = dir == 'x' ? 'scrollX' : 'scrollY',
-            _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight',
+        var _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight',
             _startPos = dir == 'x' ? 'left' : 'top',
             _stopPos = dir == 'x' ? 'right' : 'bottom',
             _size = dir == 'x' ? 'width' : 'height',
@@ -104,8 +103,7 @@ export default function(this: Mmenu) {
             _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight',
             _position = null;
 
-        var scrollPos = window[_scrollPos],
-            startPos = DOM.offset(button, _startPos) - scrollPos,
+        var startPos = DOM.offset(button, _startPos),
             stopPos = startPos + button[_outerSize],
             windowSize = window[_winSize];
 

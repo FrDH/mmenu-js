@@ -50,10 +50,10 @@
 		<script src="../dist/mmenu.polyfills.js"></script>
 		<script src="../dist/mmenu.js"></script>
 		<script>
-			new Mmenu( document.querySelector( '#menu' ) );
+			new Mmenu( document.querySelector( '#menu' ));
 
 			document.addEventListener( 'click', function( evnt ) {
-				let anchor = evnt.target.closest( 'a[href^="#/"]' );
+				var anchor = evnt.target.closest( 'a[href^="#/"]' );
 				if ( anchor ) {
 					alert('Thank you for clicking, but that\'s a demo link.');
 					evnt.preventDefault();
