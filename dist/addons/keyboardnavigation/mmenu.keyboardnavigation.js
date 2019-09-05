@@ -1,13 +1,14 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
-import * as DOM from '../../core/_dom';
-import * as events from '../../core/_eventlisteners';
-import * as support from '../../core/_support';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import * as events from '../../_modules/eventlisteners';
+import * as support from '../../_modules/support';
+import { extend } from '../../_modules/helpers';
 //  Add the options.
 Mmenu.options.keyboardNavigation = options;
 export default function () {
+    var _this = this;
     //	Keyboard navigation on touchscreens opens the virtual keyboard :/
     //	Lets prevent that.
     if (support.touch) {
@@ -17,35 +18,35 @@ export default function () {
     this.opts.keyboardNavigation = extend(options, Mmenu.options.keyboardNavigation);
     //	Enable keyboard navigation
     if (options.enable) {
-        let menuStart = DOM.create('button.mm-tabstart.mm-sronly'), menuEnd = DOM.create('button.mm-tabend.mm-sronly'), blockerEnd = DOM.create('button.mm-tabend.mm-sronly');
-        this.bind('initMenu:after', () => {
+        var menuStart_1 = DOM.create('button.mm-tabstart.mm-sronly'), menuEnd_1 = DOM.create('button.mm-tabend.mm-sronly'), blockerEnd_1 = DOM.create('button.mm-tabend.mm-sronly');
+        this.bind('initMenu:after', function () {
             if (options.enhance) {
-                this.node.menu.classList.add('mm-menu_keyboardfocus');
+                _this.node.menu.classList.add('mm-menu_keyboardfocus');
             }
-            initWindow.call(this, options.enhance);
+            initWindow.call(_this, options.enhance);
         });
-        this.bind('initOpened:before', () => {
-            this.node.menu.prepend(menuStart);
-            this.node.menu.append(menuEnd);
-            DOM.children(this.node.menu, '.mm-navbars-top, .mm-navbars-bottom').forEach(navbars => {
-                navbars.querySelectorAll('.mm-navbar__title').forEach(title => {
+        this.bind('initOpened:before', function () {
+            _this.node.menu.prepend(menuStart_1);
+            _this.node.menu.append(menuEnd_1);
+            DOM.children(_this.node.menu, '.mm-navbars-top, .mm-navbars-bottom').forEach(function (navbars) {
+                navbars.querySelectorAll('.mm-navbar__title').forEach(function (title) {
                     title.setAttribute('tabindex', '-1');
                 });
             });
         });
-        this.bind('initBlocker:after', () => {
-            Mmenu.node.blck.append(blockerEnd);
+        this.bind('initBlocker:after', function () {
+            Mmenu.node.blck.append(blockerEnd_1);
             DOM.children(Mmenu.node.blck, 'a')[0].classList.add('mm-tabstart');
         });
-        let focusable = 'input, select, textarea, button, label, a[href]';
-        const setFocus = (panel) => {
+        var focusable_1 = 'input, select, textarea, button, label, a[href]';
+        var setFocus = function (panel) {
             panel =
-                panel || DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+                panel || DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
             var focus = null;
             //	Focus already is on an element in a navbar in this menu.
             var navbar = document.activeElement.closest('.mm-navbar');
             if (navbar) {
-                if (navbar.closest('.mm-menu') == this.node.menu) {
+                if (navbar.closest('.mm-menu') == _this.node.menu) {
                     return;
                 }
             }
@@ -55,20 +56,20 @@ export default function () {
                 focus = DOM.find(panel, '.mm-listview a[href]:not(.mm-hidden)')[0];
                 //	First focusable and visible element in the current panel.
                 if (!focus) {
-                    focus = DOM.find(panel, focusable + ':not(.mm-hidden)')[0];
+                    focus = DOM.find(panel, focusable_1 + ':not(.mm-hidden)')[0];
                 }
                 //	First focusable and visible element in a navbar.
                 if (!focus) {
-                    let elements = [];
-                    DOM.children(this.node.menu, '.mm-navbars_top, .mm-navbars_bottom').forEach(navbar => {
-                        elements.push(...DOM.find(navbar, focusable + ':not(.mm-hidden)'));
+                    var elements_1 = [];
+                    DOM.children(_this.node.menu, '.mm-navbars_top, .mm-navbars_bottom').forEach(function (navbar) {
+                        elements_1.push.apply(elements_1, DOM.find(navbar, focusable_1 + ':not(.mm-hidden)'));
                     });
-                    focus = elements[0];
+                    focus = elements_1[0];
                 }
             }
             //	Default.
             if (!focus) {
-                focus = DOM.children(this.node.menu, '.mm-tabstart')[0];
+                focus = DOM.children(_this.node.menu, '.mm-tabstart')[0];
             }
             if (focus) {
                 focus.focus();
@@ -77,9 +78,9 @@ export default function () {
         this.bind('open:finish', setFocus);
         this.bind('openPanel:finish', setFocus);
         //	Add screenreader / aria support.
-        this.bind('initOpened:after:sr-aria', () => {
-            [this.node.menu, Mmenu.node.blck].forEach(element => {
-                DOM.children(element, '.mm-tabstart, .mm-tabend').forEach(tabber => {
+        this.bind('initOpened:after:sr-aria', function () {
+            [_this.node.menu, Mmenu.node.blck].forEach(function (element) {
+                DOM.children(element, '.mm-tabstart, .mm-tabend').forEach(function (tabber) {
                     Mmenu.sr_aria(tabber, 'hidden', true);
                     Mmenu.sr_role(tabber, 'presentation');
                 });
@@ -91,16 +92,17 @@ export default function () {
  * Initialize the window for keyboard navigation.
  * @param {boolean} enhance - Whether or not to also rich enhance the keyboard behavior.
  **/
-const initWindow = function (enhance) {
+var initWindow = function (enhance) {
+    var _this = this;
     //	Re-enable tabbing in general
     events.off(document.body, 'keydown.tabguard');
     //	Intersept the target when tabbing.
     events.off(document.body, 'focusin.tabguard');
-    events.on(document.body, 'focusin.tabguard', (evnt) => {
-        if (this.node.wrpr.matches('.mm-wrapper_opened')) {
-            let target = evnt.target;
+    events.on(document.body, 'focusin.tabguard', function (evnt) {
+        if (_this.node.wrpr.matches('.mm-wrapper_opened')) {
+            var target = evnt.target;
             if (target.matches('.mm-tabend')) {
-                let next;
+                var next = void 0;
                 //	Jump from menu to blocker.
                 if (target.parentElement.matches('.mm-menu')) {
                     if (Mmenu.node.blck) {
@@ -123,11 +125,11 @@ const initWindow = function (enhance) {
     });
     //	Add Additional keyboard behavior.
     events.off(document.body, 'keydown.navigate');
-    events.on(document.body, 'keydown.navigate', (evnt) => {
+    events.on(document.body, 'keydown.navigate', function (evnt) {
         var target = evnt.target;
         var menu = target.closest('.mm-menu');
         if (menu) {
-            let api = menu['mmApi'];
+            var api = menu['mmApi'];
             if (!target.matches('input, textarea')) {
                 switch (evnt.keyCode) {
                     //	press enter to toggle and check
@@ -158,19 +160,19 @@ const initWindow = function (enhance) {
                     }
                 }
                 else {
-                    let api = menu['mmApi'];
+                    var api_1 = menu['mmApi'];
                     switch (evnt.keyCode) {
                         //	close submenu with backspace
                         case 8:
-                            let parent = DOM.find(menu, '.mm-panel_opened')[0]['mmParent'];
-                            if (parent) {
-                                api.openPanel(parent.closest('.mm-panel'));
+                            var parent_1 = DOM.find(menu, '.mm-panel_opened')[0]['mmParent'];
+                            if (parent_1) {
+                                api_1.openPanel(parent_1.closest('.mm-panel'));
                             }
                             break;
                         //	close menu with esc
                         case 27:
                             if (menu.matches('.mm-menu_offcanvas')) {
-                                api.close();
+                                api_1.close();
                             }
                             break;
                     }

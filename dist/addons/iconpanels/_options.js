@@ -1,4 +1,4 @@
-const options = {
+var options = {
     add: false,
     blockPanel: true,
     hideDivider: false,

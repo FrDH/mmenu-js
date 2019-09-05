@@ -12,18 +12,21 @@ export function add(query, yes, no) {
         query = '(min-width: ' + query + 'px)';
     }
     listeners[query] = listeners[query] || [];
-    listeners[query].push({ yes, no });
+    listeners[query].push({ yes: yes, no: no });
 }
 /**
  * Initialize the matchMedia listener.
  */
 export function watch() {
-    for (let query in listeners) {
-        let mqlist = window.matchMedia(query);
+    var _loop_1 = function (query) {
+        var mqlist = window.matchMedia(query);
         fire(query, mqlist);
-        mqlist.onchange = evnt => {
+        mqlist.onchange = function (evnt) {
             fire(query, mqlist);
         };
+    };
+    for (var query in listeners) {
+        _loop_1(query);
     }
 }
 /**
@@ -34,7 +37,7 @@ export function watch() {
  */
 export function fire(query, mqlist) {
     var fn = mqlist.matches ? 'yes' : 'no';
-    for (let m = 0; m < listeners[query].length; m++) {
+    for (var m = 0; m < listeners[query].length; m++) {
         listeners[query][m][fn]();
     }
 }

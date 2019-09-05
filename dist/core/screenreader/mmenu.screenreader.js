@@ -2,15 +2,16 @@ import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
-import * as DOM from '../_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import { extend } from '../../_modules/helpers';
 //  Add the translations.
 translate();
 //  Add the options and configs.
 Mmenu.options.screenReader = options;
 Mmenu.configs.screenReader = configs;
 export default function () {
+    var _this = this;
     //	Extend options.
     var options = extendShorthandOptions(this.opts.screenReader);
     this.opts.screenReader = extend(options, Mmenu.options.screenReader);
@@ -20,71 +21,71 @@ export default function () {
     if (options.aria) {
         //	Add screenreader / aria hooks for add-ons
         //	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
-        this.bind('initAddons:after', () => {
-            this.bind('initMenu:after', function () {
+        this.bind('initAddons:after', function () {
+            _this.bind('initMenu:after', function () {
                 this.trigger('initMenu:after:sr-aria', [].slice.call(arguments));
             });
-            this.bind('initNavbar:after', function () {
+            _this.bind('initNavbar:after', function () {
                 this.trigger('initNavbar:after:sr-aria', [].slice.call(arguments));
             });
-            this.bind('openPanel:start', function () {
+            _this.bind('openPanel:start', function () {
                 this.trigger('openPanel:start:sr-aria', [].slice.call(arguments));
             });
-            this.bind('close:start', function () {
+            _this.bind('close:start', function () {
                 this.trigger('close:start:sr-aria', [].slice.call(arguments));
             });
-            this.bind('close:finish', function () {
+            _this.bind('close:finish', function () {
                 this.trigger('close:finish:sr-aria', [].slice.call(arguments));
             });
-            this.bind('open:start', function () {
+            _this.bind('open:start', function () {
                 this.trigger('open:start:sr-aria', [].slice.call(arguments));
             });
-            this.bind('initOpened:after', function () {
+            _this.bind('initOpened:after', function () {
                 this.trigger('initOpened:after:sr-aria', [].slice.call(arguments));
             });
         });
         //	Update aria-hidden for hidden / visible listitems
-        this.bind('updateListview', () => {
-            this.node.pnls
+        this.bind('updateListview', function () {
+            _this.node.pnls
                 .querySelectorAll('.mm-listitem')
-                .forEach(listitem => {
+                .forEach(function (listitem) {
                 Mmenu.sr_aria(listitem, 'hidden', listitem.matches('.mm-hidden'));
             });
         });
         //	Update aria-hidden for the panels when opening and closing a panel.
-        this.bind('openPanel:start', (panel) => {
+        this.bind('openPanel:start', function (panel) {
             /** Panels that should be considered "hidden". */
-            var hidden = DOM.find(this.node.pnls, '.mm-panel')
-                .filter(hide => hide !== panel)
-                .filter(hide => !hide.parentElement.matches('.mm-panel'));
+            var hidden = DOM.find(_this.node.pnls, '.mm-panel')
+                .filter(function (hide) { return hide !== panel; })
+                .filter(function (hide) { return !hide.parentElement.matches('.mm-panel'); });
             /** Panels that should be considered "visible". */
             var visible = [panel];
-            DOM.find(panel, '.mm-listitem_vertical .mm-listitem_opened').forEach(listitem => {
-                visible.push(...DOM.children(listitem, '.mm-panel'));
+            DOM.find(panel, '.mm-listitem_vertical .mm-listitem_opened').forEach(function (listitem) {
+                visible.push.apply(visible, DOM.children(listitem, '.mm-panel'));
             });
             //	Set the panels to be considered "hidden" or "visible".
-            hidden.forEach(panel => {
+            hidden.forEach(function (panel) {
                 Mmenu.sr_aria(panel, 'hidden', true);
             });
-            visible.forEach(panel => {
+            visible.forEach(function (panel) {
                 Mmenu.sr_aria(panel, 'hidden', false);
             });
         });
-        this.bind('closePanel', (panel) => {
+        this.bind('closePanel', function (panel) {
             Mmenu.sr_aria(panel, 'hidden', true);
         });
         //	Add aria-haspopup and aria-owns to prev- and next buttons.
-        this.bind('initPanel:after', (panel) => {
-            DOM.find(panel, '.mm-btn').forEach(button => {
+        this.bind('initPanel:after', function (panel) {
+            DOM.find(panel, '.mm-btn').forEach(function (button) {
                 Mmenu.sr_aria(button, 'haspopup', true);
-                let href = button.getAttribute('href');
+                var href = button.getAttribute('href');
                 if (href) {
                     Mmenu.sr_aria(button, 'owns', href.replace('#', ''));
                 }
             });
         });
         //	Add aria-hidden for navbars in panels.
-        this.bind('initNavbar:after', (panel) => {
+        this.bind('initNavbar:after', function (panel) {
             /** The navbar in the panel. */
             var navbar = DOM.children(panel, '.mm-navbar')[0];
             /** Whether or not the navbar should be considered "hidden". */
@@ -96,7 +97,7 @@ export default function () {
         if (options.text) {
             //	Add aria-hidden to titles in navbars
             if (this.opts.navbar.titleLink == 'parent') {
-                this.bind('initNavbar:after', (panel) => {
+                this.bind('initNavbar:after', function (panel) {
                     /** The navbar in the panel. */
                     var navbar = DOM.children(panel, '.mm-navbar')[0];
                     /** Whether or not the navbar should be considered "hidden". */
@@ -113,31 +114,31 @@ export default function () {
     if (options.text) {
         //	Add screenreader / text hooks for add-ons
         //	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
-        this.bind('initAddons:after', () => {
-            this.bind('setPage:after', function () {
+        this.bind('initAddons:after', function () {
+            _this.bind('setPage:after', function () {
                 this.trigger('setPage:after:sr-text', [].slice.call(arguments));
             });
-            this.bind('initBlocker:after', function () {
+            _this.bind('initBlocker:after', function () {
                 this.trigger('initBlocker:after:sr-text', [].slice.call(arguments));
             });
         });
         //	Add text to the prev-buttons.
-        this.bind('initNavbar:after', (panel) => {
-            let navbar = DOM.children(panel, '.mm-navbar')[0];
+        this.bind('initNavbar:after', function (panel) {
+            var navbar = DOM.children(panel, '.mm-navbar')[0];
             if (navbar) {
-                let button = DOM.children(navbar, '.mm-btn_prev')[0];
+                var button = DOM.children(navbar, '.mm-btn_prev')[0];
                 if (button) {
-                    button.innerHTML = Mmenu.sr_text(this.i18n(configs.text.closeSubmenu));
+                    button.innerHTML = Mmenu.sr_text(_this.i18n(configs.text.closeSubmenu));
                 }
             }
         });
         //	Add text to the next-buttons.
-        this.bind('initListview:after', (panel) => {
-            let parent = panel['mmParent'];
+        this.bind('initListview:after', function (panel) {
+            var parent = panel['mmParent'];
             if (parent) {
-                let next = DOM.children(parent, '.mm-btn_next')[0];
+                var next = DOM.children(parent, '.mm-btn_next')[0];
                 if (next) {
-                    let text = this.i18n(configs.text[next.parentElement.matches('.mm-listitem_vertical')
+                    var text = _this.i18n(configs.text[next.parentElement.matches('.mm-listitem_vertical')
                         ? 'toggleSubmenu'
                         : 'openSubmenu']);
                     next.innerHTML += Mmenu.sr_text(text);

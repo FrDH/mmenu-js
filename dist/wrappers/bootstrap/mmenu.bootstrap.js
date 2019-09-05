@@ -1,5 +1,6 @@
-import * as DOM from '../../core/_dom';
+import * as DOM from '../../_modules/dom';
 export default function () {
+    var _this = this;
     //	Create the menu
     if (this.node.menu.matches('.navbar-collapse')) {
         //	No need for cloning the menu...
@@ -9,7 +10,7 @@ export default function () {
         //	... We'll create a new menu
         var nav = DOM.create('nav'), panel = DOM.create('div');
         nav.append(panel);
-        DOM.children(this.node.menu).forEach(child => {
+        DOM.children(this.node.menu).forEach(function (child) {
             switch (true) {
                 case child.matches('.navbar-nav'):
                     panel.append(cloneNav(child));
@@ -18,16 +19,16 @@ export default function () {
                     panel.append(cloneDropdown(child));
                     break;
                 case child.matches('.form-inline'):
-                    this.conf.searchfield.form = {
+                    _this.conf.searchfield.form = {
                         action: child.getAttribute('action') || null,
                         method: child.getAttribute('method') || null
                     };
-                    this.conf.searchfield.input = {
+                    _this.conf.searchfield.input = {
                         name: child.querySelector('input').getAttribute('name') ||
                             null
                     };
-                    this.conf.searchfield.clear = false;
-                    this.conf.searchfield.submit = true;
+                    _this.conf.searchfield.clear = false;
+                    _this.conf.searchfield.submit = true;
                     break;
                 default:
                     panel.append(child.cloneNode(true));
@@ -35,26 +36,26 @@ export default function () {
             }
         });
         //	Set the menu
-        this.bind('initMenu:before', () => {
+        this.bind('initMenu:before', function () {
             document.body.prepend(nav);
-            this.node.menu = nav;
+            _this.node.menu = nav;
         });
         //	Hijack the toggler.
-        let parent = this.node.menu.parentElement;
-        if (parent) {
-            let toggler = parent.querySelector('.navbar-toggler');
+        var parent_1 = this.node.menu.parentElement;
+        if (parent_1) {
+            var toggler = parent_1.querySelector('.navbar-toggler');
             if (toggler) {
                 // toggler.removeAttribute('data-target');
                 delete toggler.dataset.target;
                 toggler.removeAttribute('aria-controls');
                 //	Remove all bound events.
                 toggler.outerHTML = toggler.outerHTML;
-                toggler = parent.querySelector('.navbar-toggler');
+                toggler = parent_1.querySelector('.navbar-toggler');
                 //  Open the menu on-click.
-                toggler.addEventListener('click', evnt => {
+                toggler.addEventListener('click', function (evnt) {
                     evnt.preventDefault();
                     evnt.stopImmediatePropagation();
-                    this[this.vars.opened ? 'close' : 'open']();
+                    _this[_this.vars.opened ? 'close' : 'open']();
                 });
             }
         }
@@ -71,14 +72,14 @@ export default function () {
         //	Copy contents
         link.innerHTML = anchor.innerHTML;
         //	Remove Screen reader text.
-        DOM.find(link, '.sr-only').forEach(sro => {
+        DOM.find(link, '.sr-only').forEach(function (sro) {
             sro.remove();
         });
         return link;
     }
     function cloneDropdown(dropdown) {
         var list = DOM.create('ul');
-        DOM.children(dropdown).forEach(anchor => {
+        DOM.children(dropdown).forEach(function (anchor) {
             var item = DOM.create('li');
             if (anchor.matches('.dropdown-divider')) {
                 item.classList.add('Divider');
@@ -92,13 +93,13 @@ export default function () {
     }
     function cloneNav(nav) {
         var list = DOM.create('ul');
-        DOM.find(nav, '.nav-item').forEach(anchor => {
+        DOM.find(nav, '.nav-item').forEach(function (anchor) {
             var item = DOM.create('li');
             if (anchor.matches('.active')) {
                 item.classList.add('Selected');
             }
             if (!anchor.matches('.nav-link')) {
-                let dropdown = DOM.children(anchor, '.dropdown-menu')[0];
+                var dropdown = DOM.children(anchor, '.dropdown-menu')[0];
                 if (dropdown) {
                     item.append(cloneDropdown(dropdown));
                 }

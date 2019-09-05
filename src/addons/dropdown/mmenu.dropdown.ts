@@ -1,9 +1,9 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
-import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
-import { extend, originalId } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import { extend, originalId } from '../../_modules/helpers';
 
 //	Add the options and configs.
 Mmenu.options.dropdown = options;
@@ -30,7 +30,7 @@ export default function(this: Mmenu) {
 
         if (typeof options.position.of != 'string') {
             let id = originalId(this.node.menu.id);
-            if (id && id.length) {
+            if (id) {
                 options.position.of = '[href="#' + id + '"]';
             }
         }
@@ -51,7 +51,7 @@ export default function(this: Mmenu) {
         if (events[0] == 'hover') {
             button.addEventListener(
                 'mouseenter',
-                evnt => {
+                () => {
                     this.open();
                 },
                 { passive: true }
@@ -61,7 +61,7 @@ export default function(this: Mmenu) {
         if (events[1] == 'hover') {
             this.node.menu.addEventListener(
                 'mouseleave',
-                evnt => {
+                () => {
                     this.close();
                 },
                 { passive: true }
@@ -95,8 +95,7 @@ export default function(this: Mmenu) {
         var css = obj[0],
             cls = obj[1];
 
-        var _scrollPos = dir == 'x' ? 'scrollX' : 'scrollY',
-            _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight',
+        var _outerSize = dir == 'x' ? 'offsetWidth' : 'offsetHeight',
             _startPos = dir == 'x' ? 'left' : 'top',
             _stopPos = dir == 'x' ? 'right' : 'bottom',
             _size = dir == 'x' ? 'width' : 'height',
@@ -104,8 +103,7 @@ export default function(this: Mmenu) {
             _maxSize = dir == 'x' ? 'maxWidth' : 'maxHeight',
             _position = null;
 
-        var scrollPos = window[_scrollPos],
-            startPos = DOM.offset(button, _startPos) - scrollPos,
+        var startPos = DOM.offset(button, _startPos),
             stopPos = startPos + button[_outerSize],
             windowSize = window[_winSize];
 
@@ -182,13 +180,24 @@ export default function(this: Mmenu) {
         }
 
         if (options.tip) {
-            this.node.menu.classList.remove(
+            var classnames = [
                 'mm-menu_tip-left',
                 'mm-menu_tip-right',
                 'mm-menu_tip-top',
                 'mm-menu_tip-bottom'
-            );
-            this.node.menu.classList.add(...obj[1]);
+            ];
+
+            //  IE11:
+            classnames.forEach(classname => {
+                this.node.menu.classList.remove(classname);
+            });
+            obj[1].forEach(classname => {
+                this.node.menu.classList.add(classname);
+            });
+
+            //  Better browsers:
+            // this.node.menu.classList.remove(...classnames);
+            // this.node.menu.classList.add(...obj[1]);
         }
     }
 

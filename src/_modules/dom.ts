@@ -4,18 +4,21 @@
  * @param 	{string}		selector	The nodeName and classnames for the element to create.
  * @return	{HTMLElement}				The created element.
  */
-export function create(selector) {
-    var elem;
-    selector.split('.').forEach((arg, a) => {
-        if (a == 0) {
-            elem = document.createElement(arg);
-        }
-        else {
-            elem.classList.add(arg);
-        }
+export function create(selector: string): HTMLElement {
+    var args = selector.split('.');
+    var elem = document.createElement(args.shift());
+
+    //  IE11:
+    args.forEach(classname => {
+        elem.classList.add(classname);
     });
+
+    //  Better browsers:
+    // elem.classList.add(...args);
+
     return elem;
 }
+
 /**
  * Find all elements matching the selector.
  * Basically the same as element.querySelectorAll() but it returns an actuall array.
@@ -24,9 +27,13 @@ export function create(selector) {
  * @param 	{string}		filter	The filter to match.
  * @return	{array}					Array of elements that match the filter.
  */
-export function find(element, filter) {
+export function find(
+    element: HTMLElement | Document,
+    filter: string
+): HTMLElement[] {
     return Array.prototype.slice.call(element.querySelectorAll(filter));
 }
+
 /**
  * Find all child elements matching the (optional) selector.
  *
@@ -34,22 +41,24 @@ export function find(element, filter) {
  * @param 	{string}		filter	The filter to match.
  * @return	{array}					Array of child elements that match the filter.
  */
-export function children(element, filter) {
-    var children = Array.prototype.slice.call(element.children);
+export function children(element: HTMLElement, filter?: string): HTMLElement[] {
+    var children: HTMLElement[] = Array.prototype.slice.call(element.children);
     return filter ? children.filter(child => child.matches(filter)) : children;
 }
+
 /**
  * Find text excluding text from within child elements.
  * @param   {HTMLElement}   element Element to search in.
  * @return  {string}                The text.
  */
-export function text(element) {
+export function text(element: HTMLElement): string {
     return Array.prototype.slice
         .call(element.childNodes)
         .filter(child => child.nodeType == 3)
         .map(child => child.textContent)
         .join(' ');
 }
+
 /**
  * Find all preceding elements matching the selector.
  *
@@ -57,17 +66,20 @@ export function text(element) {
  * @param 	{string}		filter	The filter to match.
  * @return	{array}					Array of preceding elements that match the selector.
  */
-export function parents(element, filter) {
+export function parents(element: HTMLElement, filter?: string): HTMLElement[] {
     /** Array of preceding elements that match the selector. */
-    var parents = [];
+    var parents: HTMLElement[] = [];
+
     /** Array of preceding elements that match the selector. */
     var parent = element.parentElement;
     while (parent) {
         parents.push(parent);
         parent = parent.parentElement;
     }
+
     return filter ? parents.filter(parent => parent.matches(filter)) : parents;
 }
+
 /**
  * Find all previous siblings matching the selecotr.
  *
@@ -75,19 +87,23 @@ export function parents(element, filter) {
  * @param 	{string}		filter	The filter to match.
  * @return	{array}					Array of previous siblings that match the selector.
  */
-export function prevAll(element, filter) {
+export function prevAll(element: HTMLElement, filter?: string): HTMLElement[] {
     /** Array of previous siblings that match the selector. */
-    var previous = [];
+    var previous: HTMLElement[] = [];
+
     /** Current element in the loop */
-    var current = element.previousElementSibling;
+    var current = element.previousElementSibling as HTMLElement;
+
     while (current) {
         if (!filter || current.matches(filter)) {
             previous.push(current);
         }
-        current = current.previousElementSibling;
+        current = current.previousElementSibling as HTMLElement;
     }
+
     return previous;
 }
+
 /**
  * Get an element offset relative to the document.
  *
@@ -95,37 +111,46 @@ export function prevAll(element, filter) {
  * @param 	{string}		 [direction=top] 	Offset top or left.
  * @return	{number}							The element offset relative to the document.
  */
-export function offset(element, direction) {
-    return (element.getBoundingClientRect()[direction] +
-        document.body[direction === 'left' ? 'scrollLeft' : 'scrollTop']);
+export function offset(element: HTMLElement, direction?: string): number {
+    return (
+        element.getBoundingClientRect()[direction] +
+        document.body[direction === 'left' ? 'scrollLeft' : 'scrollTop']
+    );
 }
+
 /**
  * Filter out non-listitem listitems.
  * @param  {array} listitems 	Elements to filter.
  * @return {array}				The filtered set of listitems.
  */
-export function filterLI(listitems) {
+export function filterLI(listitems: HTMLElement[]): HTMLElement[] {
     return listitems.filter(listitem => !listitem.matches('.mm-hidden'));
 }
+
 /**
  * Find anchors in listitems (excluding anchor that open a sub-panel).
  * @param  {array} 	listitems 	Elements to filter.
  * @return {array}				The found set of anchors.
  */
-export function filterLIA(listitems) {
+export function filterLIA(listitems: HTMLElement[]): HTMLElement[] {
     var anchors = [];
     filterLI(listitems).forEach(listitem => {
         anchors.push(...children(listitem, 'a.mm-listitem__text'));
     });
     return anchors.filter(anchor => !anchor.matches('.mm-btn_next'));
 }
+
 /**
  * Refactor a classname on multiple elements.
  * @param {HTMLElement} element 	Element to refactor.
  * @param {string}		oldClass 	Classname to remove.
  * @param {string}		newClass 	Classname to add.
  */
-export function reClass(element, oldClass, newClass) {
+export function reClass(
+    element: HTMLElement,
+    oldClass: string,
+    newClass: string
+) {
     if (element.matches('.' + oldClass)) {
         element.classList.remove(oldClass);
         element.classList.add(newClass);

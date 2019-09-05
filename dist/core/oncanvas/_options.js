@@ -1,9 +1,10 @@
-const options = {
+var options = {
     hooks: {},
     extensions: [],
     wrappers: [],
     navbar: {
         add: true,
+        sticky: true,
         title: 'Menu',
         titleLink: 'parent'
     },

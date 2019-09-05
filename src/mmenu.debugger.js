@@ -38,6 +38,102 @@
     Mmenu.prototype._deprecatedWarnings = function() {
         /**
          * ----------------------------
+         * Version 8.2 > 8.3
+         * ----------------------------
+         */
+
+        /* OPTIONS */
+
+        //  The navbar.title option can no longer be a function.
+        if (typeof this.opts.navbar.title == 'function') {
+            deprecated(
+                'A function for the "navbar.title" option',
+                'a custom JS loop',
+                '8.3.0'
+            );
+
+            //  Prevent an error.
+            this.opts.navbar.title = Mmenu.options.navbar.title;
+        }
+
+        /* ADD-ONS */
+
+        //  New Drag add-on with lesser options.
+        if (this.opts.drag) {
+            //  Swiping to close panels no longer supported.
+            if (this.opts.drag.panels) {
+                deprecated(
+                    'Swiping to close panels using the "drag" add-on',
+                    null,
+                    '8.3.0'
+                );
+            }
+
+            //  "drag.menu" Suboptions now are the "drag" options.
+            if (this.opts.drag.menu) {
+                deprecated(
+                    'The "drag.menu" options for the "drag" add-on',
+                    'the "drag" option',
+                    '8.3.0'
+                );
+            }
+        }
+
+        // The dividers.type option is removed.
+        if (this.opts.dividers) {
+            if (this.opts.dividers.type == 'light') {
+                deprecated(
+                    'The "type" option for the "dividers" add-on',
+                    'custom CSS',
+                    '8.3.0'
+                );
+            }
+        }
+
+        /* EXTENSIONS */
+
+        // Removed panel-scoped extensions.
+        [
+            'mm-panel-border-none',
+            'mm-panel-border-full',
+            'mm-panel_listview-justify',
+            'mm-panel-slide-0',
+            'mm-panel-slide-100'
+        ].forEach(ext => {
+            if (this.node.menu.querySelector(ext)) {
+                deprecated(
+                    'Using the classname ' + ext + ' on a specific panel.',
+                    'custom CSS',
+                    '8.3.0'
+                );
+            }
+        });
+
+        //  Removed (parts of) extensions.
+        [
+            'border-offset',
+            'fx-menu-fade',
+            'fx-menu-zoom',
+            'fx-panels-slide-up',
+            'fx-panels-slide-right',
+            'fx-panels-zoom',
+            'fx-listitems-drop',
+            'fx-listitems-fade',
+            'fx-listitems-slide'
+        ].forEach(ext => {
+            Object.keys(this.opts.extensions).forEach(key => {
+                if (this.opts.extensions[key].includes(ext)) {
+                    deprecated(
+                        'The "' + ext + '" extension',
+                        'custom CSS',
+                        '8.3.0'
+                    );
+                }
+            });
+        });
+
+        /**
+         * ----------------------------
          * Version 8.1 > 8.2
          * ----------------------------
          */
@@ -49,7 +145,7 @@
 
         /* ADD-ONS */
 
-        //  navbars "next" content is removed.
+        //  Navbars "next" content is removed.
         if (this.opts.navbars) {
             this.opts.navbars.forEach(navbar => {
                 if (navbar.content.includes('next')) {

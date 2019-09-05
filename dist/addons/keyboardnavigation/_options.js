@@ -1,4 +1,4 @@
-const options = {
+var options = {
     enable: false,
     enhance: false
 };

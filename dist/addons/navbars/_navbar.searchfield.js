@@ -1,5 +1,5 @@
-import * as DOM from '../../core/_dom';
-import { type } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import { type } from '../../_modules/helpers';
 export default function (navbar) {
     if (type(this.opts.searchfield) != 'object') {
         this.opts.searchfield = {};

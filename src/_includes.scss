@@ -1,6 +1,8 @@
 $mm_include_rtl: true !default;
 $mm_include_vertical: true !default;
 
+$mm_IE11Fallbacks: true !default;
+
 $mm_include_offcanvas: true !default;
 $mm_include_offcanvas_blocker: $mm_include_offcanvas !default;
 
@@ -13,7 +15,6 @@ $mm_include_columns: true !default;
 $mm_include_counters: true !default;
 
 $mm_include_dividers: true !default;
-$mm_include_dividers_light: true !default;
 
 $mm_include_drag: true !default;
 
@@ -54,18 +55,11 @@ $mm_include_checks: true !default;
 $mm_include_borderstyle: true !default;
 $mm_include_borderstyle_none: $mm_include_borderstyle !default;
 $mm_include_borderstyle_full: $mm_include_borderstyle !default;
-$mm_include_borderstyle_offset: $mm_include_borderstyle !default;
 
 $mm_include_effects: true !default;
-$mm_include_effects_menuzoom: $mm_include_effects !default;
 $mm_include_effects_menuslide: $mm_include_effects !default;
-$mm_include_effects_menufade: $mm_include_effects !default;
 $mm_include_effects_panelsnone: $mm_include_effects !default;
-$mm_include_effects_panelszoom: $mm_include_effects !default;
 $mm_include_effects_panelsslide: $mm_include_effects !default;
-$mm_include_effects_listitemsslide: $mm_include_effects !default;
-$mm_include_effects_listitemsfade: $mm_include_effects !default;
-$mm_include_effects_listitemsdrop: $mm_include_effects !default;
 
 $mm_include_fullscreen: true !default;
 

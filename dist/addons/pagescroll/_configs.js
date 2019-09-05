@@ -1,4 +1,4 @@
-const configs = {
+var configs = {
     scrollOffset: 0,
     updateOffset: 50
 };

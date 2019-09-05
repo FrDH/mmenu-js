@@ -2,16 +2,17 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
-import * as DOM from '../../core/_dom';
-import * as events from '../../core/_eventlisteners';
 import { extendShorthandOptions } from './_options';
-import { type, extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import * as events from '../../_modules/eventlisteners';
+import { type, extend } from '../../_modules/helpers';
 //  Add the translations.
 translate();
 //  Add the options and configs.
 Mmenu.options.searchfield = options;
 Mmenu.configs.searchfield = configs;
 export default function () {
+    var _this = this;
     var options = extendShorthandOptions(this.opts.searchfield);
     this.opts.searchfield = extend(options, Mmenu.options.searchfield);
     var configs = this.conf.searchfield;
@@ -19,16 +20,16 @@ export default function () {
         return;
     }
     //	Blur searchfield
-    this.bind('close:start', () => {
-        DOM.find(this.node.menu, '.mm-searchfield').forEach(input => {
+    this.bind('close:start', function () {
+        DOM.find(_this.node.menu, '.mm-searchfield').forEach(function (input) {
             input.blur();
         });
     });
-    this.bind('initPanel:after', (panel) => {
+    this.bind('initPanel:after', function (panel) {
         var searchpanel = null;
         //	Add the search panel
         if (options.panel.add) {
-            searchpanel = initSearchPanel.call(this);
+            searchpanel = initSearchPanel.call(_this);
         }
         //	Add the searchfield
         var addTo = null;
@@ -41,39 +42,39 @@ export default function () {
                 break;
             default:
                 if (typeof options.addTo == 'string') {
-                    addTo = DOM.find(this.node.menu, options.addTo);
+                    addTo = DOM.find(_this.node.menu, options.addTo);
                 }
                 else if (type(options.addTo) == 'array') {
                     addTo = options.addTo;
                 }
                 break;
         }
-        addTo.forEach(form => {
-            form = initSearchfield.call(this, form);
+        addTo.forEach(function (form) {
+            form = initSearchfield.call(_this, form);
             if (options.search && form) {
-                initSearching.call(this, form);
+                initSearching.call(_this, form);
             }
         });
         //	Add the no-results message
         if (options.noResults) {
-            initNoResultsMsg.call(this, options.panel.add ? searchpanel : panel);
+            initNoResultsMsg.call(_this, options.panel.add ? searchpanel : panel);
         }
     });
     //	Add click behavior.
     //	Prevents default behavior when clicking an anchor
-    this.clck.push((anchor, args) => {
+    this.clck.push(function (anchor, args) {
         if (args.inMenu) {
             if (anchor.matches('.mm-searchfield__btn')) {
                 //	Clicking the clear button
                 if (anchor.matches('.mm-btn_close')) {
-                    let form = anchor.closest('.mm-searchfield'), input = DOM.find(form, 'input')[0];
+                    var form = anchor.closest('.mm-searchfield'), input = DOM.find(form, 'input')[0];
                     input.value = '';
-                    this.search(input);
+                    _this.search(input);
                     return true;
                 }
                 //	Clicking the submit button
                 if (anchor.matches('.mm-btn_next')) {
-                    let form = anchor.closest('form');
+                    var form = anchor.closest('form');
                     if (form) {
                         form.submit();
                     }
@@ -83,20 +84,22 @@ export default function () {
         }
     });
 }
-const initSearchPanel = function () {
+var initSearchPanel = function () {
     var options = this.opts.searchfield, configs = this.conf.searchfield;
+    var searchpanel = DOM.children(this.node.pnls, '.mm-panel_search')[0];
     //	Only once
-    if (DOM.children(this.node.pnls, '.mm-panel_search').length) {
-        return null;
+    if (searchpanel) {
+        return searchpanel;
     }
-    var searchpanel = DOM.create('div.mm-panel_search'), listview = DOM.create('ul');
+    var listview = DOM.create('ul.mm-listview');
+    searchpanel = DOM.create('div.mm-panel_search');
     searchpanel.append(listview);
     this.node.pnls.append(searchpanel);
     if (options.panel.id) {
         searchpanel.id = options.panel.id;
     }
     if (options.panel.title) {
-        searchpanel.setAttribute('data-mm-title', options.panel.title);
+        searchpanel.dataset.mmTitle = options.panel.title;
     }
     switch (options.panel.fx) {
         case false:
@@ -110,14 +113,16 @@ const initSearchPanel = function () {
     }
     //	Add splash content
     if (options.panel.splash) {
-        let splash = DOM.create('div.mm-panel__content');
+        var splash = DOM.create('div.mm-panel__content');
         splash.innerHTML = options.panel.splash;
         searchpanel.append(splash);
     }
-    this.initPanel(searchpanel);
+    searchpanel.classList.add('mm-panel');
+    searchpanel.classList.add('mm-hidden');
+    this.node.pnls.append(searchpanel);
     return searchpanel;
 };
-const initSearchfield = function (wrapper) {
+var initSearchfield = function (wrapper) {
     var options = this.opts.searchfield, configs = this.conf.searchfield;
     //	No searchfield in vertical submenus
     if (wrapper.parentElement.matches('.mm-listitem_vertical')) {
@@ -146,26 +151,27 @@ const initSearchfield = function (wrapper) {
     addAttributes(input, configs.input);
     //	Add the clear button
     if (configs.clear) {
-        let anchor = DOM.create('a.mm-btn.mm-btn_close.mm-searchfield__btn');
+        var anchor = DOM.create('a.mm-btn.mm-btn_close.mm-searchfield__btn');
         anchor.setAttribute('href', '#');
         field.append(anchor);
     }
     //	Add attributes and submit to the form
     addAttributes(form, configs.form);
     if (configs.form && configs.submit && !configs.clear) {
-        let anchor = DOM.create('a.mm-btn.mm-btn_next.mm-searchfield__btn');
+        var anchor = DOM.create('a.mm-btn.mm-btn_next.mm-searchfield__btn');
         anchor.setAttribute('href', '#');
         field.append(anchor);
     }
     if (options.cancel) {
-        let anchor = DOM.create('a.mm-searchfield__cancel');
+        var anchor = DOM.create('a.mm-searchfield__cancel');
         anchor.setAttribute('href', '#');
         anchor.textContent = this.i18n('cancel');
         form.append(anchor);
     }
     return form;
 };
-const initSearching = function (form) {
+var initSearching = function (form) {
+    var _this = this;
     var options = this.opts.searchfield, configs = this.conf.searchfield;
     var data = {};
     //	In the searchpanel.
@@ -184,47 +190,48 @@ const initSearching = function (form) {
         data.noresults = [this.node.menu];
     }
     //	Filter out vertical submenus
-    data.panels = data.panels.filter(panel => !panel.parentElement.matches('.mm-listitem_vertical'));
+    data.panels = data.panels.filter(function (panel) { return !panel.parentElement.matches('.mm-listitem_vertical'); });
     //	Filter out search panel
-    data.panels = data.panels.filter(panel => !panel.matches('.mm-panel_search'));
+    data.panels = data.panels.filter(function (panel) { return !panel.matches('.mm-panel_search'); });
     //  Find listitems and dividers.
     data.listitems = [];
     data.dividers = [];
-    data.panels.forEach(panel => {
-        data.listitems.push(...DOM.find(panel, '.mm-listitem'));
-        data.dividers.push(...DOM.find(panel, '.mm-divider'));
+    data.panels.forEach(function (panel) {
+        var _a, _b;
+        (_a = data.listitems).push.apply(_a, DOM.find(panel, '.mm-listitem'));
+        (_b = data.dividers).push.apply(_b, DOM.find(panel, '.mm-divider'));
     });
     var searchpanel = DOM.children(this.node.pnls, '.mm-panel_search')[0], input = DOM.find(form, 'input')[0], cancel = DOM.find(form, '.mm-searchfield__cancel')[0];
     input['mmSearchfield'] = data;
     //	Open the splash panel when focussing the input.
     if (options.panel.add && options.panel.splash) {
         events.off(input, 'focus.splash');
-        events.on(input, 'focus.splash', evnt => {
-            this.openPanel(searchpanel);
+        events.on(input, 'focus.splash', function (evnt) {
+            _this.openPanel(searchpanel);
         });
     }
     if (options.cancel) {
         //	Show the cancel button when focussing the input.
         events.off(input, 'focus.cancel');
-        events.on(input, 'focus.cancel', evnt => {
+        events.on(input, 'focus.cancel', function (evnt) {
             cancel.classList.add('mm-searchfield__cancel-active');
         });
         //	Close the splash panel when clicking the cancel button.
         events.off(cancel, 'click.splash');
-        events.on(cancel, 'click.splash', evnt => {
+        events.on(cancel, 'click.splash', function (evnt) {
             evnt.preventDefault();
             cancel.classList.remove('mm-searchfield__cancel-active');
             if (searchpanel.matches('.mm-panel_opened')) {
-                let parents = DOM.children(this.node.pnls, '.mm-panel_opened-parent');
+                var parents = DOM.children(_this.node.pnls, '.mm-panel_opened-parent');
                 if (parents.length) {
-                    this.openPanel(parents[parents.length - 1]);
+                    _this.openPanel(parents[parents.length - 1]);
                 }
             }
         });
     }
     //	Focus the input in the searchpanel when opening the searchpanel.
     if (options.panel.add && options.addTo == 'panel') {
-        this.bind('openPanel:finish', (panel) => {
+        this.bind('openPanel:finish', function (panel) {
             if (panel === searchpanel) {
                 input.focus();
             }
@@ -232,7 +239,7 @@ const initSearching = function (form) {
     }
     //	Search while typing.
     events.off(input, 'input.search');
-    events.on(input, 'input.search', (evnt) => {
+    events.on(input, 'input.search', function (evnt) {
         switch (evnt.keyCode) {
             case 9: //	tab
             case 16: //	shift
@@ -244,14 +251,14 @@ const initSearching = function (form) {
             case 40: //	bottom
                 break;
             default:
-                this.search(input);
+                _this.search(input);
                 break;
         }
     });
     //	Search initially.
     this.search(input);
 };
-const initNoResultsMsg = function (wrapper) {
+var initNoResultsMsg = function (wrapper) {
     if (!wrapper) {
         return;
     }
@@ -270,6 +277,8 @@ const initNoResultsMsg = function (wrapper) {
     wrapper.append(message);
 };
 Mmenu.prototype.search = function (input, query) {
+    var _this = this;
+    var _a;
     var options = this.opts.searchfield, configs = this.conf.searchfield;
     query = query || '' + input.value;
     query = query.toLowerCase().trim();
@@ -284,27 +293,29 @@ Mmenu.prototype.search = function (input, query) {
     /** Tje dividers in a cloned array. */
     var dividers = data.dividers;
     //	Reset previous results
-    listitems.forEach(listitem => {
-        listitem.classList.remove('mm-listitem_nosubitems', 'mm-listitem_onlysubitems', 'mm-hidden');
+    listitems.forEach(function (listitem) {
+        listitem.classList.remove('mm-listitem_nosubitems');
+        listitem.classList.remove('mm-listitem_onlysubitems');
+        listitem.classList.remove('mm-hidden');
     });
     if (searchpanel) {
         DOM.children(searchpanel, '.mm-listview')[0].innerHTML = '';
     }
-    panels.forEach(panel => {
+    panels.forEach(function (panel) {
         panel.scrollTop = 0;
     });
     //	Search
     if (query.length) {
         //	Initially hide all dividers.
-        dividers.forEach(divider => {
+        dividers.forEach(function (divider) {
             divider.classList.add('mm-hidden');
         });
         //	Hide listitems that do not match.
-        listitems.forEach(listitem => {
+        listitems.forEach(function (listitem) {
             var text = DOM.children(listitem, '.mm-listitem__text')[0];
             var add = false;
             //  The listitem should be shown if:
-            //      1) The text matches the query and
+            //          1) The text matches the query and
             //          2a) The text is a open-button and
             //          2b) the option showSubPanels is set to true.
             //      or  3a) The text is not an anchor and
@@ -321,15 +332,15 @@ Mmenu.prototype.search = function (input, query) {
                     if (options.showSubPanels) {
                         add = true;
                     }
-                    //  3a
                 }
+                //  3a
                 else if (!text.matches('a')) {
                     //  3b
                     if (options.showTextItems) {
                         add = true;
                     }
-                    // 4
                 }
+                // 4
                 else {
                     add = true;
                 }
@@ -339,48 +350,51 @@ Mmenu.prototype.search = function (input, query) {
             }
         });
         /** Whether or not the query yielded results. */
-        var hasResults = listitems.filter(listitem => !listitem.matches('.mm-hidden')).length;
+        var hasResults = listitems.filter(function (listitem) { return !listitem.matches('.mm-hidden'); }).length;
         //	Show all mached listitems in the search panel
         if (options.panel.add) {
             //	Clone all matched listitems into the search panel
-            let allitems = [];
-            panels.forEach(panel => {
-                let listitems = DOM.filterLI(DOM.find(panel, '.mm-listitem'));
-                listitems = listitems.filter(listitem => !listitem.matches('.mm-hidden'));
+            var allitems_1 = [];
+            panels.forEach(function (panel) {
+                var listitems = DOM.filterLI(DOM.find(panel, '.mm-listitem'));
+                listitems = listitems.filter(function (listitem) { return !listitem.matches('.mm-hidden'); });
                 if (listitems.length) {
                     //  Add a divider to indicate in what panel the listitems were.
                     if (options.panel.dividers) {
-                        let divider = DOM.create('li.mm-divider');
-                        divider.innerHTML = panel.querySelector('.mm-navbar__title').innerHTML;
-                        allitems.push(divider);
+                        var divider = DOM.create('li.mm-divider');
+                        var title = DOM.find(panel, '.mm-navbar__title')[0];
+                        if (title) {
+                            divider.innerHTML = title.innerHTML;
+                            allitems_1.push(divider);
+                        }
                     }
-                    listitems.forEach(listitem => {
-                        allitems.push(listitem.cloneNode(true));
+                    listitems.forEach(function (listitem) {
+                        allitems_1.push(listitem.cloneNode(true));
                     });
                 }
             });
             //	Remove toggles and checks.
-            allitems.forEach(listitem => {
+            allitems_1.forEach(function (listitem) {
                 listitem
                     .querySelectorAll('.mm-toggle, .mm-check')
-                    .forEach(element => {
+                    .forEach(function (element) {
                     element.remove();
                 });
             });
             //	Add to the search panel.
-            DOM.children(searchpanel, '.mm-listview')[0].append(...allitems);
+            (_a = DOM.children(searchpanel, '.mm-listview')[0]).append.apply(_a, allitems_1);
             //	Open the search panel.
             this.openPanel(searchpanel);
         }
         else {
             //	Also show listitems in sub-panels for matched listitems
             if (options.showSubPanels) {
-                panels.forEach(panel => {
-                    let listitems = DOM.find(panel, '.mm-listitem');
-                    DOM.filterLI(listitems).forEach(listitem => {
-                        let child = listitem['mmChild'];
+                panels.forEach(function (panel) {
+                    var listitems = DOM.find(panel, '.mm-listitem');
+                    DOM.filterLI(listitems).forEach(function (listitem) {
+                        var child = listitem['mmChild'];
                         if (child) {
-                            DOM.find(child, '.mm-listitem').forEach(listitem => {
+                            DOM.find(child, '.mm-listitem').forEach(function (listitem) {
                                 listitem.classList.remove('mm-hidden');
                             });
                         }
@@ -389,12 +403,12 @@ Mmenu.prototype.search = function (input, query) {
             }
             //	Update parent for sub-panel
             //  .reverse() mutates the original array, therefor we "clone" it first using [...panels].
-            [...panels].reverse().forEach((panel, p) => {
-                let parent = panel['mmParent'];
+            panels.slice().reverse().forEach(function (panel, p) {
+                var parent = panel['mmParent'];
                 if (parent) {
                     //	The current panel has mached listitems
-                    let listitems = DOM.find(panel, '.mm-listitem');
-                    if (DOM.filterLI(listitems).length) {
+                    var listitems_1 = DOM.find(panel, '.mm-listitem');
+                    if (DOM.filterLI(listitems_1).length) {
                         //	Show parent
                         if (parent.matches('.mm-hidden')) {
                             parent.classList.remove('mm-hidden');
@@ -405,19 +419,19 @@ Mmenu.prototype.search = function (input, query) {
                         if (panel.matches('.mm-panel_opened') ||
                             panel.matches('.mm-panel_opened-parent')) {
                             //	Compensate the timeout for the opening animation
-                            setTimeout(() => {
-                                this.openPanel(parent.closest('.mm-panel'));
-                            }, (p + 1) * (this.conf.openingInterval * 1.5));
+                            setTimeout(function () {
+                                _this.openPanel(parent.closest('.mm-panel'));
+                            }, (p + 1) * (_this.conf.openingInterval * 1.5));
                         }
                         parent.classList.add('mm-listitem_nosubitems');
                     }
                 }
             });
             //	Show first preceeding divider of parent
-            panels.forEach(panel => {
-                let listitems = DOM.find(panel, '.mm-listitem');
-                DOM.filterLI(listitems).forEach(listitem => {
-                    let divider = DOM.prevAll(listitem, '.mm-divider')[0];
+            panels.forEach(function (panel) {
+                var listitems = DOM.find(panel, '.mm-listitem');
+                DOM.filterLI(listitems).forEach(function (listitem) {
+                    var divider = DOM.prevAll(listitem, '.mm-divider')[0];
                     if (divider) {
                         divider.classList.remove('mm-hidden');
                     }
@@ -425,40 +439,50 @@ Mmenu.prototype.search = function (input, query) {
             });
         }
         //	Show submit / clear button
-        buttons.forEach(button => button.classList.remove('mm-hidden'));
+        buttons.forEach(function (button) { return button.classList.remove('mm-hidden'); });
         //	Show/hide no results message
-        noresults.forEach(wrapper => {
-            DOM.find(wrapper, '.mm-panel__noresultsmsg').forEach(message => message.classList[hasResults ? 'add' : 'remove']('mm-hidden'));
+        noresults.forEach(function (wrapper) {
+            DOM.find(wrapper, '.mm-panel__noresultsmsg').forEach(function (message) {
+                return message.classList[hasResults ? 'add' : 'remove']('mm-hidden');
+            });
         });
         if (options.panel.add) {
             //	Hide splash
             if (options.panel.splash) {
-                DOM.find(searchpanel, '.mm-panel__content').forEach(splash => splash.classList.add('mm-hidden'));
+                DOM.find(searchpanel, '.mm-panel__content').forEach(function (splash) {
+                    return splash.classList.add('mm-hidden');
+                });
             }
             //	Re-show original listitems when in search panel
-            listitems.forEach(listitem => listitem.classList.remove('mm-hidden'));
-            dividers.forEach(divider => divider.classList.remove('mm-hidden'));
+            listitems.forEach(function (listitem) {
+                return listitem.classList.remove('mm-hidden');
+            });
+            dividers.forEach(function (divider) { return divider.classList.remove('mm-hidden'); });
         }
         //	Don't search
     }
     else {
         //	Show all items
-        listitems.forEach(listitem => listitem.classList.remove('mm-hidden'));
-        dividers.forEach(divider => divider.classList.remove('mm-hidden'));
+        listitems.forEach(function (listitem) { return listitem.classList.remove('mm-hidden'); });
+        dividers.forEach(function (divider) { return divider.classList.remove('mm-hidden'); });
         //	Hide submit / clear button
-        buttons.forEach(button => button.classList.add('mm-hidden'));
+        buttons.forEach(function (button) { return button.classList.add('mm-hidden'); });
         //	Hide no results message
-        noresults.forEach(wrapper => {
-            DOM.find(wrapper, '.mm-panel__noresultsmsg').forEach(message => message.classList.add('mm-hidden'));
+        noresults.forEach(function (wrapper) {
+            DOM.find(wrapper, '.mm-panel__noresultsmsg').forEach(function (message) {
+                return message.classList.add('mm-hidden');
+            });
         });
         if (options.panel.add) {
             //	Show splash
             if (options.panel.splash) {
-                DOM.find(searchpanel, '.mm-panel__content').forEach(splash => splash.classList.remove('mm-hidden'));
+                DOM.find(searchpanel, '.mm-panel__content').forEach(function (splash) {
+                    return splash.classList.remove('mm-hidden');
+                });
                 //	Close panel
             }
             else if (!input.closest('.mm-panel_search')) {
-                let opened = DOM.children(this.node.pnls, '.mm-panel_opened-parent');
+                var opened = DOM.children(this.node.pnls, '.mm-panel_opened-parent');
                 this.openPanel(opened.slice(-1)[0]);
             }
         }

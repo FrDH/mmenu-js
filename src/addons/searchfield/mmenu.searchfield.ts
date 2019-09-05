@@ -2,10 +2,10 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
-import * as DOM from '../../core/_dom';
-import * as events from '../../core/_eventlisteners';
 import { extendShorthandOptions } from './_options';
-import { type, extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import * as events from '../../_modules/eventlisteners';
+import { type, extend } from '../../_modules/helpers';
 
 //  Add the translations.
 translate();
@@ -109,13 +109,15 @@ const initSearchPanel = function(this: Mmenu): HTMLElement {
     var options = this.opts.searchfield,
         configs = this.conf.searchfield;
 
+    var searchpanel = DOM.children(this.node.pnls, '.mm-panel_search')[0];
+
     //	Only once
-    if (DOM.children(this.node.pnls, '.mm-panel_search').length) {
-        return null;
+    if (searchpanel) {
+        return searchpanel;
     }
 
-    var searchpanel = DOM.create('div.mm-panel_search'),
-        listview = DOM.create('ul');
+    var listview = DOM.create('ul.mm-listview');
+    searchpanel = DOM.create('div.mm-panel_search');
 
     searchpanel.append(listview);
     this.node.pnls.append(searchpanel);
@@ -125,7 +127,7 @@ const initSearchPanel = function(this: Mmenu): HTMLElement {
     }
 
     if (options.panel.title) {
-        searchpanel.setAttribute('data-mm-title', options.panel.title);
+        searchpanel.dataset.mmTitle = options.panel.title;
     }
 
     switch (options.panel.fx) {
@@ -149,7 +151,10 @@ const initSearchPanel = function(this: Mmenu): HTMLElement {
         searchpanel.append(splash);
     }
 
-    this.initPanel(searchpanel);
+    searchpanel.classList.add('mm-panel');
+    searchpanel.classList.add('mm-hidden');
+
+    this.node.pnls.append(searchpanel);
 
     return searchpanel;
 };
@@ -266,7 +271,6 @@ const initSearching = function(this: Mmenu, form: HTMLElement) {
         data.listitems.push(...DOM.find(panel, '.mm-listitem'));
         data.dividers.push(...DOM.find(panel, '.mm-divider'));
     });
-
     var searchpanel = DOM.children(this.node.pnls, '.mm-panel_search')[0],
         input = DOM.find(form, 'input')[0],
         cancel = DOM.find(form, '.mm-searchfield__cancel')[0];
@@ -376,7 +380,6 @@ Mmenu.prototype.search = function(
     query = query.toLowerCase().trim();
 
     var data = input['mmSearchfield'];
-
     var form: HTMLElement = input.closest('.mm-searchfield') as HTMLElement,
         buttons: HTMLElement[] = DOM.find(form as HTMLElement, '.mm-btn'),
         searchpanel: HTMLElement = DOM.children(
@@ -398,11 +401,9 @@ Mmenu.prototype.search = function(
 
     //	Reset previous results
     listitems.forEach(listitem => {
-        listitem.classList.remove(
-            'mm-listitem_nosubitems',
-            'mm-listitem_onlysubitems',
-            'mm-hidden'
-        );
+        listitem.classList.remove('mm-listitem_nosubitems');
+        listitem.classList.remove('mm-listitem_onlysubitems');
+        listitem.classList.remove('mm-hidden');
     });
 
     if (searchpanel) {
@@ -426,7 +427,7 @@ Mmenu.prototype.search = function(
             var add = false;
 
             //  The listitem should be shown if:
-            //      1) The text matches the query and
+            //          1) The text matches the query and
             //          2a) The text is a open-button and
             //          2b) the option showSubPanels is set to true.
             //      or  3a) The text is not an anchor and
@@ -446,14 +447,16 @@ Mmenu.prototype.search = function(
                     if (options.showSubPanels) {
                         add = true;
                     }
-                    //  3a
-                } else if (!text.matches('a')) {
+                }
+                //  3a
+                else if (!text.matches('a')) {
                     //  3b
                     if (options.showTextItems) {
                         add = true;
                     }
-                    // 4
-                } else {
+                }
+                // 4
+                else {
                     add = true;
                 }
             }
@@ -482,11 +485,11 @@ Mmenu.prototype.search = function(
                     //  Add a divider to indicate in what panel the listitems were.
                     if (options.panel.dividers) {
                         let divider = DOM.create('li.mm-divider');
-                        divider.innerHTML = panel.querySelector(
-                            '.mm-navbar__title'
-                        ).innerHTML;
-
-                        allitems.push(divider);
+                        let title = DOM.find(panel, '.mm-navbar__title')[0];
+                        if (title) {
+                            divider.innerHTML = title.innerHTML;
+                            allitems.push(divider);
+                        }
                     }
 
                     listitems.forEach(listitem => {

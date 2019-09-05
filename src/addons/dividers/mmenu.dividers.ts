@@ -1,8 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
-import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import { extend } from '../../_modules/helpers';
 
 //	Add the options.
 Mmenu.options.dividers = options;
@@ -31,13 +31,6 @@ export default function(this: Mmenu) {
             });
         });
     });
-
-    //	Add classname to the menu to specify the type of the dividers
-    if (options.type) {
-        this.bind('initMenu:after', () => {
-            this.node.menu.classList.add('mm-menu_dividers-' + options.type);
-        });
-    }
 
     //	Add dividers
     if (options.add) {

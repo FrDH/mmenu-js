@@ -1,10 +1,5 @@
-const configs = {
-    fixed: {
-        insertMethod: 'append',
-        insertSelector: 'body'
-    },
-    sticky: {
-        offset: 0
-    }
+var configs = {
+    insertMethod: 'append',
+    insertSelector: 'body'
 };
 export default configs;

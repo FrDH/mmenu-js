@@ -1,4 +1,4 @@
-const options = {
+var options = {
     drop: false,
     fitViewport: true,
     event: 'click',

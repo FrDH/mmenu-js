@@ -1,4 +1,4 @@
-import { extend } from './_helpers';
+import { extend } from './helpers';
 var translations = {};
 /**
  * Add translations to a language.

@@ -1,12 +1,17 @@
-@import
-	'../../mixins',
-	'../../includes',
-	'../../variables';
-
+@import '../../mixins', '../../includes', '../../variables';
 
 .mm-wrapper_dragging {
-	.mm-menu,
-	.mm-slideout {
-		transition-duration: 0s !important;
-	}
+    .mm-menu,
+    .mm-slideout {
+        transition-duration: 0s !important;
+        user-select: none !important;
+    }
+
+    .mm-menu {
+        pointer-events: none !important;
+    }
+
+    .mm-wrapper__blocker {
+        display: none !important;
+    }
 }

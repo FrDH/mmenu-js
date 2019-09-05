@@ -5,7 +5,4 @@ interface mmOptionsDividers {
 
     /** Where to add the dividers. */
     addTo?: string;
-
-    /** The style of the dividers. */
-    type?: 'compact' | 'light';
 }

@@ -31,7 +31,7 @@ export function off(element, evnt) {
     //  Extract the event name and space from the event (the event can include a namespace (click.foo)).
     var evntParts = evnt.split('.');
     evnt = 'mmEvent' + ucFirst(evntParts[0]) + ucFirst(evntParts[1]);
-    (element[evnt] || []).forEach(handler => {
+    (element[evnt] || []).forEach(function (handler) {
         element.removeEventListener(evntParts[0], handler);
     });
 }
@@ -44,7 +44,7 @@ export function off(element, evnt) {
 export function trigger(element, evnt, options) {
     var evntParts = evnt.split('.');
     evnt = 'mmEvent' + ucFirst(evntParts[0]) + ucFirst(evntParts[1]);
-    (element[evnt] || []).forEach(handler => {
+    (element[evnt] || []).forEach(function (handler) {
         handler(options || {});
     });
 }

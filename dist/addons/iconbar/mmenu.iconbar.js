@@ -1,19 +1,20 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
-import * as DOM from '../../core/_dom';
-import * as media from '../../core/_matchmedia';
 import { extendShorthandOptions } from './_options';
-import { type, extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import * as media from '../../_modules/matchmedia';
+import { type, extend } from '../../_modules/helpers';
 //  Add the options.
 Mmenu.options.iconbar = options;
 export default function () {
+    var _this = this;
     var options = extendShorthandOptions(this.opts.iconbar);
     this.opts.iconbar = extend(options, Mmenu.options.iconbar);
     if (!options.use) {
         return;
     }
     var iconbar;
-    ['top', 'bottom'].forEach((position, n) => {
+    ['top', 'bottom'].forEach(function (position, n) {
         var ctnt = options[position];
         //	Extend shorthand options
         if (type(ctnt) != 'array') {
@@ -22,7 +23,7 @@ export default function () {
         //	Create node
         var part = DOM.create('div.mm-iconbar__' + position);
         //	Add content
-        for (let c = 0, l = ctnt.length; c < l; c++) {
+        for (var c = 0, l = ctnt.length; c < l; c++) {
             if (typeof ctnt[c] == 'string') {
                 part.innerHTML += ctnt[c];
             }
@@ -40,17 +41,17 @@ export default function () {
     //	Add to menu
     if (iconbar) {
         //	Add the iconbar.
-        this.bind('initMenu:after', () => {
-            this.node.menu.prepend(iconbar);
+        this.bind('initMenu:after', function () {
+            _this.node.menu.prepend(iconbar);
         });
         //	En-/disable the iconbar.
-        let classname = 'mm-menu_iconbar-' + options.position;
-        let enable = () => {
-            this.node.menu.classList.add(classname);
+        var classname_1 = 'mm-menu_iconbar-' + options.position;
+        var enable = function () {
+            _this.node.menu.classList.add(classname_1);
             Mmenu.sr_aria(iconbar, 'hidden', false);
         };
-        let disable = () => {
-            this.node.menu.classList.remove(classname);
+        var disable = function () {
+            _this.node.menu.classList.remove(classname_1);
             Mmenu.sr_aria(iconbar, 'hidden', true);
         };
         if (typeof options.use == 'boolean') {
@@ -62,7 +63,7 @@ export default function () {
         //	Tabs
         if (options.type == 'tabs') {
             iconbar.classList.add('mm-iconbar_tabs');
-            iconbar.addEventListener('click', evnt => {
+            iconbar.addEventListener('click', function (evnt) {
                 var anchor = evnt.target;
                 if (!anchor.matches('a')) {
                     return;
@@ -72,17 +73,17 @@ export default function () {
                     return;
                 }
                 try {
-                    var panel = this.node.menu.querySelector(anchor.getAttribute('href'))[0];
+                    var panel = _this.node.menu.querySelector(anchor.getAttribute('href'))[0];
                     if (panel && panel.matches('.mm-panel')) {
                         evnt.preventDefault();
                         evnt.stopImmediatePropagation();
-                        this.openPanel(panel, false);
+                        _this.openPanel(panel, false);
                     }
                 }
                 catch (err) { }
             });
-            const selectTab = (panel) => {
-                DOM.find(iconbar, 'a').forEach(anchor => {
+            var selectTab_1 = function (panel) {
+                DOM.find(iconbar, 'a').forEach(function (anchor) {
                     anchor.classList.remove('mm-iconbar__tab_selected');
                 });
                 var anchor = DOM.find(iconbar, '[href="#' + panel.id + '"]')[0];
@@ -90,13 +91,13 @@ export default function () {
                     anchor.classList.add('mm-iconbar__tab_selected');
                 }
                 else {
-                    let parent = panel['mmParent'];
-                    if (parent) {
-                        selectTab(parent.closest('.mm-panel'));
+                    var parent_1 = panel['mmParent'];
+                    if (parent_1) {
+                        selectTab_1(parent_1.closest('.mm-panel'));
                     }
                 }
             };
-            this.bind('openPanel:start', selectTab);
+            this.bind('openPanel:start', selectTab_1);
         }
     }
 }

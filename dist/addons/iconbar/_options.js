@@ -1,5 +1,5 @@
-import { type } from '../../core/_helpers';
-const options = {
+import { type } from '../../_modules/helpers';
+var options = {
     use: false,
     top: [],
     bottom: [],
@@ -31,4 +31,3 @@ export function extendShorthandOptions(options) {
     }
     return options;
 }
-;

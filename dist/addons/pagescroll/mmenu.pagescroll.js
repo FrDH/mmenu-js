@@ -1,13 +1,14 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
-import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import { extend } from '../../_modules/helpers';
 //	Add the options and configs.
 Mmenu.options.pageScroll = options;
 Mmenu.configs.pageScroll = configs;
 export default function () {
+    var _this = this;
     var options = extendShorthandOptions(this.opts.pageScroll);
     this.opts.pageScroll = extend(options, Mmenu.options.pageScroll);
     var configs = this.conf.pageScroll;
@@ -17,7 +18,9 @@ export default function () {
         if (section) {
             // section.scrollIntoView({ behavior: 'smooth' });
             window.scrollTo({
-                top: section.getBoundingClientRect().top - configs.scrollOffset,
+                top: section.getBoundingClientRect().top +
+                    document.scrollingElement.scrollTop -
+                    configs.scrollOffset,
                 behavior: 'smooth'
             });
         }
@@ -36,14 +39,14 @@ export default function () {
     }
     //	Scroll to section after clicking menu item.
     if (options.scroll) {
-        this.bind('close:finish', () => {
+        this.bind('close:finish', function () {
             scrollTo();
         });
     }
     //	Add click behavior.
     //	Prevents default behavior when clicking an anchor.
     if (this.opts.offCanvas && options.scroll) {
-        this.clck.push((anchor, args) => {
+        this.clck.push(function (anchor, args) {
             section = null;
             //	Don't continue if the clicked anchor is not in the menu.
             if (!args.inMenu) {
@@ -56,8 +59,8 @@ export default function () {
                 return;
             }
             //	If the sidebar add-on is "expanded"...
-            if (this.node.menu.matches('.mm-menu_sidebar-expanded') &&
-                this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
+            if (_this.node.menu.matches('.mm-menu_sidebar-expanded') &&
+                _this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
                 //	... scroll the page to the section.
                 scrollTo();
                 //	... otherwise...
@@ -72,30 +75,32 @@ export default function () {
     }
     //	Update selected menu item after scrolling.
     if (options.update) {
-        let scts = [];
-        this.bind('initListview:after', (panel) => {
-            let listitems = DOM.find(panel, '.mm-listitem');
-            DOM.filterLIA(listitems).forEach(anchor => {
+        var scts_1 = [];
+        this.bind('initListview:after', function (panel) {
+            var listitems = DOM.find(panel, '.mm-listitem');
+            DOM.filterLIA(listitems).forEach(function (anchor) {
                 var href = anchor.getAttribute('href');
                 var section = anchorInPage(href);
                 if (section) {
-                    scts.unshift(section);
+                    scts_1.unshift(section);
                 }
             });
         });
-        let _selected = -1;
-        window.addEventListener('scroll', evnt => {
+        var _selected_1 = -1;
+        window.addEventListener('scroll', function (evnt) {
             var scrollTop = window.scrollY;
-            for (var s = 0; s < scts.length; s++) {
-                if (scts[s].offsetTop < scrollTop + configs.updateOffset) {
-                    if (_selected !== s) {
-                        _selected = s;
-                        let panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
-                        let listitems = DOM.find(panel, '.mm-listitem');
-                        let anchors = DOM.filterLIA(listitems);
-                        anchors = anchors.filter(anchor => anchor.matches('[href="#' + scts[s].id + '"]'));
+            for (var s = 0; s < scts_1.length; s++) {
+                if (scts_1[s].offsetTop < scrollTop + configs.updateOffset) {
+                    if (_selected_1 !== s) {
+                        _selected_1 = s;
+                        var panel = DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
+                        var listitems = DOM.find(panel, '.mm-listitem');
+                        var anchors = DOM.filterLIA(listitems);
+                        anchors = anchors.filter(function (anchor) {
+                            return anchor.matches('[href="#' + scts_1[s].id + '"]');
+                        });
                         if (anchors.length) {
-                            this.setSelected(anchors[0].parentElement);
+                            _this.setSelected(anchors[0].parentElement);
                         }
                     }
                     break;

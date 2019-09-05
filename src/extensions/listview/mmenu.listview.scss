@@ -2,15 +2,17 @@
 
 //	Justified listviews
 @if ($mm_include_listview_justify) {
-    .mm-menu_listview-justify .mm-panels > .mm-panel,
-    .mm-panels > .mm-panel_listview-justify {
-        &:before,
+    .mm-menu_listview-justify .mm-panels > .mm-panel {
+        display: flex;
+        flex-direction: column;
+
         &:after {
             content: none;
             display: none;
         }
 
         .mm-listview {
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
 
@@ -53,11 +55,17 @@
 //	Spacers
 @if ($mm_include_listview_spacer) {
     .mm-listitem_spacer {
-        padding-top: $mm_listitemSize;
+        @if ($mm_IE11Fallbacks) {
+            padding-top: $mm_listitemSize;
+
+            > .mm-listitem__btn {
+                top: $mm_listitemSize;
+            }
+        }
+
         padding-top: var(--mm-listitem-size);
 
         > .mm-listitem__btn {
-            top: $mm_listitemSize;
             top: var(--mm-listitem-size);
         }
     }

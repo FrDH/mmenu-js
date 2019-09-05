@@ -1,4 +1,4 @@
-const opts = {
+var opts = {
     height: 'default'
 };
 export default opts;

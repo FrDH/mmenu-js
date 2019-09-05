@@ -19,13 +19,13 @@ $mm_offsetBottom: 0 !default;
 $mm_offsetLeft: 0 !default;
 
 //	Sizes
-$mm_btnSize: 44px !default;
+$mm_listitemSize: 44px !default;
+$mm_btnSize: 50px !default;
 $mm_padding: 10px !default;
 $mm_lineHeight: 20px !default;
 
 $mm_listitemIndent: $mm_padding * 2 !default;
-$mm_listitemSize: $mm_btnSize !default;
-$mm_navbarSize: $mm_btnSize !default;
+$mm_navbarSize: $mm_listitemSize !default;
 $mm_panelPadding: $mm_padding * 2 !default;
-$mm_subopenWidth: $mm_btnSize + $mm_padding !default;
+$mm_subopenWidth: $mm_btnSize !default;
 $mm_subpanelOffset: 30% !default;

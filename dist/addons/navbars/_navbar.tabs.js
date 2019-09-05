@@ -1,9 +1,10 @@
-import * as DOM from '../../core/_dom';
+import * as DOM from '../../_modules/dom';
 export default function (navbar) {
+    var _this = this;
     navbar.classList.add('mm-navbar_tabs');
     navbar.parentElement.classList.add('mm-navbars_has-tabs');
     var anchors = DOM.children(navbar, 'a');
-    navbar.addEventListener('click', (evnt) => {
+    navbar.addEventListener('click', function (evnt) {
         var anchor = evnt.target;
         if (!anchor.matches('a')) {
             return;
@@ -13,16 +14,18 @@ export default function (navbar) {
             return;
         }
         try {
-            this.openPanel(this.node.menu.querySelector(anchor.getAttribute('href')), false);
+            _this.openPanel(_this.node.menu.querySelector(anchor.getAttribute('href')), false);
             evnt.stopImmediatePropagation();
         }
         catch (err) { }
     });
     function selectTab(panel) {
-        anchors.forEach((anchor) => {
+        anchors.forEach(function (anchor) {
             anchor.classList.remove('mm-navbar__tab_selected');
         });
-        var anchor = anchors.filter(anchor => anchor.matches('[href="#' + panel.id + '"]'))[0];
+        var anchor = anchors.filter(function (anchor) {
+            return anchor.matches('[href="#' + panel.id + '"]');
+        })[0];
         if (anchor) {
             anchor.classList.add('mm-navbar__tab_selected');
         }
@@ -35,4 +38,3 @@ export default function (navbar) {
     }
     this.bind('openPanel:start', selectTab);
 }
-;

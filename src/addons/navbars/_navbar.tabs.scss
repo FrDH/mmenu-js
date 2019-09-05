@@ -1,54 +1,133 @@
-$module: '.mm-navbar';
+$mm_module: '.mm-navbar';
 
 @if ($mm_include_navbars_tabs) {
-    #{$module}_tabs {
-        text-align: center;
-
+    //  All tabs.
+    #{$mm_module}_tabs {
         > * {
-            flex-grow: 1;
+            padding: 0 $mm_padding;
+            border: 1px solid transparent;
         }
     }
 
-    #{$module}__tab_selected {
-        background: inherit !important;
-        color: inherit !important;
-        border-width: 1px;
-        border-style: solid;
-        border-color: inherit;
+    //  Selected tab.
+    #{$mm_module}__tab_selected {
+        @if ($mm_IE11Fallbacks) {
+            background: $mm_backgroundColor;
+            color: $mm_textColor;
 
-        &:first-child {
-            border-left: none;
-        }
+            &:not(:first-child) {
+                border-left-color: $mm_borderColor;
+            }
 
-        &:last-child {
-            border-right: none;
-        }
-    }
-
-    @if ($mm_include_navbars_top) {
-        .mm-navbars_top.mm-navbars_has-tabs {
-            #{$module}_tabs,
-            #{$module}_tabs ~ #{$module} {
-                background: inherit !important;
-                color: inherit !important;
+            &:not(:last-child) {
+                border-right-color: $mm_borderColor;
             }
         }
-        @include mm_navbar_tabs_borders('top', 'bottom', 'last', 'first');
+
+        background: var(--mm-color-background);
+
+        // TODO: not specific enough :/ overriden by .mm-menu a :/ :/ :/
+        color: var(--mm-color-text);
+        // /TODO
+        &:not(:first-child) {
+            border-left-color: var(--mm-color-border);
+        }
+
+        &:not(:last-child) {
+            border-right-color: var(--mm-color-border);
+        }
     }
-    @if ($mm_include_navbars_bottom) {
-        .mm-navbars_bottom.mm-navbars_has-tabs {
-            #{$module} {
-                background: inherit;
-                color: inherit;
+}
+
+//  Navbars at the top.
+@if ($mm_include_navbars_top) {
+    .mm-navbars_top {
+        #{$mm_module}_tabs {
+            border-bottom: none;
+        }
+
+        //  Borders.
+        #{$mm_module}_tabs > * {
+            @if ($mm_IE11Fallbacks) {
+                border-bottom-color: $mm_borderColor;
+            }
+
+            border-bottom-color: var(--mm-color-border);
+        }
+
+        #{$mm_module}__tab_selected {
+            @if ($mm_IE11Fallbacks) {
+                border-top-color: $mm_borderColor;
+            }
+
+            border-top-color: var(--mm-color-border);
+            border-bottom-color: transparent;
+        }
+
+        //  Backgrounds
+        &.mm-navbars_has-tabs {
+            #{$mm_module} {
+                @if ($mm_IE11Fallbacks) {
+                    background: $mm_emphasizedBackgroundColor;
+                }
+
+                background: var(--mm-color-background-emphasis);
+            }
+
+            #{$mm_module}_tabs ~ #{$mm_module} {
+                @if ($mm_IE11Fallbacks) {
+                    background: $mm_backgroundColor;
+                }
+
+                background: var(--mm-color-background);
             }
         }
-        @include mm_navbar_tabs_borders('bottom', 'top', 'first', 'last');
     }
+}
 
-    .mm-navbars_top.mm-navbars_has-tabs > #{$module}:not(#{$module}_tabs),
-    .mm-navbars_bottom.mm-navbars_has-tabs #{$module}_tabs ~ #{$module},
-    #{$module}_tabs > a:not(#{$module}__tab_selected) {
-        background: var(--mm-color-background-emphasis);
-        color: var(--mm-color-text-dimmed);
+@if ($mm_include_navbars_bottom) {
+    .mm-navbars_bottom {
+        #{$mm_module}_tabs {
+            &:first-child {
+                border-top: none;
+            }
+        }
+
+        //  Borders.
+        #{$mm_module}_tabs > * {
+            @if ($mm_IE11Fallbacks) {
+                border-top-color: $mm_borderColor;
+            }
+
+            border-top-color: var(--mm-color-border);
+        }
+
+        #{$mm_module}__tab_selected {
+            @if ($mm_IE11Fallbacks) {
+                border-bottom-color: $mm_borderColor;
+            }
+
+            border-bottom-color: var(--mm-color-border);
+            border-top-color: transparent;
+        }
+        //  Backgrounds
+        &.mm-navbars_has-tabs {
+            #{$mm_module} {
+                @if ($mm_IE11Fallbacks) {
+                    background: $mm_backgroundColor;
+                }
+
+                background: var(--mm-color-background);
+            }
+
+            #{$mm_module}_tabs,
+            #{$mm_module}_tabs ~ #{$mm_module} {
+                @if ($mm_IE11Fallbacks) {
+                    background: $mm_emphasizedBackgroundColor;
+                }
+
+                background: var(--mm-color-background-emphasis);
+            }
+        }
     }
 }

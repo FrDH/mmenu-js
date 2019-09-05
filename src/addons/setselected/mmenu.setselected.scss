@@ -1,37 +1,48 @@
 @import '../../mixins', '../../includes', '../../variables';
 
-.mm-menu_selected-hover,
-.mm-menu_selected-parent {
-    .mm-listitem__text,
-    .mm-listitem__btn {
-        transition: background $mm_transitionDuration $mm_transitionFunction;
+.mm-menu_selected {
+    &-hover,
+    &-parent {
+        .mm-listitem__text,
+        .mm-listitem__btn {
+            transition: background-color $mm_transitionDuration
+                $mm_transitionFunction;
+        }
     }
-}
 
-.mm-menu_selected-hover {
-    .mm-listview:hover > .mm-listitem_selected {
-        > .mm-listitem__text {
-            background: none;
+    &-hover {
+        .mm-listview:hover > .mm-listitem_selected {
+            > .mm-listitem__text {
+                background: none;
+            }
         }
-    }
-    .mm-listitem__text,
-    .mm-listitem__btn {
-        &:hover {
-            background: var(--mm-color-background-emphasis);
-        }
-    }
-}
+        .mm-listitem__text,
+        .mm-listitem__btn {
+            &:hover {
+                @if ($mm_IE11Fallbacks) {
+                    background: $mm_emphasizedBackgroundColor;
+                }
 
-.mm-menu_selected-parent {
-    .mm-panel_opened-parent .mm-listitem:not(.mm-listitem_selected-parent) {
-        > .mm-listitem__text {
-            background: none;
+                background: var(--mm-color-background-emphasis);
+            }
         }
     }
-    .mm-listitem_selected-parent {
-        > .mm-listitem__text,
-        > .mm-listitem__btn {
-            background: var(--mm-color-background-emphasis);
+
+    &-parent {
+        .mm-panel_opened-parent .mm-listitem:not(.mm-listitem_selected-parent) {
+            > .mm-listitem__text {
+                background: none;
+            }
+        }
+        .mm-listitem_selected-parent {
+            > .mm-listitem__text,
+            > .mm-listitem__btn {
+                @if ($mm_IE11Fallbacks) {
+                    background: $mm_emphasizedBackgroundColor;
+                }
+
+                background: var(--mm-color-background-emphasis);
+            }
         }
     }
 }

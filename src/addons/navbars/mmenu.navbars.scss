@@ -1,30 +1,33 @@
 @import '../../mixins', '../../includes', '../../variables';
 
 %mm_navbars {
-    background: inherit;
-    border-color: inherit;
-    border-width: 0;
-    position: relative;
-    flex-shrink: 0;
-
-    > .mm-navbar {
-        border-width: 0;
-    }
 }
 
 @if ($mm_include_navbars_top) {
     .mm-navbars_top {
-        @extend %mm_navbars;
-        border-bottom-style: solid;
-        border-bottom-width: 1px;
+        flex-shrink: 0;
+
+        .mm-navbar:not(:last-child) {
+            border-bottom: none;
+        }
     }
 }
 
 @if ($mm_include_navbars_bottom) {
     .mm-navbars_bottom {
-        @extend %mm_navbars;
-        border-top-style: solid;
-        border-top-width: 1px;
+        flex-shrink: 0;
+
+        .mm-navbar {
+            border-bottom: none;
+
+            &:first-child {
+                @if ($mm_IE11Fallbacks) {
+                    border-top: 1px solid $mm_borderColor;
+                }
+
+                border-top: 1px solid var(--mm-color-border);
+            }
+        }
     }
 }
 

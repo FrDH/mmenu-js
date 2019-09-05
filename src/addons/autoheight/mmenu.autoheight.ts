@@ -1,8 +1,8 @@
 import Mmenu from './../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
-import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import { extend } from '../../_modules/helpers';
 
 //	Add the options.
 Mmenu.options.autoHeight = options;
@@ -28,14 +28,14 @@ export default function(this: Mmenu) {
                 panel = DOM.children(this.node.pnls, '.mm-panel')[0];
             }
 
-            return panel.offsetHeight;
+            return panel.scrollHeight;
         };
 
         const getHighest = (): number => {
             var highest = 0;
             DOM.children(this.node.pnls, '.mm-panel').forEach(panel => {
                 panel = measurablePanel(panel);
-                highest = Math.max(highest, panel.offsetHeight);
+                highest = Math.max(highest, panel.scrollHeight);
             });
 
             return highest;
@@ -58,11 +58,9 @@ export default function(this: Mmenu) {
                 return;
             }
 
-            var style = window.getComputedStyle(this.node.pnls);
-
-            var _top = Math.max(parseInt(style.top, 10), 0) || 0,
-                _bot = Math.max(parseInt(style.bottom, 10), 0) || 0,
-                _hgh = 0;
+            var _hgh = 0;
+            var _dif =
+                this.node.menu.offsetHeight - this.node.pnls.offsetHeight;
 
             //	The "measuring" classname undoes some CSS to be able to measure the height.
             this.node.menu.classList.add('mm-menu_autoheight-measuring');
@@ -75,7 +73,7 @@ export default function(this: Mmenu) {
             }
 
             //	Set the height.
-            this.node.menu.style.height = _hgh + _top + _bot + 'px';
+            this.node.menu.style.height = _hgh + _dif + 'px';
 
             //	Remove the "measuring" classname.
             this.node.menu.classList.remove('mm-menu_autoheight-measuring');

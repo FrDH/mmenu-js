@@ -2,28 +2,30 @@
     .mm-navbar__breadcrumbs {
         @include mm_ellipsis;
 
-        -webkit-overflow-scrolling: touch;
+        flex: 1 1 50%;
+        display: flex;
+        justify-content: flex-start;
+        padding: 0 $mm_panelPadding;
         overflow-x: auto;
-        text-align: left;
-        flex-grow: 1;
-        padding: 0;
-        padding-left: $mm_panelPadding;
+        -webkit-overflow-scrolling: touch;
 
         > * {
-            display: inline-block;
-            padding: calc(
-                (var(--mm-navbar-size) - var(--mm-line-height)) * 0.5
-            );
-            padding-left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding-right: 6px;
         }
 
         > a {
             text-decoration: underline;
         }
-    }
 
-    .mm-btn:not(.mm-hidden) + .mm-navbar__breadcrumbs {
-        padding-left: 0;
+        &:not(:last-child) {
+            padding-right: 0;
+        }
+
+        .mm-btn:not(.mm-hidden) + & {
+            padding-left: 0;
+        }
     }
 }

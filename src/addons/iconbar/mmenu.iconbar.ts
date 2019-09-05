@@ -1,9 +1,9 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
-import * as DOM from '../../core/_dom';
-import * as media from '../../core/_matchmedia';
 import { extendShorthandOptions } from './_options';
-import { type, extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import * as media from '../../_modules/matchmedia';
+import { type, extend } from '../../_modules/helpers';
 
 //  Add the options.
 Mmenu.options.iconbar = options;

@@ -1,8 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
-import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import { extend } from '../../_modules/helpers';
 
 //	Add the options.
 Mmenu.options.iconPanels = options;
@@ -24,7 +24,7 @@ export default function(this: Mmenu) {
     //	Add the iconpanels
     if (options.add) {
         this.bind('initMenu:after', () => {
-            var classnames = ['mm-menu_iconpanel'];
+            let classnames = ['mm-menu_iconpanel'];
 
             if (options.hideNavbar) {
                 classnames.push('mm-menu_hidenavbar');
@@ -34,12 +34,18 @@ export default function(this: Mmenu) {
                 classnames.push('mm-menu_hidedivider');
             }
 
-            this.node.menu.classList.add(...classnames);
+            //  IE11:
+            classnames.forEach(classname => {
+                this.node.menu.classList.add(classname);
+            });
+
+            //  Better browsers:
+            // this.node.menu.classList.add(...classnames);
         });
 
-        var classnames = [];
+        let classnames = [];
         if (!keepFirst) {
-            for (var i = 0; i <= options.visible; i++) {
+            for (let i = 0; i <= options.visible; i++) {
                 classnames.push('mm-panel_iconpanel-' + i);
             }
         }
@@ -61,7 +67,13 @@ export default function(this: Mmenu) {
             } else {
                 //	Remove the "iconpanel" classnames from all panels.
                 panels.forEach(panel => {
-                    panel.classList.remove(...classnames);
+                    //  IE11:
+                    classnames.forEach(classname => {
+                        panel.classList.remove(classname);
+                    });
+
+                    //  Better browsers:
+                    // panel.classList.remove(...classnames);
                 });
 
                 //	Filter out panels that are not opened.

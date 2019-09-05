@@ -1,12 +1,13 @@
 import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
-import * as DOM from '../_dom';
-import * as support from '../../core/_support';
 import { extendShorthandOptions } from './_options';
-import { extend, touchDirection } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import * as support from '../../_modules/support';
+import { extend, touchDirection } from '../../_modules/helpers';
 //  Add the options.
 Mmenu.options.scrollBugFix = options;
 export default function () {
+    var _this = this;
     //	The scrollBugFix add-on fixes a scrolling bug
     //		1) on touch devices
     //		2) in an off-canvas menu
@@ -38,7 +39,7 @@ export default function () {
         passive: false
     });
     //  Prevent the page from scrolling when dragging in the menu.
-    this.node.menu.addEventListener('touchmove', evnt => {
+    this.node.menu.addEventListener('touchmove', function (evnt) {
         var panel = evnt.target.closest('.mm-panel');
         if (panel) {
             //  When dragging a non-scrollable panel,
@@ -71,13 +72,13 @@ export default function () {
     });
     //  Some small additional improvements
     //	Scroll the current opened panel to the top when opening the menu.
-    this.bind('open:start', () => {
-        var panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+    this.bind('open:start', function () {
+        var panel = DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
         panel.scrollTop = 0;
     });
     //	Fix issue after device rotation change.
-    window.addEventListener('orientationchange', evnt => {
-        var panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+    window.addEventListener('orientationchange', function (evnt) {
+        var panel = DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
         panel.scrollTop = 0;
         //	Apparently, changing the overflow-scrolling property triggers some event :)
         panel.style['-webkit-overflow-scrolling'] = 'auto';

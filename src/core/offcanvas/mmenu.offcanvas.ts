@@ -1,15 +1,15 @@
 import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
-import * as DOM from '../_dom';
-import * as events from '../_eventlisteners';
 import { extendShorthandOptions } from './_options';
+import * as DOM from '../../_modules/dom';
+import * as events from '../../_modules/eventlisteners';
 import {
     extend,
     transitionend,
     uniqueId,
     originalId
-} from '../../core/_helpers';
+} from '../../_modules/helpers';
 
 //  Add the options and configs.
 Mmenu.options.offCanvas = options;
@@ -47,7 +47,7 @@ export default function(this: Mmenu) {
             });
         }
 
-        this.node.wrpr = document.documentElement;
+        this.node.wrpr = document.body;
 
         //	Prepend to the <body>
         document
@@ -207,7 +207,13 @@ Mmenu.prototype._openSetup = function(this: Mmenu) {
         clsn.push('mm-wrapper_background');
     }
 
-    this.node.wrpr.classList.add(...clsn);
+    //  IE11:
+    clsn.forEach(classname => {
+        this.node.wrpr.classList.add(classname);
+    });
+
+    //  Better browsers:
+    // this.node.wrpr.classList.add(...clsn);
 
     //	Open
     //	Without the timeout, the animation won't work because the menu had display: none;
@@ -250,14 +256,20 @@ Mmenu.prototype.close = function(this: Mmenu) {
         () => {
             this.node.menu.classList.remove('mm-menu_opened');
 
-            var clsn = [
+            var classnames = [
                 'mm-wrapper_opened',
                 'mm-wrapper_blocking',
                 'mm-wrapper_modal',
                 'mm-wrapper_background'
             ];
 
-            this.node.wrpr.classList.remove(...clsn);
+            //  IE11:
+            classnames.forEach(classname => {
+                this.node.wrpr.classList.remove(classname);
+            });
+
+            //  Better browsers:
+            // this.node.wrpr.classList.remove(...classnames);
 
             //	Restore style and position
             Mmenu.node.page.setAttribute('style', Mmenu.node.page['mmStyle']);
@@ -335,7 +347,9 @@ Mmenu.prototype.setPage = function(this: Mmenu, page: HTMLElement) {
 
         page = pages[0];
     }
-    page.classList.add('mm-page', 'mm-slideout');
+    page.classList.add('mm-page');
+    page.classList.add('mm-slideout');
+
     page.id = page.id || uniqueId();
 
     Mmenu.node.page = page;
@@ -356,19 +370,6 @@ const initWindow = function(this: Mmenu) {
         if (evnt.keyCode == 9) {
             if (this.node.wrpr.matches('.mm-wrapper_opened')) {
                 evnt.preventDefault();
-            }
-        }
-    });
-
-    //	Set "page" element min-height to window height
-    events.off(window, 'resize.page');
-    events.on(window, 'resize.page', evnt => {
-        if (Mmenu.node.page) {
-            if (
-                this.node.wrpr.matches('.mm-wrapper_opening') ||
-                (evnt as any).force
-            ) {
-                Mmenu.node.page.style.minHeight = window.innerHeight + 'px';
             }
         }
     });

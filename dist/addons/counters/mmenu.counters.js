@@ -1,8 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
-import * as DOM from '../../core/_dom';
 import { extendShorthandOptions } from './_options';
-import { extend } from '../../core/_helpers';
+import * as DOM from '../../_modules/dom';
+import { extend } from '../../_modules/helpers';
 //	Add the options.
 Mmenu.options.counters = options;
 //	Add the classnames.
@@ -10,18 +10,19 @@ Mmenu.configs.classNames.counters = {
     counter: 'Counter'
 };
 export default function () {
+    var _this = this;
     var options = extendShorthandOptions(this.opts.counters);
     this.opts.counters = extend(options, Mmenu.options.counters);
     //	Refactor counter class
-    this.bind('initListview:after', (panel) => {
-        var cntrclss = this.conf.classNames.counters.counter, counters = panel.querySelectorAll('.' + cntrclss);
-        counters.forEach(counter => {
+    this.bind('initListview:after', function (panel) {
+        var cntrclss = _this.conf.classNames.counters.counter, counters = panel.querySelectorAll('.' + cntrclss);
+        counters.forEach(function (counter) {
             DOM.reClass(counter, cntrclss, 'mm-counter');
         });
     });
     //	Add the counters after a listview is initiated.
     if (options.add) {
-        this.bind('initListview:after', (panel) => {
+        this.bind('initListview:after', function (panel) {
             if (!panel.matches(options.addTo)) {
                 return;
             }
@@ -29,8 +30,8 @@ export default function () {
             if (parent) {
                 //	Check if no counter already excists.
                 if (!parent.querySelector('.mm-counter')) {
-                    let counter = DOM.create('span.mm-counter');
-                    let btn = DOM.children(parent, '.mm-btn')[0];
+                    var counter = DOM.create('span.mm-counter');
+                    var btn = DOM.children(parent, '.mm-btn')[0];
                     if (btn) {
                         btn.prepend(counter);
                     }
@@ -39,11 +40,11 @@ export default function () {
         });
     }
     if (options.count) {
-        const count = (panel) => {
+        var count = function (panel) {
             var panels = panel
                 ? [panel]
-                : DOM.children(this.node.pnls, '.mm-panel');
-            panels.forEach(panel => {
+                : DOM.children(_this.node.pnls, '.mm-panel');
+            panels.forEach(function (panel) {
                 var parent = panel['mmParent'];
                 if (!parent) {
                     return;
@@ -53,8 +54,8 @@ export default function () {
                     return;
                 }
                 var listitems = [];
-                DOM.children(panel, '.mm-listview').forEach(listview => {
-                    listitems.push(...DOM.children(listview));
+                DOM.children(panel, '.mm-listview').forEach(function (listview) {
+                    listitems.push.apply(listitems, DOM.children(listview));
                 });
                 counter.innerHTML = DOM.filterLI(listitems).length.toString();
             });

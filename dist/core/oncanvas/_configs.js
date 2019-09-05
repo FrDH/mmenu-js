@@ -1,4 +1,4 @@
-const configs = {
+var configs = {
     classNames: {
         inset: 'Inset',
         nolistview: 'NoListview',

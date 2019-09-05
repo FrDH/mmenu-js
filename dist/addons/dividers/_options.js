@@ -1,7 +1,6 @@
-const options = {
+var options = {
     add: false,
-    addTo: 'panels',
-    type: null
+    addTo: 'panels'
 };
 export default options;
 /**

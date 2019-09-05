@@ -3,11 +3,15 @@
 $mm_module: '.mm-counter';
 
 #{$mm_module} {
-    color: var(--mm-color-text-dimmed);
-    text-align: right;
+    @if ($mm_IE11Fallbacks) {
+        color: $mm_dimmedTextColor;
+    }
+
     display: block;
     padding-left: $mm_padding * 2;
     float: right;
+    text-align: right;
+    color: var(--mm-color-text-dimmed);
 }
 
 @if ($mm_include_searchfield) {

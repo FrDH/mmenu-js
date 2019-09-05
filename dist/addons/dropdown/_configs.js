@@ -1,4 +1,4 @@
-const configs = {
+var configs = {
     offset: {
         button: {
             x: -5,

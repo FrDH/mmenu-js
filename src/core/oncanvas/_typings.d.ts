@@ -151,8 +151,11 @@ interface mmOptionsNavbar {
     /** Whether or not to add a navbar above the panels. */
     add?: boolean;
 
+    /** Whether or not the navbars should be sticky. */
+    sticky?: boolean;
+
     /** The title above the panels. */
-    title?: string | Function;
+    title?: string;
 
     /** The type of link to set for the title. */
     titleLink?: 'parent' | 'anchor' | 'none';
@@ -196,9 +199,6 @@ interface mmConfigs {
     screenReader?: mmConfigsScreenreader;
 
     //	Add-ons
-
-    /** Configuration for the drag add-on. */
-    drag?: mmConfigsDrag;
 
     /** Configuration for the dropdown add-on. */
     dropdown?: mmConfigsDropdown;
