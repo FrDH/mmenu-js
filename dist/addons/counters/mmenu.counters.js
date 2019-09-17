@@ -14,42 +14,41 @@ export default function () {
     var options = extendShorthandOptions(this.opts.counters);
     this.opts.counters = extend(options, Mmenu.options.counters);
     //	Refactor counter class
-    this.bind('initListview:after', function (panel) {
-        var cntrclss = _this.conf.classNames.counters.counter, counters = panel.querySelectorAll('.' + cntrclss);
+    this.bind('initListview:after', function (listview) {
+        var cntrclss = _this.conf.classNames.counters.counter, counters = DOM.find(listview, '.' + cntrclss);
         counters.forEach(function (counter) {
             DOM.reClass(counter, cntrclss, 'mm-counter');
         });
     });
     //	Add the counters after a listview is initiated.
     if (options.add) {
-        this.bind('initListview:after', function (panel) {
-            if (!panel.matches(options.addTo)) {
+        this.bind('initListview:after', function (listview) {
+            if (!listview.matches(options.addTo)) {
                 return;
             }
-            var parent = panel['mmParent'];
+            var parent = listview.closest('.mm-panel')['mmParent'];
             if (parent) {
                 //	Check if no counter already excists.
-                if (!parent.querySelector('.mm-counter')) {
-                    var counter = DOM.create('span.mm-counter');
+                if (!DOM.find(parent, '.mm-counter').length) {
                     var btn = DOM.children(parent, '.mm-btn')[0];
                     if (btn) {
-                        btn.prepend(counter);
+                        btn.prepend(DOM.create('span.mm-counter'));
                     }
                 }
             }
         });
     }
     if (options.count) {
-        var count = function (panel) {
-            var panels = panel
-                ? [panel]
+        var count = function (listview) {
+            var panels = listview
+                ? [listview.closest('.mm-panel')]
                 : DOM.children(_this.node.pnls, '.mm-panel');
             panels.forEach(function (panel) {
                 var parent = panel['mmParent'];
                 if (!parent) {
                     return;
                 }
-                var counter = parent.querySelector('.mm-counter');
+                var counter = DOM.find(parent, '.mm-counter')[0];
                 if (!counter) {
                     return;
                 }

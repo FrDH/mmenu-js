@@ -34,10 +34,12 @@ export default function(this: Mmenu) {
 
         //	Remove current selected item
     } else if (!options.current) {
-        this.bind('initListview:after', (panel: HTMLElement) => {
-            DOM.find(panel, '.mm-listitem_selected').forEach(listitem => {
-                listitem.classList.remove('mm-listitem_selected');
-            });
+        this.bind('initListview:after', (listview: HTMLElement) => {
+            DOM.children(listview, '.mm-listitem_selected').forEach(
+                listitem => {
+                    listitem.classList.remove('mm-listitem_selected');
+                }
+            );
         });
     }
 

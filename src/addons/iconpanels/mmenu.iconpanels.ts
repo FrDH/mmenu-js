@@ -107,7 +107,7 @@ export default function(this: Mmenu) {
             }
         });
 
-        this.bind('initListview:after', (panel: HTMLElement) => {
+        this.bind('initPanel:after', (panel: HTMLElement) => {
             if (
                 options.blockPanel &&
                 !panel.parentElement.matches('.mm-listitem_vertical') &&

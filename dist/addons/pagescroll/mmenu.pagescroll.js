@@ -76,8 +76,8 @@ export default function () {
     //	Update selected menu item after scrolling.
     if (options.update) {
         var scts_1 = [];
-        this.bind('initListview:after', function (panel) {
-            var listitems = DOM.find(panel, '.mm-listitem');
+        this.bind('initListview:after', function (listview) {
+            var listitems = DOM.children(listview, '.mm-listitem');
             DOM.filterLIA(listitems).forEach(function (anchor) {
                 var href = anchor.getAttribute('href');
                 var section = anchorInPage(href);

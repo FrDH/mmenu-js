@@ -197,8 +197,12 @@
             'closeAllPanels',
             'setSelected'
         ].forEach(method => {
-            this.bind(method + ':before', method => {
-                if (typeof panel != 'undefined' && panel instanceof jQuery) {
+            this.bind(method + ':before', panel => {
+                if (
+                    typeof panel != 'undefined' &&
+                    typeof jQuery != 'undefined' &&
+                    panel instanceof jQuery
+                ) {
                     deprecated(
                         'Passing a jQuery object as an argument to the "' +
                             method +
@@ -213,8 +217,12 @@
         //	These methods no longer accept a jQuery object as an argument,
         //		they now only accept an array of HTMLElements.
         ['initPanels'].forEach(method => {
-            this.bind(method + ':before', method => {
-                if (typeof panel != 'undefined' && panel instanceof jQuery) {
+            this.bind(method + ':before', panel => {
+                if (
+                    typeof panel != 'undefined' &&
+                    typeof jQuery != 'undefined' &&
+                    panel instanceof jQuery
+                ) {
                     deprecated(
                         'Passing a jQuery object as an argument to the "' +
                             method +

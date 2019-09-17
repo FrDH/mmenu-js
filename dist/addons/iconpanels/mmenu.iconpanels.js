@@ -86,7 +86,7 @@ export default function () {
                 });
             }
         });
-        this.bind('initListview:after', function (panel) {
+        this.bind('initPanel:after', function (panel) {
             if (options.blockPanel &&
                 !panel.parentElement.matches('.mm-listitem_vertical') &&
                 !DOM.children(panel, '.mm-panel__blocker')[0]) {

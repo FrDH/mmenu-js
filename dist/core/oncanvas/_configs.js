@@ -5,7 +5,6 @@ var configs = {
         nopanel: 'NoPanel',
         panel: 'Panel',
         selected: 'Selected',
-        spacer: 'Spacer',
         vertical: 'Vertical'
     },
     language: null,

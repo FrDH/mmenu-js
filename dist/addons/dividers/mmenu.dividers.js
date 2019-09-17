@@ -12,39 +12,34 @@ export default function () {
     var options = extendShorthandOptions(this.opts.dividers);
     this.opts.dividers = extend(options, Mmenu.options.dividers);
     //	Refactor divider classname
-    this.bind('initListview:after', function (panel) {
-        var listviews = DOM.children(panel, 'ul, ol');
-        listviews.forEach(function (listview) {
-            DOM.children(listview).forEach(function (listitem) {
-                DOM.reClass(listitem, _this.conf.classNames.divider, 'mm-divider');
-                if (listitem.matches('.mm-divider')) {
-                    listitem.classList.remove('mm-listitem');
-                }
-            });
+    this.bind('initListview:after', function (listview) {
+        DOM.children(listview).forEach(function (listitem) {
+            DOM.reClass(listitem, _this.conf.classNames.divider, 'mm-divider');
+            if (listitem.matches('.mm-divider')) {
+                listitem.classList.remove('mm-listitem');
+            }
         });
     });
     //	Add dividers
     if (options.add) {
-        this.bind('initListview:after', function (panel) {
-            if (!panel.matches(options.addTo)) {
+        this.bind('initListview:after', function (listview) {
+            if (!listview.matches(options.addTo)) {
                 return;
             }
-            DOM.find(panel, '.mm-divider').forEach(function (divider) {
+            DOM.find(listview, '.mm-divider').forEach(function (divider) {
                 divider.remove();
             });
-            DOM.find(panel, '.mm-listview').forEach(function (listview) {
-                var lastletter = '', listitems = DOM.children(listview);
-                DOM.filterLI(listitems).forEach(function (listitem) {
-                    var letter = DOM.children(listitem, '.mm-listitem__text')[0]
-                        .textContent.trim()
-                        .toLowerCase()[0];
-                    if (letter.length && letter != lastletter) {
-                        lastletter = letter;
-                        var divider = DOM.create('li.mm-divider');
-                        divider.textContent = letter;
-                        listview.insertBefore(divider, listitem);
-                    }
-                });
+            var lastletter = '', listitems = DOM.children(listview);
+            DOM.filterLI(listitems).forEach(function (listitem) {
+                var letter = DOM.children(listitem, '.mm-listitem__text')[0]
+                    .textContent.trim()
+                    .toLowerCase()[0];
+                if (letter.length && letter != lastletter) {
+                    lastletter = letter;
+                    var divider = DOM.create('li.mm-divider');
+                    divider.textContent = letter;
+                    listview.insertBefore(divider, listitem);
+                }
             });
         });
     }

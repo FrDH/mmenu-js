@@ -90,8 +90,8 @@ export default function(this: Mmenu) {
     if (options.update) {
         let scts: HTMLElement[] = [];
 
-        this.bind('initListview:after', (panel: HTMLElement) => {
-            let listitems = DOM.find(panel, '.mm-listitem');
+        this.bind('initListview:after', (listview: HTMLElement) => {
+            let listitems = DOM.children(listview, '.mm-listitem');
             DOM.filterLIA(listitems).forEach(anchor => {
                 var href = anchor.getAttribute('href');
                 var section = anchorInPage(href);

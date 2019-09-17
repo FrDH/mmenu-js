@@ -51,22 +51,3 @@
         }
     }
 }
-
-//	Spacers
-@if ($mm_include_listview_spacer) {
-    .mm-listitem_spacer {
-        @if ($mm_IE11Fallbacks) {
-            padding-top: $mm_listitemSize;
-
-            > .mm-listitem__btn {
-                top: $mm_listitemSize;
-            }
-        }
-
-        padding-top: var(--mm-listitem-size);
-
-        > .mm-listitem__btn {
-            top: var(--mm-listitem-size);
-        }
-    }
-}
