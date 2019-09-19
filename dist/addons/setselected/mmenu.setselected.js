@@ -30,8 +30,8 @@ export default function () {
         //	Remove current selected item
     }
     else if (!options.current) {
-        this.bind('initListview:after', function (panel) {
-            DOM.find(panel, '.mm-listitem_selected').forEach(function (listitem) {
+        this.bind('initListview:after', function (listview) {
+            DOM.children(listview, '.mm-listitem_selected').forEach(function (listitem) {
                 listitem.classList.remove('mm-listitem_selected');
             });
         });

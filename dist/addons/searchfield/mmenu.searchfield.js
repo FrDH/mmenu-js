@@ -91,16 +91,18 @@ var initSearchPanel = function () {
     if (searchpanel) {
         return searchpanel;
     }
-    var listview = DOM.create('ul.mm-listview');
-    searchpanel = DOM.create('div.mm-panel_search');
-    searchpanel.append(listview);
-    this.node.pnls.append(searchpanel);
+    searchpanel = DOM.create('div.mm-panel.mm-panel_search.mm-hidden');
     if (options.panel.id) {
         searchpanel.id = options.panel.id;
     }
     if (options.panel.title) {
         searchpanel.dataset.mmTitle = options.panel.title;
     }
+    var listview = DOM.create('ul');
+    searchpanel.append(listview);
+    this.node.pnls.append(searchpanel);
+    this.initListview(listview);
+    this._initNavbar(searchpanel);
     switch (options.panel.fx) {
         case false:
             break;

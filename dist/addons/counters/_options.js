@@ -22,7 +22,7 @@ export function extendShorthandOptions(options) {
         options = {};
     }
     if (options.addTo == 'panels') {
-        options.addTo = '.mm-panel';
+        options.addTo = '.mm-listview';
     }
     return options;
 }

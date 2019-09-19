@@ -38,6 +38,26 @@
     Mmenu.prototype._deprecatedWarnings = function() {
         /**
          * ----------------------------
+         * Version 8.3 > 8.4
+         * ----------------------------
+         */
+
+        /* Config */
+
+        //  Styling listitems with "spacer" is removed.
+        if (
+            this.conf.classNames.spacer ||
+            this.node.menu.querySelector('.Spacer')
+        ) {
+            deprecated(
+                'Styling a listitem with "Spacer"',
+                'custom CSS',
+                '8.4.0'
+            );
+        }
+
+        /**
+         * ----------------------------
          * Version 8.2 > 8.3
          * ----------------------------
          */
@@ -139,6 +159,8 @@
          */
 
         /* API */
+
+        //  Deprecated API methods.
         this.bind('initPanels:deprecated', method => {
             deprecated('The "initPanels" API method', '"initPanel"', '8.2.0');
         });
@@ -197,8 +219,12 @@
             'closeAllPanels',
             'setSelected'
         ].forEach(method => {
-            this.bind(method + ':before', method => {
-                if (typeof panel != 'undefined' && panel instanceof jQuery) {
+            this.bind(method + ':before', panel => {
+                if (
+                    typeof panel != 'undefined' &&
+                    typeof jQuery != 'undefined' &&
+                    panel instanceof jQuery
+                ) {
                     deprecated(
                         'Passing a jQuery object as an argument to the "' +
                             method +
@@ -213,8 +239,12 @@
         //	These methods no longer accept a jQuery object as an argument,
         //		they now only accept an array of HTMLElements.
         ['initPanels'].forEach(method => {
-            this.bind(method + ':before', method => {
-                if (typeof panel != 'undefined' && panel instanceof jQuery) {
+            this.bind(method + ':before', panel => {
+                if (
+                    typeof panel != 'undefined' &&
+                    typeof jQuery != 'undefined' &&
+                    panel instanceof jQuery
+                ) {
                     deprecated(
                         'Passing a jQuery object as an argument to the "' +
                             method +

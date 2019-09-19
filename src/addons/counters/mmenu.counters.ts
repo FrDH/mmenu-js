@@ -17,9 +17,9 @@ export default function(this: Mmenu) {
     this.opts.counters = extend(options, Mmenu.options.counters);
 
     //	Refactor counter class
-    this.bind('initListview:after', (panel: HTMLElement) => {
+    this.bind('initListview:after', (listview: HTMLElement) => {
         var cntrclss = this.conf.classNames.counters.counter,
-            counters = panel.querySelectorAll('.' + cntrclss);
+            counters = DOM.find(listview, '.' + cntrclss);
 
         counters.forEach(counter => {
             DOM.reClass(counter as HTMLElement, cntrclss, 'mm-counter');
@@ -28,19 +28,18 @@ export default function(this: Mmenu) {
 
     //	Add the counters after a listview is initiated.
     if (options.add) {
-        this.bind('initListview:after', (panel: HTMLElement) => {
-            if (!panel.matches(options.addTo)) {
+        this.bind('initListview:after', (listview: HTMLElement) => {
+            if (!listview.matches(options.addTo)) {
                 return;
             }
 
-            var parent: HTMLElement = panel['mmParent'];
+            var parent: HTMLElement = listview.closest('.mm-panel')['mmParent'];
             if (parent) {
                 //	Check if no counter already excists.
-                if (!parent.querySelector('.mm-counter')) {
-                    let counter = DOM.create('span.mm-counter');
+                if (!DOM.find(parent, '.mm-counter').length) {
                     let btn = DOM.children(parent, '.mm-btn')[0];
                     if (btn) {
-                        btn.prepend(counter);
+                        btn.prepend(DOM.create('span.mm-counter'));
                     }
                 }
             }
@@ -48,10 +47,11 @@ export default function(this: Mmenu) {
     }
 
     if (options.count) {
-        const count = (panel?: HTMLElement) => {
-            var panels = panel
-                ? [panel]
+        const count = (listview?: HTMLElement) => {
+            var panels: HTMLElement[] = listview
+                ? [listview.closest('.mm-panel') as HTMLElement]
                 : DOM.children(this.node.pnls, '.mm-panel');
+
             panels.forEach(panel => {
                 var parent: HTMLElement = panel['mmParent'];
 
@@ -59,7 +59,7 @@ export default function(this: Mmenu) {
                     return;
                 }
 
-                var counter = parent.querySelector('.mm-counter');
+                var counter = DOM.find(parent, '.mm-counter')[0];
                 if (!counter) {
                     return;
                 }

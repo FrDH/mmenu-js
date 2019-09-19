@@ -133,8 +133,8 @@ export default function () {
             }
         });
         //	Add text to the next-buttons.
-        this.bind('initListview:after', function (panel) {
-            var parent = panel['mmParent'];
+        this.bind('initListview:after', function (listview) {
+            var parent = listview.closest('.mm-panel')['mmParent'];
             if (parent) {
                 var next = DOM.children(parent, '.mm-btn_next')[0];
                 if (next) {

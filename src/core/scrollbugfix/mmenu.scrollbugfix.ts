@@ -59,13 +59,14 @@ export default function(this: Mmenu) {
                 //      we can simple preventDefault and stopPropagation.
                 if (panel.scrollHeight === panel.offsetHeight) {
                     stop(evnt);
+                }
 
-                    //  When dragging a scrollable panel,
-                    //      that is fully scrolled up (or down).
-                    //      It will not trigger the scroll event when dragging down (or up) (because you can't scroll up (or down)),
-                    //      so we need to match the dragging direction with the scroll position before preventDefault and stopPropagation,
-                    //      otherwise the panel would not scroll at all in any direction.
-                } else if (
+                //  When dragging a scrollable panel,
+                //      that is fully scrolled up (or down).
+                //      It will not trigger the scroll event when dragging down (or up) (because you can't scroll up (or down)),
+                //      so we need to match the dragging direction with the scroll position before preventDefault and stopPropagation,
+                //      otherwise the panel would not scroll at all in any direction.
+                else if (
                     //  When scrolled up and dragging down
                     (panel.scrollTop == 0 && touchDir.get() == 'down') ||
                     //  When scrolled down and dragging up
