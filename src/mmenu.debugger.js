@@ -38,6 +38,26 @@
     Mmenu.prototype._deprecatedWarnings = function() {
         /**
          * ----------------------------
+         * Version 8.3 > 8.4
+         * ----------------------------
+         */
+
+        /* Config */
+
+        //  Styling listitems with "spacer" is removed.
+        if (
+            this.conf.classNames.spacer ||
+            this.node.menu.querySelector('.Spacer')
+        ) {
+            deprecated(
+                'Styling a listitem with "Spacer"',
+                'custom CSS',
+                '8.4.0'
+            );
+        }
+
+        /**
+         * ----------------------------
          * Version 8.2 > 8.3
          * ----------------------------
          */
@@ -139,6 +159,8 @@
          */
 
         /* API */
+
+        //  Deprecated API methods.
         this.bind('initPanels:deprecated', method => {
             deprecated('The "initPanels" API method', '"initPanel"', '8.2.0');
         });
