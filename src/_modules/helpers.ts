@@ -38,12 +38,13 @@ export function touchDirection(surface) {
     var direction = '';
 
     surface.addEventListener('touchmove', evnt => {
+        direction = '';
+
         if (evnt.movementY > 0) {
             direction = 'down';
         } else if (evnt.movementY < 0) {
             direction = 'up';
         }
-        direction = null;
     });
 
     return {
