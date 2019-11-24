@@ -44,21 +44,20 @@ $mm_module: '.mm-navbar';
 }
 
 #{$mm_module}__title {
-    @if ($mm_IE11Fallbacks) {
-        line-height: $mm_navbarSize;
-    }
-
-    @include mm_ellipsis;
 
     flex: 1 1 50%;
-    display: block;
+    display: flex;
     padding-left: $mm_panelPadding;
     padding-right: $mm_panelPadding;
-    line-height: var(--mm-navbar-size);
+    overflow: hidden;
 
     // Center the content.
     &:not(:last-child) {
         padding-right: 0;
+    }
+
+    > span {
+        @include mm_ellipsis;
     }
 
     #{$mm_module}__btn:not(.mm-hidden) + & {
