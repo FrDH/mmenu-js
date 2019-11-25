@@ -850,7 +850,7 @@ export default class Mmenu {
         //  Add the title.
         let title = DOM.create('a.mm-navbar__title');
         let titleText = DOM.create('span');
-        title.appendChild(titleText);
+        title.append(titleText);
         titleText.innerHTML =
             panel.dataset.mmTitle ||
             (opener ? opener.textContent : '') ||

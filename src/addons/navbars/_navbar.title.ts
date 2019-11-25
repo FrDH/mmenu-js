@@ -3,7 +3,10 @@ import * as DOM from '../../_modules/dom';
 
 export default function(this: Mmenu, navbar: HTMLElement) {
     //	Add content to the navbar.
-    var title = DOM.create('a.mm-navbar__title');
+    let title = DOM.create('a.mm-navbar__title');
+    let titleText = DOM.create('span');
+
+    title.append(titleText);
     navbar.append(title);
 
     //	Update the title to the opened panel.
@@ -21,7 +24,7 @@ export default function(this: Mmenu, navbar: HTMLElement) {
             '.' + this.conf.classNames.navbars.panelTitle
         );
         if (!original) {
-            original = panel.querySelector('.mm-navbar__title');
+            original = panel.querySelector('.mm-navbar__title span');
         }
 
         //	Get the URL for the title.
@@ -34,7 +37,7 @@ export default function(this: Mmenu, navbar: HTMLElement) {
 
         //	Get the text for the title.
         _txt = original ? original.innerHTML : '';
-        title.innerHTML = _txt;
+        titleText.innerHTML = _txt;
     });
 
     //	Add screenreader / aria support

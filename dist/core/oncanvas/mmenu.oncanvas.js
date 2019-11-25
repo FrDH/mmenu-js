@@ -607,7 +607,9 @@ var Mmenu = /** @class */ (function () {
         }
         //  Add the title.
         var title = DOM.create('a.mm-navbar__title');
-        title.innerHTML =
+        var titleText = DOM.create('span');
+        title.append(titleText);
+        titleText.innerHTML =
             panel.dataset.mmTitle ||
                 (opener ? opener.textContent : '') ||
                 this.i18n(this.opts.navbar.title) ||

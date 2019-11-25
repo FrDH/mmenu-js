@@ -4,6 +4,8 @@ export default function (navbar) {
     var _this = this;
     //	Add content to the navbar.
     var title = DOM.create('a.mm-navbar__title');
+    var titleText = DOM.create('span');
+    title.append(titleText);
     navbar.append(title);
     //	Update the title to the opened panel.
     var _url, _txt;
@@ -16,7 +18,7 @@ export default function (navbar) {
         //	Find the original title in the opened panel.
         original = panel.querySelector('.' + _this.conf.classNames.navbars.panelTitle);
         if (!original) {
-            original = panel.querySelector('.mm-navbar__title');
+            original = panel.querySelector('.mm-navbar__title span');
         }
         //	Get the URL for the title.
         _url = original ? original.getAttribute('href') : '';
@@ -28,7 +30,7 @@ export default function (navbar) {
         }
         //	Get the text for the title.
         _txt = original ? original.innerHTML : '';
-        title.innerHTML = _txt;
+        titleText.innerHTML = _txt;
     });
     //	Add screenreader / aria support
     var prev;

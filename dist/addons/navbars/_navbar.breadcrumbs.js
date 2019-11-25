@@ -14,7 +14,7 @@ export default function (navbar) {
         while (current) {
             current = current.closest('.mm-panel');
             if (!current.parentElement.matches('.mm-listitem_vertical')) {
-                var title = DOM.find(current, '.mm-navbar__title')[0];
+                var title = DOM.find(current, '.mm-navbar__title span')[0];
                 if (title) {
                     var text = title.textContent;
                     if (text.length) {

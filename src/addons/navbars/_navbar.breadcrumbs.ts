@@ -22,7 +22,7 @@ export default function(this: Mmenu, navbar: HTMLElement) {
             current = current.closest('.mm-panel') as HTMLElement;
 
             if (!current.parentElement.matches('.mm-listitem_vertical')) {
-                let title = DOM.find(current, '.mm-navbar__title')[0];
+                let title = DOM.find(current, '.mm-navbar__title span')[0];
                 if (title) {
                     let text = title.textContent;
                     if (text.length) {
