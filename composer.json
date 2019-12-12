@@ -1,7 +1,12 @@
 {
 	"name"			: "mmenu.js",
 	"version"		: "8.4.3",
-	"authors"		: "Fred Heusschen <info@frebsite.nl>",
+	"authors"		: [{
+		"name"			: "Fred Heusschen",
+		"email"			: "info@frebsite.nl",
+        "homepage"		: "http://www.frebsite.nl",
+        "role"			: "King :)"
+	}],
 	"license"		: "CC-BY-NC-4.0",
 	"description"	: "The best javascript plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
 	"keywords"		: [
