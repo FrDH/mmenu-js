@@ -93,22 +93,20 @@ export default function(this: Mmenu) {
     //	Scroll the current opened panel to the top when opening the menu.
     this.bind('open:start', () => {
         var panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
-        if (!panel) {
-            return;
+        if (panel) {
+            panel.scrollTop = 0;
         }
-        panel.scrollTop = 0;
     });
 
     //	Fix issue after device rotation change.
     window.addEventListener('orientationchange', evnt => {
         var panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
-        if (!panel) {
-            return;
-        }
-        panel.scrollTop = 0;
+        if (panel) {
+            panel.scrollTop = 0;
 
-        //	Apparently, changing the overflow-scrolling property triggers some event :)
-        panel.style['-webkit-overflow-scrolling'] = 'auto';
-        panel.style['-webkit-overflow-scrolling'] = 'touch';
+            //	Apparently, changing the overflow-scrolling property triggers some event :)
+            panel.style['-webkit-overflow-scrolling'] = 'auto';
+            panel.style['-webkit-overflow-scrolling'] = 'touch';
+        }
     });
 }
