@@ -17,6 +17,9 @@ export default class DragEvents {
     /** Where the gesture started. */
     startPosition: dragCoordinates;
 
+    /** The last measured x- and y- position. */
+    currentPosition: dragCoordinates;
+
     /** The dragged x- and y-distances since the start. */
     distance: dragCoordinates;
 
@@ -72,6 +75,11 @@ export default class DragEvents {
      * @param {Event} event The touch event.
      */
     start(event) {
+        this.currentPosition = {
+            x: event.touches ? event.touches[0].pageX : event.pageX || 0,
+            y: event.touches ? event.touches[0].pageY : event.pageY || 0
+        };
+
         /** The widht of the surface. */
         var width = this.surface.clientWidth;
 
@@ -81,7 +89,7 @@ export default class DragEvents {
         //  Check if the gesture started below the area.top.
         var top = percentage2number(this.area.top, height);
         if (typeof top == 'number') {
-            if (event.pageY < top) {
+            if (this.currentPosition.y < top) {
                 return;
             }
         }
@@ -90,7 +98,7 @@ export default class DragEvents {
         var right = percentage2number(this.area.right, width);
         if (typeof right == 'number') {
             right = width - right;
-            if (event.pageX > right) {
+            if (this.currentPosition.x > right) {
                 return;
             }
         }
@@ -99,7 +107,7 @@ export default class DragEvents {
         var bottom = percentage2number(this.area.bottom, height);
         if (typeof bottom == 'number') {
             bottom = height - bottom;
-            if (event.pageY > bottom) {
+            if (this.currentPosition.y > bottom) {
                 return;
             }
         }
@@ -107,15 +115,15 @@ export default class DragEvents {
         //  Check if the gesture started after the area.left.
         var left = percentage2number(this.area.left, width);
         if (typeof left == 'number') {
-            if (event.pageX < left) {
+            if (this.currentPosition.x < left) {
                 return;
             }
         }
 
         //	Store the start x- and y-position.
         this.startPosition = {
-            x: event.pageX,
-            y: event.pageY
+            x: this.currentPosition.x,
+            y: this.currentPosition.y
         };
 
         //	Set the state of the gesture to "watching".
@@ -159,14 +167,28 @@ export default class DragEvents {
         switch (this.state) {
             case settings.state.watching:
             case settings.state.dragging:
+                var position = {
+                    x: event.changedTouches
+                        ? event.touches[0].pageX
+                        : event.pageX || 0,
+                    y: event.changedTouches
+                        ? event.touches[0].pageY
+                        : event.pageY || 0
+                };
+
                 this.movement = {
-                    x: event.movementX,
-                    y: event.movementY
+                    x: position.x - this.currentPosition.x,
+                    y: position.y - this.currentPosition.y
                 };
 
                 this.distance = {
-                    x: event.pageX - this.startPosition.x,
-                    y: event.pageY - this.startPosition.y
+                    x: position.x - this.startPosition.x,
+                    y: position.y - this.startPosition.y
+                };
+
+                this.currentPosition = {
+                    x: position.x,
+                    y: position.y
                 };
 
                 this.axis =
