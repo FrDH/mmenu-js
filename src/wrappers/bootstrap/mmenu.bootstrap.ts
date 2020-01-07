@@ -57,8 +57,8 @@ export default function(this: Mmenu) {
             let toggler: HTMLElement = parent.querySelector('.navbar-toggler');
 
             if (toggler) {
-                // toggler.removeAttribute('data-target');
-                delete toggler.dataset.target;
+                toggler.removeAttribute('data-target');
+                // delete toggler.dataset.target; // IE10 has no dataset :(
                 toggler.removeAttribute('aria-controls');
 
                 //	Remove all bound events.

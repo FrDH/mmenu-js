@@ -792,9 +792,15 @@ export default class Mmenu {
         let parentPanel: HTMLElement = null;
 
         //  The parent panel was specified in the data-mm-parent attribute.
-        if (panel.dataset.mmParent) {
-            parentPanel = DOM.find(this.node.pnls, panel.dataset.mmParent)[0];
+        if (panel.getAttribute('data-mm-parent')) {
+            parentPanel = DOM.find(
+                this.node.pnls,
+                panel.getAttribute('data-mm-parent')
+            )[0];
         }
+        // if (panel.dataset.mmParent) { // IE10 has no dataset
+        // parentPanel = DOM.find(this.node.pnls, panel.dataset.mmParent)[0];
+        // }
 
         //  The parent panel from a listitem.
         else {
@@ -852,7 +858,8 @@ export default class Mmenu {
         let titleText = DOM.create('span');
         title.append(titleText);
         titleText.innerHTML =
-            panel.dataset.mmTitle ||
+            // panel.dataset.mmTitle || // IE10 has no dataset :(
+            panel.getAttribute('data-mm-title') ||
             (opener ? opener.textContent : '') ||
             this.i18n(this.opts.navbar.title) ||
             this.i18n('Menu');

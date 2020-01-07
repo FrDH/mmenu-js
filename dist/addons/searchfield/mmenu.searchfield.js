@@ -96,7 +96,8 @@ var initSearchPanel = function () {
         searchpanel.id = options.panel.id;
     }
     if (options.panel.title) {
-        searchpanel.dataset.mmTitle = options.panel.title;
+        searchpanel.setAttribute('data-mm-title', options.panel.title);
+        // searchpanel.dataset.mmTitle = options.panel.title; // IE10 has no dataset :(
     }
     var listview = DOM.create('ul');
     searchpanel.append(listview);

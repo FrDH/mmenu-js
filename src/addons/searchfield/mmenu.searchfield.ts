@@ -123,7 +123,8 @@ const initSearchPanel = function(this: Mmenu): HTMLElement {
     }
 
     if (options.panel.title) {
-        searchpanel.dataset.mmTitle = options.panel.title;
+        searchpanel.setAttribute('data-mm-title', options.panel.title);
+        // searchpanel.dataset.mmTitle = options.panel.title; // IE10 has no dataset :(
     }
 
     var listview = DOM.create('ul');
@@ -556,9 +557,9 @@ Mmenu.prototype.search = function(
                         ) {
                             //	Compensate the timeout for the opening animation
                             setTimeout(() => {
-                                this.openPanel(parent.closest(
-                                    '.mm-panel'
-                                ) as HTMLElement);
+                                this.openPanel(
+                                    parent.closest('.mm-panel') as HTMLElement
+                                );
                             }, (p + 1) * (this.conf.openingInterval * 1.5));
                         }
                         parent.classList.add('mm-listitem_nosubitems');
