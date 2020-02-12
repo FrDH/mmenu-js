@@ -24,7 +24,9 @@ export default function(this: Mmenu, navbar: HTMLElement) {
             '.' + this.conf.classNames.navbars.panelTitle
         );
         if (!original) {
-            original = panel.querySelector('.mm-navbar__title span');
+            // Remove span, this cause bug with returning with tap on title
+            // Below we trying to get 'href' attribute on span and it's a bug
+            original = panel.querySelector('.mm-navbar__title');
         }
 
         //	Get the URL for the title.
