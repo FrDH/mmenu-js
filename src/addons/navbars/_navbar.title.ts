@@ -28,7 +28,11 @@ export default function(this: Mmenu, navbar: HTMLElement) {
         }
 
         //	Get the URL for the title.
-        _url = original ? original.getAttribute('href') : '';
+        _url =
+            original && original.closest('a')
+                ? original.closest('a').getAttribute('href')
+                : '';
+
         if (_url) {
             title.setAttribute('href', _url);
         } else {

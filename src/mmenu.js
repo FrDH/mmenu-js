@@ -86,7 +86,9 @@ Mmenu.wrappers = {
 export default Mmenu;
 
 //	Global namespace
-window.Mmenu = Mmenu;
+if (window) {
+    window.Mmenu = Mmenu;
+}
 
 //	jQuery plugin
 (function($) {

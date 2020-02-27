@@ -38,6 +38,42 @@
     Mmenu.prototype._deprecatedWarnings = function() {
         /**
          * ----------------------------
+         * Version 8.4 > 8.5
+         * ----------------------------
+         */
+
+        /* Add-ons */
+
+        //  Navbars "next" content is removed.
+        if (this.opts.navbars) {
+            this.opts.navbars.forEach(navbar => {
+                if (navbar.content.includes('next')) {
+                    deprecated(
+                        'The "next" content for the "navbars" add-on',
+                        null,
+                        '8.5.0'
+                    );
+                }
+            });
+        }
+
+        /* Extensions */
+
+        // Removed the tileview extension.
+        ['tileview'].forEach(ext => {
+            Object.keys(this.opts.extensions).forEach(key => {
+                if (this.opts.extensions[key].includes(ext)) {
+                    deprecated(
+                        'The "' + ext + '" extension',
+                        'custom CSS',
+                        '8.5.0'
+                    );
+                }
+            });
+        });
+
+        /**
+         * ----------------------------
          * Version 8.3 > 8.4
          * ----------------------------
          */
@@ -164,21 +200,6 @@
         this.bind('initPanels:deprecated', method => {
             deprecated('The "initPanels" API method', '"initPanel"', '8.2.0');
         });
-
-        /* ADD-ONS */
-
-        //  Navbars "next" content is removed.
-        if (this.opts.navbars) {
-            this.opts.navbars.forEach(navbar => {
-                if (navbar.content.includes('next')) {
-                    deprecated(
-                        'The "next" content for the "navbars" add-on',
-                        null,
-                        '8.2.0'
-                    );
-                }
-            });
-        }
 
         /**
          * ----------------------------

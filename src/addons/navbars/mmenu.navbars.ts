@@ -11,14 +11,12 @@ Mmenu.configs.navbars = configs;
 
 //  Add the classnames.
 Mmenu.configs.classNames.navbars = {
-    panelNext: 'Next',
     panelPrev: 'Prev',
     panelTitle: 'Title'
 };
 
 import breadcrumbs from './_navbar.breadcrumbs';
 import close from './_navbar.close';
-import next from './_navbar.next';
 import prev from './_navbar.prev';
 import searchfield from './_navbar.searchfield';
 import title from './_navbar.title';
@@ -26,7 +24,6 @@ import title from './_navbar.title';
 Navbars.navbarContents = {
     breadcrumbs,
     close,
-    next,
     prev,
     searchfield,
     title
