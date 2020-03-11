@@ -24,6 +24,7 @@ export default function () {
                 }
             }
         };
+        // TODO: probleem in volgorde
         this.bind('initMenu:after', function () {
             findCurrent_1.call(_this, window.location.href);
         });

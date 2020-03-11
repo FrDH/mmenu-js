@@ -102,8 +102,9 @@ var initSearchPanel = function () {
     var listview = DOM.create('ul');
     searchpanel.append(listview);
     this.node.pnls.append(searchpanel);
-    this.initListview(listview);
-    this._initNavbar(searchpanel);
+    //  TODO: hoeft niet meer?
+    // this._initListview(listview);
+    // this._initNavbar(searchpanel);
     switch (options.panel.fx) {
         case false:
             break;

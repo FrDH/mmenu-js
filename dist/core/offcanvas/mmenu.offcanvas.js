@@ -39,6 +39,7 @@ export default function () {
         document
             .querySelector(configs.menu.insertSelector)[configs.menu.insertMethod](_this.node.menu);
     });
+    // TODO: probleem in volgorde
     this.bind('initMenu:after', function () {
         //	Setup the UI blocker.
         initBlocker.call(_this);

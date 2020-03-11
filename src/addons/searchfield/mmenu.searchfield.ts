@@ -132,8 +132,9 @@ const initSearchPanel = function(this: Mmenu): HTMLElement {
 
     this.node.pnls.append(searchpanel);
 
-    this.initListview(listview);
-    this._initNavbar(searchpanel);
+    //  TODO: hoeft niet meer?
+    // this._initListview(listview);
+    // this._initNavbar(searchpanel);
 
     switch (options.panel.fx) {
         case false:

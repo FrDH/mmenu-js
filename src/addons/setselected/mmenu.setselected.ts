@@ -28,6 +28,8 @@ export default function(this: Mmenu) {
                 }
             }
         };
+
+        // TODO: probleem in volgorde
         this.bind('initMenu:after', () => {
             findCurrent.call(this, window.location.href);
         });

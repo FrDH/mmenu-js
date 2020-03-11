@@ -137,6 +137,7 @@ export default function Navbars(this: Mmenu) {
     });
 
     //	Add to menu.
+    // TODO: probleem in volgorde
     this.bind('initMenu:after', () => {
         for (let position in navbars) {
             this.node.menu[position == 'bottom' ? 'append' : 'prepend'](

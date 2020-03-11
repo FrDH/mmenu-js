@@ -17,6 +17,7 @@ export default function(this: Mmenu) {
             var panels: HTMLElement[] = [];
 
             //	Find all potential subpanels.
+            // TODO: probleem in volgorde
             DOM.find(this.node.pnls, 'li').forEach(listitem => {
                 panels.push(
                     ...DOM.children(
@@ -49,6 +50,7 @@ export default function(this: Mmenu) {
         });
 
         //	Prepare current and one level sub panels for initPanels
+        // TODO: volgorde klopt niet meer
         this.bind('initPanels:before', () => {
             const panels = DOM.children(
                 this.node.pnls,

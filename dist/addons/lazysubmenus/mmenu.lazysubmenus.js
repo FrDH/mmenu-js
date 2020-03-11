@@ -14,6 +14,7 @@ export default function () {
         this.bind('initMenu:after', function () {
             var panels = [];
             //	Find all potential subpanels.
+            // TODO: probleem in volgorde
             DOM.find(_this.node.pnls, 'li').forEach(function (listitem) {
                 panels.push.apply(panels, DOM.children(listitem, _this.conf.panelNodetype.join(', ')));
             });
@@ -37,6 +38,7 @@ export default function () {
             });
         });
         //	Prepare current and one level sub panels for initPanels
+        // TODO: volgorde klopt niet meer
         this.bind('initPanels:before', function () {
             var panels = DOM.children(_this.node.pnls, _this.conf.panelNodetype.join(', '));
             panels.forEach(function (panel) {
