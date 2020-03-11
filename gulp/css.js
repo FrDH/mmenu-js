@@ -36,7 +36,12 @@ exports.custom = CSScustom = cb => {
 exports.watch = CSSwatch = cb => {
     dir = dirs(false);
 
-    watch(dir.input + '/**/*.scss').on('change', path => {
+    watch([
+        dir.input + '/**/*.scss',
+        '!' + dir.input + '/_includes.scss',
+        '!' + dir.input + '/_variables.scss',
+        '!' + dir.input + '/_mixins.scss'
+    ]).on('change', path => {
         console.log('Change detected to .scss file "' + path + '"');
         var cb = () => {
             console.log('CSS compiled and concatenated.');
