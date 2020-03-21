@@ -52,20 +52,20 @@ $mm_include_sidebar_blocker: $mm_include_sidebar !default;
 $mm_include_toggles: true !default;
 $mm_include_checks: true !default;
 
-$mm_include_fullscreen: true !default;
+$mm_include_borderstyle: true !default;
+$mm_include_borderstyle_none: $mm_include_borderstyle !default;
+$mm_include_borderstyle_full: $mm_include_borderstyle !default;
 
 $mm_include_effects: true !default;
 $mm_include_effects_menuslide: $mm_include_effects !default;
 $mm_include_effects_panelsnone: $mm_include_effects !default;
 $mm_include_effects_panelsslide: $mm_include_effects !default;
 
+$mm_include_fullscreen: true !default;
+
 $mm_include_listview: true !default;
 $mm_include_listview_justify: $mm_include_listview !default;
 $mm_include_listview_inset: $mm_include_listview !default;
-
-$mm_include_borderstyle: true !default;
-$mm_include_borderstyle_none: $mm_include_borderstyle !default;
-$mm_include_borderstyle_full: $mm_include_borderstyle !default;
 
 $mm_include_multiline: true !default;
 
@@ -73,6 +73,14 @@ $mm_include_pagedim: true !default;
 $mm_include_pagedim_default: $mm_include_pagedim !default;
 $mm_include_pagedim_black: $mm_include_pagedim !default;
 $mm_include_pagedim_white: $mm_include_pagedim !default;
+
+$mm_include_popup: true !default;
+
+$mm_include_positioning: true !default;
+$mm_include_positioning_right: $mm_include_positioning !default;
+$mm_include_positioning_top: $mm_include_positioning !default;
+$mm_include_positioning_bottom: $mm_include_positioning !default;
+$mm_include_positioning_front: $mm_include_positioning !default;
 
 $mm_include_shadows: true !default;
 $mm_include_shadows_page: $mm_include_shadows !default;
@@ -83,11 +91,3 @@ $mm_include_themes: true !default;
 $mm_include_themes_white: $mm_include_themes !default;
 $mm_include_themes_dark: $mm_include_themes !default;
 $mm_include_themes_black: $mm_include_themes !default;
-
-$mm_include_positioning: true !default;
-$mm_include_positioning_right: $mm_include_positioning !default;
-$mm_include_positioning_top: $mm_include_positioning !default;
-$mm_include_positioning_bottom: $mm_include_positioning !default;
-$mm_include_positioning_front: $mm_include_positioning !default;
-
-$mm_include_popup: true !default;
