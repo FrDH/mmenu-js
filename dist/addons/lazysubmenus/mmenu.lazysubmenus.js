@@ -11,7 +11,7 @@ export default function () {
     this.opts.lazySubmenus = extend(options, Mmenu.options.lazySubmenus);
     if (options.load) {
         //	Prevent all sub panels from being initialized.
-        this.bind('initMenu:after', function () {
+        this.bind('initPanels:before', function () {
             var panels = [];
             //	Find all potential subpanels.
             DOM.find(_this.node.pnls, 'li').forEach(function (listitem) {
@@ -26,7 +26,7 @@ export default function () {
                 var classnames = [
                     'mm-panel_lazysubmenu',
                     'mm-nolistview',
-                    'mm-nopanel'
+                    'mm-nopanel',
                 ];
                 //  IE11:
                 classnames.forEach(function (classname) {
@@ -36,45 +36,19 @@ export default function () {
                 // panel.classList.add(...classnames);
             });
         });
-        //	Prepare current and one level sub panels for initPanels
+        //	re-enable the default opened panel to be initialized.
         this.bind('initPanels:before', function () {
-            var panels = DOM.children(_this.node.pnls, _this.conf.panelNodetype.join(', '));
-            panels.forEach(function (panel) {
-                var filter = '.mm-panel_lazysubmenu', children = DOM.find(panel, filter);
-                if (panel.matches(filter)) {
-                    children.unshift(panel);
-                }
-                children
-                    .filter(function (child) {
-                    return !child.matches('.mm-panel_lazysubmenu .mm-panel_lazysubmenu');
-                })
-                    .forEach(function (child) {
-                    var classnames = [
-                        'mm-panel_lazysubmenu',
-                        'mm-nolistview',
-                        'mm-nopanel'
-                    ];
-                    //  IE11:
-                    classnames.forEach(function (classname) {
-                        child.classList.remove(classname);
-                    });
-                    //  Better browsers:
-                    // child.classList.remove(...classnames);
-                });
-            });
-        });
-        //	initPanels for the default opened panel
-        this.bind('initOpened:before', function () {
             var panels = [];
             DOM.find(_this.node.pnls, '.' + _this.conf.classNames.selected).forEach(function (listitem) {
                 panels.push.apply(panels, DOM.parents(listitem, '.mm-panel_lazysubmenu'));
             });
             if (panels.length) {
                 panels.forEach(function (panel) {
+                    console.log(panel);
                     var classnames = [
                         'mm-panel_lazysubmenu',
                         'mm-nolistview',
-                        'mm-nopanel'
+                        'mm-nopanel',
                     ];
                     //  IE11:
                     classnames.forEach(function (classname) {
@@ -83,19 +57,28 @@ export default function () {
                     //  Better browsers:
                     // panel.classList.remove(...classnames);
                 });
-                _this.initPanel(panels[panels.length - 1]);
             }
         });
-        //	initPanels for current- and sub panels before openPanel
+        //	initPanel for current- and sub panels before openPanel
         this.bind('openPanel:before', function (panel) {
-            var filter = '.mm-panel_lazysubmenu', panels = DOM.find(panel, filter);
-            if (panel.matches(filter)) {
-                panels.unshift(panel);
-            }
-            panels = panels.filter(function (panel) {
+            var panels = DOM.find(panel, '.mm-panel_lazysubmenu').filter(function (panel) {
                 return !panel.matches('.mm-panel_lazysubmenu .mm-panel_lazysubmenu');
             });
+            if (panel.matches('.mm-panel_lazysubmenu')) {
+                panels.unshift(panel);
+            }
             panels.forEach(function (panel) {
+                var classnames = [
+                    'mm-panel_lazysubmenu',
+                    'mm-nolistview',
+                    'mm-nopanel',
+                ];
+                //  IE11:
+                classnames.forEach(function (classname) {
+                    panel.classList.remove(classname);
+                });
+                //  Better browsers:
+                // child.classList.remove(...classnames);
                 _this.initPanel(panel);
             });
         });
