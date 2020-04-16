@@ -1,41 +1,41 @@
 {
-	"name": "mmenu-js",
-	"version": "8.5.1",
-	"main": "dist/mmenu.js",
-	"module": "src/mmenu.js",
-	"author": "Fred Heusschen <info@frebsite.nl>",
-	"license": "CC-BY-NC-4.0",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/FrDH/mmenu-js.git"
-	},
-	"description": "The best javascript plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
-	"keywords": [
-		"app",
-		"list",
-		"listview",
-		"megamenu",
-		"menu",
-		"mmenu",
-		"mobile",
-		"navigation",
-		"off-canvas",
-		"on-canvas",
-		"curtain",
-		"panels",
-		"submenu"
-	],
-	"scripts": {
-		"build": "gulp default"
-	},
-	"devDependencies": {
-		"gulp": "^4.0.2",
-		"gulp-autoprefixer": "^6.1.0",
-		"gulp-clean-css": "^4.2.0",
-		"gulp-concat": "^2.6.1",
-		"gulp-sass": "^4.0.2",
-		"gulp-typescript": "^5.0.1",
-		"typescript": "^3.4.5",
-		"webpack-stream": "^5.2.1"
-	}
+    "name": "mmenu-js",
+    "version": "8.5.4",
+    "main": "dist/mmenu.js",
+    "module": "src/mmenu.js",
+    "author": "Fred Heusschen <info@frebsite.nl>",
+    "license": "CC-BY-NC-4.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/FrDH/mmenu-js.git"
+    },
+    "description": "The best javascript plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
+    "keywords": [
+        "app",
+        "list",
+        "listview",
+        "megamenu",
+        "menu",
+        "mmenu",
+        "mobile",
+        "navigation",
+        "off-canvas",
+        "on-canvas",
+        "curtain",
+        "panels",
+        "submenu"
+    ],
+    "scripts": {
+        "build": "gulp default"
+    },
+    "devDependencies": {
+        "gulp": "^4.0.2",
+        "gulp-autoprefixer": "^6.1.0",
+        "gulp-clean-css": "^4.2.0",
+        "gulp-concat": "^2.6.1",
+        "gulp-sass": "^4.0.2",
+        "gulp-typescript": "^5.0.1",
+        "typescript": "^3.4.5",
+        "webpack-stream": "^5.2.1"
+    }
 }

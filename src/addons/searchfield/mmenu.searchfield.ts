@@ -260,14 +260,14 @@ const initSearching = function(this: Mmenu, form: HTMLElement) {
         data.noresults = [this.node.menu];
     }
 
-    //	Filter out vertical submenus
-    data.panels = data.panels.filter(
-        panel => !panel.parentElement.matches('.mm-listitem_vertical')
-    );
-
     //	Filter out search panel
     data.panels = data.panels.filter(
         panel => !panel.matches('.mm-panel_search')
+    );
+
+    //	Filter out vertical submenus
+    data.panels = data.panels.filter(
+        panel => !panel.parentElement.matches('.mm-listitem_vertical')
     );
 
     //  Find listitems and dividers.
@@ -277,6 +277,7 @@ const initSearching = function(this: Mmenu, form: HTMLElement) {
         data.listitems.push(...DOM.find(panel, '.mm-listitem'));
         data.dividers.push(...DOM.find(panel, '.mm-divider'));
     });
+
     var searchpanel = DOM.children(this.node.pnls, '.mm-panel_search')[0],
         input = DOM.find(form, 'input')[0],
         cancel = DOM.find(form, '.mm-searchfield__cancel')[0];
@@ -566,6 +567,23 @@ Mmenu.prototype.search = function(
                         parent.classList.add('mm-listitem_nosubitems');
                     }
                 }
+            });
+
+            //	Show parent panels of vertical submenus
+            panels.forEach(panel => {
+                let listitems = DOM.find(panel, '.mm-listitem');
+                DOM.filterLI(listitems).forEach(listitem => {
+                    DOM.parents(listitem, '.mm-listitem_vertical').forEach(
+                        parent => {
+                            if (parent.matches('.mm-hidden')) {
+                                parent.classList.remove('mm-hidden');
+                                parent.classList.add(
+                                    'mm-listitem_onlysubitems'
+                                );
+                            }
+                        }
+                    );
+                });
             });
 
             //	Show first preceeding divider of parent
