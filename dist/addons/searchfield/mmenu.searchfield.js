@@ -96,8 +96,7 @@ var initSearchPanel = function () {
         searchpanel.id = options.panel.id;
     }
     if (options.panel.title) {
-        searchpanel.setAttribute('data-mm-title', options.panel.title);
-        // searchpanel.dataset.mmTitle = options.panel.title; // IE10 has no dataset :(
+        searchpanel.dataset.mmTitle = options.panel.title;
     }
     var listview = DOM.create('ul');
     searchpanel.append(listview);
@@ -326,10 +325,7 @@ Mmenu.prototype.search = function (input, query) {
             //          3b) the option showTextItems is set to true.
             //      or  4)  The text is an anchor.
             //  1
-            if (text &&
-                DOM.text(text)
-                    .toLowerCase()
-                    .indexOf(query) > -1) {
+            if (text && DOM.text(text).toLowerCase().indexOf(query) > -1) {
                 //  2a
                 if (text.matches('.mm-listitem__btn')) {
                     //  2b
@@ -473,7 +469,9 @@ Mmenu.prototype.search = function (input, query) {
             listitems.forEach(function (listitem) {
                 return listitem.classList.remove('mm-hidden');
             });
-            dividers.forEach(function (divider) { return divider.classList.remove('mm-hidden'); });
+            dividers.forEach(function (divider) {
+                return divider.classList.remove('mm-hidden');
+            });
         }
         //	Don't search
     }

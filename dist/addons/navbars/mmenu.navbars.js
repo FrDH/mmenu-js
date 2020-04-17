@@ -3,6 +3,7 @@ import options from './_options';
 import configs from './_configs';
 import { extendShorthandOptions } from './_options';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 import * as media from '../../_modules/matchmedia';
 //  Add the options and configs.
 Mmenu.options.navbars = options;
@@ -10,7 +11,7 @@ Mmenu.configs.navbars = configs;
 //  Add the classnames.
 Mmenu.configs.classNames.navbars = {
     panelPrev: 'Prev',
-    panelTitle: 'Title'
+    panelTitle: 'Title',
 };
 import breadcrumbs from './_navbar.breadcrumbs';
 import close from './_navbar.close';
@@ -22,11 +23,11 @@ Navbars.navbarContents = {
     close: close,
     prev: prev,
     searchfield: searchfield,
-    title: title
+    title: title,
 };
 import tabs from './_navbar.tabs';
 Navbars.navbarTypes = {
-    tabs: tabs
+    tabs: tabs,
 };
 export default function Navbars() {
     var _this = this;
@@ -101,11 +102,11 @@ export default function Navbars() {
         //	En-/disable the navbar.
         var enable = function () {
             navbar.classList.remove('mm-hidden');
-            Mmenu.sr_aria(navbar, 'hidden', false);
+            sr.aria(navbar, 'hidden', false);
         };
         var disable = function () {
             navbar.classList.add('mm-hidden');
-            Mmenu.sr_aria(navbar, 'hidden', true);
+            sr.aria(navbar, 'hidden', true);
         };
         if (typeof options.use != 'boolean') {
             media.add(options.use, enable, disable);

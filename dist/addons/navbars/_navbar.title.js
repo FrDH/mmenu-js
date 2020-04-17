@@ -1,5 +1,5 @@
-import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 export default function (navbar) {
     var _this = this;
     //	Add content to the navbar.
@@ -53,7 +53,7 @@ export default function (navbar) {
                 if (_this.opts.navbar.titleLink == 'parent') {
                     hidden = !prev.matches('.mm-hidden');
                 }
-                Mmenu.sr_aria(title, 'hidden', hidden);
+                sr.aria(title, 'hidden', hidden);
             }
         }
     });

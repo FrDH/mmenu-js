@@ -2,6 +2,7 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import { extendShorthandOptions } from './_options';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 import * as media from '../../_modules/matchmedia';
 import { type, extend } from '../../_modules/helpers';
 //  Add the options.
@@ -48,11 +49,11 @@ export default function () {
         var classname_1 = 'mm-menu_iconbar-' + options.position;
         var enable = function () {
             _this.node.menu.classList.add(classname_1);
-            Mmenu.sr_aria(iconbar, 'hidden', false);
+            sr.aria(iconbar, 'hidden', false);
         };
         var disable = function () {
             _this.node.menu.classList.remove(classname_1);
-            Mmenu.sr_aria(iconbar, 'hidden', true);
+            sr.aria(iconbar, 'hidden', true);
         };
         if (typeof options.use == 'boolean') {
             this.bind('initMenu:after', enable);

@@ -1,7 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 
-export default function(this: Mmenu, navbar: HTMLElement) {
+export default function (this: Mmenu, navbar: HTMLElement) {
     //	Add content
     var close = DOM.create('a.mm-btn.mm-btn_close.mm-navbar__btn');
     navbar.append(close);
@@ -13,9 +14,9 @@ export default function(this: Mmenu, navbar: HTMLElement) {
 
     //	Add screenreader / text support
     this.bind('setPage:after:sr-text', () => {
-        close.innerHTML = Mmenu.sr_text(
+        close.innerHTML = sr.text(
             this.i18n(this.conf.screenReader.text.closeMenu)
         );
-        Mmenu.sr_aria(close, 'owns', close.getAttribute('href').slice(1));
+        sr.aria(close, 'owns', close.getAttribute('href').slice(1));
     });
 }

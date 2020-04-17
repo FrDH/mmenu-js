@@ -41,6 +41,15 @@ export default class Mmenu {
     /** Globally used variables. */
     static vars: mmLooseObject = {};
 
+    /** MutationObserver for adding a listview to a panel. */
+    panelObserver: MutationObserver;
+
+    /** MutationObserver for adding a listitem to a listview. */
+    listviewObserver: MutationObserver;
+
+    /** MutationObserver for adding a listview to a listitem. */
+    listitemObserver: MutationObserver;
+
     /**	Options for the menu. */
     opts: mmOptions;
 
@@ -67,11 +76,6 @@ export default class Mmenu {
 
     /** Log deprecated warnings when using the debugger. */
     _deprecatedWarnings: Function;
-
-    //	screenReader add-on
-    static sr_aria: Function;
-    static sr_role: Function;
-    static sr_text: Function;
 
     //	offCanvas add-on
 
@@ -135,6 +139,8 @@ export default class Mmenu {
         if (typeof this._deprecatedWarnings == 'function') {
             this._deprecatedWarnings();
         }
+
+        this._initObservers();
 
         this._initWrappers();
         this._initAddons();
@@ -441,6 +447,36 @@ export default class Mmenu {
         }
     }
 
+    _initObservers() {
+        this.panelObserver = new MutationObserver((mutationsList) => {
+            mutationsList.forEach((mutation) => {
+                mutation.addedNodes.forEach((listview: HTMLElement) => {
+                    if (listview.matches(this.conf.panelNodetype.join(', '))) {
+                        this._initListview(listview);
+                    }
+                });
+            });
+        });
+
+        this.listviewObserver = new MutationObserver((mutationsList) => {
+            mutationsList.forEach((mutation) => {
+                mutation.addedNodes.forEach((listitem: HTMLElement) => {
+                    this._initListitem(listitem);
+                });
+            });
+        });
+
+        this.listitemObserver = new MutationObserver((mutationsList) => {
+            mutationsList.forEach((mutation) => {
+                mutation.addedNodes.forEach((listview: HTMLElement) => {
+                    if (listview.matches(this.conf.panelNodetype.join(', '))) {
+                        this._initSubPanel(listview);
+                    }
+                });
+            });
+        });
+    }
+
     /**
      * Create the API.
      */
@@ -721,11 +757,17 @@ export default class Mmenu {
             this.node.pnls.append(panel);
         }
 
+        //  Initialize tha navbar.
         this._initNavbar(panel);
 
-        //  TODO: observer voor maken?
+        //  Initialize the listview(s).
         DOM.children(panel, 'ul, ol').forEach((listview) => {
             this._initListview(listview);
+        });
+
+        // Observe the panel for added listviews.
+        this.panelObserver.observe(panel, {
+            childList: true,
         });
 
         //	Invoke "after" hook.
@@ -744,7 +786,7 @@ export default class Mmenu {
 
         //	Only one navbar per panel.
         if (DOM.children(panel, '.mm-navbar').length) {
-            return null;
+            return;
         }
 
         /** The parent listitem. */
@@ -810,8 +852,7 @@ export default class Mmenu {
         let titleText = DOM.create('span');
         title.append(titleText);
         titleText.innerHTML =
-            // panel.dataset.mmTitle || // IE10 has no dataset :(
-            panel.getAttribute('data-mm-title') ||
+            panel.dataset.mmTitle ||
             (opener ? opener.textContent : '') ||
             this.i18n(this.opts.navbar.title) ||
             this.i18n('Menu');
@@ -846,95 +887,111 @@ export default class Mmenu {
         //	Invoke "before" hook.
         this.trigger('initListview:before', [listview]);
 
-        const panelNodetype = this.conf.panelNodetype.join(', ');
-
         DOM.reClass(listview, this.conf.classNames.nolistview, 'mm-nolistview');
-
-        // TODO: observer voor LI aan UL toevoegen
-        // TODO: LI gedeelte in _initlistitem()
 
         if (!listview.matches('.mm-nolistview')) {
             listview.classList.add('mm-listview');
 
+            //  Initiate the listitem(s).
             DOM.children(listview).forEach((listitem) => {
-                listitem.classList.add('mm-listitem');
+                this._initListitem(listitem);
+            });
 
-                DOM.reClass(
-                    listitem,
-                    this.conf.classNames.selected,
-                    'mm-listitem_selected'
-                );
-
-                //  Init submenu
-                //  TODO observer voor UL aan LI toevoegen
-
-                /** The submenu of the listitem. */
-                const subpanel = DOM.children(listitem, panelNodetype)[0];
-
-                /** Whether or not the listitem expands vertically */
-                const vertical =
-                    subpanel &&
-                    (subpanel.matches('.' + this.conf.classNames.vertical) ||
-                        !this.opts.slidingSubmenus);
-
-                if (subpanel) {
-                    // Make it expand vertically
-                    if (vertical) {
-                        listitem.classList.add('mm-listitem_vertical');
-                    }
-
-                    //  Force an ID
-                    listitem.id = listitem.id || uniqueId();
-                    subpanel.id = subpanel.id || uniqueId();
-
-                    //  Store parent/child relation
-                    listitem.dataset.mmChild = subpanel.id;
-                    subpanel.dataset.mmParent = listitem.id;
-                }
-
-                //  Init item text
-                DOM.children(listitem, 'a, span').forEach((text) => {
-                    // if (!item.matches('.mm-btn')) {
-                    text.classList.add('mm-listitem__text');
-
-                    if (subpanel) {
-                        /** The open link. */
-                        let button = DOM.create(
-                            'a.mm-btn.mm-btn_next.mm-listitem__btn'
-                        ) as HTMLAnchorElement;
-
-                        button.href = '#' + subpanel.id;
-
-                        //  If the item has no link,
-                        //      Replace the item with the open link.
-                        if (text.matches('span')) {
-                            button.classList.add('mm-listitem__text');
-                            button.innerHTML = text.innerHTML;
-                            listitem.insertBefore(
-                                button,
-                                text.nextElementSibling
-                            );
-                            text.remove();
-                        }
-
-                        //  Otherwise, insert the button after the text.
-                        else {
-                            listitem.insertBefore(
-                                button,
-                                text.nextElementSibling
-                            );
-                        }
-                    }
-                });
-
-                if (subpanel) {
-                    this._initPanel(subpanel);
-                }
+            // Observe the listview for added listitems.
+            this.listviewObserver.observe(listview, {
+                childList: true,
             });
         }
 
         //	Invoke "after" hook.
         this.trigger('initListview:after', [listview]);
+    }
+
+    /**
+     * Initialte a listitem.
+     * @param {HTMLElement} listitem Listitem to initiate.
+     */
+    _initListitem(listitem: HTMLElement) {
+        listitem.classList.add('mm-listitem');
+
+        DOM.reClass(
+            listitem,
+            this.conf.classNames.selected,
+            'mm-listitem_selected'
+        );
+
+        DOM.children(listitem, 'a, span').forEach((text) => {
+            text.classList.add('mm-listitem__text');
+        });
+
+        //  Initiate the subpanel.
+        DOM.children(listitem, this.conf.panelNodetype.join(', ')).forEach(
+            (subpanel) => {
+                this._initSubPanel(subpanel);
+            }
+        );
+
+        // Observe the listview for added listitems.
+        this.listitemObserver.observe(listitem, {
+            childList: true,
+        });
+    }
+
+    /**
+     * Initiate a subpanel.
+     * @param {HTMLElement} subpanel Subpanel to initiate.
+     */
+    _initSubPanel(subpanel: HTMLElement) {
+        /** The parent element for the panel. */
+        const listitem: HTMLElement = subpanel.parentElement;
+
+        /** Whether or not the listitem expands vertically */
+        const vertical: boolean =
+            subpanel.matches('.' + this.conf.classNames.vertical) ||
+            !this.opts.slidingSubmenus;
+
+        // Make it expand vertically
+        if (vertical) {
+            listitem.classList.add('mm-listitem_vertical');
+        }
+
+        //  Force an ID
+        listitem.id = listitem.id || uniqueId();
+        subpanel.id = subpanel.id || uniqueId();
+
+        //  Store parent/child relation
+        listitem.dataset.mmChild = subpanel.id;
+        subpanel.dataset.mmParent = listitem.id;
+
+        /** The open link. */
+        let button = DOM.children(listitem, '.mm-btn')[0] as HTMLAnchorElement;
+
+        //  Init item text
+        if (!button) {
+            button = DOM.create(
+                'a.mm-btn.mm-btn_next.mm-listitem__btn'
+            ) as HTMLAnchorElement;
+
+            DOM.children(listitem, 'a, span').forEach((text) => {
+                //  If the item has no link,
+                //      Replace the item with the open link.
+                if (text.matches('span')) {
+                    button.classList.add('mm-listitem__text');
+                    button.innerHTML = text.innerHTML;
+                    listitem.insertBefore(button, text.nextElementSibling);
+                    text.remove();
+                }
+
+                //  Otherwise, insert the button after the text.
+                else {
+                    listitem.insertBefore(button, text.nextElementSibling);
+                }
+            });
+        }
+
+        button.href = '#' + subpanel.id;
+
+        this._initPanel(subpanel);
     }
 
     /**

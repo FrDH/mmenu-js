@@ -4,6 +4,7 @@ import configs from './_configs';
 import translate from './translations/translate';
 import { extendShorthandOptions } from './_options';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 import { extend } from '../../_modules/helpers';
 //  Add the translations.
 translate();
@@ -46,10 +47,8 @@ export default function () {
         });
         //	Update aria-hidden for hidden / visible listitems
         this.bind('updateListview', function () {
-            _this.node.pnls
-                .querySelectorAll('.mm-listitem')
-                .forEach(function (listitem) {
-                Mmenu.sr_aria(listitem, 'hidden', listitem.matches('.mm-hidden'));
+            DOM.find(_this.node.pnls, '.mm-listitem').forEach(function (listitem) {
+                sr.aria(listitem, 'hidden', listitem.matches('.mm-hidden'));
             });
         });
         //	Update aria-hidden for the panels when opening and closing a panel.
@@ -65,22 +64,22 @@ export default function () {
             });
             //	Set the panels to be considered "hidden" or "visible".
             hidden.forEach(function (panel) {
-                Mmenu.sr_aria(panel, 'hidden', true);
+                sr.aria(panel, 'hidden', true);
             });
             visible.forEach(function (panel) {
-                Mmenu.sr_aria(panel, 'hidden', false);
+                sr.aria(panel, 'hidden', false);
             });
         });
         this.bind('closePanel', function (panel) {
-            Mmenu.sr_aria(panel, 'hidden', true);
+            sr.aria(panel, 'hidden', true);
         });
         //	Add aria-haspopup and aria-owns to prev- and next buttons.
         this.bind('initPanel:after', function (panel) {
             DOM.find(panel, '.mm-btn').forEach(function (button) {
-                Mmenu.sr_aria(button, 'haspopup', true);
+                sr.aria(button, 'haspopup', true);
                 var href = button.getAttribute('href');
                 if (href) {
-                    Mmenu.sr_aria(button, 'owns', href.replace('#', ''));
+                    sr.aria(button, 'owns', href.replace('#', ''));
                 }
             });
         });
@@ -91,7 +90,7 @@ export default function () {
             /** Whether or not the navbar should be considered "hidden". */
             var hidden = navbar.matches('.mm-hidden');
             //	Set the navbar to be considered "hidden" or "visible".
-            Mmenu.sr_aria(navbar, 'hidden', hidden);
+            sr.aria(navbar, 'hidden', hidden);
         });
         //	Text
         if (options.text) {
@@ -105,7 +104,7 @@ export default function () {
                         ? true
                         : false;
                     //	Set the navbar-title to be considered "hidden" or "visible".
-                    Mmenu.sr_aria(DOM.find(navbar, '.mm-navbar__title')[0], 'hidden', hidden);
+                    sr.aria(DOM.find(navbar, '.mm-navbar__title')[0], 'hidden', hidden);
                 });
             }
         }
@@ -128,7 +127,7 @@ export default function () {
             if (navbar) {
                 var button = DOM.children(navbar, '.mm-btn_prev')[0];
                 if (button) {
-                    button.innerHTML = Mmenu.sr_text(_this.i18n(configs.text.closeSubmenu));
+                    button.innerHTML = sr.text(_this.i18n(configs.text.closeSubmenu));
                 }
             }
         });
@@ -141,49 +140,9 @@ export default function () {
                     var text = _this.i18n(configs.text[next.parentElement.matches('.mm-listitem_vertical')
                         ? 'toggleSubmenu'
                         : 'openSubmenu']);
-                    next.innerHTML += Mmenu.sr_text(text);
+                    next.innerHTML += sr.text(text);
                 }
             }
         });
     }
 }
-//	Methods
-(function () {
-    var attr = function (element, attr, value) {
-        element[attr] = value;
-        if (value) {
-            element.setAttribute(attr, value.toString());
-        }
-        else {
-            element.removeAttribute(attr);
-        }
-    };
-    /**
-     * Add aria (property and) attribute to a HTML element.
-     *
-     * @param {HTMLElement} 	element	The node to add the attribute to.
-     * @param {string}			name	The (non-aria-prefixed) attribute name.
-     * @param {string|boolean}	value	The attribute value.
-     */
-    Mmenu.sr_aria = function (element, name, value) {
-        attr(element, 'aria-' + name, value);
-    };
-    /**
-     * Add role attribute to a HTML element.
-     *
-     * @param {HTMLElement}		element	The node to add the attribute to.
-     * @param {string|boolean}	value	The attribute value.
-     */
-    Mmenu.sr_role = function (element, value) {
-        attr(element, 'role', value);
-    };
-    /**
-     * Wrap a text in a screen-reader-only node.
-     *
-     * @param 	{string} text	The text to wrap.
-     * @return	{string}		The wrapped text.
-     */
-    Mmenu.sr_text = function (text) {
-        return '<span class="mm-sronly">' + text + '</span>';
-    };
-})();

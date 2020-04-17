@@ -2,13 +2,14 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import { extendShorthandOptions } from './_options';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 import * as media from '../../_modules/matchmedia';
 import { type, extend } from '../../_modules/helpers';
 
 //  Add the options.
 Mmenu.options.iconbar = options;
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     var options = extendShorthandOptions(this.opts.iconbar);
     this.opts.iconbar = extend(options, Mmenu.options.iconbar);
 
@@ -57,11 +58,11 @@ export default function(this: Mmenu) {
         let classname = 'mm-menu_iconbar-' + options.position;
         let enable = () => {
             this.node.menu.classList.add(classname);
-            Mmenu.sr_aria(iconbar, 'hidden', false);
+            sr.aria(iconbar, 'hidden', false);
         };
         let disable = () => {
             this.node.menu.classList.remove(classname);
-            Mmenu.sr_aria(iconbar, 'hidden', true);
+            sr.aria(iconbar, 'hidden', true);
         };
 
         if (typeof options.use == 'boolean') {
@@ -73,7 +74,7 @@ export default function(this: Mmenu) {
         //	Tabs
         if (options.type == 'tabs') {
             iconbar.classList.add('mm-iconbar_tabs');
-            iconbar.addEventListener('click', evnt => {
+            iconbar.addEventListener('click', (evnt) => {
                 var anchor = evnt.target as HTMLElement;
 
                 if (!anchor.matches('a')) {
@@ -100,7 +101,7 @@ export default function(this: Mmenu) {
             });
 
             const selectTab = (panel: HTMLElement) => {
-                DOM.find(iconbar, 'a').forEach(anchor => {
+                DOM.find(iconbar, 'a').forEach((anchor) => {
                     anchor.classList.remove('mm-iconbar__tab_selected');
                 });
 

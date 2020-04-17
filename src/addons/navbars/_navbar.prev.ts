@@ -1,7 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 
-export default function(this: Mmenu, navbar: HTMLElement) {
+export default function (this: Mmenu, navbar: HTMLElement) {
     //	Add content.
     var prev = DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
     navbar.append(prev);
@@ -39,10 +40,10 @@ export default function(this: Mmenu, navbar: HTMLElement) {
 
     //	Add screenreader / aria support
     this.bind('initNavbar:after:sr-aria', (panel: HTMLElement) => {
-        Mmenu.sr_aria(panel.querySelector('.mm-navbar'), 'hidden', true);
+        sr.aria(panel.querySelector('.mm-navbar'), 'hidden', true);
     });
     this.bind('openPanel:start:sr-aria', (panel: HTMLElement) => {
-        Mmenu.sr_aria(prev, 'hidden', prev.matches('.mm-hidden'));
-        Mmenu.sr_aria(prev, 'owns', (prev.getAttribute('href') || '').slice(1));
+        sr.aria(prev, 'hidden', prev.matches('.mm-hidden'));
+        sr.aria(prev, 'owns', (prev.getAttribute('href') || '').slice(1));
     });
 }

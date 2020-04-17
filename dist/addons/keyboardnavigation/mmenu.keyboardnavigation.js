@@ -2,6 +2,7 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import { extendShorthandOptions } from './_options';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 import * as events from '../../_modules/eventlisteners';
 import * as support from '../../_modules/support';
 import { extend } from '../../_modules/helpers';
@@ -29,7 +30,9 @@ export default function () {
             _this.node.menu.prepend(menuStart_1);
             _this.node.menu.append(menuEnd_1);
             DOM.children(_this.node.menu, '.mm-navbars-top, .mm-navbars-bottom').forEach(function (navbars) {
-                navbars.querySelectorAll('.mm-navbar__title').forEach(function (title) {
+                navbars
+                    .querySelectorAll('.mm-navbar__title')
+                    .forEach(function (title) {
                     title.setAttribute('tabindex', '-1');
                 });
             });
@@ -81,8 +84,8 @@ export default function () {
         this.bind('initOpened:after:sr-aria', function () {
             [_this.node.menu, Mmenu.node.blck].forEach(function (element) {
                 DOM.children(element, '.mm-tabstart, .mm-tabend').forEach(function (tabber) {
-                    Mmenu.sr_aria(tabber, 'hidden', true);
-                    Mmenu.sr_role(tabber, 'presentation');
+                    sr.aria(tabber, 'hidden', true);
+                    sr.role(tabber, 'presentation');
                 });
             });
         });

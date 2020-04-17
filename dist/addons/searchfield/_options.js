@@ -10,11 +10,11 @@ var options = {
         fx: 'none',
         id: null,
         splash: null,
-        title: 'Search'
+        title: 'Search',
     },
     search: true,
     showTextItems: false,
-    showSubPanels: true
+    showSubPanels: true,
 };
 export default options;
 /**
@@ -26,7 +26,7 @@ export default options;
 export function extendShorthandOptions(options) {
     if (typeof options == 'boolean') {
         options = {
-            add: options
+            add: options,
         };
     }
     if (typeof options != 'object') {
@@ -34,7 +34,7 @@ export function extendShorthandOptions(options) {
     }
     if (typeof options.panel == 'boolean') {
         options.panel = {
-            add: options.panel
+            add: options.panel,
         };
     }
     if (typeof options.panel != 'object') {
@@ -52,4 +52,3 @@ export function extendShorthandOptions(options) {
     }
     return options;
 }
-;

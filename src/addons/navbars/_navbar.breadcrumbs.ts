@@ -1,7 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 
-export default function(this: Mmenu, navbar: HTMLElement) {
+export default function (this: Mmenu, navbar: HTMLElement) {
     //	Add content
     var breadcrumbs = DOM.create('div.mm-navbar__breadcrumbs');
     navbar.append(breadcrumbs);
@@ -62,8 +63,8 @@ export default function(this: Mmenu, navbar: HTMLElement) {
 
     //	Add screenreader / aria support
     this.bind('initNavbar:after:sr-aria', (panel: HTMLElement) => {
-        DOM.find(panel, '.mm-breadcrumbs a').forEach(anchor => {
-            Mmenu.sr_aria(anchor, 'owns', anchor.getAttribute('href').slice(1));
+        DOM.find(panel, '.mm-breadcrumbs a').forEach((anchor) => {
+            sr.aria(anchor, 'owns', anchor.getAttribute('href').slice(1));
         });
     });
 }

@@ -21,11 +21,11 @@ export default function () {
                 case child.matches('.form-inline'):
                     _this.conf.searchfield.form = {
                         action: child.getAttribute('action') || null,
-                        method: child.getAttribute('method') || null
+                        method: child.getAttribute('method') || null,
                     };
                     _this.conf.searchfield.input = {
                         name: child.querySelector('input').getAttribute('name') ||
-                            null
+                            null,
                     };
                     _this.conf.searchfield.clear = false;
                     _this.conf.searchfield.submit = true;
@@ -45,8 +45,7 @@ export default function () {
         if (parent_1) {
             var toggler = parent_1.querySelector('.navbar-toggler');
             if (toggler) {
-                toggler.removeAttribute('data-target');
-                // delete toggler.dataset.target; // IE10 has no dataset :(
+                delete toggler.dataset.target;
                 toggler.removeAttribute('aria-controls');
                 //	Remove all bound events.
                 toggler.outerHTML = toggler.outerHTML;

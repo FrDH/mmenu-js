@@ -1,5 +1,5 @@
-import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 export default function (navbar) {
     var _this = this;
     //	Add content
@@ -11,7 +11,7 @@ export default function (navbar) {
     });
     //	Add screenreader / text support
     this.bind('setPage:after:sr-text', function () {
-        close.innerHTML = Mmenu.sr_text(_this.i18n(_this.conf.screenReader.text.closeMenu));
-        Mmenu.sr_aria(close, 'owns', close.getAttribute('href').slice(1));
+        close.innerHTML = sr.text(_this.i18n(_this.conf.screenReader.text.closeMenu));
+        sr.aria(close, 'owns', close.getAttribute('href').slice(1));
     });
 }

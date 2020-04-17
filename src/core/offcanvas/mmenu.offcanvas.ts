@@ -3,19 +3,20 @@ import options from './_options';
 import configs from './_configs';
 import { extendShorthandOptions } from './_options';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 import * as events from '../../_modules/eventlisteners';
 import {
     extend,
     transitionend,
     uniqueId,
-    originalId
+    originalId,
 } from '../../_modules/helpers';
 
 //  Add the options and configs.
 Mmenu.options.offCanvas = options;
 Mmenu.configs.offCanvas = configs;
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     if (!this.opts.offCanvas) {
         return;
     }
@@ -42,7 +43,7 @@ export default function(this: Mmenu) {
             if (this.node.menu.id) {
                 this.node.menu.id = 'mm-' + this.node.menu.id;
             }
-            DOM.find(this.node.menu, '[id]').forEach(elem => {
+            DOM.find(this.node.menu, '[id]').forEach((elem) => {
                 elem.id = 'mm-' + elem.id;
             });
         }
@@ -84,7 +85,7 @@ export default function(this: Mmenu) {
     //	Sync the blocker to target the page.
     this.bind('setPage:after', (page: HTMLElement) => {
         if (Mmenu.node.blck) {
-            DOM.children(Mmenu.node.blck, 'a').forEach(anchor => {
+            DOM.children(Mmenu.node.blck, 'a').forEach((anchor) => {
                 anchor.setAttribute('href', '#' + page.id);
             });
         }
@@ -92,19 +93,19 @@ export default function(this: Mmenu) {
 
     //	Add screenreader / aria support
     this.bind('open:start:sr-aria', () => {
-        Mmenu.sr_aria(this.node.menu, 'hidden', false);
+        sr.aria(this.node.menu, 'hidden', false);
     });
     this.bind('close:finish:sr-aria', () => {
-        Mmenu.sr_aria(this.node.menu, 'hidden', true);
+        sr.aria(this.node.menu, 'hidden', true);
     });
     this.bind('initMenu:after:sr-aria', () => {
-        Mmenu.sr_aria(this.node.menu, 'hidden', true);
+        sr.aria(this.node.menu, 'hidden', true);
     });
 
     //	Add screenreader / text support
     this.bind('initBlocker:after:sr-text', () => {
-        DOM.children(Mmenu.node.blck, 'a').forEach(anchor => {
-            anchor.innerHTML = Mmenu.sr_text(
+        DOM.children(Mmenu.node.blck, 'a').forEach((anchor) => {
+            anchor.innerHTML = sr.text(
                 this.i18n(this.conf.screenReader.text.closeMenu)
             );
         });
@@ -165,7 +166,7 @@ export default function(this: Mmenu) {
 /**
  * Open the menu.
  */
-Mmenu.prototype.open = function(this: Mmenu) {
+Mmenu.prototype.open = function (this: Mmenu) {
     //	Invoke "before" hook.
     this.trigger('open:before');
 
@@ -184,7 +185,7 @@ Mmenu.prototype.open = function(this: Mmenu) {
     this.trigger('open:after');
 };
 
-Mmenu.prototype._openSetup = function(this: Mmenu) {
+Mmenu.prototype._openSetup = function (this: Mmenu) {
     var options = this.opts.offCanvas;
 
     //	Close other menus
@@ -210,7 +211,7 @@ Mmenu.prototype._openSetup = function(this: Mmenu) {
     }
 
     //  IE11:
-    clsn.forEach(classname => {
+    clsn.forEach((classname) => {
         this.node.wrpr.classList.add(classname);
     });
 
@@ -229,7 +230,7 @@ Mmenu.prototype._openSetup = function(this: Mmenu) {
 /**
  * Finish opening the menu.
  */
-Mmenu.prototype._openStart = function(this: Mmenu) {
+Mmenu.prototype._openStart = function (this: Mmenu) {
     //	Callback when the page finishes opening.
     transitionend(
         Mmenu.node.page,
@@ -244,7 +245,7 @@ Mmenu.prototype._openStart = function(this: Mmenu) {
     this.node.wrpr.classList.add('mm-wrapper_opening');
 };
 
-Mmenu.prototype.close = function(this: Mmenu) {
+Mmenu.prototype.close = function (this: Mmenu) {
     //	Invoke "before" hook.
     this.trigger('close:before');
 
@@ -262,11 +263,11 @@ Mmenu.prototype.close = function(this: Mmenu) {
                 'mm-wrapper_opened',
                 'mm-wrapper_blocking',
                 'mm-wrapper_modal',
-                'mm-wrapper_background'
+                'mm-wrapper_background',
             ];
 
             //  IE11:
-            classnames.forEach(classname => {
+            classnames.forEach((classname) => {
                 this.node.wrpr.classList.remove(classname);
             });
 
@@ -294,8 +295,8 @@ Mmenu.prototype.close = function(this: Mmenu) {
 /**
  * Close all other menus.
  */
-Mmenu.prototype.closeAllOthers = function(this: Mmenu) {
-    DOM.find(document.body, '.mm-menu_offcanvas').forEach(menu => {
+Mmenu.prototype.closeAllOthers = function (this: Mmenu) {
+    DOM.find(document.body, '.mm-menu_offcanvas').forEach((menu) => {
         if (menu !== this.node.menu) {
             let api: mmApi = menu['mmApi'];
             if (api && api.close) {
@@ -310,7 +311,7 @@ Mmenu.prototype.closeAllOthers = function(this: Mmenu) {
  *
  * @param {HTMLElement} page Element to set as the page.
  */
-Mmenu.prototype.setPage = function(this: Mmenu, page: HTMLElement) {
+Mmenu.prototype.setPage = function (this: Mmenu, page: HTMLElement) {
     //	Invoke "before" hook.
     this.trigger('setPage:before', [page]);
 
@@ -326,13 +327,13 @@ Mmenu.prototype.setPage = function(this: Mmenu, page: HTMLElement) {
 
         //	Filter out elements that are absolutely not "the page".
         pages = pages.filter(
-            page => !page.matches('.mm-menu, .mm-wrapper__blocker')
+            (page) => !page.matches('.mm-menu, .mm-wrapper__blocker')
         );
 
         //	Filter out elements that are configured to not be "the page".
         if (configs.page.noSelector.length) {
             pages = pages.filter(
-                page => !page.matches(configs.page.noSelector.join(', '))
+                (page) => !page.matches(configs.page.noSelector.join(', '))
             );
         }
 
@@ -340,7 +341,7 @@ Mmenu.prototype.setPage = function(this: Mmenu, page: HTMLElement) {
         if (pages.length > 1) {
             let wrapper = DOM.create('div');
             pages[0].before(wrapper);
-            pages.forEach(page => {
+            pages.forEach((page) => {
                 wrapper.append(page);
             });
 
@@ -363,7 +364,7 @@ Mmenu.prototype.setPage = function(this: Mmenu, page: HTMLElement) {
 /**
  * Initialize the window.
  */
-const initWindow = function(this: Mmenu) {
+const initWindow = function (this: Mmenu) {
     //	Prevent tabbing
     //	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
     //	In other words: The menu would move out of view.
@@ -380,7 +381,7 @@ const initWindow = function(this: Mmenu) {
 /**
  * Initialize "blocker" node
  */
-const initBlocker = function(this: Mmenu) {
+const initBlocker = function (this: Mmenu) {
     //	Invoke "before" hook.
     this.trigger('initBlocker:before');
 

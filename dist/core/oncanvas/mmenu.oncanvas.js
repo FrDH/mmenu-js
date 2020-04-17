@@ -41,6 +41,7 @@ var Mmenu = /** @class */ (function () {
         if (typeof this._deprecatedWarnings == 'function') {
             this._deprecatedWarnings();
         }
+        this._initObservers();
         this._initWrappers();
         this._initAddons();
         this._initExtensions();
@@ -281,6 +282,34 @@ var Mmenu = /** @class */ (function () {
             }
         }
     };
+    Mmenu.prototype._initObservers = function () {
+        var _this = this;
+        this.panelObserver = new MutationObserver(function (mutationsList) {
+            mutationsList.forEach(function (mutation) {
+                mutation.addedNodes.forEach(function (listview) {
+                    if (listview.matches(_this.conf.panelNodetype.join(', '))) {
+                        _this._initListview(listview);
+                    }
+                });
+            });
+        });
+        this.listviewObserver = new MutationObserver(function (mutationsList) {
+            mutationsList.forEach(function (mutation) {
+                mutation.addedNodes.forEach(function (listitem) {
+                    _this._initListitem(listitem);
+                });
+            });
+        });
+        this.listitemObserver = new MutationObserver(function (mutationsList) {
+            mutationsList.forEach(function (mutation) {
+                mutation.addedNodes.forEach(function (listview) {
+                    if (listview.matches(_this.conf.panelNodetype.join(', '))) {
+                        _this._initSubPanel(listview);
+                    }
+                });
+            });
+        });
+    };
     /**
      * Create the API.
      */
@@ -422,8 +451,6 @@ var Mmenu = /** @class */ (function () {
         //	Invoke "after" hook.
         this.trigger('initMenu:after');
     };
-    // oud
-    Mmenu.prototype.initPanel = function (panel) { };
     /**
      * Initialize panels.
      */
@@ -514,10 +541,15 @@ var Mmenu = /** @class */ (function () {
         if (!panel.parentElement.matches('.mm-listitem_vertical')) {
             this.node.pnls.append(panel);
         }
+        //  Initialize tha navbar.
         this._initNavbar(panel);
-        //  TODO: observer voor maken?
+        //  Initialize the listview(s).
         DOM.children(panel, 'ul, ol').forEach(function (listview) {
             _this._initListview(listview);
+        });
+        // Observe the panel for added listviews.
+        this.panelObserver.observe(panel, {
+            childList: true,
         });
         //	Invoke "after" hook.
         this.trigger('initPanel:after', [panel]);
@@ -532,7 +564,7 @@ var Mmenu = /** @class */ (function () {
         this.trigger('initNavbar:before', [panel]);
         //	Only one navbar per panel.
         if (DOM.children(panel, '.mm-navbar').length) {
-            return null;
+            return;
         }
         /** The parent listitem. */
         var parentListitem = null;
@@ -579,8 +611,7 @@ var Mmenu = /** @class */ (function () {
         var titleText = DOM.create('span');
         title.append(titleText);
         titleText.innerHTML =
-            // panel.dataset.mmTitle || // IE10 has no dataset :(
-            panel.getAttribute('data-mm-title') ||
+            panel.dataset.mmTitle ||
                 (opener ? opener.textContent : '') ||
                 this.i18n(this.opts.navbar.title) ||
                 this.i18n('Menu');
@@ -609,64 +640,83 @@ var Mmenu = /** @class */ (function () {
         var _this = this;
         //	Invoke "before" hook.
         this.trigger('initListview:before', [listview]);
-        var panelNodetype = this.conf.panelNodetype.join(', ');
         DOM.reClass(listview, this.conf.classNames.nolistview, 'mm-nolistview');
-        // TODO: observer voor LI aan UL toevoegen
-        // TODO: LI gedeelte in _initlistitem()
         if (!listview.matches('.mm-nolistview')) {
             listview.classList.add('mm-listview');
+            //  Initiate the listitem(s).
             DOM.children(listview).forEach(function (listitem) {
-                listitem.classList.add('mm-listitem');
-                DOM.reClass(listitem, _this.conf.classNames.selected, 'mm-listitem_selected');
-                //  Init submenu
-                //  TODO observer voor UL aan LI toevoegen
-                /** The submenu of the listitem. */
-                var subpanel = DOM.children(listitem, panelNodetype)[0];
-                /** Whether or not the listitem expands vertically */
-                var vertical = subpanel &&
-                    (subpanel.matches('.' + _this.conf.classNames.vertical) ||
-                        !_this.opts.slidingSubmenus);
-                if (subpanel) {
-                    // Make it expand vertically
-                    if (vertical) {
-                        listitem.classList.add('mm-listitem_vertical');
-                    }
-                    //  Force an ID
-                    listitem.id = listitem.id || uniqueId();
-                    subpanel.id = subpanel.id || uniqueId();
-                    //  Store parent/child relation
-                    listitem.dataset.mmChild = subpanel.id;
-                    subpanel.dataset.mmParent = listitem.id;
-                }
-                //  Init item text
-                DOM.children(listitem, 'a, span').forEach(function (text) {
-                    // if (!item.matches('.mm-btn')) {
-                    text.classList.add('mm-listitem__text');
-                    if (subpanel) {
-                        /** The open link. */
-                        var button = DOM.create('a.mm-btn.mm-btn_next.mm-listitem__btn');
-                        button.href = '#' + subpanel.id;
-                        //  If the item has no link,
-                        //      Replace the item with the open link.
-                        if (text.matches('span')) {
-                            button.classList.add('mm-listitem__text');
-                            button.innerHTML = text.innerHTML;
-                            listitem.insertBefore(button, text.nextElementSibling);
-                            text.remove();
-                        }
-                        //  Otherwise, insert the button after the text.
-                        else {
-                            listitem.insertBefore(button, text.nextElementSibling);
-                        }
-                    }
-                });
-                if (subpanel) {
-                    _this._initPanel(subpanel);
-                }
+                _this._initListitem(listitem);
+            });
+            // Observe the listview for added listitems.
+            this.listviewObserver.observe(listview, {
+                childList: true,
             });
         }
         //	Invoke "after" hook.
         this.trigger('initListview:after', [listview]);
+    };
+    /**
+     * Initialte a listitem.
+     * @param {HTMLElement} listitem Listitem to initiate.
+     */
+    Mmenu.prototype._initListitem = function (listitem) {
+        var _this = this;
+        listitem.classList.add('mm-listitem');
+        DOM.reClass(listitem, this.conf.classNames.selected, 'mm-listitem_selected');
+        DOM.children(listitem, 'a, span').forEach(function (text) {
+            text.classList.add('mm-listitem__text');
+        });
+        //  Initiate the subpanel.
+        DOM.children(listitem, this.conf.panelNodetype.join(', ')).forEach(function (subpanel) {
+            _this._initSubPanel(subpanel);
+        });
+        // Observe the listview for added listitems.
+        this.listitemObserver.observe(listitem, {
+            childList: true,
+        });
+    };
+    /**
+     * Initiate a subpanel.
+     * @param {HTMLElement} subpanel Subpanel to initiate.
+     */
+    Mmenu.prototype._initSubPanel = function (subpanel) {
+        /** The parent element for the panel. */
+        var listitem = subpanel.parentElement;
+        /** Whether or not the listitem expands vertically */
+        var vertical = subpanel.matches('.' + this.conf.classNames.vertical) ||
+            !this.opts.slidingSubmenus;
+        // Make it expand vertically
+        if (vertical) {
+            listitem.classList.add('mm-listitem_vertical');
+        }
+        //  Force an ID
+        listitem.id = listitem.id || uniqueId();
+        subpanel.id = subpanel.id || uniqueId();
+        //  Store parent/child relation
+        listitem.dataset.mmChild = subpanel.id;
+        subpanel.dataset.mmParent = listitem.id;
+        /** The open link. */
+        var button = DOM.children(listitem, '.mm-btn')[0];
+        //  Init item text
+        if (!button) {
+            button = DOM.create('a.mm-btn.mm-btn_next.mm-listitem__btn');
+            DOM.children(listitem, 'a, span').forEach(function (text) {
+                //  If the item has no link,
+                //      Replace the item with the open link.
+                if (text.matches('span')) {
+                    button.classList.add('mm-listitem__text');
+                    button.innerHTML = text.innerHTML;
+                    listitem.insertBefore(button, text.nextElementSibling);
+                    text.remove();
+                }
+                //  Otherwise, insert the button after the text.
+                else {
+                    listitem.insertBefore(button, text.nextElementSibling);
+                }
+            });
+        }
+        button.href = '#' + subpanel.id;
+        this._initPanel(subpanel);
     };
     /**
      * Find and open the correct panel after creating the menu.

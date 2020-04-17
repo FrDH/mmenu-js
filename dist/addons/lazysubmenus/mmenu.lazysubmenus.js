@@ -14,49 +14,33 @@ export default function () {
         this.bind('initPanels:before', function () {
             var panels = [];
             //	Find all potential subpanels.
-            // TODO: probleem in volgorde
             DOM.find(_this.node.pnls, 'li').forEach(function (listitem) {
-                panels.push.apply(
-                    panels,
-                    DOM.children(listitem, _this.conf.panelNodetype.join(', '))
-                );
+                panels.push.apply(panels, DOM.children(listitem, _this.conf.panelNodetype.join(', ')));
             });
             //	Filter out all non-panels and add the lazyload classes
             panels
-                .filter(function (panel) {
-                    return !panel.matches('.mm-listview_inset');
-                })
-                .filter(function (panel) {
-                    return !panel.matches('.mm-nolistview');
-                })
-                .filter(function (panel) {
-                    return !panel.matches('.mm-nopanel');
-                })
+                .filter(function (panel) { return !panel.matches('.mm-listview_inset'); })
+                .filter(function (panel) { return !panel.matches('.mm-nolistview'); })
+                .filter(function (panel) { return !panel.matches('.mm-nopanel'); })
                 .forEach(function (panel) {
-                    var classnames = [
-                        'mm-panel_lazysubmenu',
-                        'mm-nolistview',
-                        'mm-nopanel',
-                    ];
-                    //  IE11:
-                    classnames.forEach(function (classname) {
-                        panel.classList.add(classname);
-                    });
-                    //  Better browsers:
-                    // panel.classList.add(...classnames);
+                var classnames = [
+                    'mm-panel_lazysubmenu',
+                    'mm-nolistview',
+                    'mm-nopanel',
+                ];
+                //  IE11:
+                classnames.forEach(function (classname) {
+                    panel.classList.add(classname);
                 });
+                //  Better browsers:
+                // panel.classList.add(...classnames);
+            });
         });
         //	re-enable the default opened panel to be initialized.
         this.bind('initPanels:before', function () {
             var panels = [];
-            DOM.find(
-                _this.node.pnls,
-                '.' + _this.conf.classNames.selected
-            ).forEach(function (listitem) {
-                panels.push.apply(
-                    panels,
-                    DOM.parents(listitem, '.mm-panel_lazysubmenu')
-                );
+            DOM.find(_this.node.pnls, '.' + _this.conf.classNames.selected).forEach(function (listitem) {
+                panels.push.apply(panels, DOM.parents(listitem, '.mm-panel_lazysubmenu'));
             });
             if (panels.length) {
                 panels.forEach(function (panel) {
@@ -77,13 +61,9 @@ export default function () {
         });
         //	initPanel for current- and sub panels before openPanel
         this.bind('openPanel:before', function (panel) {
-            var panels = DOM.find(panel, '.mm-panel_lazysubmenu').filter(
-                function (panel) {
-                    return !panel.matches(
-                        '.mm-panel_lazysubmenu .mm-panel_lazysubmenu'
-                    );
-                }
-            );
+            var panels = DOM.find(panel, '.mm-panel_lazysubmenu').filter(function (panel) {
+                return !panel.matches('.mm-panel_lazysubmenu .mm-panel_lazysubmenu');
+            });
             if (panel.matches('.mm-panel_lazysubmenu')) {
                 panels.unshift(panel);
             }
@@ -99,7 +79,7 @@ export default function () {
                 });
                 //  Better browsers:
                 // child.classList.remove(...classnames);
-                _this.initPanel(panel);
+                _this._initPanel(panel);
             });
         });
     }

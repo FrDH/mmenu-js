@@ -6,7 +6,7 @@
  * @param 	{object}	dfault	The object to extend from.
  * @return	{object}			The extended "orignl" object.
  */
-export function extend(orignl: mmLooseObject, dfault: mmLooseObject) {
+export const extend = (orignl: mmLooseObject, dfault: mmLooseObject) => {
     if (type(orignl) != 'object') {
         orignl = {};
     }
@@ -26,7 +26,7 @@ export function extend(orignl: mmLooseObject, dfault: mmLooseObject) {
         }
     }
     return orignl;
-}
+};
 
 /**
  * Detect the touch / dragging direction on a touch device.
@@ -34,10 +34,10 @@ export function extend(orignl: mmLooseObject, dfault: mmLooseObject) {
  * @param   {HTMLElement} surface   The element to monitor for touch events.
  * @return  {object}                Object with "get" function.
  */
-export function touchDirection(surface) {
-    var direction = '';
+export const touchDirection = (surface) => {
+    let direction = '';
 
-    surface.addEventListener('touchmove', evnt => {
+    surface.addEventListener('touchmove', (evnt) => {
         direction = '';
 
         if (evnt.movementY > 0) {
@@ -48,9 +48,9 @@ export function touchDirection(surface) {
     });
 
     return {
-        get: () => direction
+        get: () => direction,
     };
-}
+};
 
 /**
  * Get the type of any given variable. Improvement of "typeof".
@@ -58,12 +58,12 @@ export function touchDirection(surface) {
  * @param 	{any}		variable	The variable.
  * @return	{string}				The type of the variable in lowercase.
  */
-export function type(variable: any): string {
+export const type = (variable: any): string => {
     return {}.toString
         .call(variable)
         .match(/\s([a-zA-Z]+)/)[1]
         .toLowerCase();
-}
+};
 
 /**
  * Find the value from an option or function.
@@ -72,12 +72,12 @@ export function type(variable: any): string {
  * @param 	{any} 			[dfault] 	Default fallback value.
  * @return	{any}						The given evaluation of the given option, or the default fallback value.
  */
-export function valueOrFn(
+export const valueOrFn = (
     element: HTMLElement,
     option?: any,
     dfault?: any
-): any {
-    if (typeof option == 'function') {
+): any => {
+    if (typeof option === 'function') {
         var value = option.call(element);
         if (typeof value != 'undefined') {
             return value;
@@ -87,12 +87,12 @@ export function valueOrFn(
         (option === null ||
             typeof option == 'function' ||
             typeof option == 'undefined') &&
-        typeof dfault != 'undefined'
+        typeof dfault !== 'undefined'
     ) {
         return dfault;
     }
     return option;
-}
+};
 
 /**
  * Set and invoke a (single) transition-end function with fallback.
@@ -101,13 +101,13 @@ export function valueOrFn(
  * @param {function}		func		Function to invoke.
  * @param {number}			duration	The duration of the animation (for the fallback).
  */
-export function transitionend(
+export const transitionend = (
     element: HTMLElement,
     func: Function,
     duration: number
-) {
+) => {
     var _ended = false,
-        _fn = function(evnt) {
+        _fn = function (evnt) {
             if (typeof evnt !== 'undefined') {
                 if (evnt.target !== element) {
                     return;
@@ -125,23 +125,23 @@ export function transitionend(
     element.addEventListener('transitionend', _fn);
     element.addEventListener('webkitTransitionEnd', _fn);
     setTimeout(_fn, duration * 1.1);
-}
+};
 
 /**
  * Get a (page wide) unique ID.
  */
-export function uniqueId() {
-    return 'mm-' + __id++;
-}
-var __id = 0;
+export const uniqueId = () => {
+    return `mm-${__id++}`;
+};
+let __id = 0;
 
 /**
  * Get the original ID from a possibly prefixed ID.
  * @param id The possibly prefixed ID.
  */
-export function originalId(id) {
+export const originalId = (id) => {
     if (id.slice(0, 3) == 'mm-') {
         return id.slice(3);
     }
     return id;
-}
+};

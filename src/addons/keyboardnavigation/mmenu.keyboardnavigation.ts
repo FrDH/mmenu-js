@@ -2,6 +2,7 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import options from './_options';
 import { extendShorthandOptions } from './_options';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 import * as events from '../../_modules/eventlisteners';
 import * as support from '../../_modules/support';
 import { extend } from '../../_modules/helpers';
@@ -9,7 +10,7 @@ import { extend } from '../../_modules/helpers';
 //  Add the options.
 Mmenu.options.keyboardNavigation = options;
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     //	Keyboard navigation on touchscreens opens the virtual keyboard :/
     //	Lets prevent that.
     if (support.touch) {
@@ -42,10 +43,12 @@ export default function(this: Mmenu) {
             DOM.children(
                 this.node.menu,
                 '.mm-navbars-top, .mm-navbars-bottom'
-            ).forEach(navbars => {
-                navbars.querySelectorAll('.mm-navbar__title').forEach(title => {
-                    title.setAttribute('tabindex', '-1');
-                });
+            ).forEach((navbars) => {
+                navbars
+                    .querySelectorAll('.mm-navbar__title')
+                    .forEach((title) => {
+                        title.setAttribute('tabindex', '-1');
+                    });
             });
         });
 
@@ -88,7 +91,7 @@ export default function(this: Mmenu) {
                     DOM.children(
                         this.node.menu,
                         '.mm-navbars_top, .mm-navbars_bottom'
-                    ).forEach(navbar => {
+                    ).forEach((navbar) => {
                         elements.push(
                             ...DOM.find(navbar, focusable + ':not(.mm-hidden)')
                         );
@@ -111,11 +114,11 @@ export default function(this: Mmenu) {
 
         //	Add screenreader / aria support.
         this.bind('initOpened:after:sr-aria', () => {
-            [this.node.menu, Mmenu.node.blck].forEach(element => {
+            [this.node.menu, Mmenu.node.blck].forEach((element) => {
                 DOM.children(element, '.mm-tabstart, .mm-tabend').forEach(
-                    tabber => {
-                        Mmenu.sr_aria(tabber, 'hidden', true);
-                        Mmenu.sr_role(tabber, 'presentation');
+                    (tabber) => {
+                        sr.aria(tabber, 'hidden', true);
+                        sr.role(tabber, 'presentation');
                     }
                 );
             });
@@ -127,7 +130,7 @@ export default function(this: Mmenu) {
  * Initialize the window for keyboard navigation.
  * @param {boolean} enhance - Whether or not to also rich enhance the keyboard behavior.
  **/
-const initWindow = function(this: Mmenu, enhance: boolean) {
+const initWindow = function (this: Mmenu, enhance: boolean) {
     //	Re-enable tabbing in general
     events.off(document.body, 'keydown.tabguard');
 

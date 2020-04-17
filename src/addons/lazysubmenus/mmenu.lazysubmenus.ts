@@ -106,7 +106,7 @@ export default function (this: Mmenu) {
                 //  Better browsers:
                 // child.classList.remove(...classnames);
 
-                this.initPanel(panel);
+                this._initPanel(panel);
             });
         });
     }

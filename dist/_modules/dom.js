@@ -4,7 +4,7 @@
  * @param 	{string}		selector	The nodeName and classnames for the element to create.
  * @return	{HTMLElement}				The created element.
  */
-export function create(selector) {
+export var create = function (selector) {
     var args = selector.split('.');
     var elem = document.createElement(args.shift());
     //  IE11:
@@ -14,7 +14,7 @@ export function create(selector) {
     //  Better browsers:
     // elem.classList.add(...args);
     return elem;
-}
+};
 /**
  * Find all elements matching the selector.
  * Basically the same as element.querySelectorAll() but it returns an actuall array.
@@ -23,9 +23,9 @@ export function create(selector) {
  * @param 	{string}		filter	The filter to match.
  * @return	{array}					Array of elements that match the filter.
  */
-export function find(element, filter) {
+export var find = function (element, filter) {
     return Array.prototype.slice.call(element.querySelectorAll(filter));
-}
+};
 /**
  * Find all child elements matching the (optional) selector.
  *
@@ -33,22 +33,24 @@ export function find(element, filter) {
  * @param 	{string}		filter	The filter to match.
  * @return	{array}					Array of child elements that match the filter.
  */
-export function children(element, filter) {
+export var children = function (element, filter) {
     var children = Array.prototype.slice.call(element.children);
-    return filter ? children.filter(function (child) { return child.matches(filter); }) : children;
-}
+    return filter
+        ? children.filter(function (child) { return child.matches(filter); })
+        : children;
+};
 /**
  * Find text excluding text from within child elements.
  * @param   {HTMLElement}   element Element to search in.
  * @return  {string}                The text.
  */
-export function text(element) {
+export var text = function (element) {
     return Array.prototype.slice
         .call(element.childNodes)
         .filter(function (child) { return child.nodeType == 3; })
         .map(function (child) { return child.textContent; })
         .join(' ');
-}
+};
 /**
  * Find all preceding elements matching the selector.
  *
@@ -56,7 +58,7 @@ export function text(element) {
  * @param 	{string}		filter	The filter to match.
  * @return	{array}					Array of preceding elements that match the selector.
  */
-export function parents(element, filter) {
+export var parents = function (element, filter) {
     /** Array of preceding elements that match the selector. */
     var parents = [];
     /** Array of preceding elements that match the selector. */
@@ -65,8 +67,10 @@ export function parents(element, filter) {
         parents.push(parent);
         parent = parent.parentElement;
     }
-    return filter ? parents.filter(function (parent) { return parent.matches(filter); }) : parents;
-}
+    return filter
+        ? parents.filter(function (parent) { return parent.matches(filter); })
+        : parents;
+};
 /**
  * Find all previous siblings matching the selecotr.
  *
@@ -74,7 +78,7 @@ export function parents(element, filter) {
  * @param 	{string}		filter	The filter to match.
  * @return	{array}					Array of previous siblings that match the selector.
  */
-export function prevAll(element, filter) {
+export var prevAll = function (element, filter) {
     /** Array of previous siblings that match the selector. */
     var previous = [];
     /** Current element in the loop */
@@ -86,7 +90,7 @@ export function prevAll(element, filter) {
         current = current.previousElementSibling;
     }
     return previous;
-}
+};
 /**
  * Get an element offset relative to the document.
  *
@@ -94,39 +98,39 @@ export function prevAll(element, filter) {
  * @param 	{string}		 [direction=top] 	Offset top or left.
  * @return	{number}							The element offset relative to the document.
  */
-export function offset(element, direction) {
+export var offset = function (element, direction) {
     return (element.getBoundingClientRect()[direction] +
         document.body[direction === 'left' ? 'scrollLeft' : 'scrollTop']);
-}
+};
 /**
  * Filter out non-listitem listitems.
  * @param  {array} listitems 	Elements to filter.
  * @return {array}				The filtered set of listitems.
  */
-export function filterLI(listitems) {
+export var filterLI = function (listitems) {
     return listitems.filter(function (listitem) { return !listitem.matches('.mm-hidden'); });
-}
+};
 /**
  * Find anchors in listitems (excluding anchor that open a sub-panel).
  * @param  {array} 	listitems 	Elements to filter.
  * @return {array}				The found set of anchors.
  */
-export function filterLIA(listitems) {
+export var filterLIA = function (listitems) {
     var anchors = [];
     filterLI(listitems).forEach(function (listitem) {
         anchors.push.apply(anchors, children(listitem, 'a.mm-listitem__text'));
     });
     return anchors.filter(function (anchor) { return !anchor.matches('.mm-btn_next'); });
-}
+};
 /**
  * Refactor a classname on multiple elements.
  * @param {HTMLElement} element 	Element to refactor.
  * @param {string}		oldClass 	Classname to remove.
  * @param {string}		newClass 	Classname to add.
  */
-export function reClass(element, oldClass, newClass) {
+export var reClass = function (element, oldClass, newClass) {
     if (element.matches('.' + oldClass)) {
         element.classList.remove(oldClass);
         element.classList.add(newClass);
     }
-}
+};

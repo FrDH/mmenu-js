@@ -3,8 +3,9 @@ import options from './_options';
 import configs from './_configs';
 import { extendShorthandOptions } from './_options';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 import * as events from '../../_modules/eventlisteners';
-import { extend, transitionend, uniqueId, originalId } from '../../_modules/helpers';
+import { extend, transitionend, uniqueId, originalId, } from '../../_modules/helpers';
 //  Add the options and configs.
 Mmenu.options.offCanvas = options;
 Mmenu.configs.offCanvas = configs;
@@ -70,18 +71,18 @@ export default function () {
     });
     //	Add screenreader / aria support
     this.bind('open:start:sr-aria', function () {
-        Mmenu.sr_aria(_this.node.menu, 'hidden', false);
+        sr.aria(_this.node.menu, 'hidden', false);
     });
     this.bind('close:finish:sr-aria', function () {
-        Mmenu.sr_aria(_this.node.menu, 'hidden', true);
+        sr.aria(_this.node.menu, 'hidden', true);
     });
     this.bind('initMenu:after:sr-aria', function () {
-        Mmenu.sr_aria(_this.node.menu, 'hidden', true);
+        sr.aria(_this.node.menu, 'hidden', true);
     });
     //	Add screenreader / text support
     this.bind('initBlocker:after:sr-text', function () {
         DOM.children(Mmenu.node.blck, 'a').forEach(function (anchor) {
-            anchor.innerHTML = Mmenu.sr_text(_this.i18n(_this.conf.screenReader.text.closeMenu));
+            anchor.innerHTML = sr.text(_this.i18n(_this.conf.screenReader.text.closeMenu));
         });
     });
     //	Add click behavior.
@@ -204,7 +205,7 @@ Mmenu.prototype.close = function () {
             'mm-wrapper_opened',
             'mm-wrapper_blocking',
             'mm-wrapper_modal',
-            'mm-wrapper_background'
+            'mm-wrapper_background',
         ];
         //  IE11:
         classnames.forEach(function (classname) {

@@ -1,5 +1,5 @@
-import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 export default function (navbar) {
     var _this = this;
     //	Add content.
@@ -32,10 +32,10 @@ export default function (navbar) {
     });
     //	Add screenreader / aria support
     this.bind('initNavbar:after:sr-aria', function (panel) {
-        Mmenu.sr_aria(panel.querySelector('.mm-navbar'), 'hidden', true);
+        sr.aria(panel.querySelector('.mm-navbar'), 'hidden', true);
     });
     this.bind('openPanel:start:sr-aria', function (panel) {
-        Mmenu.sr_aria(prev, 'hidden', prev.matches('.mm-hidden'));
-        Mmenu.sr_aria(prev, 'owns', (prev.getAttribute('href') || '').slice(1));
+        sr.aria(prev, 'hidden', prev.matches('.mm-hidden'));
+        sr.aria(prev, 'owns', (prev.getAttribute('href') || '').slice(1));
     });
 }

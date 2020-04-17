@@ -1,7 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
+import * as sr from '../../_modules/screenreader';
 
-export default function(this: Mmenu, navbar: HTMLElement) {
+export default function (this: Mmenu, navbar: HTMLElement) {
     //	Add content to the navbar.
     let title = DOM.create('a.mm-navbar__title');
     let titleText = DOM.create('span');
@@ -54,7 +55,7 @@ export default function(this: Mmenu, navbar: HTMLElement) {
                     this.node.menu,
                     '.mm-navbars_top, .mm-navbars_bottom'
                 );
-                navbars.forEach(navbar => {
+                navbars.forEach((navbar) => {
                     let btn = navbar.querySelector('.mm-btn_prev');
                     if (btn) {
                         prev = btn as HTMLElement;
@@ -67,7 +68,7 @@ export default function(this: Mmenu, navbar: HTMLElement) {
                 if (this.opts.navbar.titleLink == 'parent') {
                     hidden = !prev.matches('.mm-hidden');
                 }
-                Mmenu.sr_aria(title, 'hidden', hidden);
+                sr.aria(title, 'hidden', hidden);
             }
         }
     });

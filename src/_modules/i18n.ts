@@ -19,21 +19,12 @@ export function add(text: object, language: string) {
  * @param   {string} language   The language to search in.
  * @return  {string}            The translated text.
  */
-export function get(text: string, language?: string): string {
+export const get = (text: string, language?: string): string => {
     if (
-        typeof language == 'string' &&
-        typeof translations[language] != 'undefined'
+        typeof language === 'string' &&
+        typeof translations[language] !== 'undefined'
     ) {
         return translations[language][text] || text;
     }
     return text;
-}
-
-/**
- * Get all translated text in a language.
- * @param   {string} language   The language to search for.
- * @return  {object}            The translations.
- */
-export function all(language: string): object {
-    return translations;
-}
+};

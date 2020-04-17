@@ -14,7 +14,7 @@ translate();
 Mmenu.options.searchfield = options;
 Mmenu.configs.searchfield = configs;
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     var options = extendShorthandOptions(this.opts.searchfield);
     this.opts.searchfield = extend(options, Mmenu.options.searchfield);
 
@@ -26,7 +26,7 @@ export default function(this: Mmenu) {
 
     //	Blur searchfield
     this.bind('close:start', () => {
-        DOM.find(this.node.menu, '.mm-searchfield').forEach(input => {
+        DOM.find(this.node.menu, '.mm-searchfield').forEach((input) => {
             input.blur();
         });
     });
@@ -59,7 +59,7 @@ export default function(this: Mmenu) {
                 break;
         }
 
-        addTo.forEach(form => {
+        addTo.forEach((form) => {
             form = initSearchfield.call(this, form);
             if (options.search && form) {
                 initSearching.call(this, form);
@@ -105,7 +105,7 @@ export default function(this: Mmenu) {
     });
 }
 
-const initSearchPanel = function(this: Mmenu): HTMLElement {
+const initSearchPanel = function (this: Mmenu): HTMLElement {
     var options = this.opts.searchfield,
         configs = this.conf.searchfield;
 
@@ -123,8 +123,7 @@ const initSearchPanel = function(this: Mmenu): HTMLElement {
     }
 
     if (options.panel.title) {
-        searchpanel.setAttribute('data-mm-title', options.panel.title);
-        // searchpanel.dataset.mmTitle = options.panel.title; // IE10 has no dataset :(
+        searchpanel.dataset.mmTitle = options.panel.title;
     }
 
     var listview = DOM.create('ul');
@@ -165,7 +164,7 @@ const initSearchPanel = function(this: Mmenu): HTMLElement {
     return searchpanel;
 };
 
-const initSearchfield = function(
+const initSearchfield = function (
     this: Mmenu,
     wrapper: HTMLElement
 ): HTMLElement {
@@ -238,7 +237,7 @@ const initSearchfield = function(
     return form;
 };
 
-const initSearching = function(this: Mmenu, form: HTMLElement) {
+const initSearching = function (this: Mmenu, form: HTMLElement) {
     var options = this.opts.searchfield,
         configs = this.conf.searchfield;
 
@@ -262,18 +261,18 @@ const initSearching = function(this: Mmenu, form: HTMLElement) {
 
     //	Filter out search panel
     data.panels = data.panels.filter(
-        panel => !panel.matches('.mm-panel_search')
+        (panel) => !panel.matches('.mm-panel_search')
     );
 
     //	Filter out vertical submenus
     data.panels = data.panels.filter(
-        panel => !panel.parentElement.matches('.mm-listitem_vertical')
+        (panel) => !panel.parentElement.matches('.mm-listitem_vertical')
     );
 
     //  Find listitems and dividers.
     data.listitems = [];
     data.dividers = [];
-    data.panels.forEach(panel => {
+    data.panels.forEach((panel) => {
         data.listitems.push(...DOM.find(panel, '.mm-listitem'));
         data.dividers.push(...DOM.find(panel, '.mm-divider'));
     });
@@ -287,7 +286,7 @@ const initSearching = function(this: Mmenu, form: HTMLElement) {
     //	Open the splash panel when focussing the input.
     if (options.panel.add && options.panel.splash) {
         events.off(input, 'focus.splash');
-        events.on(input, 'focus.splash', evnt => {
+        events.on(input, 'focus.splash', (evnt) => {
             this.openPanel(searchpanel);
         });
     }
@@ -295,13 +294,13 @@ const initSearching = function(this: Mmenu, form: HTMLElement) {
     if (options.cancel) {
         //	Show the cancel button when focussing the input.
         events.off(input, 'focus.cancel');
-        events.on(input, 'focus.cancel', evnt => {
+        events.on(input, 'focus.cancel', (evnt) => {
             cancel.classList.add('mm-searchfield__cancel-active');
         });
 
         //	Close the splash panel when clicking the cancel button.
         events.off(cancel, 'click.splash');
-        events.on(cancel, 'click.splash', evnt => {
+        events.on(cancel, 'click.splash', (evnt) => {
             evnt.preventDefault();
             cancel.classList.remove('mm-searchfield__cancel-active');
 
@@ -350,7 +349,7 @@ const initSearching = function(this: Mmenu, form: HTMLElement) {
     this.search(input);
 };
 
-const initNoResultsMsg = function(this: Mmenu, wrapper: HTMLElement) {
+const initNoResultsMsg = function (this: Mmenu, wrapper: HTMLElement) {
     if (!wrapper) {
         return;
     }
@@ -375,7 +374,7 @@ const initNoResultsMsg = function(this: Mmenu, wrapper: HTMLElement) {
     wrapper.append(message);
 };
 
-Mmenu.prototype.search = function(
+Mmenu.prototype.search = function (
     this: Mmenu,
     input: HTMLInputElement,
     query: string
@@ -407,7 +406,7 @@ Mmenu.prototype.search = function(
     var dividers: HTMLElement[] = data.dividers;
 
     //	Reset previous results
-    listitems.forEach(listitem => {
+    listitems.forEach((listitem) => {
         listitem.classList.remove('mm-listitem_nosubitems');
         listitem.classList.remove('mm-listitem_onlysubitems');
         listitem.classList.remove('mm-hidden');
@@ -417,19 +416,19 @@ Mmenu.prototype.search = function(
         DOM.children(searchpanel, '.mm-listview')[0].innerHTML = '';
     }
 
-    panels.forEach(panel => {
+    panels.forEach((panel) => {
         panel.scrollTop = 0;
     });
 
     //	Search
     if (query.length) {
         //	Initially hide all dividers.
-        dividers.forEach(divider => {
+        dividers.forEach((divider) => {
             divider.classList.add('mm-hidden');
         });
 
         //	Hide listitems that do not match.
-        listitems.forEach(listitem => {
+        listitems.forEach((listitem) => {
             var text = DOM.children(listitem, '.mm-listitem__text')[0];
             var add = false;
 
@@ -442,12 +441,7 @@ Mmenu.prototype.search = function(
             //      or  4)  The text is an anchor.
 
             //  1
-            if (
-                text &&
-                DOM.text(text)
-                    .toLowerCase()
-                    .indexOf(query) > -1
-            ) {
+            if (text && DOM.text(text).toLowerCase().indexOf(query) > -1) {
                 //  2a
                 if (text.matches('.mm-listitem__btn')) {
                     //  2b
@@ -475,17 +469,17 @@ Mmenu.prototype.search = function(
 
         /** Whether or not the query yielded results. */
         var hasResults = listitems.filter(
-            listitem => !listitem.matches('.mm-hidden')
+            (listitem) => !listitem.matches('.mm-hidden')
         ).length;
 
         //	Show all mached listitems in the search panel
         if (options.panel.add) {
             //	Clone all matched listitems into the search panel
             let allitems: HTMLElement[] = [];
-            panels.forEach(panel => {
+            panels.forEach((panel) => {
                 let listitems = DOM.filterLI(DOM.find(panel, '.mm-listitem'));
                 listitems = listitems.filter(
-                    listitem => !listitem.matches('.mm-hidden')
+                    (listitem) => !listitem.matches('.mm-hidden')
                 );
 
                 if (listitems.length) {
@@ -499,17 +493,17 @@ Mmenu.prototype.search = function(
                         }
                     }
 
-                    listitems.forEach(listitem => {
+                    listitems.forEach((listitem) => {
                         allitems.push(listitem.cloneNode(true) as HTMLElement);
                     });
                 }
             });
 
             //	Remove toggles and checks.
-            allitems.forEach(listitem => {
+            allitems.forEach((listitem) => {
                 listitem
                     .querySelectorAll('.mm-toggle, .mm-check')
-                    .forEach(element => {
+                    .forEach((element) => {
                         element.remove();
                     });
             });
@@ -522,14 +516,14 @@ Mmenu.prototype.search = function(
         } else {
             //	Also show listitems in sub-panels for matched listitems
             if (options.showSubPanels) {
-                panels.forEach(panel => {
+                panels.forEach((panel) => {
                     let listitems = DOM.find(panel, '.mm-listitem');
 
-                    DOM.filterLI(listitems).forEach(listitem => {
+                    DOM.filterLI(listitems).forEach((listitem) => {
                         let child: HTMLElement = listitem['mmChild'];
                         if (child) {
                             DOM.find(child, '.mm-listitem').forEach(
-                                listitem => {
+                                (listitem) => {
                                     listitem.classList.remove('mm-hidden');
                                 }
                             );
@@ -570,11 +564,11 @@ Mmenu.prototype.search = function(
             });
 
             //	Show parent panels of vertical submenus
-            panels.forEach(panel => {
+            panels.forEach((panel) => {
                 let listitems = DOM.find(panel, '.mm-listitem');
-                DOM.filterLI(listitems).forEach(listitem => {
+                DOM.filterLI(listitems).forEach((listitem) => {
                     DOM.parents(listitem, '.mm-listitem_vertical').forEach(
-                        parent => {
+                        (parent) => {
                             if (parent.matches('.mm-hidden')) {
                                 parent.classList.remove('mm-hidden');
                                 parent.classList.add(
@@ -587,9 +581,9 @@ Mmenu.prototype.search = function(
             });
 
             //	Show first preceeding divider of parent
-            panels.forEach(panel => {
+            panels.forEach((panel) => {
                 let listitems = DOM.find(panel, '.mm-listitem');
-                DOM.filterLI(listitems).forEach(listitem => {
+                DOM.filterLI(listitems).forEach((listitem) => {
                     let divider = DOM.prevAll(listitem, '.mm-divider')[0];
                     if (divider) {
                         divider.classList.remove('mm-hidden');
@@ -599,11 +593,11 @@ Mmenu.prototype.search = function(
         }
 
         //	Show submit / clear button
-        buttons.forEach(button => button.classList.remove('mm-hidden'));
+        buttons.forEach((button) => button.classList.remove('mm-hidden'));
 
         //	Show/hide no results message
-        noresults.forEach(wrapper => {
-            DOM.find(wrapper, '.mm-panel__noresultsmsg').forEach(message =>
+        noresults.forEach((wrapper) => {
+            DOM.find(wrapper, '.mm-panel__noresultsmsg').forEach((message) =>
                 message.classList[hasResults ? 'add' : 'remove']('mm-hidden')
             );
         });
@@ -611,30 +605,32 @@ Mmenu.prototype.search = function(
         if (options.panel.add) {
             //	Hide splash
             if (options.panel.splash) {
-                DOM.find(searchpanel, '.mm-panel__content').forEach(splash =>
+                DOM.find(searchpanel, '.mm-panel__content').forEach((splash) =>
                     splash.classList.add('mm-hidden')
                 );
             }
 
             //	Re-show original listitems when in search panel
-            listitems.forEach(listitem =>
+            listitems.forEach((listitem) =>
                 listitem.classList.remove('mm-hidden')
             );
-            dividers.forEach(divider => divider.classList.remove('mm-hidden'));
+            dividers.forEach((divider) =>
+                divider.classList.remove('mm-hidden')
+            );
         }
 
         //	Don't search
     } else {
         //	Show all items
-        listitems.forEach(listitem => listitem.classList.remove('mm-hidden'));
-        dividers.forEach(divider => divider.classList.remove('mm-hidden'));
+        listitems.forEach((listitem) => listitem.classList.remove('mm-hidden'));
+        dividers.forEach((divider) => divider.classList.remove('mm-hidden'));
 
         //	Hide submit / clear button
-        buttons.forEach(button => button.classList.add('mm-hidden'));
+        buttons.forEach((button) => button.classList.add('mm-hidden'));
 
         //	Hide no results message
-        noresults.forEach(wrapper => {
-            DOM.find(wrapper, '.mm-panel__noresultsmsg').forEach(message =>
+        noresults.forEach((wrapper) => {
+            DOM.find(wrapper, '.mm-panel__noresultsmsg').forEach((message) =>
                 message.classList.add('mm-hidden')
             );
         });
@@ -642,7 +638,7 @@ Mmenu.prototype.search = function(
         if (options.panel.add) {
             //	Show splash
             if (options.panel.splash) {
-                DOM.find(searchpanel, '.mm-panel__content').forEach(splash =>
+                DOM.find(searchpanel, '.mm-panel__content').forEach((splash) =>
                     splash.classList.remove('mm-hidden')
                 );
 
