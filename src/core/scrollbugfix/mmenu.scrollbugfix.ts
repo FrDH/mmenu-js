@@ -8,7 +8,7 @@ import { extend, touchDirection } from '../../_modules/helpers';
 //  Add the options.
 Mmenu.options.scrollBugFix = options;
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     //	The scrollBugFix add-on fixes a scrolling bug
     //		1) on touch devices
     //		2) in an off-canvas menu
@@ -43,21 +43,21 @@ export default function(this: Mmenu) {
     //  Prevent the page from scrolling when scrolling in the menu.
     this.node.menu.addEventListener('scroll', stop, {
         //  Make sure to tell the browser the event will be prevented.
-        passive: false
+        passive: false,
     });
 
     //  Prevent the page from scrolling when dragging in the menu.
     this.node.menu.addEventListener(
         'touchmove',
-        evnt => {
-            var panel = (evnt.target as HTMLElement).closest(
-                '.mm-panel'
+        (evnt) => {
+            let wrapper = (evnt.target as HTMLElement).closest(
+                '.mm-panel, .mm-iconbar__top, .mm-iconbar__bottom'
             ) as HTMLElement;
 
-            if (panel) {
+            if (wrapper) {
                 //  When dragging a non-scrollable panel,
                 //      we can simple preventDefault and stopPropagation.
-                if (panel.scrollHeight === panel.offsetHeight) {
+                if (wrapper.scrollHeight === wrapper.offsetHeight) {
                     stop(evnt);
                 }
 
@@ -68,10 +68,10 @@ export default function(this: Mmenu) {
                 //      otherwise the panel would not scroll at all in any direction.
                 else if (
                     //  When scrolled up and dragging down
-                    (panel.scrollTop == 0 && touchDir.get() == 'down') ||
+                    (wrapper.scrollTop == 0 && touchDir.get() == 'down') ||
                     //  When scrolled down and dragging up
-                    (panel.scrollHeight ==
-                        panel.scrollTop + panel.offsetHeight &&
+                    (wrapper.scrollHeight ==
+                        wrapper.scrollTop + wrapper.offsetHeight &&
                         touchDir.get() == 'up')
                 ) {
                     stop(evnt);
@@ -84,7 +84,7 @@ export default function(this: Mmenu) {
         },
         {
             //  Make sure to tell the browser the event can be prevented.
-            passive: false
+            passive: false,
         }
     );
 
@@ -99,7 +99,7 @@ export default function(this: Mmenu) {
     });
 
     //	Fix issue after device rotation change.
-    window.addEventListener('orientationchange', evnt => {
+    window.addEventListener('orientationchange', (evnt) => {
         var panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
         if (panel) {
             panel.scrollTop = 0;

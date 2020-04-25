@@ -36,15 +36,15 @@ export default function () {
     //  Prevent the page from scrolling when scrolling in the menu.
     this.node.menu.addEventListener('scroll', stop, {
         //  Make sure to tell the browser the event will be prevented.
-        passive: false
+        passive: false,
     });
     //  Prevent the page from scrolling when dragging in the menu.
     this.node.menu.addEventListener('touchmove', function (evnt) {
-        var panel = evnt.target.closest('.mm-panel');
-        if (panel) {
+        var wrapper = evnt.target.closest('.mm-panel, .mm-iconbar__top, .mm-iconbar__bottom');
+        if (wrapper) {
             //  When dragging a non-scrollable panel,
             //      we can simple preventDefault and stopPropagation.
-            if (panel.scrollHeight === panel.offsetHeight) {
+            if (wrapper.scrollHeight === wrapper.offsetHeight) {
                 stop(evnt);
             }
             //  When dragging a scrollable panel,
@@ -54,10 +54,10 @@ export default function () {
             //      otherwise the panel would not scroll at all in any direction.
             else if (
             //  When scrolled up and dragging down
-            (panel.scrollTop == 0 && touchDir.get() == 'down') ||
+            (wrapper.scrollTop == 0 && touchDir.get() == 'down') ||
                 //  When scrolled down and dragging up
-                (panel.scrollHeight ==
-                    panel.scrollTop + panel.offsetHeight &&
+                (wrapper.scrollHeight ==
+                    wrapper.scrollTop + wrapper.offsetHeight &&
                     touchDir.get() == 'up')) {
                 stop(evnt);
             }
@@ -68,7 +68,7 @@ export default function () {
         }
     }, {
         //  Make sure to tell the browser the event can be prevented.
-        passive: false
+        passive: false,
     });
     //  Some small additional improvements
     //	Scroll the current opened panel to the top when opening the menu.

@@ -16,13 +16,13 @@ $mm_module: '.mm-panel';
     width: 100%;
 
     -webkit-overflow-scrolling: touch;
-    overflow: scroll;
-    overflow-x: hidden;
+    overflow: hidden;
     overflow-y: auto;
+    overscroll-behavior: contain;
 
-    background: var(--mm-color-background);
-    border-color: var(--mm-color-border);
     color: var(--mm-color-text);
+    border-color: var(--mm-color-border);
+    background: var(--mm-color-background);
 
     transform: translate3d(100%, 0, 0);
     transition: transform $mm_transitionDuration $mm_transitionFunction;

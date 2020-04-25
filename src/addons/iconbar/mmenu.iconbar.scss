@@ -17,12 +17,6 @@ $mm_module: '.mm-iconbar';
 
             margin-left: var(--mm-iconbar-size);
         }
-
-        #{$mm_module} {
-            border-right-width: 1px;
-            display: block;
-            left: 0;
-        }
     }
 
     &-right {
@@ -34,12 +28,6 @@ $mm_module: '.mm-iconbar';
             }
 
             margin-right: var(--mm-iconbar-size);
-        }
-
-        #{$mm_module} {
-            border-left-width: 1px;
-            display: block;
-            right: 0;
         }
     }
 }
@@ -53,14 +41,31 @@ $mm_module: '.mm-iconbar';
     }
 
     display: none;
-    width: var(--mm-iconbar-size);
-    overflow: hidden;
-    box-sizing: border-box;
+
+    .mm-menu_iconbar-left &,
+    .mm-menu_iconbar-right & {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mm-menu_iconbar-left & {
+        border-right-width: 1px;
+        left: 0;
+    }
+
+    .mm-menu_iconbar-right & {
+        border-left-width: 1px;
+        right: 0;
+    }
 
     position: absolute;
     top: 0;
     bottom: 0;
     z-index: 2;
+
+    width: var(--mm-iconbar-size);
+    overflow: hidden;
+    box-sizing: border-box;
 
     border: 0 solid;
     border-color: var(--mm-color-border);
@@ -70,8 +75,13 @@ $mm_module: '.mm-iconbar';
 }
 
 %mm_iconbar_part {
-    width: inherit;
-    position: absolute;
+    width: 100%;
+    flex-grow: 1;
+
+    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
 
     > * {
         box-sizing: border-box;
