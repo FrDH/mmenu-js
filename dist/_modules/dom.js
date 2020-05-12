@@ -35,7 +35,9 @@ export function find(element, filter) {
  */
 export function children(element, filter) {
     var children = Array.prototype.slice.call(element.children);
-    return filter ? children.filter(function (child) { return child.matches(filter); }) : children;
+    return filter
+        ? children.filter(function (child) { return child.matches(filter); })
+        : children;
 }
 /**
  * Find text excluding text from within child elements.
@@ -65,7 +67,9 @@ export function parents(element, filter) {
         parents.push(parent);
         parent = parent.parentElement;
     }
-    return filter ? parents.filter(function (parent) { return parent.matches(filter); }) : parents;
+    return filter
+        ? parents.filter(function (parent) { return parent.matches(filter); })
+        : parents;
 }
 /**
  * Find all previous siblings matching the selecotr.

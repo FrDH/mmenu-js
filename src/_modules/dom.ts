@@ -5,11 +5,11 @@
  * @return	{HTMLElement}				The created element.
  */
 export function create(selector: string): HTMLElement {
-    var args = selector.split('.');
-    var elem = document.createElement(args.shift());
+    const args = selector.split('.');
+    const elem = document.createElement(args.shift());
 
     //  IE11:
-    args.forEach(classname => {
+    args.forEach((classname) => {
         elem.classList.add(classname);
     });
 
@@ -42,8 +42,12 @@ export function find(
  * @return	{array}					Array of child elements that match the filter.
  */
 export function children(element: HTMLElement, filter?: string): HTMLElement[] {
-    var children: HTMLElement[] = Array.prototype.slice.call(element.children);
-    return filter ? children.filter(child => child.matches(filter)) : children;
+    const children: HTMLElement[] = Array.prototype.slice.call(
+        element.children
+    );
+    return filter
+        ? children.filter((child) => child.matches(filter))
+        : children;
 }
 
 /**
@@ -54,8 +58,8 @@ export function children(element: HTMLElement, filter?: string): HTMLElement[] {
 export function text(element: HTMLElement): string {
     return Array.prototype.slice
         .call(element.childNodes)
-        .filter(child => child.nodeType == 3)
-        .map(child => child.textContent)
+        .filter((child) => child.nodeType == 3)
+        .map((child) => child.textContent)
         .join(' ');
 }
 
@@ -68,16 +72,18 @@ export function text(element: HTMLElement): string {
  */
 export function parents(element: HTMLElement, filter?: string): HTMLElement[] {
     /** Array of preceding elements that match the selector. */
-    var parents: HTMLElement[] = [];
+    let parents: HTMLElement[] = [];
 
     /** Array of preceding elements that match the selector. */
-    var parent = element.parentElement;
+    let parent = element.parentElement;
     while (parent) {
         parents.push(parent);
         parent = parent.parentElement;
     }
 
-    return filter ? parents.filter(parent => parent.matches(filter)) : parents;
+    return filter
+        ? parents.filter((parent) => parent.matches(filter))
+        : parents;
 }
 
 /**
@@ -89,10 +95,10 @@ export function parents(element: HTMLElement, filter?: string): HTMLElement[] {
  */
 export function prevAll(element: HTMLElement, filter?: string): HTMLElement[] {
     /** Array of previous siblings that match the selector. */
-    var previous: HTMLElement[] = [];
+    let previous: HTMLElement[] = [];
 
     /** Current element in the loop */
-    var current = element.previousElementSibling as HTMLElement;
+    let current = element.previousElementSibling as HTMLElement;
 
     while (current) {
         if (!filter || current.matches(filter)) {
@@ -124,7 +130,7 @@ export function offset(element: HTMLElement, direction?: string): number {
  * @return {array}				The filtered set of listitems.
  */
 export function filterLI(listitems: HTMLElement[]): HTMLElement[] {
-    return listitems.filter(listitem => !listitem.matches('.mm-hidden'));
+    return listitems.filter((listitem) => !listitem.matches('.mm-hidden'));
 }
 
 /**
@@ -133,11 +139,11 @@ export function filterLI(listitems: HTMLElement[]): HTMLElement[] {
  * @return {array}				The found set of anchors.
  */
 export function filterLIA(listitems: HTMLElement[]): HTMLElement[] {
-    var anchors = [];
-    filterLI(listitems).forEach(listitem => {
+    let anchors = [];
+    filterLI(listitems).forEach((listitem) => {
         anchors.push(...children(listitem, 'a.mm-listitem__text'));
     });
-    return anchors.filter(anchor => !anchor.matches('.mm-btn_next'));
+    return anchors.filter((anchor) => !anchor.matches('.mm-btn_next'));
 }
 
 /**

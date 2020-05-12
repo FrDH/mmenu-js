@@ -41,6 +41,9 @@ export default function () {
     //  Prevent the page from scrolling when dragging in the menu.
     this.node.menu.addEventListener('touchmove', function (evnt) {
         var wrapper = evnt.target.closest('.mm-panel, .mm-iconbar__top, .mm-iconbar__bottom');
+        if (wrapper.closest('.mm-listitem_vertical')) {
+            wrapper = DOM.parents(wrapper, '.mm-panel').pop();
+        }
         if (wrapper) {
             //  When dragging a non-scrollable panel,
             //      we can simple preventDefault and stopPropagation.

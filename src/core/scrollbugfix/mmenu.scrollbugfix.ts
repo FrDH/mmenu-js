@@ -54,6 +54,10 @@ export default function (this: Mmenu) {
                 '.mm-panel, .mm-iconbar__top, .mm-iconbar__bottom'
             ) as HTMLElement;
 
+            if (wrapper.closest('.mm-listitem_vertical')) {
+                wrapper = DOM.parents(wrapper, '.mm-panel').pop();
+            }
+
             if (wrapper) {
                 //  When dragging a non-scrollable panel,
                 //      we can simple preventDefault and stopPropagation.
