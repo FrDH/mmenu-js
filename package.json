@@ -27,9 +27,9 @@
     ],
     "scripts": {
         "build": "gulp default",
-        "publish:patch": "npm version patch && gulp default && npm publish",
-        "publish:minor": "npm version minor npm run build && && npm publish",
-        "publish:major": "npm version major npm run build && && npm publish"
+        "publish:patch": "npm version patch && npm run build && npm publish",
+        "publish:minor": "npm version minor && npm run build && npm publish",
+        "publish:major": "npm version major && npm run build && npm publish"
     },
     "devDependencies": {
         "gulp": "^4.0.2",
