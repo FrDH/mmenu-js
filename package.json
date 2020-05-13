@@ -26,7 +26,9 @@
         "submenu"
     ],
     "scripts": {
-        "build": "gulp default"
+        "build": "gulp default",
+        "publish:patch": "build && npm version patch && npm publish",
+        "push": "git push"
     },
     "devDependencies": {
         "gulp": "^4.0.2",

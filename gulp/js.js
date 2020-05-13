@@ -12,27 +12,27 @@ const dirs = require('./dirs.js');
 var dir = {};
 
 /** Run all scripts. */
-exports.all = JSall = cb => {
+exports.all = JSall = (cb) => {
     dir = dirs(false);
 
     series(JStranspile, JSpack)(cb);
 };
 
-exports.custom = JScustom = cb => {
+exports.custom = JScustom = (cb) => {
     dir = dirs(true);
 
     series(JSpack)(cb);
 };
 
 /** Put a watch on all files. */
-exports.watch = JSwatch = cb => {
+exports.watch = JSwatch = (cb) => {
     dir = dirs(false);
 
     watch(dir.input + '/**/*.ts', {
         ignored: [
-            dir.input + '/**/*.d.ts' //	Exclude all typings.
-        ]
-    }).on('change', path => {
+            dir.input + '/**/*.d.ts', //	Exclude all typings.
+        ],
+    }).on('change', (path) => {
         console.log('Change detected to .ts file "' + path + '"');
         var cb = () => {
             console.log('JS transpiled and concatenated.');
@@ -49,7 +49,7 @@ exports.watch = JSwatch = cb => {
         var input = dir.input + '/' + files + '/*.ts',
             output = dir.output + '/' + files;
 
-        var JStranspileOne = cb => JStranspile(cb, input, output);
+        var JStranspileOne = (cb) => JStranspile(cb, input, output);
 
         series(JStranspileOne, JSpack)(cb);
     });
@@ -61,12 +61,14 @@ exports.watch = JSwatch = cb => {
 const JStranspile = (cb, input, output) => {
     return src([
         dir.input + '/**/*.d.ts', // Include all typings.
-        input || dir.input + '/**/*.ts' // Include the needed ts files.
+        input || dir.input + '/**/*.ts', // Include the needed ts files.
     ])
         .pipe(
             typescript({
                 target: 'es5',
-                module: 'es6'
+                module: 'es6',
+                moduleResolution: 'node',
+                resolveJsonModule: true,
             })
         )
         .pipe(dest(output || dir.output));
@@ -82,8 +84,8 @@ const JSpack = () => {
                 // mode: 'development',
                 mode: 'production',
                 output: {
-                    filename: 'mmenu.js'
-                }
+                    filename: 'mmenu.js',
+                },
                 // optimization: {
                 //     minimize: false
                 // }

@@ -1,4 +1,4 @@
-import version from '../../_version';
+import * as pack from '../../../package.json';
 import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
@@ -756,7 +756,7 @@ var Mmenu = /** @class */ (function () {
         return i18n.get(text, this.conf.language);
     };
     /**	Plugin version. */
-    Mmenu.version = version;
+    Mmenu.version = pack.version;
     /**	Default options for menus. */
     Mmenu.options = options;
     /**	Default configuration for menus. */
