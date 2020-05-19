@@ -46,6 +46,7 @@ $mm_module: '.mm-iconbar';
     .mm-menu_iconbar-right & {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
     }
 
     .mm-menu_iconbar-left & {
@@ -74,9 +75,9 @@ $mm_module: '.mm-iconbar';
     text-align: center;
 }
 
-%mm_iconbar_part {
+#{$mm_module}__top,
+#{$mm_module}__bottom {
     width: 100%;
-    flex-grow: 1;
 
     -webkit-overflow-scrolling: touch;
     overflow: hidden;
@@ -93,15 +94,6 @@ $mm_module: '.mm-iconbar';
     a:hover {
         text-decoration: none;
     }
-}
-#{$mm_module}__top {
-    @extend %mm_iconbar_part;
-    top: 0;
-}
-
-#{$mm_module}__bottom {
-    @extend %mm_iconbar_part;
-    bottom: 0;
 }
 
 @if ($mm_include_iconbar_tabs) {
