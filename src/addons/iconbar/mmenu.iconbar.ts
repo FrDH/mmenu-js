@@ -10,17 +10,17 @@ import { type, extend } from '../../_modules/helpers';
 Mmenu.options.iconbar = options;
 
 export default function (this: Mmenu) {
-    var options = extendShorthandOptions(this.opts.iconbar);
+    let options = extendShorthandOptions(this.opts.iconbar);
     this.opts.iconbar = extend(options, Mmenu.options.iconbar);
 
     if (!options.use) {
         return;
     }
 
-    var iconbar: HTMLElement;
+    let iconbar: HTMLElement;
 
     ['top', 'bottom'].forEach((position, n) => {
-        var ctnt = options[position];
+        let ctnt = options[position];
 
         //	Extend shorthand options
         if (type(ctnt) != 'array') {
@@ -28,7 +28,7 @@ export default function (this: Mmenu) {
         }
 
         //	Create node
-        var part = DOM.create('div.mm-iconbar__' + position);
+        const part = DOM.create('div.mm-iconbar__' + position);
 
         //	Add content
         for (let c = 0, l = ctnt.length; c < l; c++) {
@@ -75,7 +75,7 @@ export default function (this: Mmenu) {
         if (options.type == 'tabs') {
             iconbar.classList.add('mm-iconbar_tabs');
             iconbar.addEventListener('click', (evnt) => {
-                var anchor = evnt.target as HTMLElement;
+                const anchor = evnt.target as HTMLElement;
 
                 if (!anchor.matches('a')) {
                     return;
@@ -87,7 +87,7 @@ export default function (this: Mmenu) {
                 }
 
                 try {
-                    var panel = this.node.menu.querySelector(
+                    const panel = this.node.menu.querySelector(
                         anchor.getAttribute('href')
                     )[0];
 
@@ -105,11 +105,14 @@ export default function (this: Mmenu) {
                     anchor.classList.remove('mm-iconbar__tab_selected');
                 });
 
-                var anchor = DOM.find(iconbar, '[href="#' + panel.id + '"]')[0];
+                const anchor = DOM.find(
+                    iconbar,
+                    '[href="#' + panel.id + '"]'
+                )[0];
                 if (anchor) {
                     anchor.classList.add('mm-iconbar__tab_selected');
                 } else {
-                    let parent: HTMLElement = panel['mmParent'];
+                    const parent: HTMLElement = panel['mmParent'];
                     if (parent) {
                         selectTab(parent.closest('.mm-panel') as HTMLElement);
                     }

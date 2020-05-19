@@ -7,7 +7,7 @@ import { extend } from '../../_modules/helpers';
 //	Add the options.
 Mmenu.options.columns = options;
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     var options = extendShorthandOptions(this.opts.columns);
     this.opts.columns = extend(options, Mmenu.options.columns);
 
@@ -29,7 +29,7 @@ export default function(this: Mmenu) {
         var rmvc = [
             'mm-panel_opened',
             'mm-panel_opened-parent',
-            'mm-panel_highest'
+            'mm-panel_highest',
         ];
 
         for (var i = 0; i <= options.visible.max; i++) {
@@ -41,13 +41,17 @@ export default function(this: Mmenu) {
         //	Close all later opened panels
         this.bind('openPanel:before', (panel: HTMLElement) => {
             /** The parent panel. */
-            var parent: HTMLElement;
+            let parent: HTMLElement;
 
             if (panel) {
                 parent = panel['mmParent'];
             }
 
             if (!parent) {
+                return;
+            }
+
+            if (parent.classList.contains('mm-listitem_vertical')) {
                 return;
             }
 
@@ -77,7 +81,7 @@ export default function(this: Mmenu) {
                     panel.classList.add('mm-hidden');
 
                     //  IE11:
-                    rmvc.forEach(classname => {
+                    rmvc.forEach((classname) => {
                         panel.classList.remove(classname);
                     });
 
@@ -91,6 +95,18 @@ export default function(this: Mmenu) {
         });
 
         this.bind('openPanel:start', (panel: HTMLElement) => {
+            if (panel) {
+                /** The parent panel. */
+                let parent = panel['mmParent'];
+
+                if (
+                    parent &&
+                    parent.classList.contains('mm-listitem_vertical')
+                ) {
+                    return;
+                }
+            }
+
             var columns = DOM.children(
                 this.node.pnls,
                 '.mm-panel_opened-parent'
@@ -104,7 +120,7 @@ export default function(this: Mmenu) {
             );
 
             //  IE11:
-            colm.forEach(classname => {
+            colm.forEach((classname) => {
                 this.node.menu.classList.remove(classname);
             });
 
@@ -114,9 +130,9 @@ export default function(this: Mmenu) {
             this.node.menu.classList.add('mm-menu_columns-' + columns);
 
             var panels: HTMLElement[] = [];
-            DOM.children(this.node.pnls, '.mm-panel').forEach(panel => {
+            DOM.children(this.node.pnls, '.mm-panel').forEach((panel) => {
                 //  IE11:
-                colp.forEach(classname => {
+                colp.forEach((classname) => {
                     panel.classList.remove(classname);
                 });
 

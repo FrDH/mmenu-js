@@ -21,7 +21,7 @@ export default function () {
         var rmvc = [
             'mm-panel_opened',
             'mm-panel_opened-parent',
-            'mm-panel_highest'
+            'mm-panel_highest',
         ];
         for (var i = 0; i <= options.visible.max; i++) {
             colm.push('mm-menu_columns-' + i);
@@ -36,6 +36,9 @@ export default function () {
                 parent = panel['mmParent'];
             }
             if (!parent) {
+                return;
+            }
+            if (parent.classList.contains('mm-listitem_vertical')) {
                 return;
             }
             parent = parent.closest('.mm-panel');
@@ -70,6 +73,14 @@ export default function () {
             }
         });
         this.bind('openPanel:start', function (panel) {
+            if (panel) {
+                /** The parent panel. */
+                var parent_1 = panel['mmParent'];
+                if (parent_1 &&
+                    parent_1.classList.contains('mm-listitem_vertical')) {
+                    return;
+                }
+            }
             var columns = DOM.children(_this.node.pnls, '.mm-panel_opened-parent').length;
             if (!panel.matches('.mm-panel_opened-parent')) {
                 columns++;

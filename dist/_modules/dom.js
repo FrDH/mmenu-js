@@ -36,7 +36,9 @@ export var find = function (element, filter) {
 export var children = function (element, filter) {
     var children = Array.prototype.slice.call(element.children);
     return filter
-        ? children.filter(function (child) { return child.matches(filter); })
+        ? children.filter(function (child) {
+              return child.matches(filter);
+          })
         : children;
 };
 /**
@@ -47,8 +49,12 @@ export var children = function (element, filter) {
 export var text = function (element) {
     return Array.prototype.slice
         .call(element.childNodes)
-        .filter(function (child) { return child.nodeType == 3; })
-        .map(function (child) { return child.textContent; })
+        .filter(function (child) {
+            return child.nodeType == 3;
+        })
+        .map(function (child) {
+            return child.textContent;
+        })
         .join(' ');
 };
 /**
@@ -68,7 +74,9 @@ export var parents = function (element, filter) {
         parent = parent.parentElement;
     }
     return filter
-        ? parents.filter(function (parent) { return parent.matches(filter); })
+        ? parents.filter(function (parent) {
+              return parent.matches(filter);
+          })
         : parents;
 };
 /**
@@ -99,8 +107,10 @@ export var prevAll = function (element, filter) {
  * @return	{number}							The element offset relative to the document.
  */
 export var offset = function (element, direction) {
-    return (element.getBoundingClientRect()[direction] +
-        document.body[direction === 'left' ? 'scrollLeft' : 'scrollTop']);
+    return (
+        element.getBoundingClientRect()[direction] +
+        document.body[direction === 'left' ? 'scrollLeft' : 'scrollTop']
+    );
 };
 /**
  * Filter out non-listitem listitems.
@@ -108,7 +118,9 @@ export var offset = function (element, direction) {
  * @return {array}				The filtered set of listitems.
  */
 export var filterLI = function (listitems) {
-    return listitems.filter(function (listitem) { return !listitem.matches('.mm-hidden'); });
+    return listitems.filter(function (listitem) {
+        return !listitem.matches('.mm-hidden');
+    });
 };
 /**
  * Find anchors in listitems (excluding anchor that open a sub-panel).
@@ -120,7 +132,9 @@ export var filterLIA = function (listitems) {
     filterLI(listitems).forEach(function (listitem) {
         anchors.push.apply(anchors, children(listitem, 'a.mm-listitem__text'));
     });
-    return anchors.filter(function (anchor) { return !anchor.matches('.mm-btn_next'); });
+    return anchors.filter(function (anchor) {
+        return !anchor.matches('.mm-btn_next');
+    });
 };
 /**
  * Refactor a classname on multiple elements.

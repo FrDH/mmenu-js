@@ -5,8 +5,8 @@
  * @return	{HTMLElement}				The created element.
  */
 export const create = (selector: string): HTMLElement => {
-    var args = selector.split('.');
-    var elem = document.createElement(args.shift());
+    const args = selector.split('.'),
+        elem = document.createElement(args.shift());
 
     //  IE11:
     args.forEach((classname) => {
@@ -45,7 +45,9 @@ export const children = (
     element: HTMLElement,
     filter?: string
 ): HTMLElement[] => {
-    var children: HTMLElement[] = Array.prototype.slice.call(element.children);
+    const children: HTMLElement[] = Array.prototype.slice.call(
+        element.children
+    );
     return filter
         ? children.filter((child) => child.matches(filter))
         : children;
@@ -76,10 +78,10 @@ export const parents = (
     filter?: string
 ): HTMLElement[] => {
     /** Array of preceding elements that match the selector. */
-    var parents: HTMLElement[] = [];
+    let parents: HTMLElement[] = [];
 
     /** Array of preceding elements that match the selector. */
-    var parent = element.parentElement;
+    let parent = element.parentElement;
     while (parent) {
         parents.push(parent);
         parent = parent.parentElement;
@@ -102,10 +104,10 @@ export const prevAll = (
     filter?: string
 ): HTMLElement[] => {
     /** Array of previous siblings that match the selector. */
-    var previous: HTMLElement[] = [];
+    let previous: HTMLElement[] = [];
 
     /** Current element in the loop */
-    var current = element.previousElementSibling as HTMLElement;
+    let current = element.previousElementSibling as HTMLElement;
 
     while (current) {
         if (!filter || current.matches(filter)) {
@@ -146,7 +148,7 @@ export const filterLI = (listitems: HTMLElement[]): HTMLElement[] => {
  * @return {array}				The found set of anchors.
  */
 export const filterLIA = (listitems: HTMLElement[]): HTMLElement[] => {
-    var anchors = [];
+    let anchors = [];
     filterLI(listitems).forEach((listitem) => {
         anchors.push(...children(listitem, 'a.mm-listitem__text'));
     });

@@ -1,4 +1,4 @@
-import version from '../../_version';
+import * as pack from '../../../package.json';
 import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
@@ -21,7 +21,7 @@ translate();
  */
 export default class Mmenu {
     /**	Plugin version. */
-    static version: string = version;
+    static version: string = pack.version;
 
     /**	Default options for menus. */
     static options: mmOptions = options;
