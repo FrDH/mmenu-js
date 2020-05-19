@@ -56,6 +56,7 @@
         background: none !important;
         cursor: pointer;
         display: inline-block;
+        min-width: $mm_checkWidth;
         width: $mm_checkWidth;
         height: $mm_checkHeight;
         margin: 0 $mm_padding;

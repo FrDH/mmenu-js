@@ -5,9 +5,11 @@
     opacity: 0;
 
     box-shadow: $mm_popupShadow;
-    height: percentage($mm_menuHeight);
-    min-height: $mm_menuMinHeight;
-    max-height: $mm_menuMaxHeight;
+    height: clamp(
+        $mm_menuMinHeight,
+        percentage($mm_menuHeight),
+        $mm_menuMaxHeight
+    );
 
     top: 50%;
     left: 50%;

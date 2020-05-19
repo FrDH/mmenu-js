@@ -7,23 +7,11 @@
 ) {
     .mm-wrapper_opening {
         #{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout {
-            transform: translate3d(#{-$width * 100}vw, 0, 0);
-        }
-    }
-
-    //	adjust for min- and max-width
-    @media all and (max-width: $minWidth / $width) {
-        .mm-wrapper_opening {
-            #{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout {
-                transform: translate3d(-$minWidth, 0, 0);
-            }
-        }
-    }
-    @media all and (min-width: $maxWidth / $width) {
-        .mm-wrapper_opening {
-            #{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout {
-                transform: translate3d(-$maxWidth, 0, 0);
-            }
+            transform: translate3d(
+                clamp(-$maxWidth, #{-$width * 100}vw, -$minWidth),
+                0,
+                0
+            );
         }
     }
 }
@@ -36,9 +24,7 @@
     $maxHeight: $mm_menuMaxHeight
 ) {
     #{$cls}.mm-menu_position-top {
-        height: #{$height * 100}vh;
-        min-height: $minHeight;
-        max-height: $maxHeight;
+        height: clamp($minHeight, #{$height * 100}vh, $maxHeight);
     }
 }
 
@@ -50,8 +36,6 @@
     $maxHeight: $mm_menuMaxHeight
 ) {
     #{$cls}.mm-menu_position-bottom {
-        height: #{$height * 100}vh;
-        min-height: $minHeight;
-        max-height: $maxHeight;
+        height: clamp($minHeight, #{$height * 100}vh, $maxHeight);
     }
 }

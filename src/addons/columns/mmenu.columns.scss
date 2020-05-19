@@ -40,8 +40,6 @@
             &-bottom,
             &-top {
                 width: 100%;
-                max-width: 100%;
-                min-width: 100%;
             }
         }
     }
@@ -51,7 +49,7 @@
     .mm-wrapper_opening [class*='mm-menu_columns-'] {
         &.mm-menu_position {
             &-front {
-                transition-property: width, min-width, max-width, transform;
+                transition-property: width, transform;
             }
         }
     }

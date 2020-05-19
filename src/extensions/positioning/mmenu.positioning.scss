@@ -50,32 +50,19 @@
         }
     }
 
-    @if ($mm_include_positioning_top or $mm_include_positioning_bottom) {
-        .mm-menu_position {
-            &-top,
-            &-bottom {
-                width: 100%;
-                min-width: 100%;
-                max-width: 100%;
-            }
-        }
-    }
-
     @if ($mm_include_positioning_top) {
-        .mm-menu_position {
-            &-top {
-                transform: translate3d(0, -100%, 0);
-            }
+        .mm-menu_position-top {
+            width: 100%;
+            transform: translate3d(0, -100%, 0);
         }
         @include mm_position_top;
     }
 
     @if ($mm_include_positioning_bottom) {
-        .mm-menu_position {
-            &-bottom {
-                transform: translate3d(0, 100%, 0);
-                top: auto;
-            }
+        .mm-menu_position-bottom {
+            top: auto;
+            width: 100%;
+            transform: translate3d(0, 100%, 0);
         }
         @include mm_position_bottom;
     }
