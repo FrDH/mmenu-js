@@ -29,41 +29,41 @@ const polyfills = require('./gulp/polyfills');
 /*
 	$ gulp
 */
-exports.default = cb => {
+exports.default = (cb) => {
     parallel(js.all, css.all)(cb);
 };
 
 /*
 	$ gulp js
 */
-exports.js = cb => {
+exports.js = (cb) => {
     js.all(cb);
 };
 
 /*
 	$ gulp css
 */
-exports.css = cb => {
+exports.css = (cb) => {
     css.all(cb);
 };
 
 /*
 	$ gulp custom
 */
-exports.custom = cb => {
+exports.custom = (cb) => {
     parallel(js.custom, css.custom)(cb);
 };
 
 /*
 	$ gulp watch
 */
-exports.watch = cb => {
+exports.watch = (cb) => {
     parallel(series(js.all, js.watch), series(css.all, css.watch))(cb);
 };
 
 /*
 	$ gulp polyfill
 */
-exports.polyfill = cb => {
+exports.polyfill = (cb) => {
     parallel(polyfills)(cb);
 };
