@@ -210,13 +210,7 @@ Mmenu.prototype._openSetup = function (this: Mmenu) {
         clsn.push('mm-wrapper_background');
     }
 
-    //  IE11:
-    clsn.forEach((classname) => {
-        this.node.wrpr.classList.add(classname);
-    });
-
-    //  Better browsers:
-    // this.node.wrpr.classList.add(...clsn);
+    this.node.wrpr.classList.add(...clsn);
 
     //	Open
     //	Without the timeout, the animation won't work because the menu had display: none;
@@ -259,20 +253,12 @@ Mmenu.prototype.close = function (this: Mmenu) {
         () => {
             this.node.menu.classList.remove('mm-menu_opened');
 
-            var classnames = [
+            this.node.wrpr.classList.remove(
                 'mm-wrapper_opened',
                 'mm-wrapper_blocking',
                 'mm-wrapper_modal',
-                'mm-wrapper_background',
-            ];
-
-            //  IE11:
-            classnames.forEach((classname) => {
-                this.node.wrpr.classList.remove(classname);
-            });
-
-            //  Better browsers:
-            // this.node.wrpr.classList.remove(...classnames);
+                'mm-wrapper_background'
+            );
 
             //	Restore style and position
             Mmenu.node.page.setAttribute('style', Mmenu.node.page['mmStyle']);

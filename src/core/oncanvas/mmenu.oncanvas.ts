@@ -564,22 +564,10 @@ export default class Mmenu {
                 media.add(
                     query,
                     () => {
-                        //  IE11:
-                        classnames.forEach((classname) => {
-                            this.node.menu.classList.add(classname);
-                        });
-
-                        //  Better browsers:
-                        // this.node.menu.classList.add(...classnames);
+                        this.node.menu.classList.add(...classnames);
                     },
                     () => {
-                        //  IE11:
-                        classnames.forEach((classname) => {
-                            this.node.menu.classList.remove(classname);
-                        });
-
-                        //  Better browsers:
-                        // this.node.menu.classList.remove(...classnames);
+                        this.node.menu.classList.remove(...classnames);
                     }
                 );
             }
@@ -745,12 +733,7 @@ export default class Mmenu {
             panel = wrapper;
         }
 
-        // Modern browsers
-        // panel.classList.add('mm-panel', 'mm-hidden');
-
-        // IE11
-        panel.classList.add('mm-panel');
-        panel.classList.add('mm-hidden');
+        panel.classList.add('mm-panel', 'mm-hidden');
 
         //  Append to the panels node if not vertically expanding
         if (!panel.parentElement.matches('.mm-listitem_vertical')) {

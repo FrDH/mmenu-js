@@ -23,10 +23,6 @@ $mm_module: '.mm-sectionindexer';
     justify-content: space-evenly;
 
     a {
-        @if ($mm_IE11Fallbacks) {
-            color: $mm_dimmedTextColor;
-        }
-
         color: var(--mm-color-text-dimmed);
         line-height: 1;
         text-decoration: none;

@@ -1,9 +1,5 @@
 @mixin mm_iconpanel_size($nr) {
     .mm-panel_iconpanel-#{$nr} {
-        @if ($mm_IE11Fallbacks) {
-            width: calc(100% - #{$mm_iconpanelSize * $nr});
-        }
-
         width: calc(100% - (var(--mm-iconpanel-size) * #{$nr}));
     }
 }

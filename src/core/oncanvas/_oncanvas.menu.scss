@@ -1,16 +1,4 @@
 .mm-menu {
-    @if ($mm_IE11Fallbacks) {
-        top: $mm_offsetTop;
-        right: $mm_offsetRight;
-        bottom: $mm_offsetBottom;
-        left: $mm_offsetLeft;
-
-        background: $mm_backgroundColor;
-        border-color: $mm_borderColor;
-        color: $mm_textColor;
-        line-height: $mm_lineHeight;
-    }
-
     display: flex;
     flex-direction: column;
     padding: 0;

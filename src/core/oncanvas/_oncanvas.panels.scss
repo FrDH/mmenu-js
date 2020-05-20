@@ -1,16 +1,6 @@
 $mm_module: '.mm-panel';
 
 #{$mm_module} {
-    @if ($mm_IE11Fallbacks) {
-        background: $mm_backgroundColor;
-        border-color: $mm_borderColor;
-        color: $mm_textColor;
-
-        &:after {
-            height: $mm_listitemSize;
-        }
-    }
-
     z-index: 0;
     box-sizing: border-box;
     width: 100%;
@@ -74,12 +64,6 @@ $mm_module: '.mm-panel';
 }
 
 .mm-panels {
-    @if ($mm_IE11Fallbacks) {
-        background: $mm_backgroundColor;
-        border-color: $mm_borderColor;
-        color: $mm_textColor;
-    }
-
     position: relative;
     height: 100%;
     flex-grow: 1;

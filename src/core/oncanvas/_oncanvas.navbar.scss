@@ -1,17 +1,6 @@
 $mm_module: '.mm-navbar';
 
 #{$mm_module} {
-    @if ($mm_IE11Fallbacks) {
-        min-height: $mm_navbarSize;
-        border-bottom: 1px solid $mm_borderColor;
-        background: $mm_backgroundColor;
-        color: $mm_dimmedTextColor;
-
-        > * {
-            min-height: $mm_navbarSize;
-        }
-    }
-
     display: flex;
     min-height: var(--mm-navbar-size);
     border-bottom: 1px solid var(--mm-color-border);
@@ -44,7 +33,6 @@ $mm_module: '.mm-navbar';
 }
 
 #{$mm_module}__title {
-
     flex: 1 1 50%;
     display: flex;
     padding-left: $mm_panelPadding;

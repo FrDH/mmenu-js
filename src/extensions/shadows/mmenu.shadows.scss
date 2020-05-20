@@ -3,10 +3,6 @@
 @if ($mm_include_shadows_page) {
     .mm-menu_shadow-page {
         &:after {
-            @if ($mm_IE11Fallbacks) {
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            }
-
             content: '';
             display: block;
             width: 20px;
@@ -39,20 +35,12 @@
 
 @if ($mm_include_shadows_menu) {
     .mm-menu_shadow-menu {
-        @if ($mm_IE11Fallbacks) {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
         box-shadow: var(--mm-shadow);
     }
 }
 
 @if ($mm_include_shadows_panels) {
     .mm-menu_shadow-panels .mm-panels > .mm-panel {
-        @if ($mm_IE11Fallbacks) {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
         box-shadow: var(--mm-shadow);
     }
 }

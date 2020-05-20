@@ -117,7 +117,7 @@ export default function () {
         return [css, cls];
     };
     function position() {
-        var _this = this;
+        var _a;
         if (!this.vars.opened) {
             return;
         }
@@ -129,22 +129,8 @@ export default function () {
             this.node.menu.style[s] = obj[0][s];
         }
         if (options.tip) {
-            var classnames = [
-                'mm-menu_tip-left',
-                'mm-menu_tip-right',
-                'mm-menu_tip-top',
-                'mm-menu_tip-bottom'
-            ];
-            //  IE11:
-            classnames.forEach(function (classname) {
-                _this.node.menu.classList.remove(classname);
-            });
-            obj[1].forEach(function (classname) {
-                _this.node.menu.classList.add(classname);
-            });
-            //  Better browsers:
-            // this.node.menu.classList.remove(...classnames);
-            // this.node.menu.classList.add(...obj[1]);
+            this.node.menu.classList.remove('mm-menu_tip-left', 'mm-menu_tip-right', 'mm-menu_tip-top', 'mm-menu_tip-bottom');
+            (_a = this.node.menu.classList).add.apply(_a, obj[1]);
         }
     }
     this.bind('open:start', position);

@@ -23,17 +23,7 @@ export default function () {
                 .filter(function (panel) { return !panel.matches('.mm-nolistview'); })
                 .filter(function (panel) { return !panel.matches('.mm-nopanel'); })
                 .forEach(function (panel) {
-                var classnames = [
-                    'mm-panel_lazysubmenu',
-                    'mm-nolistview',
-                    'mm-nopanel',
-                ];
-                //  IE11:
-                classnames.forEach(function (classname) {
-                    panel.classList.add(classname);
-                });
-                //  Better browsers:
-                // panel.classList.add(...classnames);
+                panel.classList.add('mm-panel_lazysubmenu', 'mm-nolistview', 'mm-nopanel');
             });
         });
         //	re-enable the default opened panel to be initialized.
@@ -44,18 +34,7 @@ export default function () {
             });
             if (panels.length) {
                 panels.forEach(function (panel) {
-                    console.log(panel);
-                    var classnames = [
-                        'mm-panel_lazysubmenu',
-                        'mm-nolistview',
-                        'mm-nopanel',
-                    ];
-                    //  IE11:
-                    classnames.forEach(function (classname) {
-                        panel.classList.remove(classname);
-                    });
-                    //  Better browsers:
-                    // panel.classList.remove(...classnames);
+                    panel.classList.remove('mm-panel_lazysubmenu', 'mm-nolistview', 'mm-nopanel');
                 });
             }
         });
@@ -68,17 +47,7 @@ export default function () {
                 panels.unshift(panel);
             }
             panels.forEach(function (panel) {
-                var classnames = [
-                    'mm-panel_lazysubmenu',
-                    'mm-nolistview',
-                    'mm-nopanel',
-                ];
-                //  IE11:
-                classnames.forEach(function (classname) {
-                    panel.classList.remove(classname);
-                });
-                //  Better browsers:
-                // child.classList.remove(...classnames);
+                panel.classList.remove('mm-panel_lazysubmenu', 'mm-nolistview', 'mm-nopanel');
                 _this._initPanel(panel);
             });
         });

@@ -8,13 +8,7 @@ export const create = (selector: string): HTMLElement => {
     const args = selector.split('.'),
         elem = document.createElement(args.shift());
 
-    //  IE11:
-    args.forEach((classname) => {
-        elem.classList.add(classname);
-    });
-
-    //  Better browsers:
-    // elem.classList.add(...args);
+    elem.classList.add(...args);
 
     return elem;
 };

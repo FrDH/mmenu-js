@@ -11,10 +11,6 @@ $mm_module: '.mm-iconbar';
         .mm-panels,
         .mm-navbars_top,
         .mm-navbars_bottom {
-            @if ($mm_IE11Fallbacks) {
-                margin-left: $mm_iconbarSize;
-            }
-
             margin-left: var(--mm-iconbar-size);
         }
     }
@@ -23,23 +19,12 @@ $mm_module: '.mm-iconbar';
         .mm-panels,
         .mm-navbars_top,
         .mm-navbars_bottom {
-            @if ($mm_IE11Fallbacks) {
-                margin-right: $mm_iconbarSize;
-            }
-
             margin-right: var(--mm-iconbar-size);
         }
     }
 }
 
 #{$mm_module} {
-    @if ($mm_IE11Fallbacks) {
-        width: $mm_iconbarSize;
-        border-color: $mm_borderColor;
-        background: $mm_backgroundColor;
-        color: $mm_dimmedTextColor;
-    }
-
     display: none;
 
     .mm-menu_iconbar-left &,
@@ -98,10 +83,6 @@ $mm_module: '.mm-iconbar';
 
 @if ($mm_include_iconbar_tabs) {
     #{$mm_module}__tab_selected {
-        @if ($mm_IE11Fallbacks) {
-            background: $mm_emphasizedBackgroundColor;
-        }
-
         background: var(--mm-color-background-emphasis);
     }
 }

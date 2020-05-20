@@ -2,15 +2,6 @@
 
 @if ($mm_include_toggles) {
     input.mm-toggle {
-        @if ($mm_IE11Fallbacks) {
-            margin-top: ($mm_listitemSize - $mm_toggleHeight) / 2;
-            background: $mm_borderColor;
-
-            &:before {
-                background: $mm_backgroundColor;
-            }
-        }
-
         display: inline-block;
         min-width: $mm_toggleWidth;
         width: $mm_toggleWidth;
@@ -47,10 +38,6 @@
 
 @if ($mm_include_checks) {
     input.mm-check {
-        @if ($mm_IE11Fallbacks) {
-            margin-top: ($mm_listitemSize - $mm_checkHeight) / 2;
-        }
-
         appearance: none !important;
         border: none !important;
         background: none !important;

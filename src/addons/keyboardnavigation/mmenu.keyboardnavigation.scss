@@ -4,10 +4,6 @@
     &,
     &.mm-menu_opened ~ .mm-wrapper__blocker {
         a:focus {
-            @if ($mm_IE11Fallbacks) {
-                background: $mm_emphasizedBackgroundColor;
-            }
-
             background: var(--mm-color-background-emphasis);
             outline: none;
         }

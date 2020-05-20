@@ -9,7 +9,7 @@ import { extend, originalId } from '../../_modules/helpers';
 Mmenu.options.dropdown = options;
 Mmenu.configs.dropdown = configs;
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     if (!this.opts.offCanvas) {
         return;
     }
@@ -87,7 +87,7 @@ export default function(this: Mmenu) {
      * @param  {object} obj The object where (previously) measured values are stored.
      * @return {object}		The object where measered values are stored.
      */
-    var getPosition = function(
+    var getPosition = function (
         this: Mmenu,
         dir: string,
         obj: mmLooseObject
@@ -180,24 +180,13 @@ export default function(this: Mmenu) {
         }
 
         if (options.tip) {
-            var classnames = [
+            this.node.menu.classList.remove(
                 'mm-menu_tip-left',
                 'mm-menu_tip-right',
                 'mm-menu_tip-top',
                 'mm-menu_tip-bottom'
-            ];
-
-            //  IE11:
-            classnames.forEach(classname => {
-                this.node.menu.classList.remove(classname);
-            });
-            obj[1].forEach(classname => {
-                this.node.menu.classList.add(classname);
-            });
-
-            //  Better browsers:
-            // this.node.menu.classList.remove(...classnames);
-            // this.node.menu.classList.add(...obj[1]);
+            );
+            this.node.menu.classList.add(...obj[1]);
         }
     }
 
@@ -205,7 +194,7 @@ export default function(this: Mmenu) {
 
     window.addEventListener(
         'resize',
-        evnt => {
+        (evnt) => {
             position.call(this);
         },
         { passive: true }
@@ -214,7 +203,7 @@ export default function(this: Mmenu) {
     if (!this.opts.offCanvas.blockUI) {
         window.addEventListener(
             'scroll',
-            evnt => {
+            (evnt) => {
                 position.call(this);
             },
             { passive: true }

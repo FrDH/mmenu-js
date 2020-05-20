@@ -32,19 +32,11 @@ export default function (this: Mmenu) {
                 .filter((panel) => !panel.matches('.mm-nolistview'))
                 .filter((panel) => !panel.matches('.mm-nopanel'))
                 .forEach((panel) => {
-                    var classnames = [
+                    panel.classList.add(
                         'mm-panel_lazysubmenu',
                         'mm-nolistview',
-                        'mm-nopanel',
-                    ];
-
-                    //  IE11:
-                    classnames.forEach((classname) => {
-                        panel.classList.add(classname);
-                    });
-
-                    //  Better browsers:
-                    // panel.classList.add(...classnames);
+                        'mm-nopanel'
+                    );
                 });
         });
 
@@ -60,20 +52,11 @@ export default function (this: Mmenu) {
 
             if (panels.length) {
                 panels.forEach((panel) => {
-                    console.log(panel);
-                    let classnames = [
+                    panel.classList.remove(
                         'mm-panel_lazysubmenu',
                         'mm-nolistview',
-                        'mm-nopanel',
-                    ];
-
-                    //  IE11:
-                    classnames.forEach((classname) => {
-                        panel.classList.remove(classname);
-                    });
-
-                    //  Better browsers:
-                    // panel.classList.remove(...classnames);
+                        'mm-nopanel'
+                    );
                 });
             }
         });
@@ -92,19 +75,11 @@ export default function (this: Mmenu) {
             }
 
             panels.forEach((panel) => {
-                const classnames = [
+                panel.classList.remove(
                     'mm-panel_lazysubmenu',
                     'mm-nolistview',
-                    'mm-nopanel',
-                ];
-
-                //  IE11:
-                classnames.forEach((classname) => {
-                    panel.classList.remove(classname);
-                });
-
-                //  Better browsers:
-                // child.classList.remove(...classnames);
+                    'mm-nopanel'
+                );
 
                 this._initPanel(panel);
             });

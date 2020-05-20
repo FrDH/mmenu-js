@@ -3,10 +3,6 @@
 $mm_module: '.mm-counter';
 
 #{$mm_module} {
-    @if ($mm_IE11Fallbacks) {
-        color: $mm_dimmedTextColor;
-    }
-
     display: block;
     padding-left: $mm_padding * 2;
     float: right;

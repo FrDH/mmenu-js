@@ -19,6 +19,7 @@ export default function () {
     //	Add the iconpanels
     if (options.add) {
         this.bind('initMenu:after', function () {
+            var _a;
             var classnames = ['mm-menu_iconpanel'];
             if (options.hideNavbar) {
                 classnames.push('mm-menu_hidenavbar');
@@ -26,12 +27,7 @@ export default function () {
             if (options.hideDivider) {
                 classnames.push('mm-menu_hidedivider');
             }
-            //  IE11:
-            classnames.forEach(function (classname) {
-                _this.node.menu.classList.add(classname);
-            });
-            //  Better browsers:
-            // this.node.menu.classList.add(...classnames);
+            (_a = _this.node.menu.classList).add.apply(_a, classnames);
         });
         var classnames_1 = [];
         if (!keepFirst) {
@@ -53,12 +49,8 @@ export default function () {
             else {
                 //	Remove the "iconpanel" classnames from all panels.
                 panels.forEach(function (panel) {
-                    //  IE11:
-                    classnames_1.forEach(function (classname) {
-                        panel.classList.remove(classname);
-                    });
-                    //  Better browsers:
-                    // panel.classList.remove(...classnames);
+                    var _a;
+                    (_a = panel.classList).remove.apply(_a, classnames_1);
                 });
                 //	Filter out panels that are not opened.
                 panels = panels.filter(function (panel) {

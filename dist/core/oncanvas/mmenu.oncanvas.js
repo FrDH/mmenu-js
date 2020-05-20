@@ -381,19 +381,11 @@ var Mmenu = /** @class */ (function () {
             var classnames = _this.opts.extensions[query].map(function (extension) { return 'mm-menu_' + extension; });
             if (classnames.length) {
                 media.add(query, function () {
-                    //  IE11:
-                    classnames.forEach(function (classname) {
-                        _this.node.menu.classList.add(classname);
-                    });
-                    //  Better browsers:
-                    // this.node.menu.classList.add(...classnames);
+                    var _a;
+                    (_a = _this.node.menu.classList).add.apply(_a, classnames);
                 }, function () {
-                    //  IE11:
-                    classnames.forEach(function (classname) {
-                        _this.node.menu.classList.remove(classname);
-                    });
-                    //  Better browsers:
-                    // this.node.menu.classList.remove(...classnames);
+                    var _a;
+                    (_a = _this.node.menu.classList).remove.apply(_a, classnames);
                 });
             }
         });
@@ -532,11 +524,7 @@ var Mmenu = /** @class */ (function () {
             wrapper_1.append(panel);
             panel = wrapper_1;
         }
-        // Modern browsers
-        // panel.classList.add('mm-panel', 'mm-hidden');
-        // IE11
-        panel.classList.add('mm-panel');
-        panel.classList.add('mm-hidden');
+        panel.classList.add('mm-panel', 'mm-hidden');
         //  Append to the panels node if not vertically expanding
         if (!panel.parentElement.matches('.mm-listitem_vertical')) {
             this.node.pnls.append(panel);

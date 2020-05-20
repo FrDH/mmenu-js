@@ -10,10 +10,6 @@ $mm_module: '.mm-btn';
 
     &:before,
     &:after {
-        @if ($mm_IE11Fallbacks) {
-            border: 2px solid $mm_dimmedTextColor;
-        }
-
         border: 2px solid var(--mm-color-button);
     }
 }

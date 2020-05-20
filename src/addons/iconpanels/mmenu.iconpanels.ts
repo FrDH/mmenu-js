@@ -7,7 +7,7 @@ import { extend } from '../../_modules/helpers';
 //	Add the options.
 Mmenu.options.iconPanels = options;
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     var options = extendShorthandOptions(this.opts.iconPanels);
     this.opts.iconPanels = extend(options, Mmenu.options.iconPanels);
 
@@ -34,13 +34,7 @@ export default function(this: Mmenu) {
                 classnames.push('mm-menu_hidedivider');
             }
 
-            //  IE11:
-            classnames.forEach(classname => {
-                this.node.menu.classList.add(classname);
-            });
-
-            //  Better browsers:
-            // this.node.menu.classList.add(...classnames);
+            this.node.menu.classList.add(...classnames);
         });
 
         let classnames = [];
@@ -66,24 +60,18 @@ export default function(this: Mmenu) {
                 });
             } else {
                 //	Remove the "iconpanel" classnames from all panels.
-                panels.forEach(panel => {
-                    //  IE11:
-                    classnames.forEach(classname => {
-                        panel.classList.remove(classname);
-                    });
-
-                    //  Better browsers:
-                    // panel.classList.remove(...classnames);
+                panels.forEach((panel) => {
+                    panel.classList.remove(...classnames);
                 });
 
                 //	Filter out panels that are not opened.
-                panels = panels.filter(panel =>
+                panels = panels.filter((panel) =>
                     panel.matches('.mm-panel_opened-parent')
                 );
 
                 //	Add the current panel to the list.
                 let panelAdded = false;
-                panels.forEach(elem => {
+                panels.forEach((elem) => {
                     if (panel === elem) {
                         panelAdded = true;
                     }
@@ -93,7 +81,7 @@ export default function(this: Mmenu) {
                 }
 
                 //	Remove the "hidden" classname from all opened panels.
-                panels.forEach(panel => {
+                panels.forEach((panel) => {
                     panel.classList.remove('mm-hidden');
                 });
 

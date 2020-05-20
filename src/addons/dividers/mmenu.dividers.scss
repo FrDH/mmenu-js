@@ -3,17 +3,6 @@
 $mm_module: '.mm-divider';
 
 #{$mm_module} {
-    @if ($mm_IE11Fallbacks) {
-        position: relative;
-        min-height: $mm_lineHeight;
-        padding: (($mm_listitemSize * 0.65) - $mm_lineHeight) * 0.5;
-        background: $mm_backgroundColor;
-
-        &:before {
-            background: $mm_highlightedBackgroundColor;
-        }
-    }
-
     @include mm_ellipsis;
 
     @supports (position: sticky) {

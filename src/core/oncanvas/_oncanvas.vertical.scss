@@ -19,10 +19,6 @@
 
     .mm-listitem_vertical {
         > .mm-listitem__btn {
-            @if ($mm_IE11Fallbacks) {
-                height: $mm_listitemSize;
-            }
-
             height: var(--mm-listitem-size);
             bottom: auto;
         }

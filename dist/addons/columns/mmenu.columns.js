@@ -30,6 +30,7 @@ export default function () {
         rmvc.push.apply(rmvc, colp);
         //	Close all later opened panels
         this.bind('openPanel:before', function (panel) {
+            var _a;
             /** The parent panel. */
             var parent;
             if (panel) {
@@ -59,12 +60,7 @@ export default function () {
                 if (panel) {
                     colnr++;
                     panel.classList.add('mm-hidden');
-                    //  IE11:
-                    rmvc.forEach(function (classname) {
-                        panel.classList.remove(classname);
-                    });
-                    //  Better browsers:
-                    // panel.classList.remove(...rmvc);
+                    (_a = panel.classList).remove.apply(_a, rmvc);
                 }
                 else {
                     colnr = -1;
@@ -73,6 +69,7 @@ export default function () {
             }
         });
         this.bind('openPanel:start', function (panel) {
+            var _a;
             if (panel) {
                 /** The parent panel. */
                 var parent_1 = panel['mmParent'];
@@ -86,21 +83,12 @@ export default function () {
                 columns++;
             }
             columns = Math.min(options.visible.max, Math.max(options.visible.min, columns));
-            //  IE11:
-            colm.forEach(function (classname) {
-                _this.node.menu.classList.remove(classname);
-            });
-            //  Better browsers:
-            // this.node.menu.classList.remove(...colm);
+            (_a = _this.node.menu.classList).remove.apply(_a, colm);
             _this.node.menu.classList.add('mm-menu_columns-' + columns);
             var panels = [];
             DOM.children(_this.node.pnls, '.mm-panel').forEach(function (panel) {
-                //  IE11:
-                colp.forEach(function (classname) {
-                    panel.classList.remove(classname);
-                });
-                //  Better browsers:
-                // panel.classList.remove(...colp);
+                var _a;
+                (_a = panel.classList).remove.apply(_a, colp);
                 if (panel.matches('.mm-panel_opened-parent')) {
                     panels.push(panel);
                 }
