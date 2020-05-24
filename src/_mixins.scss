@@ -37,8 +37,7 @@
     }
 
     .mm-wrapper_opening {
-        #{$cls} ~ .mm-slideout {
-            // transform: translate3d( #{$width * 100}vw, 0, 0 );
+        #{$cls}.mm-menu_opened ~ .mm-slideout {
             transform: translate3d(
                 clamp($minWidth, #{$width * 100}vw, $maxWidth),
                 0,
