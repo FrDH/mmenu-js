@@ -5,13 +5,9 @@
  * @return	{HTMLElement}				The created element.
  */
 export var create = function (selector) {
+    var _a;
     var args = selector.split('.'), elem = document.createElement(args.shift());
-    //  IE11:
-    args.forEach(function (classname) {
-        elem.classList.add(classname);
-    });
-    //  Better browsers:
-    // elem.classList.add(...args);
+    (_a = elem.classList).add.apply(_a, args);
     return elem;
 };
 /**
