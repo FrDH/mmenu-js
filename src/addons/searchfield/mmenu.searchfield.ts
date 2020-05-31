@@ -106,10 +106,10 @@ export default function (this: Mmenu) {
 }
 
 const initSearchPanel = function (this: Mmenu): HTMLElement {
-    var options = this.opts.searchfield,
+    const options = this.opts.searchfield,
         configs = this.conf.searchfield;
 
-    var searchpanel = DOM.children(this.node.pnls, '.mm-panel_search')[0];
+    let searchpanel = DOM.children(this.node.pnls, '.mm-panel_search')[0];
 
     //	Only once
     if (searchpanel) {
@@ -126,14 +126,13 @@ const initSearchPanel = function (this: Mmenu): HTMLElement {
         searchpanel.dataset.mmTitle = options.panel.title;
     }
 
-    var listview = DOM.create('ul');
+    const listview = DOM.create('ul');
     searchpanel.append(listview);
 
     this.node.pnls.append(searchpanel);
 
-    //  TODO: hoeft niet meer?
-    // this._initListview(listview);
-    // this._initNavbar(searchpanel);
+    this._initListview(listview);
+    this._initNavbar(searchpanel);
 
     switch (options.panel.fx) {
         case false:
@@ -156,8 +155,7 @@ const initSearchPanel = function (this: Mmenu): HTMLElement {
         searchpanel.append(splash);
     }
 
-    searchpanel.classList.add('mm-panel');
-    searchpanel.classList.add('mm-hidden');
+    searchpanel.classList.add('mm-panel', 'mm-hidden');
 
     this.node.pnls.append(searchpanel);
 

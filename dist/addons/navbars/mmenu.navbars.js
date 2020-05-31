@@ -113,7 +113,6 @@ export default function Navbars() {
         }
     });
     //	Add to menu.
-    // TODO: probleem in volgorde
     this.bind('initMenu:after', function () {
         for (var position in navbars) {
             _this.node.menu[position == 'bottom' ? 'append' : 'prepend'](navbars[position]);

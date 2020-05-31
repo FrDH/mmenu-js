@@ -151,7 +151,7 @@ export default class Mmenu {
 
         this._initMenu();
         this._initPanels();
-        this._initOpened(); // TODO: volgorde klopt niet meer
+        this._initOpened();
         this._initAnchors();
 
         media.watch();
@@ -594,6 +594,7 @@ export default class Mmenu {
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
 
+        //  All nodes in the menu.
         const panels = DOM.children(this.node.menu).filter((panel) =>
             panel.matches(this.conf.panelNodetype.join(', '))
         );
@@ -602,31 +603,6 @@ export default class Mmenu {
         this.node.pnls = DOM.create('div.mm-panels');
 
         this.node.menu.append(this.node.pnls);
-
-        /////// TEST
-        //   initPanel aanroepen op iedere node die in this.node.pnls komt
-        (() => {
-            // const observer = new MutationObserver((mutationsList, observer) => {
-            //     for (let m = 0; m < mutationsList.length; m++) {
-            //         if (mutationsList[m].addedNodes.length) {
-            //             // console.log(
-            //             //     'A child node has been added.',
-            //             //     mutationsList[m].addedNodes[0],
-            //             //     m
-            //             // );
-            //             this._initPanel(
-            //                 mutationsList[m].addedNodes[0] as HTMLElement
-            //             );
-            //         }
-            //     }
-            // });
-            // observer.observe(this.node.pnls, {
-            //     attributes: false,
-            //     childList: true,
-            //     subtree: false
-            // });
-        })();
-        ///////
 
         //  Initiate all panel like nodes
         panels.forEach((panel) => {
@@ -895,6 +871,9 @@ export default class Mmenu {
      * @param {HTMLElement} listitem Listitem to initiate.
      */
     _initListitem(listitem: HTMLElement) {
+        //	Invoke "before" hook.
+        this.trigger('initListitem:before', [listitem]);
+
         listitem.classList.add('mm-listitem');
 
         DOM.reClass(
@@ -918,6 +897,9 @@ export default class Mmenu {
         this.listitemObserver.observe(listitem, {
             childList: true,
         });
+
+        //	Invoke "after" hook.
+        this.trigger('initListitem:after', [listitem]);
     }
 
     /**

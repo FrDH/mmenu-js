@@ -10,18 +10,18 @@ Mmenu.options.dividers = options;
 //  Add the classnames.
 Mmenu.configs.classNames.divider = 'Divider';
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     var options = extendShorthandOptions(this.opts.dividers);
     this.opts.dividers = extend(options, Mmenu.options.dividers);
 
     //	Refactor divider classname
-    this.bind('initListview:after', listview => {
-        DOM.children(listview).forEach(listitem => {
-            DOM.reClass(listitem, this.conf.classNames.divider, 'mm-divider');
-            if (listitem.matches('.mm-divider')) {
-                listitem.classList.remove('mm-listitem');
-            }
-        });
+    this.bind('initListitem:after', (listitem) => {
+        // DOM.children(listview).forEach(listitem => {
+        DOM.reClass(listitem, this.conf.classNames.divider, 'mm-divider');
+        if (listitem.matches('.mm-divider')) {
+            listitem.classList.remove('mm-listitem');
+        }
+        // });
     });
 
     //	Add dividers
@@ -31,14 +31,14 @@ export default function(this: Mmenu) {
                 return;
             }
 
-            DOM.find(listview, '.mm-divider').forEach(divider => {
+            DOM.find(listview, '.mm-divider').forEach((divider) => {
                 divider.remove();
             });
 
             var lastletter = '',
                 listitems = DOM.children(listview);
 
-            DOM.filterLI(listitems).forEach(listitem => {
+            DOM.filterLI(listitems).forEach((listitem) => {
                 let letter = DOM.children(listitem, '.mm-listitem__text')[0]
                     .textContent.trim()
                     .toLowerCase()[0];

@@ -16,6 +16,7 @@ $mm_module: '.mm-navbar';
         // TODO: not specific enough :/ overriden by .mm-menu a :/ :/ :/
         color: var(--mm-color-text);
         // /TODO
+
         &:not(:first-child) {
             border-left-color: var(--mm-color-border);
         }

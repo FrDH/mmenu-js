@@ -49,7 +49,7 @@ var Mmenu = /** @class */ (function () {
         this._initAPI();
         this._initMenu();
         this._initPanels();
-        this._initOpened(); // TODO: volgorde klopt niet meer
+        this._initOpened();
         this._initAnchors();
         media.watch();
         return this;
@@ -406,36 +406,13 @@ var Mmenu = /** @class */ (function () {
         this.node.menu.classList.add('mm-menu');
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
+        //  All nodes in the menu.
         var panels = DOM.children(this.node.menu).filter(function (panel) {
             return panel.matches(_this.conf.panelNodetype.join(', '));
         });
         //	Wrap the panels in a node.
         this.node.pnls = DOM.create('div.mm-panels');
         this.node.menu.append(this.node.pnls);
-        /////// TEST
-        //   initPanel aanroepen op iedere node die in this.node.pnls komt
-        (function () {
-            // const observer = new MutationObserver((mutationsList, observer) => {
-            //     for (let m = 0; m < mutationsList.length; m++) {
-            //         if (mutationsList[m].addedNodes.length) {
-            //             // console.log(
-            //             //     'A child node has been added.',
-            //             //     mutationsList[m].addedNodes[0],
-            //             //     m
-            //             // );
-            //             this._initPanel(
-            //                 mutationsList[m].addedNodes[0] as HTMLElement
-            //             );
-            //         }
-            //     }
-            // });
-            // observer.observe(this.node.pnls, {
-            //     attributes: false,
-            //     childList: true,
-            //     subtree: false
-            // });
-        })();
-        ///////
         //  Initiate all panel like nodes
         panels.forEach(function (panel) {
             _this._initPanel(panel);
@@ -649,6 +626,8 @@ var Mmenu = /** @class */ (function () {
      */
     Mmenu.prototype._initListitem = function (listitem) {
         var _this = this;
+        //	Invoke "before" hook.
+        this.trigger('initListitem:before', [listitem]);
         listitem.classList.add('mm-listitem');
         DOM.reClass(listitem, this.conf.classNames.selected, 'mm-listitem_selected');
         DOM.children(listitem, 'a, span').forEach(function (text) {
@@ -662,6 +641,8 @@ var Mmenu = /** @class */ (function () {
         this.listitemObserver.observe(listitem, {
             childList: true,
         });
+        //	Invoke "after" hook.
+        this.trigger('initListitem:after', [listitem]);
     };
     /**
      * Initiate a subpanel.

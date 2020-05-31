@@ -56,7 +56,6 @@ export default function (this: Mmenu) {
             [configs.menu.insertMethod](this.node.menu);
     });
 
-    // TODO: probleem in volgorde
     this.bind('initMenu:after', () => {
         //	Setup the UI blocker.
         initBlocker.call(this);

@@ -12,13 +12,13 @@ export default function () {
     var options = extendShorthandOptions(this.opts.dividers);
     this.opts.dividers = extend(options, Mmenu.options.dividers);
     //	Refactor divider classname
-    this.bind('initListview:after', function (listview) {
-        DOM.children(listview).forEach(function (listitem) {
-            DOM.reClass(listitem, _this.conf.classNames.divider, 'mm-divider');
-            if (listitem.matches('.mm-divider')) {
-                listitem.classList.remove('mm-listitem');
-            }
-        });
+    this.bind('initListitem:after', function (listitem) {
+        // DOM.children(listview).forEach(listitem => {
+        DOM.reClass(listitem, _this.conf.classNames.divider, 'mm-divider');
+        if (listitem.matches('.mm-divider')) {
+            listitem.classList.remove('mm-listitem');
+        }
+        // });
     });
     //	Add dividers
     if (options.add) {

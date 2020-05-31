@@ -108,9 +108,8 @@ var initSearchPanel = function () {
     var listview = DOM.create('ul');
     searchpanel.append(listview);
     this.node.pnls.append(searchpanel);
-    //  TODO: hoeft niet meer?
-    // this._initListview(listview);
-    // this._initNavbar(searchpanel);
+    this._initListview(listview);
+    this._initNavbar(searchpanel);
     switch (options.panel.fx) {
         case false:
             break;
@@ -127,8 +126,7 @@ var initSearchPanel = function () {
         splash.innerHTML = options.panel.splash;
         searchpanel.append(splash);
     }
-    searchpanel.classList.add('mm-panel');
-    searchpanel.classList.add('mm-hidden');
+    searchpanel.classList.add('mm-panel', 'mm-hidden');
     this.node.pnls.append(searchpanel);
     return searchpanel;
 };

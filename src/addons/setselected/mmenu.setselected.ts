@@ -7,7 +7,7 @@ import { extend } from '../../_modules/helpers';
 //	Add the options.
 Mmenu.options.setSelected = options;
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     var options = extendShorthandOptions(this.opts.setSelected);
     this.opts.setSelected = extend(options, Mmenu.options.setSelected);
 
@@ -15,21 +15,19 @@ export default function(this: Mmenu) {
     if (options.current == 'detect') {
         const findCurrent = (url: string) => {
             url = url.split('?')[0].split('#')[0];
-
-            var anchor = this.node.menu.querySelector(
+            const anchor = this.node.menu.querySelector(
                 'a[href="' + url + '"], a[href="' + url + '/"]'
             );
             if (anchor) {
                 this.setSelected(anchor.parentElement);
             } else {
-                var arr = url.split('/').slice(0, -1);
+                const arr = url.split('/').slice(0, -1);
                 if (arr.length) {
                     findCurrent(arr.join('/'));
                 }
             }
         };
 
-        // TODO: probleem in volgorde
         this.bind('initMenu:after', () => {
             findCurrent.call(this, window.location.href);
         });
@@ -38,7 +36,7 @@ export default function(this: Mmenu) {
     } else if (!options.current) {
         this.bind('initListview:after', (listview: HTMLElement) => {
             DOM.children(listview, '.mm-listitem_selected').forEach(
-                listitem => {
+                (listitem) => {
                     listitem.classList.remove('mm-listitem_selected');
                 }
             );
@@ -57,7 +55,7 @@ export default function(this: Mmenu) {
         this.bind('openPanel:finish', (panel: HTMLElement) => {
             //	Remove all
             DOM.find(this.node.pnls, '.mm-listitem_selected-parent').forEach(
-                listitem => {
+                (listitem) => {
                     listitem.classList.remove('mm-listitem_selected-parent');
                 }
             );
