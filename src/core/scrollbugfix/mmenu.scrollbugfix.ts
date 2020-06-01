@@ -54,7 +54,7 @@ export default function (this: Mmenu) {
                 '.mm-panel, .mm-iconbar__top, .mm-iconbar__bottom'
             ) as HTMLElement;
 
-            if (wrapper.closest('.mm-listitem_vertical')) {
+            if (wrapper && wrapper.closest('.mm-listitem_vertical')) {
                 wrapper = DOM.parents(wrapper, '.mm-panel').pop();
             }
 
