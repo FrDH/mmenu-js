@@ -9,10 +9,10 @@ Mmenu.options.counters = options;
 
 //	Add the classnames.
 Mmenu.configs.classNames.counters = {
-    counter: 'Counter'
+    counter: 'Counter',
 };
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     var options = extendShorthandOptions(this.opts.counters);
     this.opts.counters = extend(options, Mmenu.options.counters);
 
@@ -21,7 +21,7 @@ export default function(this: Mmenu) {
         var cntrclss = this.conf.classNames.counters.counter,
             counters = DOM.find(listview, '.' + cntrclss);
 
-        counters.forEach(counter => {
+        counters.forEach((counter) => {
             DOM.reClass(counter as HTMLElement, cntrclss, 'mm-counter');
         });
     });
@@ -52,7 +52,7 @@ export default function(this: Mmenu) {
                 ? [listview.closest('.mm-panel') as HTMLElement]
                 : DOM.children(this.node.pnls, '.mm-panel');
 
-            panels.forEach(panel => {
+            panels.forEach((panel) => {
                 var parent: HTMLElement = panel['mmParent'];
 
                 if (!parent) {
@@ -65,7 +65,7 @@ export default function(this: Mmenu) {
                 }
 
                 var listitems: HTMLElement[] = [];
-                DOM.children(panel, '.mm-listview').forEach(listview => {
+                DOM.children(panel, '.mm-listview').forEach((listview) => {
                     listitems.push(...DOM.children(listview));
                 });
 

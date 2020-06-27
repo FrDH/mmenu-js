@@ -7,7 +7,7 @@ import { extend } from '../../_modules/helpers';
 Mmenu.options.counters = options;
 //	Add the classnames.
 Mmenu.configs.classNames.counters = {
-    counter: 'Counter'
+    counter: 'Counter',
 };
 export default function () {
     var _this = this;
