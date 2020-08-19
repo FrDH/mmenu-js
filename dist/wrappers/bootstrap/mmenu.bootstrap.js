@@ -21,11 +21,11 @@ export default function () {
                 case child.matches('.form-inline'):
                     _this.conf.searchfield.form = {
                         action: child.getAttribute('action') || null,
-                        method: child.getAttribute('method') || null
+                        method: child.getAttribute('method') || null,
                     };
                     _this.conf.searchfield.input = {
                         name: child.querySelector('input').getAttribute('name') ||
-                            null
+                            null,
                     };
                     _this.conf.searchfield.clear = false;
                     _this.conf.searchfield.submit = true;
@@ -65,7 +65,7 @@ export default function () {
         //	Copy attributes
         var attr = ['href', 'title', 'target'];
         for (var a = 0; a < attr.length; a++) {
-            if (typeof anchor.getAttribute(attr[a]) != 'undefined') {
+            if (anchor.getAttribute(attr[a])) {
                 link.setAttribute(attr[a], anchor.getAttribute(attr[a]));
             }
         }

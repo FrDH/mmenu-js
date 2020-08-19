@@ -1,7 +1,7 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     //	Create the menu
     if (this.node.menu.matches('.navbar-collapse')) {
         //	No need for cloning the menu...
@@ -15,7 +15,7 @@ export default function(this: Mmenu) {
 
         nav.append(panel);
 
-        DOM.children(this.node.menu).forEach(child => {
+        DOM.children(this.node.menu).forEach((child) => {
             switch (true) {
                 case child.matches('.navbar-nav'):
                     panel.append(cloneNav(child));
@@ -28,12 +28,12 @@ export default function(this: Mmenu) {
                 case child.matches('.form-inline'):
                     this.conf.searchfield.form = {
                         action: child.getAttribute('action') || null,
-                        method: child.getAttribute('method') || null
+                        method: child.getAttribute('method') || null,
                     };
                     this.conf.searchfield.input = {
                         name:
                             child.querySelector('input').getAttribute('name') ||
-                            null
+                            null,
                     };
                     this.conf.searchfield.clear = false;
                     this.conf.searchfield.submit = true;
@@ -66,7 +66,7 @@ export default function(this: Mmenu) {
                 toggler = parent.querySelector('.navbar-toggler');
 
                 //  Open the menu on-click.
-                toggler.addEventListener('click', evnt => {
+                toggler.addEventListener('click', (evnt) => {
                     evnt.preventDefault();
                     evnt.stopImmediatePropagation();
                     this[this.vars.opened ? 'close' : 'open']();
@@ -81,7 +81,7 @@ export default function(this: Mmenu) {
         //	Copy attributes
         var attr = ['href', 'title', 'target'];
         for (var a = 0; a < attr.length; a++) {
-            if (typeof anchor.getAttribute(attr[a]) != 'undefined') {
+            if (anchor.getAttribute(attr[a])) {
                 link.setAttribute(attr[a], anchor.getAttribute(attr[a]));
             }
         }
@@ -90,7 +90,7 @@ export default function(this: Mmenu) {
         link.innerHTML = anchor.innerHTML;
 
         //	Remove Screen reader text.
-        DOM.find(link, '.sr-only').forEach(sro => {
+        DOM.find(link, '.sr-only').forEach((sro) => {
             sro.remove();
         });
 
@@ -98,7 +98,7 @@ export default function(this: Mmenu) {
     }
     function cloneDropdown(dropdown: HTMLElement) {
         var list = DOM.create('ul');
-        DOM.children(dropdown).forEach(anchor => {
+        DOM.children(dropdown).forEach((anchor) => {
             var item = DOM.create('li');
 
             if (anchor.matches('.dropdown-divider')) {
@@ -113,7 +113,7 @@ export default function(this: Mmenu) {
     function cloneNav(nav: HTMLElement) {
         var list = DOM.create('ul');
 
-        DOM.find(nav, '.nav-item').forEach(anchor => {
+        DOM.find(nav, '.nav-item').forEach((anchor) => {
             var item = DOM.create('li');
 
             if (anchor.matches('.active')) {
