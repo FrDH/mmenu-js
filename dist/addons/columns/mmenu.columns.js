@@ -34,7 +34,7 @@ export default function () {
             /** The parent panel. */
             var parent;
             if (panel) {
-                parent = panel['mmParent'];
+                parent = DOM.find(_this.node.menu, "#" + panel.dataset.mmParent)[0];
             }
             if (!parent) {
                 return;
@@ -72,7 +72,7 @@ export default function () {
             var _a;
             if (panel) {
                 /** The parent panel. */
-                var parent_1 = panel['mmParent'];
+                var parent_1 = DOM.find(_this.node.menu, "#" + panel.dataset.mmParent)[0];
                 if (parent_1 &&
                     parent_1.classList.contains('mm-listitem_vertical')) {
                     return;

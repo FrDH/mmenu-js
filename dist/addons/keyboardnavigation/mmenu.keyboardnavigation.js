@@ -163,11 +163,15 @@ var initWindow = function (enhance) {
                     }
                 }
                 else {
+                    //   TODO: dit werkt  niet meer?
                     var api_1 = menu['mmApi'];
                     switch (evnt.keyCode) {
                         //	close submenu with backspace
                         case 8:
-                            var parent_1 = DOM.find(menu, '.mm-panel_opened')[0]['mmParent'];
+                            var parent_1 = DOM.find(menu, '.mm-panel_opened')[0];
+                            if (parent_1) {
+                                parent_1 = DOM.find(menu, "#" + parent_1.dataset.mmParent)[0];
+                            }
                             if (parent_1) {
                                 api_1.openPanel(parent_1.closest('.mm-panel'));
                             }

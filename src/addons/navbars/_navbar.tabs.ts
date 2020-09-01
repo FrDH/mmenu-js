@@ -5,10 +5,10 @@ export default function(this: Mmenu, navbar: HTMLElement) {
     navbar.classList.add('mm-navbar_tabs');
     navbar.parentElement.classList.add('mm-navbars_has-tabs');
 
-    var anchors = DOM.children(navbar, 'a');
+    let anchors = DOM.children(navbar, 'a');
 
     navbar.addEventListener('click', evnt => {
-        var anchor = evnt.target as HTMLElement;
+        let anchor = evnt.target as HTMLElement;
         if (!anchor.matches('a')) {
             return;
         }
@@ -31,13 +31,13 @@ export default function(this: Mmenu, navbar: HTMLElement) {
             anchor.classList.remove('mm-navbar__tab_selected');
         });
 
-        var anchor = anchors.filter(anchor =>
-            anchor.matches('[href="#' + panel.id + '"]')
+        let anchor = anchors.filter(anchor =>
+            anchor.matches(`[href="#${panel.id }"]`)
         )[0];
         if (anchor) {
             anchor.classList.add('mm-navbar__tab_selected');
         } else {
-            var parent: HTMLElement = panel['mmParent'];
+            let parent = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
             if (parent) {
                 selectTab.call(this, parent.closest('.mm-panel'));
             }

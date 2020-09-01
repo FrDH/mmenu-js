@@ -19,7 +19,7 @@ export var create = function (selector) {
  * @return	{array}					Array of elements that match the filter.
  */
 export var find = function (element, filter) {
-    return Array.prototype.slice.call(element.querySelectorAll(filter));
+    return filter.length ? Array.prototype.slice.call(element.querySelectorAll(filter)) : [];
 };
 /**
  * Find all child elements matching the (optional) selector.

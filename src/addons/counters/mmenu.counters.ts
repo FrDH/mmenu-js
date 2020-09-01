@@ -33,7 +33,9 @@ export default function(this: Mmenu) {
                 return;
             }
 
-            var parent: HTMLElement = listview.closest('.mm-panel')['mmParent'];
+            var panel: HTMLElement = listview.closest('.mm-panel');
+            var parent: HTMLElement = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
+
             if (parent) {
                 //	Check if no counter already excists.
                 if (!DOM.find(parent, '.mm-counter').length) {
@@ -53,7 +55,7 @@ export default function(this: Mmenu) {
                 : DOM.children(this.node.pnls, '.mm-panel');
 
             panels.forEach(panel => {
-                var parent: HTMLElement = panel['mmParent'];
+                var parent: HTMLElement = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
 
                 if (!parent) {
                     return;

@@ -518,7 +518,7 @@ Mmenu.prototype.search = function (
                     let listitems = DOM.find(panel, '.mm-listitem');
 
                     DOM.filterLI(listitems).forEach((listitem) => {
-                        let child: HTMLElement = listitem['mmChild'];
+                        let child: HTMLElement = DOM.find(this.node.menu, `#${listitem.dataset.mmChild}`)[0];
                         if (child) {
                             DOM.find(child, '.mm-listitem').forEach(
                                 (listitem) => {
@@ -533,7 +533,7 @@ Mmenu.prototype.search = function (
             //	Update parent for sub-panel
             //  .reverse() mutates the original array, therefor we "clone" it first using [...panels].
             [...panels].reverse().forEach((panel, p) => {
-                let parent: HTMLElement = panel['mmParent'];
+                let parent: HTMLElement = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
 
                 if (parent) {
                     //	The current panel has mached listitems

@@ -24,15 +24,15 @@ export default function (navbar) {
             anchor.classList.remove('mm-navbar__tab_selected');
         });
         var anchor = anchors.filter(function (anchor) {
-            return anchor.matches('[href="#' + panel.id + '"]');
+            return anchor.matches("[href=\"#" + panel.id + "\"]");
         })[0];
         if (anchor) {
             anchor.classList.add('mm-navbar__tab_selected');
         }
         else {
-            var parent = panel['mmParent'];
-            if (parent) {
-                selectTab.call(this, parent.closest('.mm-panel'));
+            var parent_1 = DOM.find(this.node.menu, "#" + panel.dataset.mmParent)[0];
+            if (parent_1) {
+                selectTab.call(this, parent_1.closest('.mm-panel'));
             }
         }
     }

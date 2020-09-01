@@ -25,7 +25,7 @@ export const find = (
     element: HTMLElement | Document,
     filter: string
 ): HTMLElement[] => {
-    return Array.prototype.slice.call(element.querySelectorAll(filter));
+    return filter.length ? Array.prototype.slice.call(element.querySelectorAll(filter)) : [];
 };
 
 /**

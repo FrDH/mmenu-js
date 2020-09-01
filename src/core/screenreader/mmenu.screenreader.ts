@@ -177,7 +177,8 @@ export default function (this: Mmenu) {
 
         //	Add text to the next-buttons.
         this.bind('initListview:after', (listview: HTMLElement) => {
-            let parent: HTMLElement = listview.closest('.mm-panel')['mmParent'];
+            let panel: HTMLElement = listview.closest('.mm-panel');
+            let parent: HTMLElement = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
             if (parent) {
                 let next = DOM.children(parent, '.mm-btn_next')[0];
                 if (next) {

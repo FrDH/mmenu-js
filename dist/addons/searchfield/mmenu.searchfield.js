@@ -397,7 +397,7 @@ Mmenu.prototype.search = function (input, query) {
                 panels.forEach(function (panel) {
                     var listitems = DOM.find(panel, '.mm-listitem');
                     DOM.filterLI(listitems).forEach(function (listitem) {
-                        var child = listitem['mmChild'];
+                        var child = DOM.find(_this.node.menu, "#" + listitem.dataset.mmChild)[0];
                         if (child) {
                             DOM.find(child, '.mm-listitem').forEach(function (listitem) {
                                 listitem.classList.remove('mm-hidden');
@@ -409,7 +409,7 @@ Mmenu.prototype.search = function (input, query) {
             //	Update parent for sub-panel
             //  .reverse() mutates the original array, therefor we "clone" it first using [...panels].
             __spreadArrays(panels).reverse().forEach(function (panel, p) {
-                var parent = panel['mmParent'];
+                var parent = DOM.find(_this.node.menu, "#" + panel.dataset.mmParent)[0];
                 if (parent) {
                     //	The current panel has mached listitems
                     var listitems_1 = DOM.find(panel, '.mm-listitem');

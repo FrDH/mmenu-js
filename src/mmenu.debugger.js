@@ -38,6 +38,26 @@
     Mmenu.prototype._deprecatedWarnings = function() {
         /**
          * ----------------------------
+         * Version 8.5 > 9.0
+         * ----------------------------
+         */
+
+        /* Add-ons */
+
+        //  Removed add-ons.
+        ['columns'].forEach(addon => {
+            if (this.opts[addon]) {
+                deprecated(
+                    'The "' + addon + '" add-on',
+                    null,
+                    '8.5.0'
+                );
+            }
+        });
+
+
+        /**
+         * ----------------------------
          * Version 8.4 > 8.5
          * ----------------------------
          */
@@ -59,7 +79,7 @@
 
         /* Extensions */
 
-        // Removed the tileview extension.
+        // Removed the extensions.
         ['tileview'].forEach(ext => {
             Object.keys(this.opts.extensions).forEach(key => {
                 if (this.opts.extensions[key].includes(ext)) {

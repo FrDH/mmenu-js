@@ -212,6 +212,7 @@ const initWindow = function (this: Mmenu, enhance: boolean) {
                             break;
                     }
                 } else {
+                    //   TODO: dit werkt  niet meer?
                     let api: mmApi = menu['mmApi'];
 
                     switch (evnt.keyCode) {
@@ -220,7 +221,10 @@ const initWindow = function (this: Mmenu, enhance: boolean) {
                             let parent: HTMLElement = DOM.find(
                                 menu,
                                 '.mm-panel_opened'
-                            )[0]['mmParent'];
+                            )[0];
+                            if (parent) {
+                                parent = DOM.find(menu, `#${parent.dataset.mmParent}`)[0];
+                            }
                             if (parent) {
                                 api.openPanel(parent.closest('.mm-panel'));
                             }

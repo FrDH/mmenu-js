@@ -112,7 +112,7 @@ export default function (this: Mmenu) {
                 if (anchor) {
                     anchor.classList.add('mm-iconbar__tab_selected');
                 } else {
-                    const parent: HTMLElement = panel['mmParent'];
+                    const parent: HTMLElement = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
                     if (parent) {
                         selectTab(parent.closest('.mm-panel') as HTMLElement);
                     }

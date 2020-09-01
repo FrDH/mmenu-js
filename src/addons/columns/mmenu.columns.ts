@@ -44,7 +44,7 @@ export default function (this: Mmenu) {
             let parent: HTMLElement;
 
             if (panel) {
-                parent = panel['mmParent'];
+                parent = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
             }
 
             if (!parent) {
@@ -90,7 +90,7 @@ export default function (this: Mmenu) {
         this.bind('openPanel:start', (panel: HTMLElement) => {
             if (panel) {
                 /** The parent panel. */
-                let parent = panel['mmParent'];
+                let parent = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
 
                 if (
                     parent &&

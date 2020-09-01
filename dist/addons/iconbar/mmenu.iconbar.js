@@ -92,7 +92,7 @@ export default function () {
                     anchor.classList.add('mm-iconbar__tab_selected');
                 }
                 else {
-                    var parent_1 = panel['mmParent'];
+                    var parent_1 = DOM.find(_this.node.menu, "#" + panel.dataset.mmParent)[0];
                     if (parent_1) {
                         selectTab_1(parent_1.closest('.mm-panel'));
                     }
