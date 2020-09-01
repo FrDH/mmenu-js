@@ -148,8 +148,6 @@ Mmenu.prototype._openSetup = function () {
     var options = this.opts.offCanvas;
     //	Close other menus
     this.closeAllOthers();
-    //	Store style and position
-    Mmenu.node.page['mmStyle'] = Mmenu.node.page.getAttribute('style') || '';
     //	Trigger window-resize to measure height
     events.trigger(window, 'resize.page', { force: true });
     var clsn = ['mm-wrapper_opened'];
@@ -211,8 +209,6 @@ Mmenu.prototype.close = function () {
         });
         //  Better browsers:
         // this.node.wrpr.classList.remove(...classnames);
-        //	Restore style and position
-        Mmenu.node.page.setAttribute('style', Mmenu.node.page['mmStyle']);
         _this.vars.opened = false;
         _this.trigger('close:finish');
     }, this.conf.transitionDuration);
