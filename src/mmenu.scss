@@ -9,10 +9,6 @@
  * http://creativecommons.org/licenses/by-nc/4.0/
  */
 
-//  There's a bug in the CSS polyfill that'll override the :root vars with the .mm-menu_them-* vars
-//  Therefor we'll import the themes file first.
-@import 'extensions/themes/mmenu.themes';
-
 //	Core
 @import 'core/oncanvas/mmenu.oncanvas';
 
@@ -43,6 +39,7 @@
 @import 'addons/toggles/mmenu.toggles';
 
 //	Extensions
+
 @import 'extensions/borderstyle/mmenu.borderstyle';
 @import 'extensions/effects/mmenu.effects';
 @import 'extensions/fullscreen/mmenu.fullscreen';
