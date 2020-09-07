@@ -7,7 +7,7 @@ import { extend } from '../../_modules/helpers';
 //	Add the options.
 Mmenu.options.backButton = options;
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     if (!this.opts.offCanvas) {
         return;
     }
@@ -26,7 +26,7 @@ export default function(this: Mmenu) {
             DOM.children(
                 this.node.pnls,
                 '.mm-panel_opened, .mm-panel_opened-parent'
-            ).forEach(panel => {
+            ).forEach((panel) => {
                 states.push('#' + panel.id);
             });
         };
@@ -46,7 +46,7 @@ export default function(this: Mmenu) {
             );
         });
 
-        window.addEventListener('popstate', evnt => {
+        window.addEventListener('popstate', (evnt) => {
             if (this.vars.opened) {
                 if (states.length) {
                     states = states.slice(0, -1);
@@ -64,7 +64,7 @@ export default function(this: Mmenu) {
     }
 
     if (options.open) {
-        window.addEventListener('popstate', evnt => {
+        window.addEventListener('popstate', (evnt) => {
             if (!this.vars.opened && location.hash == _menu) {
                 this.open();
             }

@@ -64,7 +64,7 @@ export default function () {
         //	Copy attributes
         var attr = ['href', 'title', 'target'];
         for (var a = 0; a < attr.length; a++) {
-            if (typeof anchor.getAttribute(attr[a]) != 'undefined') {
+            if (anchor.getAttribute(attr[a])) {
                 link.setAttribute(attr[a], anchor.getAttribute(attr[a]));
             }
         }

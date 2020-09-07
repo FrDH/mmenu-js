@@ -190,9 +190,6 @@ Mmenu.prototype._openSetup = function (this: Mmenu) {
     //	Close other menus
     this.closeAllOthers();
 
-    //	Store style and position
-    Mmenu.node.page['mmStyle'] = Mmenu.node.page.getAttribute('style') || '';
-
     //	Trigger window-resize to measure height
     events.trigger(window, 'resize.page', { force: true });
 
@@ -258,9 +255,6 @@ Mmenu.prototype.close = function (this: Mmenu) {
                 'mm-wrapper_modal',
                 'mm-wrapper_background'
             );
-
-            //	Restore style and position
-            Mmenu.node.page.setAttribute('style', Mmenu.node.page['mmStyle']);
 
             this.vars.opened = false;
             this.trigger('close:finish');
