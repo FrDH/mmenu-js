@@ -9,33 +9,20 @@
  * http://creativecommons.org/licenses/by-nc/4.0/
  */
 
-//  There's a bug in the CSS polyfill that'll override the :root vars with the .mm-menu_them-* vars
-//  Therefor we'll import the themes file first.
-@import 'extensions/themes/mmenu.themes';
-
 //	Core
 @import 'core/oncanvas/mmenu.oncanvas';
 
 //	Core add-ons
 @import 'core/offcanvas/mmenu.offcanvas';
 @import 'core/screenreader/mmenu.screenreader';
-//@import 'core/scrollbugfix/mmenu.scrollbugfix';
 
 //	Add-ons
-@import 'addons/autoheight/mmenu.autoheight';
-//@import 'addons/backbutton/mmenu.backbutton';
-@import 'addons/columns/mmenu.columns';
 @import 'addons/counters/mmenu.counters';
-@import 'addons/dividers/mmenu.dividers';
 @import 'addons/drag/mmenu.drag';
-@import 'addons/dropdown/mmenu.dropdown';
-//@import 'addons/fixedelements/mmenu.fixedelements';
 @import 'addons/iconbar/mmenu.iconbar';
 @import 'addons/iconpanels/mmenu.iconpanels';
 @import 'addons/keyboardnavigation/mmenu.keyboardnavigation';
-//@import 'addons/lazysubmenus/mmenu.lazysubmenus';
 @import 'addons/navbars/mmenu.navbars';
-//@import 'addons/pagescroll/mmenu.pagescroll';
 @import 'addons/searchfield/mmenu.searchfield';
 @import 'addons/sectionindexer/mmenu.sectionindexer';
 @import 'addons/setselected/mmenu.setselected';
@@ -43,21 +30,10 @@
 @import 'addons/toggles/mmenu.toggles';
 
 //	Extensions
-@import 'extensions/borderstyle/mmenu.borderstyle';
-@import 'extensions/effects/mmenu.effects';
 @import 'extensions/fullscreen/mmenu.fullscreen';
-@import 'extensions/listview/mmenu.listview';
-@import 'extensions/multiline/mmenu.multiline';
 @import 'extensions/pagedim/mmenu.pagedim';
-@import 'extensions/popup/mmenu.popup';
 @import 'extensions/positioning/mmenu.positioning';
-@import 'extensions/shadows/mmenu.shadows';
 @import 'extensions/themes/mmenu.themes';
 
 //	Wrappers
-//@import 'wrappers/angular/mmenu.angular';
 @import 'wrappers/bootstrap/mmenu.bootstrap';
-//@import 'wrappers/magento/mmenu.magento';
-//@import 'wrappers/olark/mmenu.olark';
-//@import 'wrappers/turbolinks/mmenu.turbolinks';
-//@import 'wrappers/wordpress/mmenu.wordpress';

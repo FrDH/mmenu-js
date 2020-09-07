@@ -18,18 +18,12 @@ import screenReader from '../dist/core/screenreader/mmenu.screenreader';
 import scrollBugFix from '../dist/core/scrollbugfix/mmenu.scrollbugfix';
 
 //	Add-ons
-import autoHeight from '../dist/addons/autoheight/mmenu.autoheight';
 import backButton from '../dist/addons/backbutton/mmenu.backbutton';
-import columns from '../dist/addons/columns/mmenu.columns';
 import counters from '../dist/addons/counters/mmenu.counters';
-import dividers from '../dist/addons/dividers/mmenu.dividers';
 import drag from '../dist/addons/drag/mmenu.drag';
-import dropdown from '../dist/addons/dropdown/mmenu.dropdown';
-import fixedElements from '../dist/addons/fixedelements/mmenu.fixedelements';
 import iconbar from '../dist/addons/iconbar/mmenu.iconbar';
 import iconPanels from '../dist/addons/iconpanels/mmenu.iconpanels';
 import keyboardNavigation from '../dist/addons/keyboardnavigation/mmenu.keyboardnavigation';
-import lazySubmenus from '../dist/addons/lazysubmenus/mmenu.lazysubmenus';
 import navbars from '../dist/addons/navbars/mmenu.navbars';
 import pageScroll from '../dist/addons/pagescroll/mmenu.pagescroll';
 import searchfield from '../dist/addons/searchfield/mmenu.searchfield';
@@ -39,11 +33,7 @@ import sidebar from '../dist/addons/sidebar/mmenu.sidebar';
 import toggles from '../dist/addons/toggles/mmenu.toggles';
 
 //	Wrappers
-import angular from '../dist/wrappers/angular/mmenu.angular';
 import bootstrap from '../dist/wrappers/bootstrap/mmenu.bootstrap';
-import olark from '../dist/wrappers/olark/mmenu.olark';
-import turbolinks from '../dist/wrappers/turbolinks/mmenu.turbolinks';
-import wordpress from '../dist/wrappers/wordpress/mmenu.wordpress';
 
 Mmenu.addons = {
     //	Core add-ons
@@ -52,18 +42,12 @@ Mmenu.addons = {
     scrollBugFix,
 
     //	Add-ons
-    autoHeight,
     backButton,
-    columns,
     counters,
-    dividers,
     drag,
-    dropdown,
-    fixedElements,
     iconbar,
     iconPanels,
     keyboardNavigation,
-    lazySubmenus,
     navbars,
     pageScroll,
     searchfield,
@@ -75,11 +59,7 @@ Mmenu.addons = {
 
 //	Wrappers
 Mmenu.wrappers = {
-    angular,
     bootstrap,
-    olark,
-    turbolinks,
-    wordpress
 };
 
 //  Export module
@@ -91,12 +71,12 @@ if (window) {
 }
 
 //	jQuery plugin
-(function($) {
+(function ($) {
     if ($) {
-        $.fn.mmenu = function(options, configs) {
+        $.fn.mmenu = function (options, configs) {
             var $result = $();
 
-            this.each(function(e, element) {
+            this.each(function (e, element) {
                 //	Don't proceed if the element already is a mmenu.
                 if (element.mmApi) {
                     return;

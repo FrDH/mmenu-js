@@ -70,6 +70,19 @@
             });
         });
 
+        /* Add-ons */
+
+        //  Removed wrappers.
+        ['angular', 'magento', 'olark', 'turbolinks', 'wordpress'].forEach(wrpr => {
+            if (this.opts.wrappers.includes(wrpr)) {
+                deprecated(
+                    'The "' + wrpr + '" wrapper',
+                    null,
+                    '9.0.0'
+                );
+            }
+        });
+
 
         /**
          * ----------------------------

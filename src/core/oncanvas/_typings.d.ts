@@ -89,26 +89,14 @@ interface mmOptions {
 
     //	Add-ons
 
-    /** Options for the auto height add-on. */
-    autoHeight?: mmOptionsAutoheight;
-
     /** Options for the back button add-on. */
     backButton?: mmOptionsBackbutton;
-
-    /** Options for the columns add-on. */
-    columns?: mmOptionsColumns;
 
     /** Options for the counters add-on. */
     counters?: mmOptionsCounters;
 
-    /** Options for the dividers add-on. */
-    dividers?: mmOptionsDividers;
-
     /** Options for the drag add-on. */
     drag?: mmOptionsDrag;
-
-    /** Options for the dropdown add-on. */
-    dropdown?: mmOptionsDropdown;
 
     /** Options for the iconbar add-on. */
     iconbar?: mmOptionsIconbar;
@@ -118,9 +106,6 @@ interface mmOptions {
 
     /** Options for the keyboard navigation add-on. */
     keyboardNavigation?: mmOptionsKeyboardnavigation;
-
-    /** Options for the lazy submenus add-on. */
-    lazySubmenus?: mmOptionsLazysubmenus;
 
     /** List of navbar options for the navbars add-on. */
     navbars?: mmOptionsNavbarsNavbar[];
@@ -199,12 +184,6 @@ interface mmConfigs {
     screenReader?: mmConfigsScreenreader;
 
     //	Add-ons
-
-    /** Configuration for the dropdown add-on. */
-    dropdown?: mmConfigsDropdown;
-
-    /** Configuration for the fixed elements add-on. */
-    fixedElements?: mmConfigsFixedelements;
 
     /** Configuration for the navbars add-on. */
     navbars?: mmConfigsNavbars;

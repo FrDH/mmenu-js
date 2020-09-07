@@ -60,13 +60,6 @@
                 width: var(--mm-sidebar-expanded-size);
                 border-right-width: 1px;
                 border-right-style: solid;
-
-                @if ($mm_include_shadows_page) {
-                    &.mm-menu_pageshadow:after {
-                        content: none;
-                        display: none;
-                    }
-                }
             }
 
             @if ($mm_include_offcanvas_blocker) {

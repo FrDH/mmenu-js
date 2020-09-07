@@ -41,10 +41,6 @@ $mm_opt_screenreader	: true !default;
 
 $mm_counterWidth: $mm_btnSize !default;
 
-$mm_dropdownShadow: 0 2px 10px rgba( #000, 0.3 ) !default;
-$mm_dropdownTipX: 20px !default;
-$mm_dropdownTipY: 10px !default;
-
 $mm_iconbarSize: $mm_btnSize !default;
 
 $mm_iconpanelSize: $mm_btnSize !default;
@@ -66,4 +62,3 @@ $mm_fullscreen_max: 10000px !default;
 
 $mm_pagedimOpacity: 0.3 !default;
 $mm_pagedimDelay: 0.4s !default;
-$mm_popupShadow: 0 2px 10px rgba( #000, 0.3 ) !default;
