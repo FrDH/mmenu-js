@@ -16,12 +16,10 @@ export default function (this: Mmenu) {
 
     //	Refactor divider classname
     this.bind('initListitem:after', (listitem) => {
-        // DOM.children(listview).forEach(listitem => {
         DOM.reClass(listitem, this.conf.classNames.divider, 'mm-divider');
         if (listitem.matches('.mm-divider')) {
             listitem.classList.remove('mm-listitem');
         }
-        // });
     });
 
     //	Add dividers

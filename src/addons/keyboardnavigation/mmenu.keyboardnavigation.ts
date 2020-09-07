@@ -139,7 +139,6 @@ const initWindow = function (this: Mmenu, enhance: boolean) {
     events.on(document.body, 'focusin.tabguard', (evnt: KeyboardEvent) => {
         if (this.node.wrpr.matches('.mm-wrapper_opened')) {
             let target = evnt.target as HTMLElement;
-
             if (target.matches('.mm-tabend')) {
                 let next;
 
@@ -212,7 +211,6 @@ const initWindow = function (this: Mmenu, enhance: boolean) {
                             break;
                     }
                 } else {
-                    //   TODO: dit werkt  niet meer?
                     let api: mmApi = menu['mmApi'];
 
                     switch (evnt.keyCode) {

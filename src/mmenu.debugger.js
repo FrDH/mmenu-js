@@ -2,15 +2,15 @@
  * Debugger for mmenu.js
  * Include this file after including the mmenu.js plugin to debug your menu.
  */
-(function() {
+(function () {
     const _console = Mmenu.console ||
         console || {
-            log: function() {},
-            warn: function() {},
-            error: function() {},
-            group: function() {},
-            groupEnd: function() {}
-        };
+        log: function () { },
+        warn: function () { },
+        error: function () { },
+        group: function () { },
+        groupEnd: function () { }
+    };
 
     const warnings = [];
     const deprecated = (depr, repl, vers) => {
@@ -35,7 +35,7 @@
     }
 
     /** Log deprecated warnings. */
-    Mmenu.prototype._deprecatedWarnings = function() {
+    Mmenu.prototype._deprecatedWarnings = function () {
         /**
          * ----------------------------
          * Version 8.5 > 9.0
@@ -45,7 +45,7 @@
         /* Add-ons */
 
         //  Removed add-ons.
-        ['columns'].forEach(addon => {
+        ['autoheight', 'columns', 'dividers'].forEach(addon => {
             if (this.opts[addon]) {
                 deprecated(
                     'The "' + addon + '" add-on',
@@ -268,8 +268,8 @@
                 ) {
                     deprecated(
                         'Passing a jQuery object as an argument to the "' +
-                            method +
-                            '" API method',
+                        method +
+                        '" API method',
                         'a HTMLElement',
                         '8.0.0'
                     );
@@ -288,8 +288,8 @@
                 ) {
                     deprecated(
                         'Passing a jQuery object as an argument to the "' +
-                            method +
-                            '" API method',
+                        method +
+                        '" API method',
                         'a HTMLElement array',
                         '8.0.0'
                     );

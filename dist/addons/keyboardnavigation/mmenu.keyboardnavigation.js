@@ -163,7 +163,6 @@ var initWindow = function (enhance) {
                     }
                 }
                 else {
-                    //   TODO: dit werkt  niet meer?
                     var api_1 = menu['mmApi'];
                     switch (evnt.keyCode) {
                         //	close submenu with backspace
