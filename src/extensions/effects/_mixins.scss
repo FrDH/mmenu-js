@@ -1,5 +1,0 @@
-@mixin mm_effect_listitem_delay( $i ) {
-	&:nth-child( #{$i} ) {
-		transition-delay: ( $i * 50ms );
-	}
-}

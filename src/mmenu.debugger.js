@@ -45,14 +45,29 @@
         /* Add-ons */
 
         //  Removed add-ons.
-        ['autoheight', 'columns', 'dividers'].forEach(addon => {
+        ['autoheight', 'columns', 'dividers', 'dropdown', 'fixedelements', 'lazysubmenus'].forEach(addon => {
             if (this.opts[addon]) {
                 deprecated(
                     'The "' + addon + '" add-on',
                     null,
-                    '8.5.0'
+                    '9.0.0'
                 );
             }
+        });
+
+        /* Extensions */
+
+        // Removed extensions.
+        ['borderstyle', 'effects', 'listview', 'multiline', 'popup', 'shadows'].forEach(ext => {
+            Object.keys(this.opts.extensions).forEach(key => {
+                if (this.opts.extensions[key].includes(ext)) {
+                    deprecated(
+                        'The "' + ext + '" extension',
+                        'custom CSS',
+                        '9.0.0'
+                    );
+                }
+            });
         });
 
 
