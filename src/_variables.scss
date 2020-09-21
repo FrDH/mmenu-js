@@ -39,13 +39,6 @@ $mm_menuMaxHeight: 880px !default;
 
 $mm_opt_screenreader	: true !default;
 
-$mm_fullscreen_full: 1 !default;
-$mm_fullscreen_min: 140px !default;
-$mm_fullscreen_max: 10000px !default;
-
-$mm_pagedimOpacity: 0.3 !default;
-$mm_pagedimDelay: 0.4s !default;
-$mm_popupShadow: 0 2px 10px rgba( #000, 0.3 ) !default;
 $mm_counterWidth: $mm_btnSize !default;
 
 $mm_dropdownShadow: 0 2px 10px rgba( #000, 0.3 ) !default;
@@ -66,3 +59,11 @@ $mm_toggleHeight: $mm_listitemSize - $mm_padding !default;
 $mm_toggleWidth: ($mm_toggleHeight * 2) - $mm_padding !default;
 $mm_checkHeight: $mm_btnSize - $mm_padding !default;
 $mm_checkWidth: $mm_btnSize - $mm_padding !default;
+
+$mm_fullscreen_full: 1 !default;
+$mm_fullscreen_min: 140px !default;
+$mm_fullscreen_max: 10000px !default;
+
+$mm_pagedimOpacity: 0.3 !default;
+$mm_pagedimDelay: 0.4s !default;
+$mm_popupShadow: 0 2px 10px rgba( #000, 0.3 ) !default;

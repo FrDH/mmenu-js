@@ -1,8 +1,10 @@
 {
-    "include": ["src/**/*"],
+    "include": [
+        "src/**/*"
+    ],
     "compilerOptions": {
         "target": "es5",
         "moduleResolution": "node",
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
     }
 }

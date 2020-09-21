@@ -24,6 +24,8 @@
     left: var(--mm-offset-left);
     z-index: 0;
 
+    overscroll-behavior: auto;
+
     background: var(--mm-color-background);
     border-color: var(--mm-color-border);
     color: var(--mm-color-text);

@@ -91,12 +91,12 @@ if (window) {
 }
 
 //	jQuery plugin
-(function($) {
+(function ($) {
     if ($) {
-        $.fn.mmenu = function(options, configs) {
+        $.fn.mmenu = function (options, configs) {
             var $result = $();
 
-            this.each(function(e, element) {
+            this.each(function (e, element) {
                 //	Don't proceed if the element already is a mmenu.
                 if (element.mmApi) {
                     return;

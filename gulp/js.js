@@ -1,6 +1,6 @@
 /*
-	JS tasks.
-		*) The "module" file is transpiled from the specified "custom input" dir.
+    JS tasks.
+        *) The "module" file is transpiled from the specified "custom input" dir.
 */
 
 const { src, dest, watch, series } = require('gulp');
@@ -61,7 +61,7 @@ exports.watch = JSwatch = (cb) => {
 const JStranspile = (cb, input, output) => {
     return src([
         dir.input + '/**/*.d.ts', // Include all typings.
-        input || dir.input + '/**/*.ts', // Include the needed ts files.
+        input || (dir.input + '/**/*.ts'), // Include the needed ts files.
     ])
         .pipe(
             typescript({
