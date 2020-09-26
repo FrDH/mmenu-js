@@ -91,23 +91,19 @@ export default function () {
         var id = originalId(_this.node.menu.id);
         if (id) {
             if (anchor.matches('[href="#' + id + '"]')) {
-                //	Opening this menu from within this menu
-                //		-> Open menu
-                if (args.inMenu) {
-                    _this.open();
-                    return true;
-                }
                 //	Opening this menu from within a second menu
                 //		-> Close the second menu before opening this menu
-                var menu = anchor.closest('.mm-menu');
-                if (menu) {
-                    var api = menu['mmApi'];
-                    if (api && api.close) {
-                        api.close();
-                        transitionend(menu, function () {
-                            _this.open();
-                        }, _this.conf.transitionDuration);
-                        return true;
+                if (!args.inMenu) {
+                    var menu = anchor.closest('.mm-menu');
+                    if (menu) {
+                        var api = menu['mmApi'];
+                        if (api && api.close) {
+                            api.close();
+                            transitionend(menu, function () {
+                                _this.open();
+                            }, _this.conf.transitionDuration);
+                            return true;
+                        }
                     }
                 }
                 //	Opening this menu

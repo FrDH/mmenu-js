@@ -53,7 +53,7 @@ export default function (this: Mmenu) {
         //	Prepend to the <body>
         document
             .querySelector(configs.menu.insertSelector)
-            [configs.menu.insertMethod](this.node.menu);
+        [configs.menu.insertMethod](this.node.menu);
     });
 
     this.bind('initMenu:after', () => {
@@ -117,28 +117,25 @@ export default function (this: Mmenu) {
         let id = originalId(this.node.menu.id);
         if (id) {
             if (anchor.matches('[href="#' + id + '"]')) {
-                //	Opening this menu from within this menu
-                //		-> Open menu
-                if (args.inMenu) {
-                    this.open();
-                    return true;
-                }
 
                 //	Opening this menu from within a second menu
                 //		-> Close the second menu before opening this menu
-                var menu = anchor.closest('.mm-menu') as HTMLElement;
-                if (menu) {
-                    var api: mmApi = menu['mmApi'];
-                    if (api && api.close) {
-                        api.close();
-                        transitionend(
-                            menu,
-                            () => {
-                                this.open();
-                            },
-                            this.conf.transitionDuration
-                        );
-                        return true;
+                if (!args.inMenu) {
+
+                    var menu = anchor.closest('.mm-menu') as HTMLElement;
+                    if (menu) {
+                        var api: mmApi = menu['mmApi'];
+                        if (api && api.close) {
+                            api.close();
+                            transitionend(
+                                menu,
+                                () => {
+                                    this.open();
+                                },
+                                this.conf.transitionDuration
+                            );
+                            return true;
+                        }
                     }
                 }
 
