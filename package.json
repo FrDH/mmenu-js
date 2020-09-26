@@ -1,6 +1,6 @@
 {
     "name": "mmenu-js",
-    "version": "8.5.16",
+    "version": "8.5.17",
     "main": "dist/mmenu.js",
     "module": "src/mmenu.js",
     "author": "Fred Heusschen <info@frebsite.nl>",
