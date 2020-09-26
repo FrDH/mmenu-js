@@ -35,7 +35,16 @@
     position: relative;
 }
 
-@import 'oncanvas.menu', 'oncanvas.menu.rtl', 'oncanvas.panels',
-    'oncanvas.panels.rtl', 'oncanvas.vertical', 'oncanvas.buttons',
-    'oncanvas.buttons.rtl', 'oncanvas.navbar', 'oncanvas.navbar.rtl',
-    'oncanvas.listviews', 'oncanvas.listviews.rtl';
+@import 
+    'oncanvas.menu', 
+    'oncanvas.menu.rtl', 
+    'oncanvas.panels',
+    'oncanvas.panels.rtl', 
+    'oncanvas.vertical', 
+    'oncanvas.buttons',
+    'oncanvas.buttons.rtl', 
+    'oncanvas.navbar', 
+    'oncanvas.navbar.rtl',
+    'oncanvas.listviews', 
+    'oncanvas.listviews.rtl',
+    'oncanvas.divider';
