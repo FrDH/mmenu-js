@@ -640,7 +640,7 @@ export default class Mmenu {
                             }
                             return true;
                         }
-                    } catch (err) {}
+                    } catch (err) { }
                 }
             }
         });
@@ -881,6 +881,15 @@ export default class Mmenu {
             this.conf.classNames.selected,
             'mm-listitem_selected'
         );
+
+        DOM.reClass(
+            listitem,
+            this.conf.classNames.divider,
+            'mm-divider'
+        );
+        if (listitem.matches('.mm-divider')) {
+            listitem.classList.remove('mm-listitem');
+        }
 
         DOM.children(listitem, 'a, span').forEach((text) => {
             text.classList.add('mm-listitem__text');

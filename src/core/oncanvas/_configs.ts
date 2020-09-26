@@ -1,5 +1,6 @@
 const configs: mmConfigs = {
     classNames: {
+        divider: 'Divider',
         inset: 'Inset',
         nolistview: 'NoListview',
         nopanel: 'NoPanel',

@@ -630,6 +630,10 @@ var Mmenu = /** @class */ (function () {
         this.trigger('initListitem:before', [listitem]);
         listitem.classList.add('mm-listitem');
         DOM.reClass(listitem, this.conf.classNames.selected, 'mm-listitem_selected');
+        DOM.reClass(listitem, this.conf.classNames.divider, 'mm-divider');
+        if (listitem.matches('.mm-divider')) {
+            listitem.classList.remove('mm-listitem');
+        }
         DOM.children(listitem, 'a, span').forEach(function (text) {
             text.classList.add('mm-listitem__text');
         });
