@@ -163,165 +163,56 @@ export default class Mmenu {
      * Open a panel.
      * @param {HTMLElement} panel				Panel to open.
      * @param {boolean}		[animation=true]	Whether or not to open the panel with an animation.
+     * @param {boolean}     [openParents=false] Whether or nog to also open all parent panels.
      */
-    openPanel(panel: HTMLElement, animation?: boolean) {
+    openPanel(panel: HTMLElement, animation: boolean = true, openParents: boolean = false) {
         //	Invoke "before" hook.
         this.trigger('openPanel:before', [panel]);
 
         //	Find panel.
-        if (!panel) {
-            return;
-        }
-
         if (!panel.matches('.mm-panel')) {
             panel = panel.closest('.mm-panel') as HTMLElement;
         }
 
-        if (!panel) {
-            return;
-        }
-        //	/Find panel.
-
-        if (typeof animation != 'boolean') {
-            animation = true;
-        }
+        this.trigger('openPanel:start', [panel]);
 
         //	Open a "vertical" panel.
         if (panel.parentElement.matches('.mm-listitem_vertical')) {
-            //	Open current and all vertical parent panels.
-            DOM.parents(panel, '.mm-listitem_vertical').forEach((listitem) => {
-                listitem.classList.add('mm-listitem_opened');
-                DOM.children(listitem, '.mm-panel').forEach((panel) => {
-                    panel.classList.remove('mm-hidden');
+
+            //  Open only current
+            if (!openParents) {
+                panel.parentElement.classList.add('mm-listitem_opened');
+
+                //	Open current and all vertical parent panels.
+            } else {
+                DOM.parents(panel, '.mm-listitem_vertical').forEach((listitem) => {
+                    listitem.classList.add('mm-listitem_opened');
                 });
-            });
 
-            //	Open first non-vertical parent panel.
-            let parents = DOM.parents(panel, '.mm-panel').filter(
-                (panel) => !panel.parentElement.matches('.mm-listitem_vertical')
-            );
+                //	Open first horizontal parent panel.
+                const parents = DOM.parents(panel, '.mm-panel').filter(
+                    (panel) => !panel.parentElement.matches('.mm-listitem_vertical')
+                );
 
-            this.trigger('openPanel:start', [panel]);
-
-            if (parents.length) {
-                this.openPanel(parents[0]);
+                if (parents.length) {
+                    this.openPanel(parents[0], false);
+                }
             }
-
-            this.trigger('openPanel:finish', [panel]);
 
             //	Open a "horizontal" panel.
         } else {
-            if (panel.matches('.mm-panel_opened')) {
-                return;
+
+            const current = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+            if (current) {
+                current.classList.remove('mm-panel_opened', 'mm-panel_highest');
+                current.classList.add('mm-panel_opened-parent');
             }
 
-            let panels = DOM.children(this.node.pnls, '.mm-panel'),
-                current = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
-
-            //	Close all child panels.
-            panels
-                .filter((parent) => parent !== panel)
-                .forEach((parent) => {
-                    parent.classList.remove('mm-panel_opened-parent');
-                });
-
-            //	Open all parent panels.
-            let parent: HTMLElement = null;
-            if (panel.dataset.mmParent) {
-                parent = DOM.find(
-                    this.node.pnls,
-                    '#' + panel.dataset.mmParent
-                )[0];
-            }
-
-            while (parent) {
-                parent = parent.closest('.mm-panel') as HTMLElement;
-                if (parent) {
-                    if (
-                        !parent.parentElement.matches('.mm-listitem_vertical')
-                    ) {
-                        parent.classList.add('mm-panel_opened-parent');
-                    }
-
-                    if (parent.dataset.mmParent) {
-                        parent = DOM.find(
-                            this.node.pnls,
-                            '#' + parent.dataset.mmParent
-                        )[0];
-                    } else {
-                        parent = null;
-                    }
-                }
-            }
-
-            //	Add classes for animation.
-            panels.forEach((panel) => {
-                panel.classList.remove('mm-panel_highest');
-            });
-
-            panels
-                .filter((hidden) => hidden !== current)
-                .filter((hidden) => hidden !== panel)
-                .forEach((hidden) => {
-                    hidden.classList.add('mm-hidden');
-                });
-
-            panel.classList.remove('mm-hidden');
-
-            /**	Start opening the panel. */
-            let openPanelStart = () => {
-                if (current) {
-                    current.classList.remove('mm-panel_opened');
-                }
-                panel.classList.add('mm-panel_opened');
-
-                if (panel.matches('.mm-panel_opened-parent')) {
-                    if (current) {
-                        current.classList.add('mm-panel_highest');
-                    }
-                    panel.classList.remove('mm-panel_opened-parent');
-                } else {
-                    if (current) {
-                        current.classList.add('mm-panel_opened-parent');
-                    }
-                    panel.classList.add('mm-panel_highest');
-                }
-
-                //	Invoke "start" hook.
-                this.trigger('openPanel:start', [panel]);
-            };
-
-            /**	Finish opening the panel. */
-            let openPanelFinish = () => {
-                if (current) {
-                    current.classList.remove('mm-panel_highest');
-                    current.classList.add('mm-hidden');
-                }
-                panel.classList.remove('mm-panel_highest');
-
-                //	Invoke "finish" hook.
-                this.trigger('openPanel:finish', [panel]);
-            };
-
-            if (animation && !panel.matches('.mm-panel_noanimation')) {
-                //	Without the timeout the animation will not work because the element had display: none;
-                setTimeout(() => {
-                    //	Callback
-                    transitionend(
-                        panel,
-                        () => {
-                            openPanelFinish();
-                        },
-                        this.conf.transitionDuration
-                    );
-
-                    openPanelStart();
-                }, this.conf.openingInterval);
-            } else {
-                openPanelStart();
-                openPanelFinish();
-            }
+            panel.classList.add('mm-panel_opened', 'mm-panel_highest');
+            panel.classList.remove('mm-panel_opened-parent');
         }
+
+        this.trigger('openPanel:finish', [panel]);
 
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel]);
@@ -335,53 +226,30 @@ export default class Mmenu {
         //	Invoke "before" hook.
         this.trigger('closePanel:before', [panel]);
 
-        var li = panel.parentElement;
 
-        //	Only works for "vertical" panels.
-        if (li.matches('.mm-listitem_vertical')) {
-            li.classList.remove('mm-listitem_opened');
-            panel.classList.add('mm-hidden');
+        //	Close a "vertical" panel.
+        if (panel.parentElement.matches('.mm-listitem_vertical')) {
+            panel.parentElement.classList.remove('mm-listitem_opened');
 
-            //	Invoke main hook.
-            this.trigger('closePanel', [panel]);
+            //  Close a "horizontal" panel.
+        } else {
+
+            panel.classList.remove('mm-panel_opened', 'mm-panel_opened-parent');
+            panel.classList.add('mm-panel_highest');
+
+            if (panel.dataset.mmParent) {
+                const parent = DOM.find(
+                    this.node.pnls,
+                    '#' + panel.dataset.mmParent
+                )[0];
+
+                parent.classList.remove('mm-panel_highest', 'mm-panel_opened-parent');
+                parent.classList.add('mm-panel_opened');
+            }
         }
 
         //	Invoke "after" hook.
         this.trigger('closePanel:after', [panel]);
-    }
-
-    /**
-     * Close all opened panels.
-     * @param {HTMLElement} panel Panel to open after closing all other panels.
-     */
-    closeAllPanels(panel?: HTMLElement) {
-        //	Invoke "before" hook.
-        this.trigger('closeAllPanels:before');
-
-        //	Close all "vertical" panels.
-        DOM.find(this.node.pnls, '.mm-listitem').forEach((listitem) => {
-            listitem.classList.remove('mm-listitem_selected');
-            listitem.classList.remove('mm-listitem_opened');
-        });
-
-        //	Close all "horizontal" panels.
-        const panels = DOM.children(this.node.pnls, '.mm-panel'),
-            opened = panel ? panel : panels[0];
-
-        DOM.children(this.node.pnls, '.mm-panel').forEach((panel) => {
-            if (panel !== opened) {
-                panel.classList.remove('mm-panel_opened');
-                panel.classList.remove('mm-panel_opened-parent');
-                panel.classList.remove('mm-panel_highest');
-                panel.classList.add('mm-hidden');
-            }
-        });
-
-        //	Open first panel.
-        this.openPanel(opened, false);
-
-        //	Invoke "after" hook.
-        this.trigger('closeAllPanels:after');
     }
 
     /**
@@ -709,7 +577,7 @@ export default class Mmenu {
             panel = wrapper;
         }
 
-        panel.classList.add('mm-panel', 'mm-hidden');
+        panel.classList.add('mm-panel');
 
         //  Append to the panels node if not vertically expanding
         if (!panel.parentElement.matches('.mm-listitem_vertical')) {

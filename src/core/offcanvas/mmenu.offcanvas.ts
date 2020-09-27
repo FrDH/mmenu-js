@@ -131,8 +131,7 @@ export default function (this: Mmenu) {
                                 menu,
                                 () => {
                                     this.open();
-                                },
-                                this.conf.transitionDuration
+                                }
                             );
                             return true;
                         }
@@ -223,8 +222,7 @@ Mmenu.prototype._openStart = function (this: Mmenu) {
         Mmenu.node.page,
         () => {
             this.trigger('open:finish');
-        },
-        this.conf.transitionDuration
+        }
     );
 
     //	Opening
@@ -255,8 +253,7 @@ Mmenu.prototype.close = function (this: Mmenu) {
 
             this.vars.opened = false;
             this.trigger('close:finish');
-        },
-        this.conf.transitionDuration
+        }
     );
 
     //	Closing

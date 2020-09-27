@@ -17,9 +17,9 @@ $mm_module: '.mm-panel';
     transition: transform $mm_transitionDuration $mm_transitionFunction;
 
     //	Fixes css from other styles hiding submenus
-    &:not(.mm-hidden) {
-        display: block;
-    }
+    // &:not(.mm-hidden) {
+    //     display: block;
+    // }
 
     //	Because padding-bottom is ignored when a DIV is scrollable
     &:after {
@@ -37,17 +37,17 @@ $mm_module: '.mm-panel';
         transform: translate3d(-$mm_subpanelOffset, 0, 0);
     }
 
-    &_highest {
-        z-index: 2;
-    }
+    // &_highest {
+    //     z-index: 2;
+    // }
 
-    &_noanimation {
-        transition: none !important;
+    // &_noanimation {
+    //     transition: none !important;
 
-        &#{$mm_module}_opened-parent {
-            transform: translate3d(0, 0, 0);
-        }
-    }
+    //     &#{$mm_module}_opened-parent {
+    //         transform: translate3d(0, 0, 0);
+    //     }
+    // }
 
     .mm-panels > & {
         position: absolute;

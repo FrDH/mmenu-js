@@ -99,12 +99,10 @@ export const valueOrFn = (
  *
  * @param {HTMLElement} 	element 	Scope for the function.
  * @param {function}		func		Function to invoke.
- * @param {number}			duration	The duration of the animation (for the fallback).
  */
 export const transitionend = (
     element: HTMLElement,
-    func: Function,
-    duration: number
+    func: Function
 ) => {
     var _ended = false,
         _fn = function (evnt) {
@@ -116,15 +114,12 @@ export const transitionend = (
 
             if (!_ended) {
                 element.removeEventListener('transitionend', _fn);
-                element.removeEventListener('webkitTransitionEnd', _fn);
                 func.call(element);
             }
             _ended = true;
         };
 
     element.addEventListener('transitionend', _fn);
-    element.addEventListener('webkitTransitionEnd', _fn);
-    setTimeout(_fn, duration * 1.1);
 };
 
 /**

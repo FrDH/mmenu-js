@@ -5,7 +5,7 @@ import translate from './translations/translate';
 import * as DOM from '../../_modules/dom';
 import * as i18n from '../../_modules/i18n';
 import * as media from '../../_modules/matchmedia';
-import { type, extend, transitionend, uniqueId, valueOrFn, } from '../../_modules/helpers';
+import { type, extend, uniqueId, valueOrFn, } from '../../_modules/helpers';
 //  Add the translations.
 translate();
 /**
@@ -58,130 +58,47 @@ var Mmenu = /** @class */ (function () {
      * Open a panel.
      * @param {HTMLElement} panel				Panel to open.
      * @param {boolean}		[animation=true]	Whether or not to open the panel with an animation.
+     * @param {boolean}     [openParents=false] Whether or nog to also open all parent panels.
      */
-    Mmenu.prototype.openPanel = function (panel, animation) {
-        var _this = this;
+    Mmenu.prototype.openPanel = function (panel, animation, openParents) {
+        if (animation === void 0) { animation = true; }
+        if (openParents === void 0) { openParents = false; }
         //	Invoke "before" hook.
         this.trigger('openPanel:before', [panel]);
         //	Find panel.
-        if (!panel) {
-            return;
-        }
         if (!panel.matches('.mm-panel')) {
             panel = panel.closest('.mm-panel');
         }
-        if (!panel) {
-            return;
-        }
-        //	/Find panel.
-        if (typeof animation != 'boolean') {
-            animation = true;
-        }
+        this.trigger('openPanel:start', [panel]);
         //	Open a "vertical" panel.
         if (panel.parentElement.matches('.mm-listitem_vertical')) {
-            //	Open current and all vertical parent panels.
-            DOM.parents(panel, '.mm-listitem_vertical').forEach(function (listitem) {
-                listitem.classList.add('mm-listitem_opened');
-                DOM.children(listitem, '.mm-panel').forEach(function (panel) {
-                    panel.classList.remove('mm-hidden');
-                });
-            });
-            //	Open first non-vertical parent panel.
-            var parents = DOM.parents(panel, '.mm-panel').filter(function (panel) { return !panel.parentElement.matches('.mm-listitem_vertical'); });
-            this.trigger('openPanel:start', [panel]);
-            if (parents.length) {
-                this.openPanel(parents[0]);
+            //  Open only current
+            if (!openParents) {
+                panel.parentElement.classList.add('mm-listitem_opened');
+                //	Open current and all vertical parent panels.
             }
-            this.trigger('openPanel:finish', [panel]);
+            else {
+                DOM.parents(panel, '.mm-listitem_vertical').forEach(function (listitem) {
+                    listitem.classList.add('mm-listitem_opened');
+                });
+                //	Open first horizontal parent panel.
+                var parents = DOM.parents(panel, '.mm-panel').filter(function (panel) { return !panel.parentElement.matches('.mm-listitem_vertical'); });
+                if (parents.length) {
+                    this.openPanel(parents[0], false);
+                }
+            }
             //	Open a "horizontal" panel.
         }
         else {
-            if (panel.matches('.mm-panel_opened')) {
-                return;
+            var current = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+            if (current) {
+                current.classList.remove('mm-panel_opened', 'mm-panel_highest');
+                current.classList.add('mm-panel_opened-parent');
             }
-            var panels = DOM.children(this.node.pnls, '.mm-panel'), current_1 = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
-            //	Close all child panels.
-            panels
-                .filter(function (parent) { return parent !== panel; })
-                .forEach(function (parent) {
-                parent.classList.remove('mm-panel_opened-parent');
-            });
-            //	Open all parent panels.
-            var parent_1 = null;
-            if (panel.dataset.mmParent) {
-                parent_1 = DOM.find(this.node.pnls, '#' + panel.dataset.mmParent)[0];
-            }
-            while (parent_1) {
-                parent_1 = parent_1.closest('.mm-panel');
-                if (parent_1) {
-                    if (!parent_1.parentElement.matches('.mm-listitem_vertical')) {
-                        parent_1.classList.add('mm-panel_opened-parent');
-                    }
-                    if (parent_1.dataset.mmParent) {
-                        parent_1 = DOM.find(this.node.pnls, '#' + parent_1.dataset.mmParent)[0];
-                    }
-                    else {
-                        parent_1 = null;
-                    }
-                }
-            }
-            //	Add classes for animation.
-            panels.forEach(function (panel) {
-                panel.classList.remove('mm-panel_highest');
-            });
-            panels
-                .filter(function (hidden) { return hidden !== current_1; })
-                .filter(function (hidden) { return hidden !== panel; })
-                .forEach(function (hidden) {
-                hidden.classList.add('mm-hidden');
-            });
-            panel.classList.remove('mm-hidden');
-            /**	Start opening the panel. */
-            var openPanelStart_1 = function () {
-                if (current_1) {
-                    current_1.classList.remove('mm-panel_opened');
-                }
-                panel.classList.add('mm-panel_opened');
-                if (panel.matches('.mm-panel_opened-parent')) {
-                    if (current_1) {
-                        current_1.classList.add('mm-panel_highest');
-                    }
-                    panel.classList.remove('mm-panel_opened-parent');
-                }
-                else {
-                    if (current_1) {
-                        current_1.classList.add('mm-panel_opened-parent');
-                    }
-                    panel.classList.add('mm-panel_highest');
-                }
-                //	Invoke "start" hook.
-                _this.trigger('openPanel:start', [panel]);
-            };
-            /**	Finish opening the panel. */
-            var openPanelFinish_1 = function () {
-                if (current_1) {
-                    current_1.classList.remove('mm-panel_highest');
-                    current_1.classList.add('mm-hidden');
-                }
-                panel.classList.remove('mm-panel_highest');
-                //	Invoke "finish" hook.
-                _this.trigger('openPanel:finish', [panel]);
-            };
-            if (animation && !panel.matches('.mm-panel_noanimation')) {
-                //	Without the timeout the animation will not work because the element had display: none;
-                setTimeout(function () {
-                    //	Callback
-                    transitionend(panel, function () {
-                        openPanelFinish_1();
-                    }, _this.conf.transitionDuration);
-                    openPanelStart_1();
-                }, this.conf.openingInterval);
-            }
-            else {
-                openPanelStart_1();
-                openPanelFinish_1();
-            }
+            panel.classList.add('mm-panel_opened', 'mm-panel_highest');
+            panel.classList.remove('mm-panel_opened-parent');
         }
+        this.trigger('openPanel:finish', [panel]);
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel]);
     };
@@ -192,43 +109,22 @@ var Mmenu = /** @class */ (function () {
     Mmenu.prototype.closePanel = function (panel) {
         //	Invoke "before" hook.
         this.trigger('closePanel:before', [panel]);
-        var li = panel.parentElement;
-        //	Only works for "vertical" panels.
-        if (li.matches('.mm-listitem_vertical')) {
-            li.classList.remove('mm-listitem_opened');
-            panel.classList.add('mm-hidden');
-            //	Invoke main hook.
-            this.trigger('closePanel', [panel]);
+        //	Close a "vertical" panel.
+        if (panel.parentElement.matches('.mm-listitem_vertical')) {
+            panel.parentElement.classList.remove('mm-listitem_opened');
+            //  Close a "horizontal" panel.
+        }
+        else {
+            panel.classList.remove('mm-panel_opened', 'mm-panel_opened-parent');
+            panel.classList.add('mm-panel_highest');
+            if (panel.dataset.mmParent) {
+                var parent_1 = DOM.find(this.node.pnls, '#' + panel.dataset.mmParent)[0];
+                parent_1.classList.remove('mm-panel_highest', 'mm-panel_opened-parent');
+                parent_1.classList.add('mm-panel_opened');
+            }
         }
         //	Invoke "after" hook.
         this.trigger('closePanel:after', [panel]);
-    };
-    /**
-     * Close all opened panels.
-     * @param {HTMLElement} panel Panel to open after closing all other panels.
-     */
-    Mmenu.prototype.closeAllPanels = function (panel) {
-        //	Invoke "before" hook.
-        this.trigger('closeAllPanels:before');
-        //	Close all "vertical" panels.
-        DOM.find(this.node.pnls, '.mm-listitem').forEach(function (listitem) {
-            listitem.classList.remove('mm-listitem_selected');
-            listitem.classList.remove('mm-listitem_opened');
-        });
-        //	Close all "horizontal" panels.
-        var panels = DOM.children(this.node.pnls, '.mm-panel'), opened = panel ? panel : panels[0];
-        DOM.children(this.node.pnls, '.mm-panel').forEach(function (panel) {
-            if (panel !== opened) {
-                panel.classList.remove('mm-panel_opened');
-                panel.classList.remove('mm-panel_opened-parent');
-                panel.classList.remove('mm-panel_highest');
-                panel.classList.add('mm-hidden');
-            }
-        });
-        //	Open first panel.
-        this.openPanel(opened, false);
-        //	Invoke "after" hook.
-        this.trigger('closeAllPanels:after');
     };
     /**
      * Toggle a panel opened/closed.
@@ -501,7 +397,7 @@ var Mmenu = /** @class */ (function () {
             wrapper_1.append(panel);
             panel = wrapper_1;
         }
-        panel.classList.add('mm-panel', 'mm-hidden');
+        panel.classList.add('mm-panel');
         //  Append to the panels node if not vertically expanding
         if (!panel.parentElement.matches('.mm-listitem_vertical')) {
             this.node.pnls.append(panel);

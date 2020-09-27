@@ -86,9 +86,8 @@ export var valueOrFn = function (element, option, dfault) {
  *
  * @param {HTMLElement} 	element 	Scope for the function.
  * @param {function}		func		Function to invoke.
- * @param {number}			duration	The duration of the animation (for the fallback).
  */
-export var transitionend = function (element, func, duration) {
+export var transitionend = function (element, func) {
     var _ended = false, _fn = function (evnt) {
         if (typeof evnt !== 'undefined') {
             if (evnt.target !== element) {
@@ -97,14 +96,11 @@ export var transitionend = function (element, func, duration) {
         }
         if (!_ended) {
             element.removeEventListener('transitionend', _fn);
-            element.removeEventListener('webkitTransitionEnd', _fn);
             func.call(element);
         }
         _ended = true;
     };
     element.addEventListener('transitionend', _fn);
-    element.addEventListener('webkitTransitionEnd', _fn);
-    setTimeout(_fn, duration * 1.1);
 };
 /**
  * Get a (page wide) unique ID.

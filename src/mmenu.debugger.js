@@ -45,7 +45,14 @@
         /* Add-ons */
 
         //  Removed add-ons.
-        ['autoheight', 'columns', 'dividers', 'dropdown', 'fixedelements', 'lazysubmenus'].forEach(addon => {
+        [
+            'autoheight',
+            'columns',
+            'dividers',
+            'dropdown',
+            'fixedelements',
+            'lazysubmenus'
+        ].forEach(addon => {
             if (this.opts[addon]) {
                 deprecated(
                     'The "' + addon + '" add-on',
@@ -58,7 +65,14 @@
         /* Extensions */
 
         // Removed extensions.
-        ['borderstyle', 'effects', 'listview', 'multiline', 'popup', 'shadows'].forEach(ext => {
+        [
+            'borderstyle',
+            'effects',
+            'listview',
+            'multiline',
+            'popup',
+            'shadows'
+        ].forEach(ext => {
             Object.keys(this.opts.extensions).forEach(key => {
                 if (this.opts.extensions[key].includes(ext)) {
                     deprecated(
@@ -70,10 +84,16 @@
             });
         });
 
-        /* Add-ons */
+        /* Wrappers */
 
         //  Removed wrappers.
-        ['angular', 'magento', 'olark', 'turbolinks', 'wordpress'].forEach(wrpr => {
+        [
+            'angular',
+            'magento',
+            'olark',
+            'turbolinks',
+            'wordpress'
+        ].forEach(wrpr => {
             if (this.opts.wrappers.includes(wrpr)) {
                 deprecated(
                     'The "' + wrpr + '" wrapper',
@@ -81,6 +101,21 @@
                     '9.0.0'
                 );
             }
+        });
+
+        /* API */
+
+        //	Removed API methods.
+        [
+            'initPanels'
+        ].forEach(method => {
+            this.bind(method + ':before', panel => {
+                deprecated(
+                    'The "' + method + '" API method',
+                    null,
+                    '9.0.0'
+                );
+            });
         });
 
 

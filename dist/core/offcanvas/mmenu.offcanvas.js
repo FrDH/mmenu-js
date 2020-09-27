@@ -101,7 +101,7 @@ export default function () {
                             api.close();
                             transitionend(menu, function () {
                                 _this.open();
-                            }, _this.conf.transitionDuration);
+                            });
                             return true;
                         }
                     }
@@ -175,7 +175,7 @@ Mmenu.prototype._openStart = function () {
     //	Callback when the page finishes opening.
     transitionend(Mmenu.node.page, function () {
         _this.trigger('open:finish');
-    }, this.conf.transitionDuration);
+    });
     //	Opening
     this.trigger('open:start');
     this.node.wrpr.classList.add('mm-wrapper_opening');
@@ -193,7 +193,7 @@ Mmenu.prototype.close = function () {
         _this.node.wrpr.classList.remove('mm-wrapper_opened', 'mm-wrapper_blocking', 'mm-wrapper_modal', 'mm-wrapper_background');
         _this.vars.opened = false;
         _this.trigger('close:finish');
-    }, this.conf.transitionDuration);
+    });
     //	Closing
     this.trigger('close:start');
     this.node.wrpr.classList.remove('mm-wrapper_opening');
