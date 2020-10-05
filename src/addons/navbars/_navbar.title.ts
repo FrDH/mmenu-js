@@ -14,7 +14,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
     var _url, _txt;
     var original: HTMLElement;
 
-    this.bind('openPanel:start', (panel: HTMLElement) => {
+    this.bind('openPanel:before', (panel: HTMLElement) => {
         //	Do nothing in a vertically expanding panel.
         if (panel.parentElement.matches('.mm-listitem_vertical')) {
             return;
@@ -48,7 +48,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
     //	Add screenreader / aria support
     var prev: HTMLElement;
 
-    this.bind('openPanel:start:sr-aria', (panel: HTMLElement) => {
+    this.bind('openPanel:before:sr-aria', (panel: HTMLElement) => {
         if (this.opts.screenReader.text) {
             if (!prev) {
                 var navbars = DOM.children(

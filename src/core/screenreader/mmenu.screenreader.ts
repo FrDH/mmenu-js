@@ -39,9 +39,9 @@ export default function (this: Mmenu) {
                     [].slice.call(arguments)
                 );
             });
-            this.bind('openPanel:start', function (this: Mmenu) {
+            this.bind('openPanel:before', function (this: Mmenu) {
                 this.trigger(
-                    'openPanel:start:sr-aria',
+                    'openPanel:before:sr-aria',
                     [].slice.call(arguments)
                 );
             });
@@ -70,7 +70,7 @@ export default function (this: Mmenu) {
         });
 
         //	Update aria-hidden for the panels when opening and closing a panel.
-        this.bind('openPanel:start', (panel: HTMLElement) => {
+        this.bind('openPanel:before', (panel: HTMLElement) => {
             /** Panels that should be considered "hidden". */
             var hidden: HTMLElement[] = DOM.find(this.node.pnls, '.mm-panel')
                 .filter((hide) => hide !== panel)
@@ -184,9 +184,9 @@ export default function (this: Mmenu) {
                 if (next) {
                     let text = this.i18n(
                         configs.text[
-                            next.parentElement.matches('.mm-listitem_vertical')
-                                ? 'toggleSubmenu'
-                                : 'openSubmenu'
+                        next.parentElement.matches('.mm-listitem_vertical')
+                            ? 'toggleSubmenu'
+                            : 'openSubmenu'
                         ]
                     );
                     next.innerHTML += sr.text(text);

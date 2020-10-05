@@ -98,7 +98,7 @@ export default function () {
                     }
                 }
             };
-            this.bind('openPanel:start', selectTab_1);
+            this.bind('openPanel:before', selectTab_1);
         }
     }
 }

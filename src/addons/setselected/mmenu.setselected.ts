@@ -52,7 +52,7 @@ export default function (this: Mmenu) {
 
     //	Set parent item selected for submenus
     if (options.parent) {
-        this.bind('openPanel:finish', (panel: HTMLElement) => {
+        this.bind('openPanel:after', (panel: HTMLElement) => {
             //	Remove all
             DOM.find(this.node.pnls, '.mm-listitem_selected-parent').forEach(
                 (listitem) => {

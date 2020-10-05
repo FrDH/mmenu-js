@@ -285,7 +285,7 @@ const initSearching = function (this: Mmenu, form: HTMLElement) {
     if (options.panel.add && options.panel.splash) {
         events.off(input, 'focus.splash');
         events.on(input, 'focus.splash', (evnt) => {
-            this.openPanel(searchpanel);
+            this.openPanel(searchpanel, false);
         });
     }
 
@@ -316,7 +316,7 @@ const initSearching = function (this: Mmenu, form: HTMLElement) {
 
     //	Focus the input in the searchpanel when opening the searchpanel.
     if (options.panel.add && options.addTo == 'panel') {
-        this.bind('openPanel:finish', (panel: HTMLElement) => {
+        this.bind('openPanel:after', (panel: HTMLElement) => {
             if (panel === searchpanel) {
                 input.focus();
             }

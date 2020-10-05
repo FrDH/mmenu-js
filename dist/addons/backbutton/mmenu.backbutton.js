@@ -26,7 +26,7 @@ export default function () {
             history.pushState(null, document.title, _menu);
         });
         this.bind('open:finish', setStates);
-        this.bind('openPanel:finish', setStates);
+        this.bind('openPanel:after', setStates);
         this.bind('close:finish', function () {
             states = [];
             history.back();

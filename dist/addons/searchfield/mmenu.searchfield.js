@@ -215,7 +215,7 @@ var initSearching = function (form) {
     if (options.panel.add && options.panel.splash) {
         events.off(input, 'focus.splash');
         events.on(input, 'focus.splash', function (evnt) {
-            _this.openPanel(searchpanel);
+            _this.openPanel(searchpanel, false);
         });
     }
     if (options.cancel) {
@@ -239,7 +239,7 @@ var initSearching = function (form) {
     }
     //	Focus the input in the searchpanel when opening the searchpanel.
     if (options.panel.add && options.addTo == 'panel') {
-        this.bind('openPanel:finish', function (panel) {
+        this.bind('openPanel:after', function (panel) {
             if (panel === searchpanel) {
                 input.focus();
             }

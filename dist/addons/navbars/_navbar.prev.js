@@ -11,7 +11,7 @@ export default function (navbar) {
     //	Update to opened panel.
     var org;
     var _url, _txt;
-    this.bind('openPanel:start', function (panel) {
+    this.bind('openPanel:before', function (panel) {
         if (panel.parentElement.matches('.mm-listitem_vertical')) {
             return;
         }
@@ -34,7 +34,7 @@ export default function (navbar) {
     this.bind('initNavbar:after:sr-aria', function (panel) {
         sr.aria(panel.querySelector('.mm-navbar'), 'hidden', true);
     });
-    this.bind('openPanel:start:sr-aria', function (panel) {
+    this.bind('openPanel:before:sr-aria', function (panel) {
         sr.aria(prev, 'hidden', prev.matches('.mm-hidden'));
         sr.aria(prev, 'owns', (prev.getAttribute('href') || '').slice(1));
     });

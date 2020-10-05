@@ -110,7 +110,7 @@ export default function (this: Mmenu) {
             }
         };
         this.bind('open:finish', setFocus);
-        this.bind('openPanel:finish', setFocus);
+        this.bind('openPanel:after', setFocus);
 
         //	Add screenreader / aria support.
         this.bind('initOpened:after:sr-aria', () => {

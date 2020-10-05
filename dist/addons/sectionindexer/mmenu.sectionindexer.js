@@ -62,7 +62,7 @@ export default function () {
             }
         }
         //	Show or hide the indexer
-        _this.bind('openPanel:start', function (panel) {
+        _this.bind('openPanel:before', function (panel) {
             var active = DOM.find(panel, '.mm-divider').filter(function (divider) { return !divider.matches('.mm-hidden'); }).length;
             _this.node.indx.classList[active ? 'add' : 'remove']('mm-sectionindexer_active');
         });

@@ -5,7 +5,7 @@ import translate from './translations/translate';
 import * as DOM from '../../_modules/dom';
 import * as i18n from '../../_modules/i18n';
 import * as media from '../../_modules/matchmedia';
-import { type, extend, uniqueId, valueOrFn, } from '../../_modules/helpers';
+import { type, extend, transitionend, uniqueId, valueOrFn, } from '../../_modules/helpers';
 //  Add the translations.
 translate();
 /**
@@ -56,49 +56,57 @@ var Mmenu = /** @class */ (function () {
     }
     /**
      * Open a panel.
-     * @param {HTMLElement} panel				Panel to open.
-     * @param {boolean}		[animation=true]	Whether or not to open the panel with an animation.
-     * @param {boolean}     [openParents=false] Whether or nog to also open all parent panels.
+     * @param {HTMLElement} panel               Panel to open.
+     * @param {boolean}     [animation=true]    Whether or not to use an animation.
      */
-    Mmenu.prototype.openPanel = function (panel, animation, openParents) {
+    Mmenu.prototype.openPanel = function (panel, animation) {
         if (animation === void 0) { animation = true; }
-        if (openParents === void 0) { openParents = false; }
-        //	Invoke "before" hook.
-        this.trigger('openPanel:before', [panel]);
         //	Find panel.
+        if (!panel) {
+            return;
+        }
         if (!panel.matches('.mm-panel')) {
             panel = panel.closest('.mm-panel');
         }
-        this.trigger('openPanel:start', [panel]);
+        //	Invoke "before" hook.
+        this.trigger('openPanel:before', [panel]);
         //	Open a "vertical" panel.
         if (panel.parentElement.matches('.mm-listitem_vertical')) {
-            //  Open only current
-            if (!openParents) {
-                panel.parentElement.classList.add('mm-listitem_opened');
-                //	Open current and all vertical parent panels.
-            }
-            else {
-                DOM.parents(panel, '.mm-listitem_vertical').forEach(function (listitem) {
-                    listitem.classList.add('mm-listitem_opened');
-                });
-                //	Open first horizontal parent panel.
-                var parents = DOM.parents(panel, '.mm-panel').filter(function (panel) { return !panel.parentElement.matches('.mm-listitem_vertical'); });
-                if (parents.length) {
-                    this.openPanel(parents[0], false);
-                }
-            }
+            panel.parentElement.classList.add('mm-listitem_opened');
             //	Open a "horizontal" panel.
         }
         else {
-            var current = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
-            if (current) {
-                current.classList.remove('mm-panel_opened', 'mm-panel_highest');
-                current.classList.add('mm-panel_opened-parent');
+            var closeCurrent = panel.matches('.mm-panel_opened-parent');
+            var current_1 = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+            panel.classList.add('mm-panel_opened');
+            if (!animation) {
+                panel.classList.add('mm-panel_noanimation');
             }
-            panel.classList.add('mm-panel_opened', 'mm-panel_highest');
-            panel.classList.remove('mm-panel_opened-parent');
+            if (closeCurrent) {
+                panel.classList.remove('mm-panel_opened-parent');
+            }
+            else {
+                panel.classList.add('mm-panel_highest');
+            }
+            transitionend(panel, function () {
+                panel.classList.remove('mm-panel_noanimation', 'mm-panel_highest');
+            });
+            if (current_1) {
+                if (!animation) {
+                    current_1.classList.add('mm-panel_noanimation');
+                }
+                current_1.classList.remove('mm-panel_opened');
+                if (closeCurrent) {
+                    current_1.classList.add('mm-panel_highest');
+                }
+                else {
+                    current_1.classList.add('mm-panel_opened-parent');
+                }
+                transitionend(current_1, function () {
+                    current_1.classList.remove('mm-panel_noanimation', 'mm-panel_highest');
+                });
+            }
         }
-        this.trigger('openPanel:finish', [panel]);
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel]);
     };
@@ -115,12 +123,9 @@ var Mmenu = /** @class */ (function () {
             //  Close a "horizontal" panel.
         }
         else {
-            panel.classList.remove('mm-panel_opened', 'mm-panel_opened-parent');
-            panel.classList.add('mm-panel_highest');
             if (panel.dataset.mmParent) {
                 var parent_1 = DOM.find(this.node.pnls, '#' + panel.dataset.mmParent)[0];
-                parent_1.classList.remove('mm-panel_highest', 'mm-panel_opened-parent');
-                parent_1.classList.add('mm-panel_opened');
+                this.openPanel(parent_1);
             }
         }
         //	Invoke "after" hook.

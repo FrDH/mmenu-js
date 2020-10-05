@@ -37,17 +37,13 @@ $mm_module: '.mm-panel';
         transform: translate3d(-$mm_subpanelOffset, 0, 0);
     }
 
-    // &_highest {
-    //     z-index: 2;
-    // }
+    &_highest {
+        z-index: 2;
+    }
 
-    // &_noanimation {
-    //     transition: none !important;
-
-    //     &#{$mm_module}_opened-parent {
-    //         transform: translate3d(0, 0, 0);
-    //     }
-    // }
+    &_noanimation {
+        transition-duration: 0.001s !important;
+    }
 
     .mm-panels > & {
         position: absolute;

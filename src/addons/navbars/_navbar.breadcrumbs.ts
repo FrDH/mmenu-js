@@ -31,10 +31,10 @@ export default function (this: Mmenu, navbar: HTMLElement) {
                             first
                                 ? '<span>' + text + '</span>'
                                 : '<a href="#' +
-                                      current.id +
-                                      '">' +
-                                      text +
-                                      '</a>'
+                                current.id +
+                                '">' +
+                                text +
+                                '</a>'
                         );
                     }
                 }
@@ -49,14 +49,14 @@ export default function (this: Mmenu, navbar: HTMLElement) {
 
         breadcrumbs.innerHTML = crumbs.join(
             '<span class="mm-separator">' +
-                this.conf.navbars.breadcrumbs.separator +
-                '</span>'
+            this.conf.navbars.breadcrumbs.separator +
+            '</span>'
         );
         DOM.children(panel, '.mm-navbar')[0].append(breadcrumbs);
     });
 
     //	Update for to opened panel
-    this.bind('openPanel:start', (panel: HTMLElement) => {
+    this.bind('openPanel:before', (panel: HTMLElement) => {
         var crumbs = panel.querySelector('.mm-navbar__breadcrumbs');
         breadcrumbs.innerHTML = crumbs ? crumbs.innerHTML : '';
     });

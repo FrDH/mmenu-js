@@ -35,7 +35,7 @@ export default function () {
                 classnames_1.push('mm-panel_iconpanel-' + i);
             }
         }
-        this.bind('openPanel:start', function (panel) {
+        this.bind('openPanel:before', function (panel) {
             var panels = DOM.children(_this.node.pnls, '.mm-panel');
             panel = panel || panels[0];
             if (panel.parentElement.matches('.mm-listitem_vertical')) {

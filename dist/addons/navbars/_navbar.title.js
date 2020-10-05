@@ -10,7 +10,7 @@ export default function (navbar) {
     //	Update the title to the opened panel.
     var _url, _txt;
     var original;
-    this.bind('openPanel:start', function (panel) {
+    this.bind('openPanel:before', function (panel) {
         //	Do nothing in a vertically expanding panel.
         if (panel.parentElement.matches('.mm-listitem_vertical')) {
             return;
@@ -37,7 +37,7 @@ export default function (navbar) {
     });
     //	Add screenreader / aria support
     var prev;
-    this.bind('openPanel:start:sr-aria', function (panel) {
+    this.bind('openPanel:before:sr-aria', function (panel) {
         if (_this.opts.screenReader.text) {
             if (!prev) {
                 var navbars = DOM.children(_this.node.menu, '.mm-navbars_top, .mm-navbars_bottom');

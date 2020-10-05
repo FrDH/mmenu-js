@@ -79,7 +79,7 @@ export default function () {
             }
         };
         this.bind('open:finish', setFocus);
-        this.bind('openPanel:finish', setFocus);
+        this.bind('openPanel:after', setFocus);
         //	Add screenreader / aria support.
         this.bind('initOpened:after:sr-aria', function () {
             [_this.node.menu, Mmenu.node.blck].forEach(function (element) {

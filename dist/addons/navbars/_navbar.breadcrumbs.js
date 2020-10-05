@@ -40,7 +40,7 @@ export default function (navbar) {
         DOM.children(panel, '.mm-navbar')[0].append(breadcrumbs);
     });
     //	Update for to opened panel
-    this.bind('openPanel:start', function (panel) {
+    this.bind('openPanel:before', function (panel) {
         var crumbs = panel.querySelector('.mm-navbar__breadcrumbs');
         breadcrumbs.innerHTML = crumbs ? crumbs.innerHTML : '';
     });

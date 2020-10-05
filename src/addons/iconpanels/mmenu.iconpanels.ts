@@ -44,7 +44,7 @@ export default function (this: Mmenu) {
             }
         }
 
-        this.bind('openPanel:start', (panel?: HTMLElement) => {
+        this.bind('openPanel:before', (panel?: HTMLElement) => {
             var panels = DOM.children(this.node.pnls, '.mm-panel');
             panel = panel || panels[0];
 

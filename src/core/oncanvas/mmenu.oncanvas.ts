@@ -161,58 +161,65 @@ export default class Mmenu {
 
     /**
      * Open a panel.
-     * @param {HTMLElement} panel				Panel to open.
-     * @param {boolean}		[animation=true]	Whether or not to open the panel with an animation.
-     * @param {boolean}     [openParents=false] Whether or nog to also open all parent panels.
+     * @param {HTMLElement} panel               Panel to open.
+     * @param {boolean}     [animation=true]    Whether or not to use an animation.
      */
-    openPanel(panel: HTMLElement, animation: boolean = true, openParents: boolean = false) {
-        //	Invoke "before" hook.
-        this.trigger('openPanel:before', [panel]);
-
+    openPanel(panel: HTMLElement, animation: boolean = true) {
         //	Find panel.
+        if (!panel) {
+            return;
+        }
+
         if (!panel.matches('.mm-panel')) {
             panel = panel.closest('.mm-panel') as HTMLElement;
         }
-
-        this.trigger('openPanel:start', [panel]);
+        //	Invoke "before" hook.
+        this.trigger('openPanel:before', [panel]);
 
         //	Open a "vertical" panel.
         if (panel.parentElement.matches('.mm-listitem_vertical')) {
-
-            //  Open only current
-            if (!openParents) {
-                panel.parentElement.classList.add('mm-listitem_opened');
-
-                //	Open current and all vertical parent panels.
-            } else {
-                DOM.parents(panel, '.mm-listitem_vertical').forEach((listitem) => {
-                    listitem.classList.add('mm-listitem_opened');
-                });
-
-                //	Open first horizontal parent panel.
-                const parents = DOM.parents(panel, '.mm-panel').filter(
-                    (panel) => !panel.parentElement.matches('.mm-listitem_vertical')
-                );
-
-                if (parents.length) {
-                    this.openPanel(parents[0], false);
-                }
-            }
+            panel.parentElement.classList.add('mm-listitem_opened');
 
             //	Open a "horizontal" panel.
         } else {
-
+            const closeCurrent = panel.matches('.mm-panel_opened-parent');
             const current = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
-            if (current) {
-                current.classList.remove('mm-panel_opened', 'mm-panel_highest');
-                current.classList.add('mm-panel_opened-parent');
+
+            panel.classList.add('mm-panel_opened');
+
+            if (!animation) {
+                panel.classList.add('mm-panel_noanimation');
             }
 
-            panel.classList.add('mm-panel_opened', 'mm-panel_highest');
-            panel.classList.remove('mm-panel_opened-parent');
-        }
+            if (closeCurrent) {
+                panel.classList.remove('mm-panel_opened-parent');
+            } else {
+                panel.classList.add('mm-panel_highest');
+            }
 
-        this.trigger('openPanel:finish', [panel]);
+            transitionend(panel, () => {
+                panel.classList.remove('mm-panel_noanimation', 'mm-panel_highest');
+            });
+
+            if (current) {
+
+                if (!animation) {
+                    current.classList.add('mm-panel_noanimation');
+                }
+
+                current.classList.remove('mm-panel_opened');
+
+                if (closeCurrent) {
+                    current.classList.add('mm-panel_highest');
+                } else {
+                    current.classList.add('mm-panel_opened-parent');
+                }
+
+                transitionend(current, () => {
+                    current.classList.remove('mm-panel_noanimation', 'mm-panel_highest');
+                });
+            }
+        }
 
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel]);
@@ -234,17 +241,12 @@ export default class Mmenu {
             //  Close a "horizontal" panel.
         } else {
 
-            panel.classList.remove('mm-panel_opened', 'mm-panel_opened-parent');
-            panel.classList.add('mm-panel_highest');
-
             if (panel.dataset.mmParent) {
                 const parent = DOM.find(
                     this.node.pnls,
                     '#' + panel.dataset.mmParent
                 )[0];
-
-                parent.classList.remove('mm-panel_highest', 'mm-panel_opened-parent');
-                parent.classList.add('mm-panel_opened');
+                this.openPanel(parent);
             }
         }
 

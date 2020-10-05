@@ -8,7 +8,7 @@ import { extend } from '../../_modules/helpers';
 //  Add the options.
 Mmenu.options.sectionIndexer = options;
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     var options = extendShorthandOptions(this.opts.sectionIndexer);
     this.opts.sectionIndexer = extend(options, Mmenu.options.sectionIndexer);
 
@@ -58,10 +58,10 @@ export default function(this: Mmenu) {
                         if (
                             newTop < 0 &&
                             letter ==
-                                divider.textContent
-                                    .trim()
-                                    .slice(0, 1)
-                                    .toLowerCase()
+                            divider.textContent
+                                .trim()
+                                .slice(0, 1)
+                                .toLowerCase()
                         ) {
                             newTop = divider.offsetTop;
                         }
@@ -79,7 +79,7 @@ export default function(this: Mmenu) {
         }
 
         //	Show or hide the indexer
-        this.bind('openPanel:start', (panel: HTMLElement) => {
+        this.bind('openPanel:before', (panel: HTMLElement) => {
             var active = DOM.find(panel, '.mm-divider').filter(
                 divider => !divider.matches('.mm-hidden')
             ).length;

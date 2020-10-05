@@ -44,7 +44,7 @@ export default function () {
     }
     //	Set parent item selected for submenus
     if (options.parent) {
-        this.bind('openPanel:finish', function (panel) {
+        this.bind('openPanel:after', function (panel) {
             //	Remove all
             DOM.find(_this.node.pnls, '.mm-listitem_selected-parent').forEach(function (listitem) {
                 listitem.classList.remove('mm-listitem_selected-parent');

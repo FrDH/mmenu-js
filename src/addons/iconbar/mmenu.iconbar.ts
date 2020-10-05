@@ -97,7 +97,7 @@ export default function (this: Mmenu) {
 
                         this.openPanel(panel, false);
                     }
-                } catch (err) {}
+                } catch (err) { }
             });
 
             const selectTab = (panel: HTMLElement) => {
@@ -118,7 +118,7 @@ export default function (this: Mmenu) {
                     }
                 }
             };
-            this.bind('openPanel:start', selectTab);
+            this.bind('openPanel:before', selectTab);
         }
     }
 }

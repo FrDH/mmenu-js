@@ -35,7 +35,7 @@ export default function (this: Mmenu) {
             history.pushState(null, document.title, _menu);
         });
         this.bind('open:finish', setStates);
-        this.bind('openPanel:finish', setStates);
+        this.bind('openPanel:after', setStates);
         this.bind('close:finish', () => {
             states = [];
             history.back();

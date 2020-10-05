@@ -29,8 +29,8 @@ export default function () {
             _this.bind('initNavbar:after', function () {
                 this.trigger('initNavbar:after:sr-aria', [].slice.call(arguments));
             });
-            _this.bind('openPanel:start', function () {
-                this.trigger('openPanel:start:sr-aria', [].slice.call(arguments));
+            _this.bind('openPanel:before', function () {
+                this.trigger('openPanel:before:sr-aria', [].slice.call(arguments));
             });
             _this.bind('close:start', function () {
                 this.trigger('close:start:sr-aria', [].slice.call(arguments));
@@ -52,7 +52,7 @@ export default function () {
             });
         });
         //	Update aria-hidden for the panels when opening and closing a panel.
-        this.bind('openPanel:start', function (panel) {
+        this.bind('openPanel:before', function (panel) {
             /** Panels that should be considered "hidden". */
             var hidden = DOM.find(_this.node.pnls, '.mm-panel')
                 .filter(function (hide) { return hide !== panel; })
