@@ -1,5 +1,5 @@
 @mixin mm_iconpanel_size($nr) {
-    .mm-panel_iconpanel-#{$nr} {
+    .mm-panel--iconpanel-#{$nr} {
         width: calc(100% - (var(--mm-iconpanel-size) * #{$nr}));
     }
 }

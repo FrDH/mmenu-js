@@ -16,7 +16,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
 
     this.bind('openPanel:before', (panel: HTMLElement) => {
         //	Do nothing in a vertically expanding panel.
-        if (panel.parentElement.matches('.mm-listitem_vertical')) {
+        if (panel.parentElement.matches('.mm-listitem--vertical')) {
             return;
         }
 
@@ -56,7 +56,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
                     '.mm-navbars_top, .mm-navbars_bottom'
                 );
                 navbars.forEach((navbar) => {
-                    let btn = navbar.querySelector('.mm-btn_prev');
+                    let btn = DOM.find(navbar, '.mm-btn--prev')[0];
                     if (btn) {
                         prev = btn as HTMLElement;
                     }

@@ -82,7 +82,7 @@ $mm_module: '.mm-iconbar';
 }
 
 @if ($mm_include_iconbar_tabs) {
-    #{$mm_module}__tab_selected {
+    #{$mm_module}__tab--selected {
         background: var(--mm-color-background-emphasis);
     }
 }

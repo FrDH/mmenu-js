@@ -31,36 +31,36 @@ export default function () {
     }
     else if (!options.current) {
         this.bind('initListview:after', function (listview) {
-            DOM.children(listview, '.mm-listitem_selected').forEach(function (listitem) {
-                listitem.classList.remove('mm-listitem_selected');
+            DOM.children(listview, '.mm-listitem--selected').forEach(function (listitem) {
+                listitem.classList.remove('mm-listitem--selected');
             });
         });
     }
     //	Add :hover effect on items
     if (options.hover) {
         this.bind('initMenu:after', function () {
-            _this.node.menu.classList.add('mm-menu_selected-hover');
+            _this.node.menu.classList.add('mm-menu--selected-hover');
         });
     }
     //	Set parent item selected for submenus
     if (options.parent) {
         this.bind('openPanel:after', function (panel) {
             //	Remove all
-            DOM.find(_this.node.pnls, '.mm-listitem_selected-parent').forEach(function (listitem) {
-                listitem.classList.remove('mm-listitem_selected-parent');
+            DOM.find(_this.node.pnls, '.mm-listitem--selected-parent').forEach(function (listitem) {
+                listitem.classList.remove('mm-listitem--selected-parent');
             });
             //	Move up the DOM tree
             var parent = DOM.find(_this.node.menu, "#" + panel.dataset.mmParent)[0];
             while (parent) {
-                if (!parent.matches('.mm-listitem_vertical')) {
-                    parent.classList.add('mm-listitem_selected-parent');
+                if (!parent.matches('.mm-listitem--vertical')) {
+                    parent.classList.add('mm-listitem--selected-parent');
                 }
                 parent = parent.closest('.mm-panel');
                 parent = DOM.find(_this.node.menu, "#" + parent.dataset.mmParent)[0];
             }
         });
         this.bind('initMenu:after', function () {
-            _this.node.menu.classList.add('mm-menu_selected-parent');
+            _this.node.menu.classList.add('mm-menu--selected-parent');
         });
     }
 }

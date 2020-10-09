@@ -29,17 +29,17 @@ $mm_module: '.mm-btn';
 }
 
 #{$mm_module} {
-    &_prev:before {
+    &--prev:before {
         @extend %mm_btn_arrow;
         @include mm_btn_arrow_prev;
     }
 
-    &_next:after {
+    &--next:after {
         @extend %mm_btn_arrow;
         @include mm_btn_arrow_next;
     }
 
-    &_close {
+    &--close {
         &:before,
         &:after {
             content: '';

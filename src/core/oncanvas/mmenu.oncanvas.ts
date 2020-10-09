@@ -177,36 +177,36 @@ export default class Mmenu {
         this.trigger('openPanel:before', [panel]);
 
         //	Open a "vertical" panel.
-        if (panel.parentElement.matches('.mm-listitem_vertical')) {
-            panel.parentElement.classList.add('mm-listitem_opened');
+        if (panel.parentElement.matches('.mm-listitem--vertical')) {
+            panel.parentElement.classList.add('mm-listitem--opened');
 
             //	Open a "horizontal" panel.
         } else {
 
             /** Currently opened panel. */
-            const current = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+            const current = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
 
             //  Ensure current panel stays on top while closing it.
-            if (panel.matches('.mm-panel_parent') && current) {
-                current.classList.add('mm-panel_highest');
+            if (panel.matches('.mm-panel--parent') && current) {
+                current.classList.add('mm-panel--highest');
             }
 
             //  Remove opened, parent, animation and highest classes from all panels.
             DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
-                pnl.classList.remove('mm-panel_opened', 'mm-panel_parent', 'mm-panel_noanimation');
+                pnl.classList.remove('mm-panel--opened', 'mm-panel--parent', 'mm-panel--noanimation');
                 if (pnl !== current) {
-                    pnl.classList.remove('mm-panel_highest');
+                    pnl.classList.remove('mm-panel--highest');
                 }
             });
 
             //  Open new panel.
-            panel.classList.add('mm-panel_opened');
+            panel.classList.add('mm-panel--opened');
 
             //	Set parent panels as "parent".
             let parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
             while (parent) {
                 parent = parent.closest('.mm-panel') as HTMLElement;
-                parent.classList.add('mm-panel_parent');
+                parent.classList.add('mm-panel--parent');
 
                 parent = DOM.find(this.node.menu, `#${parent.dataset.mmParent}`)[0];
             }
@@ -226,8 +226,8 @@ export default class Mmenu {
 
 
         //	Close a "vertical" panel.
-        if (panel.parentElement.matches('.mm-listitem_vertical')) {
-            panel.parentElement.classList.remove('mm-listitem_opened');
+        if (panel.parentElement.matches('.mm-listitem--vertical')) {
+            panel.parentElement.classList.remove('mm-listitem--opened');
 
             //  Close a "horizontal" panel.
         } else {
@@ -253,9 +253,9 @@ export default class Mmenu {
         let listitem = panel.parentElement;
 
         //	Only works for "vertical" panels.
-        if (listitem.matches('.mm-listitem_vertical')) {
+        if (listitem.matches('.mm-listitem--vertical')) {
             this[
-                listitem.matches('.mm-listitem_opened')
+                listitem.matches('.mm-listitem--opened')
                     ? 'closePanel'
                     : 'openPanel'
             ](panel);
@@ -271,12 +271,12 @@ export default class Mmenu {
         this.trigger('setSelected:before', [listitem]);
 
         //	First, remove the selected class from all listitems.
-        DOM.find(this.node.menu, '.mm-listitem_selected').forEach((li) => {
-            li.classList.remove('mm-listitem_selected');
+        DOM.find(this.node.menu, '.mm-listitem--selected').forEach((li) => {
+            li.classList.remove('mm-listitem--selected');
         });
 
         //	Next, add the selected class to the provided listitem.
-        listitem.classList.add('mm-listitem_selected');
+        listitem.classList.add('mm-listitem--selected');
 
         //	Invoke "after" hook.
         this.trigger('setSelected:after', [listitem]);
@@ -492,7 +492,7 @@ export default class Mmenu {
                         if (panel && panel.matches('.mm-panel')) {
                             if (
                                 anchor.parentElement.matches(
-                                    '.mm-listitem_vertical'
+                                    '.mm-listitem--vertical'
                                 )
                             ) {
                                 this.togglePanel(panel);
@@ -573,7 +573,7 @@ export default class Mmenu {
         panel.classList.add('mm-panel');
 
         //  Append to the panels node if not vertically expanding
-        if (!panel.parentElement.matches('.mm-listitem_vertical')) {
+        if (!panel.parentElement.matches('.mm-listitem--vertical')) {
             this.node.pnls.append(panel);
         }
 
@@ -626,7 +626,7 @@ export default class Mmenu {
         }
 
         //  No navbar needed for vertical submenus.
-        if (parentListitem && parentListitem.matches('.mm-listitem_vertical')) {
+        if (parentListitem && parentListitem.matches('.mm-listitem--vertical')) {
             return;
         }
 
@@ -638,16 +638,11 @@ export default class Mmenu {
             navbar.classList.add('mm-hidden');
         }
 
-        //  Sticky navbars.
-        else if (this.opts.navbar.sticky) {
-            navbar.classList.add('mm-navbar_sticky');
-        }
-
         //  Add the back button.
         if (parentPanel) {
             /** The back button. */
             let prev = DOM.create(
-                'a.mm-btn.mm-btn_prev.mm-navbar__btn'
+                'a.mm-btn.mm-btn--prev.mm-navbar__btn'
             ) as HTMLAnchorElement;
             prev.href = '#' + parentPanel.id;
 
@@ -740,7 +735,7 @@ export default class Mmenu {
         DOM.reClass(
             listitem,
             this.conf.classNames.selected,
-            'mm-listitem_selected'
+            'mm-listitem--selected'
         );
 
         DOM.reClass(
@@ -787,7 +782,7 @@ export default class Mmenu {
 
         // Make it expand vertically
         if (vertical) {
-            listitem.classList.add('mm-listitem_vertical');
+            listitem.classList.add('mm-listitem--vertical');
         }
 
         //  Force an ID
@@ -804,7 +799,7 @@ export default class Mmenu {
         //  Init item text
         if (!button) {
             button = DOM.create(
-                'a.mm-btn.mm-btn_next.mm-listitem__btn'
+                'a.mm-btn.mm-btn--next.mm-listitem__btn'
             ) as HTMLAnchorElement;
 
             DOM.children(listitem, 'a, span').forEach((text) => {
@@ -838,7 +833,7 @@ export default class Mmenu {
 
         /** The selected listitem(s). */
         let listitems = this.node.pnls.querySelectorAll(
-            '.mm-listitem_selected'
+            '.mm-listitem--selected'
         );
 
         /** The last selected listitem. */
@@ -847,12 +842,12 @@ export default class Mmenu {
         //	Deselect the listitems.
         listitems.forEach((listitem) => {
             lastitem = listitem;
-            listitem.classList.remove('mm-listitem_selected');
+            listitem.classList.remove('mm-listitem--selected');
         });
 
         //	Re-select the last listitem.
         if (lastitem) {
-            lastitem.classList.add('mm-listitem_selected');
+            lastitem.classList.add('mm-listitem--selected');
         }
 
         /**	The current opened panel. */

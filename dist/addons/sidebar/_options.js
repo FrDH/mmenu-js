@@ -1,9 +1,7 @@
 var options = {
     collapsed: {
         use: false,
-        blockMenu: true,
-        hideDivider: false,
-        hideNavbar: true
+        blockMenu: true
     },
     expanded: {
         use: false,

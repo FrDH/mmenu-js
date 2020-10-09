@@ -54,7 +54,7 @@ export default function (this: Mmenu) {
                 '.mm-panel, .mm-iconbar__top, .mm-iconbar__bottom'
             ) as HTMLElement;
 
-            if (wrapper && wrapper.closest('.mm-listitem_vertical')) {
+            if (wrapper && wrapper.closest('.mm-listitem--vertical')) {
                 wrapper = DOM.parents(wrapper, '.mm-panel').pop();
             }
 
@@ -96,7 +96,7 @@ export default function (this: Mmenu) {
 
     //	Scroll the current opened panel to the top when opening the menu.
     this.bind('open:start', () => {
-        var panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+        var panel = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
         if (panel) {
             panel.scrollTop = 0;
         }
@@ -104,7 +104,7 @@ export default function (this: Mmenu) {
 
     //	Fix issue after device rotation change.
     window.addEventListener('orientationchange', (evnt) => {
-        var panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+        var panel = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
         if (panel) {
             panel.scrollTop = 0;
 

@@ -1,6 +1,6 @@
 @import '../../mixins', '../../includes', '../../variables';
 
-.mm-menu_selected {
+.mm-menu--selected {
     &-hover,
     &-parent {
         .mm-listitem__text,
@@ -11,7 +11,7 @@
     }
 
     &-hover {
-        .mm-listview:hover > .mm-listitem_selected:not(:hover) {
+        .mm-listview:hover > .mm-listitem--selected:not(:hover) {
             > .mm-listitem__text {
                 background: none;
             }
@@ -25,12 +25,12 @@
     }
 
     &-parent {
-        .mm-panel_parent .mm-listitem:not(.mm-listitem_selected-parent) {
+        .mm-panel--parent .mm-listitem:not(.mm-listitem--selected-parent) {
             > .mm-listitem__text {
                 background: none;
             }
         }
-        .mm-listitem_selected-parent {
+        .mm-listitem--selected-parent {
             > .mm-listitem__text,
             > .mm-listitem__btn {
                 background: var(--mm-color-background-emphasis);

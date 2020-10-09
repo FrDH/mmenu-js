@@ -136,9 +136,6 @@ interface mmOptionsNavbar {
     /** Whether or not to add a navbar above the panels. */
     add?: boolean;
 
-    /** Whether or not the navbars should be sticky. */
-    sticky?: boolean;
-
     /** The title above the panels. */
     title?: string;
 

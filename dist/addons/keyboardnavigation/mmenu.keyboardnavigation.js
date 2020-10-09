@@ -44,7 +44,7 @@ export default function () {
         var focusable_1 = 'input, select, textarea, button, label, a[href]';
         var setFocus = function (panel) {
             panel =
-                panel || DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
+                panel || DOM.children(_this.node.pnls, '.mm-panel--opened')[0];
             var focus = null;
             //	Focus already is on an element in a navbar in this menu.
             var navbar = document.activeElement.closest('.mm-navbar');
@@ -102,7 +102,7 @@ var initWindow = function (enhance) {
     //	Intersept the target when tabbing.
     events.off(document.body, 'focusin.tabguard');
     events.on(document.body, 'focusin.tabguard', function (evnt) {
-        if (_this.node.wrpr.matches('.mm-wrapper_opened')) {
+        if (_this.node.wrpr.matches('.mm-wrapper--opened')) {
             var target = evnt.target;
             if (target.matches('.mm-tabend')) {
                 var next = void 0;
@@ -114,7 +114,7 @@ var initWindow = function (enhance) {
                 }
                 //	Jump to opened menu.
                 if (target.parentElement.matches('.mm-wrapper__blocker')) {
-                    next = DOM.find(document.body, '.mm-menu_offcanvas.mm-menu_opened')[0];
+                    next = DOM.find(document.body, '.mm-menu_offcanvas.mm-menu--opened')[0];
                 }
                 //	If no available element found, stay in current element.
                 if (!next) {
@@ -167,7 +167,7 @@ var initWindow = function (enhance) {
                     switch (evnt.keyCode) {
                         //	close submenu with backspace
                         case 8:
-                            var parent_1 = DOM.find(menu, '.mm-panel_opened')[0];
+                            var parent_1 = DOM.find(menu, '.mm-panel--opened')[0];
                             if (parent_1) {
                                 parent_1 = DOM.find(menu, "#" + parent_1.dataset.mmParent)[0];
                             }

@@ -81,7 +81,7 @@ export default function (this: Mmenu) {
         if (args.inMenu) {
             if (anchor.matches('.mm-searchfield__btn')) {
                 //	Clicking the clear button
-                if (anchor.matches('.mm-btn_close')) {
+                if (anchor.matches('.mm-btn--close')) {
                     let form = anchor.closest('.mm-searchfield') as HTMLElement,
                         input = DOM.find(form, 'input')[0] as HTMLInputElement;
 
@@ -92,7 +92,7 @@ export default function (this: Mmenu) {
                 }
 
                 //	Clicking the submit button
-                if (anchor.matches('.mm-btn_next')) {
+                if (anchor.matches('.mm-btn--next')) {
                     let form = anchor.closest('form');
                     if (form) {
                         form.submit();
@@ -134,18 +134,8 @@ const initSearchPanel = function (this: Mmenu): HTMLElement {
     this._initListview(listview);
     this._initNavbar(searchpanel);
 
-    switch (options.panel.fx) {
-        case false:
-            break;
+    searchpanel.classList.add('mm-panel--noanimation');
 
-        case 'none':
-            searchpanel.classList.add('mm-panel_noanimation');
-            break;
-
-        default:
-            searchpanel.classList.add('mm-panel_fx-' + options.panel.fx);
-            break;
-    }
 
     //	Add splash content
     if (options.panel.splash) {
@@ -170,7 +160,7 @@ const initSearchfield = function (
         configs = this.conf.searchfield;
 
     //	No searchfield in vertical submenus
-    if (wrapper.parentElement.matches('.mm-listitem_vertical')) {
+    if (wrapper.parentElement.matches('.mm-listitem--vertical')) {
         return null;
     }
 
@@ -209,7 +199,7 @@ const initSearchfield = function (
 
     //	Add the clear button
     if (configs.clear) {
-        let anchor = DOM.create('a.mm-btn.mm-btn_close.mm-searchfield__btn');
+        let anchor = DOM.create('a.mm-btn.mm-btn--close.mm-searchfield__btn');
         anchor.setAttribute('href', '#');
 
         field.append(anchor);
@@ -218,7 +208,7 @@ const initSearchfield = function (
     //	Add attributes and submit to the form
     addAttributes(form, configs.form);
     if (configs.form && configs.submit && !configs.clear) {
-        let anchor = DOM.create('a.mm-btn.mm-btn_next.mm-searchfield__btn');
+        let anchor = DOM.create('a.mm-btn.mm-btn--next.mm-searchfield__btn');
         anchor.setAttribute('href', '#');
 
         field.append(anchor);
@@ -264,7 +254,7 @@ const initSearching = function (this: Mmenu, form: HTMLElement) {
 
     //	Filter out vertical submenus
     data.panels = data.panels.filter(
-        (panel) => !panel.parentElement.matches('.mm-listitem_vertical')
+        (panel) => !panel.parentElement.matches('.mm-listitem--vertical')
     );
 
     //  Find listitems and dividers.
@@ -302,10 +292,10 @@ const initSearching = function (this: Mmenu, form: HTMLElement) {
             evnt.preventDefault();
             cancel.classList.remove('mm-searchfield__cancel-active');
 
-            if (searchpanel.matches('.mm-panel_opened')) {
+            if (searchpanel.matches('.mm-panel--opened')) {
                 let parents = DOM.children(
                     this.node.pnls,
-                    '.mm-panel_parent'
+                    '.mm-panel--parent'
                 );
                 if (parents.length) {
                     this.openPanel(parents[parents.length - 1]);
@@ -546,8 +536,8 @@ Mmenu.prototype.search = function (
                         parent.classList.add('mm-listitem_onlysubitems');
                     } else if (!input.closest('.mm-panel')) {
                         if (
-                            panel.matches('.mm-panel_opened') ||
-                            panel.matches('.mm-panel_parent')
+                            panel.matches('.mm-panel--opened') ||
+                            panel.matches('.mm-panel--parent')
                         ) {
                             //	Compensate the timeout for the opening animation
                             setTimeout(() => {
@@ -565,7 +555,7 @@ Mmenu.prototype.search = function (
             panels.forEach((panel) => {
                 let listitems = DOM.find(panel, '.mm-listitem');
                 DOM.filterLI(listitems).forEach((listitem) => {
-                    DOM.parents(listitem, '.mm-listitem_vertical').forEach(
+                    DOM.parents(listitem, '.mm-listitem--vertical').forEach(
                         (parent) => {
                             if (parent.matches('.mm-hidden')) {
                                 parent.classList.remove('mm-hidden');
@@ -644,7 +634,7 @@ Mmenu.prototype.search = function (
             } else if (!input.closest('.mm-panel_search')) {
                 let opened = DOM.children(
                     this.node.pnls,
-                    '.mm-panel_parent'
+                    '.mm-panel--parent'
                 );
                 this.openPanel(opened.slice(-1)[0]);
             }

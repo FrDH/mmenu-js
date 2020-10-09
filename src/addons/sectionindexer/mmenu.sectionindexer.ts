@@ -46,7 +46,7 @@ export default function (this: Mmenu) {
                 }
 
                 var letter = evnt.target.textContent,
-                    panel = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+                    panel = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
 
                 var newTop = -1,
                     oldTop = panel.scrollTop;
@@ -85,7 +85,7 @@ export default function (this: Mmenu) {
             ).length;
 
             this.node.indx.classList[active ? 'add' : 'remove'](
-                'mm-sectionindexer_active'
+                'mm-sectionindexer--active'
             );
         });
     });

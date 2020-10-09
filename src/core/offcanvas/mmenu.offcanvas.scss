@@ -13,7 +13,7 @@
 
 //	Wrapper
 .mm-wrapper {
-    &_opened {
+    &--opened {
         overflow-x: hidden;
         position: relative;
 
@@ -21,7 +21,7 @@
             min-height: 100vh;
         }
     }
-    &_background {
+    &--background {
         .mm-page {
             background: inherit;
         }
@@ -34,7 +34,7 @@
     right: auto;
     z-index: 0;
 
-    &:not(.mm-menu_opened) {
+    &:not(.mm-menu--opened) {
         display: none;
     }
 }
@@ -54,7 +54,7 @@
         z-index: 2;
     }
 
-    .mm-wrapper_blocking {
+    .mm-wrapper--blocking {
         overflow: hidden;
 
         body {

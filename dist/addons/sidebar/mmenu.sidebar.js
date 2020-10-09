@@ -17,7 +17,7 @@ export default function () {
     if (options.collapsed.use) {
         //	Make the menu collapsable.
         this.bind('initMenu:after', function () {
-            _this.node.menu.classList.add('mm-menu_sidebar-collapsed');
+            _this.node.menu.classList.add('mm-menu--sidebar-collapsed');
             if (options.collapsed.blockMenu &&
                 _this.opts.offCanvas &&
                 !DOM.children(_this.node.menu, '.mm-menu__blocker')[0]) {
@@ -25,19 +25,13 @@ export default function () {
                 anchor.setAttribute('href', '#' + _this.node.menu.id);
                 _this.node.menu.prepend(anchor);
             }
-            if (options.collapsed.hideNavbar) {
-                _this.node.menu.classList.add('mm-menu_hidenavbar');
-            }
-            if (options.collapsed.hideDivider) {
-                _this.node.menu.classList.add('mm-menu_hidedivider');
-            }
         });
         //	En-/disable the collapsed sidebar.
         var enable = function () {
-            _this.node.wrpr.classList.add('mm-wrapper_sidebar-collapsed');
+            _this.node.wrpr.classList.add('mm-wrapper--sidebar-collapsed');
         };
         var disable = function () {
-            _this.node.wrpr.classList.remove('mm-wrapper_sidebar-collapsed');
+            _this.node.wrpr.classList.remove('mm-wrapper--sidebar-collapsed');
         };
         if (typeof options.collapsed.use == 'boolean') {
             this.bind('initMenu:after', enable);
@@ -50,17 +44,17 @@ export default function () {
     if (options.expanded.use) {
         //	Make the menu expandable
         this.bind('initMenu:after', function () {
-            _this.node.menu.classList.add('mm-menu_sidebar-expanded');
+            _this.node.menu.classList.add('mm-menu--sidebar-expanded');
         });
         //	En-/disable the expanded sidebar.
         var enable = function () {
-            _this.node.wrpr.classList.add('mm-wrapper_sidebar-expanded');
-            if (!_this.node.wrpr.matches('.mm-wrapper_sidebar-closed')) {
+            _this.node.wrpr.classList.add('mm-wrapper--sidebar-expanded');
+            if (!_this.node.wrpr.matches('.mm-wrapper--sidebar-closed')) {
                 _this.open();
             }
         };
         var disable = function () {
-            _this.node.wrpr.classList.remove('mm-wrapper_sidebar-expanded');
+            _this.node.wrpr.classList.remove('mm-wrapper--sidebar-expanded');
             _this.close();
         };
         if (typeof options.expanded.use == 'boolean') {
@@ -71,16 +65,16 @@ export default function () {
         }
         //  Manually en-/disable the expanded sidebar (open / close the menu)
         this.bind('close:start', function () {
-            if (_this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
-                _this.node.wrpr.classList.add('mm-wrapper_sidebar-closed');
+            if (_this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
+                _this.node.wrpr.classList.add('mm-wrapper--sidebar-closed');
                 if (options.expanded.initial == 'remember') {
                     window.localStorage.setItem('mmenuExpandedState', 'closed');
                 }
             }
         });
         this.bind('open:start', function () {
-            if (_this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
-                _this.node.wrpr.classList.remove('mm-wrapper_sidebar-closed');
+            if (_this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
+                _this.node.wrpr.classList.remove('mm-wrapper--sidebar-closed');
                 if (options.expanded.initial == 'remember') {
                     window.localStorage.setItem('mmenuExpandedState', 'open');
                 }
@@ -99,14 +93,14 @@ export default function () {
         }
         if (initialState == 'closed') {
             this.bind('initMenu:after', function () {
-                _this.node.wrpr.classList.add('mm-wrapper_sidebar-closed');
+                _this.node.wrpr.classList.add('mm-wrapper--sidebar-closed');
             });
         }
         //	Add click behavior.
         //	Prevents default behavior when clicking an anchor
         this.clck.push(function (anchor, args) {
             if (args.inMenu && args.inListview) {
-                if (_this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
+                if (_this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
                     return {
                         close: options.expanded.initial == 'closed'
                     };

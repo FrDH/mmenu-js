@@ -36,7 +36,7 @@ export default function () {
                 if (!evnt.target.matches('a')) {
                     return;
                 }
-                var letter = evnt.target.textContent, panel = DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
+                var letter = evnt.target.textContent, panel = DOM.children(_this.node.pnls, '.mm-panel--opened')[0];
                 var newTop = -1, oldTop = panel.scrollTop;
                 panel.scrollTop = 0;
                 DOM.find(panel, '.mm-divider')
@@ -64,7 +64,7 @@ export default function () {
         //	Show or hide the indexer
         _this.bind('openPanel:before', function (panel) {
             var active = DOM.find(panel, '.mm-divider').filter(function (divider) { return !divider.matches('.mm-hidden'); }).length;
-            _this.node.indx.classList[active ? 'add' : 'remove']('mm-sectionindexer_active');
+            _this.node.indx.classList[active ? 'add' : 'remove']('mm-sectionindexer--active');
         });
     });
 }

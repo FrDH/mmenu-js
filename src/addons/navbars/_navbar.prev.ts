@@ -4,7 +4,7 @@ import * as sr from '../../_modules/screenreader';
 
 export default function (this: Mmenu, navbar: HTMLElement) {
     //	Add content.
-    var prev = DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
+    var prev = DOM.create('a.mm-btn.mm-btn--prev.mm-navbar__btn');
     navbar.append(prev);
 
     this.bind('initNavbar:after', (panel: HTMLElement) => {
@@ -16,13 +16,13 @@ export default function (this: Mmenu, navbar: HTMLElement) {
     var _url, _txt;
 
     this.bind('openPanel:before', (panel: HTMLElement) => {
-        if (panel.parentElement.matches('.mm-listitem_vertical')) {
+        if (panel.parentElement.matches('.mm-listitem--vertical')) {
             return;
         }
 
         org = panel.querySelector('.' + this.conf.classNames.navbars.panelPrev);
         if (!org) {
-            org = panel.querySelector('.mm-navbar__btn.mm-btn_prev');
+            org = panel.querySelector('.mm-navbar__btn.mm-btn--prev');
         }
 
         _url = org ? org.getAttribute('href') : '';

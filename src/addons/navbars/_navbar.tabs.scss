@@ -10,7 +10,7 @@ $mm_module: '.mm-navbar';
     }
 
     //  Selected tab.
-    #{$mm_module}__tab_selected {
+    #{$mm_module}__tab--selected {
         background: var(--mm-color-background);
 
         // TODO: not specific enough :/ overriden by .mm-menu a :/ :/ :/
@@ -39,7 +39,7 @@ $mm_module: '.mm-navbar';
             border-bottom-color: var(--mm-color-border);
         }
 
-        #{$mm_module}__tab_selected {
+        #{$mm_module}__tab--selected {
             border-top-color: var(--mm-color-border);
             border-bottom-color: transparent;
         }
@@ -70,7 +70,7 @@ $mm_module: '.mm-navbar';
             border-top-color: var(--mm-color-border);
         }
 
-        #{$mm_module}__tab_selected {
+        #{$mm_module}__tab--selected {
             border-bottom-color: var(--mm-color-border);
             border-top-color: transparent;
         }

@@ -6,7 +6,7 @@
     $maxWidth: $mm_menuMaxWidth
 ) {
     .mm-wrapper_opening {
-        #{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout {
+        #{$cls}.mm-menu_position-right.mm-menu--opened ~ .mm-slideout {
             transform: translate3d(
                 clamp(-$maxWidth, #{-$width * 100}vw, -$minWidth),
                 0,

@@ -71,31 +71,31 @@ var Mmenu = /** @class */ (function () {
         //	Invoke "before" hook.
         this.trigger('openPanel:before', [panel]);
         //	Open a "vertical" panel.
-        if (panel.parentElement.matches('.mm-listitem_vertical')) {
-            panel.parentElement.classList.add('mm-listitem_opened');
+        if (panel.parentElement.matches('.mm-listitem--vertical')) {
+            panel.parentElement.classList.add('mm-listitem--opened');
             //	Open a "horizontal" panel.
         }
         else {
             /** Currently opened panel. */
-            var current_1 = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+            var current_1 = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
             //  Ensure current panel stays on top while closing it.
-            if (panel.matches('.mm-panel_parent') && current_1) {
-                current_1.classList.add('mm-panel_highest');
+            if (panel.matches('.mm-panel--parent') && current_1) {
+                current_1.classList.add('mm-panel--highest');
             }
             //  Remove opened, parent, animation and highest classes from all panels.
             DOM.children(this.node.pnls, '.mm-panel').forEach(function (pnl) {
-                pnl.classList.remove('mm-panel_opened', 'mm-panel_parent', 'mm-panel_noanimation');
+                pnl.classList.remove('mm-panel--opened', 'mm-panel--parent', 'mm-panel--noanimation');
                 if (pnl !== current_1) {
-                    pnl.classList.remove('mm-panel_highest');
+                    pnl.classList.remove('mm-panel--highest');
                 }
             });
             //  Open new panel.
-            panel.classList.add('mm-panel_opened');
+            panel.classList.add('mm-panel--opened');
             //	Set parent panels as "parent".
             var parent_1 = DOM.find(this.node.pnls, "#" + panel.dataset.mmParent)[0];
             while (parent_1) {
                 parent_1 = parent_1.closest('.mm-panel');
-                parent_1.classList.add('mm-panel_parent');
+                parent_1.classList.add('mm-panel--parent');
                 parent_1 = DOM.find(this.node.menu, "#" + parent_1.dataset.mmParent)[0];
             }
         }
@@ -110,8 +110,8 @@ var Mmenu = /** @class */ (function () {
         //	Invoke "before" hook.
         this.trigger('closePanel:before', [panel]);
         //	Close a "vertical" panel.
-        if (panel.parentElement.matches('.mm-listitem_vertical')) {
-            panel.parentElement.classList.remove('mm-listitem_opened');
+        if (panel.parentElement.matches('.mm-listitem--vertical')) {
+            panel.parentElement.classList.remove('mm-listitem--opened');
             //  Close a "horizontal" panel.
         }
         else {
@@ -130,8 +130,8 @@ var Mmenu = /** @class */ (function () {
     Mmenu.prototype.togglePanel = function (panel) {
         var listitem = panel.parentElement;
         //	Only works for "vertical" panels.
-        if (listitem.matches('.mm-listitem_vertical')) {
-            this[listitem.matches('.mm-listitem_opened')
+        if (listitem.matches('.mm-listitem--vertical')) {
+            this[listitem.matches('.mm-listitem--opened')
                 ? 'closePanel'
                 : 'openPanel'](panel);
         }
@@ -144,11 +144,11 @@ var Mmenu = /** @class */ (function () {
         //	Invoke "before" hook.
         this.trigger('setSelected:before', [listitem]);
         //	First, remove the selected class from all listitems.
-        DOM.find(this.node.menu, '.mm-listitem_selected').forEach(function (li) {
-            li.classList.remove('mm-listitem_selected');
+        DOM.find(this.node.menu, '.mm-listitem--selected').forEach(function (li) {
+            li.classList.remove('mm-listitem--selected');
         });
         //	Next, add the selected class to the provided listitem.
-        listitem.classList.add('mm-listitem_selected');
+        listitem.classList.add('mm-listitem--selected');
         //	Invoke "after" hook.
         this.trigger('setSelected:after', [listitem]);
     };
@@ -328,7 +328,7 @@ var Mmenu = /** @class */ (function () {
                     try {
                         var panel = DOM.find(_this.node.menu, href)[0];
                         if (panel && panel.matches('.mm-panel')) {
-                            if (anchor.parentElement.matches('.mm-listitem_vertical')) {
+                            if (anchor.parentElement.matches('.mm-listitem--vertical')) {
                                 _this.togglePanel(panel);
                             }
                             else {
@@ -396,7 +396,7 @@ var Mmenu = /** @class */ (function () {
         }
         panel.classList.add('mm-panel');
         //  Append to the panels node if not vertically expanding
-        if (!panel.parentElement.matches('.mm-listitem_vertical')) {
+        if (!panel.parentElement.matches('.mm-listitem--vertical')) {
             this.node.pnls.append(panel);
         }
         //  Initialize tha navbar.
@@ -434,7 +434,7 @@ var Mmenu = /** @class */ (function () {
             parentPanel = parentListitem.closest('.mm-panel');
         }
         //  No navbar needed for vertical submenus.
-        if (parentListitem && parentListitem.matches('.mm-listitem_vertical')) {
+        if (parentListitem && parentListitem.matches('.mm-listitem--vertical')) {
             return;
         }
         /** The navbar element. */
@@ -443,14 +443,10 @@ var Mmenu = /** @class */ (function () {
         if (!this.opts.navbar.add) {
             navbar.classList.add('mm-hidden');
         }
-        //  Sticky navbars.
-        else if (this.opts.navbar.sticky) {
-            navbar.classList.add('mm-navbar_sticky');
-        }
         //  Add the back button.
         if (parentPanel) {
             /** The back button. */
-            var prev = DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
+            var prev = DOM.create('a.mm-btn.mm-btn--prev.mm-navbar__btn');
             prev.href = '#' + parentPanel.id;
             navbar.append(prev);
         }
@@ -522,7 +518,7 @@ var Mmenu = /** @class */ (function () {
         //	Invoke "before" hook.
         this.trigger('initListitem:before', [listitem]);
         listitem.classList.add('mm-listitem');
-        DOM.reClass(listitem, this.conf.classNames.selected, 'mm-listitem_selected');
+        DOM.reClass(listitem, this.conf.classNames.selected, 'mm-listitem--selected');
         DOM.reClass(listitem, this.conf.classNames.divider, 'mm-divider');
         if (listitem.matches('.mm-divider')) {
             listitem.classList.remove('mm-listitem');
@@ -553,7 +549,7 @@ var Mmenu = /** @class */ (function () {
             !this.opts.slidingSubmenus;
         // Make it expand vertically
         if (vertical) {
-            listitem.classList.add('mm-listitem_vertical');
+            listitem.classList.add('mm-listitem--vertical');
         }
         //  Force an ID
         listitem.id = listitem.id || uniqueId();
@@ -565,7 +561,7 @@ var Mmenu = /** @class */ (function () {
         var button = DOM.children(listitem, '.mm-btn')[0];
         //  Init item text
         if (!button) {
-            button = DOM.create('a.mm-btn.mm-btn_next.mm-listitem__btn');
+            button = DOM.create('a.mm-btn.mm-btn--next.mm-listitem__btn');
             DOM.children(listitem, 'a, span').forEach(function (text) {
                 //  If the item has no link,
                 //      Replace the item with the open link.
@@ -591,17 +587,17 @@ var Mmenu = /** @class */ (function () {
         //	Invoke "before" hook.
         this.trigger('initOpened:before');
         /** The selected listitem(s). */
-        var listitems = this.node.pnls.querySelectorAll('.mm-listitem_selected');
+        var listitems = this.node.pnls.querySelectorAll('.mm-listitem--selected');
         /** The last selected listitem. */
         var lastitem = null;
         //	Deselect the listitems.
         listitems.forEach(function (listitem) {
             lastitem = listitem;
-            listitem.classList.remove('mm-listitem_selected');
+            listitem.classList.remove('mm-listitem--selected');
         });
         //	Re-select the last listitem.
         if (lastitem) {
-            lastitem.classList.add('mm-listitem_selected');
+            lastitem.classList.add('mm-listitem--selected');
         }
         /**	The current opened panel. */
         var current = lastitem

@@ -33,7 +33,7 @@ $mm_module: '.mm-sectionindexer';
         padding-right: 0;
     }
 
-    &_active {
+    &--active {
         right: 0;
 
         ~ .mm-panel {

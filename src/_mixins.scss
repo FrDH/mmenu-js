@@ -37,7 +37,7 @@
     }
 
     .mm-wrapper_opening {
-        #{$cls}.mm-menu_opened ~ .mm-slideout {
+        #{$cls}.mm-menu--opened ~ .mm-slideout {
             transform: translate3d(
                 clamp($minWidth, #{$width * 100}vw, $maxWidth),
                 0,
@@ -48,7 +48,7 @@
 }
 
 @mixin mm_iconpanel_size($nr) {
-    .mm-panel_iconpanel-#{$nr} {
+    .mm-panel--iconpanel-#{$nr} {
         width: calc(100% - (var(--mm-iconpanel-size) * #{$nr}));
     }
 }
@@ -59,11 +59,11 @@
 			border-#{$bottom}-width: 1px;
 			border-#{$bottom}-style: solid;
 		}
-		.mm-navbar__tab_selected {
+		.mm-navbar__tab--selected {
 			border-#{$bottom}: none;
 			margin-#{$bottom}: -1px;
 		}
-		.mm-navbar_tabs:#{$first}-child .mm-navbar__tab_selected {
+		.mm-navbar_tabs:#{$first}-child .mm-navbar__tab--selected {
 			border-#{$top}: none;
 		}
 	}
@@ -77,7 +77,7 @@
     $maxWidth: $mm_menuMaxWidth
 ) {
     .mm-wrapper_opening {
-        #{$cls}.mm-menu_position-right.mm-menu_opened ~ .mm-slideout {
+        #{$cls}.mm-menu_position-right.mm-menu--opened ~ .mm-slideout {
             transform: translate3d(
                 clamp(-$maxWidth, #{-$width * 100}vw, -$minWidth),
                 0,

@@ -24,23 +24,13 @@ export default function (this: Mmenu) {
     //	Add the iconpanels
     if (options.add) {
         this.bind('initMenu:after', () => {
-            let classnames = ['mm-menu_iconpanel'];
-
-            if (options.hideNavbar) {
-                classnames.push('mm-menu_hidenavbar');
-            }
-
-            if (options.hideDivider) {
-                classnames.push('mm-menu_hidedivider');
-            }
-
-            this.node.menu.classList.add(...classnames);
+            this.node.menu.classList.add('mm-menu--iconpanel');
         });
 
         let classnames = [];
         if (!keepFirst) {
             for (let i = 0; i <= options.visible; i++) {
-                classnames.push('mm-panel_iconpanel-' + i);
+                classnames.push('mm-panel--iconpanel-' + i);
             }
         }
 
@@ -48,14 +38,14 @@ export default function (this: Mmenu) {
             var panels = DOM.children(this.node.pnls, '.mm-panel');
             panel = panel || panels[0];
 
-            if (panel.parentElement.matches('.mm-listitem_vertical')) {
+            if (panel.parentElement.matches('.mm-listitem--vertical')) {
                 return;
             }
 
             if (keepFirst) {
                 panels.forEach((panel, p) => {
                     panel.classList[p == 0 ? 'add' : 'remove'](
-                        'mm-panel_iconpanel-first'
+                        'mm-panel--iconpanel-first'
                     );
                 });
             } else {
@@ -66,7 +56,7 @@ export default function (this: Mmenu) {
 
                 //	Filter out panels that are not opened.
                 panels = panels.filter((panel) =>
-                    panel.matches('.mm-panel_parent')
+                    panel.matches('.mm-panel--parent')
                 );
 
                 //	Add the current panel to the list.
@@ -90,7 +80,7 @@ export default function (this: Mmenu) {
 
                 //	Add the "iconpanel" classnames.
                 panels.forEach((panel, p) => {
-                    panel.classList.add('mm-panel_iconpanel-' + p);
+                    panel.classList.add('mm-panel--iconpanel-' + p);
                 });
             }
         });
@@ -98,7 +88,7 @@ export default function (this: Mmenu) {
         this.bind('initPanel:after', (panel: HTMLElement) => {
             if (
                 options.blockPanel &&
-                !panel.parentElement.matches('.mm-listitem_vertical') &&
+                !panel.parentElement.matches('.mm-listitem--vertical') &&
                 !DOM.children(panel, '.mm-panel__blocker')[0]
             ) {
                 let blocker = DOM.create('a.mm-panel__blocker');

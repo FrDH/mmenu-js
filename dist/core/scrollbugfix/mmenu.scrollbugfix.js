@@ -41,7 +41,7 @@ export default function () {
     //  Prevent the page from scrolling when dragging in the menu.
     this.node.menu.addEventListener('touchmove', function (evnt) {
         var wrapper = evnt.target.closest('.mm-panel, .mm-iconbar__top, .mm-iconbar__bottom');
-        if (wrapper && wrapper.closest('.mm-listitem_vertical')) {
+        if (wrapper && wrapper.closest('.mm-listitem--vertical')) {
             wrapper = DOM.parents(wrapper, '.mm-panel').pop();
         }
         if (wrapper) {
@@ -76,14 +76,14 @@ export default function () {
     //  Some small additional improvements
     //	Scroll the current opened panel to the top when opening the menu.
     this.bind('open:start', function () {
-        var panel = DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
+        var panel = DOM.children(_this.node.pnls, '.mm-panel--opened')[0];
         if (panel) {
             panel.scrollTop = 0;
         }
     });
     //	Fix issue after device rotation change.
     window.addEventListener('orientationchange', function (evnt) {
-        var panel = DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
+        var panel = DOM.children(_this.node.pnls, '.mm-panel--opened')[0];
         if (panel) {
             panel.scrollTop = 0;
             //	Apparently, changing the overflow-scrolling property triggers some event :)

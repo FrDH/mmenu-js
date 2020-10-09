@@ -3,7 +3,7 @@ import * as sr from '../../_modules/screenreader';
 export default function (navbar) {
     var _this = this;
     //	Add content.
-    var prev = DOM.create('a.mm-btn.mm-btn_prev.mm-navbar__btn');
+    var prev = DOM.create('a.mm-btn.mm-btn--prev.mm-navbar__btn');
     navbar.append(prev);
     this.bind('initNavbar:after', function (panel) {
         DOM.children(panel, '.mm-navbar')[0].classList.add('mm-hidden');
@@ -12,12 +12,12 @@ export default function (navbar) {
     var org;
     var _url, _txt;
     this.bind('openPanel:before', function (panel) {
-        if (panel.parentElement.matches('.mm-listitem_vertical')) {
+        if (panel.parentElement.matches('.mm-listitem--vertical')) {
             return;
         }
         org = panel.querySelector('.' + _this.conf.classNames.navbars.panelPrev);
         if (!org) {
-            org = panel.querySelector('.mm-navbar__btn.mm-btn_prev');
+            org = panel.querySelector('.mm-navbar__btn.mm-btn--prev');
         }
         _url = org ? org.getAttribute('href') : '';
         _txt = org ? org.innerHTML : '';

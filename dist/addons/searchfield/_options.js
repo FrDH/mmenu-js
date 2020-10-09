@@ -7,7 +7,6 @@ var options = {
     panel: {
         add: false,
         dividers: true,
-        fx: 'none',
         id: null,
         splash: null,
         title: 'Search',

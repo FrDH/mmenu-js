@@ -9,7 +9,7 @@ import { extend } from '../../_modules/helpers';
 Mmenu.options.pageScroll = options;
 Mmenu.configs.pageScroll = configs;
 
-export default function(this: Mmenu) {
+export default function (this: Mmenu) {
     var options = extendShorthandOptions(this.opts.pageScroll);
     this.opts.pageScroll = extend(options, Mmenu.options.pageScroll);
 
@@ -70,8 +70,8 @@ export default function(this: Mmenu) {
 
             //	If the sidebar add-on is "expanded"...
             if (
-                this.node.menu.matches('.mm-menu_sidebar-expanded') &&
-                this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')
+                this.node.menu.matches('.mm-menu--sidebar-expanded') &&
+                this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')
             ) {
                 //	... scroll the page to the section.
                 scrollTo();
@@ -114,7 +114,7 @@ export default function(this: Mmenu) {
 
                         let panel = DOM.children(
                             this.node.pnls,
-                            '.mm-panel_opened'
+                            '.mm-panel--opened'
                         )[0];
 
                         let listitems = DOM.find(panel, '.mm-listitem');

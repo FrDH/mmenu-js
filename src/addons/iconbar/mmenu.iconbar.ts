@@ -81,7 +81,7 @@ export default function (this: Mmenu) {
                     return;
                 }
 
-                if (anchor.matches('.mm-iconbar__tab_selected')) {
+                if (anchor.matches('.mm-iconbar__tab--selected')) {
                     evnt.stopImmediatePropagation();
                     return;
                 }
@@ -102,7 +102,7 @@ export default function (this: Mmenu) {
 
             const selectTab = (panel: HTMLElement) => {
                 DOM.find(iconbar, 'a').forEach((anchor) => {
-                    anchor.classList.remove('mm-iconbar__tab_selected');
+                    anchor.classList.remove('mm-iconbar__tab--selected');
                 });
 
                 const anchor = DOM.find(
@@ -110,7 +110,7 @@ export default function (this: Mmenu) {
                     '[href="#' + panel.id + '"]'
                 )[0];
                 if (anchor) {
-                    anchor.classList.add('mm-iconbar__tab_selected');
+                    anchor.classList.add('mm-iconbar__tab--selected');
                 } else {
                     const parent: HTMLElement = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
                     if (parent) {

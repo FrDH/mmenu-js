@@ -4,7 +4,7 @@ import * as sr from '../../_modules/screenreader';
 
 export default function (this: Mmenu, navbar: HTMLElement) {
     //	Add content
-    var close = DOM.create('a.mm-btn.mm-btn_close.mm-navbar__btn');
+    var close = DOM.create('a.mm-btn.mm-btn--close.mm-navbar__btn');
     navbar.append(close);
 
     //	Update to page node

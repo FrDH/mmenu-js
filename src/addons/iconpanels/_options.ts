@@ -1,8 +1,6 @@
-const options : mmOptionsIconpanels = {
+const options: mmOptionsIconpanels = {
 	add: false,
 	blockPanel: true,
-	hideDivider: false,
-	hideNavbar: true,
 	visible: 3
 };
 export default options;
@@ -13,26 +11,26 @@ export default options;
  * @param  {object} options The options to extend.
  * @return {object}			The extended options.
  */
-export function extendShorthandOptions( 
-	options : mmOptionsIconpanels
-) : mmOptionsIconpanels {
+export function extendShorthandOptions(
+	options: mmOptionsIconpanels
+): mmOptionsIconpanels {
 
-	if ( typeof options == 'boolean' ) {
+	if (typeof options == 'boolean') {
 		options = {
-			add : options
+			add: options
 		};
 	}
 
-	if ( typeof options == 'number' ||
-		 typeof options == 'string'
+	if (typeof options == 'number' ||
+		typeof options == 'string'
 	) {
 		options = {
-			add 	: true,
-			visible : options
+			add: true,
+			visible: options
 		};
 	}
 
-	if ( typeof options != 'object' ) {
+	if (typeof options != 'object') {
 		options = {};
 	}
 

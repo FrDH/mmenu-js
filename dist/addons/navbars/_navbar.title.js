@@ -12,7 +12,7 @@ export default function (navbar) {
     var original;
     this.bind('openPanel:before', function (panel) {
         //	Do nothing in a vertically expanding panel.
-        if (panel.parentElement.matches('.mm-listitem_vertical')) {
+        if (panel.parentElement.matches('.mm-listitem--vertical')) {
             return;
         }
         //	Find the original title in the opened panel.
@@ -42,7 +42,7 @@ export default function (navbar) {
             if (!prev) {
                 var navbars = DOM.children(_this.node.menu, '.mm-navbars_top, .mm-navbars_bottom');
                 navbars.forEach(function (navbar) {
-                    var btn = navbar.querySelector('.mm-btn_prev');
+                    var btn = DOM.find(navbar, '.mm-btn--prev')[0];
                     if (btn) {
                         prev = btn;
                     }

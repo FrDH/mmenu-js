@@ -60,7 +60,7 @@ export default function (this: Mmenu) {
         let focusable = 'input, select, textarea, button, label, a[href]';
         const setFocus = (panel?: HTMLElement) => {
             panel =
-                panel || DOM.children(this.node.pnls, '.mm-panel_opened')[0];
+                panel || DOM.children(this.node.pnls, '.mm-panel--opened')[0];
 
             var focus: HTMLElement = null;
 
@@ -137,7 +137,7 @@ const initWindow = function (this: Mmenu, enhance: boolean) {
     //	Intersept the target when tabbing.
     events.off(document.body, 'focusin.tabguard');
     events.on(document.body, 'focusin.tabguard', (evnt: KeyboardEvent) => {
-        if (this.node.wrpr.matches('.mm-wrapper_opened')) {
+        if (this.node.wrpr.matches('.mm-wrapper--opened')) {
             let target = evnt.target as HTMLElement;
             if (target.matches('.mm-tabend')) {
                 let next;
@@ -153,7 +153,7 @@ const initWindow = function (this: Mmenu, enhance: boolean) {
                 if (target.parentElement.matches('.mm-wrapper__blocker')) {
                     next = DOM.find(
                         document.body,
-                        '.mm-menu_offcanvas.mm-menu_opened'
+                        '.mm-menu_offcanvas.mm-menu--opened'
                     )[0];
                 }
 
@@ -218,7 +218,7 @@ const initWindow = function (this: Mmenu, enhance: boolean) {
                         case 8:
                             let parent: HTMLElement = DOM.find(
                                 menu,
-                                '.mm-panel_opened'
+                                '.mm-panel--opened'
                             )[0];
                             if (parent) {
                                 parent = DOM.find(menu, `#${parent.dataset.mmParent}`)[0];

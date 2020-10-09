@@ -6,7 +6,7 @@
         --mm-sidebar-expanded-size: #{$mm_sidebarExpandedSize};
     }
 
-    .mm-wrapper_sidebar {
+    .mm-wrapper--sidebar {
         &-collapsed,
         &-expanded {
             body {
@@ -24,46 +24,44 @@
             }
         }
 
-        &-collapsed .mm-menu_sidebar-collapsed,
-        &-expanded .mm-menu_sidebar-expanded {
+        &-collapsed .mm-menu--sidebar-collapsed,
+        &-expanded .mm-menu--sidebar-expanded {
             display: flex !important;
             top: 0 !important;
             right: auto !important;
             bottom: 0 !important;
             left: 0 !important;
+
+            .mm-panel--parent .mm-navbar,
+            .mm-panel--parent .mm-divider {
+                opacity: 0;
+            }
         }
     }
 }
 
 @if ($mm_include_sidebar_collapsed) {
-    .mm-wrapper_sidebar {
+    .mm-wrapper--sidebar {
         &-collapsed {
             .mm-slideout {
                 width: calc(100% - var(--mm-sidebar-collapsed-size));
                 transform: translate3d(var(--mm-sidebar-collapsed-size), 0, 0);
-            }
-
-            &:not(.mm-wrapper_opening) {
-                .mm-menu_hidenavbar .mm-navbar,
-                .mm-menu_hidedivider .mm-divider {
-                    opacity: 0;
-                }
             }
         }
     }
 }
 
 @if ($mm_include_sidebar_expanded) {
-    .mm-wrapper_sidebar {
+    .mm-wrapper--sidebar {
         &-expanded {
-            .mm-menu_sidebar-expanded {
+            .mm-menu--sidebar-expanded {
                 width: var(--mm-sidebar-expanded-size);
                 border-right-width: 1px;
                 border-right-style: solid;
             }
 
             @if ($mm_include_offcanvas_blocker) {
-                &.mm-wrapper_blocking {
+                &.mm-wrapper--blocking {
                     &,
                     body {
                         overflow: visible;
@@ -75,8 +73,8 @@
                 }
             }
 
-            &:not(.mm-wrapper_sidebar-closed) {
-                .mm-menu_sidebar-expanded.mm-menu_opened {
+            &:not(.mm-wrapper--sidebar-closed) {
+                .mm-menu--sidebar-expanded.mm-menu--opened {
                     ~ .mm-slideout {
                         width: calc(100% - var(--mm-sidebar-expanded-size));
                         transform: translate3d(
@@ -102,7 +100,7 @@
         left: 0;
         z-index: 3;
 
-        .mm-menu_opened & {
+        .mm-menu--opened & {
             display: none;
         }
     }

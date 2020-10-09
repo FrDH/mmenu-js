@@ -13,7 +13,7 @@ export default function (navbar) {
         var crumbs = [], breadcrumbs = DOM.create('span.mm-navbar__breadcrumbs'), current = panel, first = true;
         while (current) {
             current = current.closest('.mm-panel');
-            if (!current.parentElement.matches('.mm-listitem_vertical')) {
+            if (!current.parentElement.matches('.mm-listitem--vertical')) {
                 var title = DOM.find(current, '.mm-navbar__title span')[0];
                 if (title) {
                     var text = title.textContent;

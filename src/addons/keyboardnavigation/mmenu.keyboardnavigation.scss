@@ -2,7 +2,7 @@
 
 .mm-menu_keyboardfocus {
     &,
-    &.mm-menu_opened ~ .mm-wrapper__blocker {
+    &.mm-menu--opened ~ .mm-wrapper__blocker {
         a:focus {
             background: var(--mm-color-background-emphasis);
             outline: none;

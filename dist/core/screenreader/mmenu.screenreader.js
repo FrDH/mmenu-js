@@ -59,7 +59,7 @@ export default function () {
                 .filter(function (hide) { return !hide.parentElement.matches('.mm-panel'); });
             /** Panels that should be considered "visible". */
             var visible = [panel];
-            DOM.find(panel, '.mm-listitem_vertical .mm-listitem_opened').forEach(function (listitem) {
+            DOM.find(panel, '.mm-listitem--vertical .mm-listitem--opened').forEach(function (listitem) {
                 visible.push.apply(visible, DOM.children(listitem, '.mm-panel'));
             });
             //	Set the panels to be considered "hidden" or "visible".
@@ -100,7 +100,7 @@ export default function () {
                     /** The navbar in the panel. */
                     var navbar = DOM.children(panel, '.mm-navbar')[0];
                     /** Whether or not the navbar should be considered "hidden". */
-                    var hidden = navbar.querySelector('.mm-btn_prev')
+                    var hidden = navbar.querySelector('.mm-btn--prev')
                         ? true
                         : false;
                     //	Set the navbar-title to be considered "hidden" or "visible".
@@ -125,7 +125,7 @@ export default function () {
         this.bind('initNavbar:after', function (panel) {
             var navbar = DOM.children(panel, '.mm-navbar')[0];
             if (navbar) {
-                var button = DOM.children(navbar, '.mm-btn_prev')[0];
+                var button = DOM.children(navbar, '.mm-btn--prev')[0];
                 if (button) {
                     button.innerHTML = sr.text(_this.i18n(configs.text.closeSubmenu));
                 }
@@ -136,9 +136,9 @@ export default function () {
             var panel = listview.closest('.mm-panel');
             var parent = DOM.find(_this.node.menu, "#" + panel.dataset.mmParent)[0];
             if (parent) {
-                var next = DOM.children(parent, '.mm-btn_next')[0];
+                var next = DOM.children(parent, '.mm-btn--next')[0];
                 if (next) {
-                    var text = _this.i18n(configs.text[next.parentElement.matches('.mm-listitem_vertical')
+                    var text = _this.i18n(configs.text[next.parentElement.matches('.mm-listitem--vertical')
                         ? 'toggleSubmenu'
                         : 'openSubmenu']);
                     next.innerHTML += sr.text(text);

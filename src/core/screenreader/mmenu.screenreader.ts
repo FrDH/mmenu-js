@@ -80,7 +80,7 @@ export default function (this: Mmenu) {
             var visible: HTMLElement[] = [panel];
             DOM.find(
                 panel,
-                '.mm-listitem_vertical .mm-listitem_opened'
+                '.mm-listitem--vertical .mm-listitem--opened'
             ).forEach((listitem) => {
                 visible.push(...DOM.children(listitem, '.mm-panel'));
             });
@@ -131,7 +131,7 @@ export default function (this: Mmenu) {
                     var navbar = DOM.children(panel, '.mm-navbar')[0];
 
                     /** Whether or not the navbar should be considered "hidden". */
-                    var hidden = navbar.querySelector('.mm-btn_prev')
+                    var hidden = navbar.querySelector('.mm-btn--prev')
                         ? true
                         : false;
 
@@ -166,7 +166,7 @@ export default function (this: Mmenu) {
         this.bind('initNavbar:after', (panel: HTMLElement) => {
             let navbar = DOM.children(panel, '.mm-navbar')[0];
             if (navbar) {
-                let button = DOM.children(navbar, '.mm-btn_prev')[0];
+                let button = DOM.children(navbar, '.mm-btn--prev')[0];
                 if (button) {
                     button.innerHTML = sr.text(
                         this.i18n(configs.text.closeSubmenu)
@@ -180,11 +180,11 @@ export default function (this: Mmenu) {
             let panel: HTMLElement = listview.closest('.mm-panel');
             let parent: HTMLElement = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
             if (parent) {
-                let next = DOM.children(parent, '.mm-btn_next')[0];
+                let next = DOM.children(parent, '.mm-btn--next')[0];
                 if (next) {
                     let text = this.i18n(
                         configs.text[
-                        next.parentElement.matches('.mm-listitem_vertical')
+                        next.parentElement.matches('.mm-listitem--vertical')
                             ? 'toggleSubmenu'
                             : 'openSubmenu'
                         ]

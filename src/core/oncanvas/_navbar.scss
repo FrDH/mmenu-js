@@ -12,11 +12,9 @@ $mm_module: '.mm-navbar';
     transition: opacity $mm_transitionDuration $mm_transitionFunction;
 
     @supports (position: sticky) {
-        &_sticky {
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
+        position: sticky;
+        top: 0;
+        z-index: 1;
     }
 
     > * {

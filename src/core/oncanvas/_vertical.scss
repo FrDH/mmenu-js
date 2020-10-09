@@ -1,5 +1,5 @@
 @if ($mm_include_vertical) {
-    .mm-listitem_vertical > .mm-panel {
+    .mm-listitem--vertical > .mm-panel {
         display: none;
         width: 100%;
         padding: $mm_padding 0 $mm_padding $mm_padding;
@@ -13,11 +13,11 @@
         }
     }
 
-    .mm-listitem_opened > .mm-panel {
+    .mm-listitem--opened > .mm-panel {
         display: block;
     }
 
-    .mm-listitem_vertical {
+    .mm-listitem--vertical {
         > .mm-listitem__btn {
             height: var(--mm-listitem-size);
             bottom: auto;
@@ -28,7 +28,7 @@
         }
     }
 
-    .mm-listitem_opened {
+    .mm-listitem--opened {
         > .mm-listitem__btn:after {
             transform: rotate(225deg);
             right: $mm_listitemIndent - 1;

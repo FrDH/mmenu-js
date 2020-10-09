@@ -146,7 +146,7 @@ export const filterLIA = (listitems: HTMLElement[]): HTMLElement[] => {
     filterLI(listitems).forEach((listitem) => {
         anchors.push(...children(listitem, 'a.mm-listitem__text'));
     });
-    return anchors.filter((anchor) => !anchor.matches('.mm-btn_next'));
+    return anchors.filter((anchor) => !anchor.matches('.mm-btn--next'));
 };
 
 /**

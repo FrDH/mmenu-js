@@ -115,7 +115,7 @@ export var filterLIA = function (listitems) {
     filterLI(listitems).forEach(function (listitem) {
         anchors.push.apply(anchors, children(listitem, 'a.mm-listitem__text'));
     });
-    return anchors.filter(function (anchor) { return !anchor.matches('.mm-btn_next'); });
+    return anchors.filter(function (anchor) { return !anchor.matches('.mm-btn--next'); });
 };
 /**
  * Refactor a classname on multiple elements.

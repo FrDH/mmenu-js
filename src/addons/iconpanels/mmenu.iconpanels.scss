@@ -8,37 +8,40 @@
 @include mm_iconpanel_size(2);
 @include mm_iconpanel_size(3);
 
-.mm-panel_iconpanel-first {
+.mm-panel--iconpanel-first {
     ~ .mm-panel {
         width: calc(100% - var(--mm-iconpanel-size));
     }
 }
 
-.mm-menu_iconpanel .mm-panels {
-    > .mm-panel {
-        left: auto;
-        transition-property: transform, width;
+.mm-menu--iconpanel {
 
-        &_opened,
-        &_parent {
-            display: block !important;
-        }
+    .mm-panel--parent .mm-navbar,
+    .mm-panel--parent .mm-divider {
+        opacity: 0;
+    }
 
-        &_parent {
-            overflow-y: hidden;
-            transform: unset;
-        }
+    .mm-panels {
+        > .mm-panel {
+            left: auto;
+            transition-property: transform, width;
 
-        &:not(.mm-panel_iconpanel-first):not(.mm-panel_iconpanel-0) {
-            border-left-width: 1px;
-            border-left-style: solid;
+            &--opened,
+            &--parent {
+                display: block !important;
+            }
+
+            &--parent {
+                overflow-y: hidden;
+                transform: unset;
+            }
+
+            &:not(.mm-panel--iconpanel-first):not(.mm-panel--iconpanel-0) {
+                border-left-width: 1px;
+                border-left-style: solid;
+            }
         }
     }
-}
-
-.mm-menu_hidenavbar .mm-panel_parent .mm-navbar,
-.mm-menu_hidedivider .mm-panel_parent .mm-divider {
-    opacity: 0;
 }
 
 @if ($mm_include_iconpanels_blocker) {
@@ -55,7 +58,7 @@
 
         transition: opacity $mm_transitionDuration $mm_transitionFunction;
 
-        .mm-panel_parent & {
+        .mm-panel--parent & {
             opacity: 0.6;
             bottom: -100000px;
         }

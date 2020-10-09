@@ -3,16 +3,16 @@ $mm_module: '.mm-btn';
 @if ( $mm_include_rtl ) {
 	[dir="rtl"] {
 		#{$mm_module} {
-			&_next:after {
+			&--next:after {
 				@include mm_btn_arrow_prev;
 			}
 		
 
-			&_prev:before {
+			&--prev:before {
 				@include mm_btn_arrow_next;
 			}
 
-			&_close {
+			&--close {
 				&:before,
 				&:after {
 					right: auto;

@@ -59,8 +59,8 @@ export default function () {
                 return;
             }
             //	If the sidebar add-on is "expanded"...
-            if (_this.node.menu.matches('.mm-menu_sidebar-expanded') &&
-                _this.node.wrpr.matches('.mm-wrapper_sidebar-expanded')) {
+            if (_this.node.menu.matches('.mm-menu--sidebar-expanded') &&
+                _this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
                 //	... scroll the page to the section.
                 scrollTo();
                 //	... otherwise...
@@ -93,7 +93,7 @@ export default function () {
                 if (scts_1[s].offsetTop < scrollTop + configs.updateOffset) {
                     if (_selected_1 !== s) {
                         _selected_1 = s;
-                        var panel = DOM.children(_this.node.pnls, '.mm-panel_opened')[0];
+                        var panel = DOM.children(_this.node.pnls, '.mm-panel--opened')[0];
                         var listitems = DOM.find(panel, '.mm-listitem');
                         var anchors = DOM.filterLIA(listitems);
                         anchors = anchors.filter(function (anchor) {

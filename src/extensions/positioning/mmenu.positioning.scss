@@ -21,7 +21,7 @@
         &-bottom {
             transition: transform $mm_transitionDuration $mm_transitionFunction;
 
-            &.mm-menu_opened {
+            &.mm-menu--opened {
                 z-index: 2;
 
                 ~ .mm-slideout {

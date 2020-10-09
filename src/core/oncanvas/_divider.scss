@@ -11,7 +11,7 @@ $mm_module: '.mm-divider';
         z-index: 2;
         top: 0;
 
-        .mm-navbar_sticky:not(.mm-hidden) ~ .mm-listview & {
+        .mm-navbar:not(.mm-hidden) ~ .mm-listview & {
             top: var(--mm-navbar-size);
         }
     }

@@ -23,21 +23,21 @@ $mm_module: '.mm-panel';
         height: var(--mm-listitem-size);
     }
 
-    &_opened {
+    &--opened {
         z-index: 2;
         transform: translate3d(0%, 0, 0);
     }
 
-    &_parent {
+    &--parent {
         transform: translate3d(-$mm_subpanelOffset, 0, 0);
         z-index: 0;
     }
 
-    &_highest {
+    &--highest {
         z-index: 3;
     }
 
-    &_noanimation {
+    &--noanimation {
         transition: none;
     }
 

@@ -15,7 +15,7 @@ export default function (navbar) {
         /** The tab that links to the opened panel. */
         var anchor = DOM.children(navbar, ".mm-navbar__tab[href=\"#" + panel.id + "\"]")[0];
         if (anchor) {
-            anchor.classList.add('mm-navbar__tab_selected');
+            anchor.classList.add('mm-navbar__tab--selected');
         }
         else {
             /** The parent listitem. */
@@ -28,7 +28,7 @@ export default function (navbar) {
     this.bind('openPanel:before', function (panel) {
         //  Remove selected class.
         DOM.children(navbar, 'a').forEach(function (anchor) {
-            anchor.classList.remove('mm-navbar__tab_selected');
+            anchor.classList.remove('mm-navbar__tab--selected');
         });
         selectTab.call(_this, panel);
     });
@@ -39,7 +39,7 @@ export default function (navbar) {
         if (anchor) {
             var panel = DOM.find(_this.node.pnls, anchor.getAttribute('href'))[0];
             if (panel) {
-                panel.classList.add('mm-panel_noanimation');
+                panel.classList.add('mm-panel--noanimation');
             }
         }
     });

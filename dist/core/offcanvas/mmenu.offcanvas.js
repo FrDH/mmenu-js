@@ -148,16 +148,16 @@ Mmenu.prototype._openSetup = function () {
     this.closeAllOthers();
     //	Trigger window-resize to measure height
     events.trigger(window, 'resize.page', { force: true });
-    var clsn = ['mm-wrapper_opened'];
+    var clsn = ['mm-wrapper--opened'];
     //	Add options
     if (options.blockUI) {
-        clsn.push('mm-wrapper_blocking');
+        clsn.push('mm-wrapper--blocking');
     }
     if (options.blockUI == 'modal') {
-        clsn.push('mm-wrapper_modal');
+        clsn.push('mm-wrapper--modal');
     }
     if (options.moveBackground) {
-        clsn.push('mm-wrapper_background');
+        clsn.push('mm-wrapper--background');
     }
     (_a = this.node.wrpr.classList).add.apply(_a, clsn);
     //	Open
@@ -165,7 +165,7 @@ Mmenu.prototype._openSetup = function () {
     setTimeout(function () {
         _this.vars.opened = true;
     }, this.conf.openingInterval);
-    this.node.menu.classList.add('mm-menu_opened');
+    this.node.menu.classList.add('mm-menu--opened');
 };
 /**
  * Finish opening the menu.
@@ -189,8 +189,8 @@ Mmenu.prototype.close = function () {
     }
     //	Callback when the page finishes closing.
     transitionend(Mmenu.node.page, function () {
-        _this.node.menu.classList.remove('mm-menu_opened');
-        _this.node.wrpr.classList.remove('mm-wrapper_opened', 'mm-wrapper_blocking', 'mm-wrapper_modal', 'mm-wrapper_background');
+        _this.node.menu.classList.remove('mm-menu--opened');
+        _this.node.wrpr.classList.remove('mm-wrapper--opened', 'mm-wrapper--blocking', 'mm-wrapper--modal', 'mm-wrapper--background');
         _this.vars.opened = false;
         _this.trigger('close:finish');
     });
@@ -264,7 +264,7 @@ var initWindow = function () {
     events.off(document.body, 'keydown.tabguard');
     events.on(document.body, 'keydown.tabguard', function (evnt) {
         if (evnt.keyCode == 9) {
-            if (_this.node.wrpr.matches('.mm-wrapper_opened')) {
+            if (_this.node.wrpr.matches('.mm-wrapper--opened')) {
                 evnt.preventDefault();
             }
         }
@@ -297,7 +297,7 @@ var initBlocker = function () {
     var closeMenu = function (evnt) {
         evnt.preventDefault();
         evnt.stopPropagation();
-        if (!_this.node.wrpr.matches('.mm-wrapper_modal')) {
+        if (!_this.node.wrpr.matches('.mm-wrapper--modal')) {
             _this.close();
         }
     };

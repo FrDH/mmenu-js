@@ -19,7 +19,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         const anchor = DOM.children(navbar, `.mm-navbar__tab[href="#${panel.id}"]`)[0];
 
         if (anchor) {
-            anchor.classList.add('mm-navbar__tab_selected');
+            anchor.classList.add('mm-navbar__tab--selected');
         } else {
 
             /** The parent listitem. */
@@ -33,7 +33,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
     this.bind('openPanel:before', (panel) => {
         //  Remove selected class.
         DOM.children(navbar, 'a').forEach(anchor => {
-            anchor.classList.remove('mm-navbar__tab_selected');
+            anchor.classList.remove('mm-navbar__tab--selected');
         });
 
         selectTab.call(this, panel);
@@ -47,7 +47,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         if (anchor) {
             const panel = DOM.find(this.node.pnls, anchor.getAttribute('href'))[0];
             if (panel) {
-                panel.classList.add('mm-panel_noanimation');
+                panel.classList.add('mm-panel--noanimation');
             }
         }
     });

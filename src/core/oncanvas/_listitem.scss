@@ -72,13 +72,13 @@ $mm_module: '.mm-listitem';
 }
 
 #{$mm_module} {
-    &_selected {
+    &--selected {
         > #{$mm_module}__text {
             background: var(--mm-color-background-emphasis);
         }
     }
 
-    &_opened {
+    &--opened {
         > #{$mm_module}__btn,
         > .mm-panel {
             background: var(--mm-color-background-highlight);

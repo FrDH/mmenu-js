@@ -73,14 +73,14 @@ export default function () {
         if (args.inMenu) {
             if (anchor.matches('.mm-searchfield__btn')) {
                 //	Clicking the clear button
-                if (anchor.matches('.mm-btn_close')) {
+                if (anchor.matches('.mm-btn--close')) {
                     var form = anchor.closest('.mm-searchfield'), input = DOM.find(form, 'input')[0];
                     input.value = '';
                     _this.search(input);
                     return true;
                 }
                 //	Clicking the submit button
-                if (anchor.matches('.mm-btn_next')) {
+                if (anchor.matches('.mm-btn--next')) {
                     var form = anchor.closest('form');
                     if (form) {
                         form.submit();
@@ -110,16 +110,7 @@ var initSearchPanel = function () {
     this.node.pnls.append(searchpanel);
     this._initListview(listview);
     this._initNavbar(searchpanel);
-    switch (options.panel.fx) {
-        case false:
-            break;
-        case 'none':
-            searchpanel.classList.add('mm-panel_noanimation');
-            break;
-        default:
-            searchpanel.classList.add('mm-panel_fx-' + options.panel.fx);
-            break;
-    }
+    searchpanel.classList.add('mm-panel--noanimation');
     //	Add splash content
     if (options.panel.splash) {
         var splash = DOM.create('div.mm-panel__content');
@@ -133,7 +124,7 @@ var initSearchPanel = function () {
 var initSearchfield = function (wrapper) {
     var options = this.opts.searchfield, configs = this.conf.searchfield;
     //	No searchfield in vertical submenus
-    if (wrapper.parentElement.matches('.mm-listitem_vertical')) {
+    if (wrapper.parentElement.matches('.mm-listitem--vertical')) {
         return null;
     }
     //	Only one searchfield per panel
@@ -159,14 +150,14 @@ var initSearchfield = function (wrapper) {
     addAttributes(input, configs.input);
     //	Add the clear button
     if (configs.clear) {
-        var anchor = DOM.create('a.mm-btn.mm-btn_close.mm-searchfield__btn');
+        var anchor = DOM.create('a.mm-btn.mm-btn--close.mm-searchfield__btn');
         anchor.setAttribute('href', '#');
         field.append(anchor);
     }
     //	Add attributes and submit to the form
     addAttributes(form, configs.form);
     if (configs.form && configs.submit && !configs.clear) {
-        var anchor = DOM.create('a.mm-btn.mm-btn_next.mm-searchfield__btn');
+        var anchor = DOM.create('a.mm-btn.mm-btn--next.mm-searchfield__btn');
         anchor.setAttribute('href', '#');
         field.append(anchor);
     }
@@ -200,7 +191,7 @@ var initSearching = function (form) {
     //	Filter out search panel
     data.panels = data.panels.filter(function (panel) { return !panel.matches('.mm-panel_search'); });
     //	Filter out vertical submenus
-    data.panels = data.panels.filter(function (panel) { return !panel.parentElement.matches('.mm-listitem_vertical'); });
+    data.panels = data.panels.filter(function (panel) { return !panel.parentElement.matches('.mm-listitem--vertical'); });
     //  Find listitems and dividers.
     data.listitems = [];
     data.dividers = [];
@@ -229,8 +220,8 @@ var initSearching = function (form) {
         events.on(cancel, 'click.splash', function (evnt) {
             evnt.preventDefault();
             cancel.classList.remove('mm-searchfield__cancel-active');
-            if (searchpanel.matches('.mm-panel_opened')) {
-                var parents = DOM.children(_this.node.pnls, '.mm-panel_parent');
+            if (searchpanel.matches('.mm-panel--opened')) {
+                var parents = DOM.children(_this.node.pnls, '.mm-panel--parent');
                 if (parents.length) {
                     _this.openPanel(parents[parents.length - 1]);
                 }
@@ -421,8 +412,8 @@ Mmenu.prototype.search = function (input, query) {
                         parent.classList.add('mm-listitem_onlysubitems');
                     }
                     else if (!input.closest('.mm-panel')) {
-                        if (panel.matches('.mm-panel_opened') ||
-                            panel.matches('.mm-panel_parent')) {
+                        if (panel.matches('.mm-panel--opened') ||
+                            panel.matches('.mm-panel--parent')) {
                             //	Compensate the timeout for the opening animation
                             setTimeout(function () {
                                 _this.openPanel(parent.closest('.mm-panel'));
@@ -436,7 +427,7 @@ Mmenu.prototype.search = function (input, query) {
             panels.forEach(function (panel) {
                 var listitems = DOM.find(panel, '.mm-listitem');
                 DOM.filterLI(listitems).forEach(function (listitem) {
-                    DOM.parents(listitem, '.mm-listitem_vertical').forEach(function (parent) {
+                    DOM.parents(listitem, '.mm-listitem--vertical').forEach(function (parent) {
                         if (parent.matches('.mm-hidden')) {
                             parent.classList.remove('mm-hidden');
                             parent.classList.add('mm-listitem_onlysubitems');
@@ -501,7 +492,7 @@ Mmenu.prototype.search = function (input, query) {
                 //	Close panel
             }
             else if (!input.closest('.mm-panel_search')) {
-                var opened = DOM.children(this.node.pnls, '.mm-panel_parent');
+                var opened = DOM.children(this.node.pnls, '.mm-panel--parent');
                 this.openPanel(opened.slice(-1)[0]);
             }
         }

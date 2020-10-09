@@ -189,17 +189,17 @@ Mmenu.prototype._openSetup = function (this: Mmenu) {
     //	Trigger window-resize to measure height
     events.trigger(window, 'resize.page', { force: true });
 
-    var clsn = ['mm-wrapper_opened'];
+    var clsn = ['mm-wrapper--opened'];
 
     //	Add options
     if (options.blockUI) {
-        clsn.push('mm-wrapper_blocking');
+        clsn.push('mm-wrapper--blocking');
     }
     if (options.blockUI == 'modal') {
-        clsn.push('mm-wrapper_modal');
+        clsn.push('mm-wrapper--modal');
     }
     if (options.moveBackground) {
-        clsn.push('mm-wrapper_background');
+        clsn.push('mm-wrapper--background');
     }
 
     this.node.wrpr.classList.add(...clsn);
@@ -210,7 +210,7 @@ Mmenu.prototype._openSetup = function (this: Mmenu) {
         this.vars.opened = true;
     }, this.conf.openingInterval);
 
-    this.node.menu.classList.add('mm-menu_opened');
+    this.node.menu.classList.add('mm-menu--opened');
 };
 
 /**
@@ -242,13 +242,13 @@ Mmenu.prototype.close = function (this: Mmenu) {
     transitionend(
         Mmenu.node.page,
         () => {
-            this.node.menu.classList.remove('mm-menu_opened');
+            this.node.menu.classList.remove('mm-menu--opened');
 
             this.node.wrpr.classList.remove(
-                'mm-wrapper_opened',
-                'mm-wrapper_blocking',
-                'mm-wrapper_modal',
-                'mm-wrapper_background'
+                'mm-wrapper--opened',
+                'mm-wrapper--blocking',
+                'mm-wrapper--modal',
+                'mm-wrapper--background'
             );
 
             this.vars.opened = false;
@@ -344,7 +344,7 @@ const initWindow = function (this: Mmenu) {
     events.off(document.body, 'keydown.tabguard');
     events.on(document.body, 'keydown.tabguard', (evnt: KeyboardEvent) => {
         if (evnt.keyCode == 9) {
-            if (this.node.wrpr.matches('.mm-wrapper_opened')) {
+            if (this.node.wrpr.matches('.mm-wrapper--opened')) {
                 evnt.preventDefault();
             }
         }
@@ -385,7 +385,7 @@ const initBlocker = function (this: Mmenu) {
         evnt.preventDefault();
         evnt.stopPropagation();
 
-        if (!this.node.wrpr.matches('.mm-wrapper_modal')) {
+        if (!this.node.wrpr.matches('.mm-wrapper--modal')) {
             this.close();
         }
     };

@@ -35,9 +35,9 @@ export default function (this: Mmenu) {
         //	Remove current selected item
     } else if (!options.current) {
         this.bind('initListview:after', (listview: HTMLElement) => {
-            DOM.children(listview, '.mm-listitem_selected').forEach(
+            DOM.children(listview, '.mm-listitem--selected').forEach(
                 (listitem) => {
-                    listitem.classList.remove('mm-listitem_selected');
+                    listitem.classList.remove('mm-listitem--selected');
                 }
             );
         });
@@ -46,7 +46,7 @@ export default function (this: Mmenu) {
     //	Add :hover effect on items
     if (options.hover) {
         this.bind('initMenu:after', () => {
-            this.node.menu.classList.add('mm-menu_selected-hover');
+            this.node.menu.classList.add('mm-menu--selected-hover');
         });
     }
 
@@ -54,17 +54,17 @@ export default function (this: Mmenu) {
     if (options.parent) {
         this.bind('openPanel:after', (panel: HTMLElement) => {
             //	Remove all
-            DOM.find(this.node.pnls, '.mm-listitem_selected-parent').forEach(
+            DOM.find(this.node.pnls, '.mm-listitem--selected-parent').forEach(
                 (listitem) => {
-                    listitem.classList.remove('mm-listitem_selected-parent');
+                    listitem.classList.remove('mm-listitem--selected-parent');
                 }
             );
 
             //	Move up the DOM tree
             let parent: HTMLElement = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
             while (parent) {
-                if (!parent.matches('.mm-listitem_vertical')) {
-                    parent.classList.add('mm-listitem_selected-parent');
+                if (!parent.matches('.mm-listitem--vertical')) {
+                    parent.classList.add('mm-listitem--selected-parent');
                 }
 
                 parent = parent.closest('.mm-panel') as HTMLElement;
@@ -73,7 +73,7 @@ export default function (this: Mmenu) {
         });
 
         this.bind('initMenu:after', () => {
-            this.node.menu.classList.add('mm-menu_selected-parent');
+            this.node.menu.classList.add('mm-menu--selected-parent');
         });
     }
 }

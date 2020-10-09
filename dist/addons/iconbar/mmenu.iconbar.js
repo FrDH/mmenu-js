@@ -69,7 +69,7 @@ export default function () {
                 if (!anchor.matches('a')) {
                     return;
                 }
-                if (anchor.matches('.mm-iconbar__tab_selected')) {
+                if (anchor.matches('.mm-iconbar__tab--selected')) {
                     evnt.stopImmediatePropagation();
                     return;
                 }
@@ -85,11 +85,11 @@ export default function () {
             });
             var selectTab_1 = function (panel) {
                 DOM.find(iconbar, 'a').forEach(function (anchor) {
-                    anchor.classList.remove('mm-iconbar__tab_selected');
+                    anchor.classList.remove('mm-iconbar__tab--selected');
                 });
                 var anchor = DOM.find(iconbar, '[href="#' + panel.id + '"]')[0];
                 if (anchor) {
-                    anchor.classList.add('mm-iconbar__tab_selected');
+                    anchor.classList.add('mm-iconbar__tab--selected');
                 }
                 else {
                     var parent_1 = DOM.find(_this.node.menu, "#" + panel.dataset.mmParent)[0];

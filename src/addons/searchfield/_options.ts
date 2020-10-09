@@ -7,7 +7,6 @@ const options: mmOptionsSearchfield = {
     panel: {
         add: false,
         dividers: true,
-        fx: 'none',
         id: null,
         splash: null,
         title: 'Search',
