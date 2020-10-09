@@ -5,7 +5,7 @@ import translate from './translations/translate';
 import * as DOM from '../../_modules/dom';
 import * as i18n from '../../_modules/i18n';
 import * as media from '../../_modules/matchmedia';
-import { type, extend, transitionend, uniqueId, valueOrFn, } from '../../_modules/helpers';
+import { type, extend, uniqueId, valueOrFn, } from '../../_modules/helpers';
 //  Add the translations.
 translate();
 /**
@@ -76,35 +76,27 @@ var Mmenu = /** @class */ (function () {
             //	Open a "horizontal" panel.
         }
         else {
-            var closeCurrent = panel.matches('.mm-panel_opened-parent');
+            /** Currently opened panel. */
             var current_1 = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
-            panel.classList.add('mm-panel_opened');
-            if (!animation) {
-                panel.classList.add('mm-panel_noanimation');
+            //  Ensure current panel stays on top while closing it.
+            if (panel.matches('.mm-panel_parent') && current_1) {
+                current_1.classList.add('mm-panel_highest');
             }
-            if (closeCurrent) {
-                panel.classList.remove('mm-panel_opened-parent');
-            }
-            else {
-                panel.classList.add('mm-panel_highest');
-            }
-            transitionend(panel, function () {
-                panel.classList.remove('mm-panel_noanimation', 'mm-panel_highest');
+            //  Remove opened, parent, animation and highest classes from all panels.
+            DOM.children(this.node.pnls, '.mm-panel').forEach(function (pnl) {
+                pnl.classList.remove('mm-panel_opened', 'mm-panel_parent', 'mm-panel_noanimation');
+                if (pnl !== current_1) {
+                    pnl.classList.remove('mm-panel_highest');
+                }
             });
-            if (current_1) {
-                if (!animation) {
-                    current_1.classList.add('mm-panel_noanimation');
-                }
-                current_1.classList.remove('mm-panel_opened');
-                if (closeCurrent) {
-                    current_1.classList.add('mm-panel_highest');
-                }
-                else {
-                    current_1.classList.add('mm-panel_opened-parent');
-                }
-                transitionend(current_1, function () {
-                    current_1.classList.remove('mm-panel_noanimation', 'mm-panel_highest');
-                });
+            //  Open new panel.
+            panel.classList.add('mm-panel_opened');
+            //	Set parent panels as "parent".
+            var parent_1 = DOM.find(this.node.pnls, "#" + panel.dataset.mmParent)[0];
+            while (parent_1) {
+                parent_1 = parent_1.closest('.mm-panel');
+                parent_1.classList.add('mm-panel_parent');
+                parent_1 = DOM.find(this.node.menu, "#" + parent_1.dataset.mmParent)[0];
             }
         }
         //	Invoke "after" hook.
@@ -124,8 +116,8 @@ var Mmenu = /** @class */ (function () {
         }
         else {
             if (panel.dataset.mmParent) {
-                var parent_1 = DOM.find(this.node.pnls, '#' + panel.dataset.mmParent)[0];
-                this.openPanel(parent_1);
+                var parent_2 = DOM.find(this.node.pnls, '#' + panel.dataset.mmParent)[0];
+                this.openPanel(parent_2);
             }
         }
         //	Invoke "after" hook.

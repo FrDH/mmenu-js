@@ -54,7 +54,7 @@ export default function () {
                 });
                 //	Filter out panels that are not opened.
                 panels = panels.filter(function (panel) {
-                    return panel.matches('.mm-panel_opened-parent');
+                    return panel.matches('.mm-panel_parent');
                 });
                 //	Add the current panel to the list.
                 var panelAdded_1 = false;

@@ -20,11 +20,11 @@
         transition-property: transform, width;
 
         &_opened,
-        &_opened-parent {
+        &_parent {
             display: block !important;
         }
 
-        &_opened-parent {
+        &_parent {
             overflow-y: hidden;
             transform: unset;
         }
@@ -36,8 +36,8 @@
     }
 }
 
-.mm-menu_hidenavbar .mm-panel_opened-parent .mm-navbar,
-.mm-menu_hidedivider .mm-panel_opened-parent .mm-divider {
+.mm-menu_hidenavbar .mm-panel_parent .mm-navbar,
+.mm-menu_hidedivider .mm-panel_parent .mm-divider {
     opacity: 0;
 }
 
@@ -55,7 +55,7 @@
 
         transition: opacity $mm_transitionDuration $mm_transitionFunction;
 
-        .mm-panel_opened-parent & {
+        .mm-panel_parent & {
             opacity: 0.6;
             bottom: -100000px;
         }

@@ -18,7 +18,7 @@ export default function () {
         var states = [];
         var setStates = function () {
             states = [_menu];
-            DOM.children(_this.node.pnls, '.mm-panel_opened, .mm-panel_opened-parent').forEach(function (panel) {
+            DOM.children(_this.node.pnls, '.mm-panel_opened, .mm-panel_parent').forEach(function (panel) {
                 states.push('#' + panel.id);
             });
         };

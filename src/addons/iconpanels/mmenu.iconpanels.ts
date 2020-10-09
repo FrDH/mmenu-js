@@ -66,7 +66,7 @@ export default function (this: Mmenu) {
 
                 //	Filter out panels that are not opened.
                 panels = panels.filter((panel) =>
-                    panel.matches('.mm-panel_opened-parent')
+                    panel.matches('.mm-panel_parent')
                 );
 
                 //	Add the current panel to the list.

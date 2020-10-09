@@ -305,7 +305,7 @@ const initSearching = function (this: Mmenu, form: HTMLElement) {
             if (searchpanel.matches('.mm-panel_opened')) {
                 let parents = DOM.children(
                     this.node.pnls,
-                    '.mm-panel_opened-parent'
+                    '.mm-panel_parent'
                 );
                 if (parents.length) {
                     this.openPanel(parents[parents.length - 1]);
@@ -547,7 +547,7 @@ Mmenu.prototype.search = function (
                     } else if (!input.closest('.mm-panel')) {
                         if (
                             panel.matches('.mm-panel_opened') ||
-                            panel.matches('.mm-panel_opened-parent')
+                            panel.matches('.mm-panel_parent')
                         ) {
                             //	Compensate the timeout for the opening animation
                             setTimeout(() => {
@@ -644,7 +644,7 @@ Mmenu.prototype.search = function (
             } else if (!input.closest('.mm-panel_search')) {
                 let opened = DOM.children(
                     this.node.pnls,
-                    '.mm-panel_opened-parent'
+                    '.mm-panel_parent'
                 );
                 this.openPanel(opened.slice(-1)[0]);
             }

@@ -230,7 +230,7 @@ var initSearching = function (form) {
             evnt.preventDefault();
             cancel.classList.remove('mm-searchfield__cancel-active');
             if (searchpanel.matches('.mm-panel_opened')) {
-                var parents = DOM.children(_this.node.pnls, '.mm-panel_opened-parent');
+                var parents = DOM.children(_this.node.pnls, '.mm-panel_parent');
                 if (parents.length) {
                     _this.openPanel(parents[parents.length - 1]);
                 }
@@ -422,7 +422,7 @@ Mmenu.prototype.search = function (input, query) {
                     }
                     else if (!input.closest('.mm-panel')) {
                         if (panel.matches('.mm-panel_opened') ||
-                            panel.matches('.mm-panel_opened-parent')) {
+                            panel.matches('.mm-panel_parent')) {
                             //	Compensate the timeout for the opening animation
                             setTimeout(function () {
                                 _this.openPanel(parent.closest('.mm-panel'));
@@ -501,7 +501,7 @@ Mmenu.prototype.search = function (input, query) {
                 //	Close panel
             }
             else if (!input.closest('.mm-panel_search')) {
-                var opened = DOM.children(this.node.pnls, '.mm-panel_opened-parent');
+                var opened = DOM.children(this.node.pnls, '.mm-panel_parent');
                 this.openPanel(opened.slice(-1)[0]);
             }
         }

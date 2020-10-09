@@ -1,12 +1,14 @@
 @import '../../mixins', '../../includes', '../../variables';
 
-%mm_navbars {
+
+@if ($mm_include_navbars_top or $mm_include_navbars_bottom) {
+    .mm-navbars {
+        flex-shrink: 0;
+    }
 }
 
 @if ($mm_include_navbars_top) {
     .mm-navbars_top {
-        flex-shrink: 0;
-
         .mm-navbar:not(:last-child) {
             border-bottom: none;
         }
@@ -15,8 +17,6 @@
 
 @if ($mm_include_navbars_bottom) {
     .mm-navbars_bottom {
-        flex-shrink: 0;
-
         .mm-navbar {
             border-bottom: none;
 

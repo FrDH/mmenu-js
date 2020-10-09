@@ -25,7 +25,7 @@ export default function (this: Mmenu) {
             states = [_menu];
             DOM.children(
                 this.node.pnls,
-                '.mm-panel_opened, .mm-panel_opened-parent'
+                '.mm-panel_opened, .mm-panel_parent'
             ).forEach((panel) => {
                 states.push('#' + panel.id);
             });

@@ -25,7 +25,7 @@
     }
 
     &-parent {
-        .mm-panel_opened-parent .mm-listitem:not(.mm-listitem_selected-parent) {
+        .mm-panel_parent .mm-listitem:not(.mm-listitem_selected-parent) {
             > .mm-listitem__text {
                 background: none;
             }

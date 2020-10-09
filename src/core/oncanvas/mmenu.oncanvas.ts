@@ -182,42 +182,33 @@ export default class Mmenu {
 
             //	Open a "horizontal" panel.
         } else {
-            const closeCurrent = panel.matches('.mm-panel_opened-parent');
+
+            /** Currently opened panel. */
             const current = DOM.children(this.node.pnls, '.mm-panel_opened')[0];
 
-            panel.classList.add('mm-panel_opened');
-
-            if (!animation) {
-                panel.classList.add('mm-panel_noanimation');
+            //  Ensure current panel stays on top while closing it.
+            if (panel.matches('.mm-panel_parent') && current) {
+                current.classList.add('mm-panel_highest');
             }
 
-            if (closeCurrent) {
-                panel.classList.remove('mm-panel_opened-parent');
-            } else {
-                panel.classList.add('mm-panel_highest');
-            }
-
-            transitionend(panel, () => {
-                panel.classList.remove('mm-panel_noanimation', 'mm-panel_highest');
+            //  Remove opened, parent, animation and highest classes from all panels.
+            DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
+                pnl.classList.remove('mm-panel_opened', 'mm-panel_parent', 'mm-panel_noanimation');
+                if (pnl !== current) {
+                    pnl.classList.remove('mm-panel_highest');
+                }
             });
 
-            if (current) {
+            //  Open new panel.
+            panel.classList.add('mm-panel_opened');
 
-                if (!animation) {
-                    current.classList.add('mm-panel_noanimation');
-                }
+            //	Set parent panels as "parent".
+            let parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
+            while (parent) {
+                parent = parent.closest('.mm-panel') as HTMLElement;
+                parent.classList.add('mm-panel_parent');
 
-                current.classList.remove('mm-panel_opened');
-
-                if (closeCurrent) {
-                    current.classList.add('mm-panel_highest');
-                } else {
-                    current.classList.add('mm-panel_opened-parent');
-                }
-
-                transitionend(current, () => {
-                    current.classList.remove('mm-panel_noanimation', 'mm-panel_highest');
-                });
+                parent = DOM.find(this.node.menu, `#${parent.dataset.mmParent}`)[0];
             }
         }
 
