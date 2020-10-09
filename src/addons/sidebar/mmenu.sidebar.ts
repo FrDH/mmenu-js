@@ -111,17 +111,5 @@ export default function (this: Mmenu) {
                 this.node.wrpr.classList.add('mm-wrapper--sidebar-closed');
             });
         }
-
-        //	Add click behavior.
-        //	Prevents default behavior when clicking an anchor
-        this.clck.push((anchor: HTMLElement, args: mmClickArguments) => {
-            if (args.inMenu && args.inListview) {
-                if (this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
-                    return {
-                        close: options.expanded.initial == 'closed'
-                    };
-                }
-            }
-        });
     }
 }

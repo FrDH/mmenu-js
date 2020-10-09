@@ -27,7 +27,7 @@ export default function () {
                 return;
             }
             var panel = listview.closest('.mm-panel');
-            var parent = DOM.find(_this.node.menu, "#" + panel.dataset.mmParent)[0];
+            var parent = DOM.find(_this.node.pnls, "#" + panel.dataset.mmParent)[0];
             if (parent) {
                 //	Check if no counter already excists.
                 if (!DOM.find(parent, '.mm-counter').length) {
@@ -45,7 +45,7 @@ export default function () {
                 ? [listview.closest('.mm-panel')]
                 : DOM.children(_this.node.pnls, '.mm-panel');
             panels.forEach(function (panel) {
-                var parent = DOM.find(_this.node.menu, "#" + panel.dataset.mmParent)[0];
+                var parent = DOM.find(_this.node.pnls, "#" + panel.dataset.mmParent)[0];
                 if (!parent) {
                     return;
                 }

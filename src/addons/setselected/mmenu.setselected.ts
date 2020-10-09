@@ -61,14 +61,14 @@ export default function (this: Mmenu) {
             );
 
             //	Move up the DOM tree
-            let parent: HTMLElement = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
+            let parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
             while (parent) {
                 if (!parent.matches('.mm-listitem--vertical')) {
                     parent.classList.add('mm-listitem--selected-parent');
                 }
 
                 parent = parent.closest('.mm-panel') as HTMLElement;
-                parent = DOM.find(this.node.menu, `#${parent.dataset.mmParent}`)[0];
+                parent = DOM.find(this.node.pnsl, `#${parent.dataset.mmParent}`)[0];
             }
         });
 

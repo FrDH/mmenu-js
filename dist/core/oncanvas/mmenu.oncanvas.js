@@ -91,12 +91,16 @@ var Mmenu = /** @class */ (function () {
             });
             //  Open new panel.
             panel.classList.add('mm-panel--opened');
-            //	Set parent panels as "parent".
+            if (!animation) {
+                panel.classList.add('mm-panel--noanimation');
+            }
+            /** The parent panel */
             var parent_1 = DOM.find(this.node.pnls, "#" + panel.dataset.mmParent)[0];
+            //	Set parent panels as "parent".
             while (parent_1) {
                 parent_1 = parent_1.closest('.mm-panel');
                 parent_1.classList.add('mm-panel--parent');
-                parent_1 = DOM.find(this.node.menu, "#" + parent_1.dataset.mmParent)[0];
+                parent_1 = DOM.find(this.node.pnls, "#" + parent_1.dataset.mmParent)[0];
             }
         }
         //	Invoke "after" hook.
@@ -129,12 +133,14 @@ var Mmenu = /** @class */ (function () {
      */
     Mmenu.prototype.togglePanel = function (panel) {
         var listitem = panel.parentElement;
-        //	Only works for "vertical" panels.
-        if (listitem.matches('.mm-listitem--vertical')) {
-            this[listitem.matches('.mm-listitem--opened')
-                ? 'closePanel'
-                : 'openPanel'](panel);
+        /** The function to invoke (open or close). */
+        var fn = 'openPanel';
+        //	Toggle only works for "vertical" panels.
+        if (listitem.matches('.mm-listitem--opened') ||
+            panel.matches('.mm-panel--opened')) {
+            fn = 'closePanel';
         }
+        this[fn](panel);
     };
     /**
      * Display a listitem as being "selected".
@@ -321,25 +327,21 @@ var Mmenu = /** @class */ (function () {
         //	Invoke "before" hook.
         this.trigger('initPanels:before');
         //	Open / close panels.
-        this.clck.push(function (anchor, args) {
-            if (args.inMenu) {
-                var href = anchor.getAttribute('href');
-                if (href && href.length > 1 && href.slice(0, 1) == '#') {
-                    try {
-                        var panel = DOM.find(_this.node.menu, href)[0];
-                        if (panel && panel.matches('.mm-panel')) {
-                            if (anchor.parentElement.matches('.mm-listitem--vertical')) {
-                                _this.togglePanel(panel);
-                            }
-                            else {
-                                _this.openPanel(panel);
-                            }
-                            return true;
-                        }
-                    }
-                    catch (err) { }
+        this.node.menu.addEventListener('click', function (event) {
+            var _a, _b;
+            /** The href attribute for the clicked anchor. */
+            var href = (_b = (_a = event.target) === null || _a === void 0 ? void 0 : _a.closest('a[href]')) === null || _b === void 0 ? void 0 : _b.getAttribute('href');
+            if (href.length && href.slice(0, 1) == '#') {
+                /** The targeted panel */
+                var panel = DOM.find(_this.node.menu, href)[0];
+                if (panel) {
+                    event.preventDefault();
+                    _this.togglePanel(panel);
                 }
             }
+        }, {
+            // useCapture to ensure the logical order.
+            capture: true
         });
         //	Invoke "after" hook.
         this.trigger('initPanels:after');
@@ -587,24 +589,15 @@ var Mmenu = /** @class */ (function () {
         //	Invoke "before" hook.
         this.trigger('initOpened:before');
         /** The selected listitem(s). */
-        var listitems = this.node.pnls.querySelectorAll('.mm-listitem--selected');
-        /** The last selected listitem. */
-        var lastitem = null;
-        //	Deselect the listitems.
-        listitems.forEach(function (listitem) {
-            lastitem = listitem;
-            listitem.classList.remove('mm-listitem--selected');
-        });
-        //	Re-select the last listitem.
-        if (lastitem) {
-            lastitem.classList.add('mm-listitem--selected');
-        }
+        var listitem = DOM.find(this.node.pnls, '.mm-listitem--selected').pop();
         /**	The current opened panel. */
-        var current = lastitem
-            ? lastitem.closest('.mm-panel')
-            : DOM.children(this.node.pnls, '.mm-panel')[0];
+        var panel = DOM.children(this.node.pnls, '.mm-panel')[0];
+        if (listitem) {
+            this.setSelected(listitem);
+            panel = listitem.closest('.mm-panel');
+        }
         //	Open the current opened panel.
-        this.openPanel(current, false);
+        this.openPanel(panel, false);
         //	Invoke "after" hook.
         this.trigger('initOpened:after');
     };
@@ -648,10 +641,16 @@ var Mmenu = /** @class */ (function () {
             }
             //	Default behavior for anchors in lists.
             if (args.inMenu && args.inListview && !args.toExternal) {
-                //	Set selected item, Default: true
-                if (valueOrFn(target, _this.opts.onClick.setSelected, onClick.setSelected)) {
-                    _this.setSelected(target.parentElement);
-                }
+                // //	Set selected item, Default: true
+                // if (
+                //     valueOrFn(
+                //         target,
+                //         this.opts.onClick.setSelected,
+                //         onClick.setSelected
+                //     )
+                // ) {
+                //     this.setSelected(target.parentElement);
+                // }
                 //	Prevent default / don't follow link. Default: false.
                 if (valueOrFn(target, _this.opts.onClick.preventDefault, onClick.preventDefault)) {
                     evnt.preventDefault();

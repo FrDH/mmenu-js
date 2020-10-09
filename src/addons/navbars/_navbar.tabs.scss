@@ -2,7 +2,7 @@ $mm_module: '.mm-navbar';
 
 @if ($mm_include_navbars_tabs) {
     //  All tabs.
-    #{$mm_module}_tabs {
+    #{$mm_module}--tabs {
         > * {
             padding: 0 $mm_padding;
             border: 1px solid transparent;
@@ -29,13 +29,13 @@ $mm_module: '.mm-navbar';
 
 //  Navbars at the top.
 @if ($mm_include_navbars_top) {
-    .mm-navbars_top {
-        #{$mm_module}_tabs {
+    .mm-navbars--top {
+        #{$mm_module}--tabs {
             border-bottom: none;
         }
 
         //  Borders.
-        #{$mm_module}_tabs > * {
+        #{$mm_module}--tabs > * {
             border-bottom-color: var(--mm-color-border);
         }
 
@@ -45,12 +45,12 @@ $mm_module: '.mm-navbar';
         }
 
         //  Backgrounds
-        &.mm-navbars_has-tabs {
+        &.mm-navbars--has-tabs {
             #{$mm_module} {
                 background: var(--mm-color-background-emphasis);
             }
 
-            #{$mm_module}_tabs ~ #{$mm_module} {
+            #{$mm_module}--tabs ~ #{$mm_module} {
                 background: var(--mm-color-background);
             }
         }
@@ -58,15 +58,15 @@ $mm_module: '.mm-navbar';
 }
 
 @if ($mm_include_navbars_bottom) {
-    .mm-navbars_bottom {
-        #{$mm_module}_tabs {
+    .mm-navbars--bottom {
+        #{$mm_module}--tabs {
             &:first-child {
                 border-top: none;
             }
         }
 
         //  Borders.
-        #{$mm_module}_tabs > * {
+        #{$mm_module}--tabs > * {
             border-top-color: var(--mm-color-border);
         }
 
@@ -75,13 +75,13 @@ $mm_module: '.mm-navbar';
             border-top-color: transparent;
         }
         //  Backgrounds
-        &.mm-navbars_has-tabs {
+        &.mm-navbars--has-tabs {
             #{$mm_module} {
                 background: var(--mm-color-background);
             }
 
-            #{$mm_module}_tabs,
-            #{$mm_module}_tabs ~ #{$mm_module} {
+            #{$mm_module}--tabs,
+            #{$mm_module}--tabs ~ #{$mm_module} {
                 background: var(--mm-color-background-emphasis);
             }
         }

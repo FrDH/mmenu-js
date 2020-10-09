@@ -201,14 +201,19 @@ export default class Mmenu {
 
             //  Open new panel.
             panel.classList.add('mm-panel--opened');
+            if (!animation) {
+                panel.classList.add('mm-panel--noanimation');
+            }
+
+            /** The parent panel */
+            let parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
 
             //	Set parent panels as "parent".
-            let parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
             while (parent) {
                 parent = parent.closest('.mm-panel') as HTMLElement;
                 parent.classList.add('mm-panel--parent');
 
-                parent = DOM.find(this.node.menu, `#${parent.dataset.mmParent}`)[0];
+                parent = DOM.find(this.node.pnls, `#${parent.dataset.mmParent}`)[0];
             }
         }
 
@@ -223,7 +228,6 @@ export default class Mmenu {
     closePanel(panel: HTMLElement) {
         //	Invoke "before" hook.
         this.trigger('closePanel:before', [panel]);
-
 
         //	Close a "vertical" panel.
         if (panel.parentElement.matches('.mm-listitem--vertical')) {
@@ -250,16 +254,19 @@ export default class Mmenu {
      * @param {HTMLElement} panel Panel to open or close.
      */
     togglePanel(panel: HTMLElement) {
-        let listitem = panel.parentElement;
+        const listitem = panel.parentElement;
 
-        //	Only works for "vertical" panels.
-        if (listitem.matches('.mm-listitem--vertical')) {
-            this[
-                listitem.matches('.mm-listitem--opened')
-                    ? 'closePanel'
-                    : 'openPanel'
-            ](panel);
+        /** The function to invoke (open or close). */
+        let fn = 'openPanel';
+
+        //	Toggle only works for "vertical" panels.
+        if (listitem.matches('.mm-listitem--opened') ||
+            panel.matches('.mm-panel--opened')
+        ) {
+            fn = 'closePanel';
         }
+
+        this[fn](panel);
     }
 
     /**
@@ -482,28 +489,23 @@ export default class Mmenu {
         this.trigger('initPanels:before');
 
         //	Open / close panels.
-        this.clck.push((anchor: HTMLAnchorElement, args: mmClickArguments) => {
-            if (args.inMenu) {
-                var href = anchor.getAttribute('href');
-                if (href && href.length > 1 && href.slice(0, 1) == '#') {
-                    try {
-                        const panel = DOM.find(this.node.menu, href)[0];
+        this.node.menu.addEventListener('click', event => {
 
-                        if (panel && panel.matches('.mm-panel')) {
-                            if (
-                                anchor.parentElement.matches(
-                                    '.mm-listitem--vertical'
-                                )
-                            ) {
-                                this.togglePanel(panel);
-                            } else {
-                                this.openPanel(panel);
-                            }
-                            return true;
-                        }
-                    } catch (err) { }
+            /** The href attribute for the clicked anchor. */
+            const href = (event.target as HTMLElement)?.closest('a[href]')?.getAttribute('href');
+            if (href.length && href.slice(0, 1) == '#') {
+                /** The targeted panel */
+                const panel = DOM.find(this.node.menu, href)[0];
+
+                if (panel) {
+                    event.preventDefault();
+
+                    this.togglePanel(panel);
                 }
             }
+        }, {
+            // useCapture to ensure the logical order.
+            capture: true
         });
 
         //	Invoke "after" hook.
@@ -832,31 +834,20 @@ export default class Mmenu {
         this.trigger('initOpened:before');
 
         /** The selected listitem(s). */
-        let listitems = this.node.pnls.querySelectorAll(
+        const listitem = DOM.find(this.node.pnls,
             '.mm-listitem--selected'
-        );
-
-        /** The last selected listitem. */
-        let lastitem = null;
-
-        //	Deselect the listitems.
-        listitems.forEach((listitem) => {
-            lastitem = listitem;
-            listitem.classList.remove('mm-listitem--selected');
-        });
-
-        //	Re-select the last listitem.
-        if (lastitem) {
-            lastitem.classList.add('mm-listitem--selected');
-        }
+        ).pop();
 
         /**	The current opened panel. */
-        let current = lastitem
-            ? lastitem.closest('.mm-panel')
-            : DOM.children(this.node.pnls, '.mm-panel')[0];
+        let panel = DOM.children(this.node.pnls, '.mm-panel')[0];
+
+        if (listitem) {
+            this.setSelected(listitem);
+            panel = listitem.closest('.mm-panel')
+        }
 
         //	Open the current opened panel.
-        this.openPanel(current, false);
+        this.openPanel(panel, false);
 
         //	Invoke "after" hook.
         this.trigger('initOpened:after');
@@ -913,16 +904,16 @@ export default class Mmenu {
 
                 //	Default behavior for anchors in lists.
                 if (args.inMenu && args.inListview && !args.toExternal) {
-                    //	Set selected item, Default: true
-                    if (
-                        valueOrFn(
-                            target,
-                            this.opts.onClick.setSelected,
-                            onClick.setSelected
-                        )
-                    ) {
-                        this.setSelected(target.parentElement);
-                    }
+                    // //	Set selected item, Default: true
+                    // if (
+                    //     valueOrFn(
+                    //         target,
+                    //         this.opts.onClick.setSelected,
+                    //         onClick.setSelected
+                    //     )
+                    // ) {
+                    //     this.setSelected(target.parentElement);
+                    // }
 
                     //	Prevent default / don't follow link. Default: false.
                     if (

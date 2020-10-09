@@ -40,7 +40,7 @@ export default function (navbar) {
     this.bind('openPanel:before:sr-aria', function (panel) {
         if (_this.opts.screenReader.text) {
             if (!prev) {
-                var navbars = DOM.children(_this.node.menu, '.mm-navbars_top, .mm-navbars_bottom');
+                var navbars = DOM.children(_this.node.menu, '.mm-navbars--top, .mm-navbars--bottom');
                 navbars.forEach(function (navbar) {
                     var btn = DOM.find(navbar, '.mm-btn--prev')[0];
                     if (btn) {

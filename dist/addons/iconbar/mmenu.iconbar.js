@@ -46,7 +46,7 @@ export default function () {
             _this.node.menu.prepend(iconbar);
         });
         //	En-/disable the iconbar.
-        var classname_1 = 'mm-menu_iconbar-' + options.position;
+        var classname_1 = 'mm-menu--iconbar-' + options.position;
         var enable = function () {
             _this.node.menu.classList.add(classname_1);
             sr.aria(iconbar, 'hidden', false);
@@ -63,7 +63,7 @@ export default function () {
         }
         //	Tabs
         if (options.type == 'tabs') {
-            iconbar.classList.add('mm-iconbar_tabs');
+            iconbar.classList.add('mm-iconbar--tabs');
             iconbar.addEventListener('click', function (evnt) {
                 var anchor = evnt.target;
                 if (!anchor.matches('a')) {
@@ -92,7 +92,7 @@ export default function () {
                     anchor.classList.add('mm-iconbar__tab--selected');
                 }
                 else {
-                    var parent_1 = DOM.find(_this.node.menu, "#" + panel.dataset.mmParent)[0];
+                    var parent_1 = DOM.find(_this.node.pnls, "#" + panel.dataset.mmParent)[0];
                     if (parent_1) {
                         selectTab_1(parent_1.closest('.mm-panel'));
                     }

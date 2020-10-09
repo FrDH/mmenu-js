@@ -1,7 +1,7 @@
 @import '../../mixins', '../../includes', '../../variables';
 
 @if ($mm_include_positioning_right) {
-    .mm-menu_position {
+    .mm-menu--position {
         &-right {
             left: auto;
             right: 0;
@@ -15,7 +15,7 @@
         $mm_include_positioning_top or
         $mm_include_positioning_bottom
 ) {
-    .mm-menu_position {
+    .mm-menu--position {
         &-front,
         &-top,
         &-bottom {
@@ -37,12 +37,12 @@
     }
 
     @if ($mm_include_positioning_front) {
-        .mm-menu_position {
+        .mm-menu--position {
             &-front {
                 transform: translate3d(-100%, 0, 0);
 
                 @if ($mm_include_positioning_right) {
-                    &.mm-menu_position-right {
+                    &.mm-menu--position-right {
                         transform: translate3d(100%, 0, 0);
                     }
                 }
@@ -51,7 +51,7 @@
     }
 
     @if ($mm_include_positioning_top) {
-        .mm-menu_position-top {
+        .mm-menu--position-top {
             width: 100%;
             transform: translate3d(0, -100%, 0);
         }
@@ -59,7 +59,7 @@
     }
 
     @if ($mm_include_positioning_bottom) {
-        .mm-menu_position-bottom {
+        .mm-menu--position-bottom {
             top: auto;
             width: 100%;
             transform: translate3d(0, 100%, 0);
@@ -67,8 +67,8 @@
         @include mm_position_bottom;
     }
 
-    .mm-wrapper_opening {
-        .mm-menu_position {
+    .mm-wrapper--opening {
+        .mm-menu--position {
             &-front,
             &-top,
             &-bottom {

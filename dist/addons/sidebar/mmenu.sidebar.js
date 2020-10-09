@@ -96,16 +96,5 @@ export default function () {
                 _this.node.wrpr.classList.add('mm-wrapper--sidebar-closed');
             });
         }
-        //	Add click behavior.
-        //	Prevents default behavior when clicking an anchor
-        this.clck.push(function (anchor, args) {
-            if (args.inMenu && args.inListview) {
-                if (_this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
-                    return {
-                        close: options.expanded.initial == 'closed'
-                    };
-                }
-            }
-        });
     }
 }

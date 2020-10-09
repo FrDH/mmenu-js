@@ -11,7 +11,7 @@ $mm_module: '.mm-counter';
 }
 
 @if ($mm_include_searchfield) {
-    .mm-listitem_nosubitems > #{$mm_module} {
+    .mm-listitem--nosubitems > #{$mm_module} {
         display: none;
     }
 }

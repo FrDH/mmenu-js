@@ -73,7 +73,7 @@ export default function Navbars(this: Mmenu) {
 
         //	Create the wrapper for the navbar position.
         if (!navbars[position]) {
-            navbars[position] = DOM.create('div.mm-navbars.mm-navbars_' + position);
+            navbars[position] = DOM.create('div.mm-navbars.mm-navbars--' + position);
         }
         navbars[position].append(navbar);
 

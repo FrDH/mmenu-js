@@ -227,7 +227,7 @@ Mmenu.prototype._openStart = function (this: Mmenu) {
 
     //	Opening
     this.trigger('open:start');
-    this.node.wrpr.classList.add('mm-wrapper_opening');
+    this.node.wrpr.classList.add('mm-wrapper--opening');
 };
 
 Mmenu.prototype.close = function (this: Mmenu) {
@@ -259,7 +259,7 @@ Mmenu.prototype.close = function (this: Mmenu) {
     //	Closing
     this.trigger('close:start');
 
-    this.node.wrpr.classList.remove('mm-wrapper_opening');
+    this.node.wrpr.classList.remove('mm-wrapper--opening');
 
     //	Invoke "after" hook.
     this.trigger('close:after');

@@ -55,7 +55,7 @@ export default function (this: Mmenu) {
         });
 
         //	En-/disable the iconbar.
-        let classname = 'mm-menu_iconbar-' + options.position;
+        let classname = 'mm-menu--iconbar-' + options.position;
         let enable = () => {
             this.node.menu.classList.add(classname);
             sr.aria(iconbar, 'hidden', false);
@@ -73,7 +73,7 @@ export default function (this: Mmenu) {
 
         //	Tabs
         if (options.type == 'tabs') {
-            iconbar.classList.add('mm-iconbar_tabs');
+            iconbar.classList.add('mm-iconbar--tabs');
             iconbar.addEventListener('click', (evnt) => {
                 const anchor = evnt.target as HTMLElement;
 
@@ -112,7 +112,7 @@ export default function (this: Mmenu) {
                 if (anchor) {
                     anchor.classList.add('mm-iconbar__tab--selected');
                 } else {
-                    const parent: HTMLElement = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
+                    const parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
                     if (parent) {
                         selectTab(parent.closest('.mm-panel') as HTMLElement);
                     }

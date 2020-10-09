@@ -53,7 +53,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
             if (!prev) {
                 var navbars = DOM.children(
                     this.node.menu,
-                    '.mm-navbars_top, .mm-navbars_bottom'
+                    '.mm-navbars--top, .mm-navbars--bottom'
                 );
                 navbars.forEach((navbar) => {
                     let btn = DOM.find(navbar, '.mm-btn--prev')[0];

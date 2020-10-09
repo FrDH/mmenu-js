@@ -6,19 +6,17 @@ $mm_module: '.mm-iconbar';
     --mm-iconbar-size: #{$mm_iconbarSize};
 }
 
-.mm-menu_iconbar {
+.mm-menu--iconbar {
     &-left {
         .mm-panels,
-        .mm-navbars_top,
-        .mm-navbars_bottom {
+        .mm-navbars {
             margin-left: var(--mm-iconbar-size);
         }
     }
 
     &-right {
         .mm-panels,
-        .mm-navbars_top,
-        .mm-navbars_bottom {
+        .mm-navbars {
             margin-right: var(--mm-iconbar-size);
         }
     }
@@ -27,19 +25,19 @@ $mm_module: '.mm-iconbar';
 #{$mm_module} {
     display: none;
 
-    .mm-menu_iconbar-left &,
-    .mm-menu_iconbar-right & {
+    .mm-menu--iconbar-left &,
+    .mm-menu--iconbar-right & {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
 
-    .mm-menu_iconbar-left & {
+    .mm-menu--iconbar-left & {
         border-right-width: 1px;
         left: 0;
     }
 
-    .mm-menu_iconbar-right & {
+    .mm-menu--iconbar-right & {
         border-left-width: 1px;
         right: 0;
     }

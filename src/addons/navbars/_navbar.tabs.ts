@@ -2,8 +2,8 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
 
 export default function (this: Mmenu, navbar: HTMLElement) {
-    navbar.classList.add('mm-navbar_tabs');
-    navbar.closest('.mm-navbars').classList.add('mm-navbars_has-tabs');
+    navbar.classList.add('mm-navbar--tabs');
+    navbar.closest('.mm-navbars').classList.add('mm-navbars--has-tabs');
 
     // TODO: mutation observer?
     DOM.children(navbar, 'a').forEach(anchor => {
@@ -23,7 +23,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         } else {
 
             /** The parent listitem. */
-            const parent = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
+            const parent = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
             if (parent) {
                 selectTab.call(this, parent.closest('.mm-panel'));
             }
@@ -40,15 +40,17 @@ export default function (this: Mmenu, navbar: HTMLElement) {
     });
 
     //	Add animation class to panel.
-    navbar.addEventListener('click', event => {
-        /** The clicked tab. */
-        const anchor = (event.target as HTMLElement).closest('.mm-navbar__tab');
+    this.bind('initPanels:after', () => {
 
-        if (anchor) {
-            const panel = DOM.find(this.node.pnls, anchor.getAttribute('href'))[0];
-            if (panel) {
-                panel.classList.add('mm-panel--noanimation');
+        navbar.addEventListener('click', event => {
+            /** The href for the clicked tab. */
+            const href = (event.target as HTMLElement)?.closest('.mm-navbar__tab')?.getAttribute('href');
+            if (href) {
+                DOM.find(this.node.pnls, `${href}.mm-panel`)[0]?.classList.add('mm-panel--noanimation');
             }
-        }
+        }, {
+            // useCapture to ensure the logical order.
+            capture: true
+        });
     });
 }

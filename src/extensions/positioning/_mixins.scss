@@ -5,8 +5,8 @@
     $minWidth: $mm_menuMinWidth,
     $maxWidth: $mm_menuMaxWidth
 ) {
-    .mm-wrapper_opening {
-        #{$cls}.mm-menu_position-right.mm-menu--opened ~ .mm-slideout {
+    .mm-wrapper--opening {
+        #{$cls}.mm-menu--position-right.mm-menu--opened ~ .mm-slideout {
             transform: translate3d(
                 clamp(-$maxWidth, #{-$width * 100}vw, -$minWidth),
                 0,
@@ -23,7 +23,7 @@
     $minHeight: $mm_menuMinHeight,
     $maxHeight: $mm_menuMaxHeight
 ) {
-    #{$cls}.mm-menu_position-top {
+    #{$cls}.mm-menu--position-top {
         height: clamp($minHeight, #{$height * 100}vh, $maxHeight);
     }
 }
@@ -35,7 +35,7 @@
     $minHeight: $mm_menuMinHeight,
     $maxHeight: $mm_menuMaxHeight
 ) {
-    #{$cls}.mm-menu_position-bottom {
+    #{$cls}.mm-menu--position-bottom {
         height: clamp($minHeight, #{$height * 100}vh, $maxHeight);
     }
 }

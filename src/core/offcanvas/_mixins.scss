@@ -8,7 +8,7 @@
         width: clamp($minWidth, percentage($width), $maxWidth);
     }
 
-    .mm-wrapper_opening {
+    .mm-wrapper--opening {
         #{$cls}.mm-menu--opened ~ .mm-slideout {
             transform: translate3d(
                 clamp($minWidth, #{$width * 100}vw, $maxWidth),

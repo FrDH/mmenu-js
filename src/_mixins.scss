@@ -36,7 +36,7 @@
         width: clamp($minWidth, percentage($width), $maxWidth);
     }
 
-    .mm-wrapper_opening {
+    .mm-wrapper--opening {
         #{$cls}.mm-menu--opened ~ .mm-slideout {
             transform: translate3d(
                 clamp($minWidth, #{$width * 100}vw, $maxWidth),
@@ -55,7 +55,7 @@
 
 @mixin mm_navbar_tabs_borders( $top, $bottom, $last, $first ) {
 	.mm-navbars_#{$top} {
-		.mm-navbar_tabs:not( :#{$last}-child ) {
+		.mm-navbar--tabs:not( :#{$last}-child ) {
 			border-#{$bottom}-width: 1px;
 			border-#{$bottom}-style: solid;
 		}
@@ -63,7 +63,7 @@
 			border-#{$bottom}: none;
 			margin-#{$bottom}: -1px;
 		}
-		.mm-navbar_tabs:#{$first}-child .mm-navbar__tab--selected {
+		.mm-navbar--tabs:#{$first}-child .mm-navbar__tab--selected {
 			border-#{$top}: none;
 		}
 	}
@@ -76,8 +76,8 @@
     $minWidth: $mm_menuMinWidth,
     $maxWidth: $mm_menuMaxWidth
 ) {
-    .mm-wrapper_opening {
-        #{$cls}.mm-menu_position-right.mm-menu--opened ~ .mm-slideout {
+    .mm-wrapper--opening {
+        #{$cls}.mm-menu--position-right.mm-menu--opened ~ .mm-slideout {
             transform: translate3d(
                 clamp(-$maxWidth, #{-$width * 100}vw, -$minWidth),
                 0,
@@ -94,7 +94,7 @@
     $minHeight: $mm_menuMinHeight,
     $maxHeight: $mm_menuMaxHeight
 ) {
-    #{$cls}.mm-menu_position-top {
+    #{$cls}.mm-menu--position-top {
         height: clamp($minHeight, #{$height * 100}vh, $maxHeight);
     }
 }
@@ -106,7 +106,7 @@
     $minHeight: $mm_menuMinHeight,
     $maxHeight: $mm_menuMaxHeight
 ) {
-    #{$cls}.mm-menu_position-bottom {
+    #{$cls}.mm-menu--position-bottom {
         height: clamp($minHeight, #{$height * 100}vh, $maxHeight);
     }
 }

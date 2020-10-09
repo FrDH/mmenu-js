@@ -29,7 +29,7 @@ export default function (navbar) {
                 }
                 first = false;
             }
-            current = DOM.find(_this.node.menu, "#" + current.dataset.mmParent)[0];
+            current = DOM.find(_this.node.pnls, "#" + current.dataset.mmParent)[0];
         }
         if (_this.conf.navbars.breadcrumbs.removeFirst) {
             crumbs.shift();

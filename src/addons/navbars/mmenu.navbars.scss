@@ -8,7 +8,7 @@
 }
 
 @if ($mm_include_navbars_top) {
-    .mm-navbars_top {
+    .mm-navbars--top {
         .mm-navbar:not(:last-child) {
             border-bottom: none;
         }
@@ -16,7 +16,7 @@
 }
 
 @if ($mm_include_navbars_bottom) {
-    .mm-navbars_bottom {
+    .mm-navbars--bottom {
         .mm-navbar {
             border-bottom: none;
 

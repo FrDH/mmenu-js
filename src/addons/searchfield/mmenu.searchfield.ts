@@ -77,32 +77,32 @@ export default function (this: Mmenu) {
 
     //	Add click behavior.
     //	Prevents default behavior when clicking an anchor
-    this.clck.push((anchor: HTMLElement, args: mmClickArguments) => {
-        if (args.inMenu) {
-            if (anchor.matches('.mm-searchfield__btn')) {
-                //	Clicking the clear button
-                if (anchor.matches('.mm-btn--close')) {
-                    let form = anchor.closest('.mm-searchfield') as HTMLElement,
-                        input = DOM.find(form, 'input')[0] as HTMLInputElement;
+    // this.clck.push((anchor: HTMLElement, args: mmClickArguments) => {
+    //     if (args.inMenu) {
+    //         if (anchor.matches('.mm-searchfield__btn')) {
+    //             //	Clicking the clear button
+    //             if (anchor.matches('.mm-btn--close')) {
+    //                 let form = anchor.closest('.mm-searchfield') as HTMLElement,
+    //                     input = DOM.find(form, 'input')[0] as HTMLInputElement;
 
-                    input.value = '';
-                    this.search(input);
+    //                 input.value = '';
+    //                 this.search(input);
 
-                    return true;
-                }
+    //                 return true;
+    //             }
 
-                //	Clicking the submit button
-                if (anchor.matches('.mm-btn--next')) {
-                    let form = anchor.closest('form');
-                    if (form) {
-                        form.submit();
-                    }
+    //             //	Clicking the submit button
+    //             if (anchor.matches('.mm-btn--next')) {
+    //                 let form = anchor.closest('form');
+    //                 if (form) {
+    //                     form.submit();
+    //                 }
 
-                    return true;
-                }
-            }
-        }
-    });
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    // });
 }
 
 const initSearchPanel = function (this: Mmenu): HTMLElement {
@@ -395,8 +395,8 @@ Mmenu.prototype.search = function (
 
     //	Reset previous results
     listitems.forEach((listitem) => {
-        listitem.classList.remove('mm-listitem_nosubitems');
-        listitem.classList.remove('mm-listitem_onlysubitems');
+        listitem.classList.remove('mm-listitem--nosubitems');
+        listitem.classList.remove('mm-listitem--onlysubitems');
         listitem.classList.remove('mm-hidden');
     });
 
@@ -508,7 +508,7 @@ Mmenu.prototype.search = function (
                     let listitems = DOM.find(panel, '.mm-listitem');
 
                     DOM.filterLI(listitems).forEach((listitem) => {
-                        let child: HTMLElement = DOM.find(this.node.menu, `#${listitem.dataset.mmChild}`)[0];
+                        let child: HTMLElement = DOM.find(this.node.pnls, `#${listitem.dataset.mmChild}`)[0];
                         if (child) {
                             DOM.find(child, '.mm-listitem').forEach(
                                 (listitem) => {
@@ -523,7 +523,7 @@ Mmenu.prototype.search = function (
             //	Update parent for sub-panel
             //  .reverse() mutates the original array, therefor we "clone" it first using [...panels].
             [...panels].reverse().forEach((panel, p) => {
-                let parent: HTMLElement = DOM.find(this.node.menu, `#${panel.dataset.mmParent}`)[0];
+                let parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
 
                 if (parent) {
                     //	The current panel has mached listitems
@@ -533,7 +533,7 @@ Mmenu.prototype.search = function (
                         if (parent.matches('.mm-hidden')) {
                             parent.classList.remove('mm-hidden');
                         }
-                        parent.classList.add('mm-listitem_onlysubitems');
+                        parent.classList.add('mm-listitem--onlysubitems');
                     } else if (!input.closest('.mm-panel')) {
                         if (
                             panel.matches('.mm-panel--opened') ||
@@ -546,7 +546,7 @@ Mmenu.prototype.search = function (
                                 );
                             }, (p + 1) * (this.conf.openingInterval * 1.5));
                         }
-                        parent.classList.add('mm-listitem_nosubitems');
+                        parent.classList.add('mm-listitem--nosubitems');
                     }
                 }
             });
@@ -560,7 +560,7 @@ Mmenu.prototype.search = function (
                             if (parent.matches('.mm-hidden')) {
                                 parent.classList.remove('mm-hidden');
                                 parent.classList.add(
-                                    'mm-listitem_onlysubitems'
+                                    'mm-listitem--onlysubitems'
                                 );
                             }
                         }

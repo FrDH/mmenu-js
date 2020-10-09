@@ -40,7 +40,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
                 }
                 first = false;
             }
-            current = DOM.find(this.node.menu, `#${current.dataset.mmParent}`)[0];
+            current = DOM.find(this.node.pnls, `#${current.dataset.mmParent}`)[0];
         }
 
         if (this.conf.navbars.breadcrumbs.removeFirst) {

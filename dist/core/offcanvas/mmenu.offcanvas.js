@@ -178,7 +178,7 @@ Mmenu.prototype._openStart = function () {
     });
     //	Opening
     this.trigger('open:start');
-    this.node.wrpr.classList.add('mm-wrapper_opening');
+    this.node.wrpr.classList.add('mm-wrapper--opening');
 };
 Mmenu.prototype.close = function () {
     var _this = this;
@@ -196,7 +196,7 @@ Mmenu.prototype.close = function () {
     });
     //	Closing
     this.trigger('close:start');
-    this.node.wrpr.classList.remove('mm-wrapper_opening');
+    this.node.wrpr.classList.remove('mm-wrapper--opening');
     //	Invoke "after" hook.
     this.trigger('close:after');
 };

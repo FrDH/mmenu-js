@@ -90,7 +90,7 @@ export default function (this: Mmenu) {
                     let elements: HTMLElement[] = [];
                     DOM.children(
                         this.node.menu,
-                        '.mm-navbars_top, .mm-navbars_bottom'
+                        '.mm-navbars--top, .mm-navbars--bottom'
                     ).forEach((navbar) => {
                         elements.push(
                             ...DOM.find(navbar, focusable + ':not(.mm-hidden)')
