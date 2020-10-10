@@ -495,14 +495,13 @@ export default class Mmenu {
         this.node.menu.addEventListener('click', event => {
 
             /** The href attribute for the clicked anchor. */
-            const href = (event.target as HTMLElement)?.closest('a[href]')?.getAttribute('href');
-            if (href.length && href.slice(0, 1) == '#') {
+            const href = (event.target as HTMLElement)?.closest('a[href]')?.getAttribute('href') || '';
+            if (href.slice(0, 1) === '#') {
                 /** The targeted panel */
                 const panel = DOM.find(this.node.menu, href)[0];
 
                 if (panel) {
                     event.preventDefault();
-
                     this.togglePanel(panel);
                 }
             }

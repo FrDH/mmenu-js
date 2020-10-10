@@ -330,8 +330,8 @@ var Mmenu = /** @class */ (function () {
         this.node.menu.addEventListener('click', function (event) {
             var _a, _b;
             /** The href attribute for the clicked anchor. */
-            var href = (_b = (_a = event.target) === null || _a === void 0 ? void 0 : _a.closest('a[href]')) === null || _b === void 0 ? void 0 : _b.getAttribute('href');
-            if (href.length && href.slice(0, 1) == '#') {
+            var href = ((_b = (_a = event.target) === null || _a === void 0 ? void 0 : _a.closest('a[href]')) === null || _b === void 0 ? void 0 : _b.getAttribute('href')) || '';
+            if (href.slice(0, 1) === '#') {
                 /** The targeted panel */
                 var panel = DOM.find(_this.node.menu, href)[0];
                 if (panel) {

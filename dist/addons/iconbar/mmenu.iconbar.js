@@ -62,6 +62,7 @@ export default function () {
             media.add(options.use, enable, disable);
         }
         //	Tabs
+        //  TODO: zie navbar tabs
         if (options.type == 'tabs') {
             iconbar.classList.add('mm-iconbar--tabs');
             iconbar.addEventListener('click', function (evnt) {

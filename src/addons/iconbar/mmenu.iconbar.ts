@@ -72,6 +72,7 @@ export default function (this: Mmenu) {
         }
 
         //	Tabs
+        //  TODO: zie navbar tabs
         if (options.type == 'tabs') {
             iconbar.classList.add('mm-iconbar--tabs');
             iconbar.addEventListener('click', (evnt) => {

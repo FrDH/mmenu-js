@@ -40,27 +40,8 @@ $mm_module: '.mm-panel';
     &--noanimation {
         transition: none;
     }
-
-    .mm-panels > & {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-    }
 }
 
 #{$mm_module}__content {
     padding: $mm_panelPadding $mm_panelPadding 0;
-}
-
-.mm-panels {
-    position: relative;
-    height: 100%;
-    flex-grow: 1;
-    overflow: hidden;
-
-    background: var(--mm-color-background);
-    border-color: var(--mm-color-border);
-    color: var(--mm-color-text);
 }

@@ -125,7 +125,6 @@ export default function (this: Mmenu) {
                 event.preventDefault();
                 this.close();
         }
-
     });
 }
 
