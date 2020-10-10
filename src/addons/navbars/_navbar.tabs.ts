@@ -20,6 +20,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
 
         if (anchor) {
             anchor.classList.add('mm-navbar__tab--selected');
+
         } else {
 
             /** The parent listitem. */
@@ -39,9 +40,8 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         selectTab.call(this, panel);
     });
 
-    //	Add animation class to panel.
     this.bind('initPanels:after', () => {
-
+        //	Add animation class to panel.
         navbar.addEventListener('click', event => {
             /** The href for the clicked tab. */
             const href = (event.target as HTMLElement)?.closest('.mm-navbar__tab')?.getAttribute('href');

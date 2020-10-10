@@ -32,8 +32,8 @@ export default function (navbar) {
         });
         selectTab.call(_this, panel);
     });
-    //	Add animation class to panel.
     this.bind('initPanels:after', function () {
+        //	Add animation class to panel.
         navbar.addEventListener('click', function (event) {
             var _a, _b, _c;
             /** The href for the clicked tab. */

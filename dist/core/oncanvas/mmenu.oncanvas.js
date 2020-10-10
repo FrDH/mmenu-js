@@ -149,11 +149,11 @@ var Mmenu = /** @class */ (function () {
     Mmenu.prototype.setSelected = function (listitem) {
         //	Invoke "before" hook.
         this.trigger('setSelected:before', [listitem]);
-        //	First, remove the selected class from all listitems.
+        //	Remove the selected class from all listitems.
         DOM.find(this.node.menu, '.mm-listitem--selected').forEach(function (li) {
             li.classList.remove('mm-listitem--selected');
         });
-        //	Next, add the selected class to the provided listitem.
+        //	Add the selected class to the provided listitem.
         listitem.classList.add('mm-listitem--selected');
         //	Invoke "after" hook.
         this.trigger('setSelected:after', [listitem]);

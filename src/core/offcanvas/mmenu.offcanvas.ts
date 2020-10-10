@@ -110,51 +110,22 @@ export default function (this: Mmenu) {
         });
     });
 
-    //	Add click behavior.
-    //	Prevents default behavior when clicking an anchor
-    this.clck.push((anchor: HTMLElement, args: mmClickArguments) => {
-        //	Open menu if the clicked anchor links to the menu
-        let id = originalId(this.node.menu.id);
-        if (id) {
-            if (anchor.matches('[href="#' + id + '"]')) {
+    document.addEventListener('click', event => {
+        /** THe href attribute for the clicked anchor. */
+        const href = (event.target as HTMLElement).closest('a')?.getAttribute('href');
 
-                //	Opening this menu from within a second menu
-                //		-> Close the second menu before opening this menu
-                if (!args.inMenu) {
-
-                    var menu = anchor.closest('.mm-menu') as HTMLElement;
-                    if (menu) {
-                        var api: mmApi = menu['mmApi'];
-                        if (api && api.close) {
-                            api.close();
-                            transitionend(
-                                menu,
-                                () => {
-                                    this.open();
-                                }
-                            );
-                            return true;
-                        }
-                    }
-                }
-
-                //	Opening this menu
+        switch (href) {
+            //	Open menu if the clicked anchor links to the menu.
+            case `#${originalId(this.node.menu.id)}`:
+                event.preventDefault();
                 this.open();
 
-                return true;
-            }
-        }
-
-        //	Close menu
-        id = Mmenu.node.page.id;
-        if (id) {
-            if (anchor.matches('[href="#' + id + '"]')) {
+            //	Close menu if the clicked anchor links to the page.
+            case `#${originalId(Mmenu.node.page.id)}`:
+                event.preventDefault();
                 this.close();
-                return true;
-            }
         }
 
-        return;
     });
 }
 
@@ -181,7 +152,8 @@ Mmenu.prototype.open = function (this: Mmenu) {
 };
 
 Mmenu.prototype._openSetup = function (this: Mmenu) {
-    var options = this.opts.offCanvas;
+    /** The off-canvas options. */
+    const options = this.opts.offCanvas;
 
     //	Close other menus
     this.closeAllOthers();

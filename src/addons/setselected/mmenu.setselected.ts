@@ -53,6 +53,7 @@ export default function (this: Mmenu) {
     //	Set parent item selected for submenus
     if (options.parent) {
         this.bind('openPanel:after', (panel: HTMLElement) => {
+
             //	Remove all
             DOM.find(this.node.pnls, '.mm-listitem--selected-parent').forEach(
                 (listitem) => {
@@ -61,14 +62,14 @@ export default function (this: Mmenu) {
             );
 
             //	Move up the DOM tree
-            let parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
-            while (parent) {
-                if (!parent.matches('.mm-listitem--vertical')) {
-                    parent.classList.add('mm-listitem--selected-parent');
-                }
+            let current = panel;
+            while (current) {
+                let li = DOM.find(this.node.pnls, `#${current.dataset.mmParent}`)[0];
+                current = li?.closest('.mm-panel') as HTMLElement;
 
-                parent = parent.closest('.mm-panel') as HTMLElement;
-                parent = DOM.find(this.node.pnsl, `#${parent.dataset.mmParent}`)[0];
+                if (li && !li.matches('.mm-listitem--vertical')) {
+                    li.classList.add('mm-listitem--selected-parent');
+                }
             }
         });
 

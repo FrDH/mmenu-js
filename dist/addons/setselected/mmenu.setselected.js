@@ -50,13 +50,13 @@ export default function () {
                 listitem.classList.remove('mm-listitem--selected-parent');
             });
             //	Move up the DOM tree
-            var parent = DOM.find(_this.node.pnls, "#" + panel.dataset.mmParent)[0];
-            while (parent) {
-                if (!parent.matches('.mm-listitem--vertical')) {
-                    parent.classList.add('mm-listitem--selected-parent');
+            var current = panel;
+            while (current) {
+                var li = DOM.find(_this.node.pnls, "#" + current.dataset.mmParent)[0];
+                current = li === null || li === void 0 ? void 0 : li.closest('.mm-panel');
+                if (li && !li.matches('.mm-listitem--vertical')) {
+                    li.classList.add('mm-listitem--selected-parent');
                 }
-                parent = parent.closest('.mm-panel');
-                parent = DOM.find(_this.node.pnsl, "#" + parent.dataset.mmParent)[0];
             }
         });
         this.bind('initMenu:after', function () {

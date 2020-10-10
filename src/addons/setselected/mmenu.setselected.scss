@@ -6,7 +6,7 @@
         .mm-listitem__text,
         .mm-listitem__btn {
             transition: background-color $mm_transitionDuration
-                $mm_transitionFunction;
+                $mm_transitionFunction $mm_transitionDuration;
         }
     }
 

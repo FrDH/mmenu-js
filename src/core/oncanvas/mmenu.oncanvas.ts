@@ -215,10 +215,12 @@ export default class Mmenu {
 
                 parent = DOM.find(this.node.pnls, `#${parent.dataset.mmParent}`)[0];
             }
+
         }
 
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel]);
+
     }
 
     /**
@@ -274,15 +276,16 @@ export default class Mmenu {
      * @param {HTMLElement} listitem Listitem to mark.
      */
     setSelected(listitem: HTMLElement) {
+
         //	Invoke "before" hook.
         this.trigger('setSelected:before', [listitem]);
 
-        //	First, remove the selected class from all listitems.
+        //	Remove the selected class from all listitems.
         DOM.find(this.node.menu, '.mm-listitem--selected').forEach((li) => {
             li.classList.remove('mm-listitem--selected');
         });
 
-        //	Next, add the selected class to the provided listitem.
+        //	Add the selected class to the provided listitem.
         listitem.classList.add('mm-listitem--selected');
 
         //	Invoke "after" hook.
