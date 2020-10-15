@@ -28,48 +28,35 @@ export default function () {
     }
     function anchorInPage(href) {
         try {
-            if (href != '#' && href.slice(0, 1) == '#') {
-                return Mmenu.node.page.querySelector(href);
+            if (href.slice(0, 1) == '#') {
+                return DOM.find(Mmenu.node.page, href)[0];
             }
-            return null;
         }
-        catch (err) {
-            return null;
-        }
+        catch (err) { }
+        return null;
     }
-    //	Scroll to section after clicking menu item.
-    if (options.scroll) {
+    if (this.opts.offCanvas && options.scroll) {
+        //	Scroll to section after clicking menu item.
         this.bind('close:finish', function () {
             scrollTo();
         });
-    }
-    //	Add click behavior.
-    //	Prevents default behavior when clicking an anchor.
-    if (this.opts.offCanvas && options.scroll) {
-        this.clck.push(function (anchor, args) {
-            section = null;
-            //	Don't continue if the clicked anchor is not in the menu.
-            if (!args.inMenu) {
-                return;
-            }
-            //	Don't continue if the targeted section is not on the page.
-            var href = anchor.getAttribute('href');
+        this.node.menu.addEventListener('click', function (event) {
+            var _a, _b;
+            var href = ((_b = (_a = event.target) === null || _a === void 0 ? void 0 : _a.closest('a[href]')) === null || _b === void 0 ? void 0 : _b.getAttribute('href')) || '';
             section = anchorInPage(href);
-            if (!section) {
-                return;
-            }
-            //	If the sidebar add-on is "expanded"...
-            if (_this.node.menu.matches('.mm-menu--sidebar-expanded') &&
-                _this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
-                //	... scroll the page to the section.
-                scrollTo();
-                //	... otherwise...
-            }
-            else {
-                //	... close the menu.
-                return {
-                    close: true
-                };
+            if (section) {
+                event.preventDefault();
+                //	If the sidebar add-on is "expanded"...
+                if (_this.node.menu.matches('.mm-menu--sidebar-expanded') &&
+                    _this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
+                    //	... scroll the page to the section.
+                    scrollTo();
+                    //	... otherwise...
+                }
+                else {
+                    //	... close the menu.
+                    _this.close();
+                }
             }
         });
     }
@@ -79,8 +66,7 @@ export default function () {
         this.bind('initListview:after', function (listview) {
             var listitems = DOM.children(listview, '.mm-listitem');
             DOM.filterLIA(listitems).forEach(function (anchor) {
-                var href = anchor.getAttribute('href');
-                var section = anchorInPage(href);
+                var section = anchorInPage(anchor.getAttribute('href'));
                 if (section) {
                     scts_1.unshift(section);
                 }
@@ -106,6 +92,8 @@ export default function () {
                     break;
                 }
             }
+        }, {
+            passive: true
         });
     }
 }

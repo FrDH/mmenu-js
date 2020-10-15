@@ -8,23 +8,19 @@ export default function (navbar) {
     title.append(titleText);
     navbar.append(title);
     //	Update the title to the opened panel.
-    var _url, _txt;
-    var original;
     this.bind('openPanel:before', function (panel) {
+        var _a;
         //	Do nothing in a vertically expanding panel.
         if (panel.parentElement.matches('.mm-listitem--vertical')) {
             return;
         }
         //	Find the original title in the opened panel.
-        original = panel.querySelector('.' + _this.conf.classNames.navbars.panelTitle);
+        var original = DOM.find(panel, "." + _this.conf.classNames.navbars.panelTitle)[0];
         if (!original) {
-            original = panel.querySelector('.mm-navbar__title span');
+            original = DOM.find(panel, '.mm-navbar__title span')[0];
         }
         //	Get the URL for the title.
-        _url =
-            original && original.closest('a')
-                ? original.closest('a').getAttribute('href')
-                : '';
+        var _url = ((_a = original === null || original === void 0 ? void 0 : original.closest('a')) === null || _a === void 0 ? void 0 : _a.getAttribute('href')) || '';
         if (_url) {
             title.setAttribute('href', _url);
         }
@@ -32,15 +28,14 @@ export default function (navbar) {
             title.removeAttribute('href');
         }
         //	Get the text for the title.
-        _txt = original ? original.innerHTML : '';
-        titleText.innerHTML = _txt;
+        titleText.innerHTML = (original === null || original === void 0 ? void 0 : original.innerHTML) || '';
     });
     //	Add screenreader / aria support
     var prev;
     this.bind('openPanel:before:sr-aria', function (panel) {
         if (_this.opts.screenReader.text) {
             if (!prev) {
-                var navbars = DOM.children(_this.node.menu, '.mm-navbars--top, .mm-navbars--bottom');
+                var navbars = DOM.children(_this.node.menu, '.mm-navbars');
                 navbars.forEach(function (navbar) {
                     var btn = DOM.find(navbar, '.mm-btn--prev')[0];
                     if (btn) {

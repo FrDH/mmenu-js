@@ -79,7 +79,7 @@ export default function () {
                 sr.aria(button, 'haspopup', true);
                 var href = button.getAttribute('href');
                 if (href) {
-                    sr.aria(button, 'owns', href.replace('#', ''));
+                    sr.aria(button, 'owns', href.slice(1));
                 }
             });
         });

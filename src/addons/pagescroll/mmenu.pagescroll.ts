@@ -33,57 +33,44 @@ export default function (this: Mmenu) {
     }
     function anchorInPage(href: string) {
         try {
-            if (href != '#' && href.slice(0, 1) == '#') {
-                return Mmenu.node.page.querySelector(href) as HTMLElement;
+            if (href.slice(0, 1) == '#') {
+                return DOM.find(Mmenu.node.page, href)[0];
             }
-            return null;
-        } catch (err) {
-            return null;
-        }
+        } catch (err) { }
+        return null;
     }
 
-    //	Scroll to section after clicking menu item.
-    if (options.scroll) {
+    if (this.opts.offCanvas && options.scroll) {
+
+        //	Scroll to section after clicking menu item.
         this.bind('close:finish', () => {
             scrollTo();
         });
-    }
 
-    //	Add click behavior.
-    //	Prevents default behavior when clicking an anchor.
-    if (this.opts.offCanvas && options.scroll) {
-        this.clck.push((anchor: HTMLElement, args: mmClickArguments) => {
-            section = null;
-
-            //	Don't continue if the clicked anchor is not in the menu.
-            if (!args.inMenu) {
-                return;
-            }
-
-            //	Don't continue if the targeted section is not on the page.
-            var href = anchor.getAttribute('href');
+        this.node.menu.addEventListener('click', event => {
+            const href = (event.target as HTMLElement)?.closest('a[href]')?.getAttribute('href') || '';
 
             section = anchorInPage(href);
-            if (!section) {
-                return;
-            }
+            if (section) {
 
-            //	If the sidebar add-on is "expanded"...
-            if (
-                this.node.menu.matches('.mm-menu--sidebar-expanded') &&
-                this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')
-            ) {
-                //	... scroll the page to the section.
-                scrollTo();
+                event.preventDefault();
 
-                //	... otherwise...
-            } else {
-                //	... close the menu.
-                return {
-                    close: true
-                };
+                //	If the sidebar add-on is "expanded"...
+                if (
+                    this.node.menu.matches('.mm-menu--sidebar-expanded') &&
+                    this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')
+                ) {
+                    //	... scroll the page to the section.
+                    scrollTo();
+
+                    //	... otherwise...
+                } else {
+                    //	... close the menu.
+                    this.close();
+                }
             }
         });
+
     }
 
     //	Update selected menu item after scrolling.
@@ -91,10 +78,9 @@ export default function (this: Mmenu) {
         let scts: HTMLElement[] = [];
 
         this.bind('initListview:after', (listview: HTMLElement) => {
-            let listitems = DOM.children(listview, '.mm-listitem');
+            const listitems = DOM.children(listview, '.mm-listitem');
             DOM.filterLIA(listitems).forEach(anchor => {
-                var href = anchor.getAttribute('href');
-                var section = anchorInPage(href);
+                const section = anchorInPage(anchor.getAttribute('href'));
 
                 if (section) {
                     scts.unshift(section);
@@ -105,7 +91,7 @@ export default function (this: Mmenu) {
         let _selected = -1;
 
         window.addEventListener('scroll', evnt => {
-            var scrollTop = window.scrollY;
+            const scrollTop = window.scrollY;
 
             for (var s = 0; s < scts.length; s++) {
                 if (scts[s].offsetTop < scrollTop + configs.updateOffset) {
@@ -131,6 +117,8 @@ export default function (this: Mmenu) {
                     break;
                 }
             }
+        }, {
+            passive: true
         });
     }
 }

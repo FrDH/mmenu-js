@@ -19,8 +19,8 @@ export default function (navbar) {
         if (!org) {
             org = panel.querySelector('.mm-navbar__btn.mm-btn--prev');
         }
-        _url = org ? org.getAttribute('href') : '';
-        _txt = org ? org.innerHTML : '';
+        _url = (org === null || org === void 0 ? void 0 : org.getAttribute('href')) || '';
+        _txt = (org === null || org === void 0 ? void 0 : org.innerHTML) || '';
         if (_url) {
             prev.setAttribute('href', _url);
         }

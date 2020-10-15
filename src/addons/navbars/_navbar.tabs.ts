@@ -5,7 +5,6 @@ export default function (this: Mmenu, navbar: HTMLElement) {
     navbar.classList.add('mm-navbar--tabs');
     navbar.closest('.mm-navbars').classList.add('mm-navbars--has-tabs');
 
-    // TODO: mutation observer?
     DOM.children(navbar, 'a').forEach(anchor => {
         anchor.classList.add('mm-navbar__tab');
     });
@@ -45,9 +44,9 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         navbar.addEventListener('click', event => {
             /** The href for the clicked tab. */
             const href = (event.target as HTMLElement)?.closest('.mm-navbar__tab')?.getAttribute('href');
-            if (href) {
+            try {
                 DOM.find(this.node.pnls, `${href}.mm-panel`)[0]?.classList.add('mm-panel--noanimation');
-            }
+            } catch (err) { }
         }, {
             // useCapture to ensure the logical order.
             capture: true

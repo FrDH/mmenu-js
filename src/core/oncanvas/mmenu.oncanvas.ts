@@ -71,9 +71,6 @@ export default class Mmenu {
     /** Callback hooks used for the menu. */
     hook: mmLooseObject;
 
-    /** Click handlers used for the menu. */
-    clck: Function[];
-
     /** Log deprecated warnings when using the debugger. */
     _deprecatedWarnings: Function;
 
@@ -130,7 +127,6 @@ export default class Mmenu {
         this.node = {};
         this.vars = {};
         this.hook = {};
-        this.clck = [];
 
         //	Get menu node from string or element.
         this.node.menu =
@@ -152,7 +148,6 @@ export default class Mmenu {
         this._initMenu();
         this._initPanels();
         this._initOpened();
-        this._initAnchors();
 
         media.watch();
 
@@ -497,13 +492,16 @@ export default class Mmenu {
             /** The href attribute for the clicked anchor. */
             const href = (event.target as HTMLElement)?.closest('a[href]')?.getAttribute('href') || '';
             if (href.slice(0, 1) === '#') {
-                /** The targeted panel */
-                const panel = DOM.find(this.node.menu, href)[0];
+                try {
 
-                if (panel) {
-                    event.preventDefault();
-                    this.togglePanel(panel);
-                }
+                    /** The targeted panel */
+                    const panel = DOM.find(this.node.menu, href)[0];
+
+                    if (panel) {
+                        event.preventDefault();
+                        this.togglePanel(panel);
+                    }
+                } catch (err) { }
             }
         }, {
             // useCapture to ensure the logical order.
@@ -685,7 +683,7 @@ export default class Mmenu {
 
             case 'parent':
                 if (parentPanel) {
-                    title.setAttribute('href', '#' + parentPanel.id);
+                    title.setAttribute('href', `#${parentPanel.id}`);
                 }
                 break;
         }
@@ -853,103 +851,6 @@ export default class Mmenu {
 
         //	Invoke "after" hook.
         this.trigger('initOpened:after');
-    }
-
-    /**
-     * Initialize anchors in / for the menu.
-     */
-    _initAnchors() {
-        //	Invoke "before" hook.
-        this.trigger('initAnchors:before');
-
-        document.addEventListener(
-            'click',
-            (evnt) => {
-                /** The clicked element. */
-                var target = (evnt.target as HTMLElement).closest(
-                    'a[href]'
-                ) as HTMLElement;
-                if (!target) {
-                    return;
-                }
-
-                /** Arguments passed to the bound methods. */
-                var args: mmClickArguments = {
-                    inMenu: target.closest('.mm-menu') === this.node.menu,
-                    inListview: target.matches('.mm-listitem > a'),
-                    toExternal:
-                        target.matches('[rel="external"]') ||
-                        target.matches('[target="_blank"]'),
-                };
-
-                var onClick: mmOptionsOnclick = {
-                    close: null,
-                    setSelected: null,
-                    preventDefault:
-                        target.getAttribute('href').slice(0, 1) == '#',
-                };
-
-                //	Find hooked behavior.
-                for (let c = 0; c < this.clck.length; c++) {
-                    let click = this.clck[c].call(this, target, args);
-
-                    if (click) {
-                        if (typeof click == 'boolean') {
-                            evnt.preventDefault();
-                            return;
-                        }
-                        if (type(click) == 'object') {
-                            onClick = extend(click, onClick);
-                        }
-                    }
-                }
-
-                //	Default behavior for anchors in lists.
-                if (args.inMenu && args.inListview && !args.toExternal) {
-                    // //	Set selected item, Default: true
-                    // if (
-                    //     valueOrFn(
-                    //         target,
-                    //         this.opts.onClick.setSelected,
-                    //         onClick.setSelected
-                    //     )
-                    // ) {
-                    //     this.setSelected(target.parentElement);
-                    // }
-
-                    //	Prevent default / don't follow link. Default: false.
-                    if (
-                        valueOrFn(
-                            target,
-                            this.opts.onClick.preventDefault,
-                            onClick.preventDefault
-                        )
-                    ) {
-                        evnt.preventDefault();
-                    }
-
-                    //	Close menu. Default: false
-                    if (
-                        valueOrFn(
-                            target,
-                            this.opts.onClick.close,
-                            onClick.close
-                        )
-                    ) {
-                        if (
-                            this.opts.offCanvas &&
-                            typeof this.close == 'function'
-                        ) {
-                            this.close();
-                        }
-                    }
-                }
-            },
-            true
-        );
-
-        //	Invoke "after" hook.
-        this.trigger('initAnchors:after');
     }
 
     /**

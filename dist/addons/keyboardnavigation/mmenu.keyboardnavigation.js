@@ -64,7 +64,7 @@ export default function () {
                 //	First focusable and visible element in a navbar.
                 if (!focus) {
                     var elements_1 = [];
-                    DOM.children(_this.node.menu, '.mm-navbars--top, .mm-navbars--bottom').forEach(function (navbar) {
+                    DOM.children(_this.node.menu, '.mm-navbars').forEach(function (navbar) {
                         elements_1.push.apply(elements_1, DOM.find(navbar, focusable_1 + ':not(.mm-hidden)'));
                     });
                     focus = elements_1[0];

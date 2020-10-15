@@ -76,9 +76,9 @@ export default function (this: Mmenu) {
         if (options.type == 'tabs') {
             iconbar.classList.add('mm-iconbar--tabs');
             iconbar.addEventListener('click', (evnt) => {
-                const anchor = evnt.target as HTMLElement;
+                const anchor = (evnt.target as HTMLElement).closest('.mm-iconbar__tab');
 
-                if (!anchor.matches('a')) {
+                if (!anchor) {
                     return;
                 }
 
@@ -88,11 +88,8 @@ export default function (this: Mmenu) {
                 }
 
                 try {
-                    const panel = this.node.menu.querySelector(
-                        anchor.getAttribute('href')
-                    )[0];
-
-                    if (panel && panel.matches('.mm-panel')) {
+                    const panel = DOM.find(this.node.menu, `${anchor.getAttribute('href')}.mm-panel`)[0];
+                    if (panel) {
                         evnt.preventDefault();
                         evnt.stopImmediatePropagation();
 

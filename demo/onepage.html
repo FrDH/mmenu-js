@@ -1,128 +1,114 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="author" content="www.frebsite.nl" />
-		<meta name="viewport" content="width=device-width minimum-scale=1.0 maximum-scale=1.0 user-scalable=no" />
 
-		<title>mmenu.js demo</title>
+<head>
+	<meta charset="utf-8" />
+	<meta name="author" content="www.frebsite.nl" />
+	<meta name="viewport" content="width=device-width minimum-scale=1.0 maximum-scale=1.0 user-scalable=no" />
 
-		<link type="text/css" rel="stylesheet" href="css/demo.css" />
-		<link type="text/css" rel="stylesheet" href="../dist/mmenu.css" />
+	<title>mmenu.js demo</title>
 
-		<!-- for the one page layout -->
-		<style type="text/css">
-			section
-			{
-				border-top: 1px solid #ccc;
-				padding: 150px 0 200px;
-			}
-			section:first-child
-			{
-				border-top: none;
-				padding-top: 0;
-			}
-		</style>
+	<link type="text/css" rel="stylesheet" href="css/demo.css" />
+	<link type="text/css" rel="stylesheet" href="../dist/mmenu.css" />
 
-		<!-- for the fixed header -->
-		<style type="text/css">
-			.header,
-			.footer
-			{
-				position: fixed;
-				left: 0;
-				right: 0;
-			}
-			.header
-			{
-				top: 0;
-			}
-			.footer
-			{
-				bottom: 0;
-			}
-			@media (min-width: 800px) {
-				.header a
-				{
-					display: none;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<div id="page">
-			<div class="header Fixed">
-				<a href="#menu"><span></span></a>
-				Demo
-			</div>
-			<div class="content" id="content">
-				<section id="intro">
-					<p><strong>This is a demo</strong><br />
-						Click the menu icon to open the menu.</p>
-					<p>Some of the links in the menu link to a section on this page.</p>
-				</section>
-				<section id="widescreen">
-					<p><strong>Widescreen extension</strong><br />
-						On wider screens, the menu will always be opened.</p>
-					<p><a href="#menu">Open the menu.</a></p>
-				</section>
-				<section id="drag">
-					<p><strong>Drag add-on</strong><br />
-						You can also drag the page to the right to open the menu.</p>
-					<p><a href="#menu">Open the menu.</a></p>
-				</section>
-				<section id="fixed">
-					<p><strong>Fixed elements</strong><br />
-						Notice how the fixed header and footer slide out along with the page.</p>
-					<p><a href="#menu">Open the menu.</a></p>
-				</section>
-			</div>
-			<div class="footer Fixed">
-				Fixed footer :-)
-			</div>
-			<nav id="menu">
-				<ul>
-					<li><a href="#content">Introduction</a></li>
-					<li><a href="#widescreen">Widescreen extension</a></li>
-					<li><a href="#drag">Drag add-on</a></li>
-					<li><a href="#fixed">Fixed elements</a></li>
+	<!-- for the one page layout -->
+	<style type="text/css">
+		section {
+			border-top: 1px solid #ccc;
+			padding: 150px 0 200px;
+		}
 
-					<li class="Divider">Other demos</li>
-					<li><a href="default.html">Default demo</a></li>
-					<li><a href="advanced.html">Advanced demo</a></li>
-				</ul>
-			</nav>
+		section:first-child {
+			border-top: none;
+			padding-top: 0;
+		}
+	</style>
+
+	<!-- for the fixed header -->
+	<style type="text/css">
+		@media (min-width: 800px) {
+			.mm-wrapper--sidebar-expanded.mm-wrapper--opened .header a {
+				display: none;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div id="page">
+		<div class="header Fixed">
+			<a href="#menu"><span></span></a>
+			Demo
 		</div>
+		<div class="content" id="content">
+			<section id="intro">
+				<p><strong>This is a demo</strong><br />
+					Click the menu icon to open the menu.</p>
+				<p>Some of the links in the menu link to a section on this page.</p>
+			</section>
+			<section id="widescreen">
+				<p><strong>Widescreen extension</strong><br />
+					On wider screens, the menu will always be opened.</p>
+				<p><a href="#menu">Open the menu.</a></p>
+			</section>
+			<section id="drag">
+				<p><strong>Drag add-on</strong><br />
+					You can also drag the page to the right to open the menu.</p>
+				<p><a href="#menu">Open the menu.</a></p>
+			</section>
+			<section id="fixed">
+				<p><strong>Fixed elements</strong><br />
+					Notice how the fixed header and footer slide out along with the page.</p>
+				<p><a href="#menu">Open the menu.</a></p>
+			</section>
+		</div>
+		<div class="footer Fixed">
+			Fixed footer :-)
+		</div>
+		<nav id="menu">
+			<ul>
+				<li><a href="#content">Introduction</a></li>
+				<li><a href="#widescreen">Widescreen extension</a></li>
+				<li><a href="#drag">Drag add-on</a></li>
+				<li><a href="#fixed">Fixed elements</a></li>
 
-		<!-- Hammer.js for dragging -->
-		<script type="text/javascript" src="http://cdn.jsdelivr.net/hammerjs/2.0.8/hammer.min.js"></script>
+				<li class="Divider">Other demos</li>
+				<li><a href="default.html">Default demo</a></li>
+				<li><a href="advanced.html">Advanced demo</a></li>
+			</ul>
+		</nav>
+	</div>
 
-		<!-- mmenu scripts -->
-		<script src="../dist/mmenu.polyfills.js"></script>
-		<script src="../dist/mmenu.js"></script>
+	<!-- Hammer.js for dragging -->
+	<script type="text/javascript" src="http://cdn.jsdelivr.net/hammerjs/2.0.8/hammer.min.js"></script>
 
-		<script>
-			new Mmenu(
-				document.querySelector( '#menu' ),
-				{
-					drag 		: true,
-					pageScroll 	: {
-						scroll 		: true,
-						update		: true
-					},
-					sidebar 	: {
-						expanded 	: 800
-					}
+	<!-- mmenu scripts -->
+	<script src="../dist/mmenu.polyfills.js"></script>
+	<script src="../dist/mmenu.js"></script>
+
+	<script>
+		new Mmenu(
+			document.querySelector('#menu'),
+			{
+				drag: true,
+				pageScroll: {
+					scroll: true,
+					update: true
+				},
+				sidebar: {
+					expanded: 800
 				}
-			);
+			}
+		);
 
-			document.addEventListener( 'click', function( evnt ) {
-				var anchor = evnt.target.closest( 'a[href^="#/"]' );
-				if ( anchor ) {
-					alert('Thank you for clicking, but that\'s a demo link.');
-					evnt.preventDefault();
-				}
-			});
-		</script>
-	</body>
+		document.addEventListener('click', function (evnt) {
+			var anchor = evnt.target.closest('a[href^="#/"]');
+			if (anchor) {
+				alert('Thank you for clicking, but that\'s a demo link.');
+				evnt.preventDefault();
+			}
+		});
+	</script>
+</body>
+
 </html>

@@ -42,27 +42,22 @@ nav:not(.mm-menu) {
 }
 .header,
 .footer {
+	position: sticky;
 	background: #4bb5ef;
 	font-size: 16px;
 	font-weight: bold;
 	color: #fff;
 	line-height: 44px;
 
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 100%;
 	height: 44px;
 	padding: 0 50px;
 }
-.header.fixed {
-	position: fixed;
+.header {
 	top: 0;
-	left: 0;
 }
-.footer.fixed {
-	position: fixed;
+.footer {
 	bottom: 0;
-	left: 0;
 }
 .header a {
 	display: block;

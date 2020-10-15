@@ -25,8 +25,8 @@ export default function (this: Mmenu, navbar: HTMLElement) {
             org = panel.querySelector('.mm-navbar__btn.mm-btn--prev');
         }
 
-        _url = org ? org.getAttribute('href') : '';
-        _txt = org ? org.innerHTML : '';
+        _url = org?.getAttribute('href') || '';
+        _txt = org?.innerHTML || '';
 
         if (_url) {
             prev.setAttribute('href', _url);

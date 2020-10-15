@@ -5,7 +5,7 @@ import translate from './translations/translate';
 import * as DOM from '../../_modules/dom';
 import * as i18n from '../../_modules/i18n';
 import * as media from '../../_modules/matchmedia';
-import { type, extend, uniqueId, valueOrFn, } from '../../_modules/helpers';
+import { type, extend, uniqueId, } from '../../_modules/helpers';
 //  Add the translations.
 translate();
 /**
@@ -34,7 +34,6 @@ var Mmenu = /** @class */ (function () {
         this.node = {};
         this.vars = {};
         this.hook = {};
-        this.clck = [];
         //	Get menu node from string or element.
         this.node.menu =
             typeof menu == 'string' ? document.querySelector(menu) : menu;
@@ -50,7 +49,6 @@ var Mmenu = /** @class */ (function () {
         this._initMenu();
         this._initPanels();
         this._initOpened();
-        this._initAnchors();
         media.watch();
         return this;
     }
@@ -332,12 +330,15 @@ var Mmenu = /** @class */ (function () {
             /** The href attribute for the clicked anchor. */
             var href = ((_b = (_a = event.target) === null || _a === void 0 ? void 0 : _a.closest('a[href]')) === null || _b === void 0 ? void 0 : _b.getAttribute('href')) || '';
             if (href.slice(0, 1) === '#') {
-                /** The targeted panel */
-                var panel = DOM.find(_this.node.menu, href)[0];
-                if (panel) {
-                    event.preventDefault();
-                    _this.togglePanel(panel);
+                try {
+                    /** The targeted panel */
+                    var panel = DOM.find(_this.node.menu, href)[0];
+                    if (panel) {
+                        event.preventDefault();
+                        _this.togglePanel(panel);
+                    }
                 }
+                catch (err) { }
             }
         }, {
             // useCapture to ensure the logical order.
@@ -479,7 +480,7 @@ var Mmenu = /** @class */ (function () {
                 break;
             case 'parent':
                 if (parentPanel) {
-                    title.setAttribute('href', '#' + parentPanel.id);
+                    title.setAttribute('href', "#" + parentPanel.id);
                 }
                 break;
         }
@@ -600,72 +601,6 @@ var Mmenu = /** @class */ (function () {
         this.openPanel(panel, false);
         //	Invoke "after" hook.
         this.trigger('initOpened:after');
-    };
-    /**
-     * Initialize anchors in / for the menu.
-     */
-    Mmenu.prototype._initAnchors = function () {
-        var _this = this;
-        //	Invoke "before" hook.
-        this.trigger('initAnchors:before');
-        document.addEventListener('click', function (evnt) {
-            /** The clicked element. */
-            var target = evnt.target.closest('a[href]');
-            if (!target) {
-                return;
-            }
-            /** Arguments passed to the bound methods. */
-            var args = {
-                inMenu: target.closest('.mm-menu') === _this.node.menu,
-                inListview: target.matches('.mm-listitem > a'),
-                toExternal: target.matches('[rel="external"]') ||
-                    target.matches('[target="_blank"]'),
-            };
-            var onClick = {
-                close: null,
-                setSelected: null,
-                preventDefault: target.getAttribute('href').slice(0, 1) == '#',
-            };
-            //	Find hooked behavior.
-            for (var c = 0; c < _this.clck.length; c++) {
-                var click = _this.clck[c].call(_this, target, args);
-                if (click) {
-                    if (typeof click == 'boolean') {
-                        evnt.preventDefault();
-                        return;
-                    }
-                    if (type(click) == 'object') {
-                        onClick = extend(click, onClick);
-                    }
-                }
-            }
-            //	Default behavior for anchors in lists.
-            if (args.inMenu && args.inListview && !args.toExternal) {
-                // //	Set selected item, Default: true
-                // if (
-                //     valueOrFn(
-                //         target,
-                //         this.opts.onClick.setSelected,
-                //         onClick.setSelected
-                //     )
-                // ) {
-                //     this.setSelected(target.parentElement);
-                // }
-                //	Prevent default / don't follow link. Default: false.
-                if (valueOrFn(target, _this.opts.onClick.preventDefault, onClick.preventDefault)) {
-                    evnt.preventDefault();
-                }
-                //	Close menu. Default: false
-                if (valueOrFn(target, _this.opts.onClick.close, onClick.close)) {
-                    if (_this.opts.offCanvas &&
-                        typeof _this.close == 'function') {
-                        _this.close();
-                    }
-                }
-            }
-        }, true);
-        //	Invoke "after" hook.
-        this.trigger('initAnchors:after');
     };
     /**
      * Get the translation for a text.

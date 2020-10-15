@@ -3,7 +3,6 @@ export default function (navbar) {
     var _this = this;
     navbar.classList.add('mm-navbar--tabs');
     navbar.closest('.mm-navbars').classList.add('mm-navbars--has-tabs');
-    // TODO: mutation observer?
     DOM.children(navbar, 'a').forEach(function (anchor) {
         anchor.classList.add('mm-navbar__tab');
     });
@@ -38,9 +37,10 @@ export default function (navbar) {
             var _a, _b, _c;
             /** The href for the clicked tab. */
             var href = (_b = (_a = event.target) === null || _a === void 0 ? void 0 : _a.closest('.mm-navbar__tab')) === null || _b === void 0 ? void 0 : _b.getAttribute('href');
-            if (href) {
+            try {
                 (_c = DOM.find(_this.node.pnls, href + ".mm-panel")[0]) === null || _c === void 0 ? void 0 : _c.classList.add('mm-panel--noanimation');
             }
+            catch (err) { }
         }, {
             // useCapture to ensure the logical order.
             capture: true

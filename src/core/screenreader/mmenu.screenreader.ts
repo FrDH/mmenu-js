@@ -103,9 +103,9 @@ export default function (this: Mmenu) {
             DOM.find(panel, '.mm-btn').forEach((button) => {
                 sr.aria(button, 'haspopup', true);
 
-                let href = button.getAttribute('href');
+                const href = button.getAttribute('href');
                 if (href) {
-                    sr.aria(button, 'owns', href.replace('#', ''));
+                    sr.aria(button, 'owns', href.slice(1));
                 }
             });
         });

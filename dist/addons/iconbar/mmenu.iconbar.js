@@ -66,8 +66,8 @@ export default function () {
         if (options.type == 'tabs') {
             iconbar.classList.add('mm-iconbar--tabs');
             iconbar.addEventListener('click', function (evnt) {
-                var anchor = evnt.target;
-                if (!anchor.matches('a')) {
+                var anchor = evnt.target.closest('.mm-iconbar__tab');
+                if (!anchor) {
                     return;
                 }
                 if (anchor.matches('.mm-iconbar__tab--selected')) {
@@ -75,8 +75,8 @@ export default function () {
                     return;
                 }
                 try {
-                    var panel = _this.node.menu.querySelector(anchor.getAttribute('href'))[0];
-                    if (panel && panel.matches('.mm-panel')) {
+                    var panel = DOM.find(_this.node.menu, anchor.getAttribute('href') + ".mm-panel")[0];
+                    if (panel) {
                         evnt.preventDefault();
                         evnt.stopImmediatePropagation();
                         _this.openPanel(panel, false);
