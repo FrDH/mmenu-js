@@ -8,7 +8,7 @@ You can purchase a license if you want to use it in a commercial project.
 The mmenu.js plugin is licensed under [the CC-BY-NC-4.0](http://creativecommons.org/licenses/by-nc/4.0/)  license.
 
 
-#### fter purchasing a license key:
+#### After purchasing a license key:
 The mmenu.js plugin is licensed under the [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/) license.
 
 For more information, please visit [the documentation](https://mmenujs.com/download.html).
