@@ -7,6 +7,7 @@
             right: 0;
         }
     }
+    
     @include mm_position_right;
 }
 
@@ -19,7 +20,6 @@
         &-front,
         &-top,
         &-bottom {
-            transition: transform $mm_transitionDuration $mm_transitionFunction;
 
             &.mm-menu--opened {
                 z-index: 2;

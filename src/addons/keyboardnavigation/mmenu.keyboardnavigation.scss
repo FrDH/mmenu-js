@@ -1,6 +1,6 @@
 @import '../../mixins', '../../includes', '../../variables';
 
-.mm-menu_keyboardfocus {
+.mm-menu--keyboardfocus {
     &,
     &.mm-menu--opened ~ .mm-wrapper__blocker {
         a:focus {

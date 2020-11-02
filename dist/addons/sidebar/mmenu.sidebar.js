@@ -64,7 +64,7 @@ export default function () {
             media.add(options.expanded.use, enable, disable);
         }
         //  Manually en-/disable the expanded sidebar (open / close the menu)
-        this.bind('close:start', function () {
+        this.bind('close:after', function () {
             if (_this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
                 _this.node.wrpr.classList.add('mm-wrapper--sidebar-closed');
                 if (options.expanded.initial == 'remember') {
@@ -72,7 +72,7 @@ export default function () {
                 }
             }
         });
-        this.bind('open:start', function () {
+        this.bind('open:after', function () {
             if (_this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
                 _this.node.wrpr.classList.remove('mm-wrapper--sidebar-closed');
                 if (options.expanded.initial == 'remember') {

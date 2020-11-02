@@ -73,7 +73,7 @@ export default function (this: Mmenu) {
         }
 
         //  Manually en-/disable the expanded sidebar (open / close the menu)
-        this.bind('close:start', () => {
+        this.bind('close:after', () => {
             if (this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
                 this.node.wrpr.classList.add('mm-wrapper--sidebar-closed');
 
@@ -83,7 +83,7 @@ export default function (this: Mmenu) {
             }
         });
 
-        this.bind('open:start', () => {
+        this.bind('open:after', () => {
             if (this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
                 this.node.wrpr.classList.remove('mm-wrapper--sidebar-closed');
 

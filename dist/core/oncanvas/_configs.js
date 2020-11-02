@@ -9,8 +9,6 @@ var configs = {
         vertical: 'Vertical'
     },
     language: null,
-    openingInterval: 25,
-    panelNodetype: ['ul', 'ol', 'div'],
-    transitionDuration: 400
+    panelNodetype: ['ul', 'ol', 'div']
 };
 export default configs;

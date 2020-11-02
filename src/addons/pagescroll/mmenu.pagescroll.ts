@@ -43,7 +43,7 @@ export default function (this: Mmenu) {
     if (this.opts.offCanvas && options.scroll) {
 
         //	Scroll to section after clicking menu item.
-        this.bind('close:finish', () => {
+        this.bind('close:after', () => {
             scrollTo();
         });
 

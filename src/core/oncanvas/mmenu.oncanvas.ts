@@ -88,9 +88,6 @@ export default class Mmenu {
     /** Close the menu. */
     close: Function;
 
-    /** Close all other menus. */
-    closeAllOthers: Function;
-
     /** Set the page HTML element. */
     setPage: Function;
 
@@ -119,7 +116,6 @@ export default class Mmenu {
             'bind',
             'openPanel',
             'closePanel',
-            'closeAllPanels',
             'setSelected',
         ];
 
@@ -423,7 +419,7 @@ export default class Mmenu {
         //	Loop over object.
         Object.keys(this.opts.extensions).forEach((query) => {
             let classnames = this.opts.extensions[query].map(
-                (extension) => 'mm-menu_' + extension
+                (extension) => 'mm-menu--' + extension
             );
 
             if (classnames.length) {

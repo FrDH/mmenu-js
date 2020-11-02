@@ -22,7 +22,7 @@ export default function () {
         var menuStart_1 = DOM.create('button.mm-tabstart.mm-sronly'), menuEnd_1 = DOM.create('button.mm-tabend.mm-sronly'), blockerEnd_1 = DOM.create('button.mm-tabend.mm-sronly');
         this.bind('initMenu:after', function () {
             if (options.enhance) {
-                _this.node.menu.classList.add('mm-menu_keyboardfocus');
+                _this.node.menu.classList.add('mm-menu--keyboardfocus');
             }
             initWindow.call(_this, options.enhance);
         });
@@ -78,7 +78,7 @@ export default function () {
                 focus.focus();
             }
         };
-        this.bind('open:finish', setFocus);
+        this.bind('open:after', setFocus);
         this.bind('openPanel:after', setFocus);
         //	Add screenreader / aria support.
         this.bind('initOpened:after:sr-aria', function () {
@@ -114,7 +114,7 @@ var initWindow = function (enhance) {
                 }
                 //	Jump to opened menu.
                 if (target.parentElement.matches('.mm-wrapper__blocker')) {
-                    next = DOM.find(document.body, '.mm-menu_offcanvas.mm-menu--opened')[0];
+                    next = DOM.find(document.body, '.mm-menu--offcanvas.mm-menu--opened')[0];
                 }
                 //	If no available element found, stay in current element.
                 if (!next) {
@@ -177,7 +177,7 @@ var initWindow = function (enhance) {
                             break;
                         //	close menu with esc
                         case 27:
-                            if (menu.matches('.mm-menu_offcanvas')) {
+                            if (menu.matches('.mm-menu--offcanvas')) {
                                 api_1.close();
                             }
                             break;

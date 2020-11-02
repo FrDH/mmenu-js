@@ -2,9 +2,6 @@
 interface mmOptionsOffcanvas {
     /** Whether or not (and how) to block the UI while the menu is opened. */
     blockUI?: true | false | 'modal';
-
-    /** Whether or not to have the "page" inherit its background (from its parent element). */
-    moveBackground?: boolean;
 }
 
 //	Add-on configs interfaces.

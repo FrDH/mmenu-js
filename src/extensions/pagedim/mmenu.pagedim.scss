@@ -5,13 +5,13 @@
 
 
 @if ( $mm_include_pagedim_default or $mm_include_pagedim_black or $mm_include_pagedim_white ) {
-	[class*="mm-menu_pagedim"].mm-menu--opened {
+	[class*="mm-menu--pagedim"].mm-menu--opened {
 		~ .mm-wrapper__blocker {
 			opacity: 0;
 		}
 	}
 
-	.mm-wrapper--opening [class*="mm-menu_pagedim"].mm-menu--opened {
+	.mm-wrapper--opening [class*="mm-menu--pagedim"].mm-menu--opened {
 		~ .mm-wrapper__blocker {
 			opacity: $mm_pagedimOpacity;
 			transition: opacity $mm_transitionDuration $mm_transitionFunction $mm_pagedimDelay;
@@ -20,19 +20,19 @@
 
 	.mm-menu--opened {
 		@if ( $mm_include_pagedim_default ) {
-			&.mm-menu_pagedim ~ .mm-wrapper__blocker {
+			&.mm-menu--pagedim ~ .mm-wrapper__blocker {
 				background: inherit;
 			}
 		}
 
 		@if ( $mm_include_pagedim_black ) {
-			&.mm-menu_pagedim-black ~ .mm-wrapper__blocker {
+			&.mm-menu--pagedim-black ~ .mm-wrapper__blocker {
 				background: #000;
 			}
 		}
 
 		@if ( $mm_include_pagedim_white ) {
-			&.mm-menu_pagedim-white ~ .mm-wrapper__blocker {
+			&.mm-menu--pagedim-white ~ .mm-wrapper__blocker {
 				background: #fff;
 			}
 		}

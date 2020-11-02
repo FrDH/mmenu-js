@@ -25,7 +25,7 @@ export default function (this: Mmenu) {
     }
 
     //	Blur searchfield
-    this.bind('close:start', () => {
+    this.bind('close:after', () => {
         DOM.find(this.node.menu, '.mm-searchfield').forEach((input) => {
             input.blur();
         });
@@ -540,11 +540,11 @@ Mmenu.prototype.search = function (
                             panel.matches('.mm-panel--parent')
                         ) {
                             //	Compensate the timeout for the opening animation
-                            setTimeout(() => {
-                                this.openPanel(
-                                    parent.closest('.mm-panel') as HTMLElement
-                                );
-                            }, (p + 1) * (this.conf.openingInterval * 1.5));
+                            // setTimeout(() => {
+                            //     this.openPanel(
+                            //         parent.closest('.mm-panel') as HTMLElement
+                            //     );
+                            // }, (p + 1) * (this.conf.openingInterval * 1.5));
                         }
                         parent.classList.add('mm-listitem--nosubitems');
                     }

@@ -1,6 +1,5 @@
 const options: mmOptionsOffcanvas = {
-	blockUI: true,
-	moveBackground: true
+	blockUI: true
 };
 export default options;
 

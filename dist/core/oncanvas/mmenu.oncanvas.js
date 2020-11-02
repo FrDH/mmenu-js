@@ -27,7 +27,6 @@ var Mmenu = /** @class */ (function () {
             'bind',
             'openPanel',
             'closePanel',
-            'closeAllPanels',
             'setSelected',
         ];
         //	Storage objects for nodes, variables, hooks and click handlers.
@@ -275,7 +274,7 @@ var Mmenu = /** @class */ (function () {
         }
         //	Loop over object.
         Object.keys(this.opts.extensions).forEach(function (query) {
-            var classnames = _this.opts.extensions[query].map(function (extension) { return 'mm-menu_' + extension; });
+            var classnames = _this.opts.extensions[query].map(function (extension) { return 'mm-menu--' + extension; });
             if (classnames.length) {
                 media.add(query, function () {
                     var _a;

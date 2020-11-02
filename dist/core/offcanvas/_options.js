@@ -1,6 +1,5 @@
 var options = {
-    blockUI: true,
-    moveBackground: true
+    blockUI: true
 };
 export default options;
 /**

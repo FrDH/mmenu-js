@@ -67,7 +67,7 @@ export default function (this: Mmenu) {
         initWindow.call(this);
 
         //	Setup the menu.
-        this.node.menu.classList.add('mm-menu_offcanvas');
+        this.node.menu.classList.add('mm-menu--offcanvas');
 
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         let hash = window.location.hash;
@@ -91,10 +91,10 @@ export default function (this: Mmenu) {
     });
 
     //	Add screenreader / aria support
-    this.bind('open:start:sr-aria', () => {
+    this.bind('open:after:sr-aria', () => {
         sr.aria(this.node.menu, 'hidden', false);
     });
-    this.bind('close:finish:sr-aria', () => {
+    this.bind('close:after:sr-aria', () => {
         sr.aria(this.node.menu, 'hidden', true);
     });
     this.bind('initMenu:after:sr-aria', () => {
@@ -111,6 +111,8 @@ export default function (this: Mmenu) {
     });
 
     document.addEventListener('click', event => {
+
+
         /** THe href attribute for the clicked anchor. */
         const href = (event.target as HTMLElement).closest('a')?.getAttribute('href');
 
@@ -119,11 +121,13 @@ export default function (this: Mmenu) {
             case `#${originalId(this.node.menu.id)}`:
                 event.preventDefault();
                 this.open();
+                break;
 
             //	Close menu if the clicked anchor links to the page.
             case `#${originalId(Mmenu.node.page.id)}`:
                 event.preventDefault();
                 this.close();
+                break;
         }
     });
 }
@@ -138,13 +142,10 @@ Mmenu.prototype.open = function (this: Mmenu) {
     if (this.vars.opened) {
         return;
     }
+    this.vars.opened = true;
 
     this._openSetup();
-
-    //	Without the timeout, the animation won't work because the menu had display: none;
-    setTimeout(() => {
-        this._openStart();
-    }, this.conf.openingInterval);
+    this._openStart();
 
     //	Invoke "after" hook.
     this.trigger('open:after');
@@ -153,12 +154,6 @@ Mmenu.prototype.open = function (this: Mmenu) {
 Mmenu.prototype._openSetup = function (this: Mmenu) {
     /** The off-canvas options. */
     const options = this.opts.offCanvas;
-
-    //	Close other menus
-    this.closeAllOthers();
-
-    //	Trigger window-resize to measure height
-    events.trigger(window, 'resize.page', { force: true });
 
     var clsn = ['mm-wrapper--opened'];
 
@@ -169,18 +164,10 @@ Mmenu.prototype._openSetup = function (this: Mmenu) {
     if (options.blockUI == 'modal') {
         clsn.push('mm-wrapper--modal');
     }
-    if (options.moveBackground) {
-        clsn.push('mm-wrapper--background');
-    }
 
     this.node.wrpr.classList.add(...clsn);
 
     //	Open
-    //	Without the timeout, the animation won't work because the menu had display: none;
-    setTimeout(() => {
-        this.vars.opened = true;
-    }, this.conf.openingInterval);
-
     this.node.menu.classList.add('mm-menu--opened');
 };
 
@@ -188,16 +175,8 @@ Mmenu.prototype._openSetup = function (this: Mmenu) {
  * Finish opening the menu.
  */
 Mmenu.prototype._openStart = function (this: Mmenu) {
-    //	Callback when the page finishes opening.
-    transitionend(
-        Mmenu.node.page,
-        () => {
-            this.trigger('open:finish');
-        }
-    );
 
     //	Opening
-    this.trigger('open:start');
     this.node.wrpr.classList.add('mm-wrapper--opening');
 };
 
@@ -209,10 +188,12 @@ Mmenu.prototype.close = function (this: Mmenu) {
         return;
     }
 
+    //  TODO: transitionend er uit
     //	Callback when the page finishes closing.
     transitionend(
         Mmenu.node.page,
         () => {
+
             this.node.menu.classList.remove('mm-menu--opened');
 
             this.node.wrpr.classList.remove(
@@ -223,31 +204,13 @@ Mmenu.prototype.close = function (this: Mmenu) {
             );
 
             this.vars.opened = false;
-            this.trigger('close:finish');
         }
     );
-
-    //	Closing
-    this.trigger('close:start');
 
     this.node.wrpr.classList.remove('mm-wrapper--opening');
 
     //	Invoke "after" hook.
     this.trigger('close:after');
-};
-
-/**
- * Close all other menus.
- */
-Mmenu.prototype.closeAllOthers = function (this: Mmenu) {
-    DOM.find(document.body, '.mm-menu_offcanvas').forEach((menu) => {
-        if (menu !== this.node.menu) {
-            let api: mmApi = menu['mmApi'];
-            if (api && api.close) {
-                api.close();
-            }
-        }
-    });
 };
 
 /**
@@ -312,14 +275,14 @@ const initWindow = function (this: Mmenu) {
     //	Prevent tabbing
     //	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
     //	In other words: The menu would move out of view.
-    events.off(document.body, 'keydown.tabguard');
-    events.on(document.body, 'keydown.tabguard', (evnt: KeyboardEvent) => {
-        if (evnt.keyCode == 9) {
-            if (this.node.wrpr.matches('.mm-wrapper--opened')) {
-                evnt.preventDefault();
-            }
-        }
-    });
+    // events.off(document.body, 'keydown.tabguard');
+    // events.on(document.body, 'keydown.tabguard', (evnt: KeyboardEvent) => {
+    //     if (evnt.keyCode == 9) {
+    //         if (this.node.wrpr.matches('.mm-wrapper--opened')) {
+    //             evnt.preventDefault();
+    //         }
+    //     }
+    // });
 };
 
 /**

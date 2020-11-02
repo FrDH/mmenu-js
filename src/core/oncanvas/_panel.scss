@@ -1,6 +1,7 @@
 $mm_module: '.mm-panel';
 
 #{$mm_module} {
+    visibility: hidden;
     z-index: 1;
     box-sizing: border-box;
     width: 100%;
@@ -14,7 +15,7 @@ $mm_module: '.mm-panel';
     background: var(--mm-color-background);
 
     transform: translate3d(100%, 0, 0);
-    transition: transform $mm_transitionDuration $mm_transitionFunction;
+    transition: visibility 0s linear $mm_transitionDuration, transform $mm_transitionDuration $mm_transitionFunction;
 
     //	Because padding-bottom is ignored when a DIV is scrollable
     &:after {
@@ -24,8 +25,10 @@ $mm_module: '.mm-panel';
     }
 
     &--opened {
+        visibility: visible;
         z-index: 2;
         transform: translate3d(0%, 0, 0);
+        transition-delay: 0s;
     }
 
     &--parent {

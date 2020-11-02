@@ -1,45 +1,60 @@
 @import '../../mixins', '../../includes', '../../variables';
 
+:root {
+    --mm-size: #{$mm_menuSize};
+    --mm-min-size: #{$mm_menuMinSize};
+    --mm-max-size: #{$mm_menuMaxSize};
+}
+
 //	Animations
 .mm-page {
     box-sizing: border-box;
     position: relative;
+    background: inherit;
 }
 
 .mm-slideout {
-    transition: transform $mm_transitionDuration $mm_transitionFunction;
     z-index: 1;
+    transition: transform $mm_transitionDuration $mm_transitionFunction;
 }
 
 //	Wrapper
 .mm-wrapper {
     &--opened {
-        overflow-x: hidden;
         position: relative;
+        overflow-x: hidden;
 
         .mm-page {
             min-height: 100vh;
         }
     }
-    &--background {
-        .mm-page {
-            background: inherit;
+}
+
+//	Menu
+.mm-menu--offcanvas {
+    position: fixed;
+    right: auto;
+    z-index: 0;
+    width: clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size));
+    transition: transform $mm_transitionDuration $mm_transitionFunction;
+
+    // Visible panels are visible even if the menu is hidden
+    &:not(.mm-menu--opened) {
+        visibility: hidden;
+
+        .mm-panel {
+            display: none;
         }
     }
 }
 
-//	Menu
-.mm-menu_offcanvas {
-    position: fixed;
-    right: auto;
-    z-index: 0;
-
-    &:not(.mm-menu--opened) {
-        display: none;
-    }
+.mm-wrapper--opening .mm-slideout {
+    transform: translate3d(
+        clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size)),
+        0,
+        0
+    );
 }
-
-@include mm_offcanvas_size;
 
 @if ($mm_include_offcanvas_blocker) {
     .mm-wrapper__blocker {

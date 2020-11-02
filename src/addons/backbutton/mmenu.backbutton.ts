@@ -31,12 +31,12 @@ export default function (this: Mmenu) {
             });
         };
 
-        this.bind('open:finish', () => {
+        this.bind('open:after', () => {
             history.pushState(null, document.title, _menu);
         });
-        this.bind('open:finish', setStates);
+        this.bind('open:after', setStates);
         this.bind('openPanel:after', setStates);
-        this.bind('close:finish', () => {
+        this.bind('close:after', () => {
             states = [];
             history.back();
             history.pushState(

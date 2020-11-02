@@ -75,7 +75,7 @@ export default function () {
     });
     //  Some small additional improvements
     //	Scroll the current opened panel to the top when opening the menu.
-    this.bind('open:start', function () {
+    this.bind('open:after', function () {
         var panel = DOM.children(_this.node.pnls, '.mm-panel--opened')[0];
         if (panel) {
             panel.scrollTop = 0;

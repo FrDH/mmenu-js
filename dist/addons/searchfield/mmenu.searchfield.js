@@ -27,7 +27,7 @@ export default function () {
         return;
     }
     //	Blur searchfield
-    this.bind('close:start', function () {
+    this.bind('close:after', function () {
         DOM.find(_this.node.menu, '.mm-searchfield').forEach(function (input) {
             input.blur();
         });
@@ -416,9 +416,11 @@ Mmenu.prototype.search = function (input, query) {
                         if (panel.matches('.mm-panel--opened') ||
                             panel.matches('.mm-panel--parent')) {
                             //	Compensate the timeout for the opening animation
-                            setTimeout(function () {
-                                _this.openPanel(parent.closest('.mm-panel'));
-                            }, (p + 1) * (_this.conf.openingInterval * 1.5));
+                            // setTimeout(() => {
+                            //     this.openPanel(
+                            //         parent.closest('.mm-panel') as HTMLElement
+                            //     );
+                            // }, (p + 1) * (this.conf.openingInterval * 1.5));
                         }
                         parent.classList.add('mm-listitem--nosubitems');
                     }

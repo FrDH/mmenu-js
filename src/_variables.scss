@@ -29,13 +29,9 @@ $mm_panelPadding: $mm_padding * 2 !default;
 $mm_subopenWidth: $mm_btnSize !default;
 $mm_subpanelOffset: 30% !default;
 
-$mm_menuWidth: 0.8 !default;
-$mm_menuMinWidth: 240px !default;
-$mm_menuMaxWidth: 440px !default;
-$mm_menuHeight: 0.8 !default;
-$mm_menuMinHeight: 140px !default;
-$mm_menuMaxHeight: 880px !default;
-
+$mm_menuSize: 80% !default;
+$mm_menuMinSize: 240px !default;
+$mm_menuMaxSize: 440px !default;
 $mm_opt_screenreader	: true !default;
 
 $mm_counterWidth: $mm_btnSize !default;
@@ -47,7 +43,7 @@ $mm_iconpanelSize: $mm_btnSize !default;
 $mm_sectionIndexerSize: 20px !default;
 
 $mm_sidebarCollapsedSize: $mm_btnSize !default;
-$mm_sidebarExpandedSize: $mm_menuMaxWidth !default;
+$mm_sidebarExpandedSize: $mm_menuMaxSize !default;
 
 $mm_toggleCheckedColor: #4bd963 !default;
 $mm_toggleHeight: $mm_listitemSize - $mm_padding !default;

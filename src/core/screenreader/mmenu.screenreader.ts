@@ -45,14 +45,11 @@ export default function (this: Mmenu) {
                     [].slice.call(arguments)
                 );
             });
-            this.bind('close:start', function (this: Mmenu) {
-                this.trigger('close:start:sr-aria', [].slice.call(arguments));
+            this.bind('close:after', function (this: Mmenu) {
+                this.trigger('close:after:sr-aria', [].slice.call(arguments));
             });
-            this.bind('close:finish', function (this: Mmenu) {
-                this.trigger('close:finish:sr-aria', [].slice.call(arguments));
-            });
-            this.bind('open:start', function (this: Mmenu) {
-                this.trigger('open:start:sr-aria', [].slice.call(arguments));
+            this.bind('open:after', function (this: Mmenu) {
+                this.trigger('open:after:sr-aria', [].slice.call(arguments));
             });
             this.bind('initOpened:after', function (this: Mmenu) {
                 this.trigger(

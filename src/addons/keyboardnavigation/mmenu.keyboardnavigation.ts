@@ -31,7 +31,7 @@ export default function (this: Mmenu) {
 
         this.bind('initMenu:after', () => {
             if (options.enhance) {
-                this.node.menu.classList.add('mm-menu_keyboardfocus');
+                this.node.menu.classList.add('mm-menu--keyboardfocus');
             }
 
             initWindow.call(this, options.enhance);
@@ -109,7 +109,7 @@ export default function (this: Mmenu) {
                 focus.focus();
             }
         };
-        this.bind('open:finish', setFocus);
+        this.bind('open:after', setFocus);
         this.bind('openPanel:after', setFocus);
 
         //	Add screenreader / aria support.
@@ -153,7 +153,7 @@ const initWindow = function (this: Mmenu, enhance: boolean) {
                 if (target.parentElement.matches('.mm-wrapper__blocker')) {
                     next = DOM.find(
                         document.body,
-                        '.mm-menu_offcanvas.mm-menu--opened'
+                        '.mm-menu--offcanvas.mm-menu--opened'
                     )[0];
                 }
 
@@ -230,7 +230,7 @@ const initWindow = function (this: Mmenu, enhance: boolean) {
 
                         //	close menu with esc
                         case 27:
-                            if (menu.matches('.mm-menu_offcanvas')) {
+                            if (menu.matches('.mm-menu--offcanvas')) {
                                 api.close();
                             }
                             break;

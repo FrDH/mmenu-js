@@ -27,7 +27,7 @@ export default function (page) {
                     _this.node.wrpr.classList.add('mm-wrapper_dragging');
                     //  Prepare the menu to be opened.
                     _this._openSetup();
-                    _this.trigger('open:start');
+                    _this.trigger('open:after');
                     //  Get the maximum distance to move out the page or menu.
                     maxDistance = _this.node.menu[vars.axis == 'x' ? 'clientWidth' : 'clientHeight'];
                 }

@@ -4,7 +4,6 @@ import configs from './_configs';
 import { extendShorthandOptions } from './_options';
 import * as DOM from '../../_modules/dom';
 import * as sr from '../../_modules/screenreader';
-import * as events from '../../_modules/eventlisteners';
 import { extend, transitionend, uniqueId, originalId, } from '../../_modules/helpers';
 //  Add the options and configs.
 Mmenu.options.offCanvas = options;
@@ -48,7 +47,7 @@ export default function () {
         //	Setup window events.
         initWindow.call(_this);
         //	Setup the menu.
-        _this.node.menu.classList.add('mm-menu_offcanvas');
+        _this.node.menu.classList.add('mm-menu--offcanvas');
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         var hash = window.location.hash;
         if (hash) {
@@ -69,10 +68,10 @@ export default function () {
         }
     });
     //	Add screenreader / aria support
-    this.bind('open:start:sr-aria', function () {
+    this.bind('open:after:sr-aria', function () {
         sr.aria(_this.node.menu, 'hidden', false);
     });
-    this.bind('close:finish:sr-aria', function () {
+    this.bind('close:after:sr-aria', function () {
         sr.aria(_this.node.menu, 'hidden', true);
     });
     this.bind('initMenu:after:sr-aria', function () {
@@ -93,10 +92,12 @@ export default function () {
             case "#" + originalId(_this.node.menu.id):
                 event.preventDefault();
                 _this.open();
+                break;
             //	Close menu if the clicked anchor links to the page.
             case "#" + originalId(Mmenu.node.page.id):
                 event.preventDefault();
                 _this.close();
+                break;
         }
     });
 }
@@ -104,29 +105,21 @@ export default function () {
  * Open the menu.
  */
 Mmenu.prototype.open = function () {
-    var _this = this;
     //	Invoke "before" hook.
     this.trigger('open:before');
     if (this.vars.opened) {
         return;
     }
+    this.vars.opened = true;
     this._openSetup();
-    //	Without the timeout, the animation won't work because the menu had display: none;
-    setTimeout(function () {
-        _this._openStart();
-    }, this.conf.openingInterval);
+    this._openStart();
     //	Invoke "after" hook.
     this.trigger('open:after');
 };
 Mmenu.prototype._openSetup = function () {
     var _a;
-    var _this = this;
     /** The off-canvas options. */
     var options = this.opts.offCanvas;
-    //	Close other menus
-    this.closeAllOthers();
-    //	Trigger window-resize to measure height
-    events.trigger(window, 'resize.page', { force: true });
     var clsn = ['mm-wrapper--opened'];
     //	Add options
     if (options.blockUI) {
@@ -135,28 +128,15 @@ Mmenu.prototype._openSetup = function () {
     if (options.blockUI == 'modal') {
         clsn.push('mm-wrapper--modal');
     }
-    if (options.moveBackground) {
-        clsn.push('mm-wrapper--background');
-    }
     (_a = this.node.wrpr.classList).add.apply(_a, clsn);
     //	Open
-    //	Without the timeout, the animation won't work because the menu had display: none;
-    setTimeout(function () {
-        _this.vars.opened = true;
-    }, this.conf.openingInterval);
     this.node.menu.classList.add('mm-menu--opened');
 };
 /**
  * Finish opening the menu.
  */
 Mmenu.prototype._openStart = function () {
-    var _this = this;
-    //	Callback when the page finishes opening.
-    transitionend(Mmenu.node.page, function () {
-        _this.trigger('open:finish');
-    });
     //	Opening
-    this.trigger('open:start');
     this.node.wrpr.classList.add('mm-wrapper--opening');
 };
 Mmenu.prototype.close = function () {
@@ -166,32 +146,16 @@ Mmenu.prototype.close = function () {
     if (!this.vars.opened) {
         return;
     }
+    //  TODO: transitionend er uit
     //	Callback when the page finishes closing.
     transitionend(Mmenu.node.page, function () {
         _this.node.menu.classList.remove('mm-menu--opened');
         _this.node.wrpr.classList.remove('mm-wrapper--opened', 'mm-wrapper--blocking', 'mm-wrapper--modal', 'mm-wrapper--background');
         _this.vars.opened = false;
-        _this.trigger('close:finish');
     });
-    //	Closing
-    this.trigger('close:start');
     this.node.wrpr.classList.remove('mm-wrapper--opening');
     //	Invoke "after" hook.
     this.trigger('close:after');
-};
-/**
- * Close all other menus.
- */
-Mmenu.prototype.closeAllOthers = function () {
-    var _this = this;
-    DOM.find(document.body, '.mm-menu_offcanvas').forEach(function (menu) {
-        if (menu !== _this.node.menu) {
-            var api = menu['mmApi'];
-            if (api && api.close) {
-                api.close();
-            }
-        }
-    });
 };
 /**
  * Set the "page" node.
@@ -236,18 +200,17 @@ Mmenu.prototype.setPage = function (page) {
  * Initialize the window.
  */
 var initWindow = function () {
-    var _this = this;
     //	Prevent tabbing
     //	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
     //	In other words: The menu would move out of view.
-    events.off(document.body, 'keydown.tabguard');
-    events.on(document.body, 'keydown.tabguard', function (evnt) {
-        if (evnt.keyCode == 9) {
-            if (_this.node.wrpr.matches('.mm-wrapper--opened')) {
-                evnt.preventDefault();
-            }
-        }
-    });
+    // events.off(document.body, 'keydown.tabguard');
+    // events.on(document.body, 'keydown.tabguard', (evnt: KeyboardEvent) => {
+    //     if (evnt.keyCode == 9) {
+    //         if (this.node.wrpr.matches('.mm-wrapper--opened')) {
+    //             evnt.preventDefault();
+    //         }
+    //     }
+    // });
 };
 /**
  * Initialize "blocker" node

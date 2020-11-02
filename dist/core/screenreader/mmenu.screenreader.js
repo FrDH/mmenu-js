@@ -32,14 +32,11 @@ export default function () {
             _this.bind('openPanel:before', function () {
                 this.trigger('openPanel:before:sr-aria', [].slice.call(arguments));
             });
-            _this.bind('close:start', function () {
-                this.trigger('close:start:sr-aria', [].slice.call(arguments));
+            _this.bind('close:after', function () {
+                this.trigger('close:after:sr-aria', [].slice.call(arguments));
             });
-            _this.bind('close:finish', function () {
-                this.trigger('close:finish:sr-aria', [].slice.call(arguments));
-            });
-            _this.bind('open:start', function () {
-                this.trigger('open:start:sr-aria', [].slice.call(arguments));
+            _this.bind('open:after', function () {
+                this.trigger('open:after:sr-aria', [].slice.call(arguments));
             });
             _this.bind('initOpened:after', function () {
                 this.trigger('initOpened:after:sr-aria', [].slice.call(arguments));

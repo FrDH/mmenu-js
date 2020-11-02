@@ -1,20 +1,8 @@
 @mixin mm_offcanvas_size(
-    $cls: '.mm-menu_offcanvas',
+    $cls: '.mm-menu--offcanvas',
     $width: $mm_menuWidth,
     $minWidth: $mm_menuMinWidth,
     $maxWidth: $mm_menuMaxWidth
 ) {
-    #{$cls} {
-        width: clamp($minWidth, percentage($width), $maxWidth);
-    }
-
-    .mm-wrapper--opening {
-        #{$cls}.mm-menu--opened ~ .mm-slideout {
-            transform: translate3d(
-                clamp($minWidth, #{$width * 100}vw, $maxWidth),
-                0,
-                0
-            );
-        }
-    }
+    
 }

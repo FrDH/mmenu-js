@@ -22,12 +22,12 @@ export default function () {
                 states.push('#' + panel.id);
             });
         };
-        this.bind('open:finish', function () {
+        this.bind('open:after', function () {
             history.pushState(null, document.title, _menu);
         });
-        this.bind('open:finish', setStates);
+        this.bind('open:after', setStates);
         this.bind('openPanel:after', setStates);
-        this.bind('close:finish', function () {
+        this.bind('close:after', function () {
             states = [];
             history.back();
             history.pushState(null, document.title, location.pathname + location.search);

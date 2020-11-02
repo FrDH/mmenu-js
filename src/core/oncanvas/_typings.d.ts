@@ -34,7 +34,6 @@ interface mmApi {
     initPanel: Function;
     openPanel: Function;
     closePanel: Function;
-    closeAllPanels: Function;
     setSelected: Function;
 
     //	offCanvas add-on
@@ -163,14 +162,8 @@ interface mmConfigs {
     /** The language to translate the menu to. */
     language?: 'en' | 'nl' | 'de' | 'ru' | 'fa';
 
-    /** The number of milliseconds between opening/closing the menu and panels, needed to force CSS transitions. */
-    openingInterval?: number;
-
     /** List of possible node-type of panels. */
     panelNodetype?: string[];
-
-    /** The number of milliseconds used in the CSS transitions. */
-    transitionDuration?: number;
 
     //	Core add-ons
 

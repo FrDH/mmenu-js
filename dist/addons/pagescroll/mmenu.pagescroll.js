@@ -37,7 +37,7 @@ export default function () {
     }
     if (this.opts.offCanvas && options.scroll) {
         //	Scroll to section after clicking menu item.
-        this.bind('close:finish', function () {
+        this.bind('close:after', function () {
             scrollTo();
         });
         this.node.menu.addEventListener('click', function (event) {
