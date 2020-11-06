@@ -68,7 +68,7 @@ export default function (this: Mmenu) {
                 toggler.addEventListener('click', (evnt) => {
                     evnt.preventDefault();
                     evnt.stopImmediatePropagation();
-                    this[this.vars.opened ? 'close' : 'open']();
+                    this[this.node.menu.matches('.mm-menu--opened') ? 'close' : 'open']();
                 });
             }
         }

@@ -31,7 +31,6 @@ var Mmenu = /** @class */ (function () {
         ];
         //	Storage objects for nodes, variables, hooks and click handlers.
         this.node = {};
-        this.vars = {};
         this.hook = {};
         //	Get menu node from string or element.
         this.node.menu =
@@ -353,22 +352,18 @@ var Mmenu = /** @class */ (function () {
      */
     Mmenu.prototype._initPanel = function (panel) {
         var _this = this;
-        //	Invoke "before" hook.
-        this.trigger('initPanel:before', [panel]);
         if (panel.matches('.mm-panel')) {
-            return null;
+            return;
         }
         //	Refactor panel classnames
         DOM.reClass(panel, this.conf.classNames.panel, 'mm-panel');
         DOM.reClass(panel, this.conf.classNames.nopanel, 'mm-nopanel');
-        DOM.reClass(panel, this.conf.classNames.inset, 'mm-listview_inset');
-        if (panel.matches('.mm-listview_inset')) {
-            panel.classList.add('mm-nopanel');
-        }
         //	Stop if not supposed to be a panel.
         if (panel.matches('.mm-nopanel')) {
-            return null;
+            return;
         }
+        //	Invoke "before" hook.
+        this.trigger('initPanel:before', [panel]);
         //  Must have an ID
         panel.id = panel.id || uniqueId();
         //	Wrap UL/OL in DIV
@@ -420,8 +415,6 @@ var Mmenu = /** @class */ (function () {
      * @param {HTMLElement} panel Panel for the navbar.
      */
     Mmenu.prototype._initNavbar = function (panel) {
-        //	Invoke "before" hook.
-        this.trigger('initNavbar:before', [panel]);
         //	Only one navbar per panel.
         if (DOM.children(panel, '.mm-navbar').length) {
             return;
@@ -439,6 +432,8 @@ var Mmenu = /** @class */ (function () {
         if (parentListitem && parentListitem.matches('.mm-listitem--vertical')) {
             return;
         }
+        //	Invoke "before" hook.
+        this.trigger('initNavbar:before', [panel]);
         /** The navbar element. */
         var navbar = DOM.create('div.mm-navbar');
         //  Hide navbar if specified in options.
@@ -471,18 +466,20 @@ var Mmenu = /** @class */ (function () {
                 (opener ? opener.textContent : '') ||
                 this.i18n(this.opts.navbar.title) ||
                 this.i18n('Menu');
+        var href = '#';
         switch (this.opts.navbar.titleLink) {
             case 'anchor':
                 if (opener) {
-                    title.setAttribute('href', opener.getAttribute('href'));
+                    href = opener.getAttribute('href');
                 }
                 break;
             case 'parent':
                 if (parentPanel) {
-                    title.setAttribute('href', "#" + parentPanel.id);
+                    href = "#" + parentPanel.id;
                 }
                 break;
         }
+        title.setAttribute('href', href);
         navbar.append(title);
         panel.prepend(navbar);
         //	Invoke "after" hook.
@@ -494,20 +491,21 @@ var Mmenu = /** @class */ (function () {
      */
     Mmenu.prototype._initListview = function (listview) {
         var _this = this;
+        DOM.reClass(listview, this.conf.classNames.nolistview, 'mm-nolistview');
+        if (listview.matches('.mm-nolistview')) {
+            return;
+        }
         //	Invoke "before" hook.
         this.trigger('initListview:before', [listview]);
-        DOM.reClass(listview, this.conf.classNames.nolistview, 'mm-nolistview');
-        if (!listview.matches('.mm-nolistview')) {
-            listview.classList.add('mm-listview');
-            //  Initiate the listitem(s).
-            DOM.children(listview).forEach(function (listitem) {
-                _this._initListitem(listitem);
-            });
-            // Observe the listview for added listitems.
-            this.listviewObserver.observe(listview, {
-                childList: true,
-            });
-        }
+        listview.classList.add('mm-listview');
+        //  Initiate the listitem(s).
+        DOM.children(listview).forEach(function (listitem) {
+            _this._initListitem(listitem);
+        });
+        // Observe the listview for added listitems.
+        this.listviewObserver.observe(listview, {
+            childList: true,
+        });
         //	Invoke "after" hook.
         this.trigger('initListview:after', [listview]);
     };
@@ -517,14 +515,14 @@ var Mmenu = /** @class */ (function () {
      */
     Mmenu.prototype._initListitem = function (listitem) {
         var _this = this;
+        DOM.reClass(listitem, this.conf.classNames.divider, 'mm-divider');
+        if (listitem.matches('.mm-divider')) {
+            return;
+        }
         //	Invoke "before" hook.
         this.trigger('initListitem:before', [listitem]);
         listitem.classList.add('mm-listitem');
         DOM.reClass(listitem, this.conf.classNames.selected, 'mm-listitem--selected');
-        DOM.reClass(listitem, this.conf.classNames.divider, 'mm-divider');
-        if (listitem.matches('.mm-divider')) {
-            listitem.classList.remove('mm-listitem');
-        }
         DOM.children(listitem, 'a, span').forEach(function (text) {
             text.classList.add('mm-listitem__text');
         });

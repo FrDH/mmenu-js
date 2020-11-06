@@ -11,10 +11,8 @@ export default function () {
     //	The scrollBugFix add-on fixes a scrolling bug
     //		1) on touch devices
     //		2) in an off-canvas menu
-    //		3) that -when opened- blocks the UI from interaction
     if (!support.touch || // 1
-        !this.opts.offCanvas || // 2
-        !this.opts.offCanvas.blockUI // 3
+        !this.opts.offCanvas // 2
     ) {
         return;
     }

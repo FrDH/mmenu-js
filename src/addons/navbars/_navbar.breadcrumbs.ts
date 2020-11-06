@@ -62,7 +62,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
     });
 
     //	Add screenreader / aria support
-    this.bind('initNavbar:after:sr-aria', (panel: HTMLElement) => {
+    this.bind('initNavbar:after', (panel: HTMLElement) => {
         DOM.find(panel, '.mm-breadcrumbs a').forEach((anchor) => {
             sr.aria(anchor, 'owns', anchor.getAttribute('href').slice(1));
         });

@@ -1,25 +1,22 @@
 import Mmenu from './../oncanvas/mmenu.oncanvas';
 import options from './_options';
 import configs from './_configs';
-import { extendShorthandOptions } from './_options';
 import * as DOM from '../../_modules/dom';
 import * as sr from '../../_modules/screenreader';
-import { extend, transitionend, uniqueId, originalId, } from '../../_modules/helpers';
+import { extend, uniqueId, originalId, } from '../../_modules/helpers';
 //  Add the options and configs.
 Mmenu.options.offCanvas = options;
 Mmenu.configs.offCanvas = configs;
 export default function () {
     var _this = this;
-    if (!this.opts.offCanvas) {
+    var options = this.opts.offCanvas;
+    var configs = this.conf.offCanvas;
+    this.opts.searchfield = extend(options, Mmenu.options.searchfield);
+    if (!options.use) {
         return;
     }
-    var options = extendShorthandOptions(this.opts.offCanvas);
-    this.opts.offCanvas = extend(options, Mmenu.options.offCanvas);
-    var configs = this.conf.offCanvas;
     //	Add methods to the API.
     this._api.push('open', 'close', 'setPage');
-    //	Setup the menu.
-    this.vars.opened = false;
     //	Add off-canvas behavior.
     this.bind('initMenu:before', function () {
         //	Clone if needed.
@@ -36,8 +33,7 @@ export default function () {
         }
         _this.node.wrpr = document.body;
         //	Prepend to the <body>
-        document
-            .querySelector(configs.menu.insertSelector)[configs.menu.insertMethod](_this.node.menu);
+        document.querySelector(configs.menu.insertSelector)[configs.menu.insertMethod](_this.node.menu);
     });
     this.bind('initMenu:after', function () {
         //	Setup the UI blocker.
@@ -59,29 +55,18 @@ export default function () {
             }
         }
     });
-    //	Sync the blocker to target the page.
-    this.bind('setPage:after', function (page) {
-        if (Mmenu.node.blck) {
-            DOM.children(Mmenu.node.blck, 'a').forEach(function (anchor) {
-                anchor.setAttribute('href', '#' + page.id);
-            });
-        }
-    });
     //	Add screenreader / aria support
-    this.bind('open:after:sr-aria', function () {
+    this.bind('initMenu:after', function () {
+        sr.aria(_this.node.menu, 'hidden', true);
+        sr.aria(Mmenu.node.blck, 'hidden', true);
+    });
+    this.bind('open:after', function () {
         sr.aria(_this.node.menu, 'hidden', false);
+        sr.aria(Mmenu.node.blck, 'hidden', false);
     });
-    this.bind('close:after:sr-aria', function () {
+    this.bind('close:after', function () {
         sr.aria(_this.node.menu, 'hidden', true);
-    });
-    this.bind('initMenu:after:sr-aria', function () {
-        sr.aria(_this.node.menu, 'hidden', true);
-    });
-    //	Add screenreader / text support
-    this.bind('initBlocker:after:sr-text', function () {
-        DOM.children(Mmenu.node.blck, 'a').forEach(function (anchor) {
-            anchor.innerHTML = sr.text(_this.i18n(_this.conf.screenReader.text.closeMenu));
-        });
+        sr.aria(Mmenu.node.blck, 'hidden', true);
     });
     document.addEventListener('click', function (event) {
         var _a;
@@ -105,55 +90,28 @@ export default function () {
  * Open the menu.
  */
 Mmenu.prototype.open = function () {
-    //	Invoke "before" hook.
-    this.trigger('open:before');
-    if (this.vars.opened) {
+    var _a;
+    if (this.node.menu.matches('.mm-menu--opened')) {
         return;
     }
-    this.vars.opened = true;
-    this._openSetup();
-    this._openStart();
-    //	Invoke "after" hook.
-    this.trigger('open:after');
-};
-Mmenu.prototype._openSetup = function () {
-    var _a;
-    /** The off-canvas options. */
-    var options = this.opts.offCanvas;
+    //	Invoke "before" hook.
+    this.trigger('open:before');
     var clsn = ['mm-wrapper--opened'];
-    //	Add options
-    if (options.blockUI) {
-        clsn.push('mm-wrapper--blocking');
-    }
-    if (options.blockUI == 'modal') {
-        clsn.push('mm-wrapper--modal');
-    }
     (_a = this.node.wrpr.classList).add.apply(_a, clsn);
     //	Open
     this.node.menu.classList.add('mm-menu--opened');
-};
-/**
- * Finish opening the menu.
- */
-Mmenu.prototype._openStart = function () {
-    //	Opening
-    this.node.wrpr.classList.add('mm-wrapper--opening');
+    this.node.wrpr.classList.add('mm-wrapper--opened');
+    //	Invoke "after" hook.
+    this.trigger('open:after');
 };
 Mmenu.prototype.close = function () {
-    var _this = this;
-    //	Invoke "before" hook.
-    this.trigger('close:before');
-    if (!this.vars.opened) {
+    if (!this.node.menu.matches('.mm-menu--opened')) {
         return;
     }
-    //  TODO: transitionend er uit
-    //	Callback when the page finishes closing.
-    transitionend(Mmenu.node.page, function () {
-        _this.node.menu.classList.remove('mm-menu--opened');
-        _this.node.wrpr.classList.remove('mm-wrapper--opened', 'mm-wrapper--blocking', 'mm-wrapper--modal', 'mm-wrapper--background');
-        _this.vars.opened = false;
-    });
-    this.node.wrpr.classList.remove('mm-wrapper--opening');
+    //	Invoke "before" hook.
+    this.trigger('close:before');
+    this.node.menu.classList.remove('mm-menu--opened');
+    this.node.wrpr.classList.remove('mm-wrapper--opened');
     //	Invoke "after" hook.
     this.trigger('close:after');
 };
@@ -163,8 +121,6 @@ Mmenu.prototype.close = function () {
  * @param {HTMLElement} page Element to set as the page.
  */
 Mmenu.prototype.setPage = function (page) {
-    //	Invoke "before" hook.
-    this.trigger('setPage:before', [page]);
     var configs = this.conf.offCanvas;
     //	If no page was specified, find it.
     if (!page) {
@@ -189,8 +145,9 @@ Mmenu.prototype.setPage = function (page) {
         }
         page = pages[0];
     }
-    page.classList.add('mm-page');
-    page.classList.add('mm-slideout');
+    //	Invoke "before" hook.
+    this.trigger('setPage:before', [page]);
+    page.classList.add('mm-page', 'mm-slideout');
     page.id = page.id || uniqueId();
     Mmenu.node.page = page;
     //	Invoke "after" hook.
@@ -216,36 +173,24 @@ var initWindow = function () {
  * Initialize "blocker" node
  */
 var initBlocker = function () {
-    var _this = this;
+    var configs = this.conf.offCanvas;
     //	Invoke "before" hook.
     this.trigger('initBlocker:before');
-    var options = this.opts.offCanvas, configs = this.conf.offCanvas;
-    if (!options.blockUI) {
-        return;
-    }
     //	Create the blocker node.
     if (!Mmenu.node.blck) {
         var blck = DOM.create('div.mm-wrapper__blocker.mm-slideout');
-        blck.innerHTML = '<a></a>';
+        blck.innerHTML = "<a>" + sr.text(this.i18n(this.conf.screenReader.text.closeMenu)) + "</a>";
         //	Append the blocker node to the body.
         document.querySelector(configs.menu.insertSelector).append(blck);
         //	Store the blocker node.
         Mmenu.node.blck = blck;
     }
-    //	Close the menu when
-    //		1) clicking,
-    //		2) touching or
-    //		3) dragging the blocker node.
-    var closeMenu = function (evnt) {
-        evnt.preventDefault();
-        evnt.stopPropagation();
-        if (!_this.node.wrpr.matches('.mm-wrapper--modal')) {
-            _this.close();
-        }
-    };
-    Mmenu.node.blck.addEventListener('mousedown', closeMenu); // 1
-    Mmenu.node.blck.addEventListener('touchstart', closeMenu); // 2
-    Mmenu.node.blck.addEventListener('touchmove', closeMenu); // 3
+    //	Sync the blocker to target the page.
+    this.bind('setPage:after', function (page) {
+        DOM.children(Mmenu.node.blck, 'a').forEach(function (anchor) {
+            anchor.setAttribute('href', '#' + page.id);
+        });
+    });
     //	Invoke "after" hook.
     this.trigger('initBlocker:after');
 };

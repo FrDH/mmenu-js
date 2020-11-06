@@ -1,78 +1,64 @@
 @import '../../mixins', '../../includes', '../../variables';
 
-@if ($mm_include_positioning_right) {
+// Very ugly, but otherwise it's compiled without a unit (e.g. "0") which doesn't work in calc().
+$px0: '(1px - 1px)';
+
+@if $mm_include_positioning { 
     .mm-menu--position {
         &-right {
             left: auto;
             right: 0;
-        }
-    }
-    
-    @include mm_position_right;
-}
 
-@if (
-    $mm_include_positioning_front or
-        $mm_include_positioning_top or
-        $mm_include_positioning_bottom
-) {
-    .mm-menu--position {
+            &.mm-menu--opened ~ .mm-slideout {
+                transform: translate3d(
+                    clamp(calc(#{$px0} - var(--mm-max-size)), calc(#{$px0} - var(--mm-size)), calc(#{$px0} - var(--mm-min-size))),
+                    0,
+                    0
+                );
+            }
+        }
+
+        &-front {
+            transform: translate3d(-100%, 0, 0);
+
+            &.mm-menu--position-right {
+                transform: translate3d(100%, 0, 0);
+            }
+        }
+
+        &-top,
+        &-bottom {
+            width: 100%;
+            height: clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size));
+        }
+
+        &-top {
+            bottom: auto;
+            transform: translate3d(0, -100%, 0);
+        }
+
+        &-bottom {
+            top: auto;
+            transform: translate3d(0, 100%, 0);
+        }
+
         &-front,
         &-top,
         &-bottom {
+            z-index: 2;
+            transition: visibility 0s linear $mm_transitionDuration,
+                transform $mm_transitionDuration $mm_transitionFunction 0s;
 
             &.mm-menu--opened {
-                z-index: 2;
+                transform: translate3d(0, 0, 0);
 
                 ~ .mm-slideout {
                     transform: none !important;
-                    z-index: 0;
                 }
 
                 ~ .mm-wrapper__blocker {
                     z-index: 1;
                 }
-            }
-        }
-    }
-
-    @if ($mm_include_positioning_front) {
-        .mm-menu--position {
-            &-front {
-                transform: translate3d(-100%, 0, 0);
-
-                @if ($mm_include_positioning_right) {
-                    &.mm-menu--position-right {
-                        transform: translate3d(100%, 0, 0);
-                    }
-                }
-            }
-        }
-    }
-
-    @if ($mm_include_positioning_top) {
-        .mm-menu--position-top {
-            width: 100%;
-            transform: translate3d(0, -100%, 0);
-        }
-        @include mm_position_top;
-    }
-
-    @if ($mm_include_positioning_bottom) {
-        .mm-menu--position-bottom {
-            top: auto;
-            width: 100%;
-            transform: translate3d(0, 100%, 0);
-        }
-        @include mm_position_bottom;
-    }
-
-    .mm-wrapper--opening {
-        .mm-menu--position {
-            &-front,
-            &-top,
-            &-bottom {
-                transform: translate3d(0, 0, 0);
             }
         }
     }

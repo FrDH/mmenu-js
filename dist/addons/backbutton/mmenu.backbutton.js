@@ -33,7 +33,7 @@ export default function () {
             history.pushState(null, document.title, location.pathname + location.search);
         });
         window.addEventListener('popstate', function (evnt) {
-            if (_this.vars.opened) {
+            if (_this.node.menu.matches('.mm-menu--opened')) {
                 if (states.length) {
                     states = states.slice(0, -1);
                     var hash = states[states.length - 1];
@@ -50,7 +50,7 @@ export default function () {
     }
     if (options.open) {
         window.addEventListener('popstate', function (evnt) {
-            if (!_this.vars.opened && location.hash == _menu) {
+            if (!_this.node.menu.matches('.mm-menu--opened') && location.hash == _menu) {
                 _this.open();
             }
         });

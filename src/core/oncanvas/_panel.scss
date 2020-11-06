@@ -15,7 +15,8 @@ $mm_module: '.mm-panel';
     background: var(--mm-color-background);
 
     transform: translate3d(100%, 0, 0);
-    transition: visibility 0s linear $mm_transitionDuration, transform $mm_transitionDuration $mm_transitionFunction;
+    transition: visibility 0s linear $mm_transitionDuration, 
+        transform $mm_transitionDuration $mm_transitionFunction 0s;
 
     //	Because padding-bottom is ignored when a DIV is scrollable
     &:after {
@@ -32,7 +33,7 @@ $mm_module: '.mm-panel';
     }
 
     &--parent {
-        transform: translate3d(-$mm_subpanelOffset, 0, 0);
+        transform: translate3d(-30%, 0, 0);
         z-index: 0;
     }
 

@@ -2,32 +2,14 @@
 $mm_transitionDuration: 0.4s !default;
 $mm_transitionFunction: ease !default;
 
-//	Colors
-$mm_backgroundColor: #f3f3f3 !default;
-$mm_borderColor: rgba(#000, 0.1) !default;
-$mm_dimmedTextColor: rgba(#000, 0.3) !default;
-$mm_emphasizedBackgroundColor: rgba(#fff, 0.4) !default;
-$mm_highlightedBackgroundColor: rgba(#000, 0.05) !default;
-$mm_navbarColor: rgba(#000, 0.3) !default;
-$mm_textColor: rgba(#000, 0.75) !default;
-
-//	Positioning
-$mm_offsetTop: 0 !default;
-$mm_offsetRight: 0 !default;
-$mm_offsetBottom: 0 !default;
-$mm_offsetLeft: 0 !default;
 
 //	Sizes
-$mm_listitemSize: 44px !default;
 $mm_btnSize: 50px !default;
 $mm_padding: 10px !default;
-$mm_lineHeight: 20px !default;
 
 $mm_listitemIndent: $mm_padding * 2 !default;
-$mm_navbarSize: $mm_listitemSize !default;
 $mm_panelPadding: $mm_padding * 2 !default;
 $mm_subopenWidth: $mm_btnSize !default;
-$mm_subpanelOffset: 30% !default;
 
 $mm_menuSize: 80% !default;
 $mm_menuMinSize: 240px !default;
@@ -46,14 +28,7 @@ $mm_sidebarCollapsedSize: $mm_btnSize !default;
 $mm_sidebarExpandedSize: $mm_menuMaxSize !default;
 
 $mm_toggleCheckedColor: #4bd963 !default;
-$mm_toggleHeight: $mm_listitemSize - $mm_padding !default;
+$mm_toggleHeight: 44px - $mm_padding !default;
 $mm_toggleWidth: ($mm_toggleHeight * 2) - $mm_padding !default;
 $mm_checkHeight: $mm_btnSize - $mm_padding !default;
 $mm_checkWidth: $mm_btnSize - $mm_padding !default;
-
-$mm_fullscreen_full: 1 !default;
-$mm_fullscreen_min: 140px !default;
-$mm_fullscreen_max: 10000px !default;
-
-$mm_pagedimOpacity: 0.3 !default;
-$mm_pagedimDelay: 0.4s !default;

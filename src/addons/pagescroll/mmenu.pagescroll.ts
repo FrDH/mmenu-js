@@ -37,6 +37,7 @@ export default function (this: Mmenu) {
                 return DOM.find(Mmenu.node.page, href)[0];
             }
         } catch (err) { }
+
         return null;
     }
 

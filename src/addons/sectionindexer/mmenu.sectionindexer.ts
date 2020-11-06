@@ -9,7 +9,7 @@ import { extend } from '../../_modules/helpers';
 Mmenu.options.sectionIndexer = options;
 
 export default function (this: Mmenu) {
-    var options = extendShorthandOptions(this.opts.sectionIndexer);
+    const options = extendShorthandOptions(this.opts.sectionIndexer);
     this.opts.sectionIndexer = extend(options, Mmenu.options.sectionIndexer);
 
     if (!options.add) {
@@ -32,7 +32,7 @@ export default function (this: Mmenu) {
 
             //	Prevent default behavior when clicking an anchor
             this.node.indx.addEventListener('click', evnt => {
-                var anchor = evnt.target as HTMLElement;
+                const anchor = evnt.target as HTMLElement;
 
                 if (anchor.matches('a')) {
                     evnt.preventDefault();
@@ -45,10 +45,10 @@ export default function (this: Mmenu) {
                     return;
                 }
 
-                var letter = evnt.target.textContent,
-                    panel = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
+                const letter = evnt.target.textContent;
+                const panel = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
 
-                var newTop = -1,
+                let newTop = -1,
                     oldTop = panel.scrollTop;
 
                 panel.scrollTop = 0;
@@ -80,7 +80,7 @@ export default function (this: Mmenu) {
 
         //	Show or hide the indexer
         this.bind('openPanel:before', (panel: HTMLElement) => {
-            var active = DOM.find(panel, '.mm-divider').filter(
+            const active = DOM.find(panel, '.mm-divider').filter(
                 divider => !divider.matches('.mm-hidden')
             ).length;
 

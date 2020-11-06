@@ -6,27 +6,34 @@
     --mm-max-size: #{$mm_menuMaxSize};
 }
 
-//	Animations
+//	Page node
 .mm-page {
     box-sizing: border-box;
-    position: relative;
-    background: inherit;
+    min-height: 100vh;
+    background: inherit;    
 }
 
+//  All sliding out nodes
 .mm-slideout {
+    position: relative;
     z-index: 1;
     transition: transform $mm_transitionDuration $mm_transitionFunction;
+
+    .mm-wrapper--opened & {
+        transform: translate3d(
+            clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size)),
+            0,
+            0
+        );
+    }
 }
 
 //	Wrapper
-.mm-wrapper {
-    &--opened {
-        position: relative;
-        overflow-x: hidden;
+.mm-wrapper--opened {
+    overflow: hidden;
 
-        .mm-page {
-            min-height: 100vh;
-        }
+    body {
+        overflow: hidden;
     }
 }
 
@@ -36,49 +43,45 @@
     right: auto;
     z-index: 0;
     width: clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size));
-    transition: transform $mm_transitionDuration $mm_transitionFunction;
+    transition: visibility 0s linear $mm_transitionDuration;
 
-    // Visible panels are visible even if the menu is hidden
+    &.mm-menu--opened {
+        transition-delay: 0s;
+    }
+
     &:not(.mm-menu--opened) {
         visibility: hidden;
+        pointer-events: none;
 
+        // Visible panels undo the hidden menu.
         .mm-panel {
-            display: none;
+            visibility: hidden;
+            transition: visibility 0s linear, $mm_transitionDuration;
         }
     }
 }
 
-.mm-wrapper--opening .mm-slideout {
-    transform: translate3d(
-        clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size)),
-        0,
-        0
-    );
-}
+.mm-wrapper__blocker {
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 100%;
+    z-index: 2;
+    overflow: hidden;
 
-@if ($mm_include_offcanvas_blocker) {
-    .mm-wrapper__blocker {
-        background: rgba(3, 2, 1, 0);
-        overflow: hidden;
-        display: none;
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
+    .mm-wrapper--opened & {
+        visibility: visible;
         left: 0;
-        z-index: 2;
+        transition-delay: 0;
     }
 
-    .mm-wrapper--blocking {
-        overflow: hidden;
-
-        body {
-            overflow: hidden;
-        }
-
-        .mm-wrapper__blocker {
-            display: block;
-        }
+    a {
+        display: block;
+        height: 100%;
+        width: 100%;
+        background: rgba(3, 2, 1, 0);
     }
 }
 

@@ -36,7 +36,8 @@ export default function () {
                 if (!evnt.target.matches('a')) {
                     return;
                 }
-                var letter = evnt.target.textContent, panel = DOM.children(_this.node.pnls, '.mm-panel--opened')[0];
+                var letter = evnt.target.textContent;
+                var panel = DOM.children(_this.node.pnls, '.mm-panel--opened')[0];
                 var newTop = -1, oldTop = panel.scrollTop;
                 panel.scrollTop = 0;
                 DOM.find(panel, '.mm-divider')

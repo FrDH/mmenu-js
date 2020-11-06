@@ -8,9 +8,7 @@ import * as media from '../../_modules/matchmedia';
 import {
     type,
     extend,
-    transitionend,
     uniqueId,
-    valueOrFn,
 } from '../../_modules/helpers';
 
 //  Add the translations.
@@ -65,9 +63,6 @@ export default class Mmenu {
     /** HTML elements used for the menu. */
     node: mmHtmlObject;
 
-    /** Variables used for the menu. */
-    vars: mmLooseObject;
-
     /** Callback hooks used for the menu. */
     hook: mmLooseObject;
 
@@ -78,12 +73,6 @@ export default class Mmenu {
 
     /** Open the menu. */
     open: Function;
-
-    /** Setup the menu so it can be opened. */
-    _openSetup: Function;
-
-    /** The menu starts opening. */
-    _openStart: Function;
 
     /** Close the menu. */
     close: Function;
@@ -121,7 +110,6 @@ export default class Mmenu {
 
         //	Storage objects for nodes, variables, hooks and click handlers.
         this.node = {};
-        this.vars = {};
         this.hook = {};
 
         //	Get menu node from string or element.
@@ -164,6 +152,7 @@ export default class Mmenu {
         if (!panel.matches('.mm-panel')) {
             panel = panel.closest('.mm-panel') as HTMLElement;
         }
+
         //	Invoke "before" hook.
         this.trigger('openPanel:before', [panel]);
 
@@ -211,7 +200,6 @@ export default class Mmenu {
 
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel]);
-
     }
 
     /**
@@ -514,26 +502,22 @@ export default class Mmenu {
      * @return {HTMLElement|null} 			Initialized panel.
      */
     _initPanel(panel: HTMLElement): HTMLElement {
-        //	Invoke "before" hook.
-        this.trigger('initPanel:before', [panel]);
 
         if (panel.matches('.mm-panel')) {
-            return null;
+            return;
         }
 
         //	Refactor panel classnames
         DOM.reClass(panel, this.conf.classNames.panel, 'mm-panel');
         DOM.reClass(panel, this.conf.classNames.nopanel, 'mm-nopanel');
-        DOM.reClass(panel, this.conf.classNames.inset, 'mm-listview_inset');
-
-        if (panel.matches('.mm-listview_inset')) {
-            panel.classList.add('mm-nopanel');
-        }
 
         //	Stop if not supposed to be a panel.
         if (panel.matches('.mm-nopanel')) {
-            return null;
+            return;
         }
+
+        //	Invoke "before" hook.
+        this.trigger('initPanel:before', [panel]);
 
         //  Must have an ID
         panel.id = panel.id || uniqueId();
@@ -599,8 +583,6 @@ export default class Mmenu {
      * @param {HTMLElement} panel Panel for the navbar.
      */
     _initNavbar(panel: HTMLElement) {
-        //	Invoke "before" hook.
-        this.trigger('initNavbar:before', [panel]);
 
         //	Only one navbar per panel.
         if (DOM.children(panel, '.mm-navbar').length) {
@@ -627,6 +609,9 @@ export default class Mmenu {
         if (parentListitem && parentListitem.matches('.mm-listitem--vertical')) {
             return;
         }
+
+        //	Invoke "before" hook.
+        this.trigger('initNavbar:before', [panel]);
 
         /** The navbar element. */
         let navbar = DOM.create('div.mm-navbar');
@@ -663,6 +648,7 @@ export default class Mmenu {
         //  Add the title.
         let title = DOM.create('a.mm-navbar__title');
         let titleText = DOM.create('span');
+
         title.append(titleText);
         titleText.innerHTML =
             panel.dataset.mmTitle ||
@@ -670,22 +656,25 @@ export default class Mmenu {
             this.i18n(this.opts.navbar.title) ||
             this.i18n('Menu');
 
+        let href = '#';
+
         switch (this.opts.navbar.titleLink) {
             case 'anchor':
                 if (opener) {
-                    title.setAttribute('href', opener.getAttribute('href'));
+                    href = opener.getAttribute('href');
                 }
                 break;
 
             case 'parent':
                 if (parentPanel) {
-                    title.setAttribute('href', `#${parentPanel.id}`);
+                    href = `#${parentPanel.id}`;
                 }
                 break;
         }
 
-        navbar.append(title);
+        title.setAttribute('href', href);
 
+        navbar.append(title);
         panel.prepend(navbar);
 
         //	Invoke "after" hook.
@@ -697,24 +686,27 @@ export default class Mmenu {
      * @param {HTMLElement} listview Listview to initialize.
      */
     _initListview(listview: HTMLElement) {
-        //	Invoke "before" hook.
-        this.trigger('initListview:before', [listview]);
 
         DOM.reClass(listview, this.conf.classNames.nolistview, 'mm-nolistview');
 
-        if (!listview.matches('.mm-nolistview')) {
-            listview.classList.add('mm-listview');
-
-            //  Initiate the listitem(s).
-            DOM.children(listview).forEach((listitem) => {
-                this._initListitem(listitem);
-            });
-
-            // Observe the listview for added listitems.
-            this.listviewObserver.observe(listview, {
-                childList: true,
-            });
+        if (listview.matches('.mm-nolistview')) {
+            return;
         }
+
+        //	Invoke "before" hook.
+        this.trigger('initListview:before', [listview]);
+
+        listview.classList.add('mm-listview');
+
+        //  Initiate the listitem(s).
+        DOM.children(listview).forEach((listitem) => {
+            this._initListitem(listitem);
+        });
+
+        // Observe the listview for added listitems.
+        this.listviewObserver.observe(listview, {
+            childList: true,
+        });
 
         //	Invoke "after" hook.
         this.trigger('initListview:after', [listview]);
@@ -725,6 +717,17 @@ export default class Mmenu {
      * @param {HTMLElement} listitem Listitem to initiate.
      */
     _initListitem(listitem: HTMLElement) {
+
+        DOM.reClass(
+            listitem,
+            this.conf.classNames.divider,
+            'mm-divider'
+        );
+
+        if (listitem.matches('.mm-divider')) {
+            return;
+        }
+
         //	Invoke "before" hook.
         this.trigger('initListitem:before', [listitem]);
 
@@ -735,15 +738,6 @@ export default class Mmenu {
             this.conf.classNames.selected,
             'mm-listitem--selected'
         );
-
-        DOM.reClass(
-            listitem,
-            this.conf.classNames.divider,
-            'mm-divider'
-        );
-        if (listitem.matches('.mm-divider')) {
-            listitem.classList.remove('mm-listitem');
-        }
 
         DOM.children(listitem, 'a, span').forEach((text) => {
             text.classList.add('mm-listitem__text');

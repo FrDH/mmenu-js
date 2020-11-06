@@ -161,11 +161,11 @@ const initSearchfield = function (
 
     //	No searchfield in vertical submenus
     if (wrapper.parentElement.matches('.mm-listitem--vertical')) {
-        return null;
+        return;
     }
 
     //	Only one searchfield per panel
-    var form = DOM.find(wrapper, '.mm-searchfield')[0];
+    let form = DOM.find(wrapper, '.mm-searchfield')[0];
     if (form) {
         return form;
     }
@@ -181,8 +181,8 @@ const initSearchfield = function (
         }
     }
 
-    var form = DOM.create((configs.form ? 'form' : 'div') + '.mm-searchfield'),
-        field = DOM.create('div.mm-searchfield__input'),
+    form = DOM.create((configs.form ? 'form' : 'div') + '.mm-searchfield');
+    let field = DOM.create('div.mm-searchfield__input'),
         input = DOM.create('input') as HTMLInputElement;
 
     input.type = 'text';
@@ -199,7 +199,7 @@ const initSearchfield = function (
 
     //	Add the clear button
     if (configs.clear) {
-        let anchor = DOM.create('a.mm-btn.mm-btn--close.mm-searchfield__btn');
+        const anchor = DOM.create('a.mm-btn.mm-btn--close.mm-searchfield__btn');
         anchor.setAttribute('href', '#');
 
         field.append(anchor);
@@ -208,14 +208,14 @@ const initSearchfield = function (
     //	Add attributes and submit to the form
     addAttributes(form, configs.form);
     if (configs.form && configs.submit && !configs.clear) {
-        let anchor = DOM.create('a.mm-btn.mm-btn--next.mm-searchfield__btn');
+        const anchor = DOM.create('a.mm-btn.mm-btn--next.mm-searchfield__btn');
         anchor.setAttribute('href', '#');
 
         field.append(anchor);
     }
 
     if (options.cancel) {
-        let anchor = DOM.create('a.mm-searchfield__cancel');
+        const anchor = DOM.create('a.mm-searchfield__cancel');
         anchor.setAttribute('href', '#');
         anchor.textContent = this.i18n('cancel') as string;
 

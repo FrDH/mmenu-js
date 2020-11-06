@@ -54,7 +54,7 @@ export default function () {
                 toggler.addEventListener('click', function (evnt) {
                     evnt.preventDefault();
                     evnt.stopImmediatePropagation();
-                    _this[_this.vars.opened ? 'close' : 'open']();
+                    _this[_this.node.menu.matches('.mm-menu--opened') ? 'close' : 'open']();
                 });
             }
         }

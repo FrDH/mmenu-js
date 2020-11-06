@@ -31,10 +31,10 @@ export default function (navbar) {
         prev.innerHTML = _txt;
     });
     //	Add screenreader / aria support
-    this.bind('initNavbar:after:sr-aria', function (panel) {
+    this.bind('initNavbar:after', function (panel) {
         sr.aria(panel.querySelector('.mm-navbar'), 'hidden', true);
     });
-    this.bind('openPanel:before:sr-aria', function (panel) {
+    this.bind('openPanel:before', function (panel) {
         sr.aria(prev, 'hidden', prev.matches('.mm-hidden'));
         sr.aria(prev, 'owns', (prev.getAttribute('href') || '').slice(1));
     });

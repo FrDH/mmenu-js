@@ -13,7 +13,7 @@ export default function (this: Mmenu) {
         return;
     }
 
-    var options = extendShorthandOptions(this.opts.sidebar);
+    const options = extendShorthandOptions(this.opts.sidebar);
     this.opts.sidebar = extend(options, Mmenu.options.sidebar);
 
     //	Collapsed

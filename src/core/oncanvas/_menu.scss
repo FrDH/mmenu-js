@@ -6,10 +6,10 @@
     box-sizing: border-box;
 
     position: absolute;
-    top: var(--mm-offset-top);
-    right: var(--mm-offset-right);
-    bottom: var(--mm-offset-bottom);
-    left: var(--mm-offset-left);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     z-index: 0;
 
     overscroll-behavior: auto;

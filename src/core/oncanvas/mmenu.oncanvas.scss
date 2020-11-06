@@ -3,24 +3,18 @@
 //	Variables
 :root {
     //	sizes
-    --mm-line-height: #{$mm_lineHeight};
-    --mm-listitem-size: #{$mm_listitemSize};
-    --mm-navbar-size: #{$mm_navbarSize};
-
-    //	positioning
-    --mm-offset-top: #{$mm_offsetTop};
-    --mm-offset-right: #{$mm_offsetRight};
-    --mm-offset-bottom: #{$mm_offsetBottom};
-    --mm-offset-left: #{$mm_offsetLeft};
+    --mm-line-height: 20px;
+    --mm-listitem-size: 44px;
+    --mm-navbar-size: 44px;
 
     //	colors
-    --mm-color-border: #{$mm_borderColor};
-    --mm-color-button: #{$mm_dimmedTextColor};
-    --mm-color-text: #{$mm_textColor};
-    --mm-color-text-dimmed: #{$mm_dimmedTextColor};
-    --mm-color-background: #{$mm_backgroundColor};
-    --mm-color-background-highlight: #{$mm_highlightedBackgroundColor};
-    --mm-color-background-emphasis: #{$mm_emphasizedBackgroundColor};
+    --mm-color-border: rgba(0,0,0, 0.1);
+    --mm-color-button: rgba(0,0,0, 0.3);
+    --mm-color-text: rgba(0,0,0, 0.75);
+    --mm-color-text-dimmed: rgba(0,0,0, 0.3);
+    --mm-color-background: #f3f3f3;
+    --mm-color-background-highlight: rgba(0,0,0, 0.05);
+    --mm-color-background-emphasis: rgba(255,255,255, 0.4);
 }
 
 .mm-hidden {

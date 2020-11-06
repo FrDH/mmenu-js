@@ -38,7 +38,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
 
     //	Add screenreader / aria support
     let prev: HTMLElement;
-    this.bind('openPanel:before:sr-aria', (panel: HTMLElement) => {
+    this.bind('openPanel:before', (panel: HTMLElement) => {
 
         if (this.opts.screenReader.text) {
             if (!prev) {

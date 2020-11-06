@@ -55,18 +55,18 @@ export default function (this: Mmenu) {
                 : DOM.children(this.node.pnls, '.mm-panel');
 
             panels.forEach(panel => {
-                var parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
+                const parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
 
                 if (!parent) {
                     return;
                 }
 
-                var counter = DOM.find(parent, '.mm-counter')[0];
+                const counter = DOM.find(parent, '.mm-counter')[0];
                 if (!counter) {
                     return;
                 }
 
-                var listitems: HTMLElement[] = [];
+                const listitems: HTMLElement[] = [];
                 DOM.children(panel, '.mm-listview').forEach((listview) => {
                     listitems.push(...DOM.children(listview));
                 });

@@ -2,7 +2,6 @@ $mm_include_rtl: true !default;
 $mm_include_vertical: true !default;
 
 $mm_include_offcanvas: true !default;
-$mm_include_offcanvas_blocker: $mm_include_offcanvas !default;
 
 $mm_include_screenreader: true !default;
 
@@ -16,6 +15,8 @@ $mm_include_iconbar_tabs: $mm_include_iconbar !default;
 $mm_include_iconpanels: true !default;
 $mm_include_iconpanels_blocker: $mm_include_iconpanels !default;
 
+$mm_include_keyboardnavigation: true !default;
+
 $mm_include_navbars: true !default;
 $mm_include_navbars_top: $mm_include_navbars !default;
 $mm_include_navbars_bottom: $mm_include_navbars !default;
@@ -23,20 +24,18 @@ $mm_include_navbars_breadcrumbs: $mm_include_navbars !default;
 $mm_include_navbars_searchfield: $mm_include_navbars !default;
 $mm_include_navbars_tabs: $mm_include_navbars !default;
 
-$mm_include_keyboardnavigation: true !default;
-
 $mm_include_searchfield: true !default;
 $mm_include_searchfield_btn: $mm_include_searchfield !default;
 $mm_include_searchfield_searchpanel: $mm_include_searchfield !default;
 
 $mm_include_sectionindexer: true !default;
 
-$mm_include_setselected: true !default;
-
 $mm_include_sidebar: true !default;
 $mm_include_sidebar_collapsed: $mm_include_sidebar !default;
 $mm_include_sidebar_expanded: $mm_include_sidebar !default;
 $mm_include_sidebar_blocker: $mm_include_sidebar !default;
+
+$mm_include_setselected: true !default;
 
 $mm_include_toggles: true !default;
 $mm_include_checks: true !default;
@@ -44,15 +43,7 @@ $mm_include_checks: true !default;
 $mm_include_fullscreen: true !default;
 
 $mm_include_pagedim: true !default;
-$mm_include_pagedim_default: $mm_include_pagedim !default;
-$mm_include_pagedim_black: $mm_include_pagedim !default;
-$mm_include_pagedim_white: $mm_include_pagedim !default;
-
 $mm_include_positioning: true !default;
-$mm_include_positioning_right: $mm_include_positioning !default;
-$mm_include_positioning_top: $mm_include_positioning !default;
-$mm_include_positioning_bottom: $mm_include_positioning !default;
-$mm_include_positioning_front: $mm_include_positioning !default;
 
 $mm_include_themes: true !default;
 $mm_include_themes_white: $mm_include_themes !default;

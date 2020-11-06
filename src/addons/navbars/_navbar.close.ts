@@ -13,7 +13,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
     });
 
     //	Add screenreader / text support
-    this.bind('setPage:after:sr-text', () => {
+    this.bind('setPage:after', () => {
         close.innerHTML = sr.text(
             this.i18n(this.conf.screenReader.text.closeMenu)
         );

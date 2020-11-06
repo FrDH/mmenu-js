@@ -37,6 +37,10 @@ $mm_module: '.mm-navbar';
     padding-right: $mm_panelPadding;
     overflow: hidden;
 
+    &[href="#"] {
+        pointer-events: none;
+    }
+
     // Center the content.
     &:not(:last-child) {
         padding-right: 0;

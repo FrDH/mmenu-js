@@ -57,14 +57,14 @@ export default function Navbars(this: Mmenu) {
         options = extendShorthandOptions(options);
 
         if (!options.use) {
-            return false;
+            return;
         }
 
         //	Create the navbar element.
-        var navbar = DOM.create('div.mm-navbar');
+        const navbar = DOM.create('div.mm-navbar');
 
         //	Get the position for the navbar.
-        var position = options.position;
+        let { position } = options;
 
         //	Restrict the position to either "bottom" or "top" (default).
         if (position !== 'bottom') {
@@ -79,7 +79,7 @@ export default function Navbars(this: Mmenu) {
 
         //	Add content to the navbar.
         for (let c = 0, l = options.content.length; c < l; c++) {
-            let ctnt = options.content[c];
+            const ctnt = options.content[c];
 
             //	The content is a string.
             if (typeof ctnt == 'string') {
@@ -99,7 +99,7 @@ export default function Navbars(this: Mmenu) {
                     node.innerHTML = ctnt;
 
                     //  If there was only a single node, use that.
-                    let children = DOM.children(node);
+                    const children = DOM.children(node);
                     if (children.length == 1) {
                         node = children[0];
                     }

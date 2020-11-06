@@ -60,17 +60,8 @@
                 border-right-style: solid;
             }
 
-            @if ($mm_include_offcanvas_blocker) {
-                &.mm-wrapper--blocking {
-                    &,
-                    body {
-                        overflow: visible;
-                    }
-                }
-
-                .mm-wrapper__blocker {
-                    display: none !important;
-                }
+            .mm-wrapper__blocker {
+                display: none !important;
             }
 
             &:not(.mm-wrapper--sidebar-closed) {

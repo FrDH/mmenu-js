@@ -24,40 +24,7 @@ export default function (this: Mmenu) {
 
     //	Add Aria-* attributes
     if (options.aria) {
-        //	Add screenreader / aria hooks for add-ons
-        //	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
-        this.bind('initAddons:after', () => {
-            this.bind('initMenu:after', function (this: Mmenu) {
-                this.trigger(
-                    'initMenu:after:sr-aria',
-                    [].slice.call(arguments)
-                );
-            });
-            this.bind('initNavbar:after', function (this: Mmenu) {
-                this.trigger(
-                    'initNavbar:after:sr-aria',
-                    [].slice.call(arguments)
-                );
-            });
-            this.bind('openPanel:before', function (this: Mmenu) {
-                this.trigger(
-                    'openPanel:before:sr-aria',
-                    [].slice.call(arguments)
-                );
-            });
-            this.bind('close:after', function (this: Mmenu) {
-                this.trigger('close:after:sr-aria', [].slice.call(arguments));
-            });
-            this.bind('open:after', function (this: Mmenu) {
-                this.trigger('open:after:sr-aria', [].slice.call(arguments));
-            });
-            this.bind('initOpened:after', function (this: Mmenu) {
-                this.trigger(
-                    'initOpened:after:sr-aria',
-                    [].slice.call(arguments)
-                );
-            });
-        });
+
 
         //	Update aria-hidden for hidden / visible listitems
         this.bind('updateListview', () => {
@@ -147,17 +114,7 @@ export default function (this: Mmenu) {
     if (options.text) {
         //	Add screenreader / text hooks for add-ons
         //	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
-        this.bind('initAddons:after', () => {
-            this.bind('setPage:after', function () {
-                this.trigger('setPage:after:sr-text', [].slice.call(arguments));
-            });
-            this.bind('initBlocker:after', function () {
-                this.trigger(
-                    'initBlocker:after:sr-text',
-                    [].slice.call(arguments)
-                );
-            });
-        });
+
 
         //	Add text to the prev-buttons.
         this.bind('initNavbar:after', (panel: HTMLElement) => {

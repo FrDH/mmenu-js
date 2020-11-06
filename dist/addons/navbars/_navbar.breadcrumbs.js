@@ -45,7 +45,7 @@ export default function (navbar) {
         breadcrumbs.innerHTML = crumbs ? crumbs.innerHTML : '';
     });
     //	Add screenreader / aria support
-    this.bind('initNavbar:after:sr-aria', function (panel) {
+    this.bind('initNavbar:after', function (panel) {
         DOM.find(panel, '.mm-breadcrumbs a').forEach(function (anchor) {
             sr.aria(anchor, 'owns', anchor.getAttribute('href').slice(1));
         });

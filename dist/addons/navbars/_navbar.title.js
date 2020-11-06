@@ -32,7 +32,7 @@ export default function (navbar) {
     });
     //	Add screenreader / aria support
     var prev;
-    this.bind('openPanel:before:sr-aria', function (panel) {
+    this.bind('openPanel:before', function (panel) {
         if (_this.opts.screenReader.text) {
             if (!prev) {
                 var navbars = DOM.children(_this.node.menu, '.mm-navbars');

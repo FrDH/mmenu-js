@@ -113,7 +113,7 @@ export default function (this: Mmenu) {
         this.bind('openPanel:after', setFocus);
 
         //	Add screenreader / aria support.
-        this.bind('initOpened:after:sr-aria', () => {
+        this.bind('initOpened:after', () => {
             [this.node.menu, Mmenu.node.blck].forEach((element) => {
                 DOM.children(element, '.mm-tabstart, .mm-tabend').forEach(
                     (tabber) => {

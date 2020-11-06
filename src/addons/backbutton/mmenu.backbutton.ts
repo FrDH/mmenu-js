@@ -47,7 +47,7 @@ export default function (this: Mmenu) {
         });
 
         window.addEventListener('popstate', (evnt) => {
-            if (this.vars.opened) {
+            if (this.node.menu.matches('.mm-menu--opened')) {
                 if (states.length) {
                     states = states.slice(0, -1);
                     var hash = states[states.length - 1];
@@ -65,7 +65,7 @@ export default function (this: Mmenu) {
 
     if (options.open) {
         window.addEventListener('popstate', (evnt) => {
-            if (!this.vars.opened && location.hash == _menu) {
+            if (!this.node.menu.matches('.mm-menu--opened') && location.hash == _menu) {
                 this.open();
             }
         });

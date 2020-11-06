@@ -126,7 +126,7 @@ var initSearchfield = function (wrapper) {
     var options = this.opts.searchfield, configs = this.conf.searchfield;
     //	No searchfield in vertical submenus
     if (wrapper.parentElement.matches('.mm-listitem--vertical')) {
-        return null;
+        return;
     }
     //	Only one searchfield per panel
     var form = DOM.find(wrapper, '.mm-searchfield')[0];
@@ -140,7 +140,8 @@ var initSearchfield = function (wrapper) {
             }
         }
     }
-    var form = DOM.create((configs.form ? 'form' : 'div') + '.mm-searchfield'), field = DOM.create('div.mm-searchfield__input'), input = DOM.create('input');
+    form = DOM.create((configs.form ? 'form' : 'div') + '.mm-searchfield');
+    var field = DOM.create('div.mm-searchfield__input'), input = DOM.create('input');
     input.type = 'text';
     input.autocomplete = 'off';
     input.placeholder = this.i18n(options.placeholder);

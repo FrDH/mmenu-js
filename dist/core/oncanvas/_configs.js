@@ -1,7 +1,6 @@
 var configs = {
     classNames: {
         divider: 'Divider',
-        inset: 'Inset',
         nolistview: 'NoListview',
         nopanel: 'NoPanel',
         panel: 'Panel',

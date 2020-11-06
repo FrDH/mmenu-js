@@ -45,7 +45,7 @@ export default function Navbars() {
     navs.forEach(function (options) {
         options = extendShorthandOptions(options);
         if (!options.use) {
-            return false;
+            return;
         }
         //	Create the navbar element.
         var navbar = DOM.create('div.mm-navbar');

@@ -20,28 +20,6 @@ export default function () {
     var configs = this.conf.screenReader;
     //	Add Aria-* attributes
     if (options.aria) {
-        //	Add screenreader / aria hooks for add-ons
-        //	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
-        this.bind('initAddons:after', function () {
-            _this.bind('initMenu:after', function () {
-                this.trigger('initMenu:after:sr-aria', [].slice.call(arguments));
-            });
-            _this.bind('initNavbar:after', function () {
-                this.trigger('initNavbar:after:sr-aria', [].slice.call(arguments));
-            });
-            _this.bind('openPanel:before', function () {
-                this.trigger('openPanel:before:sr-aria', [].slice.call(arguments));
-            });
-            _this.bind('close:after', function () {
-                this.trigger('close:after:sr-aria', [].slice.call(arguments));
-            });
-            _this.bind('open:after', function () {
-                this.trigger('open:after:sr-aria', [].slice.call(arguments));
-            });
-            _this.bind('initOpened:after', function () {
-                this.trigger('initOpened:after:sr-aria', [].slice.call(arguments));
-            });
-        });
         //	Update aria-hidden for hidden / visible listitems
         this.bind('updateListview', function () {
             DOM.find(_this.node.pnls, '.mm-listitem').forEach(function (listitem) {
@@ -110,14 +88,6 @@ export default function () {
     if (options.text) {
         //	Add screenreader / text hooks for add-ons
         //	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
-        this.bind('initAddons:after', function () {
-            _this.bind('setPage:after', function () {
-                this.trigger('setPage:after:sr-text', [].slice.call(arguments));
-            });
-            _this.bind('initBlocker:after', function () {
-                this.trigger('initBlocker:after:sr-text', [].slice.call(arguments));
-            });
-        });
         //	Add text to the prev-buttons.
         this.bind('initNavbar:after', function (panel) {
             var navbar = DOM.children(panel, '.mm-navbar')[0];

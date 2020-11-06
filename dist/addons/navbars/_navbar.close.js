@@ -10,7 +10,7 @@ export default function (navbar) {
         close.setAttribute('href', '#' + page.id);
     });
     //	Add screenreader / text support
-    this.bind('setPage:after:sr-text', function () {
+    this.bind('setPage:after', function () {
         close.innerHTML = sr.text(_this.i18n(_this.conf.screenReader.text.closeMenu));
         sr.aria(close, 'owns', close.getAttribute('href').slice(1));
     });
