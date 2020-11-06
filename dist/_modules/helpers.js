@@ -60,49 +60,6 @@ export var type = function (variable) {
         .toLowerCase();
 };
 /**
- * Find the value from an option or function.
- * @param 	{HTMLElement} 	element 	Scope for the function.
- * @param 	{any} 			[option] 	Value or function.
- * @param 	{any} 			[dfault] 	Default fallback value.
- * @return	{any}						The given evaluation of the given option, or the default fallback value.
- */
-export var valueOrFn = function (element, option, dfault) {
-    if (typeof option === 'function') {
-        var value = option.call(element);
-        if (typeof value != 'undefined') {
-            return value;
-        }
-    }
-    if ((option === null ||
-        typeof option == 'function' ||
-        typeof option == 'undefined') &&
-        typeof dfault !== 'undefined') {
-        return dfault;
-    }
-    return option;
-};
-/**
- * Set and invoke a (single) transition-end function with fallback.
- *
- * @param {HTMLElement} 	element 	Scope for the function.
- * @param {function}		func		Function to invoke.
- */
-export var transitionend = function (element, func) {
-    var _ended = false, _fn = function (evnt) {
-        if (typeof evnt !== 'undefined') {
-            if (evnt.target !== element) {
-                return;
-            }
-        }
-        if (!_ended) {
-            element.removeEventListener('transitionend', _fn);
-            func.call(element);
-        }
-        _ended = true;
-    };
-    element.addEventListener('transitionend', _fn);
-};
-/**
  * Get a (page wide) unique ID.
  */
 export var uniqueId = function () {

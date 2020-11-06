@@ -94,9 +94,6 @@ interface mmOptions {
     /** Options for the counters add-on. */
     counters?: mmOptionsCounters;
 
-    /** Options for the drag add-on. */
-    drag?: mmOptionsDrag;
-
     /** Options for the iconbar add-on. */
     iconbar?: mmOptionsIconbar;
 

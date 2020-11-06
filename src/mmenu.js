@@ -17,7 +17,6 @@ import scrollBugFix from '../dist/core/scrollbugfix/mmenu.scrollbugfix';
 //	Add-ons
 import backButton from '../dist/addons/backbutton/mmenu.backbutton';
 import counters from '../dist/addons/counters/mmenu.counters';
-import drag from '../dist/addons/drag/mmenu.drag';
 import iconbar from '../dist/addons/iconbar/mmenu.iconbar';
 import iconPanels from '../dist/addons/iconpanels/mmenu.iconpanels';
 import keyboardNavigation from '../dist/addons/keyboardnavigation/mmenu.keyboardnavigation';
@@ -41,7 +40,6 @@ Mmenu.addons = {
     //	Add-ons
     backButton,
     counters,
-    drag,
     iconbar,
     iconPanels,
     keyboardNavigation,
