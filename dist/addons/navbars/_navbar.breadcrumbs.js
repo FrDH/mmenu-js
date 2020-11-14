@@ -1,5 +1,4 @@
 import * as DOM from '../../_modules/dom';
-import * as sr from '../../_modules/screenreader';
 export default function (navbar) {
     //	Add content
     var breadcrumbs = DOM.create('div.mm-navbar__breadcrumbs');
@@ -42,11 +41,5 @@ export default function (navbar) {
     this.bind('openPanel:before', (panel) => {
         var crumbs = panel.querySelector('.mm-navbar__breadcrumbs');
         breadcrumbs.innerHTML = crumbs ? crumbs.innerHTML : '';
-    });
-    //	Add screenreader / aria support
-    this.bind('initNavbar:after', (panel) => {
-        DOM.find(panel, '.mm-breadcrumbs a').forEach((anchor) => {
-            sr.aria(anchor, 'owns', anchor.getAttribute('href').slice(1));
-        });
     });
 }

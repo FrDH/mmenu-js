@@ -1,4 +1,3 @@
-import * as pack from '../../../package.json';
 import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
@@ -603,8 +602,6 @@ export default class Mmenu {
         return i18n.get(text, this.conf.language);
     }
 }
-/**	Plugin version. */
-Mmenu.version = pack.version;
 /**	Default options for menus. */
 Mmenu.options = options;
 /**	Default configuration for menus. */

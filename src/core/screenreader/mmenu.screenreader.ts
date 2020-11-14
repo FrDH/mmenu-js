@@ -62,15 +62,10 @@ export default function (this: Mmenu) {
             sr.aria(panel, 'hidden', true);
         });
 
-        //	Add aria-haspopup and aria-owns to prev- and next buttons.
+        //	Add aria-haspopup to buttons.
         this.bind('initPanel:after', (panel: HTMLElement) => {
             DOM.find(panel, '.mm-btn').forEach((button) => {
                 sr.aria(button, 'haspopup', true);
-
-                const href = button.getAttribute('href');
-                if (href) {
-                    sr.aria(button, 'owns', href.slice(1));
-                }
             });
         });
 
@@ -112,7 +107,7 @@ export default function (this: Mmenu) {
 
     //	Add screenreader text
     if (options.text) {
-        //	Add screenreader / text hooks for add-ons
+        //	Add screenreader hooks for add-ons
         //	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
 
 

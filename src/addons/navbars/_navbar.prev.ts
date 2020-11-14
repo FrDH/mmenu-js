@@ -38,12 +38,11 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         prev.innerHTML = _txt;
     });
 
-    //	Add screenreader / aria support
+    //	Add screenreader support
     this.bind('initNavbar:after', (panel: HTMLElement) => {
         sr.aria(panel.querySelector('.mm-navbar'), 'hidden', true);
     });
     this.bind('openPanel:before', (panel: HTMLElement) => {
         sr.aria(prev, 'hidden', prev.matches('.mm-hidden'));
-        sr.aria(prev, 'owns', (prev.getAttribute('href') || '').slice(1));
     });
 }

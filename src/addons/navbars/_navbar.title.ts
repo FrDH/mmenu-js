@@ -36,7 +36,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         titleText.innerHTML = original?.innerHTML || '';
     });
 
-    //	Add screenreader / aria support
+    //	Add screenreader  support
     let prev: HTMLElement;
     this.bind('openPanel:before', (panel: HTMLElement) => {
 

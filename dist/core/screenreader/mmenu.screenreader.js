@@ -47,14 +47,10 @@ export default function () {
         this.bind('closePanel', (panel) => {
             sr.aria(panel, 'hidden', true);
         });
-        //	Add aria-haspopup and aria-owns to prev- and next buttons.
+        //	Add aria-haspopup to buttons.
         this.bind('initPanel:after', (panel) => {
             DOM.find(panel, '.mm-btn').forEach((button) => {
                 sr.aria(button, 'haspopup', true);
-                const href = button.getAttribute('href');
-                if (href) {
-                    sr.aria(button, 'owns', href.slice(1));
-                }
             });
         });
         //	Add aria-hidden for navbars in panels.
@@ -85,7 +81,7 @@ export default function () {
     }
     //	Add screenreader text
     if (options.text) {
-        //	Add screenreader / text hooks for add-ons
+        //	Add screenreader hooks for add-ons
         //	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
         //	Add text to the prev-buttons.
         this.bind('initNavbar:after', (panel) => {

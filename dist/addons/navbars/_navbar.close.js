@@ -10,7 +10,4 @@ export default function (navbar) {
     });
     //	Add screenreader support
     close.innerHTML = sr.text(this.i18n(this.conf.screenReader.text.closeMenu));
-    this.bind('setPage:after', () => {
-        sr.aria(close, 'owns', close.getAttribute('href').slice(1));
-    });
 }

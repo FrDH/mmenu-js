@@ -42,7 +42,7 @@ export default function () {
     };
     this.bind('open:after', setFocus);
     this.bind('openPanel:after', setFocus);
-    //	Add screenreader / aria support.
+    //	Add screenreader support.
     this.bind('initOpened:after', () => {
         [this.node.menu, Mmenu.node.blck].forEach((element) => {
             DOM.children(element, '.mm-tabstart, .mm-tabend').forEach((tabber) => {

@@ -29,7 +29,7 @@ export default function (navbar) {
         //	Get the text for the title.
         titleText.innerHTML = (original === null || original === void 0 ? void 0 : original.innerHTML) || '';
     });
-    //	Add screenreader / aria support
+    //	Add screenreader  support
     let prev;
     this.bind('openPanel:before', (panel) => {
         if (this.opts.screenReader.text) {

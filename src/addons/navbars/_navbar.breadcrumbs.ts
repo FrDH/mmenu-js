@@ -60,11 +60,4 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         var crumbs = panel.querySelector('.mm-navbar__breadcrumbs');
         breadcrumbs.innerHTML = crumbs ? crumbs.innerHTML : '';
     });
-
-    //	Add screenreader / aria support
-    this.bind('initNavbar:after', (panel: HTMLElement) => {
-        DOM.find(panel, '.mm-breadcrumbs a').forEach((anchor) => {
-            sr.aria(anchor, 'owns', anchor.getAttribute('href').slice(1));
-        });
-    });
 }

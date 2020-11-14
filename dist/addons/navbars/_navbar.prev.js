@@ -29,12 +29,11 @@ export default function (navbar) {
         prev.classList[_url || _txt ? 'remove' : 'add']('mm-hidden');
         prev.innerHTML = _txt;
     });
-    //	Add screenreader / aria support
+    //	Add screenreader support
     this.bind('initNavbar:after', (panel) => {
         sr.aria(panel.querySelector('.mm-navbar'), 'hidden', true);
     });
     this.bind('openPanel:before', (panel) => {
         sr.aria(prev, 'hidden', prev.matches('.mm-hidden'));
-        sr.aria(prev, 'owns', (prev.getAttribute('href') || '').slice(1));
     });
 }
