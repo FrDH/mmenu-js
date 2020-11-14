@@ -12,6 +12,5 @@ export default function (navbar) {
     //	Add screenreader / text support
     this.bind('setPage:after:sr-text', function () {
         close.innerHTML = Mmenu.sr_text(_this.i18n(_this.conf.screenReader.text.closeMenu));
-        Mmenu.sr_aria(close, 'owns', close.getAttribute('href').slice(1));
     });
 }

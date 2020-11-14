@@ -1,7 +1,7 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
 
-export default function(this: Mmenu, navbar: HTMLElement) {
+export default function (this: Mmenu, navbar: HTMLElement) {
     //	Add content
     var close = DOM.create('a.mm-btn.mm-btn_close.mm-navbar__btn');
     navbar.append(close);
@@ -16,6 +16,5 @@ export default function(this: Mmenu, navbar: HTMLElement) {
         close.innerHTML = Mmenu.sr_text(
             this.i18n(this.conf.screenReader.text.closeMenu)
         );
-        Mmenu.sr_aria(close, 'owns', close.getAttribute('href').slice(1));
     });
 }
