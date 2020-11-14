@@ -11,14 +11,14 @@ translate();
 /**
  * Class for a mobile menu.
  */
-var Mmenu = /** @class */ (function () {
+export default class Mmenu {
     /**
      * Create a mobile menu.
      * @param {HTMLElement|string} 	menu						The menu node.
      * @param {object} 				[options=Mmenu.options]		Options for the menu.
      * @param {object} 				[configs=Mmenu.configs]		Configuration options for the menu.
      */
-    function Mmenu(menu, options, configs) {
+    constructor(menu, options, configs) {
         //	Extend options and configuration from defaults.
         this.opts = extend(options, Mmenu.options);
         this.conf = extend(configs, Mmenu.configs);
@@ -55,8 +55,7 @@ var Mmenu = /** @class */ (function () {
      * @param {HTMLElement} panel               Panel to open.
      * @param {boolean}     [animation=true]    Whether or not to use an animation.
      */
-    Mmenu.prototype.openPanel = function (panel, animation) {
-        if (animation === void 0) { animation = true; }
+    openPanel(panel, animation = true) {
         //	Find panel.
         if (!panel) {
             return;
@@ -73,15 +72,15 @@ var Mmenu = /** @class */ (function () {
         }
         else {
             /** Currently opened panel. */
-            var current_1 = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
+            const current = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
             //  Ensure current panel stays on top while closing it.
-            if (panel.matches('.mm-panel--parent') && current_1) {
-                current_1.classList.add('mm-panel--highest');
+            if (panel.matches('.mm-panel--parent') && current) {
+                current.classList.add('mm-panel--highest');
             }
             //  Remove opened, parent, animation and highest classes from all panels.
-            DOM.children(this.node.pnls, '.mm-panel').forEach(function (pnl) {
+            DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
                 pnl.classList.remove('mm-panel--opened', 'mm-panel--parent', 'mm-panel--noanimation');
-                if (pnl !== current_1) {
+                if (pnl !== current) {
                     pnl.classList.remove('mm-panel--highest');
                 }
             });
@@ -91,22 +90,22 @@ var Mmenu = /** @class */ (function () {
                 panel.classList.add('mm-panel--noanimation');
             }
             /** The parent panel */
-            var parent_1 = DOM.find(this.node.pnls, "#" + panel.dataset.mmParent)[0];
+            let parent = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
             //	Set parent panels as "parent".
-            while (parent_1) {
-                parent_1 = parent_1.closest('.mm-panel');
-                parent_1.classList.add('mm-panel--parent');
-                parent_1 = DOM.find(this.node.pnls, "#" + parent_1.dataset.mmParent)[0];
+            while (parent) {
+                parent = parent.closest('.mm-panel');
+                parent.classList.add('mm-panel--parent');
+                parent = DOM.find(this.node.pnls, `#${parent.dataset.mmParent}`)[0];
             }
         }
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel]);
-    };
+    }
     /**
      * Close a panel.
      * @param {HTMLElement} panel Panel to close.
      */
-    Mmenu.prototype.closePanel = function (panel) {
+    closePanel(panel) {
         //	Invoke "before" hook.
         this.trigger('closePanel:before', [panel]);
         //	Close a "vertical" panel.
@@ -116,153 +115,150 @@ var Mmenu = /** @class */ (function () {
         }
         else {
             if (panel.dataset.mmParent) {
-                var parent_2 = DOM.find(this.node.pnls, '#' + panel.dataset.mmParent)[0];
-                this.openPanel(parent_2);
+                const parent = DOM.find(this.node.pnls, '#' + panel.dataset.mmParent)[0];
+                this.openPanel(parent);
             }
         }
         //	Invoke "after" hook.
         this.trigger('closePanel:after', [panel]);
-    };
+    }
     /**
      * Toggle a panel opened/closed.
      * @param {HTMLElement} panel Panel to open or close.
      */
-    Mmenu.prototype.togglePanel = function (panel) {
-        var listitem = panel.parentElement;
+    togglePanel(panel) {
+        const listitem = panel.parentElement;
         /** The function to invoke (open or close). */
-        var fn = 'openPanel';
+        let fn = 'openPanel';
         //	Toggle only works for "vertical" panels.
         if (listitem.matches('.mm-listitem--opened') ||
             panel.matches('.mm-panel--opened')) {
             fn = 'closePanel';
         }
         this[fn](panel);
-    };
+    }
     /**
      * Display a listitem as being "selected".
      * @param {HTMLElement} listitem Listitem to mark.
      */
-    Mmenu.prototype.setSelected = function (listitem) {
+    setSelected(listitem) {
         //	Invoke "before" hook.
         this.trigger('setSelected:before', [listitem]);
         //	Remove the selected class from all listitems.
-        DOM.find(this.node.menu, '.mm-listitem--selected').forEach(function (li) {
+        DOM.find(this.node.menu, '.mm-listitem--selected').forEach((li) => {
             li.classList.remove('mm-listitem--selected');
         });
         //	Add the selected class to the provided listitem.
         listitem.classList.add('mm-listitem--selected');
         //	Invoke "after" hook.
         this.trigger('setSelected:after', [listitem]);
-    };
+    }
     /**
      * Bind functions to a hook (subscriber).
      * @param {string} 		hook The hook.
      * @param {function} 	func The function.
      */
-    Mmenu.prototype.bind = function (hook, func) {
+    bind(hook, func) {
         //	Create an array for the hook if it does not yet excist.
         this.hook[hook] = this.hook[hook] || [];
         //	Push the function to the array.
         this.hook[hook].push(func);
-    };
+    }
     /**
      * Invoke the functions bound to a hook (publisher).
      * @param {string} 	hook  	The hook.
      * @param {array}	[args] 	Arguments for the function.
      */
-    Mmenu.prototype.trigger = function (hook, args) {
+    trigger(hook, args) {
         if (this.hook[hook]) {
             for (var h = 0, l = this.hook[hook].length; h < l; h++) {
                 this.hook[hook][h].apply(this, args);
             }
         }
-    };
-    Mmenu.prototype._initObservers = function () {
-        var _this = this;
-        this.panelObserver = new MutationObserver(function (mutationsList) {
-            mutationsList.forEach(function (mutation) {
-                mutation.addedNodes.forEach(function (listview) {
-                    if (listview.matches(_this.conf.panelNodetype.join(', '))) {
-                        _this._initListview(listview);
+    }
+    _initObservers() {
+        this.panelObserver = new MutationObserver((mutationsList) => {
+            mutationsList.forEach((mutation) => {
+                mutation.addedNodes.forEach((listview) => {
+                    if (listview.matches(this.conf.panelNodetype.join(', '))) {
+                        this._initListview(listview);
                     }
                 });
             });
         });
-        this.listviewObserver = new MutationObserver(function (mutationsList) {
-            mutationsList.forEach(function (mutation) {
-                mutation.addedNodes.forEach(function (listitem) {
-                    _this._initListitem(listitem);
+        this.listviewObserver = new MutationObserver((mutationsList) => {
+            mutationsList.forEach((mutation) => {
+                mutation.addedNodes.forEach((listitem) => {
+                    this._initListitem(listitem);
                 });
             });
         });
-        this.listitemObserver = new MutationObserver(function (mutationsList) {
-            mutationsList.forEach(function (mutation) {
-                mutation.addedNodes.forEach(function (listview) {
-                    if (listview.matches(_this.conf.panelNodetype.join(', '))) {
-                        _this._initSubPanel(listview);
+        this.listitemObserver = new MutationObserver((mutationsList) => {
+            mutationsList.forEach((mutation) => {
+                mutation.addedNodes.forEach((listview) => {
+                    if (listview === null || listview === void 0 ? void 0 : listview.matches(this.conf.panelNodetype.join(', '))) {
+                        this._initSubPanel(listview);
                     }
                 });
             });
         });
-    };
+    }
     /**
      * Create the API.
      */
-    Mmenu.prototype._initAPI = function () {
-        var _this = this;
+    _initAPI() {
         //	We need this=that because:
         //	1) the "arguments" object can not be referenced in an arrow function in ES3 and ES5.
         var that = this;
         this.API = {};
-        this._api.forEach(function (fn) {
-            _this.API[fn] = function () {
+        this._api.forEach((fn) => {
+            this.API[fn] = function () {
                 var re = that[fn].apply(that, arguments); // 1)
                 return typeof re == 'undefined' ? that.API : re;
             };
         });
         //	Store the API in the HTML node for external usage.
         this.node.menu['mmApi'] = this.API;
-    };
+    }
     /**
      * Bind the hooks specified in the options (publisher).
      */
-    Mmenu.prototype._initHooks = function () {
-        for (var hook in this.opts.hooks) {
+    _initHooks() {
+        for (let hook in this.opts.hooks) {
             this.bind(hook, this.opts.hooks[hook]);
         }
-    };
+    }
     /**
      * Initialize the wrappers specified in the options.
      */
-    Mmenu.prototype._initWrappers = function () {
+    _initWrappers() {
         //	Invoke "before" hook.
         this.trigger('initWrappers:before');
-        for (var w = 0; w < this.opts.wrappers.length; w++) {
-            var wrpr = Mmenu.wrappers[this.opts.wrappers[w]];
+        for (let w = 0; w < this.opts.wrappers.length; w++) {
+            let wrpr = Mmenu.wrappers[this.opts.wrappers[w]];
             if (typeof wrpr == 'function') {
                 wrpr.call(this);
             }
         }
         //	Invoke "after" hook.
         this.trigger('initWrappers:after');
-    };
+    }
     /**
      * Initialize all available add-ons.
      */
-    Mmenu.prototype._initAddons = function () {
+    _initAddons() {
         //	Invoke "before" hook.
         this.trigger('initAddons:before');
-        for (var addon in Mmenu.addons) {
+        for (let addon in Mmenu.addons) {
             Mmenu.addons[addon].call(this);
         }
         //	Invoke "after" hook.
         this.trigger('initAddons:after');
-    };
+    }
     /**
      * Initialize the extensions specified in the options.
      */
-    Mmenu.prototype._initExtensions = function () {
-        var _this = this;
+    _initExtensions() {
         //	Invoke "before" hook.
         this.trigger('initExtensions:before');
         //	Convert array to object with array.
@@ -272,26 +268,23 @@ var Mmenu = /** @class */ (function () {
             };
         }
         //	Loop over object.
-        Object.keys(this.opts.extensions).forEach(function (query) {
-            var classnames = _this.opts.extensions[query].map(function (extension) { return 'mm-menu--' + extension; });
+        Object.keys(this.opts.extensions).forEach((query) => {
+            let classnames = this.opts.extensions[query].map((extension) => 'mm-menu--' + extension);
             if (classnames.length) {
-                media.add(query, function () {
-                    var _a;
-                    (_a = _this.node.menu.classList).add.apply(_a, classnames);
-                }, function () {
-                    var _a;
-                    (_a = _this.node.menu.classList).remove.apply(_a, classnames);
+                media.add(query, () => {
+                    this.node.menu.classList.add(...classnames);
+                }, () => {
+                    this.node.menu.classList.remove(...classnames);
                 });
             }
         });
         //	Invoke "after" hook.
         this.trigger('initExtensions:after');
-    };
+    }
     /**
      * Initialize the menu.
      */
-    Mmenu.prototype._initMenu = function () {
-        var _this = this;
+    _initMenu() {
         //	Invoke "before" hook.
         this.trigger('initMenu:before');
         //	Add class to the wrapper.
@@ -302,38 +295,35 @@ var Mmenu = /** @class */ (function () {
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
         //  All nodes in the menu.
-        var panels = DOM.children(this.node.menu).filter(function (panel) {
-            return panel.matches(_this.conf.panelNodetype.join(', '));
-        });
+        const panels = DOM.children(this.node.menu).filter((panel) => panel.matches(this.conf.panelNodetype.join(', ')));
         //	Wrap the panels in a node.
         this.node.pnls = DOM.create('div.mm-panels');
         this.node.menu.append(this.node.pnls);
         //  Initiate all panel like nodes
-        panels.forEach(function (panel) {
-            _this._initPanel(panel);
+        panels.forEach((panel) => {
+            this._initPanel(panel);
         });
         //	Invoke "after" hook.
         this.trigger('initMenu:after');
-    };
+    }
     /**
      * Initialize panels.
      */
-    Mmenu.prototype._initPanels = function () {
-        var _this = this;
+    _initPanels() {
         //	Invoke "before" hook.
         this.trigger('initPanels:before');
         //	Open / close panels.
-        this.node.menu.addEventListener('click', function (event) {
+        this.node.menu.addEventListener('click', event => {
             var _a, _b;
             /** The href attribute for the clicked anchor. */
-            var href = ((_b = (_a = event.target) === null || _a === void 0 ? void 0 : _a.closest('a[href]')) === null || _b === void 0 ? void 0 : _b.getAttribute('href')) || '';
+            const href = ((_b = (_a = event.target) === null || _a === void 0 ? void 0 : _a.closest('a[href]')) === null || _b === void 0 ? void 0 : _b.getAttribute('href')) || '';
             if (href.slice(0, 1) === '#') {
                 try {
                     /** The targeted panel */
-                    var panel = DOM.find(_this.node.menu, href)[0];
+                    const panel = DOM.find(this.node.menu, href)[0];
                     if (panel) {
                         event.preventDefault();
-                        _this.togglePanel(panel);
+                        this.togglePanel(panel);
                     }
                 }
                 catch (err) { }
@@ -344,14 +334,13 @@ var Mmenu = /** @class */ (function () {
         });
         //	Invoke "after" hook.
         this.trigger('initPanels:after');
-    };
+    }
     /**
      * Initialize a single panel.
      * @param  {HTMLElement} 		panel 	Panel to initialize.
      * @return {HTMLElement|null} 			Initialized panel.
      */
-    Mmenu.prototype._initPanel = function (panel) {
-        var _this = this;
+    _initPanel(panel) {
         if (panel.matches('.mm-panel')) {
             return;
         }
@@ -369,27 +358,27 @@ var Mmenu = /** @class */ (function () {
         //	Wrap UL/OL in DIV
         if (panel.matches('ul, ol')) {
             /** The panel. */
-            var wrapper_1 = DOM.create('div');
+            let wrapper = DOM.create('div');
             //  Transport the ID
-            wrapper_1.id = panel.id;
+            wrapper.id = panel.id;
             panel.removeAttribute('id');
             //  Transport the "mm-" prefixed classnames
             Array.prototype.slice
                 .call(panel.classList)
-                .filter(function (classname) { return classname.slice(0, 3) == 'mm-'; })
-                .forEach(function (classname) {
+                .filter((classname) => classname.slice(0, 3) == 'mm-')
+                .forEach((classname) => {
                 panel.classList.remove(classname);
-                wrapper_1.classList.add(classname);
+                wrapper.classList.add(classname);
             });
             //  Transport the parent relation
             if (panel.dataset.mmParent) {
-                wrapper_1.dataset.mmParent = panel.dataset.mmParent;
+                wrapper.dataset.mmParent = panel.dataset.mmParent;
                 delete panel.dataset.mmParent;
             }
             //	Wrap the listview in the panel.
-            panel.before(wrapper_1);
-            wrapper_1.append(panel);
-            panel = wrapper_1;
+            panel.before(wrapper);
+            wrapper.append(panel);
+            panel = wrapper;
         }
         panel.classList.add('mm-panel');
         //  Append to the panels node if not vertically expanding
@@ -399,8 +388,8 @@ var Mmenu = /** @class */ (function () {
         //  Initialize tha navbar.
         this._initNavbar(panel);
         //  Initialize the listview(s).
-        DOM.children(panel, 'ul, ol').forEach(function (listview) {
-            _this._initListview(listview);
+        DOM.children(panel, 'ul, ol').forEach((listview) => {
+            this._initListview(listview);
         });
         // Observe the panel for added listviews.
         this.panelObserver.observe(panel, {
@@ -409,20 +398,20 @@ var Mmenu = /** @class */ (function () {
         //	Invoke "after" hook.
         this.trigger('initPanel:after', [panel]);
         return panel;
-    };
+    }
     /**
      * Initialize a navbar.
      * @param {HTMLElement} panel Panel for the navbar.
      */
-    Mmenu.prototype._initNavbar = function (panel) {
+    _initNavbar(panel) {
         //	Only one navbar per panel.
         if (DOM.children(panel, '.mm-navbar').length) {
             return;
         }
         /** The parent listitem. */
-        var parentListitem = null;
+        let parentListitem = null;
         /** The parent panel. */
-        var parentPanel = null;
+        let parentPanel = null;
         //  The parent listitem and parent panel
         if (panel.dataset.mmParent) {
             parentListitem = DOM.find(this.node.pnls, '#' + panel.dataset.mmParent)[0];
@@ -435,7 +424,7 @@ var Mmenu = /** @class */ (function () {
         //	Invoke "before" hook.
         this.trigger('initNavbar:before', [panel]);
         /** The navbar element. */
-        var navbar = DOM.create('div.mm-navbar');
+        let navbar = DOM.create('div.mm-navbar');
         //  Hide navbar if specified in options.
         if (!this.opts.navbar.add) {
             navbar.classList.add('mm-hidden');
@@ -443,12 +432,12 @@ var Mmenu = /** @class */ (function () {
         //  Add the back button.
         if (parentPanel) {
             /** The back button. */
-            var prev = DOM.create('a.mm-btn.mm-btn--prev.mm-navbar__btn');
+            let prev = DOM.create('a.mm-btn.mm-btn--prev.mm-navbar__btn');
             prev.href = '#' + parentPanel.id;
             navbar.append(prev);
         }
         /** The anchor that opens the panel. */
-        var opener = null;
+        let opener = null;
         //  The anchor is in a listitem.
         if (parentListitem) {
             opener = DOM.children(parentListitem, '.mm-listitem__text')[0];
@@ -458,15 +447,15 @@ var Mmenu = /** @class */ (function () {
             opener = DOM.find(parentPanel, 'a[href="#' + panel.id + '"]')[0];
         }
         //  Add the title.
-        var title = DOM.create('a.mm-navbar__title');
-        var titleText = DOM.create('span');
+        let title = DOM.create('a.mm-navbar__title');
+        let titleText = DOM.create('span');
         title.append(titleText);
         titleText.innerHTML =
             panel.dataset.mmTitle ||
                 (opener ? opener.textContent : '') ||
                 this.i18n(this.opts.navbar.title) ||
                 this.i18n('Menu');
-        var href = '#';
+        let href = '#';
         switch (this.opts.navbar.titleLink) {
             case 'anchor':
                 if (opener) {
@@ -475,7 +464,7 @@ var Mmenu = /** @class */ (function () {
                 break;
             case 'parent':
                 if (parentPanel) {
-                    href = "#" + parentPanel.id;
+                    href = `#${parentPanel.id}`;
                 }
                 break;
         }
@@ -484,13 +473,16 @@ var Mmenu = /** @class */ (function () {
         panel.prepend(navbar);
         //	Invoke "after" hook.
         this.trigger('initNavbar:after', [panel]);
-    };
+    }
     /**
      * Initialize a listview.
      * @param {HTMLElement} listview Listview to initialize.
      */
-    Mmenu.prototype._initListview = function (listview) {
-        var _this = this;
+    _initListview(listview) {
+        //  Assert UL
+        if (!['htmlulistelement', 'htmlolistelement'].includes(type(listview))) {
+            return;
+        }
         DOM.reClass(listview, this.conf.classNames.nolistview, 'mm-nolistview');
         if (listview.matches('.mm-nolistview')) {
             return;
@@ -499,8 +491,8 @@ var Mmenu = /** @class */ (function () {
         this.trigger('initListview:before', [listview]);
         listview.classList.add('mm-listview');
         //  Initiate the listitem(s).
-        DOM.children(listview).forEach(function (listitem) {
-            _this._initListitem(listitem);
+        DOM.children(listview).forEach((listitem) => {
+            this._initListitem(listitem);
         });
         // Observe the listview for added listitems.
         this.listviewObserver.observe(listview, {
@@ -508,13 +500,16 @@ var Mmenu = /** @class */ (function () {
         });
         //	Invoke "after" hook.
         this.trigger('initListview:after', [listview]);
-    };
+    }
     /**
      * Initialte a listitem.
      * @param {HTMLElement} listitem Listitem to initiate.
      */
-    Mmenu.prototype._initListitem = function (listitem) {
-        var _this = this;
+    _initListitem(listitem) {
+        //  Assert LI
+        if (!['htmllielement'].includes(type(listitem))) {
+            return;
+        }
         DOM.reClass(listitem, this.conf.classNames.divider, 'mm-divider');
         if (listitem.matches('.mm-divider')) {
             return;
@@ -523,29 +518,29 @@ var Mmenu = /** @class */ (function () {
         this.trigger('initListitem:before', [listitem]);
         listitem.classList.add('mm-listitem');
         DOM.reClass(listitem, this.conf.classNames.selected, 'mm-listitem--selected');
-        DOM.children(listitem, 'a, span').forEach(function (text) {
+        DOM.children(listitem, 'a, span').forEach((text) => {
             text.classList.add('mm-listitem__text');
         });
         //  Initiate the subpanel.
-        DOM.children(listitem, this.conf.panelNodetype.join(', ')).forEach(function (subpanel) {
-            _this._initSubPanel(subpanel);
+        DOM.children(listitem, this.conf.panelNodetype.join(', ')).forEach((subpanel) => {
+            this._initSubPanel(subpanel);
         });
-        // Observe the listview for added listitems.
+        // Observe the listitem for added listviews.
         this.listitemObserver.observe(listitem, {
             childList: true,
         });
         //	Invoke "after" hook.
         this.trigger('initListitem:after', [listitem]);
-    };
+    }
     /**
      * Initiate a subpanel.
      * @param {HTMLElement} subpanel Subpanel to initiate.
      */
-    Mmenu.prototype._initSubPanel = function (subpanel) {
+    _initSubPanel(subpanel) {
         /** The parent element for the panel. */
-        var listitem = subpanel.parentElement;
+        const listitem = subpanel.parentElement;
         /** Whether or not the listitem expands vertically */
-        var vertical = subpanel.matches('.' + this.conf.classNames.vertical) ||
+        const vertical = subpanel.matches('.' + this.conf.classNames.vertical) ||
             !this.opts.slidingSubmenus;
         // Make it expand vertically
         if (vertical) {
@@ -558,11 +553,11 @@ var Mmenu = /** @class */ (function () {
         listitem.dataset.mmChild = subpanel.id;
         subpanel.dataset.mmParent = listitem.id;
         /** The open link. */
-        var button = DOM.children(listitem, '.mm-btn')[0];
+        let button = DOM.children(listitem, '.mm-btn')[0];
         //  Init item text
         if (!button) {
             button = DOM.create('a.mm-btn.mm-btn--next.mm-listitem__btn');
-            DOM.children(listitem, 'a, span').forEach(function (text) {
+            DOM.children(listitem, 'a, span').forEach((text) => {
                 //  If the item has no link,
                 //      Replace the item with the open link.
                 if (text.matches('span')) {
@@ -579,17 +574,17 @@ var Mmenu = /** @class */ (function () {
         }
         button.href = '#' + subpanel.id;
         this._initPanel(subpanel);
-    };
+    }
     /**
      * Find and open the correct panel after creating the menu.
      */
-    Mmenu.prototype._initOpened = function () {
+    _initOpened() {
         //	Invoke "before" hook.
         this.trigger('initOpened:before');
         /** The selected listitem(s). */
-        var listitem = DOM.find(this.node.pnls, '.mm-listitem--selected').pop();
+        const listitem = DOM.find(this.node.pnls, '.mm-listitem--selected').pop();
         /**	The current opened panel. */
-        var panel = DOM.children(this.node.pnls, '.mm-panel')[0];
+        let panel = DOM.children(this.node.pnls, '.mm-panel')[0];
         if (listitem) {
             this.setSelected(listitem);
             panel = listitem.closest('.mm-panel');
@@ -598,29 +593,27 @@ var Mmenu = /** @class */ (function () {
         this.openPanel(panel, false);
         //	Invoke "after" hook.
         this.trigger('initOpened:after');
-    };
+    }
     /**
      * Get the translation for a text.
      * @param  {string} text 	Text to translate.
      * @return {string}			The translated text.
      */
-    Mmenu.prototype.i18n = function (text) {
+    i18n(text) {
         return i18n.get(text, this.conf.language);
-    };
-    /**	Plugin version. */
-    Mmenu.version = pack.version;
-    /**	Default options for menus. */
-    Mmenu.options = options;
-    /**	Default configuration for menus. */
-    Mmenu.configs = configs;
-    /**	Available add-ons for the plugin. */
-    Mmenu.addons = {};
-    /** Available wrappers for the plugin. */
-    Mmenu.wrappers = {};
-    /**	Globally used HTML elements. */
-    Mmenu.node = {};
-    /** Globally used variables. */
-    Mmenu.vars = {};
-    return Mmenu;
-}());
-export default Mmenu;
+    }
+}
+/**	Plugin version. */
+Mmenu.version = pack.version;
+/**	Default options for menus. */
+Mmenu.options = options;
+/**	Default configuration for menus. */
+Mmenu.configs = configs;
+/**	Available add-ons for the plugin. */
+Mmenu.addons = {};
+/** Available wrappers for the plugin. */
+Mmenu.wrappers = {};
+/**	Globally used HTML elements. */
+Mmenu.node = {};
+/** Globally used variables. */
+Mmenu.vars = {};

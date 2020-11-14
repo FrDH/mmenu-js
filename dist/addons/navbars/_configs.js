@@ -1,4 +1,4 @@
-var configs = {
+const configs = {
     breadcrumbs: {
         separator: '/',
         removeFirst: false

@@ -1,4 +1,4 @@
-var options = {
+const options = {
     aria: true,
     text: true
 };

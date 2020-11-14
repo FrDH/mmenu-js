@@ -1,4 +1,4 @@
-var options = {
+const options = {
     current: true,
     hover: false,
     parent: false

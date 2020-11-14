@@ -319,7 +319,7 @@ export default class Mmenu {
         this.listitemObserver = new MutationObserver((mutationsList) => {
             mutationsList.forEach((mutation) => {
                 mutation.addedNodes.forEach((listview: HTMLElement) => {
-                    if (listview.matches(this.conf.panelNodetype.join(', '))) {
+                    if (listview?.matches(this.conf.panelNodetype.join(', '))) {
                         this._initSubPanel(listview);
                     }
                 });
@@ -687,6 +687,11 @@ export default class Mmenu {
      */
     _initListview(listview: HTMLElement) {
 
+        //  Assert UL
+        if (!['htmlulistelement', 'htmlolistelement'].includes(type(listview))) {
+            return;
+        }
+
         DOM.reClass(listview, this.conf.classNames.nolistview, 'mm-nolistview');
 
         if (listview.matches('.mm-nolistview')) {
@@ -717,6 +722,10 @@ export default class Mmenu {
      * @param {HTMLElement} listitem Listitem to initiate.
      */
     _initListitem(listitem: HTMLElement) {
+        //  Assert LI
+        if (!['htmllielement'].includes(type(listitem))) {
+            return;
+        }
 
         DOM.reClass(
             listitem,
@@ -750,7 +759,7 @@ export default class Mmenu {
             }
         );
 
-        // Observe the listview for added listitems.
+        // Observe the listitem for added listviews.
         this.listitemObserver.observe(listitem, {
             childList: true,
         });

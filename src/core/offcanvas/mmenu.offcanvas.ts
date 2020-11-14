@@ -27,7 +27,7 @@ export default function (this: Mmenu) {
     //	Add methods to the API.
     this._api.push('open', 'close', 'setPage');
 
-    //	Add off-canvas behavior.
+    //  Clone menu and prepend it to the <body>.
     this.bind('initMenu:before', () => {
         //	Clone if needed.
         if (configs.clone) {
@@ -50,14 +50,9 @@ export default function (this: Mmenu) {
     });
 
     this.bind('initMenu:after', () => {
-        //	Setup the UI blocker.
-        initBlocker.call(this);
 
         //	Setup the page.
         this.setPage(Mmenu.node.page);
-
-        //	Setup window events.
-        initWindow.call(this);
 
         //	Setup the menu.
         this.node.menu.classList.add('mm-menu--offcanvas');
@@ -74,7 +69,12 @@ export default function (this: Mmenu) {
         }
     });
 
-    //	Add screenreader / aria support
+    //	Sync the blocker to target the page.
+    this.bind('setPage:after', (page: HTMLElement) => {
+        DOM.children(Mmenu.node.blck, '.mm-tabstart')[0]?.setAttribute('href', `#${page?.id}`);
+    });
+
+    //	Add screenreader support
     this.bind('initMenu:after', () => {
         sr.aria(this.node.menu, 'hidden', true);
         sr.aria(Mmenu.node.blck, 'hidden', true);
@@ -89,6 +89,26 @@ export default function (this: Mmenu) {
         sr.aria(this.node.menu, 'hidden', true);
         sr.aria(Mmenu.node.blck, 'hidden', true);
     });
+
+    //	Setup the UI blocker.
+    if (!Mmenu.node.blck) {
+        const blck = DOM.create('div.mm-wrapper__blocker.mm-slideout');
+        const tabstart = DOM.create('a.mm-tabstart');
+        const tabend = DOM.create('button.mm-tabend');
+        tabend.setAttribute('type', 'button');
+
+        blck.append(tabstart);
+        blck.append(tabend);
+
+        //	Append the blocker node to the body.
+        document.querySelector(configs.menu.insertSelector).append(blck);
+
+        //	Store the blocker node.
+        Mmenu.node.blck = blck;
+
+        //  Add screenreader support
+        tabstart.innerHTML = sr.text(this.i18n(this.conf.screenReader.text.closeMenu));
+    }
 
     document.addEventListener('click', event => {
 
@@ -205,22 +225,6 @@ Mmenu.prototype.setPage = function (this: Mmenu, page: HTMLElement) {
     this.trigger('setPage:after', [page]);
 };
 
-/**
- * Initialize the window.
- */
-const initWindow = function (this: Mmenu) {
-    //	Prevent tabbing
-    //	Because when tabbing outside the menu, the element that gains focus will be centered on the screen.
-    //	In other words: The menu would move out of view.
-    // events.off(document.body, 'keydown.tabguard');
-    // events.on(document.body, 'keydown.tabguard', (evnt: KeyboardEvent) => {
-    //     if (evnt.keyCode == 9) {
-    //         if (this.node.wrpr.matches('.mm-wrapper--opened')) {
-    //             evnt.preventDefault();
-    //         }
-    //     }
-    // });
-};
 
 /**
  * Initialize "blocker" node
@@ -228,31 +232,4 @@ const initWindow = function (this: Mmenu) {
 const initBlocker = function (this: Mmenu) {
 
     const configs = this.conf.offCanvas;
-
-    //	Invoke "before" hook.
-    this.trigger('initBlocker:before');
-
-    //	Create the blocker node.
-    if (!Mmenu.node.blck) {
-        const blck = DOM.create('div.mm-wrapper__blocker.mm-slideout');
-        blck.innerHTML = `<a>${sr.text(
-            this.i18n(this.conf.screenReader.text.closeMenu)
-        )}</a>`;
-
-        //	Append the blocker node to the body.
-        document.querySelector(configs.menu.insertSelector).append(blck);
-
-        //	Store the blocker node.
-        Mmenu.node.blck = blck;
-    }
-
-    //	Sync the blocker to target the page.
-    this.bind('setPage:after', (page: HTMLElement) => {
-        DOM.children(Mmenu.node.blck, 'a').forEach((anchor) => {
-            anchor.setAttribute('href', '#' + page.id);
-        });
-    });
-
-    //	Invoke "after" hook.
-    this.trigger('initBlocker:after');
 };

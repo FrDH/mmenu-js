@@ -1,4 +1,4 @@
-var configs = {
+const configs = {
     text: {
         closeMenu: 'Close menu',
         closeSubmenu: 'Close submenu',

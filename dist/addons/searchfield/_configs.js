@@ -1,4 +1,4 @@
-var configs = {
+const configs = {
     clear: false,
     form: false,
     input: false,

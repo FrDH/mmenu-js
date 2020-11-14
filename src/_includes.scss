@@ -7,8 +7,6 @@ $mm_include_screenreader: true !default;
 
 $mm_include_counters: true !default;
 
-$mm_include_drag: true !default;
-
 $mm_include_iconbar: true !default;
 $mm_include_iconbar_tabs: $mm_include_iconbar !default;
 
@@ -42,7 +40,6 @@ $mm_include_checks: true !default;
 
 $mm_include_fullscreen: true !default;
 
-$mm_include_pagedim: true !default;
 $mm_include_positioning: true !default;
 
 $mm_include_themes: true !default;

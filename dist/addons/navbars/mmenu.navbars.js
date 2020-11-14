@@ -19,18 +19,17 @@ import prev from './_navbar.prev';
 import searchfield from './_navbar.searchfield';
 import title from './_navbar.title';
 Navbars.navbarContents = {
-    breadcrumbs: breadcrumbs,
-    close: close,
-    prev: prev,
-    searchfield: searchfield,
-    title: title,
+    breadcrumbs,
+    close,
+    prev,
+    searchfield,
+    title,
 };
 import tabs from './_navbar.tabs';
 Navbars.navbarTypes = {
-    tabs: tabs,
+    tabs,
 };
 export default function Navbars() {
-    var _this = this;
     var navs = this.opts.navbars;
     if (typeof navs == 'undefined') {
         return;
@@ -42,15 +41,15 @@ export default function Navbars() {
     if (!navs.length) {
         return;
     }
-    navs.forEach(function (options) {
+    navs.forEach((options) => {
         options = extendShorthandOptions(options);
         if (!options.use) {
             return;
         }
         //	Create the navbar element.
-        var navbar = DOM.create('div.mm-navbar');
+        const navbar = DOM.create('div.mm-navbar');
         //	Get the position for the navbar.
-        var position = options.position;
+        let { position } = options;
         //	Restrict the position to either "bottom" or "top" (default).
         if (position !== 'bottom') {
             position = 'top';
@@ -61,24 +60,24 @@ export default function Navbars() {
         }
         navbars[position].append(navbar);
         //	Add content to the navbar.
-        for (var c = 0, l = options.content.length; c < l; c++) {
-            var ctnt = options.content[c];
+        for (let c = 0, l = options.content.length; c < l; c++) {
+            const ctnt = options.content[c];
             //	The content is a string.
             if (typeof ctnt == 'string') {
-                var func = Navbars.navbarContents[ctnt];
+                let func = Navbars.navbarContents[ctnt];
                 //	The content refers to one of the navbar-presets ("prev", "title", etc).
                 if (typeof func == 'function') {
                     //	Call the preset function.
-                    func.call(_this, navbar);
+                    func.call(this, navbar);
                     //	The content is just HTML.
                 }
                 else {
                     //	Add the HTML.
                     //  Wrap the HTML in a single node
-                    var node = DOM.create('span');
+                    let node = DOM.create('span');
                     node.innerHTML = ctnt;
                     //  If there was only a single node, use that.
-                    var children = DOM.children(node);
+                    const children = DOM.children(node);
                     if (children.length == 1) {
                         node = children[0];
                     }
@@ -93,18 +92,18 @@ export default function Navbars() {
         //	The type option is set.
         if (typeof options.type == 'string') {
             //	The function refers to one of the navbar-presets ("tabs").
-            var func = Navbars.navbarTypes[options.type];
+            let func = Navbars.navbarTypes[options.type];
             if (typeof func == 'function') {
                 //	Call the preset function.
-                func.call(_this, navbar);
+                func.call(this, navbar);
             }
         }
         //	En-/disable the navbar.
-        var enable = function () {
+        let enable = () => {
             navbar.classList.remove('mm-hidden');
             sr.aria(navbar, 'hidden', false);
         };
-        var disable = function () {
+        let disable = () => {
             navbar.classList.add('mm-hidden');
             sr.aria(navbar, 'hidden', true);
         };
@@ -113,9 +112,9 @@ export default function Navbars() {
         }
     });
     //	Add to menu.
-    this.bind('initMenu:after', function () {
-        for (var position in navbars) {
-            _this.node.menu[position == 'bottom' ? 'append' : 'prepend'](navbars[position]);
+    this.bind('initMenu:after', () => {
+        for (let position in navbars) {
+            this.node.menu[position == 'bottom' ? 'append' : 'prepend'](navbars[position]);
         }
     });
 }

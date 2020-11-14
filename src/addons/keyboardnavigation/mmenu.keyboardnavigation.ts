@@ -16,114 +16,59 @@ export default function (this: Mmenu) {
     if (support.touch) {
         return;
     }
-
-    var options = extendShorthandOptions(this.opts.keyboardNavigation);
-    this.opts.keyboardNavigation = extend(
-        options,
-        Mmenu.options.keyboardNavigation
-    );
+    return;
 
     //	Enable keyboard navigation
-    if (options.enable) {
-        let menuStart = DOM.create('button.mm-tabstart.mm-sronly'),
-            menuEnd = DOM.create('button.mm-tabend.mm-sronly'),
-            blockerEnd = DOM.create('button.mm-tabend.mm-sronly');
+    let menuStart = DOM.create('button.mm-tabstart.mm-sronly'),
+        menuEnd = DOM.create('button.mm-tabend.mm-sronly'),
+        blockerEnd = DOM.create('button.mm-tabend.mm-sronly');
 
-        this.bind('initMenu:after', () => {
-            if (options.enhance) {
-                this.node.menu.classList.add('mm-menu--keyboardfocus');
-            }
+    this.bind('initMenu:after', () => {
+        if (options.enhance) {
+            this.node.menu.classList.add('mm-menu--keyboardfocus');
+        }
 
-            initWindow.call(this, options.enhance);
+        initWindow.call(this, options.enhance);
+    });
+
+    this.bind('initOpened:before', () => {
+        this.node.menu.prepend(menuStart);
+        this.node.menu.append(menuEnd);
+        DOM.children(
+            this.node.menu,
+            '.mm-navbars-top, .mm-navbars-bottom'
+        ).forEach((navbars) => {
+            navbars
+                .querySelectorAll('.mm-navbar__title')
+                .forEach((title) => {
+                    title.setAttribute('tabindex', '-1');
+                });
         });
+    });
 
-        this.bind('initOpened:before', () => {
-            this.node.menu.prepend(menuStart);
-            this.node.menu.append(menuEnd);
-            DOM.children(
-                this.node.menu,
-                '.mm-navbars-top, .mm-navbars-bottom'
-            ).forEach((navbars) => {
-                navbars
-                    .querySelectorAll('.mm-navbar__title')
-                    .forEach((title) => {
-                        title.setAttribute('tabindex', '-1');
-                    });
-            });
-        });
+    this.bind('initBlocker:after', () => {
+        Mmenu.node.blck.append(blockerEnd);
+        DOM.children(Mmenu.node.blck, 'a')[0].classList.add('');
+    });
 
-        this.bind('initBlocker:after', () => {
-            Mmenu.node.blck.append(blockerEnd);
-            DOM.children(Mmenu.node.blck, 'a')[0].classList.add('mm-tabstart');
-        });
+    const setFocus = () => {
+        DOM.children(this.node.menu, '.mm-tabstart')[0]?.focus();
+    };
 
-        let focusable = 'input, select, textarea, button, label, a[href]';
-        const setFocus = (panel?: HTMLElement) => {
-            panel =
-                panel || DOM.children(this.node.pnls, '.mm-panel--opened')[0];
+    this.bind('open:after', setFocus);
+    this.bind('openPanel:after', setFocus);
 
-            var focus: HTMLElement = null;
-
-            //	Focus already is on an element in a navbar in this menu.
-            var navbar = document.activeElement.closest('.mm-navbar');
-            if (navbar) {
-                if (navbar.closest('.mm-menu') == this.node.menu) {
-                    return;
+    //	Add screenreader / aria support.
+    this.bind('initOpened:after', () => {
+        [this.node.menu, Mmenu.node.blck].forEach((element) => {
+            DOM.children(element, '.mm-tabstart, .mm-tabend').forEach(
+                (tabber) => {
+                    sr.aria(tabber, 'hidden', true);
+                    sr.role(tabber, 'presentation');
                 }
-            }
-
-            //	Set the focus to the first focusable element by default.
-            if (options.enable == 'default') {
-                //	First visible anchor in a listview in the current panel.
-                focus = DOM.find(
-                    panel,
-                    '.mm-listview a[href]:not(.mm-hidden)'
-                )[0];
-
-                //	First focusable and visible element in the current panel.
-                if (!focus) {
-                    focus = DOM.find(panel, focusable + ':not(.mm-hidden)')[0];
-                }
-
-                //	First focusable and visible element in a navbar.
-                if (!focus) {
-                    let elements: HTMLElement[] = [];
-                    DOM.children(
-                        this.node.menu,
-                        '.mm-navbars'
-                    ).forEach((navbar) => {
-                        elements.push(
-                            ...DOM.find(navbar, focusable + ':not(.mm-hidden)')
-                        );
-                    });
-                    focus = elements[0];
-                }
-            }
-
-            //	Default.
-            if (!focus) {
-                focus = DOM.children(this.node.menu, '.mm-tabstart')[0];
-            }
-
-            if (focus) {
-                focus.focus();
-            }
-        };
-        this.bind('open:after', setFocus);
-        this.bind('openPanel:after', setFocus);
-
-        //	Add screenreader / aria support.
-        this.bind('initOpened:after', () => {
-            [this.node.menu, Mmenu.node.blck].forEach((element) => {
-                DOM.children(element, '.mm-tabstart, .mm-tabend').forEach(
-                    (tabber) => {
-                        sr.aria(tabber, 'hidden', true);
-                        sr.role(tabber, 'presentation');
-                    }
-                );
-            });
+            );
         });
-    }
+    });
 }
 
 /**
@@ -131,8 +76,7 @@ export default function (this: Mmenu) {
  * @param {boolean} enhance - Whether or not to also rich enhance the keyboard behavior.
  **/
 const initWindow = function (this: Mmenu, enhance: boolean) {
-    //	Re-enable tabbing in general
-    events.off(document.body, 'keydown.tabguard');
+
 
     //	Intersept the target when tabbing.
     events.off(document.body, 'focusin.tabguard');
@@ -170,25 +114,14 @@ const initWindow = function (this: Mmenu, enhance: boolean) {
     });
 
     //	Add Additional keyboard behavior.
-    events.off(document.body, 'keydown.navigate');
     events.on(document.body, 'keydown.navigate', (evnt: KeyboardEvent) => {
         var target = evnt.target as HTMLElement;
         var menu = target.closest('.mm-menu') as HTMLElement;
 
         if (menu) {
-            let api: mmApi = menu['mmApi'];
 
             if (!target.matches('input, textarea')) {
                 switch (evnt.keyCode) {
-                    //	press enter to toggle and check
-                    case 13:
-                        if (
-                            target.matches('.mm-toggle') ||
-                            target.matches('.mm-check')
-                        ) {
-                            target.dispatchEvent(new Event('click'));
-                        }
-                        break;
 
                     //	prevent spacebar or arrows from scrolling the page
                     case 32: //	space
@@ -202,41 +135,33 @@ const initWindow = function (this: Mmenu, enhance: boolean) {
             }
 
             if (enhance) {
-                //	special case for input
-                if (target.matches('input')) {
-                    switch (evnt.keyCode) {
-                        //	empty searchfield with esc
-                        case 27:
-                            (target as HTMLInputElement).value = '';
-                            break;
-                    }
-                } else {
-                    let api: mmApi = menu['mmApi'];
 
-                    switch (evnt.keyCode) {
-                        //	close submenu with backspace
-                        case 8:
-                            let parent: HTMLElement = DOM.find(
-                                menu,
-                                '.mm-panel--opened'
-                            )[0];
-                            if (parent) {
-                                parent = DOM.find(menu, `#${parent.dataset.mmParent}`)[0];
-                            }
-                            if (parent) {
-                                api.openPanel(parent.closest('.mm-panel'));
-                            }
-                            break;
+                let api: mmApi = menu['mmApi'];
 
-                        //	close menu with esc
-                        case 27:
-                            if (menu.matches('.mm-menu--offcanvas')) {
-                                api.close();
-                            }
-                            break;
-                    }
+                switch (evnt.keyCode) {
+                    //	close submenu with backspace
+                    case 8:
+                        let parent: HTMLElement = DOM.find(
+                            menu,
+                            '.mm-panel--opened'
+                        )[0];
+                        if (parent) {
+                            parent = DOM.find(menu, `#${parent.dataset.mmParent}`)[0];
+                        }
+                        if (parent) {
+                            api.openPanel(parent.closest('.mm-panel'));
+                        }
+                        break;
+
+                    //	close menu with esc
+                    case 27:
+                        if (menu.matches('.mm-menu--offcanvas')) {
+                            api.close();
+                        }
+                        break;
                 }
             }
+
         }
     });
 };

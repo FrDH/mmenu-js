@@ -7,42 +7,41 @@ import { extend } from '../../_modules/helpers';
 //  Add the options.
 Mmenu.options.sectionIndexer = options;
 export default function () {
-    var _this = this;
-    var options = extendShorthandOptions(this.opts.sectionIndexer);
+    const options = extendShorthandOptions(this.opts.sectionIndexer);
     this.opts.sectionIndexer = extend(options, Mmenu.options.sectionIndexer);
     if (!options.add) {
         return;
     }
-    this.bind('initPanels:after', function () {
+    this.bind('initPanels:after', () => {
         //	Add the indexer, only if it does not allready excists
-        if (!_this.node.indx) {
-            var buttons_1 = '';
-            'abcdefghijklmnopqrstuvwxyz'.split('').forEach(function (letter) {
-                buttons_1 += '<a href="#">' + letter + '</a>';
+        if (!this.node.indx) {
+            let buttons = '';
+            'abcdefghijklmnopqrstuvwxyz'.split('').forEach(letter => {
+                buttons += '<a href="#">' + letter + '</a>';
             });
-            var indexer = DOM.create('div.mm-sectionindexer');
-            indexer.innerHTML = buttons_1;
-            _this.node.pnls.prepend(indexer);
-            _this.node.indx = indexer;
+            let indexer = DOM.create('div.mm-sectionindexer');
+            indexer.innerHTML = buttons;
+            this.node.pnls.prepend(indexer);
+            this.node.indx = indexer;
             //	Prevent default behavior when clicking an anchor
-            _this.node.indx.addEventListener('click', function (evnt) {
-                var anchor = evnt.target;
+            this.node.indx.addEventListener('click', evnt => {
+                const anchor = evnt.target;
                 if (anchor.matches('a')) {
                     evnt.preventDefault();
                 }
             });
             //	Scroll onMouseOver / onTouchStart
-            var mouseOverEvent = function (evnt) {
+            let mouseOverEvent = evnt => {
                 if (!evnt.target.matches('a')) {
                     return;
                 }
-                var letter = evnt.target.textContent;
-                var panel = DOM.children(_this.node.pnls, '.mm-panel--opened')[0];
-                var newTop = -1, oldTop = panel.scrollTop;
+                const letter = evnt.target.textContent;
+                const panel = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
+                let newTop = -1, oldTop = panel.scrollTop;
                 panel.scrollTop = 0;
                 DOM.find(panel, '.mm-divider')
-                    .filter(function (divider) { return !divider.matches('.mm-hidden'); })
-                    .forEach(function (divider) {
+                    .filter(divider => !divider.matches('.mm-hidden'))
+                    .forEach(divider => {
                     if (newTop < 0 &&
                         letter ==
                             divider.textContent
@@ -55,17 +54,17 @@ export default function () {
                 panel.scrollTop = newTop > -1 ? newTop : oldTop;
             };
             if (support.touch) {
-                _this.node.indx.addEventListener('touchstart', mouseOverEvent);
-                _this.node.indx.addEventListener('touchmove', mouseOverEvent);
+                this.node.indx.addEventListener('touchstart', mouseOverEvent);
+                this.node.indx.addEventListener('touchmove', mouseOverEvent);
             }
             else {
-                _this.node.indx.addEventListener('mouseover', mouseOverEvent);
+                this.node.indx.addEventListener('mouseover', mouseOverEvent);
             }
         }
         //	Show or hide the indexer
-        _this.bind('openPanel:before', function (panel) {
-            var active = DOM.find(panel, '.mm-divider').filter(function (divider) { return !divider.matches('.mm-hidden'); }).length;
-            _this.node.indx.classList[active ? 'add' : 'remove']('mm-sectionindexer--active');
+        this.bind('openPanel:before', (panel) => {
+            const active = DOM.find(panel, '.mm-divider').filter(divider => !divider.matches('.mm-hidden')).length;
+            this.node.indx.classList[active ? 'add' : 'remove']('mm-sectionindexer--active');
         });
     });
 }

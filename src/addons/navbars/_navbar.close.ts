@@ -12,11 +12,11 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         close.setAttribute('href', '#' + page.id);
     });
 
-    //	Add screenreader / text support
+    //	Add screenreader support
+    close.innerHTML = sr.text(
+        this.i18n(this.conf.screenReader.text.closeMenu)
+    );
     this.bind('setPage:after', () => {
-        close.innerHTML = sr.text(
-            this.i18n(this.conf.screenReader.text.closeMenu)
-        );
         sr.aria(close, 'owns', close.getAttribute('href').slice(1));
     });
 }

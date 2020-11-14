@@ -7,7 +7,6 @@ import { extend, touchDirection } from '../../_modules/helpers';
 //  Add the options.
 Mmenu.options.scrollBugFix = options;
 export default function () {
-    var _this = this;
     //	The scrollBugFix add-on fixes a scrolling bug
     //		1) on touch devices
     //		2) in an off-canvas menu
@@ -37,8 +36,8 @@ export default function () {
         passive: false,
     });
     //  Prevent the page from scrolling when dragging in the menu.
-    this.node.menu.addEventListener('touchmove', function (evnt) {
-        var wrapper = evnt.target.closest('.mm-panel, .mm-iconbar__top, .mm-iconbar__bottom');
+    this.node.menu.addEventListener('touchmove', (evnt) => {
+        let wrapper = evnt.target.closest('.mm-panel, .mm-iconbar__top, .mm-iconbar__bottom');
         if (wrapper && wrapper.closest('.mm-listitem--vertical')) {
             wrapper = DOM.parents(wrapper, '.mm-panel').pop();
         }
@@ -73,15 +72,15 @@ export default function () {
     });
     //  Some small additional improvements
     //	Scroll the current opened panel to the top when opening the menu.
-    this.bind('open:after', function () {
-        var panel = DOM.children(_this.node.pnls, '.mm-panel--opened')[0];
+    this.bind('open:after', () => {
+        var panel = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
         if (panel) {
             panel.scrollTop = 0;
         }
     });
     //	Fix issue after device rotation change.
-    window.addEventListener('orientationchange', function (evnt) {
-        var panel = DOM.children(_this.node.pnls, '.mm-panel--opened')[0];
+    window.addEventListener('orientationchange', (evnt) => {
+        var panel = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
         if (panel) {
             panel.scrollTop = 0;
             //	Apparently, changing the overflow-scrolling property triggers some event :)

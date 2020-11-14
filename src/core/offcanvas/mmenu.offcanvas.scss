@@ -77,11 +77,34 @@
         transition-delay: 0;
     }
 
-    a {
-        display: block;
+    .mm-tabstart {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         height: 100%;
         width: 100%;
-        background: rgba(3, 2, 1, 0);
+        font-size: 0;
+        opacity: 0;
+        background: rgba(#000, 0.3);
+        transition: opacity $mm_transitionDuration $mm_transitionFunction $mm_transitionDuration;
+
+        .mm-menu--opened ~ & {
+            opacity: 0.5;
+        }
+
+        &:focus {
+            opacity: 1;
+        }
+    }
+
+    .mm-tabend {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
     }
 }
 

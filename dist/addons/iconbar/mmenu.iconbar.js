@@ -8,23 +8,22 @@ import { type, extend } from '../../_modules/helpers';
 //  Add the options.
 Mmenu.options.iconbar = options;
 export default function () {
-    var _this = this;
-    var options = extendShorthandOptions(this.opts.iconbar);
+    let options = extendShorthandOptions(this.opts.iconbar);
     this.opts.iconbar = extend(options, Mmenu.options.iconbar);
     if (!options.use) {
         return;
     }
-    var iconbar;
-    ['top', 'bottom'].forEach(function (position, n) {
-        var ctnt = options[position];
+    let iconbar;
+    ['top', 'bottom'].forEach((position, n) => {
+        let ctnt = options[position];
         //	Extend shorthand options
         if (type(ctnt) != 'array') {
             ctnt = [ctnt];
         }
         //	Create node
-        var part = DOM.create('div.mm-iconbar__' + position);
+        const part = DOM.create('div.mm-iconbar__' + position);
         //	Add content
-        for (var c = 0, l = ctnt.length; c < l; c++) {
+        for (let c = 0, l = ctnt.length; c < l; c++) {
             if (typeof ctnt[c] == 'string') {
                 part.innerHTML += ctnt[c];
             }
@@ -42,17 +41,17 @@ export default function () {
     //	Add to menu
     if (iconbar) {
         //	Add the iconbar.
-        this.bind('initMenu:after', function () {
-            _this.node.menu.prepend(iconbar);
+        this.bind('initMenu:after', () => {
+            this.node.menu.prepend(iconbar);
         });
         //	En-/disable the iconbar.
-        var classname_1 = 'mm-menu--iconbar-' + options.position;
-        var enable = function () {
-            _this.node.menu.classList.add(classname_1);
+        let classname = 'mm-menu--iconbar-' + options.position;
+        let enable = () => {
+            this.node.menu.classList.add(classname);
             sr.aria(iconbar, 'hidden', false);
         };
-        var disable = function () {
-            _this.node.menu.classList.remove(classname_1);
+        let disable = () => {
+            this.node.menu.classList.remove(classname);
             sr.aria(iconbar, 'hidden', true);
         };
         if (typeof options.use == 'boolean') {
@@ -65,8 +64,8 @@ export default function () {
         //  TODO: zie navbar tabs
         if (options.type == 'tabs') {
             iconbar.classList.add('mm-iconbar--tabs');
-            iconbar.addEventListener('click', function (evnt) {
-                var anchor = evnt.target.closest('.mm-iconbar__tab');
+            iconbar.addEventListener('click', (evnt) => {
+                const anchor = evnt.target.closest('.mm-iconbar__tab');
                 if (!anchor) {
                     return;
                 }
@@ -75,31 +74,31 @@ export default function () {
                     return;
                 }
                 try {
-                    var panel = DOM.find(_this.node.menu, anchor.getAttribute('href') + ".mm-panel")[0];
+                    const panel = DOM.find(this.node.menu, `${anchor.getAttribute('href')}.mm-panel`)[0];
                     if (panel) {
                         evnt.preventDefault();
                         evnt.stopImmediatePropagation();
-                        _this.openPanel(panel, false);
+                        this.openPanel(panel, false);
                     }
                 }
                 catch (err) { }
             });
-            var selectTab_1 = function (panel) {
-                DOM.find(iconbar, 'a').forEach(function (anchor) {
+            const selectTab = (panel) => {
+                DOM.find(iconbar, 'a').forEach((anchor) => {
                     anchor.classList.remove('mm-iconbar__tab--selected');
                 });
-                var anchor = DOM.find(iconbar, '[href="#' + panel.id + '"]')[0];
+                const anchor = DOM.find(iconbar, '[href="#' + panel.id + '"]')[0];
                 if (anchor) {
                     anchor.classList.add('mm-iconbar__tab--selected');
                 }
                 else {
-                    var parent_1 = DOM.find(_this.node.pnls, "#" + panel.dataset.mmParent)[0];
-                    if (parent_1) {
-                        selectTab_1(parent_1.closest('.mm-panel'));
+                    const parent = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
+                    if (parent) {
+                        selectTab(parent.closest('.mm-panel'));
                     }
                 }
             };
-            this.bind('openPanel:before', selectTab_1);
+            this.bind('openPanel:before', selectTab);
         }
     }
 }

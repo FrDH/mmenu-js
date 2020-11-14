@@ -3,7 +3,7 @@
         "src/**/*"
     ],
     "compilerOptions": {
-        "target": "es5",
+        "target": "es2016",
         "moduleResolution": "node",
         "resolveJsonModule": true,
     }

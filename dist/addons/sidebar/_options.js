@@ -1,4 +1,4 @@
-var options = {
+const options = {
     collapsed: {
         use: false,
         blockMenu: true

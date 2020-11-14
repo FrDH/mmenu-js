@@ -1,4 +1,4 @@
-var configs = {
+const configs = {
     clone: false,
     menu: {
         insertMethod: 'prepend',

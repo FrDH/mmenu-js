@@ -17,7 +17,7 @@ export function add(text, language) {
  * @param   {string} language   The language to search in.
  * @return  {string}            The translated text.
  */
-export var get = function (text, language) {
+export const get = (text, language) => {
     if (typeof language === 'string' &&
         typeof translations[language] !== 'undefined') {
         return translations[language][text] || text;

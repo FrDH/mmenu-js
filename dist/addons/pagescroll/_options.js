@@ -1,4 +1,4 @@
-var options = {
+const options = {
     scroll: false,
     update: false
 };

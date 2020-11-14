@@ -14,9 +14,9 @@ function ucFirst(word) {
  * @param {string}      evnt        The event to listen to.
  * @param {funcion}     handler     The function to invoke.
  */
-export var on = function (element, evnt, handler) {
+export const on = (element, evnt, handler) => {
     //  Extract the event name and space from the event (the event can include a namespace (click.foo)).
-    var evntParts = evnt.split('.');
+    const evntParts = evnt.split('.');
     evnt = 'mmEvent' + ucFirst(evntParts[0]) + ucFirst(evntParts[1]);
     element[evnt] = element[evnt] || [];
     element[evnt].push(handler);
@@ -27,11 +27,11 @@ export var on = function (element, evnt, handler) {
  * @param {HTMLElement} element The element to remove the event listeners from.
  * @param {string}      evnt    The event to remove.
  */
-export var off = function (element, evnt) {
+export const off = (element, evnt) => {
     //  Extract the event name and space from the event (the event can include a namespace (click.foo)).
-    var evntParts = evnt.split('.');
+    const evntParts = evnt.split('.');
     evnt = 'mmEvent' + ucFirst(evntParts[0]) + ucFirst(evntParts[1]);
-    (element[evnt] || []).forEach(function (handler) {
+    (element[evnt] || []).forEach((handler) => {
         element.removeEventListener(evntParts[0], handler);
     });
 };
@@ -41,10 +41,10 @@ export var off = function (element, evnt) {
  * @param {string}      evnt        The event to trigger.
  * @param {object}      [options]   Options to pass to the handler.
  */
-export var trigger = function (element, evnt, options) {
-    var evntParts = evnt.split('.');
+export const trigger = (element, evnt, options) => {
+    const evntParts = evnt.split('.');
     evnt = 'mmEvent' + ucFirst(evntParts[0]) + ucFirst(evntParts[1]);
-    (element[evnt] || []).forEach(function (handler) {
+    (element[evnt] || []).forEach((handler) => {
         handler(options || {});
     });
 };

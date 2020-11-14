@@ -6,7 +6,6 @@ import { extend } from '../../_modules/helpers';
 //	Add the options.
 Mmenu.options.backButton = options;
 export default function () {
-    var _this = this;
     if (!this.opts.offCanvas) {
         return;
     }
@@ -16,32 +15,32 @@ export default function () {
     //	Close menu
     if (options.close) {
         var states = [];
-        var setStates = function () {
+        const setStates = () => {
             states = [_menu];
-            DOM.children(_this.node.pnls, '.mm-panel--opened, .mm-panel--parent').forEach(function (panel) {
+            DOM.children(this.node.pnls, '.mm-panel--opened, .mm-panel--parent').forEach((panel) => {
                 states.push('#' + panel.id);
             });
         };
-        this.bind('open:after', function () {
+        this.bind('open:after', () => {
             history.pushState(null, document.title, _menu);
         });
         this.bind('open:after', setStates);
         this.bind('openPanel:after', setStates);
-        this.bind('close:after', function () {
+        this.bind('close:after', () => {
             states = [];
             history.back();
             history.pushState(null, document.title, location.pathname + location.search);
         });
-        window.addEventListener('popstate', function (evnt) {
-            if (_this.node.menu.matches('.mm-menu--opened')) {
+        window.addEventListener('popstate', (evnt) => {
+            if (this.node.menu.matches('.mm-menu--opened')) {
                 if (states.length) {
                     states = states.slice(0, -1);
                     var hash = states[states.length - 1];
                     if (hash == _menu) {
-                        _this.close();
+                        this.close();
                     }
                     else {
-                        _this.openPanel(_this.node.menu.querySelector(hash));
+                        this.openPanel(this.node.menu.querySelector(hash));
                         history.pushState(null, document.title, _menu);
                     }
                 }
@@ -49,9 +48,9 @@ export default function () {
         });
     }
     if (options.open) {
-        window.addEventListener('popstate', function (evnt) {
-            if (!_this.node.menu.matches('.mm-menu--opened') && location.hash == _menu) {
-                _this.open();
+        window.addEventListener('popstate', (evnt) => {
+            if (!this.node.menu.matches('.mm-menu--opened') && location.hash == _menu) {
+                this.open();
             }
         });
     }

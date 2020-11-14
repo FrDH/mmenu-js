@@ -4,10 +4,9 @@
  * @param 	{string}		selector	The nodeName and classnames for the element to create.
  * @return	{HTMLElement}				The created element.
  */
-export var create = function (selector) {
-    var _a;
-    var args = selector.split('.'), elem = document.createElement(args.shift());
-    (_a = elem.classList).add.apply(_a, args);
+export const create = (selector) => {
+    const args = selector.split('.'), elem = document.createElement(args.shift());
+    elem.classList.add(...args);
     return elem;
 };
 /**
@@ -18,7 +17,7 @@ export var create = function (selector) {
  * @param 	{string}		filter	The filter to match.
  * @return	{array}					Array of elements that match the filter.
  */
-export var find = function (element, filter) {
+export const find = (element, filter) => {
     return filter.length ? Array.prototype.slice.call(element.querySelectorAll(filter)) : [];
 };
 /**
@@ -28,10 +27,10 @@ export var find = function (element, filter) {
  * @param 	{string}		filter	The filter to match.
  * @return	{array}					Array of child elements that match the filter.
  */
-export var children = function (element, filter) {
-    var children = Array.prototype.slice.call(element.children);
+export const children = (element, filter) => {
+    const children = Array.prototype.slice.call(element.children);
     return filter
-        ? children.filter(function (child) { return child.matches(filter); })
+        ? children.filter((child) => child.matches(filter))
         : children;
 };
 /**
@@ -39,11 +38,11 @@ export var children = function (element, filter) {
  * @param   {HTMLElement}   element Element to search in.
  * @return  {string}                The text.
  */
-export var text = function (element) {
+export const text = (element) => {
     return Array.prototype.slice
         .call(element.childNodes)
-        .filter(function (child) { return child.nodeType == 3; })
-        .map(function (child) { return child.textContent; })
+        .filter((child) => child.nodeType == 3)
+        .map((child) => child.textContent)
         .join(' ');
 };
 /**
@@ -53,17 +52,17 @@ export var text = function (element) {
  * @param 	{string}		filter	The filter to match.
  * @return	{array}					Array of preceding elements that match the selector.
  */
-export var parents = function (element, filter) {
+export const parents = (element, filter) => {
     /** Array of preceding elements that match the selector. */
-    var parents = [];
+    let parents = [];
     /** Array of preceding elements that match the selector. */
-    var parent = element.parentElement;
+    let parent = element.parentElement;
     while (parent) {
         parents.push(parent);
         parent = parent.parentElement;
     }
     return filter
-        ? parents.filter(function (parent) { return parent.matches(filter); })
+        ? parents.filter((parent) => parent.matches(filter))
         : parents;
 };
 /**
@@ -73,11 +72,11 @@ export var parents = function (element, filter) {
  * @param 	{string}		filter	The filter to match.
  * @return	{array}					Array of previous siblings that match the selector.
  */
-export var prevAll = function (element, filter) {
+export const prevAll = (element, filter) => {
     /** Array of previous siblings that match the selector. */
-    var previous = [];
+    let previous = [];
     /** Current element in the loop */
-    var current = element.previousElementSibling;
+    let current = element.previousElementSibling;
     while (current) {
         if (!filter || current.matches(filter)) {
             previous.push(current);
@@ -93,7 +92,7 @@ export var prevAll = function (element, filter) {
  * @param 	{string}		 [direction=top] 	Offset top or left.
  * @return	{number}							The element offset relative to the document.
  */
-export var offset = function (element, direction) {
+export const offset = (element, direction) => {
     return (element.getBoundingClientRect()[direction] +
         document.body[direction === 'left' ? 'scrollLeft' : 'scrollTop']);
 };
@@ -102,20 +101,20 @@ export var offset = function (element, direction) {
  * @param  {array} listitems 	Elements to filter.
  * @return {array}				The filtered set of listitems.
  */
-export var filterLI = function (listitems) {
-    return listitems.filter(function (listitem) { return !listitem.matches('.mm-hidden'); });
+export const filterLI = (listitems) => {
+    return listitems.filter((listitem) => !listitem.matches('.mm-hidden'));
 };
 /**
  * Find anchors in listitems (excluding anchor that open a sub-panel).
  * @param  {array} 	listitems 	Elements to filter.
  * @return {array}				The found set of anchors.
  */
-export var filterLIA = function (listitems) {
-    var anchors = [];
-    filterLI(listitems).forEach(function (listitem) {
-        anchors.push.apply(anchors, children(listitem, 'a.mm-listitem__text'));
+export const filterLIA = (listitems) => {
+    let anchors = [];
+    filterLI(listitems).forEach((listitem) => {
+        anchors.push(...children(listitem, 'a.mm-listitem__text'));
     });
-    return anchors.filter(function (anchor) { return !anchor.matches('.mm-btn--next'); });
+    return anchors.filter((anchor) => !anchor.matches('.mm-btn--next'));
 };
 /**
  * Refactor a classname on multiple elements.
@@ -123,7 +122,7 @@ export var filterLIA = function (listitems) {
  * @param {string}		oldClass 	Classname to remove.
  * @param {string}		newClass 	Classname to add.
  */
-export var reClass = function (element, oldClass, newClass) {
+export const reClass = (element, oldClass, newClass) => {
     if (element.matches('.' + oldClass)) {
         element.classList.remove(oldClass);
         element.classList.add(newClass);

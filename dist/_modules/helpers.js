@@ -6,14 +6,14 @@
  * @param 	{object}	dfault	The object to extend from.
  * @return	{object}			The extended "orignl" object.
  */
-export var extend = function (orignl, dfault) {
+export const extend = (orignl, dfault) => {
     if (type(orignl) != 'object') {
         orignl = {};
     }
     if (type(dfault) != 'object') {
         dfault = {};
     }
-    for (var k in dfault) {
+    for (let k in dfault) {
         if (!dfault.hasOwnProperty(k)) {
             continue;
         }
@@ -32,9 +32,9 @@ export var extend = function (orignl, dfault) {
  * @param   {HTMLElement} surface   The element to monitor for touch events.
  * @return  {object}                Object with "get" function.
  */
-export var touchDirection = function (surface) {
-    var direction = '';
-    surface.addEventListener('touchmove', function (evnt) {
+export const touchDirection = (surface) => {
+    let direction = '';
+    surface.addEventListener('touchmove', (evnt) => {
         direction = '';
         if (evnt.movementY > 0) {
             direction = 'down';
@@ -44,7 +44,7 @@ export var touchDirection = function (surface) {
         }
     });
     return {
-        get: function () { return direction; },
+        get: () => direction,
     };
 };
 /**
@@ -53,7 +53,7 @@ export var touchDirection = function (surface) {
  * @param 	{any}		variable	The variable.
  * @return	{string}				The type of the variable in lowercase.
  */
-export var type = function (variable) {
+export const type = (variable) => {
     return {}.toString
         .call(variable)
         .match(/\s([a-zA-Z]+)/)[1]
@@ -62,15 +62,15 @@ export var type = function (variable) {
 /**
  * Get a (page wide) unique ID.
  */
-export var uniqueId = function () {
-    return "mm-" + __id++;
+export const uniqueId = () => {
+    return `mm-${__id++}`;
 };
-var __id = 0;
+let __id = 0;
 /**
  * Get the original ID from a possibly prefixed ID.
  * @param id The possibly prefixed ID.
  */
-export var originalId = function (id) {
+export const originalId = (id) => {
     if (id.slice(0, 3) == 'mm-') {
         return id.slice(3);
     }

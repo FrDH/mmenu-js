@@ -65,7 +65,7 @@ const JStranspile = (cb, input, output) => {
     ])
         .pipe(
             typescript({
-                target: 'es5',
+                target: 'es2016',
                 module: 'es6',
                 moduleResolution: 'node',
                 resolveJsonModule: true,
