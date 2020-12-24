@@ -1,7 +1,6 @@
 const options: mmOptions = {
     hooks: {},
     extensions: [],
-    wrappers: [],
     navbar: {
         add: true,
         title: 'Menu',

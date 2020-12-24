@@ -38,7 +38,6 @@ export default class Mmenu {
             this._deprecatedWarnings();
         }
         this._initObservers();
-        this._initWrappers();
         this._initAddons();
         this._initExtensions();
         this._initHooks();
@@ -226,21 +225,6 @@ export default class Mmenu {
         for (let hook in this.opts.hooks) {
             this.bind(hook, this.opts.hooks[hook]);
         }
-    }
-    /**
-     * Initialize the wrappers specified in the options.
-     */
-    _initWrappers() {
-        //	Invoke "before" hook.
-        this.trigger('initWrappers:before');
-        for (let w = 0; w < this.opts.wrappers.length; w++) {
-            let wrpr = Mmenu.wrappers[this.opts.wrappers[w]];
-            if (typeof wrpr == 'function') {
-                wrpr.call(this);
-            }
-        }
-        //	Invoke "after" hook.
-        this.trigger('initWrappers:after');
     }
     /**
      * Initialize all available add-ons.
@@ -608,8 +592,6 @@ Mmenu.options = options;
 Mmenu.configs = configs;
 /**	Available add-ons for the plugin. */
 Mmenu.addons = {};
-/** Available wrappers for the plugin. */
-Mmenu.wrappers = {};
 /**	Globally used HTML elements. */
 Mmenu.node = {};
 /** Globally used variables. */

@@ -11,7 +11,6 @@ export default function (this: Mmenu) {
 
     const options = extendShorthandOptions(this.opts.keyboardNavigation);
     this.opts.keyboardNavigation = extend(options, Mmenu.options.keyboardNavigation);
-    console.log(this.opts);
 
     if (!this.opts.keyboardNavigation.enable) {
         return;

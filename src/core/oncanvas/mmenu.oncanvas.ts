@@ -4,7 +4,6 @@ import translate from './translations';
 import * as DOM from '../../_modules/dom';
 import * as i18n from '../../_modules/i18n';
 import * as media from '../../_modules/matchmedia';
-import * as sr from '../../_modules/screenreader';
 import {
     type,
     extend,
@@ -27,9 +26,6 @@ export default class Mmenu {
 
     /**	Available add-ons for the plugin. */
     static addons: mmLooseObject = {};
-
-    /** Available wrappers for the plugin. */
-    static wrappers: mmFunctionObject = {};
 
     /**	Globally used HTML elements. */
     static node: mmHtmlObject = {};
@@ -120,7 +116,6 @@ export default class Mmenu {
 
         this._initObservers();
 
-        this._initWrappers();
         this._initAddons();
         this._initExtensions();
 
@@ -352,24 +347,6 @@ export default class Mmenu {
         for (let hook in this.opts.hooks) {
             this.bind(hook, this.opts.hooks[hook]);
         }
-    }
-
-    /**
-     * Initialize the wrappers specified in the options.
-     */
-    _initWrappers() {
-        //	Invoke "before" hook.
-        this.trigger('initWrappers:before');
-
-        for (let w = 0; w < this.opts.wrappers.length; w++) {
-            let wrpr = Mmenu.wrappers[this.opts.wrappers[w]];
-            if (typeof wrpr == 'function') {
-                wrpr.call(this);
-            }
-        }
-
-        //	Invoke "after" hook.
-        this.trigger('initWrappers:after');
     }
 
     /**

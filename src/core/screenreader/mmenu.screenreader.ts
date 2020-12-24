@@ -25,102 +25,51 @@ export default function (this: Mmenu) {
     //	Add Aria-* attributes
     if (options.aria) {
 
-
-        //	Update aria-hidden for hidden / visible listitems
-        this.bind('updateListview', () => {
-            DOM.find(this.node.pnls, '.mm-listitem').forEach((listitem) => {
-                sr.aria(listitem, 'hidden', listitem.matches('.mm-hidden'));
-            });
-        });
-
-        //	Update aria-hidden for the panels when opening and closing a panel.
-        this.bind('openPanel:before', (panel: HTMLElement) => {
-            /** Panels that should be considered "hidden". */
-            var hidden: HTMLElement[] = DOM.find(this.node.pnls, '.mm-panel')
-                .filter((hide) => hide !== panel)
-                .filter((hide) => !hide.parentElement.matches('.mm-panel'));
-
-            /** Panels that should be considered "visible". */
-            var visible: HTMLElement[] = [panel];
-            DOM.find(
-                panel,
-                '.mm-listitem--vertical .mm-listitem--opened'
-            ).forEach((listitem) => {
-                visible.push(...DOM.children(listitem, '.mm-panel'));
-            });
-
-            //	Set the panels to be considered "hidden" or "visible".
-            hidden.forEach((panel) => {
-                sr.aria(panel, 'hidden', true);
-            });
-            visible.forEach((panel) => {
-                sr.aria(panel, 'hidden', false);
-            });
-        });
-
-        this.bind('closePanel', (panel: HTMLElement) => {
-            sr.aria(panel, 'hidden', true);
-        });
-
-        //	Add aria-haspopup to buttons.
-        this.bind('initPanel:after', (panel: HTMLElement) => {
-            DOM.find(panel, '.mm-btn').forEach((button) => {
+        //	Add aria-haspopup to listitem buttons.
+        this.bind('initListitem:after', (listitem: HTMLElement) => {
+            DOM.find(listitem, '.mm-btn').forEach((button) => {
                 sr.aria(button, 'haspopup', true);
             });
         });
 
-        //	Add aria-hidden for navbars in panels.
-        this.bind('initNavbar:after', (panel: HTMLElement) => {
-            /** The navbar in the panel. */
-            var navbar = DOM.children(panel, '.mm-navbar')[0];
-
-            /** Whether or not the navbar should be considered "hidden". */
-            var hidden = navbar.matches('.mm-hidden');
-
-            //	Set the navbar to be considered "hidden" or "visible".
-            sr.aria(navbar, 'hidden', hidden);
+        //  Set aria-hidden for panels.
+        this.bind('initPanel:after', (panel: HTMLElement) => {
+            sr.aria(panel, 'hidden', true);
         });
 
-        //	Text
-        if (options.text) {
-            //	Add aria-hidden to titles in navbars
-            if (this.opts.navbar.titleLink == 'parent') {
-                this.bind('initNavbar:after', (panel: HTMLElement) => {
-                    /** The navbar in the panel. */
-                    var navbar = DOM.children(panel, '.mm-navbar')[0];
+        //	Update aria-hidden for the panels when opening a panel.
+        this.bind('openPanel:after', () => {
+            DOM.find(this.node.pnls, '.mm-panel').forEach(panel => {
+                //  Set a panel to be visible
+                if (panel.matches('.mm-panel--opened') ||
+                    panel.parentElement.matches('.mm-listitem--opened')
+                ) {
+                    sr.aria(panel, 'hidden', false);
 
-                    /** Whether or not the navbar should be considered "hidden". */
-                    var hidden = navbar.querySelector('.mm-btn--prev')
-                        ? true
-                        : false;
+                } else {
+                    sr.aria(panel, 'hidden', true);
+                }
+            });
+        });
 
-                    //	Set the navbar-title to be considered "hidden" or "visible".
-                    sr.aria(
-                        DOM.find(navbar, '.mm-navbar__title')[0],
-                        'hidden',
-                        hidden
-                    );
-                });
-            }
-        }
+        //	Update aria-hidden for the panels when closing a panel.
+        this.bind('closePanel:after', (panel: HTMLElement) => {
+            sr.aria(panel, 'hidden', true);
+        });
     }
 
     //	Add screenreader text
     if (options.text) {
-        //	Add screenreader hooks for add-ons
-        //	In orde to keep this list short, only extend hooks that are actually used by other add-ons.
-
 
         //	Add text to the prev-buttons.
         this.bind('initNavbar:after', (panel: HTMLElement) => {
-            let navbar = DOM.children(panel, '.mm-navbar')[0];
+            const navbar = DOM.children(panel, '.mm-navbar')[0];
+            console.log(navbar);
+
             if (navbar) {
-                let button = DOM.children(navbar, '.mm-btn--prev')[0];
-                if (button) {
-                    button.append(sr.text(
-                        this.i18n(configs.text.closeSubmenu)
-                    ));
-                }
+                DOM.children(navbar, '.mm-btn--prev')[0]?.append(sr.text(
+                    this.i18n(configs.text.closeSubmenu)
+                ));
             }
         });
 

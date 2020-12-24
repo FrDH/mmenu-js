@@ -11,8 +11,8 @@ import Mmenu from '../dist/core/oncanvas/mmenu.oncanvas';
 
 //	Core add-ons
 import offcanvas from '../dist/core/offcanvas/mmenu.offcanvas';
-import screenReader from '../dist/core/screenreader/mmenu.screenreader';
 import keyboardNavigation from '../dist/core/keyboardnavigation/mmenu.keyboardnavigation';
+import screenReader from '../dist/core/screenreader/mmenu.screenreader';
 import scrollBugFix from '../dist/core/scrollbugfix/mmenu.scrollbugfix';
 
 //	Add-ons
@@ -28,12 +28,11 @@ import setSelected from '../dist/addons/setselected/mmenu.setselected';
 import sidebar from '../dist/addons/sidebar/mmenu.sidebar';
 import toggles from '../dist/addons/toggles/mmenu.toggles';
 
-//	Wrappers
-import bootstrap from '../dist/wrappers/bootstrap/mmenu.bootstrap';
 
 Mmenu.addons = {
     //	Core add-ons
     offcanvas,
+    keyboardNavigation,
     screenReader,
     scrollBugFix,
 
@@ -42,7 +41,6 @@ Mmenu.addons = {
     counters,
     iconbar,
     iconPanels,
-    keyboardNavigation,
     navbars,
     pageScroll,
     searchfield,
@@ -50,11 +48,6 @@ Mmenu.addons = {
     setSelected,
     sidebar,
     toggles
-};
-
-//	Wrappers
-Mmenu.wrappers = {
-    bootstrap,
 };
 
 //  Export module

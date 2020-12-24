@@ -72,13 +72,13 @@ interface mmOptions {
     /** Whether or not submenus should come sliding in from the right. */
     slidingSubmenus?: boolean;
 
-    /** A collection of framework wrappers to enable for the menu. */
-    wrappers?: string[];
-
     //	Core add-ons
 
     /** Options for the off-canvas add-on. */
     offCanvas?: mmOptionsOffcanvas;
+
+    /** Options for the keyboard navigation add-on. */
+    keyboardNavigation?: mmOptionsKeyboardnavigation;
 
     /** Options for the screen reader add-on. */
     screenReader?: mmOptionsScreenreader;
@@ -99,9 +99,6 @@ interface mmOptions {
 
     /** Options for the icon panels add-on. */
     iconPanels?: mmOptionsIconpanels;
-
-    /** Options for the keyboard navigation add-on. */
-    keyboardNavigation?: mmOptionsKeyboardnavigation;
 
     /** List of navbar options for the navbars add-on. */
     navbars?: mmOptionsNavbarsNavbar[];

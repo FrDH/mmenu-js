@@ -148,7 +148,6 @@ Mmenu.prototype.open = function (this: Mmenu) {
     //	Add screenreader support
     sr.aria(this.node.menu, 'hidden', false);
     sr.aria(Mmenu.node.blck, 'hidden', false);
-    // sr.aria(Mmenu.node.page, 'disabled', true);
 
     //	Invoke "after" hook.
     this.trigger('open:after');

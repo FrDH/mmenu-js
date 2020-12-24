@@ -132,7 +132,11 @@ export default function Navbars(this: Mmenu) {
             navbar.classList.add('mm-hidden');
             sr.aria(navbar, 'hidden', true);
         };
-        if (typeof options.use != 'boolean') {
+
+        if (typeof options.use == 'boolean') {
+            this.bind('initMenu:after', enable);
+
+        } else {
             media.add(options.use, enable, disable);
         }
     });

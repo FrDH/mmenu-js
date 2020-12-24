@@ -26,14 +26,19 @@ export default function (navbar) {
         else {
             prev.removeAttribute('href');
         }
-        prev.classList[_url || _txt ? 'remove' : 'add']('mm-hidden');
+        if (_url || _txt) {
+            prev.classList.remove('mm-hidden');
+            sr.aria(prev, 'hidden', false);
+        }
+        else {
+            prev.classList.add('mm-hidden');
+            sr.aria(prev, 'hidden', true);
+        }
         prev.innerHTML = _txt;
     });
-    //	Add screenreader support
+    //	Add screenreader support, 
+    //  aria-hidden for the navbar in the panel.
     this.bind('initNavbar:after', (panel) => {
         sr.aria(panel.querySelector('.mm-navbar'), 'hidden', true);
-    });
-    this.bind('openPanel:before', (panel) => {
-        sr.aria(prev, 'hidden', prev.matches('.mm-hidden'));
     });
 }

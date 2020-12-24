@@ -89,6 +89,7 @@
         //  Removed wrappers.
         [
             'angular',
+            'bootstrap',
             'magento',
             'olark',
             'turbolinks',
