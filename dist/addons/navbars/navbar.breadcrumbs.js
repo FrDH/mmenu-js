@@ -17,12 +17,8 @@ export default function (navbar) {
                     let text = title.textContent;
                     if (text.length) {
                         crumbs.unshift(first
-                            ? '<span>' + text + '</span>'
-                            : '<a href="#' +
-                                current.id +
-                                '">' +
-                                text +
-                                '</a>');
+                            ? `<span>${text}</span>`
+                            : `<a href="#${current.id}">${text}</a>`);
                     }
                 }
                 first = false;

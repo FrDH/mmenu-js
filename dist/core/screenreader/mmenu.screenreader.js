@@ -52,8 +52,8 @@ export default function () {
         //	Add text to the prev-buttons.
         this.bind('initNavbar:after', (panel) => {
             var _a;
+            /** The navbar */
             const navbar = DOM.children(panel, '.mm-navbar')[0];
-            console.log(navbar);
             if (navbar) {
                 (_a = DOM.children(navbar, '.mm-btn--prev')[0]) === null || _a === void 0 ? void 0 : _a.append(sr.text(this.i18n(configs.text.closeSubmenu)));
             }

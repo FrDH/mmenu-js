@@ -28,12 +28,8 @@ export default function (this: Mmenu, navbar: HTMLElement) {
                     if (text.length) {
                         crumbs.unshift(
                             first
-                                ? '<span>' + text + '</span>'
-                                : '<a href="#' +
-                                current.id +
-                                '">' +
-                                text +
-                                '</a>'
+                                ? `<span>${text}</span>`
+                                : `<a href="#${current.id}">${text}</a>`
                         );
                     }
                 }

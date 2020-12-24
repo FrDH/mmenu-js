@@ -63,8 +63,8 @@ export default function (this: Mmenu) {
 
         //	Add text to the prev-buttons.
         this.bind('initNavbar:after', (panel: HTMLElement) => {
+            /** The navbar */
             const navbar = DOM.children(panel, '.mm-navbar')[0];
-            console.log(navbar);
 
             if (navbar) {
                 DOM.children(navbar, '.mm-btn--prev')[0]?.append(sr.text(

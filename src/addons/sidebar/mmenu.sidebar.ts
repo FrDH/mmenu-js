@@ -9,6 +9,7 @@ import { extend } from '../../_modules/helpers';
 Mmenu.options.sidebar = options;
 
 export default function (this: Mmenu) {
+    // only for off-canvas menus.
     if (!this.opts.offCanvas) {
         return;
     }
@@ -24,13 +25,14 @@ export default function (this: Mmenu) {
 
             if (
                 options.collapsed.blockMenu &&
-                this.opts.offCanvas &&
                 !DOM.children(this.node.menu, '.mm-menu__blocker')[0]
             ) {
-                let anchor = DOM.create('a.mm-menu__blocker');
-                anchor.setAttribute('href', '#' + this.node.menu.id);
+                const blocker = DOM.create('a.mm-menu__blocker');
+                blocker.setAttribute('href', `#${this.node.menu.id}`);
 
-                this.node.menu.prepend(anchor);
+                //  todo: screenreader text
+
+                this.node.menu.prepend(blocker);
             }
         });
 
@@ -55,14 +57,16 @@ export default function (this: Mmenu) {
             this.node.menu.classList.add('mm-menu--sidebar-expanded');
         });
 
+        let expandedEnabled = false;
+
         //	En-/disable the expanded sidebar.
         let enable = () => {
+            expandedEnabled = true;
             this.node.wrpr.classList.add('mm-wrapper--sidebar-expanded');
-            if (!this.node.wrpr.matches('.mm-wrapper--sidebar-closed')) {
-                this.open();
-            }
+            this.open();
         };
         let disable = () => {
+            expandedEnabled = false;
             this.node.wrpr.classList.remove('mm-wrapper--sidebar-expanded');
             this.close();
         };
@@ -72,43 +76,34 @@ export default function (this: Mmenu) {
             media.add(options.expanded.use, enable, disable);
         }
 
-        //  Manually en-/disable the expanded sidebar (open / close the menu)
+        //  Store exanded state when opening and closing the menu.
         this.bind('close:after', () => {
-            if (this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
-                this.node.wrpr.classList.add('mm-wrapper--sidebar-closed');
-
-                if (options.expanded.initial == 'remember') {
-                    window.localStorage.setItem('mmenuExpandedState', 'closed');
-                }
+            if (expandedEnabled) {
+                window.sessionStorage.setItem('mmenuExpandedState', 'closed');
             }
         });
 
         this.bind('open:after', () => {
-            if (this.node.wrpr.matches('.mm-wrapper--sidebar-expanded')) {
-                this.node.wrpr.classList.remove('mm-wrapper--sidebar-closed');
-
-                if (options.expanded.initial == 'remember') {
-                    window.localStorage.setItem('mmenuExpandedState', 'open');
-                }
+            if (expandedEnabled) {
+                window.sessionStorage.setItem('mmenuExpandedState', 'open');
             }
         });
 
         //  Set the initial state
-        var initialState = options.expanded.initial;
+        let initialState = options.expanded.initial;
 
-        if (options.expanded.initial == 'remember') {
-            let state = window.localStorage.getItem('mmenuExpandedState');
-            switch (state) {
-                case 'open':
-                case 'closed':
-                    initialState = state;
-                    break;
-            }
+        const state = window.sessionStorage.getItem('mmenuExpandedState');
+        switch (state) {
+            case 'open':
+            case 'closed':
+                initialState = state;
+                break;
         }
 
         if (initialState == 'closed') {
-            this.bind('initMenu:after', () => {
-                this.node.wrpr.classList.add('mm-wrapper--sidebar-closed');
+            this.bind('initMedia:after', () => {
+                // TODO: dit gebeurt te vroeg
+                this.close();
             });
         }
     }

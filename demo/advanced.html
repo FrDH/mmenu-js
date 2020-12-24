@@ -105,7 +105,7 @@
         new Mmenu(
             document.querySelector('#menu'),
             {
-                extensions: ['theme-dark', 'shadow-page'],
+                extensions: ['theme-dark'],
                 setSelected: true,
                 counters: true,
                 searchfield: {
@@ -130,6 +130,7 @@
                     },
                     expanded: {
                         use: '(min-width: 992px)',
+                        initial: 'closed'
                     },
                 },
                 navbars: [

@@ -126,7 +126,7 @@ export default class Mmenu {
         this._initPanels();
         this._initOpened();
 
-        media.watch();
+        this._initMedia();
 
         return this;
     }
@@ -824,6 +824,19 @@ export default class Mmenu {
 
         //	Invoke "after" hook.
         this.trigger('initOpened:after');
+    }
+
+    /**
+     * Start watching the media queries.
+     */
+    _initMedia() {
+        //	Invoke "before" hook.
+        this.trigger('initMedia:before');
+
+        media.watch();
+
+        //	Invoke "after" hook.
+        this.trigger('initMedia:after');
     }
 
     /**

@@ -41,7 +41,9 @@
 .mm-slideout {
     position: relative;
     z-index: 1;
-    transition: transform $mm_transitionDuration $mm_transitionFunction;
+    width: 100%;
+    transition: width $mm_transitionDuration $mm_transitionFunction, 
+        transform $mm_transitionDuration $mm_transitionFunction;
 
     .mm-wrapper--opened & {
         transform: translate3d(

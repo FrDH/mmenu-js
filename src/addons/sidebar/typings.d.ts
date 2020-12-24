@@ -22,5 +22,5 @@ interface mmOptionsSidebarExpanded {
     use?: boolean | string | number;
 
     /** The initial state */
-    initial?: 'open' | 'closed' | 'remember';
+    initial?: 'open' | 'closed';
 }
