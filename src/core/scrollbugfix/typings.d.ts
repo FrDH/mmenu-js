@@ -1,4 +1,6 @@
 //	Add-on options interface.
 interface mmOptionsScrollbugfix {
-	fix ?: boolean
+
+	/** Whether or not to fix the scrolling bug. */
+	fix?: boolean
 }

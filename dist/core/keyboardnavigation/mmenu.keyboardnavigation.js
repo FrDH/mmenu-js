@@ -8,10 +8,13 @@ Mmenu.options.keyboardNavigation = options;
 export default function () {
     const options = extendShorthandOptions(this.opts.keyboardNavigation);
     this.opts.keyboardNavigation = extend(options, Mmenu.options.keyboardNavigation);
+    console.log(this.opts);
     if (!this.opts.keyboardNavigation.enable) {
         return;
     }
-    // todo alleen bij off-canvas?
+    if (!this.opts.offCanvas.use) {
+        return;
+    }
     //  Add tabindex="-1" to the menu and blocker so they can be focussed.
     this.bind('initMenu:after', () => {
         this.node.menu.setAttribute('tabindex', '-1');
@@ -34,28 +37,23 @@ export default function () {
     this.bind('openPanel:after', () => {
         this.node.menu.focus();
     });
-    //  Prevent tabbing outside the menu.
-    //      1) If the menu is opened
-    //      2) and the focus is not inside the menu
-    //      3) and the focus is not inside the blocker:
-    //      4) Set focus to the blocker
+    //  Prevent tabbing outside the menu,
+    //  set focus to the blocker when:
+    //      1) the menu is opened,
+    //      2) the focus is not inside the menu,
+    //      3) the focus is not inside the blocker.
     document.addEventListener('focusin', evnt => {
         var _a, _b;
         if (this.node.menu.matches('.mm-menu--opened')) { // 1
             if (!((_a = evnt.target) === null || _a === void 0 ? void 0 : _a.closest(`#${this.node.menu.id}`)) && // 2
                 !((_b = evnt.target) === null || _b === void 0 ? void 0 : _b.closest(`#${Mmenu.node.blck.id}`)) // 3
             ) {
-                Mmenu.node.blck.focus(); // 4
+                Mmenu.node.blck.focus();
             }
         }
     });
-    //  Enhanced behavior
+    //	Add Additional keyboard behavior.
     if (this.opts.keyboardNavigation.enhance) {
-        //  Add :hover like styles for :focus
-        this.bind('initMenu:after', () => {
-            this.node.menu.classList.add('mm-menu--keyboardfocus');
-        });
-        //	Add Additional keyboard behavior.
         this.node.menu.addEventListener('keydown', (evnt) => {
             switch (evnt.key) {
                 //	close submenu with backspace

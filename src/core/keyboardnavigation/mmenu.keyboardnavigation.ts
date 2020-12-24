@@ -11,12 +11,15 @@ export default function (this: Mmenu) {
 
     const options = extendShorthandOptions(this.opts.keyboardNavigation);
     this.opts.keyboardNavigation = extend(options, Mmenu.options.keyboardNavigation);
+    console.log(this.opts);
 
     if (!this.opts.keyboardNavigation.enable) {
         return;
     }
 
-    // todo alleen bij off-canvas?
+    if (!this.opts.offCanvas.use) {
+        return;
+    }
 
     //  Add tabindex="-1" to the menu and blocker so they can be focussed.
     this.bind('initMenu:after', () => {
@@ -45,18 +48,18 @@ export default function (this: Mmenu) {
         this.node.menu.focus();
     });
 
-    //  Prevent tabbing outside the menu.
-    //      1) If the menu is opened
-    //      2) and the focus is not inside the menu
-    //      3) and the focus is not inside the blocker:
-    //      4) Set focus to the blocker
+    //  Prevent tabbing outside the menu,
+    //  set focus to the blocker when:
+    //      1) the menu is opened,
+    //      2) the focus is not inside the menu,
+    //      3) the focus is not inside the blocker.
     document.addEventListener('focusin', evnt => {
 
         if (this.node.menu.matches('.mm-menu--opened')) { // 1
             if (!(evnt.target as HTMLElement)?.closest(`#${this.node.menu.id}`) && // 2
                 !(evnt.target as HTMLElement)?.closest(`#${Mmenu.node.blck.id}`) // 3
             ) {
-                Mmenu.node.blck.focus(); // 4
+                Mmenu.node.blck.focus();
             }
         }
     });
