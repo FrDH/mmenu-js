@@ -48,13 +48,6 @@ export default function (this: Mmenu) {
 
         //	Store the blocker node.
         Mmenu.node.blck = blocker;
-
-        // TODO, dit kan ook de blocker zelf zijn??
-        // const tabstart = DOM.create('a.mm-tabguard.mm-tabguard--fill');
-
-        // blocker.append(tabstart);
-
-
     }
 
     //	Sync the blocker to target the page.

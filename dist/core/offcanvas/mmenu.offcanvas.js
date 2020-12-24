@@ -30,9 +30,6 @@ export default function () {
         blocker.append(sr.text(this.i18n(this.conf.screenReader.text.closeMenu)));
         //	Store the blocker node.
         Mmenu.node.blck = blocker;
-        // TODO, dit kan ook de blocker zelf zijn??
-        // const tabstart = DOM.create('a.mm-tabguard.mm-tabguard--fill');
-        // blocker.append(tabstart);
     }
     //	Sync the blocker to target the page.
     this.bind('setPage:after', () => {

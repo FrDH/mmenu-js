@@ -55,7 +55,6 @@ export default class Mmenu {
      * @param {boolean}     [animation=true]    Whether or not to use an animation.
      */
     openPanel(panel, animation = true) {
-        var _a;
         //	Find panel.
         if (!panel) {
             return;
@@ -98,8 +97,6 @@ export default class Mmenu {
                 parent = DOM.find(this.node.pnls, `#${parent.dataset.mmParent}`)[0];
             }
         }
-        //  Focus the tabstart node
-        (_a = DOM.children(panel, '.mm-tabguard--start')[0]) === null || _a === void 0 ? void 0 : _a.focus();
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel]);
     }
@@ -393,11 +390,6 @@ export default class Mmenu {
         DOM.children(panel, 'ul, ol').forEach((listview) => {
             this._initListview(listview);
         });
-        //  Add tabstart for keyboard navigation
-        // const tabstart = DOM.create('button.mm-tabguard.mm-tabguard--start');
-        // tabstart.setAttribute('type', 'button');
-        // sr.aria(tabstart, 'disabled', true);
-        // panel.prepend(tabstart);
         // Observe the panel for added listviews.
         this.panelObserver.observe(panel, {
             childList: true,

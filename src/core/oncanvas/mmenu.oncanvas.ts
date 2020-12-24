@@ -195,9 +195,6 @@ export default class Mmenu {
             }
         }
 
-        //  Focus the tabstart node
-        DOM.children(panel, '.mm-tabguard--start')[0]?.focus();
-
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel]);
     }
@@ -566,12 +563,6 @@ export default class Mmenu {
         DOM.children(panel, 'ul, ol').forEach((listview) => {
             this._initListview(listview);
         });
-
-        //  Add tabstart for keyboard navigation
-        // const tabstart = DOM.create('button.mm-tabguard.mm-tabguard--start');
-        // tabstart.setAttribute('type', 'button');
-        // sr.aria(tabstart, 'disabled', true);
-        // panel.prepend(tabstart);
 
         // Observe the panel for added listviews.
         this.panelObserver.observe(panel, {
