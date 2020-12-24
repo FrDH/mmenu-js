@@ -568,10 +568,10 @@ export default class Mmenu {
         });
 
         //  Add tabstart for keyboard navigation
-        const tabstart = DOM.create('button.mm-tabguard.mm-tabguard--start');
-        tabstart.setAttribute('type', 'button');
-        sr.aria(tabstart, 'disabled', true);
-        panel.prepend(tabstart);
+        // const tabstart = DOM.create('button.mm-tabguard.mm-tabguard--start');
+        // tabstart.setAttribute('type', 'button');
+        // sr.aria(tabstart, 'disabled', true);
+        // panel.prepend(tabstart);
 
         // Observe the panel for added listviews.
         this.panelObserver.observe(panel, {

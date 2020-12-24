@@ -6,7 +6,7 @@ import { extend } from '../../_modules/helpers';
 //	Add the options.
 Mmenu.options.iconPanels = options;
 export default function () {
-    var options = extendShorthandOptions(this.opts.iconPanels);
+    const options = extendShorthandOptions(this.opts.iconPanels);
     this.opts.iconPanels = extend(options, Mmenu.options.iconPanels);
     var keepFirst = false;
     if (options.visible == 'first') {

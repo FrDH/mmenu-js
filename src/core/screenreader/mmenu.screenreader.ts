@@ -117,9 +117,9 @@ export default function (this: Mmenu) {
             if (navbar) {
                 let button = DOM.children(navbar, '.mm-btn--prev')[0];
                 if (button) {
-                    button.innerHTML = sr.text(
+                    button.append(sr.text(
                         this.i18n(configs.text.closeSubmenu)
-                    );
+                    ));
                 }
             }
         });
@@ -138,7 +138,7 @@ export default function (this: Mmenu) {
                             : 'openSubmenu'
                         ]
                     );
-                    next.innerHTML += sr.text(text);
+                    next.prepend(sr.text(text));
                 }
             }
         });

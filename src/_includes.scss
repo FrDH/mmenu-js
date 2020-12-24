@@ -1,18 +1,11 @@
 $mm_include_rtl: true !default;
 $mm_include_vertical: true !default;
 
+$mm_include_keyboardnavigation: true !default;
+
 $mm_include_offcanvas: true !default;
 
 $mm_include_screenreader: true !default;
-
-$mm_include_fullscreen: true !default;
-
-$mm_include_positioning: true !default;
-
-$mm_include_themes: true !default;
-$mm_include_themes_white: $mm_include_themes !default;
-$mm_include_themes_dark: $mm_include_themes !default;
-$mm_include_themes_black: $mm_include_themes !default;
 
 $mm_include_counters: true !default;
 
@@ -22,8 +15,6 @@ $mm_include_iconbar_tabs: $mm_include_iconbar !default;
 $mm_include_iconpanels: true !default;
 $mm_include_iconpanels_blocker: $mm_include_iconpanels !default;
 
-$mm_include_keyboardnavigation: true !default;
-
 $mm_include_navbars: true !default;
 $mm_include_navbars_top: $mm_include_navbars !default;
 $mm_include_navbars_bottom: $mm_include_navbars !default;
@@ -31,11 +22,11 @@ $mm_include_navbars_breadcrumbs: $mm_include_navbars !default;
 $mm_include_navbars_searchfield: $mm_include_navbars !default;
 $mm_include_navbars_tabs: $mm_include_navbars !default;
 
+$mm_include_sectionindexer: true !default;
+
 $mm_include_searchfield: true !default;
 $mm_include_searchfield_btn: $mm_include_searchfield !default;
 $mm_include_searchfield_searchpanel: $mm_include_searchfield !default;
-
-$mm_include_sectionindexer: true !default;
 
 $mm_include_setselected: true !default;
 
@@ -46,3 +37,12 @@ $mm_include_sidebar_blocker: $mm_include_sidebar !default;
 
 $mm_include_toggles: true !default;
 $mm_include_checks: true !default;
+
+$mm_include_fullscreen: true !default;
+
+$mm_include_positioning: true !default;
+
+$mm_include_themes: true !default;
+$mm_include_themes_white: $mm_include_themes !default;
+$mm_include_themes_dark: $mm_include_themes !default;
+$mm_include_themes_black: $mm_include_themes !default;

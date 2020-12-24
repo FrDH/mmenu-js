@@ -6,6 +6,30 @@
     --mm-max-size: #{$mm_menuMaxSize};
 }
 
+//	Menu
+.mm-menu--offcanvas {
+    position: fixed;
+    right: auto;
+    z-index: 0;
+    width: clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size));
+    transition: visibility 0s linear $mm_transitionDuration;
+
+    &.mm-menu--opened {
+        transition-delay: 0s;
+    }
+
+    &:not(.mm-menu--opened) {
+        visibility: hidden;
+        pointer-events: none;
+
+        // Visible panels undo the hidden menu :/
+        .mm-panel {
+            visibility: hidden;
+            transition: visibility 0s linear, $mm_transitionDuration;
+        }
+    }
+}
+
 //	Page node
 .mm-page {
     box-sizing: border-box;
@@ -37,30 +61,7 @@
     }
 }
 
-//	Menu
-.mm-menu--offcanvas {
-    position: fixed;
-    right: auto;
-    z-index: 0;
-    width: clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size));
-    transition: visibility 0s linear $mm_transitionDuration;
-
-    &.mm-menu--opened {
-        transition-delay: 0s;
-    }
-
-    &:not(.mm-menu--opened) {
-        visibility: hidden;
-        pointer-events: none;
-
-        // Visible panels undo the hidden menu.
-        .mm-panel {
-            visibility: hidden;
-            transition: visibility 0s linear, $mm_transitionDuration;
-        }
-    }
-}
-
+//  UI Blocker
 .mm-wrapper__blocker {
     visibility: hidden;
     position: fixed;
@@ -76,19 +77,26 @@
         left: 0;
         transition-delay: 0;
     }
+}
 
-    .mm-tabguard--fill {
-        opacity: 0;
-        background: rgba(#000, 0.3);
-        transition: opacity $mm_transitionDuration $mm_transitionFunction $mm_transitionDuration;
+//  Backdrop in UI blocker.
+.mm-wrapper__backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
-        .mm-menu--opened ~ & {
-            opacity: 0.5;
-        }
+    opacity: 0;
+    background: rgba(#000, 0.3);
+    transition: opacity $mm_transitionDuration $mm_transitionFunction $mm_transitionDuration;
 
-        &:focus {
-            opacity: 1;
-        }
+    .mm-wrapper--opened & {
+        opacity: 0.5;
+    }
+
+    .mm-wrapper__blocker:focus & {
+        opacity: 1;
     }
 }
 

@@ -1,7 +1,6 @@
 const options = {
-    add: false,
-    addTo: 'panels',
-    count: false
+    enable: true,
+    enhance: true
 };
 export default options;
 /**
@@ -11,18 +10,14 @@ export default options;
  * @return {object}			The extended options.
  */
 export function extendShorthandOptions(options) {
-    if (typeof options == 'boolean') {
+    if (typeof options == 'boolean' || typeof options == 'string') {
         options = {
-            add: options,
-            addTo: 'panels',
-            count: options
+            enable: options
         };
     }
     if (typeof options != 'object') {
         options = {};
     }
-    if (options.addTo == 'panels') {
-        options.addTo = '.mm-listview';
-    }
     return options;
 }
+;

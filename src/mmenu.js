@@ -12,6 +12,7 @@ import Mmenu from '../dist/core/oncanvas/mmenu.oncanvas';
 //	Core add-ons
 import offcanvas from '../dist/core/offcanvas/mmenu.offcanvas';
 import screenReader from '../dist/core/screenreader/mmenu.screenreader';
+import keyboardNavigation from '../dist/core/keyboardnavigation/mmenu.keyboardnavigation';
 import scrollBugFix from '../dist/core/scrollbugfix/mmenu.scrollbugfix';
 
 //	Add-ons
@@ -19,7 +20,6 @@ import backButton from '../dist/addons/backbutton/mmenu.backbutton';
 import counters from '../dist/addons/counters/mmenu.counters';
 import iconbar from '../dist/addons/iconbar/mmenu.iconbar';
 import iconPanels from '../dist/addons/iconpanels/mmenu.iconpanels';
-import keyboardNavigation from '../dist/addons/keyboardnavigation/mmenu.keyboardnavigation';
 import navbars from '../dist/addons/navbars/mmenu.navbars';
 import pageScroll from '../dist/addons/pagescroll/mmenu.pagescroll';
 import searchfield from '../dist/addons/searchfield/mmenu.searchfield';

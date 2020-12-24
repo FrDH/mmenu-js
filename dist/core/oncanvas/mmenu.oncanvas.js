@@ -4,7 +4,6 @@ import translate from './translations';
 import * as DOM from '../../_modules/dom';
 import * as i18n from '../../_modules/i18n';
 import * as media from '../../_modules/matchmedia';
-import * as sr from '../../_modules/screenreader';
 import { type, extend, uniqueId, } from '../../_modules/helpers';
 //  Add the translations.
 translate();
@@ -395,10 +394,10 @@ export default class Mmenu {
             this._initListview(listview);
         });
         //  Add tabstart for keyboard navigation
-        const tabstart = DOM.create('button.mm-tabguard.mm-tabguard--start');
-        tabstart.setAttribute('type', 'button');
-        sr.aria(tabstart, 'disabled', true);
-        panel.prepend(tabstart);
+        // const tabstart = DOM.create('button.mm-tabguard.mm-tabguard--start');
+        // tabstart.setAttribute('type', 'button');
+        // sr.aria(tabstart, 'disabled', true);
+        // panel.prepend(tabstart);
         // Observe the panel for added listviews.
         this.panelObserver.observe(panel, {
             childList: true,

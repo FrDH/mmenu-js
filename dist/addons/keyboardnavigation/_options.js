@@ -1,5 +1,5 @@
 const options = {
-    enable: false,
+    enable: true,
     enhance: false
 };
 export default options;

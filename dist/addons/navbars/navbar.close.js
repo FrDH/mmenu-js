@@ -9,5 +9,5 @@ export default function (navbar) {
         close.setAttribute('href', '#' + page.id);
     });
     //	Add screenreader support
-    close.innerHTML = sr.text(this.i18n(this.conf.screenReader.text.closeMenu));
+    close.append(sr.text(this.i18n(this.conf.screenReader.text.closeMenu)));
 }

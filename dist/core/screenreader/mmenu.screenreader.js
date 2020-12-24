@@ -89,7 +89,7 @@ export default function () {
             if (navbar) {
                 let button = DOM.children(navbar, '.mm-btn--prev')[0];
                 if (button) {
-                    button.innerHTML = sr.text(this.i18n(configs.text.closeSubmenu));
+                    button.append(sr.text(this.i18n(configs.text.closeSubmenu)));
                 }
             }
         });
@@ -103,7 +103,7 @@ export default function () {
                     let text = this.i18n(configs.text[next.parentElement.matches('.mm-listitem--vertical')
                         ? 'toggleSubmenu'
                         : 'openSubmenu']);
-                    next.innerHTML += sr.text(text);
+                    next.prepend(sr.text(text));
                 }
             }
         });

@@ -1,3 +1,4 @@
+import * as DOM from './dom';
 const attr = (element, attr, value) => {
     element[attr] = value;
     if (value) {
@@ -33,5 +34,7 @@ export const role = (element, value) => {
  * @return	{string}		The wrapped text.
  */
 export const text = (text) => {
-    return `<span class="mm-sronly">${text}</span>`;
+    const span = DOM.create('span.mm-sronly');
+    span.innerHTML = text;
+    return span;
 };

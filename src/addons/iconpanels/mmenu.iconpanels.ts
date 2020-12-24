@@ -8,7 +8,7 @@ import { extend } from '../../_modules/helpers';
 Mmenu.options.iconPanels = options;
 
 export default function (this: Mmenu) {
-    var options = extendShorthandOptions(this.opts.iconPanels);
+    const options = extendShorthandOptions(this.opts.iconPanels);
     this.opts.iconPanels = extend(options, Mmenu.options.iconPanels);
 
     var keepFirst = false;
