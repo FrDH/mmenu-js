@@ -1,8 +1,8 @@
 import Mmenu from './../oncanvas/mmenu.oncanvas';
-import options from './_options';
-import configs from './_configs';
-import translate from './translations/translate';
-import { extendShorthandOptions } from './_options';
+import options from './options';
+import configs from './configs';
+import translate from './translations';
+import { extendShorthandOptions } from './options';
 import * as DOM from '../../_modules/dom';
 import * as sr from '../../_modules/screenreader';
 import { extend } from '../../_modules/helpers';
@@ -16,11 +16,11 @@ Mmenu.configs.screenReader = configs;
 
 export default function (this: Mmenu) {
     //	Extend options.
-    var options = extendShorthandOptions(this.opts.screenReader);
+    const options = extendShorthandOptions(this.opts.screenReader);
     this.opts.screenReader = extend(options, Mmenu.options.screenReader);
 
     //	Extend configs.
-    var configs = this.conf.screenReader;
+    const configs = this.conf.screenReader;
 
     //	Add Aria-* attributes
     if (options.aria) {

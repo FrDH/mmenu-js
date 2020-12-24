@@ -1,4 +1,7 @@
-@import '../../mixins', '../../includes', '../../variables';
+@import 
+    '../../mixins', 
+    '../../includes', 
+    '../../variables';
 
 //	Variables
 :root {
@@ -39,4 +42,5 @@
     'panel',
     'panel.rtl', 
     'panels',
+    'tabguard',
     'vertical';

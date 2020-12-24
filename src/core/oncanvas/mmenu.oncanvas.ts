@@ -1,9 +1,10 @@
-import options from './_options';
-import configs from './_configs';
-import translate from './translations/translate';
+import options from './options';
+import configs from './configs';
+import translate from './translations';
 import * as DOM from '../../_modules/dom';
 import * as i18n from '../../_modules/i18n';
 import * as media from '../../_modules/matchmedia';
+import * as sr from '../../_modules/screenreader';
 import {
     type,
     extend,
@@ -192,8 +193,10 @@ export default class Mmenu {
 
                 parent = DOM.find(this.node.pnls, `#${parent.dataset.mmParent}`)[0];
             }
-
         }
+
+        //  Focus the tabstart node
+        DOM.children(panel, '.mm-tabguard--start')[0]?.focus();
 
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel]);
@@ -563,6 +566,12 @@ export default class Mmenu {
         DOM.children(panel, 'ul, ol').forEach((listview) => {
             this._initListview(listview);
         });
+
+        //  Add tabstart for keyboard navigation
+        const tabstart = DOM.create('button.mm-tabguard.mm-tabguard--start');
+        tabstart.setAttribute('type', 'button');
+        sr.aria(tabstart, 'disabled', true);
+        panel.prepend(tabstart);
 
         // Observe the panel for added listviews.
         this.panelObserver.observe(panel, {

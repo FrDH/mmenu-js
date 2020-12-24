@@ -1,6 +1,6 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './_options';
-import { extendShorthandOptions } from './_options';
+import options from './options';
+import { extendShorthandOptions } from './options';
 import * as DOM from '../../_modules/dom';
 import * as media from '../../_modules/matchmedia';
 import { extend } from '../../_modules/helpers';

@@ -2,8 +2,8 @@
 interface mmOptionsSectionindexer {
 
 	/** Whether or not to automatically append a section indexer to the menu. */
-	add ?: boolean
+	add?: boolean
 
 	/** Where to add the section indexer(s). */
-	addTo ?: string
+	addTo?: string
 }

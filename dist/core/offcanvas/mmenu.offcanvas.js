@@ -1,6 +1,6 @@
 import Mmenu from './../oncanvas/mmenu.oncanvas';
-import options from './_options';
-import configs from './_configs';
+import options from './options';
+import configs from './configs';
 import * as DOM from '../../_modules/dom';
 import * as sr from '../../_modules/screenreader';
 import { extend, uniqueId, originalId, } from '../../_modules/helpers';
@@ -39,6 +39,15 @@ export default function () {
         this.setPage(Mmenu.node.page);
         //	Setup the menu.
         this.node.menu.classList.add('mm-menu--offcanvas');
+        //  Add tabend for keyboard navigation.
+        const tabend = DOM.create('button.mm-tabguard.mm-tabguard--end');
+        tabend.setAttribute('type', 'button');
+        sr.aria(tabend, 'disabled', true);
+        this.node.menu.append(tabend);
+        tabend.addEventListener('focusin', evnt => {
+            var _a;
+            (_a = DOM.children(Mmenu.node.blck, '.mm-tabguard--fill')[0]) === null || _a === void 0 ? void 0 : _a.focus();
+        });
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         let hash = window.location.hash;
         if (hash) {
@@ -53,29 +62,29 @@ export default function () {
     //	Sync the blocker to target the page.
     this.bind('setPage:after', (page) => {
         var _a;
-        (_a = DOM.children(Mmenu.node.blck, '.mm-tabstart')[0]) === null || _a === void 0 ? void 0 : _a.setAttribute('href', `#${page === null || page === void 0 ? void 0 : page.id}`);
+        (_a = DOM.children(Mmenu.node.blck, '.mm-tabguard--fill')[0]) === null || _a === void 0 ? void 0 : _a.setAttribute('href', `#${page === null || page === void 0 ? void 0 : page.id}`);
     });
     //	Add screenreader support
     this.bind('initMenu:after', () => {
         sr.aria(this.node.menu, 'hidden', true);
         sr.aria(Mmenu.node.blck, 'hidden', true);
     });
-    this.bind('open:after', () => {
-        sr.aria(this.node.menu, 'hidden', false);
-        sr.aria(Mmenu.node.blck, 'hidden', false);
-    });
-    this.bind('close:after', () => {
-        sr.aria(this.node.menu, 'hidden', true);
-        sr.aria(Mmenu.node.blck, 'hidden', true);
-    });
     //	Setup the UI blocker.
     if (!Mmenu.node.blck) {
         const blck = DOM.create('div.mm-wrapper__blocker.mm-slideout');
-        const tabstart = DOM.create('a.mm-tabstart');
-        const tabend = DOM.create('button.mm-tabend');
+        const tabstart = DOM.create('a.mm-tabguard.mm-tabguard--fill');
+        const tabend = DOM.create('button.mm-tabguard.mm-tabguard--end');
         tabend.setAttribute('type', 'button');
         blck.append(tabstart);
         blck.append(tabend);
+        //  Focus the tabstart node in the opened panel.
+        tabend.addEventListener('focusin', evnt => {
+            var _a;
+            const current = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
+            if (current) {
+                (_a = DOM.children(current, '.mm-tabguard--start')[0]) === null || _a === void 0 ? void 0 : _a.focus();
+            }
+        });
         //	Append the blocker node to the body.
         document.querySelector(configs.menu.insertSelector).append(blck);
         //	Store the blocker node.
@@ -83,6 +92,7 @@ export default function () {
         //  Add screenreader support
         tabstart.innerHTML = sr.text(this.i18n(this.conf.screenReader.text.closeMenu));
     }
+    //	Open / close the menu.
     document.addEventListener('click', event => {
         var _a;
         /** THe href attribute for the clicked anchor. */
@@ -105,6 +115,7 @@ export default function () {
  * Open the menu.
  */
 Mmenu.prototype.open = function () {
+    var _a;
     if (this.node.menu.matches('.mm-menu--opened')) {
         return;
     }
@@ -115,10 +126,20 @@ Mmenu.prototype.open = function () {
     //	Open
     this.node.menu.classList.add('mm-menu--opened');
     this.node.wrpr.classList.add('mm-wrapper--opened');
+    //  Focus the tabstart node in the opened panel.
+    const current = DOM.children(this.node.pnls, '.mm-panel--opened')[0];
+    if (current) {
+        (_a = DOM.children(current, '.mm-tabguard--start')[0]) === null || _a === void 0 ? void 0 : _a.focus();
+    }
+    //	Add screenreader support
+    sr.aria(this.node.menu, 'hidden', false);
+    sr.aria(Mmenu.node.blck, 'hidden', false);
+    // sr.aria(Mmenu.node.page, 'disabled', true);
     //	Invoke "after" hook.
     this.trigger('open:after');
 };
 Mmenu.prototype.close = function () {
+    var _a;
     if (!this.node.menu.matches('.mm-menu--opened')) {
         return;
     }
@@ -126,6 +147,12 @@ Mmenu.prototype.close = function () {
     this.trigger('close:before');
     this.node.menu.classList.remove('mm-menu--opened');
     this.node.wrpr.classList.remove('mm-wrapper--opened');
+    //  Focus the tabstart node in the page.
+    (_a = DOM.children(Mmenu.node.page, '.mm-tabguard--start')[0]) === null || _a === void 0 ? void 0 : _a.focus();
+    //	Add screenreader support
+    sr.aria(this.node.menu, 'hidden', true);
+    sr.aria(Mmenu.node.blck, 'hidden', true);
+    // sr.aria(Mmenu.node.page, 'disabled', false);
     //	Invoke "after" hook.
     this.trigger('close:after');
 };

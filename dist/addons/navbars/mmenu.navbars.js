@@ -1,7 +1,7 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './_options';
-import configs from './_configs';
-import { extendShorthandOptions } from './_options';
+import options from './options';
+import configs from './configs';
+import { extendShorthandOptions } from './options';
 import * as DOM from '../../_modules/dom';
 import * as sr from '../../_modules/screenreader';
 import * as media from '../../_modules/matchmedia';
@@ -13,11 +13,11 @@ Mmenu.configs.classNames.navbars = {
     panelPrev: 'Prev',
     panelTitle: 'Title',
 };
-import breadcrumbs from './_navbar.breadcrumbs';
-import close from './_navbar.close';
-import prev from './_navbar.prev';
-import searchfield from './_navbar.searchfield';
-import title from './_navbar.title';
+import breadcrumbs from './navbar.breadcrumbs';
+import close from './navbar.close';
+import prev from './navbar.prev';
+import searchfield from './navbar.searchfield';
+import title from './navbar.title';
 Navbars.navbarContents = {
     breadcrumbs,
     close,
@@ -25,7 +25,7 @@ Navbars.navbarContents = {
     searchfield,
     title,
 };
-import tabs from './_navbar.tabs';
+import tabs from './navbar.tabs';
 Navbars.navbarTypes = {
     tabs,
 };
@@ -114,7 +114,7 @@ export default function Navbars() {
     //	Add to menu.
     this.bind('initMenu:after', () => {
         for (let position in navbars) {
-            this.node.menu[position == 'bottom' ? 'append' : 'prepend'](navbars[position]);
+            this.node.pnls[position == 'bottom' ? 'after' : 'before'](navbars[position]);
         }
     });
 }

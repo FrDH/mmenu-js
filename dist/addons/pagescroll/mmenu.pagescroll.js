@@ -1,7 +1,7 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './_options';
-import configs from './_configs';
-import { extendShorthandOptions } from './_options';
+import options from './options';
+import configs from './configs';
+import { extendShorthandOptions } from './options';
 import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
 //	Add the options and configs.

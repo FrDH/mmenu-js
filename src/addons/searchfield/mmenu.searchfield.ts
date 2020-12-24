@@ -1,8 +1,8 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './_options';
-import configs from './_configs';
-import translate from './translations/translate';
-import { extendShorthandOptions } from './_options';
+import options from './options';
+import configs from './configs';
+import translate from './translations';
+import { extendShorthandOptions } from './options';
 import * as DOM from '../../_modules/dom';
 import * as events from '../../_modules/eventlisteners';
 import { type, extend } from '../../_modules/helpers';
