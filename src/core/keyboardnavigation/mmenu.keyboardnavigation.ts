@@ -61,15 +61,9 @@ export default function (this: Mmenu) {
         }
     });
 
-    //  Enhanced behavior
+    //	Add Additional keyboard behavior.
     if (this.opts.keyboardNavigation.enhance) {
 
-        //  Add :hover like styles for :focus
-        this.bind('initMenu:after', () => {
-            this.node.menu.classList.add('mm-menu--keyboardfocus');
-        });
-
-        //	Add Additional keyboard behavior.
         this.node.menu.addEventListener('keydown', (evnt: KeyboardEvent) => {
 
             switch (evnt.key) {
