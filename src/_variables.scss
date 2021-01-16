@@ -24,9 +24,3 @@ $mm_sectionIndexerSize: 20px !default;
 
 $mm_sidebarCollapsedSize: $mm_btnSize !default;
 $mm_sidebarExpandedSize: $mm_menuMaxSize !default;
-
-$mm_toggleCheckedColor: #4bd963 !default;
-$mm_toggleHeight: 44px - $mm_padding !default;
-$mm_toggleWidth: ($mm_toggleHeight * 2) - $mm_padding !default;
-$mm_checkHeight: $mm_btnSize - $mm_padding !default;
-$mm_checkWidth: $mm_btnSize - $mm_padding !default;

@@ -9,12 +9,4 @@ $module: '.mm-panels';
     background: var(--mm-color-background);
     border-color: var(--mm-color-border);
     color: var(--mm-color-text);
-
-    > * {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-    }
 }

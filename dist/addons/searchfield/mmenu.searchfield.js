@@ -1,59 +1,49 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './options';
-import configs from './configs';
+import OPTIONS from './options';
+import CONFIGS from './configs';
 import translate from './translations';
-import { extendShorthandOptions } from './options';
 import * as DOM from '../../_modules/dom';
 import * as events from '../../_modules/eventlisteners';
-import { type, extend } from '../../_modules/helpers';
+import { extend } from '../../_modules/helpers';
 //  Add the translations.
 translate();
-//  Add the options and configs.
-Mmenu.options.searchfield = options;
-Mmenu.configs.searchfield = configs;
 export default function () {
-    var options = extendShorthandOptions(this.opts.searchfield);
-    this.opts.searchfield = extend(options, Mmenu.options.searchfield);
-    var configs = this.conf.searchfield;
+    //	Extend options.
+    const options = extend(this.opts.searchfield, OPTIONS);
+    const configs = extend(this.opts.searchfield, CONFIGS);
     if (!options.add) {
         return;
     }
     //	Blur searchfield
-    this.bind('close:after', () => {
-        DOM.find(this.node.menu, '.mm-searchfield').forEach((input) => {
-            input.blur();
-        });
-    });
+    // this.bind('close:after', () => {
+    //     DOM.find(this.node.menu, '.mm-searchfield').forEach((input) => {
+    //         input.blur();
+    //     });
+    // });
+    console.log('xx');
     this.bind('initPanel:after', (panel) => {
         var searchpanel = null;
         //	Add the search panel
-        if (options.panel.add) {
-            searchpanel = initSearchPanel.call(this);
-        }
+        // if (options.panel.add) {
+        //     searchpanel = initSearchPanel.call(this);
+        // }
+        console.log(panel);
+        return;
         //	Add the searchfield
-        var addTo = null;
-        switch (options.addTo) {
-            case 'panels':
-                addTo = [panel];
-                break;
-            case 'panel':
-                addTo = [searchpanel];
-                break;
-            default:
-                if (typeof options.addTo == 'string') {
-                    addTo = DOM.find(this.node.menu, options.addTo);
-                }
-                else if (type(options.addTo) == 'array') {
-                    addTo = options.addTo;
-                }
-                break;
-        }
-        addTo.forEach((form) => {
-            form = initSearchfield.call(this, form);
-            if (options.search && form) {
-                initSearching.call(this, form);
-            }
-        });
+        // let addTo: HTMLElement[] = null;
+        // if (options.addTo == 'panels') {
+        //     addTo = [panel];
+        // } else if (typeof options.addTo == 'string') {
+        //     addTo = DOM.find(this.node.menu, options.addTo);
+        // } else if (type(options.addTo) == 'array') {
+        //     addTo = options.addTo;
+        // }
+        // addTo.forEach((form) => {
+        //     form = initSearchfield.call(this, form);
+        //     if (options.search && form) {
+        //         initSearching.call(this, form);
+        //     }
+        // });
         //	Add the no-results message
         if (options.noResults) {
             initNoResultsMsg.call(this, options.panel.add ? searchpanel : panel);
@@ -477,6 +467,4 @@ Mmenu.prototype.search = function (input, query) {
             }
         }
     }
-    //	Update for other addons
-    this.trigger('updateListview');
 };

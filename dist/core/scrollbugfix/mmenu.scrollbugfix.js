@@ -1,23 +1,18 @@
-import Mmenu from './../oncanvas/mmenu.oncanvas';
-import options from './options';
-import { extendShorthandOptions } from './options';
+import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import * as support from '../../_modules/support';
 import { extend, touchDirection } from '../../_modules/helpers';
-//  Add the options.
-Mmenu.options.scrollBugFix = options;
 export default function () {
     //	The scrollBugFix add-on fixes a scrolling bug
     //		1) on touch devices
     //		2) in an off-canvas menu
     if (!support.touch || // 1
-        !this.opts.offCanvas // 2
+        !this.opts.offCanvas.use // 2
     ) {
         return;
     }
     //	Extend options.
-    var options = extendShorthandOptions(this.opts.scrollBugFix);
-    this.opts.scrollBugFix = extend(options, Mmenu.options.scrollBugFix);
+    const options = extend(this.opts.scrollBugFix, OPTIONS);
     if (!options.fix) {
         return;
     }

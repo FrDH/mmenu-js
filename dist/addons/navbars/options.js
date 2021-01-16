@@ -22,9 +22,6 @@ export function extendShorthandOptions(options) {
     if (typeof options.use == 'undefined') {
         options.use = true;
     }
-    if (typeof options.use == 'boolean' && options.use) {
-        options.use = true;
-    }
     return options;
 }
 ;

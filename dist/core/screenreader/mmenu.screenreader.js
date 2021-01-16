@@ -1,22 +1,15 @@
-import Mmenu from './../oncanvas/mmenu.oncanvas';
-import options from './options';
-import configs from './configs';
+import OPTIONS from './options';
+import CONFIGS from './configs';
 import translate from './translations';
-import { extendShorthandOptions } from './options';
 import * as DOM from '../../_modules/dom';
 import * as sr from '../../_modules/screenreader';
 import { extend } from '../../_modules/helpers';
 //  Add the translations.
 translate();
-//  Add the options and configs.
-Mmenu.options.screenReader = options;
-Mmenu.configs.screenReader = configs;
 export default function () {
     //	Extend options.
-    const options = extendShorthandOptions(this.opts.screenReader);
-    this.opts.screenReader = extend(options, Mmenu.options.screenReader);
-    //	Extend configs.
-    const configs = this.conf.screenReader;
+    const options = extend(this.opts.scrollBugFix, OPTIONS);
+    const configs = extend(this.opts.scrollBugFix, CONFIGS);
     //	Add Aria-* attributes
     if (options.aria) {
         //	Add aria-haspopup to listitem buttons.

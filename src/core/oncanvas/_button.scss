@@ -15,27 +15,30 @@ $mm_module: '.mm-btn';
 }
 
 %mm_btn_arrow {
-    content: '';
-    border-bottom: none;
-    border-right: none;
-    box-sizing: content-box;
-    display: block;
-    width: 8px;
-    height: 8px;
-    margin: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
+    
 }
 
 #{$mm_module} {
+    &--prev:before,
+    &--next:after {
+        content: '';
+        border-bottom: none;
+        border-right: none;
+        box-sizing: content-box;
+        display: block;
+        width: 8px;
+        height: 8px;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+    }
+
     &--prev:before {
-        @extend %mm_btn_arrow;
         @include mm_btn_arrow_prev;
     }
 
     &--next:after {
-        @extend %mm_btn_arrow;
         @include mm_btn_arrow_next;
     }
 

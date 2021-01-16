@@ -1,15 +1,11 @@
-import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './options';
-import { extendShorthandOptions } from './options';
+import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import * as sr from '../../_modules/screenreader';
 import * as media from '../../_modules/matchmedia';
 import { type, extend } from '../../_modules/helpers';
-//  Add the options.
-Mmenu.options.iconbar = options;
 export default function () {
-    let options = extendShorthandOptions(this.opts.iconbar);
-    this.opts.iconbar = extend(options, Mmenu.options.iconbar);
+    //	Extend options.
+    const options = extend(this.opts.iconbar, OPTIONS);
     if (!options.use) {
         return;
     }

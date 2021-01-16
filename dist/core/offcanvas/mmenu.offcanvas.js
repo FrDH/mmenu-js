@@ -1,16 +1,13 @@
 import Mmenu from './../oncanvas/mmenu.oncanvas';
-import options from './options';
-import configs from './configs';
+import OPTIONS from './options';
+import CONFIGS from './configs';
 import * as DOM from '../../_modules/dom';
 import * as sr from '../../_modules/screenreader';
 import { extend, uniqueId, originalId, } from '../../_modules/helpers';
-//  Add the options and configs.
-Mmenu.options.offCanvas = options;
-Mmenu.configs.offCanvas = configs;
 export default function () {
-    const options = this.opts.offCanvas;
-    const configs = this.conf.offCanvas;
-    this.opts.searchfield = extend(options, Mmenu.options.searchfield);
+    //	Extend options.
+    const options = extend(this.opts.offCanvas, OPTIONS);
+    const configs = extend(this.conf.offCanvas, CONFIGS);
     if (!options.use) {
         return;
     }
@@ -18,18 +15,20 @@ export default function () {
     this._api.push('open', 'close', 'setPage');
     //	Setup the UI blocker.
     if (!Mmenu.node.blck) {
-        /** The UI blocker node. */
-        const blocker = DOM.create('a.mm-wrapper__blocker.mm-slideout');
-        blocker.id = uniqueId();
-        /** Backdrop inside the blocker. */
-        const backdrop = DOM.create('div.mm-wrapper__backdrop');
-        blocker.append(backdrop);
-        //	Append the blocker node to the body.
-        document.querySelector(configs.menu.insertSelector).append(blocker);
-        //  Add screenreader support
-        blocker.append(sr.text(this.i18n(this.conf.screenReader.text.closeMenu)));
-        //	Store the blocker node.
-        Mmenu.node.blck = blocker;
+        this.bind('initMenu:before', () => {
+            /** The UI blocker node. */
+            const blocker = DOM.create('a.mm-wrapper__blocker.mm-slideout');
+            blocker.id = uniqueId();
+            /** Backdrop inside the blocker. */
+            const backdrop = DOM.create('div.mm-wrapper__backdrop');
+            blocker.append(backdrop);
+            //	Append the blocker node to the body.
+            document.querySelector(configs.menu.insertSelector).append(blocker);
+            //  Add screenreader support
+            blocker.append(sr.text(this.i18n(this.conf.screenReader.text.closeMenu)));
+            //	Store the blocker node.
+            Mmenu.node.blck = blocker;
+        });
     }
     //	Sync the blocker to target the page.
     this.bind('setPage:after', () => {

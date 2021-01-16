@@ -1,4 +1,4 @@
-const options : mmOptionsNavbarsNavbar[] = [];
+const options: mmOptionsNavbarsNavbar[] = [];
 export default options;
 
 /**
@@ -7,31 +7,27 @@ export default options;
  * @param  {object} options The options to extend.
  * @return {object}			The extended options.
  */
-export function extendShorthandOptions( 
-	options : mmOptionsNavbarsNavbar
-) : mmOptionsNavbarsNavbar {
+export function extendShorthandOptions(
+	options: mmOptionsNavbarsNavbar
+): mmOptionsNavbarsNavbar {
 
-	if ( typeof options == 'boolean' && options ) {
-			options = {};
-		}
-
-	if ( typeof options != 'object' ) {
+	if (typeof options == 'boolean' && options) {
 		options = {};
 	}
 
-	if ( typeof options.content == 'undefined' ) {
-		options.content = [ 'prev', 'title' ];
+	if (typeof options != 'object') {
+		options = {};
 	}
 
-	if ( !( options.content instanceof Array ) ) {
-		options.content = [ options.content ];
+	if (typeof options.content == 'undefined') {
+		options.content = ['prev', 'title'];
 	}
 
-	if ( typeof options.use == 'undefined' ) {
-		options.use = true;
+	if (!(options.content instanceof Array)) {
+		options.content = [options.content];
 	}
 
-	if ( typeof options.use == 'boolean' && options.use ) {
+	if (typeof options.use == 'undefined') {
 		options.use = true;
 	}
 

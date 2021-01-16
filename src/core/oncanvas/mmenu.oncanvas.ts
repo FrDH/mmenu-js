@@ -1,12 +1,12 @@
-import options from './options';
-import configs from './configs';
+import OPTIONS from './options';
+import CONFIGS from './configs';
 import translate from './translations';
 import * as DOM from '../../_modules/dom';
 import * as i18n from '../../_modules/i18n';
 import * as media from '../../_modules/matchmedia';
 import {
-    type,
     extend,
+    type,
     uniqueId,
 } from '../../_modules/helpers';
 
@@ -17,12 +17,6 @@ translate();
  * Class for a mobile menu.
  */
 export default class Mmenu {
-
-    /**	Default options for menus. */
-    static options: mmOptions = options;
-
-    /**	Default configuration for menus. */
-    static configs: mmConfigs = configs;
 
     /**	Available add-ons for the plugin. */
     static addons: mmLooseObject = {};
@@ -81,18 +75,20 @@ export default class Mmenu {
 
     /**
      * Create a mobile menu.
-     * @param {HTMLElement|string} 	menu						The menu node.
-     * @param {object} 				[options=Mmenu.options]		Options for the menu.
-     * @param {object} 				[configs=Mmenu.configs]		Configuration options for the menu.
+     * @param {HTMLElement|string} 	menu		The menu node.
+     * @param {object} 				[option]	Options for the menu.
+     * @param {object} 				[configs]	Configuration options for the menu.
      */
     constructor(
         menu: HTMLElement | string,
         options?: mmOptions,
         configs?: mmConfigs
     ) {
+
         //	Extend options and configuration from defaults.
-        this.opts = extend(options, Mmenu.options);
-        this.conf = extend(configs, Mmenu.configs);
+        this.opts = extend(options, OPTIONS);
+        this.conf = extend(configs, CONFIGS);
+
 
         //	Methods to expose in the API.
         this._api = [
@@ -212,7 +208,7 @@ export default class Mmenu {
             if (panel.dataset.mmParent) {
                 const parent = DOM.find(
                     this.node.pnls,
-                    '#' + panel.dataset.mmParent
+                    `#${panel.dataset.mmParent}`
                 )[0];
                 this.openPanel(parent);
             }
@@ -425,7 +421,6 @@ export default class Mmenu {
 
         //	Wrap the panels in a node.
         this.node.pnls = DOM.create('div.mm-panels');
-
         this.node.menu.append(this.node.pnls);
 
         //  Initiate all panel like nodes

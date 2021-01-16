@@ -1,10 +1,10 @@
-import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
+// import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
 //	Add the classnames.
-Mmenu.configs.classNames.toggles = {
-    toggle: 'Toggle',
-    check: 'Check'
-};
+// Mmenu.configs.classNames.toggles = {
+//     toggle: 'Toggle',
+//     check: 'Check'
+// };
 export default function () {
     this.bind('initListitem:after', (listitem) => {
         //	Refactor toggle classes

@@ -1,13 +1,9 @@
-import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './options';
-import { extendShorthandOptions } from './options';
+import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
-//	Add the options.
-Mmenu.options.setSelected = options;
 export default function () {
-    var options = extendShorthandOptions(this.opts.setSelected);
-    this.opts.setSelected = extend(options, Mmenu.options.setSelected);
+    //	Extend options.
+    const options = extend(this.opts.setSelected, OPTIONS);
     //	Find current by URL
     if (options.current == 'detect') {
         const findCurrent = (url) => {

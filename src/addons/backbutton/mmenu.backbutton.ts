@@ -1,21 +1,19 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './options';
-import { extendShorthandOptions } from './options';
+import OPTIONS from './options';
+
 import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
 
-//	Add the options.
-Mmenu.options.backButton = options;
-
 export default function (this: Mmenu) {
-    if (!this.opts.offCanvas) {
+    if (!this.opts.offCanvas.use) {
         return;
     }
 
-    var options = extendShorthandOptions(this.opts.backButton);
-    this.opts.backButton = extend(options, Mmenu.options.backButton);
 
-    var _menu = '#' + this.node.menu.id;
+    //	Extend options.
+    const options = extend(this.opts.backButton, OPTIONS);
+
+    const _menu = `#${this.node.menu.id}`;
 
     //	Close menu
     if (options.close) {

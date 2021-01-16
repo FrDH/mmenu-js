@@ -1,10 +1,10 @@
-import options from './options';
-import configs from './configs';
+import OPTIONS from './options';
+import CONFIGS from './configs';
 import translate from './translations';
 import * as DOM from '../../_modules/dom';
 import * as i18n from '../../_modules/i18n';
 import * as media from '../../_modules/matchmedia';
-import { type, extend, uniqueId, } from '../../_modules/helpers';
+import { extend, type, uniqueId, } from '../../_modules/helpers';
 //  Add the translations.
 translate();
 /**
@@ -13,14 +13,14 @@ translate();
 export default class Mmenu {
     /**
      * Create a mobile menu.
-     * @param {HTMLElement|string} 	menu						The menu node.
-     * @param {object} 				[options=Mmenu.options]		Options for the menu.
-     * @param {object} 				[configs=Mmenu.configs]		Configuration options for the menu.
+     * @param {HTMLElement|string} 	menu		The menu node.
+     * @param {object} 				[option]	Options for the menu.
+     * @param {object} 				[configs]	Configuration options for the menu.
      */
     constructor(menu, options, configs) {
         //	Extend options and configuration from defaults.
-        this.opts = extend(options, Mmenu.options);
-        this.conf = extend(configs, Mmenu.configs);
+        this.opts = extend(options, OPTIONS);
+        this.conf = extend(configs, CONFIGS);
         //	Methods to expose in the API.
         this._api = [
             'bind',
@@ -113,7 +113,7 @@ export default class Mmenu {
         }
         else {
             if (panel.dataset.mmParent) {
-                const parent = DOM.find(this.node.pnls, '#' + panel.dataset.mmParent)[0];
+                const parent = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
                 this.openPanel(parent);
             }
         }
@@ -596,10 +596,6 @@ export default class Mmenu {
         return i18n.get(text, this.conf.language);
     }
 }
-/**	Default options for menus. */
-Mmenu.options = options;
-/**	Default configuration for menus. */
-Mmenu.configs = configs;
 /**	Available add-ons for the plugin. */
 Mmenu.addons = {};
 /**	Globally used HTML elements. */

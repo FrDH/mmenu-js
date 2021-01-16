@@ -1,6 +1,8 @@
 $mm_include_rtl: true !default;
 $mm_include_vertical: true !default;
 
+$mm_include_toggles: true !default;
+$mm_include_checks: true !default;
 $mm_include_offcanvas: true !default;
 
 $mm_include_counters: true !default;
@@ -30,9 +32,6 @@ $mm_include_sidebar: true !default;
 $mm_include_sidebar_collapsed: $mm_include_sidebar !default;
 $mm_include_sidebar_expanded: $mm_include_sidebar !default;
 $mm_include_sidebar_blocker: $mm_include_sidebar !default;
-
-$mm_include_toggles: true !default;
-$mm_include_checks: true !default;
 
 $mm_include_fullscreen: true !default;
 

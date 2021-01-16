@@ -32,7 +32,7 @@
                     <ul>
                         <li><a href="#about/history">History</a></li>
                         <li>
-                            <a>The team</a>
+                            <span>The tespanm</span>
                             <ul>
                                 <li>
                                     <a href="#about/team/management">Management</a>
@@ -61,7 +61,23 @@
     <script src="../dist/mmenu.js"></script>
     <script>
         new Mmenu(document.querySelector('#menu'), {
-            extensions: ['pagedim']
+            counters: {
+                add: true
+            },
+            searchfield: {
+                add: true,
+            },
+            navbar: {
+                add: false
+            }
+
+        }, {
+            offCanvas: {
+                clone: true,
+                menu: {
+                    insertMethod: 'append'
+                }
+            }
         });
 
         document.addEventListener('click', function (evnt) {

@@ -1,20 +1,17 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './options';
-import { extendShorthandOptions } from './options';
+import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
 
-//	Add the options.
-Mmenu.options.counters = options;
-
 //	Add the classnames.
-Mmenu.configs.classNames.counters = {
-    counter: 'Counter',
-};
+// Mmenu.configs.classNames.counters = {
+//     counter: 'Counter',
+// };
 
 export default function (this: Mmenu) {
-    var options = extendShorthandOptions(this.opts.counters);
-    this.opts.counters = extend(options, Mmenu.options.counters);
+
+    //	Extend options.
+    const options = extend(this.opts.counters, OPTIONS);
 
     //	Refactor counter class
     this.bind('initListview:after', (listview: HTMLElement) => {
@@ -33,8 +30,8 @@ export default function (this: Mmenu) {
                 return;
             }
 
-            var panel: HTMLElement = listview.closest('.mm-panel');
-            var parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
+            const panel: HTMLElement = listview.closest('.mm-panel');
+            const parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
 
             if (parent) {
                 //	Check if no counter already excists.

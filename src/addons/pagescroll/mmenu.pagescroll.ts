@@ -1,19 +1,13 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './options';
-import configs from './configs';
-import { extendShorthandOptions } from './options';
+import OPTIONS from './options';
+import CONFIGS from './configs';
 import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
 
-//	Add the options and configs.
-Mmenu.options.pageScroll = options;
-Mmenu.configs.pageScroll = configs;
-
 export default function (this: Mmenu) {
-    var options = extendShorthandOptions(this.opts.pageScroll);
-    this.opts.pageScroll = extend(options, Mmenu.options.pageScroll);
-
-    var configs = this.conf.pageScroll;
+    //	Extend options.
+    const options = extend(this.opts.pageScroll, OPTIONS);
+    const configs = extend(this.opts.pageScroll, CONFIGS);
 
     /** The currently "active" section */
     var section: HTMLElement;
@@ -41,7 +35,7 @@ export default function (this: Mmenu) {
         return null;
     }
 
-    if (this.opts.offCanvas && options.scroll) {
+    if (this.opts.offCanvas.use && options.scroll) {
 
         //	Scroll to section after clicking menu item.
         this.bind('close:after', () => {

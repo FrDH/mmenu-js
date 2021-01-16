@@ -33,9 +33,5 @@ export function extendShorthandOptions(
         options.use = true;
     }
 
-    if (typeof options.use == 'boolean' && options.use) {
-        options.use = true;
-    }
-
     return options;
 }

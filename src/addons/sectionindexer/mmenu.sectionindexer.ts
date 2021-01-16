@@ -1,16 +1,13 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './options';
-import { extendShorthandOptions } from './options';
+import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import * as support from '../../_modules/support';
 import { extend } from '../../_modules/helpers';
 
-//  Add the options.
-Mmenu.options.sectionIndexer = options;
 
 export default function (this: Mmenu) {
-    const options = extendShorthandOptions(this.opts.sectionIndexer);
-    this.opts.sectionIndexer = extend(options, Mmenu.options.sectionIndexer);
+    //	Extend options.
+    const options = extend(this.opts.sectionIndexer, OPTIONS);
 
     if (!options.add) {
         return;

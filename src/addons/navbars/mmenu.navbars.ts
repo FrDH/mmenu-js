@@ -1,26 +1,25 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './options';
-import configs from './configs';
+import OPTIONS from './options';
+import CONFIGS from './configs';
 import { extendShorthandOptions } from './options';
+import { extend } from '../../_modules/helpers'
 import * as DOM from '../../_modules/dom';
 import * as sr from '../../_modules/screenreader';
 import * as media from '../../_modules/matchmedia';
 
-//  Add the options and configs.
-Mmenu.options.navbars = options;
-Mmenu.configs.navbars = configs;
-
-//  Add the classnames.
-Mmenu.configs.classNames.navbars = {
-    panelPrev: 'Prev',
-    panelTitle: 'Title',
-};
 
 import breadcrumbs from './navbar.breadcrumbs';
 import close from './navbar.close';
 import prev from './navbar.prev';
 import searchfield from './navbar.searchfield';
 import title from './navbar.title';
+import tabs from './navbar.tabs';
+
+//  Add the classnames.
+// Mmenu.configs.classNames.navbars = {
+//     panelPrev: 'Prev',
+//     panelTitle: 'Title',
+// };
 
 Navbars.navbarContents = {
     breadcrumbs,
@@ -30,13 +29,16 @@ Navbars.navbarContents = {
     title,
 };
 
-import tabs from './navbar.tabs';
-
 Navbars.navbarTypes = {
     tabs,
 };
 
 export default function Navbars(this: Mmenu) {
+
+    //	Extend options.
+    extend(this.opts.navbars, OPTIONS);
+    extend(this.opts.navbars, CONFIGS);
+
     var navs = this.opts.navbars;
 
     if (typeof navs == 'undefined') {

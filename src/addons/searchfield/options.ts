@@ -1,19 +1,19 @@
 const options: mmOptionsSearchfield = {
     add: false,
     addTo: 'panels',
-    cancel: false,
+    // cancel: false,
     noResults: 'No results found.',
     placeholder: 'Search',
-    panel: {
-        add: false,
-        dividers: true,
-        id: null,
-        splash: null,
-        title: 'Search',
-    },
+    // panel: {
+    //     add: false,
+    //     dividers: true,
+    //     id: null,
+    //     splash: null,
+    //     title: 'Search',
+    // },
     search: true,
-    showTextItems: false,
-    showSubPanels: true,
+    // showTextItems: false,
+    // showSubPanels: true,
 };
 export default options;
 
@@ -26,6 +26,7 @@ export default options;
 export function extendShorthandOptions(
     options: mmOptionsSearchfield
 ): mmOptionsSearchfield {
+
     if (typeof options == 'boolean') {
         options = {
             add: options,

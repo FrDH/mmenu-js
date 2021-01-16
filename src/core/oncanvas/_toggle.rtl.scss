@@ -1,6 +1,7 @@
 @if ( $mm_include_rtl ) {
 	@if ( $mm_include_toggles ) {
 		[dir="rtl"] input.mm-toggle:checked ~ label.mm-toggle:before {
+			// TODO?
 			float: left;
 		}
 	}

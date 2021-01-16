@@ -26,7 +26,6 @@ import searchfield from '../dist/addons/searchfield/mmenu.searchfield';
 import sectionIndexer from '../dist/addons/sectionindexer/mmenu.sectionindexer';
 import setSelected from '../dist/addons/setselected/mmenu.setselected';
 import sidebar from '../dist/addons/sidebar/mmenu.sidebar';
-import toggles from '../dist/addons/toggles/mmenu.toggles';
 
 
 Mmenu.addons = {
@@ -46,8 +45,7 @@ Mmenu.addons = {
     searchfield,
     sectionIndexer,
     setSelected,
-    sidebar,
-    toggles
+    sidebar
 };
 
 //  Export module

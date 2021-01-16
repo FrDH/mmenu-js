@@ -26,12 +26,6 @@
 		clear: both;
 	}
 }
-@mixin mm_iconpanel_size($nr) {
-    .mm-panel--iconpanel-#{$nr} {
-        width: calc(100% - (var(--mm-iconpanel-size) * #{$nr}));
-    }
-}
-
 @mixin mm_navbar_tabs_borders( $top, $bottom, $last, $first ) {
 	.mm-navbars_#{$top} {
 		.mm-navbar--tabs:not( :#{$last}-child ) {

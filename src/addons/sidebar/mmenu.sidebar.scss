@@ -36,6 +36,15 @@
                 width: calc(100% - var(--mm-sidebar-collapsed-size));
                 transform: translate3d(var(--mm-sidebar-collapsed-size), 0, 0);
             }
+
+            .mm-panel--opened {
+                visibility: visible;
+            }
+
+            .mm-navbar,
+            .mm-divider {
+                opacity: 0;
+            }
         }
     }
 }
@@ -50,10 +59,12 @@
 
         &.mm-wrapper--opened {
 
+            //  disable the UI blocker.
             .mm-wrapper__blocker {
                 display: none !important;
             }
 
+            //  page next to menu.
             .mm-menu--sidebar-expanded {
                 ~ .mm-slideout {
                     width: calc(100% - var(--mm-sidebar-expanded-size));
@@ -71,18 +82,22 @@
 
 @if ($mm_include_sidebar_blocker) {
     .mm-menu__blocker {
-        background: rgba(3, 2, 1, 0);
         display: block;
         position: absolute;
         top: 0;
         right: 0;
-        bottom: 0;
         left: 0;
+        bottom: 0;
         z-index: 3;
+        opacity: 0.6;
+        background: var(--mm-color-background);
         pointer-events: auto;
 
+        transition: opacity $mm_transitionDuration $mm_transitionFunction;
+
         .mm-menu--opened & {
-            display: none;
+            bottom: 100%;
+            opacity: 0;
         }
     }
 }

@@ -1,18 +1,14 @@
-import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import options from './options';
-import { extendShorthandOptions } from './options';
+import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import * as media from '../../_modules/matchmedia';
 import { extend } from '../../_modules/helpers';
-//  Add the options.
-Mmenu.options.sidebar = options;
 export default function () {
-    // only for off-canvas menus.
-    if (!this.opts.offCanvas) {
+    // Only for off-canvas menus.
+    if (!this.opts.offCanvas.use) {
         return;
     }
-    const options = extendShorthandOptions(this.opts.sidebar);
-    this.opts.sidebar = extend(options, Mmenu.options.sidebar);
+    //	Extend options.
+    const options = extend(this.opts.sidebar, OPTIONS);
     //	Collapsed
     if (options.collapsed.use) {
         //	Make the menu collapsable.
