@@ -1,4 +1,3 @@
-import * as pack from '../../../package.json';
 import options from './_options';
 import configs from './_configs';
 import translate from './translations/translate';
@@ -20,8 +19,6 @@ translate();
  * Class for a mobile menu.
  */
 export default class Mmenu {
-    /**	Plugin version. */
-    static version: string = pack.version;
 
     /**	Default options for menus. */
     static options: mmOptions = options;
