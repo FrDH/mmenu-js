@@ -37,7 +37,6 @@
 
     .mm-panels {
         > .mm-panel {
-            transition-property: visibility, left, transform;
 
             &--parent {
                 visibility: visible !important;
