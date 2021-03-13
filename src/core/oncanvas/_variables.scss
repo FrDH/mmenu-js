@@ -2,11 +2,10 @@
 $mm_transitionDuration: 0.4s !default;
 $mm_transitionFunction: ease !default;
 
-
 //	Sizes
 $mm_btnSize: 50px !default;
 $mm_padding: 10px !default;
 
-$mm_listitemIndent: $mm_padding * 2 !default;
-$mm_panelPadding: $mm_padding * 2 !default;
-$mm_subopenWidth: $mm_btnSize !default;
+$mm_listitemIndent: 20px !default;
+$mm_panelPadding: 20px !default;
+$mm_subopenWidth: 50px !default;

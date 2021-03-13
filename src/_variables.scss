@@ -2,25 +2,16 @@
 $mm_transitionDuration: 0.4s !default;
 $mm_transitionFunction: ease !default;
 
-
 //	Sizes
 $mm_btnSize: 50px !default;
 $mm_padding: 10px !default;
 
-$mm_listitemIndent: $mm_padding * 2 !default;
-$mm_panelPadding: $mm_padding * 2 !default;
-$mm_subopenWidth: $mm_btnSize !default;
+$mm_listitemIndent: 20px !default;
+$mm_panelPadding: 20px !default;
+$mm_subopenWidth: 50px !default;
 
-$mm_menuSize: 80% !default;
-$mm_menuMinSize: 240px !default;
-$mm_menuMaxSize: 440px !default;
-$mm_counterWidth: $mm_btnSize !default;
+$mm_iconbarSize: 50px !default;
 
-$mm_iconbarSize: $mm_btnSize !default;
+$mm_iconpanelSize: 50px !default;
 
-$mm_iconpanelSize: $mm_btnSize !default;
-
-$mm_sectionIndexerSize: 20px !default;
-
-$mm_sidebarCollapsedSize: $mm_btnSize !default;
-$mm_sidebarExpandedSize: $mm_menuMaxSize !default;
+$mm_sidebarCollapsedSize: 50px !default;

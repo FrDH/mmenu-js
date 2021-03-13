@@ -2,18 +2,22 @@
 
 $mm_module: '.mm-sectionindexer';
 
+:root {
+    --mm-sectionindexer-size: 20px;
+}
+
 #{$mm_module} {
     background: inherit;
     text-align: center;
     font-size: 12px;
 
     box-sizing: border-box;
-    width: $mm_sectionIndexerSize;
+    width: var(--mm-sectionindexer-size);
 
     position: absolute;
     top: 0;
     bottom: 0;
-    right: -$mm_sectionIndexerSize;
+    right: calc( 0px - var(--mm-sectionindexer-size) );
     z-index: 5;
 
     transition: right $mm_transitionDuration $mm_transitionFunction;
@@ -37,7 +41,7 @@ $mm_module: '.mm-sectionindexer';
         right: 0;
 
         ~ .mm-panel {
-            padding-right: $mm_sectionIndexerSize;
+            padding-right: var(--mm-sectionindexer-size);
         }
     }
 }

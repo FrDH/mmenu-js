@@ -3,7 +3,7 @@
 @if ($mm_include_sidebar_collapsed or $mm_include_sidebar_expanded) {
     :root {
         --mm-sidebar-collapsed-size: #{$mm_sidebarCollapsedSize};
-        --mm-sidebar-expanded-size: #{$mm_sidebarExpandedSize};
+        --mm-sidebar-expanded-size: var(--mm-max-size);
     }
 
     .mm-wrapper--sidebar {

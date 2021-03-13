@@ -70,7 +70,7 @@ $mm_module: '.mm-iconbar';
     > * {
         box-sizing: border-box;
         display: block;
-        padding: ($mm_btnSize / 4) 0;
+        padding: $mm_padding 0;
     }
 
     a,

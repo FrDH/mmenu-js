@@ -52,7 +52,7 @@ $mm_module: '.mm-searchfield';
 }
 
 .mm-panel__noresultsmsg {
-    padding: $mm_btnSize 0;
+    padding: $mm_panelPadding * 2 0;
     color: var(--mm-color-text-dimmed);
     text-align: center;
     font-size: 150%;

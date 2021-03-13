@@ -84,6 +84,32 @@
             });
         });
 
+        /* Config */
+
+        //  Prev classnames removed from navbars add-on.
+        if (
+            this.conf.classNames.prev ||
+            this.node.menu.querySelector('.Prev')
+        ) {
+            deprecated(
+                'Predefining a back button for navbars with the ".Prev" classname',
+                null,
+                '9.0.0'
+            );
+        }
+
+        //  Title classnames removed from navbars add-on.
+        if (
+            this.conf.classNames.title ||
+            this.node.menu.querySelector('.Title')
+        ) {
+            deprecated(
+                'Predefining a title for navbars with the ".Title" classname',
+                null,
+                '9.0.0'
+            );
+        }
+
         /* Wrappers */
 
         //  Removed wrappers.
