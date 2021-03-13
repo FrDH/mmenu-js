@@ -1,9 +1,9 @@
 @import '../../mixins', '../../includes', '../../variables';
 
 :root {
-    --mm-size: #{$mm_menuSize};
-    --mm-min-size: #{$mm_menuMinSize};
-    --mm-max-size: #{$mm_menuMaxSize};
+    --mm-size: 80%;
+    --mm-min-size: 240px;
+    --mm-max-size: 440px;
 }
 
 //	Menu
