@@ -10,9 +10,12 @@ import { extend } from '../../_modules/helpers';
 translate();
 
 export default function (this: Mmenu) {
+    this.opts.screenReader = this.opts.screenReader || {};
+    this.conf.screenReader = this.conf.screenReader || {};
+
     //	Extend options.
-    const options = extend(this.opts.scrollBugFix, OPTIONS);
-    const configs = extend(this.opts.scrollBugFix, CONFIGS);
+    const options = extend(this.opts.screenReader, OPTIONS);
+    const configs = extend(this.conf.screenReader, CONFIGS);
 
     //	Add Aria-* attributes
     if (options.aria) {

@@ -2,6 +2,7 @@ import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
 export default function () {
+    this.opts.setSelected = this.opts.setSelected || {};
     //	Extend options.
     const options = extend(this.opts.setSelected, OPTIONS);
     //	Find current by URL

@@ -8,16 +8,13 @@ export default function (navbar) {
         DOM.children(panel, '.mm-navbar')[0].classList.add('mm-hidden');
     });
     //	Update to opened panel.
-    var org;
-    var _url, _txt;
+    let org;
+    let _url, _txt;
     this.bind('openPanel:before', (panel) => {
         if (panel.parentElement.matches('.mm-listitem--vertical')) {
             return;
         }
-        org = panel.querySelector('.' + this.conf.classNames.navbars.panelPrev);
-        if (!org) {
-            org = panel.querySelector('.mm-navbar__btn.mm-btn--prev');
-        }
+        org = panel.querySelector('.mm-navbar__btn.mm-btn--prev');
         _url = (org === null || org === void 0 ? void 0 : org.getAttribute('href')) || '';
         _txt = (org === null || org === void 0 ? void 0 : org.innerHTML) || '';
         if (_url) {

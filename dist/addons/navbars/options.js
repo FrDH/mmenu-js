@@ -1,5 +1,3 @@
-const options = [];
-export default options;
 /**
  * Extend shorthand options.
  *

@@ -7,9 +7,11 @@ import { extend } from '../../_modules/helpers';
 //  Add the translations.
 translate();
 export default function () {
+    this.opts.screenReader = this.opts.screenReader || {};
+    this.conf.screenReader = this.conf.screenReader || {};
     //	Extend options.
-    const options = extend(this.opts.scrollBugFix, OPTIONS);
-    const configs = extend(this.opts.scrollBugFix, CONFIGS);
+    const options = extend(this.opts.screenReader, OPTIONS);
+    const configs = extend(this.conf.screenReader, CONFIGS);
     //	Add Aria-* attributes
     if (options.aria) {
         //	Add aria-haspopup to listitem buttons.

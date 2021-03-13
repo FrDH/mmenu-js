@@ -15,6 +15,8 @@ export default function (this: Mmenu) {
         return;
     }
 
+    this.opts.scrollBugFix = this.opts.scrollBugFix || {};
+
     //	Extend options.
     const options = extend(this.opts.scrollBugFix, OPTIONS);
 

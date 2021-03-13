@@ -7,6 +7,7 @@ import { type, extend } from '../../_modules/helpers';
 
 
 export default function (this: Mmenu) {
+    this.opts.iconbar = this.opts.iconbar || {};
 
     //	Extend options.
     const options = extend(this.opts.iconbar, OPTIONS);

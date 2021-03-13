@@ -7,6 +7,7 @@ export default function () {
     if (!this.opts.offCanvas.use) {
         return;
     }
+    this.opts.sidebar = this.opts.sidebar || {};
     //	Extend options.
     const options = extend(this.opts.sidebar, OPTIONS);
     //	Collapsed

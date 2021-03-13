@@ -11,6 +11,9 @@ import {
 
 export default function (this: Mmenu) {
 
+    this.opts.offCanvas = this.opts.offCanvas || {};
+    this.conf.offCanvas = this.conf.offCanvas || {};
+
     //	Extend options.
     const options = extend(this.opts.offCanvas, OPTIONS);
     const configs = extend(this.conf.offCanvas, CONFIGS);

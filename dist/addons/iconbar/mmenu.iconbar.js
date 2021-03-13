@@ -4,6 +4,7 @@ import * as sr from '../../_modules/screenreader';
 import * as media from '../../_modules/matchmedia';
 import { type, extend } from '../../_modules/helpers';
 export default function () {
+    this.opts.iconbar = this.opts.iconbar || {};
     //	Extend options.
     const options = extend(this.opts.iconbar, OPTIONS);
     if (!options.use) {

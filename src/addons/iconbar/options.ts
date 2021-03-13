@@ -1,5 +1,3 @@
-import { type } from '../../_modules/helpers';
-
 const options: mmOptionsIconbar = {
     use: false,
     top: [],
@@ -7,31 +5,5 @@ const options: mmOptionsIconbar = {
     position: 'left',
     type: 'default'
 };
+
 export default options;
-
-/**
- * Extend shorthand options.
- *
- * @param  {object} options The options to extend.
- * @return {object}			The extended options.
- */
-export function extendShorthandOptions(
-    options: mmOptionsIconbar
-): mmOptionsIconbar {
-    if (type(options) == 'array') {
-        options = {
-            use: true,
-            top: options as any
-        };
-    }
-
-    if (type(options) != 'object') {
-        options = {};
-    }
-
-    if (typeof options.use == 'undefined') {
-        options.use = true;
-    }
-
-    return options;
-}

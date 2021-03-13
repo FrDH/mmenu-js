@@ -11,6 +11,8 @@ export default function (this: Mmenu) {
         return;
     }
 
+    this.opts.keyboardNavigation = this.opts.keyboardNavigation || {};
+
     //	Extend options.
     const options = extend(this.opts.keyboardNavigation, OPTIONS);
 

@@ -1,20 +1,10 @@
 import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
-//	Add the classnames.
-// Mmenu.configs.classNames.counters = {
-//     counter: 'Counter',
-// };
 export default function () {
+    this.opts.counters = this.opts.counters || {};
     //	Extend options.
     const options = extend(this.opts.counters, OPTIONS);
-    //	Refactor counter class
-    this.bind('initListview:after', (listview) => {
-        var cntrclss = this.conf.classNames.counters.counter, counters = DOM.find(listview, '.' + cntrclss);
-        counters.forEach((counter) => {
-            DOM.reClass(counter, cntrclss, 'mm-counter');
-        });
-    });
     //	Add the counters after a listview is initiated.
     if (options.add) {
         this.bind('initListview:after', (listview) => {

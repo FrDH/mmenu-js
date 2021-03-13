@@ -5,6 +5,7 @@ import { extend } from '../../_modules/helpers';
 
 
 export default function (this: Mmenu) {
+    this.opts.setSelected = this.opts.setSelected || {};
 
     //	Extend options.
     const options = extend(this.opts.setSelected, OPTIONS);

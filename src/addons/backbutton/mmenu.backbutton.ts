@@ -5,10 +5,11 @@ import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
 
 export default function (this: Mmenu) {
+    this.opts.backButton = this.opts.backButton || {};
+
     if (!this.opts.offCanvas.use) {
         return;
     }
-
 
     //	Extend options.
     const options = extend(this.opts.backButton, OPTIONS);

@@ -3,6 +3,7 @@ import * as DOM from '../../_modules/dom';
 import * as support from '../../_modules/support';
 import { extend } from '../../_modules/helpers';
 export default function () {
+    this.opts.sectionIndexer = this.opts.sectionIndexer || {};
     //	Extend options.
     const options = extend(this.opts.sectionIndexer, OPTIONS);
     if (!options.add) {

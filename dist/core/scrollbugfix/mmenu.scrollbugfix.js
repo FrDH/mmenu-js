@@ -11,6 +11,7 @@ export default function () {
     ) {
         return;
     }
+    this.opts.scrollBugFix = this.opts.scrollBugFix || {};
     //	Extend options.
     const options = extend(this.opts.scrollBugFix, OPTIONS);
     if (!options.fix) {

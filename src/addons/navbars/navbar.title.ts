@@ -19,10 +19,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         }
 
         //	Find the original title in the opened panel.
-        let original = DOM.find(panel, `.${this.conf.classNames.navbars.panelTitle}`)[0];
-        if (!original) {
-            original = DOM.find(panel, '.mm-navbar__title span')[0];
-        }
+        let original = panel.querySelector('.mm-navbar__title span');
 
         //	Get the URL for the title.
         let _url = original?.closest('a')?.getAttribute('href') || '';

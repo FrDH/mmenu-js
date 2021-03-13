@@ -4,6 +4,8 @@ import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
 
 export default function (this: Mmenu) {
+    this.opts.iconPanels = this.opts.iconPanels || {};
+
     //	Extend options.
     const options = extend(this.opts.iconPanels, OPTIONS);
 

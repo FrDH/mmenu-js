@@ -5,6 +5,8 @@ import * as DOM from '../../_modules/dom';
 import * as sr from '../../_modules/screenreader';
 import { extend, uniqueId, originalId, } from '../../_modules/helpers';
 export default function () {
+    this.opts.offCanvas = this.opts.offCanvas || {};
+    this.conf.offCanvas = this.conf.offCanvas || {};
     //	Extend options.
     const options = extend(this.opts.offCanvas, OPTIONS);
     const configs = extend(this.conf.offCanvas, CONFIGS);

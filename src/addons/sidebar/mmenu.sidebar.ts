@@ -10,6 +10,8 @@ export default function (this: Mmenu) {
         return;
     }
 
+    this.opts.sidebar = this.opts.sidebar || {};
+
     //	Extend options.
     const options = extend(this.opts.sidebar, OPTIONS);
 

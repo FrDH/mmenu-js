@@ -11,10 +11,12 @@ import { type, extend } from '../../_modules/helpers';
 translate();
 
 export default function (this: Mmenu) {
+    this.opts.searchfield = this.opts.searchfield || {};
+    this.conf.searchfield = this.conf.searchfield || {};
 
     //	Extend options.
     const options = extend(this.opts.searchfield, OPTIONS);
-    const configs = extend(this.opts.searchfield, CONFIGS);
+    const configs = extend(this.conf.searchfield, CONFIGS);
 
     if (!options.add) {
         return;
@@ -26,7 +28,7 @@ export default function (this: Mmenu) {
     //         input.blur();
     //     });
     // });
-    console.log('xx');
+    
 
     this.bind('initPanel:after', (panel: HTMLElement) => {
         var searchpanel: HTMLElement = null;
@@ -35,7 +37,7 @@ export default function (this: Mmenu) {
         // if (options.panel.add) {
         //     searchpanel = initSearchPanel.call(this);
         // }
-        console.log(panel);
+        
         return;
         //	Add the searchfield
         // let addTo: HTMLElement[] = null;

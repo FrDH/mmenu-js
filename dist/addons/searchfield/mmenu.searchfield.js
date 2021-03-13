@@ -8,9 +8,11 @@ import { extend } from '../../_modules/helpers';
 //  Add the translations.
 translate();
 export default function () {
+    this.opts.searchfield = this.opts.searchfield || {};
+    this.conf.searchfield = this.conf.searchfield || {};
     //	Extend options.
     const options = extend(this.opts.searchfield, OPTIONS);
-    const configs = extend(this.opts.searchfield, CONFIGS);
+    const configs = extend(this.conf.searchfield, CONFIGS);
     if (!options.add) {
         return;
     }
@@ -20,14 +22,12 @@ export default function () {
     //         input.blur();
     //     });
     // });
-    console.log('xx');
     this.bind('initPanel:after', (panel) => {
         var searchpanel = null;
         //	Add the search panel
         // if (options.panel.add) {
         //     searchpanel = initSearchPanel.call(this);
         // }
-        console.log(panel);
         return;
         //	Add the searchfield
         // let addTo: HTMLElement[] = null;

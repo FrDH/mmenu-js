@@ -12,18 +12,15 @@ export default function (this: Mmenu, navbar: HTMLElement) {
     });
 
     //	Update to opened panel.
-    var org: HTMLElement;
-    var _url, _txt;
+    let org: HTMLElement;
+    let _url, _txt;
 
     this.bind('openPanel:before', (panel: HTMLElement) => {
         if (panel.parentElement.matches('.mm-listitem--vertical')) {
             return;
         }
 
-        org = panel.querySelector('.' + this.conf.classNames.navbars.panelPrev);
-        if (!org) {
-            org = panel.querySelector('.mm-navbar__btn.mm-btn--prev');
-        }
+        org = panel.querySelector('.mm-navbar__btn.mm-btn--prev');
 
         _url = org?.getAttribute('href') || '';
         _txt = org?.innerHTML || '';

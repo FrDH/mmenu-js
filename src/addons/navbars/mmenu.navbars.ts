@@ -1,5 +1,4 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
-import OPTIONS from './options';
 import CONFIGS from './configs';
 import { extendShorthandOptions } from './options';
 import { extend } from '../../_modules/helpers'
@@ -15,12 +14,6 @@ import searchfield from './navbar.searchfield';
 import title from './navbar.title';
 import tabs from './navbar.tabs';
 
-//  Add the classnames.
-// Mmenu.configs.classNames.navbars = {
-//     panelPrev: 'Prev',
-//     panelTitle: 'Title',
-// };
-
 Navbars.navbarContents = {
     breadcrumbs,
     close,
@@ -34,10 +27,11 @@ Navbars.navbarTypes = {
 };
 
 export default function Navbars(this: Mmenu) {
+    this.opts.navbars = this.opts.navbars || [];
+    this.conf.navbars = this.conf.navbars || {};
 
     //	Extend options.
-    extend(this.opts.navbars, OPTIONS);
-    extend(this.opts.navbars, CONFIGS);
+    extend(this.conf.navbars, CONFIGS);
 
     var navs = this.opts.navbars;
 
@@ -48,12 +42,12 @@ export default function Navbars(this: Mmenu) {
     if (!(navs instanceof Array)) {
         navs = [navs];
     }
-
-    var navbars = {};
-
+    
     if (!navs.length) {
         return;
     }
+    
+    var navbars = {};
 
     navs.forEach((options) => {
         options = extendShorthandOptions(options);

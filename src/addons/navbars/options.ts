@@ -1,6 +1,3 @@
-const options: mmOptionsNavbarsNavbar[] = [];
-export default options;
-
 /**
  * Extend shorthand options.
  *

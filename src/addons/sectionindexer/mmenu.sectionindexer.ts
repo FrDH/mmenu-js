@@ -6,6 +6,8 @@ import { extend } from '../../_modules/helpers';
 
 
 export default function (this: Mmenu) {
+    this.opts.sectionIndexer = this.opts.sectionIndexer || {};
+
     //	Extend options.
     const options = extend(this.opts.sectionIndexer, OPTIONS);
 

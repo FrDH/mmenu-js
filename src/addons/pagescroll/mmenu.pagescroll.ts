@@ -5,9 +5,12 @@ import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
 
 export default function (this: Mmenu) {
+    this.opts.pageScroll = this.opts.pageScroll || {};
+    this.conf.pageScroll = this.conf.pageScroll || {};
+
     //	Extend options.
     const options = extend(this.opts.pageScroll, OPTIONS);
-    const configs = extend(this.opts.pageScroll, CONFIGS);
+    const configs = extend(this.conf.pageScroll, CONFIGS);
 
     /** The currently "active" section */
     var section: HTMLElement;

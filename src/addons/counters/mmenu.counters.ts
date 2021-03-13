@@ -3,33 +3,20 @@ import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
 
-//	Add the classnames.
-// Mmenu.configs.classNames.counters = {
-//     counter: 'Counter',
-// };
-
 export default function (this: Mmenu) {
+    this.opts.counters = this.opts.counters || {};
 
     //	Extend options.
     const options = extend(this.opts.counters, OPTIONS);
 
-    //	Refactor counter class
-    this.bind('initListview:after', (listview: HTMLElement) => {
-        var cntrclss = this.conf.classNames.counters.counter,
-            counters = DOM.find(listview, '.' + cntrclss);
-
-        counters.forEach((counter) => {
-            DOM.reClass(counter as HTMLElement, cntrclss, 'mm-counter');
-        });
-    });
-
     //	Add the counters after a listview is initiated.
     if (options.add) {
         this.bind('initListview:after', (listview: HTMLElement) => {
+            
             if (!listview.matches(options.addTo)) {
                 return;
             }
-
+            
             const panel: HTMLElement = listview.closest('.mm-panel');
             const parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
 

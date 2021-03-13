@@ -2,6 +2,7 @@ import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
 export default function () {
+    this.opts.backButton = this.opts.backButton || {};
     if (!this.opts.offCanvas.use) {
         return;
     }

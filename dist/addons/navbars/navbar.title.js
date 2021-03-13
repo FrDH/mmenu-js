@@ -14,10 +14,7 @@ export default function (navbar) {
             return;
         }
         //	Find the original title in the opened panel.
-        let original = DOM.find(panel, `.${this.conf.classNames.navbars.panelTitle}`)[0];
-        if (!original) {
-            original = DOM.find(panel, '.mm-navbar__title span')[0];
-        }
+        let original = panel.querySelector('.mm-navbar__title span');
         //	Get the URL for the title.
         let _url = ((_a = original === null || original === void 0 ? void 0 : original.closest('a')) === null || _a === void 0 ? void 0 : _a.getAttribute('href')) || '';
         if (_url) {
