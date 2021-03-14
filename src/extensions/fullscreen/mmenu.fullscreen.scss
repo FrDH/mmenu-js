@@ -1,7 +1,6 @@
-@import '../../mixins', '../../includes', '../../variables';
+@import '../../includes';
 
 @if ($mm_include_fullscreen) {
-    //  TODO: dit werkt niet omdat de page het niet overneemt
     .mm-menu--fullscreen {
         --mm-size: 100%;
         --mm-min-size: 100%;

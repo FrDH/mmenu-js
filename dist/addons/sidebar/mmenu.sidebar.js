@@ -1,6 +1,7 @@
 import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import * as media from '../../_modules/matchmedia';
+import * as sr from '../../_modules/screenreader';
 import { extend } from '../../_modules/helpers';
 export default function () {
     // Only for off-canvas menus.
@@ -19,7 +20,9 @@ export default function () {
                 !DOM.children(this.node.menu, '.mm-menu__blocker')[0]) {
                 const blocker = DOM.create('a.mm-menu__blocker');
                 blocker.setAttribute('href', `#${this.node.menu.id}`);
-                //  todo: screenreader text
+                //  Add screenreader support
+                blocker.append(sr.text(this.i18n(this.conf.screenReader.text.openMenu)));
+                // TODO: tabguard when menu is closed?
                 this.node.menu.prepend(blocker);
             }
         });
@@ -83,7 +86,6 @@ export default function () {
         }
         if (initialState == 'closed') {
             this.bind('initMedia:after', () => {
-                // TODO: dit gebeurt te vroeg
                 this.close();
             });
         }

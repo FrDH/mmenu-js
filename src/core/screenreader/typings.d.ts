@@ -9,6 +9,7 @@ interface mmConfigsScreenreader {
 	text ?: mmConfigsScreenreaderText
 }
 interface mmConfigsScreenreaderText {
+	openMenu ?: string
 	closeMenu ?: string
 	closeSubmenu ?: string
 	openSubmenu ?: string

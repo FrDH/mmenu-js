@@ -2,6 +2,7 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import * as media from '../../_modules/matchmedia';
+import * as sr from '../../_modules/screenreader';
 import { extend } from '../../_modules/helpers';
 
 export default function (this: Mmenu) {
@@ -28,7 +29,10 @@ export default function (this: Mmenu) {
                 const blocker = DOM.create('a.mm-menu__blocker');
                 blocker.setAttribute('href', `#${this.node.menu.id}`);
 
-                //  todo: screenreader text
+                //  Add screenreader support
+                blocker.append(sr.text(this.i18n(this.conf.screenReader.text.openMenu)));
+
+                // TODO: tabguard when menu is closed?
 
                 this.node.menu.prepend(blocker);
             }
@@ -100,7 +104,6 @@ export default function (this: Mmenu) {
 
         if (initialState == 'closed') {
             this.bind('initMedia:after', () => {
-                // TODO: dit gebeurt te vroeg
                 this.close();
             });
         }
