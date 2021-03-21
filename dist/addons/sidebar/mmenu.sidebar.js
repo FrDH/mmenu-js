@@ -20,10 +20,10 @@ export default function () {
                 !DOM.children(this.node.menu, '.mm-menu__blocker')[0]) {
                 const blocker = DOM.create('a.mm-menu__blocker');
                 blocker.setAttribute('href', `#${this.node.menu.id}`);
+                this.node.menu.prepend(blocker);
                 //  Add screenreader support
                 blocker.append(sr.text(this.i18n(this.conf.screenReader.text.openMenu)));
-                // TODO: tabguard when menu is closed?
-                this.node.menu.prepend(blocker);
+                //  TODO: Keyboard navigation support
             }
         });
         //	En-/disable the collapsed sidebar.

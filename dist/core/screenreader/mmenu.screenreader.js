@@ -55,12 +55,12 @@ export default function () {
         });
         //	Add text to the next-buttons.
         this.bind('initListview:after', (listview) => {
-            let panel = listview.closest('.mm-panel');
-            let parent = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
+            const panel = listview.closest('.mm-panel');
+            const parent = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
             if (parent) {
-                let next = DOM.children(parent, '.mm-btn--next')[0];
+                const next = DOM.children(parent, '.mm-btn--next')[0];
                 if (next) {
-                    let text = this.i18n(configs.text[next.parentElement.matches('.mm-listitem--vertical')
+                    const text = this.i18n(configs.text[next.parentElement.matches('.mm-listitem--vertical')
                         ? 'toggleSubmenu'
                         : 'openSubmenu']);
                     next.prepend(sr.text(text));

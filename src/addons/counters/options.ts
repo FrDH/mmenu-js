@@ -1,7 +1,5 @@
 const options: mmOptionsCounters = {
-    add: false,
-    addTo: '.mm-listview',
-    count: false
+    add: false
 };
 
 export default options;

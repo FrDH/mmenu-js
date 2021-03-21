@@ -17,7 +17,7 @@ export default function () {
     if (!options.fix) {
         return;
     }
-    var touchDir = touchDirection(this.node.menu);
+    const touchDir = touchDirection(this.node.menu);
     /**
      * Prevent an event from doing its default and stop its propagation.
      * @param {ScrollBehavior} evnt The event to stop.

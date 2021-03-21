@@ -5,47 +5,63 @@ export default function () {
     this.opts.counters = this.opts.counters || {};
     //	Extend options.
     const options = extend(this.opts.counters, OPTIONS);
-    //	Add the counters after a listview is initiated.
-    if (options.add) {
-        this.bind('initListview:after', (listview) => {
-            if (!listview.matches(options.addTo)) {
-                return;
-            }
-            const panel = listview.closest('.mm-panel');
-            const parent = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
-            if (parent) {
-                //	Check if no counter already excists.
-                if (!DOM.find(parent, '.mm-counter').length) {
-                    let btn = DOM.children(parent, '.mm-btn')[0];
-                    if (btn) {
-                        btn.prepend(DOM.create('span.mm-counter'));
-                    }
-                }
+    if (!options.add) {
+        return;
+    }
+    /**
+     * Counting the visible listitems and setting it to the counter element.
+     * @param {HTMLElement} panel Panel to count LIs in.
+     */
+    const count = (panel) => {
+        /** Parent panel for the mutated listitem. */
+        const parent = this.node.pnls.querySelector(`#${panel.dataset.mmParent}`);
+        if (!parent) {
+            return;
+        }
+        /** The counter for the listitem. */
+        const counter = parent.querySelector('.mm-counter');
+        if (!counter) {
+            return;
+        }
+        /** The listitems */
+        const listitems = [];
+        DOM.children(panel, '.mm-listview').forEach((listview) => {
+            listitems.push(...DOM.children(listview));
+        });
+        counter.innerHTML = DOM.filterLI(listitems).length.toString();
+    };
+    /** Mutation observer the the listitems. */
+    const listitemObserver = new MutationObserver((mutationsList) => {
+        mutationsList.forEach((mutation) => {
+            if (mutation.attributeName == 'class') {
+                count(mutation.target.closest('.mm-panel'));
             }
         });
-    }
-    if (options.count) {
-        const count = (listview) => {
-            var panels = listview
-                ? [listview.closest('.mm-panel')]
-                : DOM.children(this.node.pnls, '.mm-panel');
-            panels.forEach(panel => {
-                const parent = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
-                if (!parent) {
-                    return;
-                }
-                const counter = DOM.find(parent, '.mm-counter')[0];
-                if (!counter) {
-                    return;
-                }
-                const listitems = [];
-                DOM.children(panel, '.mm-listview').forEach((listview) => {
-                    listitems.push(...DOM.children(listview));
-                });
-                counter.innerHTML = DOM.filterLI(listitems).length.toString();
-            });
-        };
-        this.bind('initListview:after', count);
-        this.bind('updateListview', count);
-    }
+    });
+    //	Add the counters after a listview is initiated.
+    this.bind('initListview:after', (listview) => {
+        const panel = listview.closest('.mm-panel');
+        const parent = this.node.pnls.querySelector(`#${panel.dataset.mmParent}`);
+        if (!parent) {
+            return;
+        }
+        //	Check if no counter already excists.
+        if (!DOM.find(parent, '.mm-counter').length) {
+            const btn = DOM.children(parent, '.mm-btn')[0];
+            btn === null || btn === void 0 ? void 0 : btn.prepend(DOM.create('span.mm-counter'));
+        }
+        //  Count immediately.
+        count(panel);
+    });
+    //  Count when LI classname changes.
+    this.bind('initListitem:after', (listitem) => {
+        const panel = listitem.closest('.mm-panel');
+        const parent = this.node.pnls.querySelector(`#${panel.dataset.mmParent}`);
+        if (!parent) {
+            return;
+        }
+        listitemObserver.observe(listitem, {
+            attributes: true
+        });
+    });
 }

@@ -9,57 +9,80 @@ export default function (this: Mmenu) {
     //	Extend options.
     const options = extend(this.opts.counters, OPTIONS);
 
-    //	Add the counters after a listview is initiated.
-    if (options.add) {
-        this.bind('initListview:after', (listview: HTMLElement) => {
-            
-            if (!listview.matches(options.addTo)) {
-                return;
-            }
-            
-            const panel: HTMLElement = listview.closest('.mm-panel');
-            const parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
+    if (!options.add) {
+        return;
+    }
 
-            if (parent) {
-                //	Check if no counter already excists.
-                if (!DOM.find(parent, '.mm-counter').length) {
-                    let btn = DOM.children(parent, '.mm-btn')[0];
-                    if (btn) {
-                        btn.prepend(DOM.create('span.mm-counter'));
-                    }
-                }
+    /** 
+     * Counting the visible listitems and setting it to the counter element. 
+     * @param {HTMLElement} panel Panel to count LIs in.
+     */
+    const count = (panel: HTMLElement) => {
+
+        /** Parent panel for the mutated listitem. */
+        const parent = this.node.pnls.querySelector(`#${panel.dataset.mmParent}`);
+
+        if (!parent) {
+            return;
+        }
+
+        /** The counter for the listitem. */
+        const counter = parent.querySelector('.mm-counter');
+        if (!counter) {
+            return;
+        }
+
+        /** The listitems */
+        const listitems: HTMLElement[] = [];
+        DOM.children(panel, '.mm-listview').forEach((listview) => {
+            listitems.push(...DOM.children(listview));
+        });
+
+        counter.innerHTML = DOM.filterLI(listitems).length.toString();
+    };
+
+    /** Mutation observer the the listitems. */
+    const listitemObserver = new MutationObserver((mutationsList) => {
+        mutationsList.forEach((mutation) => {
+            if (mutation.attributeName == 'class') {
+                count((mutation.target as HTMLLIElement).closest('.mm-panel'));
             }
         });
-    }
+    });
 
-    if (options.count) {
-        const count = (listview?: HTMLElement) => {
-            var panels: HTMLElement[] = listview
-                ? [listview.closest('.mm-panel') as HTMLElement]
-                : DOM.children(this.node.pnls, '.mm-panel');
+    //	Add the counters after a listview is initiated.
+    this.bind('initListview:after', (listview: HTMLUListElement) => {
+        
+        const panel: HTMLDivElement = listview.closest('.mm-panel');
+        const parent: HTMLLIElement = this.node.pnls.querySelector(`#${panel.dataset.mmParent}`);
 
-            panels.forEach(panel => {
-                const parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
+        if (!parent) {
+            return;
+        }
 
-                if (!parent) {
-                    return;
-                }
+        //	Check if no counter already excists.
+        if (!DOM.find(parent, '.mm-counter').length) {
+            const btn = DOM.children(parent, '.mm-btn')[0];
+            btn?.prepend(DOM.create('span.mm-counter'));
+        }
 
-                const counter = DOM.find(parent, '.mm-counter')[0];
-                if (!counter) {
-                    return;
-                }
+        //  Count immediately.
+        count(panel);
+    });
 
-                const listitems: HTMLElement[] = [];
-                DOM.children(panel, '.mm-listview').forEach((listview) => {
-                    listitems.push(...DOM.children(listview));
-                });
 
-                counter.innerHTML = DOM.filterLI(listitems).length.toString();
-            });
-        };
+    //  Count when LI classname changes.
+    this.bind('initListitem:after', (listitem: HTMLLIElement) => {
+        
+        const panel: HTMLDivElement = listitem.closest('.mm-panel');
+        const parent: HTMLLIElement = this.node.pnls.querySelector(`#${panel.dataset.mmParent}`);
 
-        this.bind('initListview:after', count);
-        this.bind('updateListview', count);
-    }
+        if (!parent) {
+            return;
+        }
+        
+        listitemObserver.observe(listitem, {
+            attributes: true
+        });
+    });
 }

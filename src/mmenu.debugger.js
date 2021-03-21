@@ -55,7 +55,7 @@
         ].forEach(addon => {
             if (this.opts[addon]) {
                 deprecated(
-                    'The "' + addon + '" add-on',
+                    `The "${addon}" add-on`,
                     null,
                     '9.0.0'
                 );
@@ -76,7 +76,7 @@
             Object.keys(this.opts.extensions).forEach(key => {
                 if (this.opts.extensions[key].includes(ext)) {
                     deprecated(
-                        'The "' + ext + '" extension',
+                        `The "${ext}" extension`,
                         'custom CSS',
                         '9.0.0'
                     );
@@ -92,7 +92,7 @@
             this.node.menu.querySelector('.Prev')
         ) {
             deprecated(
-                'Predefining a back button for navbars with the ".Prev" classname',
+                'Predefining a back button for navbars',
                 null,
                 '9.0.0'
             );
@@ -104,11 +104,24 @@
             this.node.menu.querySelector('.Title')
         ) {
             deprecated(
-                'Predefining a title for navbars with the ".Title" classname',
+                'Predefining a title for navbars',
                 null,
                 '9.0.0'
             );
         }
+
+        /* Add-ons */
+
+        //  Counters "addTo" and "count" are removed.
+        if (this.opts.counters.addTo) {
+            ['addTo', 'count'].forEach(option => {
+                deprecated(
+                    `The "${option}" options for the "counters" add-on`,
+                    null,
+                    '9.0.0'
+                );
+            });
+        };
 
         /* Wrappers */
 
@@ -123,7 +136,7 @@
         ].forEach(wrpr => {
             if (this.opts.wrappers.includes(wrpr)) {
                 deprecated(
-                    'The "' + wrpr + '" wrapper',
+                    `The "${wrpr}" wrapper`,
                     null,
                     '9.0.0'
                 );
@@ -136,9 +149,9 @@
         [
             'initPanels'
         ].forEach(method => {
-            this.bind(method + ':before', panel => {
+            this.bind(method + ':before', () => {
                 deprecated(
-                    'The "' + method + '" API method',
+                    `The "${method}" API method`,
                     null,
                     '9.0.0'
                 );
@@ -174,7 +187,7 @@
             Object.keys(this.opts.extensions).forEach(key => {
                 if (this.opts.extensions[key].includes(ext)) {
                     deprecated(
-                        'The "' + ext + '" extension',
+                        `The "${ext}" extension`,
                         'custom CSS',
                         '8.5.0'
                     );
@@ -238,7 +251,7 @@
             //  "drag.menu" Suboptions now are the "drag" options.
             if (this.opts.drag.menu) {
                 deprecated(
-                    'The "drag.menu" options for the "drag" add-on',
+                    'The "menu" options for the "drag" add-on',
                     'the "drag" option',
                     '8.3.0'
                 );
@@ -268,7 +281,7 @@
         ].forEach(ext => {
             if (this.node.menu.querySelector(ext)) {
                 deprecated(
-                    'Using the classname ' + ext + ' on a specific panel.',
+                    `Using the classname ${ext} on a specific panel.`,
                     'custom CSS',
                     '8.3.0'
                 );
@@ -290,7 +303,7 @@
             Object.keys(this.opts.extensions).forEach(key => {
                 if (this.opts.extensions[key].includes(ext)) {
                     deprecated(
-                        'The "' + ext + '" extension',
+                        `The "${ext}" extension`,
                         'custom CSS',
                         '8.3.0'
                     );

@@ -56,11 +56,11 @@ export default function (this: Mmenu) {
     //      3) the focus is not inside the menu,
     //      4) the focus is not inside the blocker.
     if (this.opts.offCanvas.use) { // 1
-        document.addEventListener('focusin', evnt => {
+        document.addEventListener('focusin', event => {
 
             if (this.node.menu.matches('.mm-menu--opened')) { // 2
-                if (!(evnt.target as HTMLElement)?.closest(`#${this.node.menu.id}`) && // 3
-                    !(evnt.target as HTMLElement)?.closest(`#${Mmenu.node.blck.id}`) // 4
+                if (!(event.target as HTMLElement)?.closest(`#${this.node.menu.id}`) && // 3
+                    !(event.target as HTMLElement)?.closest(`#${Mmenu.node.blck.id}`) // 4
                 ) {
                     Mmenu.node.blck?.focus();
                 }

@@ -13,10 +13,6 @@ $mm_module: '.mm-navbar';
     #{$mm_module}__tab--selected {
         background: var(--mm-color-background);
 
-        // TODO: not specific enough :/ overriden by .mm-menu a :/ :/ :/
-        color: var(--mm-color-text);
-        // /TODO
-
         &:not(:first-child) {
             border-left-color: var(--mm-color-border);
         }

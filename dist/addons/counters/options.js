@@ -1,6 +1,4 @@
 const options = {
-    add: false,
-    addTo: '.mm-listview',
-    count: false
+    add: false
 };
 export default options;
