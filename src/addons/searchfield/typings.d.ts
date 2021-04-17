@@ -4,11 +4,8 @@ interface mmOptionsSearchfield {
 	/** Whether or not to automatically prepend a searchfield to the menu or (some of the) panels. */
 	add?: boolean
 
-	/** Where to add the searchfield(s). */
-	addTo?: string | HTMLElement[]
-
-	/** Whether or not to add a cancel button after the searchfield. */
-	cancel?: boolean
+	/** QuerySelector for the panels to add a searchfield to, or "searchpanel". */
+	addTo?: string
 
 	/** The text to show when no results are found.  */
 	noResults?: string
@@ -16,38 +13,12 @@ interface mmOptionsSearchfield {
 	/** The placeholder text for the searchfield. */
 	placeholder?: string
 
-	/** Panel options */
-	panel?: mmOptionsSearchfieldPanel
+	/** QuerySelector for the panels to search in. */
+	searchIn?: string
 
-	/** Whether or not to immediately search through the listitems while typing. */
-	search?: boolean
-
-	/** Whether or not to show its sub-panels if a listitem matches the search. */
-	showTextItems?: boolean
-
-	/** Whether or not to show listitems without an anchor in the results.  */
-	showSubPanels?: boolean
-}
-
-/**	Panel options for the searchfield add-on. */
-interface mmOptionsSearchfieldPanel {
-
-	/** Whether or not to add a search panel for showing the search results. */
-	add?: boolean
-
-	/** Whether or not to add dividers to divide the results per panel. */
-	dividers?: boolean
-
-	/** The ID to add to the search panel. */
-	id?: string
-
-	/** HTML to show in the search panel before searching. */
-	splash?: string
-
-	/** The title in the navbar for the search panel. */
+	/** Title for the searchpanel. */
 	title?: string
 }
-
 
 /**	Configuration for the searchfield add-on. */
 interface mmConfigsSearchfield {
@@ -63,4 +34,7 @@ interface mmConfigsSearchfield {
 
 	/** Whether or not to add a submit button to the searchfield. */
 	submit?: boolean
+
+	/** Whether or not to add a cancel button after the searchfield. */
+	cancel?: boolean
 }

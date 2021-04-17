@@ -111,8 +111,10 @@
                     add: true
                 },
                 searchfield: {
-                    panel: true,
+                    add: true,
+                    addTo: '.mm-panel--search',
                     placeholder: 'Search menu items',
+                    title: 'searchh'
                 },
                 iconbar: {
                     use: '(min-width: 450px)',
@@ -140,19 +142,20 @@
                     },
                 },
                 navbars: [
-                    {
-                        content: ['searchfield'],
-                    },
+                    // {
+                    //     content: ['searchfield'],
+                    // },
                     {
                         type: 'tabs',
                         content: [
                             '<a href="#panel-menu"><i class="fa fa-bars"></i> <span>Menu</span></a>',
                             '<a href="#panel-account"><i class="fa fa-user"></i> <span>Account</span></a>',
                             '<a href="#panel-cart"><i class="fa fa-shopping-cart"></i> <span>Cart</span></a>',
+                            '<a href="#panel-search"><i class="fa fa-search"></i> <span>Search</span></a>',
                         ],
                     },
                     {
-                        content: ['prev', 'breadcrumbs', 'close'],
+                        content: ['prev', 'title', 'close'],
                     },
                     {
                         position: 'bottom',
@@ -165,6 +168,10 @@
             {
                 searchfield: {
                     clear: true,
+                    cancel: true,
+                    form: {
+                        action: 'GET'
+                    }
                 },
                 navbars: {
                     breadcrumbs: {

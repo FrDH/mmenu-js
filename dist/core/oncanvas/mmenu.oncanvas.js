@@ -348,12 +348,12 @@ export default class Mmenu {
             //  Transport the "mm-" prefixed classnames
             Array.prototype.slice
                 .call(panel.classList)
-                .filter((classname) => classname.slice(0, 3) == 'mm-')
+                .filter((classname) => classname.slice(0, 3) === 'mm-')
                 .forEach((classname) => {
                 panel.classList.remove(classname);
                 wrapper.classList.add(classname);
             });
-            //  Transport the parent relation
+            //  Transport the parent relation.
             if (panel.dataset.mmParent) {
                 wrapper.dataset.mmParent = panel.dataset.mmParent;
                 delete panel.dataset.mmParent;
@@ -365,7 +365,7 @@ export default class Mmenu {
         }
         panel.classList.add('mm-panel');
         //  Append to the panels node if not vertically expanding
-        if (!panel.parentElement.matches('.mm-listitem--vertical')) {
+        if (!panel.closest('.mm-listitem--vertical')) {
             this.node.pnls.append(panel);
         }
         //  Initialize tha navbar.

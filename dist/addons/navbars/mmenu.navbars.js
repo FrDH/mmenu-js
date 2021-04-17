@@ -25,7 +25,7 @@ export default function Navbars() {
     this.conf.navbars = this.conf.navbars || {};
     //	Extend options.
     extend(this.conf.navbars, CONFIGS);
-    var navs = this.opts.navbars;
+    let navs = this.opts.navbars;
     if (typeof navs == 'undefined') {
         return;
     }

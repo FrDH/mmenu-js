@@ -12,5 +12,6 @@ export default function (this: Mmenu, navbar: HTMLElement) {
     }
 
     this.opts.searchfield.add = true;
-    this.opts.searchfield.addTo = [searchfield];
+    // TODO
+    // this.opts.searchfield.addTo = [searchfield];
 }

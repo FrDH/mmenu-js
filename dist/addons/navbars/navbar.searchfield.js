@@ -7,5 +7,6 @@ export default function (navbar) {
         this.opts.searchfield = {};
     }
     this.opts.searchfield.add = true;
-    this.opts.searchfield.addTo = [searchfield];
+    // TODO
+    // this.opts.searchfield.addTo = [searchfield];
 }

@@ -1,111 +1,137 @@
-@import '../../mixins', '../../includes', '../../variables';
+@import "../../mixins", "../../includes", "../../variables";
 
-$mm_module: '.mm-searchfield';
+$mm_module: ".mm-searchfield";
 
+/**
+ * The form.
+ */
 #{$mm_module} {
-    display: flex;
-    flex-grow: 1;
-    height: var(--mm-navbar-size);
-    padding: 0;
-    overflow: hidden;
-
-    input {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        height: calc(var(--mm-navbar-size) * 0.7);
-        min-height: auto;
-        max-height: auto;
-        margin: 0;
-        padding: 0 $mm_padding;
-        box-sizing: border-box;
-        border: none !important;
-        border-radius: 4px;
-        line-height: calc(var(--mm-navbar-size) * 0.7);
-        box-shadow: none !important;
-        outline: none !important;
-        font: inherit;
-        font-size: inherit;
-
-        &,
-        &:hover,
-        &:focus {
-            background: var(--mm-color-background-highlight);
-            color: var(--mm-color-text);
-        }
-    }
-
-    input::-ms-clear {
-        display: none;
-    }
+  display: flex;
+  flex-grow: 1;
+  height: var(--mm-navbar-size);
+  padding: 0;
+  overflow: hidden;
 }
-
+/**
+ * The fieldset
+ */
 #{$mm_module}__input {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  padding: 0 $mm_padding;
+  box-sizing: border-box;
+
+  // Input
+  input {
+    display: block;
     width: 100%;
     max-width: 100%;
+    height: calc(var(--mm-navbar-size) * 0.7);
+    min-height: auto;
+    max-height: auto;
+    margin: 0;
     padding: 0 $mm_padding;
     box-sizing: border-box;
+    border: none !important;
+    border-radius: 4px;
+    line-height: calc(var(--mm-navbar-size) * 0.7);
+    box-shadow: none !important;
+    outline: none !important;
+    font: inherit;
+    font-size: inherit;
+
+    &,
+    &:hover,
+    &:focus {
+      background: var(--mm-color-background-highlight);
+      color: var(--mm-color-text);
+    }
+  }
+
+  input::-ms-clear {
+    display: none;
+  }
 }
 
+/**
+ * Submit and reset buttons.
+ */
+#{$mm_module}__btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+/**
+ * Cancel button.
+ */
+#{$mm_module}__cancel {
+  display: block;
+  padding-right: $mm_padding;
+  margin-right: -100px;
+  line-height: var(--mm-navbar-size);
+  text-decoration: none;
+
+  transition: margin $mm_transitionDuration $mm_transitionFunction;
+
+  &--active {
+    margin-right: 0;
+  }
+}
+
+/**
+ * The searchpanel
+ */
+.mm-panel--search {
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  border-left: none !important;
+  transition: none !important;
+}
+
+/**
+ * Splash message
+ */
 .mm-panel__noresultsmsg {
-    padding: $mm_panelPadding * 2 0;
-    color: var(--mm-color-text-dimmed);
-    text-align: center;
-    font-size: 150%;
+  // TODO
+  padding: $mm_panelPadding * 2 0;
+  color: var(--mm-color-text-dimmed);
+  text-align: center;
+  font-size: 150%;
 }
 
-@if ($mm_include_searchfield_btn) {
-    #{$mm_module}__btn {
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 0;
-    }
+/**
+ * No results message
+ */
+.mm-panel__noresultsmsg {
+  padding: $mm_panelPadding * 2 0;
+  color: var(--mm-color-text-dimmed);
+  text-align: center;
+  font-size: 150%;
 }
 
-@if ($mm_include_searchfield_searchpanel) {
-    .mm-panel_search {
-        left: 0 !important;
-        right: 0 !important;
-        width: 100% !important;
-        border-left: none !important;
-    }
+// // Listitem with no search results in the child panel.
+// .mm-listitem--nosubitems {
+//   > .mm-listitem__btn {
+//     display: none;
+//   }
 
-    #{$mm_module}__cancel {
-        display: block;
-        padding-right: $mm_padding;
-        margin-right: -100px;
-        line-height: var(--mm-navbar-size);
-        text-decoration: none;
+//   > .mm-listitem__text {
+//     padding-right: $mm_padding;
+//   }
+// }
 
-        transition: margin $mm_transitionDuration $mm_transitionFunction;
-    }
-
-    #{$mm_module}__cancel-active {
-        margin-right: 0;
-    }
-}
-
-// Listitem with no search results in the child panel.
-.mm-listitem--nosubitems {
-    > .mm-listitem__btn {
-        display: none;
-    }
-
-    > .mm-listitem__text {
-        padding-right: $mm_padding;
-    }
-}
-
-// Listitem with only search results in the child panel (not in the listitem itself).
-.mm-listitem--onlysubitems {
-    > .mm-listitem__text:not(.mm-listitem__btn) {
-        // This should (sort of) disable the anchor in the listitem.
-        z-index: -1;
-        pointer-events: none;
-    }
-}
+// // Listitem with only search results in the child panel (not in the listitem itself).
+// .mm-listitem--onlysubitems {
+//   > .mm-listitem__text:not(.mm-listitem__btn) {
+//     // This should (sort of) disable the anchor in the listitem.
+//     z-index: -1;
+//     pointer-events: none;
+//   }
+// }

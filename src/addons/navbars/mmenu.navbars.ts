@@ -33,7 +33,7 @@ export default function Navbars(this: Mmenu) {
     //	Extend options.
     extend(this.conf.navbars, CONFIGS);
 
-    var navs = this.opts.navbars;
+    let navs = this.opts.navbars;
 
     if (typeof navs == 'undefined') {
         return;
