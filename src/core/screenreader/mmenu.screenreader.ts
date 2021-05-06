@@ -103,17 +103,17 @@ export default function(this: Mmenu) {
             Mmenu.sr_aria(panel, 'hidden', true);
         });
 
-        //	Add aria-haspopup and aria-owns to prev- and next buttons.
-        this.bind('initPanel:after', (panel: HTMLElement) => {
-            DOM.find(panel, '.mm-btn').forEach(button => {
-                Mmenu.sr_aria(button, 'haspopup', true);
+        // //	Add aria-haspopup and aria-owns to prev- and next buttons.
+        // this.bind('initPanel:after', (panel: HTMLElement) => {
+        //     DOM.find(panel, '.mm-btn').forEach(button => {
+        //         Mmenu.sr_aria(button, 'haspopup', true);
 
-                let href = button.getAttribute('href');
-                if (href) {
-                    Mmenu.sr_aria(button, 'owns', href.replace('#', ''));
-                }
-            });
-        });
+        //         let href = button.getAttribute('href');
+        //         if (href) {
+        //             Mmenu.sr_aria(button, 'owns', href.replace('#', ''));
+        //         }
+        //     });
+        // });
 
         //	Add aria-hidden for navbars in panels.
         this.bind('initNavbar:after', (panel: HTMLElement) => {

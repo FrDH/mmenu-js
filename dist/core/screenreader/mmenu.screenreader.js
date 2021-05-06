@@ -74,16 +74,16 @@ export default function () {
         this.bind('closePanel', function (panel) {
             Mmenu.sr_aria(panel, 'hidden', true);
         });
-        //	Add aria-haspopup and aria-owns to prev- and next buttons.
-        this.bind('initPanel:after', function (panel) {
-            DOM.find(panel, '.mm-btn').forEach(function (button) {
-                Mmenu.sr_aria(button, 'haspopup', true);
-                var href = button.getAttribute('href');
-                if (href) {
-                    Mmenu.sr_aria(button, 'owns', href.replace('#', ''));
-                }
-            });
-        });
+        // //	Add aria-haspopup and aria-owns to prev- and next buttons.
+        // this.bind('initPanel:after', (panel: HTMLElement) => {
+        //     DOM.find(panel, '.mm-btn').forEach(button => {
+        //         Mmenu.sr_aria(button, 'haspopup', true);
+        //         let href = button.getAttribute('href');
+        //         if (href) {
+        //             Mmenu.sr_aria(button, 'owns', href.replace('#', ''));
+        //         }
+        //     });
+        // });
         //	Add aria-hidden for navbars in panels.
         this.bind('initNavbar:after', function (panel) {
             /** The navbar in the panel. */
