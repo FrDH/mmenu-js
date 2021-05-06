@@ -61,10 +61,15 @@ $mm_module: ".mm-searchfield";
  * Submit and reset buttons.
  */
 #{$mm_module}__btn {
+  display: none;
   position: absolute;
   right: 0;
   top: 0;
   bottom: 0;
+
+  #{$mm_module}--searching & {
+    display: block;
+  }
 }
 
 /**
@@ -73,65 +78,9 @@ $mm_module: ".mm-searchfield";
 #{$mm_module}__cancel {
   display: block;
   padding-right: $mm_padding;
-  margin-right: -100px;
+
   line-height: var(--mm-navbar-size);
   text-decoration: none;
-
-  transition: margin $mm_transitionDuration $mm_transitionFunction;
-
-  &--active {
-    margin-right: 0;
-  }
 }
 
-/**
- * The searchpanel
- */
-.mm-panel--search {
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
-  border-left: none !important;
-  transition: none !important;
-}
-
-/**
- * Splash message
- */
-.mm-panel__noresultsmsg {
-  // TODO
-  padding: $mm_panelPadding * 2 0;
-  color: var(--mm-color-text-dimmed);
-  text-align: center;
-  font-size: 150%;
-}
-
-/**
- * No results message
- */
-.mm-panel__noresultsmsg {
-  padding: $mm_panelPadding * 2 0;
-  color: var(--mm-color-text-dimmed);
-  text-align: center;
-  font-size: 150%;
-}
-
-// // Listitem with no search results in the child panel.
-// .mm-listitem--nosubitems {
-//   > .mm-listitem__btn {
-//     display: none;
-//   }
-
-//   > .mm-listitem__text {
-//     padding-right: $mm_padding;
-//   }
-// }
-
-// // Listitem with only search results in the child panel (not in the listitem itself).
-// .mm-listitem--onlysubitems {
-//   > .mm-listitem__text:not(.mm-listitem__btn) {
-//     // This should (sort of) disable the anchor in the listitem.
-//     z-index: -1;
-//     pointer-events: none;
-//   }
-// }
+@import "./panel";

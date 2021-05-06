@@ -1,7 +1,8 @@
 const configs : mmConfigsSearchfield = {
 	clear: false,
-	form: false,
-	input: false,
+	form: {},
+	input: {},
+	panel: {},
 	submit: false
 };
 export default configs;

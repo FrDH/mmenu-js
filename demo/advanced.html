@@ -27,7 +27,6 @@
             display: none;
         }
 
-
         .mm-navbar--tabs span {
             display: inline-block;
             margin-left: 8px;
@@ -81,16 +80,19 @@
                 </ul>
             </div>
 
-            <div id="panel-account">
-                <ul>
-                    <li><a href="#/">My profile</a></li>
-                    <li><a href="#/">Privacy settings</a></li>
-                    <li><a href="#/">Activity</a></li>
-                    <li><a href="#/">Sign out</a></li>
-                </ul>
-            </div>
+            <ul id="panel-account"
+                data-mm-title="Account"
+            >
+                <li><a href="#/">My profile</a></li>
+                <li><a href="#/">Privacy settings</a></li>
+                <li><a href="#/">Activity</a></li>
+                <li><a href="#/">Sign out</a></li>
+            </ul>
+            
 
-            <div id="panel-cart">
+            <div id="panel-cart"
+                data-mm-title="Shopping cart"
+            >
                 <p style="text-align: center; padding-top: 30px;">
                     Your shoppingcart is empty.<br />
                     <a href="#/">Continue shopping.</a>
@@ -112,8 +114,9 @@
                 },
                 searchfield: {
                     add: true,
-                    addTo: '.mm-panel--search',
+                    // addTo: 'searchpanel',
                     placeholder: 'Search menu items',
+                    splash: '<p>asdf</p>',
                     title: 'searchh'
                 },
                 iconbar: {
@@ -168,9 +171,8 @@
             {
                 searchfield: {
                     clear: true,
-                    cancel: true,
-                    form: {
-                        action: 'GET'
+                    panel: {
+                        id: 'panel-search'
                     }
                 },
                 navbars: {

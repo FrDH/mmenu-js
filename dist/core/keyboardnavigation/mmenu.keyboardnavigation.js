@@ -64,9 +64,11 @@ export default function () {
             switch (evnt.key) {
                 //	close submenu with backspace
                 case 'Backspace':
-                    const panel = DOM.find(this.node.pnls, '.mm-panel--opened')[0];
-                    if (panel) {
-                        this.closePanel(panel);
+                    if (!evnt.target.closest('input')) {
+                        const panel = DOM.find(this.node.pnls, '.mm-panel--opened')[0];
+                        if (panel) {
+                            this.closePanel(panel);
+                        }
                     }
                     break;
                 //	close menu with esc

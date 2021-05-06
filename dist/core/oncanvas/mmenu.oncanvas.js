@@ -345,19 +345,21 @@ export default class Mmenu {
             //  Transport the ID
             wrapper.id = panel.id;
             panel.removeAttribute('id');
-            //  Transport the "mm-" prefixed classnames
+            //  Transport "mm-" prefixed classnames.
             Array.prototype.slice
                 .call(panel.classList)
                 .filter((classname) => classname.slice(0, 3) === 'mm-')
                 .forEach((classname) => {
-                panel.classList.remove(classname);
                 wrapper.classList.add(classname);
+                panel.classList.remove(classname);
             });
-            //  Transport the parent relation.
-            if (panel.dataset.mmParent) {
-                wrapper.dataset.mmParent = panel.dataset.mmParent;
-                delete panel.dataset.mmParent;
-            }
+            //  Transport "mm" prefixed data attributes.
+            Object.keys(panel.dataset)
+                .filter((attr) => attr.slice(0, 2) === 'mm')
+                .forEach(attr => {
+                wrapper.dataset[attr] = panel.dataset[attr];
+                delete panel.dataset[attr];
+            });
             //	Wrap the listview in the panel.
             panel.before(wrapper);
             wrapper.append(panel);

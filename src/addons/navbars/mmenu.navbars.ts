@@ -79,7 +79,7 @@ export default function Navbars(this: Mmenu) {
 
             //	The content is a string.
             if (typeof ctnt == 'string') {
-                let func = Navbars.navbarContents[ctnt];
+                const func = Navbars.navbarContents[ctnt];
 
                 //	The content refers to one of the navbar-presets ("prev", "title", etc).
                 if (typeof func == 'function') {
@@ -112,7 +112,7 @@ export default function Navbars(this: Mmenu) {
         //	The type option is set.
         if (typeof options.type == 'string') {
             //	The function refers to one of the navbar-presets ("tabs").
-            let func = Navbars.navbarTypes[options.type];
+            const func = Navbars.navbarTypes[options.type];
             if (typeof func == 'function') {
                 //	Call the preset function.
                 func.call(this, navbar);

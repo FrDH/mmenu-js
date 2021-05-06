@@ -16,6 +16,9 @@ interface mmOptionsSearchfield {
 	/** QuerySelector for the panels to search in. */
 	searchIn?: string
 
+	/** Text or HTML to add as splash content. */
+	splash?: string
+
 	/** Title for the searchpanel. */
 	title?: string
 }
@@ -23,18 +26,18 @@ interface mmOptionsSearchfield {
 /**	Configuration for the searchfield add-on. */
 interface mmConfigsSearchfield {
 
-	/** Wraps the searchfield in a FORM element with the specified keys/values as attributes. */
-	form?: mmLooseObject | boolean
-
-	/** Adds the specified keys/values as attributes to the searchfield. */
-	input?: mmLooseObject | boolean
-
 	/** Whether or not to add a clear button to the searchfield. */
 	clear?: boolean
 
+	/** Adds the specified keys/values as attributes to fhe form. */
+	form?: mmLooseObject
+
+	/** Adds the specified keys/values as attributes to the input. */
+	input?: mmLooseObject
+	
+	/** Adds the specified keys/values as attributes to the panel. */
+	panel?: mmLooseObject
+
 	/** Whether or not to add a submit button to the searchfield. */
 	submit?: boolean
-
-	/** Whether or not to add a cancel button after the searchfield. */
-	cancel?: boolean
 }

@@ -76,13 +76,15 @@ export default function (this: Mmenu) {
             switch (evnt.key) {
                 //	close submenu with backspace
                 case 'Backspace':
-                    const panel: HTMLElement = DOM.find(
-                        this.node.pnls,
-                        '.mm-panel--opened'
-                    )[0];
-
-                    if (panel) {
-                        this.closePanel(panel);
+                    if (!(evnt.target as HTMLElement).closest('input')) {
+                        const panel: HTMLElement = DOM.find(
+                            this.node.pnls,
+                            '.mm-panel--opened'
+                        )[0];
+    
+                        if (panel) {
+                            this.closePanel(panel);
+                        }
                     }
                     break;
 

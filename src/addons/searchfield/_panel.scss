@@ -1,0 +1,38 @@
+$mm_module: ".mm-panel";
+
+/**
+ * The searchpanel
+ */
+#{$mm_module}--search {
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  border-left: none !important;
+  transition: none !important;
+}
+
+/**
+ * Splash message
+ */
+#{$mm_module}__splash {
+  padding: $mm_panelPadding;
+
+  #{$mm_module}--searching & {
+    display: none;
+  }
+}
+
+/**
+ * No results message
+ */
+#{$mm_module}__noresults {
+  display: none;
+  padding: $mm_panelPadding * 2 $mm_panelPadding;
+  color: var(--mm-color-text-dimmed);
+  text-align: center;
+  font-size: 150%;
+
+  #{$mm_module}--noresults & {
+    display: block;
+  }
+}
