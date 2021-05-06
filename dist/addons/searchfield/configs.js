@@ -1,5 +1,6 @@
 const configs = {
-    clear: false,
+    cancel: true,
+    clear: true,
     form: {},
     input: {},
     panel: {},

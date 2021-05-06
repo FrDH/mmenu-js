@@ -62,17 +62,35 @@ export default function (this: Mmenu) {
                 //  Add the form to the panel.
                 wrapper.prepend(form);
 
+                /** The input node. */
                 const input = DOM.find(form, 'input')[0] as HTMLInputElement;
                 
-                // TODO: als splash, onFocus openen
-
-                //  Open resultspanel when searching.
-                input.addEventListener('input', () => {
-                    resultspanel.classList.add('mm-panel--opened');
-                    //  TODO: focus moet op input blijven...
-                    // this.openPanel(resultspanel);
-                });
-
+                // With a splash: open on focus...
+                if (options.splash.length) {
+                    input.addEventListener('focusin', () => {
+                        //  TODO: focus moet in input blijven, extra param??                        
+                        this.openPanel(resultspanel);
+                        //  TODO: cancel zichtbaar maken
+                    });
+                    
+                    // ...without splash.
+                } else {
+                    
+                    //  Open resultspanel when searching.
+                    input.addEventListener('mm.searching', (e) => {
+                        //  TODO: focus moet in input blijven, extra param??                        
+                        this.openPanel(resultspanel, false);
+                    });
+                    
+                    //  Close resultspanel when resetting.
+                    input.addEventListener('mm.clearing', () => {
+                        console.log('clear');
+                        
+                        // TODO: close
+                        this.closePanel(resultspanel);
+                    });
+                }
+                
                 //  Initialize searching.
                 initSearch.call(this, form);
             }
@@ -209,15 +227,17 @@ const createSearchfield = function(this: Mmenu) {
      /** The fieldset node. */
      const field = DOM.create('div.mm-searchfield__input');
      form.append(field);
- 
+
+     
      /** The input node. */
      const input = DOM.create('input') as HTMLInputElement;
      field.append(input);
- 
+     
      //	Add attributes to the input
      input.type = 'text';
      input.autocomplete = 'off';
      input.placeholder = this.i18n(options.placeholder);
+     input.setAttribute('aria-label', this.i18n(options.placeholder));
      _addAttributes(input, configs.input);
  
     //	Add a button to submit to the form.
@@ -249,8 +269,7 @@ const createSearchfield = function(this: Mmenu) {
     }
  
      // Add a button to close the searchpanel.
-     // TODO: of als het zoekveld buiten de resultspanel is....
-     if ( options.addTo == '.mm-panel--search' ) {
+     if ( configs.cancel ) {
  
          /** The cancel button. */
          const cancel = DOM.create('a.mm-searchfield__cancel') as HTMLAnchorElement;
@@ -304,62 +323,73 @@ const initSearch = function (
         
         /** All listitems */
         const listitems = [];
+
         searchIn.forEach(panel => {
+            //  Scroll all panels to top.
             panel.scrollTop = 0;
+
+            //  Find listitems.
             listitems.push(...DOM.find(panel, '.mm-listitem'));
         });
 
         //	Search
         if (query.length) {
-
+            
             form.classList.add('mm-searchfield--searching');
             resultspanel.classList.add('mm-panel--searching');
-
-            //	Add data attribute to matching listitems.
+            
+            //	Add data attribute to the matching listitems.
             listitems.forEach((listitem) => {
                 const text = DOM.children(listitem, '.mm-listitem__text')[0];
                 if (!text || DOM.text(text).toLowerCase().indexOf(query) > -1) {
                     listitem.dataset.mmSearchresult = query;
                 }
             });
-
+            
+            /** The number of matching results. */
             let count = 0;
-
+            
             //  Resultspanel: Copy results to resultspanel.
             if (resultspanel.matches('.mm-panel--search') ) {
                 count = _searchResultsPanel(resultspanel, query, searchIn);
-
-            //  Search per panel: Hide non-matching listitems.
+                
+                //  Search per panel: Hide the non-matching listitems.
             } else {
                 count = _searchPerPanel(query, searchIn);
             }
-
+            
             resultspanel.classList[count == 0 ? 'add' : 'remove' ]('mm-panel--noresults');
+
+            // Dispatch searching event.
+            input.dispatchEvent(new Event('mm.searching'));
             
         //  Don't search, reset all.
         } else {
-
+            
             form.classList.remove('mm-searchfield--searching');
             resultspanel.classList.remove('mm-panel--searching');
             resultspanel.classList.remove('mm-panel--noresults');
-
+            
             //  Resultspanel.
             if (resultspanel.matches('.mm-panel--search') ) {
                 _resetResultsPanel(resultspanel);
-
+                
                 //  Searchfield outside of resultspanel.
                 if (options.addTo !== '.mm-panel--search') {
                     //  Close the resultspanel if there is no splash page.
                     if (!options.splash.length) {
-
+                        
                         this.closePanel(resultspanel);
                     }
                 }
-            
-            //  Search per panel: Show all listitems and dividers.
+                
+                //  Search per panel: Show all listitems and dividers.
             } else {
                 _resetPerPanel(searchIn);
             }
+
+            // Dispatch clearing event.
+            input.dispatchEvent(new Event('mm.clearing'));
         }
     };
 

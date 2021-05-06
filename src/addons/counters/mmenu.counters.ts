@@ -75,8 +75,11 @@ export default function (this: Mmenu) {
     this.bind('initListitem:after', (listitem: HTMLLIElement) => {
         
         const panel: HTMLDivElement = listitem.closest('.mm-panel');
+        if (!panel) {
+            return;
+        }
+        
         const parent: HTMLLIElement = this.node.pnls.querySelector(`#${panel.dataset.mmParent}`);
-
         if (!parent) {
             return;
         }

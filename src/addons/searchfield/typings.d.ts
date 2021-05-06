@@ -25,6 +25,8 @@ interface mmOptionsSearchfield {
 
 /**	Configuration for the searchfield add-on. */
 interface mmConfigsSearchfield {
+	/** Whether or not to add a cancel button to the searchfield. */
+	cancel?: boolean
 
 	/** Whether or not to add a clear button to the searchfield. */
 	clear?: boolean

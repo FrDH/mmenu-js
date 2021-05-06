@@ -56,6 +56,9 @@ export default function () {
     //  Count when LI classname changes.
     this.bind('initListitem:after', (listitem) => {
         const panel = listitem.closest('.mm-panel');
+        if (!panel) {
+            return;
+        }
         const parent = this.node.pnls.querySelector(`#${panel.dataset.mmParent}`);
         if (!parent) {
             return;
