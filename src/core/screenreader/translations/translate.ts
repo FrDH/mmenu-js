@@ -10,5 +10,6 @@ export default function() {
     add(nl, 'nl');
     add(fa, 'fa');
     add(de, 'de');
+    add(ru, 'ru');
     add(pt_br, 'pt_br');
 }
