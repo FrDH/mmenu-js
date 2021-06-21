@@ -1,50 +1,33 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
-import * as sr from '../../_modules/screenreader';
 
 export default function (this: Mmenu, navbar: HTMLElement) {
-    //	Add content.
-    var prev = DOM.create('a.mm-btn.mm-btn--prev.mm-navbar__btn');
+    /** The prev button. */
+    const prev = DOM.create('a.mm-btn.mm-btn--prev.mm-navbar__btn') as HTMLAnchorElement;
+    
+    //	Add button to navbar.
     navbar.append(prev);
 
+    //  Hide navbar in the panel.
     this.bind('initNavbar:after', (panel: HTMLElement) => {
         DOM.children(panel, '.mm-navbar')[0].classList.add('mm-hidden');
     });
 
-    //	Update to opened panel.
-    let org: HTMLElement;
-    let _url, _txt;
-
+    // Update the button href when opening a panel.
     this.bind('openPanel:before', (panel: HTMLElement) => {
         if (panel.parentElement.matches('.mm-listitem--vertical')) {
             return;
         }
+        
+        /** Prev button href */
+        const href = panel.querySelector('.mm-navbar__btn.mm-btn--prev')?.getAttribute('href') || '';
 
-        org = panel.querySelector('.mm-navbar__btn.mm-btn--prev');
-
-        _url = org?.getAttribute('href') || '';
-        _txt = org?.innerHTML || '';
-
-        if (_url) {
-            prev.setAttribute('href', _url);
+        if (href) {
+            prev.href = href;
+            prev.classList.remove('mm-hidden');
         } else {
             prev.removeAttribute('href');
-        }
-
-        if (_url || _txt) {
-            prev.classList.remove('mm-hidden');
-            sr.aria(prev, 'hidden', false);
-
-        } else {
             prev.classList.add('mm-hidden');
-            sr.aria(prev, 'hidden', true);
         }
-        prev.innerHTML = _txt;
-    });
-
-    //	Add screenreader support, 
-    //  aria-hidden for the navbar in the panel.
-    this.bind('initNavbar:after', (panel: HTMLElement) => {
-        sr.aria(panel.querySelector('.mm-navbar'), 'hidden', true);
     });
 }

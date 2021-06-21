@@ -34,8 +34,10 @@ export default function (this: Mmenu) {
     });
 
     //  Focus menu when opening panel.
-    this.bind('openPanel:after', () => {
-        this.node.pnls.focus();
+    this.bind('openPanel:after', (panel, options) => {
+        if (options.setfocus) {
+            this.node.pnls.focus();
+        }
     });
 
     //  Focus menu when opening it.

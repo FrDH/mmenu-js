@@ -5,7 +5,6 @@ import translate from './translations';
 
 import * as DOM from '../../_modules/dom';
 import { extend } from '../../_modules/helpers';
-import options from '../../core/oncanvas/options';
 
 //  Add the translations.
 translate();
@@ -16,7 +15,7 @@ export default function (this: Mmenu) {
 
     //	Extend options.
     const options = extend(this.opts.searchfield, OPTIONS);
-    const configs = extend(this.conf.searchfield, CONFIGS);
+    const configs = extend(this.opts.searchfield, CONFIGS);
 
     if (!options.add) {
         return;
@@ -57,37 +56,43 @@ export default function (this: Mmenu) {
             if (!wrapper.matches('.mm-panel')) {
                 
                 /** The searchform. */
-                const form = createSearchfield.call(this);
-                
+                const form = createSearchfield.call(this, true);
+
                 //  Add the form to the panel.
                 wrapper.prepend(form);
 
                 /** The input node. */
                 const input = DOM.find(form, 'input')[0] as HTMLInputElement;
                 
-                // With a splash: open on focus...
+                //  Bind events for opening and closing the resultspanel.
+
+                // With a splash...
                 if (options.splash.length) {
+                    //  Open on focus.
                     input.addEventListener('focusin', () => {
-                        //  TODO: focus moet in input blijven, extra param??                        
-                        this.openPanel(resultspanel);
-                        //  TODO: cancel zichtbaar maken
+                        this.openPanel(resultspanel, false, false);
                     });
-                    
-                    // ...without splash.
+
+                    //  Show cancel button if searchpanel is opened.
+                    this.bind('openPanel:after', (panel) => {                        
+                        if (panel.matches('.mm-panel--search')) {
+                            form.classList.add('mm-searchfield--cancelable');
+                        } else {
+                            form.classList.remove('mm-searchfield--cancelable');
+                        }
+                    });                    
+
+                // ...without splash.
                 } else {
                     
                     //  Open resultspanel when searching.
-                    input.addEventListener('mm.searching', (e) => {
-                        //  TODO: focus moet in input blijven, extra param??                        
-                        this.openPanel(resultspanel, false);
+                    this.bind('search:after', () => {                     
+                        this.openPanel(resultspanel, false, false);
                     });
-                    
+
                     //  Close resultspanel when resetting.
-                    input.addEventListener('mm.clearing', () => {
-                        console.log('clear');
-                        
-                        // TODO: close
-                        this.closePanel(resultspanel);
+                    this.bind('clear:after', () => {
+                        this.closePanel(resultspanel, false);
                     });
                 }
                 
@@ -108,7 +113,7 @@ export default function (this: Mmenu) {
 
 /**
  * Create the searchpanel.
- * @param this {Mmenu}
+ * @param {Mmenu} this
  */
 const createResultsPanel = function (
     this: Mmenu
@@ -148,8 +153,8 @@ const createResultsPanel = function (
 
 /**
  * Add a searchfield, splash message and no-results message to a panel.
- * @param this {Mmenu}
- * @param panel {HTMLElement} The panel to initialise.
+ * @param {Mmenu}       this
+ * @param {HTMLElement} panel The panel to initialise.
  */
 const initPanel = function(
     this: Mmenu, 
@@ -160,12 +165,17 @@ const initPanel = function(
 
     //	Create the searchfield.
     if (panel.matches(options.addTo) ) {
+        /** Whether or not the panel is the resultspanel */
+        const isResultspanel = panel.matches('.mm-panel--search');
 
         //  Only one per panel.
         if (!DOM.find(panel, '.mm-searchfield').length) {
 
             /** The searchform. */
-            const form = createSearchfield.call(this);
+            const form = createSearchfield.call(this, isResultspanel);
+            if ( isResultspanel ) {
+                form.classList.add('mm-searchfield--cancelable');
+            }
 
             //  Add the form to the panel.
             panel.prepend(form);
@@ -209,9 +219,13 @@ const initPanel = function(
 
 /**
  * Create the searchfield.
- * @param this {Mmenu}
+ * @param {Mmenu}   this
+ * @param {boolean} [cancel=false] Whether or not to add the cancel button
  */
-const createSearchfield = function(this: Mmenu) {
+const createSearchfield = function(
+    this: Mmenu, 
+    cancel: boolean = false
+) {
     /** Options for the searchfield. */
     const options = this.opts.searchfield;
     
@@ -269,19 +283,18 @@ const createSearchfield = function(this: Mmenu) {
     }
  
      // Add a button to close the searchpanel.
-     if ( configs.cancel ) {
+     if ( configs.cancel && cancel ) {
  
          /** The cancel button. */
          const cancel = DOM.create('a.mm-searchfield__cancel') as HTMLAnchorElement;
+         cancel.href = '#';
          cancel.textContent = this.i18n('cancel');
  
          form.append(cancel);
  
-         // Update the href attribute so it opens the last opened panel.
-         this.bind('openPanel:before', panel => {
-             if (!panel.matches('.mm-panel--search')) {
-                 cancel.href = `#${panel.id}`;
-             }
+         // Close the search panel.
+         cancel.addEventListener('click', () => {
+            this.closePanel(DOM.children(this.node.pnls, '.mm-panel--search')[0], false);
          });
      }
 
@@ -290,8 +303,8 @@ const createSearchfield = function(this: Mmenu) {
 
 /**
  * Initialize the searching.
- * @param this {Mmenu}
- * @param form {HTMLElement} The searchform.
+ * @param {Mmenu}       this
+ * @param {HTMLElement} form The searchform.
  */
 const initSearch = function (
     this: Mmenu, 
@@ -334,6 +347,8 @@ const initSearch = function (
 
         //	Search
         if (query.length) {
+            // Trigger event.
+            this.trigger('search:before');
             
             form.classList.add('mm-searchfield--searching');
             resultspanel.classList.add('mm-panel--searching');
@@ -360,11 +375,13 @@ const initSearch = function (
             
             resultspanel.classList[count == 0 ? 'add' : 'remove' ]('mm-panel--noresults');
 
-            // Dispatch searching event.
-            input.dispatchEvent(new Event('mm.searching'));
+            // Trigger event.
+            this.trigger('search:after');
             
         //  Don't search, reset all.
         } else {
+            // Trigger event.
+            this.trigger('clear:before');
             
             form.classList.remove('mm-searchfield--searching');
             resultspanel.classList.remove('mm-panel--searching');
@@ -374,22 +391,13 @@ const initSearch = function (
             if (resultspanel.matches('.mm-panel--search') ) {
                 _resetResultsPanel(resultspanel);
                 
-                //  Searchfield outside of resultspanel.
-                if (options.addTo !== '.mm-panel--search') {
-                    //  Close the resultspanel if there is no splash page.
-                    if (!options.splash.length) {
-                        
-                        this.closePanel(resultspanel);
-                    }
-                }
-                
-                //  Search per panel: Show all listitems and dividers.
+            //  Search per panel: Show all listitems and dividers.
             } else {
                 _resetPerPanel(searchIn);
             }
 
-            // Dispatch clearing event.
-            input.dispatchEvent(new Event('mm.clearing'));
+            // Trigger event.
+            this.trigger('clear:after');
         }
     };
 
@@ -510,10 +518,10 @@ const _resetPerPanel = (
 
 /** 
  * Add array of attributes to an element.
- * @param element {HTMLEement} The element to add the attributes to.
- * @param attributes {Object} The attributes to add.
+ * @param {HTMLEement}  element     The element to add the attributes to.
+ * @param {Object}      attributes  The attributes to add.
  */
-    const _addAttributes = (
+const _addAttributes = (
     element: HTMLElement,
     attributes: mmLooseObject | boolean
 ) => {

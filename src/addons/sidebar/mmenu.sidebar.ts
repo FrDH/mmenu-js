@@ -34,7 +34,7 @@ export default function (this: Mmenu) {
                 //  Add screenreader support
                 blocker.append(sr.text(this.i18n(this.conf.screenReader.text.openMenu)));
 
-                //  TODO: Keyboard navigation support
+                //  TODO: Keyboard navigation support?
             }
         });
 

@@ -3,10 +3,13 @@ import * as DOM from '../../_modules/dom';
 import * as sr from '../../_modules/screenreader';
 
 export default function (this: Mmenu, navbar: HTMLElement) {
-    //	Add content to the navbar.
-    let title = DOM.create('a.mm-navbar__title');
-    let titleText = DOM.create('span');
+    /** The title node in the navbar. */
+    const title = DOM.create('a.mm-navbar__title') as HTMLAnchorElement;
 
+    /** Text in the title. */
+    const titleText = DOM.create('span');
+    
+    //	Add title to the navbar.
     title.append(titleText);
     navbar.append(title);
 
@@ -19,18 +22,18 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         }
 
         //	Find the original title in the opened panel.
-        let original = panel.querySelector('.mm-navbar__title span');
+        const original = DOM.find(panel, '.mm-navbar__title')[0];
 
         //	Get the URL for the title.
-        let _url = original?.closest('a')?.getAttribute('href') || '';
-        if (_url) {
-            title.setAttribute('href', _url);
+        let href = original?.getAttribute('href') || '';
+        if (href) {
+            title.href = href;
         } else {
             title.removeAttribute('href');
         }
 
         //	Get the text for the title.
-        titleText.innerHTML = original?.innerHTML || '';
+        titleText.innerHTML = DOM.children(original, 'span')[0]?.innerHTML || '';
     });
 
     //	Add screenreader  support

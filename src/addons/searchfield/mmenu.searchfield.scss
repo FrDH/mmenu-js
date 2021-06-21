@@ -77,10 +77,18 @@ $mm_module: ".mm-searchfield";
  */
 #{$mm_module}__cancel {
   display: block;
-  padding-right: $mm_padding;
+  visibility: hidden;
+  max-width: 0;
 
   line-height: var(--mm-navbar-size);
   text-decoration: none;
+  transition: all $mm-transitionDuration linear;
+
+  #{$mm_module}--cancelable & {
+    visibility: visible;
+    max-width: 75px;
+    padding-right: $mm_padding;
+  }
 }
 
 @import "./panel";

@@ -131,8 +131,13 @@ export default class Mmenu {
      * Open a panel.
      * @param {HTMLElement} panel               Panel to open.
      * @param {boolean}     [animation=true]    Whether or not to use an animation.
+     * @param {boolean}     [setfocus=true]     Whether or not to set focus to the panel.
      */
-    openPanel(panel: HTMLElement, animation: boolean = true) {
+    openPanel(
+        panel: HTMLElement, 
+        animation: boolean = true,
+        setfocus: boolean = true,
+    ) {
         //	Find panel.
         if (!panel) {
             return;
@@ -143,13 +148,16 @@ export default class Mmenu {
         }
 
         //	Invoke "before" hook.
-        this.trigger('openPanel:before', [panel]);
+        this.trigger('openPanel:before', [panel, {
+            animation,
+            setfocus
+        }]);
 
         //	Open a "vertical" panel.
         if (panel.parentElement.matches('.mm-listitem--vertical')) {
             panel.parentElement.classList.add('mm-listitem--opened');
 
-            //	Open a "horizontal" panel.
+        //	Open a "horizontal" panel.
         } else {
 
             /** Currently opened panel. */
@@ -162,17 +170,25 @@ export default class Mmenu {
 
             //  Remove opened, parent, animation and highest classes from all panels.
             DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
-                pnl.classList.remove('mm-panel--opened', 'mm-panel--parent', 'mm-panel--noanimation');
-                if (pnl !== current) {
-                    pnl.classList.remove('mm-panel--highest');
+                const remove = ['mm-panel--opened', 'mm-panel--parent'];
+                const add = [];
+                
+                if (animation) {
+                    remove.push('mm-panel--noanimation');
+                } else {
+                    add.push('mm-panel--noanimation');
                 }
+
+                if (pnl !== current) {
+                    remove.push('mm-panel--highest');
+                }
+                
+                pnl.classList.add(...add);
+                pnl.classList.remove(...remove);
             });
 
             //  Open new panel.
             panel.classList.add('mm-panel--opened');
-            if (!animation) {
-                panel.classList.add('mm-panel--noanimation');
-            }
 
             /** The parent panel */
             let parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
@@ -187,14 +203,24 @@ export default class Mmenu {
         }
 
         //	Invoke "after" hook.
-        this.trigger('openPanel:after', [panel]);
+        this.trigger('openPanel:after', [panel, {
+            animation,
+            setfocus
+        }]);
     }
 
     /**
      * Close a panel.
-     * @param {HTMLElement} panel Panel to close.
+     * @param {HTMLElement} panel               Panel to close.
+     * @param {boolean}     [animation=true]    Whether or not to use an animation.
      */
-    closePanel(panel: HTMLElement) {
+    closePanel(panel: HTMLElement, 
+        animation: boolean = true
+    ) {
+        if (!panel) {
+            return;
+        }
+        
         //	Invoke "before" hook.
         this.trigger('closePanel:before', [panel]);
 
@@ -202,15 +228,23 @@ export default class Mmenu {
         if (panel.parentElement.matches('.mm-listitem--vertical')) {
             panel.parentElement.classList.remove('mm-listitem--opened');
 
-            //  Close a "horizontal" panel.
+        //  Close a "horizontal" panel...
         } else {
 
+            //  ... open its parent...
             if (panel.dataset.mmParent) {
                 const parent = DOM.find(
                     this.node.pnls,
                     `#${panel.dataset.mmParent}`
                 )[0];
-                this.openPanel(parent);
+                this.openPanel(parent, animation);
+            
+            /// ... or the first panel.
+            } else {
+                const firstPanel = DOM.children(this.node.pnls, '.mm-panel')[0];
+                if (panel !== firstPanel) {
+                    this.openPanel(firstPanel, animation);
+                }
             }
         }
 

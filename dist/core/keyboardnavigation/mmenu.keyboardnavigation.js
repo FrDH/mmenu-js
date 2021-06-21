@@ -27,8 +27,10 @@ export default function () {
         (_a = Mmenu.node.page) === null || _a === void 0 ? void 0 : _a.setAttribute('tabindex', '-1');
     });
     //  Focus menu when opening panel.
-    this.bind('openPanel:after', () => {
-        this.node.pnls.focus();
+    this.bind('openPanel:after', (panel, options) => {
+        if (options.setfocus) {
+            this.node.pnls.focus();
+        }
     });
     //  Focus menu when opening it.
     this.bind('open:after', () => {

@@ -1,12 +1,7 @@
 import * as DOM from './dom';
 const attr = (element, attr, value) => {
     element[attr] = value;
-    if (value) {
-        element.setAttribute(attr, value.toString());
-    }
-    else {
-        element.removeAttribute(attr);
-    }
+    element.setAttribute(attr, value.toString());
 };
 /**
  * Add aria (property and) attribute to a HTML element.

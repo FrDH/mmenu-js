@@ -2,11 +2,7 @@ import * as DOM from './dom';
 
 const attr = (element: HTMLElement, attr: string, value: string | boolean) => {
     element[attr] = value;
-    if (value) {
-        element.setAttribute(attr, value.toString());
-    } else {
-        element.removeAttribute(attr);
-    }
+    element.setAttribute(attr, value.toString());
 };
 
 /**

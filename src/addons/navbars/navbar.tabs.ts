@@ -1,13 +1,15 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
-
+import * as sr from '../../_modules/screenreader';
 export default function (this: Mmenu, navbar: HTMLElement) {
     navbar.classList.add('mm-navbar--tabs');
     navbar.closest('.mm-navbars').classList.add('mm-navbars--has-tabs');
-
+    
     DOM.children(navbar, 'a').forEach(anchor => {
         anchor.classList.add('mm-navbar__tab');
     });
+    
+    // TODO aria tabs
 
     /**
      * Mark a tab as selected.
@@ -19,9 +21,10 @@ export default function (this: Mmenu, navbar: HTMLElement) {
 
         if (anchor) {
             anchor.classList.add('mm-navbar__tab--selected');
+            sr.aria(anchor, 'expanded', true);
 
         } else {
-
+            
             /** The parent listitem. */
             const parent = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
             if (parent) {
@@ -34,6 +37,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         //  Remove selected class.
         DOM.children(navbar, 'a').forEach(anchor => {
             anchor.classList.remove('mm-navbar__tab--selected');
+            sr.aria(anchor, 'expanded', false);
         });
 
         selectTab.call(this, panel);
