@@ -82,7 +82,7 @@ $mm_module: ".mm-searchfield";
 
   line-height: var(--mm-navbar-size);
   text-decoration: none;
-  transition: all $mm-transitionDuration linear;
+  transition: all 0.2s linear;
 
   #{$mm_module}--cancelable & {
     visibility: visible;

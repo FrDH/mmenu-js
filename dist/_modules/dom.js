@@ -124,7 +124,6 @@ export const filterLIA = (listitems) => {
  */
 export const reClass = (element, oldClass, newClass) => {
     if (element.matches('.' + oldClass)) {
-        element.classList.remove(oldClass);
         element.classList.add(newClass);
     }
 };

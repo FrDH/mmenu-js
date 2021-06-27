@@ -50,7 +50,6 @@
             <p>
                 <strong>This is an advanced demo.</strong><br />
                 Click the menu icon to open the menu.
-                <a href="#">link for testing</a>
             </p>
         </div>
         <nav id="menu">
@@ -59,7 +58,7 @@
                     <li><a href="#/">Home</a></li>
                     <li>
                         <span>About us</span>
-                        <ul>
+                        <ul class="Vertical">
                             <li><a href="#/">History</a></li>
                             <li>
                                 <span>The team</span>
@@ -114,7 +113,7 @@
                 },
                 searchfield: {
                     add: true,
-                    addTo: 'searchpanel',
+                    // addTo: 'searchpanel',
                     placeholder: 'Search menu items',
                     splash: '<p>asdf</p>',
                     title: 'searchh'
@@ -154,7 +153,7 @@
                             '<a href="#panel-menu"><i class="fa fa-bars"></i> <span>Menu</span></a>',
                             '<a href="#panel-account"><i class="fa fa-user"></i> <span>Account</span></a>',
                             '<a href="#panel-cart"><i class="fa fa-shopping-cart"></i> <span>Cart</span></a>',
-                            '<a href="#panel-search"><i class="fa fa-search"></i> <span>Search</span></a>',
+                            // '<a href="#panel-search"><i class="fa fa-search"></i> <span>Search</span></a>',
                         ],
                     },
                     {
@@ -170,6 +169,7 @@
             },
             {
                 searchfield: {
+                    cancel: true,
                     panel: {
                         id: 'panel-search'
                     }

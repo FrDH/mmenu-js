@@ -1,7 +1,6 @@
 import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import * as media from '../../_modules/matchmedia';
-import * as sr from '../../_modules/screenreader';
 import { extend } from '../../_modules/helpers';
 export default function () {
     // Only for off-canvas menus.
@@ -22,8 +21,9 @@ export default function () {
                 blocker.setAttribute('href', `#${this.node.menu.id}`);
                 this.node.menu.prepend(blocker);
                 //  Add screenreader support
-                blocker.append(sr.text(this.i18n(this.conf.screenReader.text.openMenu)));
-                //  TODO: Keyboard navigation support
+                blocker.title = this.i18n(this.conf.screenReader.text.openMenu);
+                //  TODO: Keyboard navigation support?
+                //      shouldnt be able to tab inside the menu while it's closed
             }
         });
         //	En-/disable the collapsed sidebar.

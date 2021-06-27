@@ -161,7 +161,6 @@ export const reClass = (
     newClass: string
 ) => {
     if (element.matches('.' + oldClass)) {
-        element.classList.remove(oldClass);
         element.classList.add(newClass);
     }
 };

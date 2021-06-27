@@ -560,10 +560,10 @@ export default class Mmenu {
         panel.classList.add('mm-panel');
 
         //  Append to the panels node if not vertically expanding
-        if (!panel.closest('.mm-listitem--vertical')) {
+        if (!panel.parentElement?.matches('.mm-listitem--vertical')) {
             this.node.pnls.append(panel);
         }
-
+        
         //  Initialize tha navbar.
         this._initNavbar(panel);
 

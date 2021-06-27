@@ -204,7 +204,7 @@ const createSearchfield = function (cancel = false) {
         //  so we manually dispatch the event, one frame later :/
         form.addEventListener('reset', () => {
             window.requestAnimationFrame(() => {
-                input.dispatchEvent(new Event('change'));
+                input.dispatchEvent(new Event('input'));
             });
         });
     }
@@ -299,7 +299,6 @@ const initSearch = function (form) {
         }
     };
     input.addEventListener('input', search);
-    input.addEventListener('change', search);
     search();
 };
 const _searchResultsPanel = (resultspanel, query, searchIn) => {
@@ -351,23 +350,6 @@ const _searchPerPanel = (query, searchIn) => {
                     divider.dataset.mmSearchresult = query;
                 }
             });
-            //  TODO?
-            //	Show parent panels of vertical submenus
-            // panels.forEach((panel) => {
-            //     let listitems = DOM.find(panel, '.mm-listitem');
-            //     DOM.filterLI(listitems).forEach((listitem) => {
-            //         DOM.parents(listitem, '.mm-listitem--vertical').forEach(
-            //             (parent) => {
-            //                 if (parent.matches('.mm-hidden')) {
-            //                     parent.classList.remove('mm-hidden');
-            //                     parent.classList.add(
-            //                         'mm-listitem--onlysubitems'
-            //                     );
-            //                 }
-            //             }
-            //         );
-            //     });
-            // });
         }
         DOM.find(panel, '.mm-listitem, .mm-divider').forEach(item => {
             item.classList[item.dataset.mmSearchresult === query ? 'remove' : 'add']('mm-hidden');

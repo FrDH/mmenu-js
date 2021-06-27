@@ -1,60 +1,55 @@
-$mm_module: '.mm-panel';
+$mm_module: ".mm-panel";
 
 #{$mm_module} {
-    visibility: hidden;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 1;
-    
-    #{$mm_module} {
-        position: static;
-        width: 100%;
-    }
+  visibility: hidden;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
 
-    -webkit-overflow-scrolling: touch;
-    overflow: hidden;
-    overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+  overflow-y: auto;
 
-    color: var(--mm-color-text);
-    border-color: var(--mm-color-border);
-    background: var(--mm-color-background);
+  color: var(--mm-color-text);
+  border-color: var(--mm-color-border);
+  background: var(--mm-color-background);
 
-    transform: translate3d(100%, 0, 0);
-    transition: visibility 0s linear $mm_transitionDuration, 
-        transform $mm_transitionDuration $mm_transitionFunction 0s,
-        left $mm_transitionDuration $mm_transitionFunction 0s;
+  transform: translate3d(100%, 0, 0);
+  transition: visibility 0s linear $mm_transitionDuration,
+    transform $mm_transitionDuration $mm_transitionFunction 0s,
+    left $mm_transitionDuration $mm_transitionFunction 0s;
 
-    //	Because padding-bottom is ignored when a DIV is scrollable
-    &:after {
-        content: '';
-        display: block;
-        height: var(--mm-listitem-size);
-    }
+  //	Because padding-bottom is ignored when a DIV is scrollable
+  &:after {
+    content: "";
+    display: block;
+    height: var(--mm-listitem-size);
+  }
 
-    &--opened {
-        visibility: visible;
-        z-index: 2;
-        transform: translate3d(0%, 0, 0);
-        transition-delay: 0s;
-    }
+  &--opened {
+    visibility: visible;
+    z-index: 2;
+    transform: translate3d(0%, 0, 0);
+    transition-delay: 0s;
+  }
 
-    &--parent {
-        transform: translate3d(-30%, 0, 0);
-        z-index: 0;
-    }
+  &--parent {
+    transform: translate3d(-30%, 0, 0);
+    z-index: 0;
+  }
 
-    &--highest {
-        z-index: 3;
-    }
+  &--highest {
+    z-index: 3;
+  }
 
-    &--noanimation {
-        transition: none !important;
-    }
+  &--noanimation {
+    transition: none !important;
+  }
 }
 
 #{$mm_module}__content {
-    padding: $mm_panelPadding $mm_panelPadding 0;
+  padding: $mm_panelPadding $mm_panelPadding 0;
 }

@@ -10,23 +10,23 @@
  */
 
 //	Core
-@import 'core/oncanvas/mmenu.oncanvas';
+@import "core/oncanvas/mmenu.oncanvas";
 
 //	Core add-ons
-@import 'core/offcanvas/mmenu.offcanvas';
-@import 'core/screenreader/mmenu.screenreader';
+@import "core/offcanvas/mmenu.offcanvas";
+@import "core/screenreader/mmenu.screenreader";
 
 //	Add-ons
-@import 'addons/counters/mmenu.counters';
-@import 'addons/iconbar/mmenu.iconbar';
-@import 'addons/iconpanels/mmenu.iconpanels';
-@import 'addons/navbars/mmenu.navbars';
-@import 'addons/searchfield/mmenu.searchfield';
-@import 'addons/sectionindexer/mmenu.sectionindexer';
-@import 'addons/setselected/mmenu.setselected';
-@import 'addons/sidebar/mmenu.sidebar';
+@import "addons/counters/mmenu.counters";
+@import "addons/iconbar/mmenu.iconbar";
+@import "addons/iconpanels/mmenu.iconpanels";
+@import "addons/navbars/mmenu.navbars";
+@import "addons/searchfield/mmenu.searchfield";
+@import "addons/sectionindexer/mmenu.sectionindexer";
+@import "addons/setselected/mmenu.setselected";
+@import "addons/sidebar/mmenu.sidebar";
 
 //	Extensions
-@import 'extensions/fullscreen/mmenu.fullscreen';
-@import 'extensions/positioning/mmenu.positioning';
-@import 'extensions/themes/mmenu.themes';
+@import "extensions/fullscreen/mmenu.fullscreen";
+@import "extensions/positioning/mmenu.positioning";
+@import "extensions/themes/mmenu.themes";

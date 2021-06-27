@@ -349,6 +349,7 @@ export default class Mmenu {
      * @return {HTMLElement|null} 			Initialized panel.
      */
     _initPanel(panel) {
+        var _a;
         if (panel.matches('.mm-panel')) {
             return;
         }
@@ -392,7 +393,7 @@ export default class Mmenu {
         }
         panel.classList.add('mm-panel');
         //  Append to the panels node if not vertically expanding
-        if (!panel.closest('.mm-listitem--vertical')) {
+        if (!((_a = panel.parentElement) === null || _a === void 0 ? void 0 : _a.matches('.mm-listitem--vertical'))) {
             this.node.pnls.append(panel);
         }
         //  Initialize tha navbar.
