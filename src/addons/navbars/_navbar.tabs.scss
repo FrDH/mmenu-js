@@ -1,85 +1,80 @@
-$mm_module: '.mm-navbar';
+$mm_module: ".mm-navbar";
 
-@if ($mm_include_navbars_tabs) {
-    //  All tabs.
-    #{$mm_module}--tabs {
-        > * {
-            padding: 0 $mm_padding;
-            border: 1px solid transparent;
-        }
-    }
+//  All tabs.
+#{$mm_module}--tabs {
+  > * {
+    padding: 0 $mm_padding;
+    border: 1px solid transparent;
+  }
+}
 
-    //  Selected tab.
-    #{$mm_module}__tab--selected {
-        background: var(--mm-color-background);
+//  Selected tab.
+#{$mm_module}__tab--selected {
+  background: var(--mm-color-background);
 
-        &:not(:first-child) {
-            border-left-color: var(--mm-color-border);
-        }
+  &:not(:first-child) {
+    border-left-color: var(--mm-color-border);
+  }
 
-        &:not(:last-child) {
-            border-right-color: var(--mm-color-border);
-        }
-    }
+  &:not(:last-child) {
+    border-right-color: var(--mm-color-border);
+  }
 }
 
 //  Navbars at the top.
-@if ($mm_include_navbars_top) {
-    .mm-navbars--top {
-        #{$mm_module}--tabs {
-            border-bottom: none;
-        }
+.mm-navbars--top {
+  #{$mm_module}--tabs {
+    border-bottom: none;
+  }
 
-        //  Borders.
-        #{$mm_module}--tabs > * {
-            border-bottom-color: var(--mm-color-border);
-        }
+  //  Borders.
+  #{$mm_module}--tabs > * {
+    border-bottom-color: var(--mm-color-border);
+  }
 
-        #{$mm_module}__tab--selected {
-            border-top-color: var(--mm-color-border);
-            border-bottom-color: transparent;
-        }
+  #{$mm_module}__tab--selected {
+    border-top-color: var(--mm-color-border);
+    border-bottom-color: transparent;
+  }
 
-        //  Backgrounds
-        &.mm-navbars--has-tabs {
-            #{$mm_module} {
-                background: var(--mm-color-background-emphasis);
-            }
-
-            #{$mm_module}--tabs ~ #{$mm_module} {
-                background: var(--mm-color-background);
-            }
-        }
+  //  Backgrounds
+  &.mm-navbars--has-tabs {
+    #{$mm_module} {
+      background: var(--mm-color-background-emphasis);
     }
+
+    #{$mm_module}--tabs ~ #{$mm_module} {
+      background: var(--mm-color-background);
+    }
+  }
 }
 
-@if ($mm_include_navbars_bottom) {
-    .mm-navbars--bottom {
-        #{$mm_module}--tabs {
-            &:first-child {
-                border-top: none;
-            }
-        }
-
-        //  Borders.
-        #{$mm_module}--tabs > * {
-            border-top-color: var(--mm-color-border);
-        }
-
-        #{$mm_module}__tab--selected {
-            border-bottom-color: var(--mm-color-border);
-            border-top-color: transparent;
-        }
-        //  Backgrounds
-        &.mm-navbars--has-tabs {
-            #{$mm_module} {
-                background: var(--mm-color-background);
-            }
-
-            #{$mm_module}--tabs,
-            #{$mm_module}--tabs ~ #{$mm_module} {
-                background: var(--mm-color-background-emphasis);
-            }
-        }
+.mm-navbars--bottom {
+  #{$mm_module}--tabs {
+    &:first-child {
+      border-top: none;
     }
+  }
+
+  //  Borders.
+  #{$mm_module}--tabs > * {
+    border-top-color: var(--mm-color-border);
+  }
+
+  #{$mm_module}__tab--selected {
+    border-bottom-color: var(--mm-color-border);
+    border-top-color: transparent;
+  }
+
+  //  Backgrounds
+  &.mm-navbars--has-tabs {
+    #{$mm_module} {
+      background: var(--mm-color-background);
+    }
+
+    #{$mm_module}--tabs,
+    #{$mm_module}--tabs ~ #{$mm_module} {
+      background: var(--mm-color-background-emphasis);
+    }
+  }
 }

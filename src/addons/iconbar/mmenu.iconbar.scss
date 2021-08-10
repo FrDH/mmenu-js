@@ -1,86 +1,84 @@
-@import '../../mixins', '../../includes', '../../variables';
+@import "../../mixins", "../../includes", "../../variables";
 
-$mm_module: '.mm-iconbar';
+$mm_module: ".mm-iconbar";
 
 :root {
-    --mm-iconbar-size: #{$mm_iconbarSize};
+  --mm-iconbar-size: 50px;
 }
 
 .mm-menu--iconbar {
-    &-left {
-        .mm-panels,
-        .mm-navbars {
-            margin-left: var(--mm-iconbar-size);
-        }
+  &-left {
+    .mm-panels,
+    .mm-navbars {
+      margin-left: var(--mm-iconbar-size);
     }
+  }
 
-    &-right {
-        .mm-panels,
-        .mm-navbars {
-            margin-right: var(--mm-iconbar-size);
-        }
+  &-right {
+    .mm-panels,
+    .mm-navbars {
+      margin-right: var(--mm-iconbar-size);
     }
+  }
 }
 
 #{$mm_module} {
-    display: none;
+  display: none;
 
-    .mm-menu--iconbar-left &,
-    .mm-menu--iconbar-right & {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
+  .mm-menu--iconbar-left &,
+  .mm-menu--iconbar-right & {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
-    .mm-menu--iconbar-left & {
-        border-right-width: 1px;
-        left: 0;
-    }
+  .mm-menu--iconbar-left & {
+    border-right-width: 1px;
+    left: 0;
+  }
 
-    .mm-menu--iconbar-right & {
-        border-left-width: 1px;
-        right: 0;
-    }
+  .mm-menu--iconbar-right & {
+    border-left-width: 1px;
+    right: 0;
+  }
 
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    z-index: 2;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
 
-    width: var(--mm-iconbar-size);
-    overflow: hidden;
-    box-sizing: border-box;
+  width: var(--mm-iconbar-size);
+  overflow: hidden;
+  box-sizing: border-box;
 
-    border: 0 solid;
-    border-color: var(--mm-color-border);
-    background: var(--mm-color-background);
-    color: var(--mm-color-text-dimmed);
-    text-align: center;
+  border: 0 solid;
+  border-color: var(--mm-color-border);
+  background: var(--mm-color-background);
+  color: var(--mm-color-text-dimmed);
+  text-align: center;
 }
 
 #{$mm_module}__top,
 #{$mm_module}__bottom {
-    width: 100%;
+  width: 100%;
 
-    -webkit-overflow-scrolling: touch;
-    overflow: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 
-    > * {
-        box-sizing: border-box;
-        display: block;
-        padding: $mm_padding 0;
-    }
+  > * {
+    box-sizing: border-box;
+    display: block;
+    padding: $mm_padding 0;
+  }
 
-    a,
-    a:hover {
-        text-decoration: none;
-    }
+  a,
+  a:hover {
+    text-decoration: none;
+  }
 }
 
-@if ($mm_include_iconbar_tabs) {
-    #{$mm_module}__tab--selected {
-        background: var(--mm-color-background-emphasis);
-    }
+#{$mm_module}__tab--selected {
+  background: var(--mm-color-background-emphasis);
 }

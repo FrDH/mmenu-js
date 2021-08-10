@@ -1,75 +1,69 @@
-@import '../../mixins', '../../includes', '../../variables';
+@import "../../mixins", "../../includes", "../../variables";
 
 :root {
-    --mm-iconpanel-size: #{$mm_iconpanelSize};
+  --mm-iconpanel-size: 50px;
 }
 
-
 .mm-panel--iconpanel-0 {
-    left: 0;
+  left: 0;
 }
 
 .mm-panel--iconpanel-1 {
-    left: var(--mm-iconpanel-size);
+  left: var(--mm-iconpanel-size);
 }
 
 .mm-panel--iconpanel-2 {
-    left: calc(var(--mm-iconpanel-size) * 2);
+  left: calc(var(--mm-iconpanel-size) * 2);
 }
 
 .mm-panel--iconpanel-3 {
-    left: calc(var(--mm-iconpanel-size) * 3);
+  left: calc(var(--mm-iconpanel-size) * 3);
 }
 
 .mm-panel--iconpanel-first {
-    ~ .mm-panel {
-        left: var(--mm-iconpanel-size);
-    }
+  ~ .mm-panel {
+    left: var(--mm-iconpanel-size);
+  }
 }
 
 .mm-menu--iconpanel {
+  // Hide navbars and dividers in parent panels.
+  .mm-panel--parent .mm-navbar,
+  .mm-panel--parent .mm-divider {
+    opacity: 0;
+  }
 
-    // Hide navbars and dividers in parent panels.
-    .mm-panel--parent .mm-navbar,
-    .mm-panel--parent .mm-divider {
-        opacity: 0;
+  .mm-panels {
+    > .mm-panel {
+      &--parent {
+        visibility: visible !important;
+        overflow-y: hidden;
+        transform: unset;
+      }
+
+      &:not(.mm-panel--iconpanel-first):not(.mm-panel--iconpanel-0) {
+        border-left-width: 1px;
+        border-left-style: solid;
+      }
     }
-
-    .mm-panels {
-        > .mm-panel {
-
-            &--parent {
-                visibility: visible !important;
-                overflow-y: hidden;
-                transform: unset;
-            }
-
-            &:not(.mm-panel--iconpanel-first):not(.mm-panel--iconpanel-0) {
-                border-left-width: 1px;
-                border-left-style: solid;
-            }
-        }
-    }
+  }
 }
 
-@if ($mm_include_iconpanels_blocker) {
-    .mm-panel__blocker {
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: 0;
-        z-index: 3;
-        opacity: 0;
-        background: var(--mm-color-background);
+.mm-panel__blocker {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 3;
+  opacity: 0;
+  background: var(--mm-color-background);
+  transition: opacity $mm_transitionDuration $mm_transitionFunction;
 
-        transition: opacity $mm_transitionDuration $mm_transitionFunction;
-
-        .mm-panel--parent & {
-            opacity: 0.6;
-            bottom: -100000px;
-        }
-    }
+  .mm-panel--parent & {
+    opacity: 0.6;
+    bottom: -100000px;
+  }
 }
 
-@import 'iconpanels.rtl';
+@import "iconpanels.rtl";

@@ -1,19 +1,13 @@
-@import '../../mixins', '../../includes', '../../variables';
+@import "../../mixins", "../../includes", "../../variables";
 
-$mm_module: '.mm-counter';
+$mm_module: ".mm-counter";
 
 #{$mm_module} {
-    display: block;
-    padding-left: $mm_padding * 2;
-    float: right;
-    text-align: right;
-    color: var(--mm-color-text-dimmed);
+  display: block;
+  padding-left: $mm_padding * 2;
+  float: right;
+  text-align: right;
+  color: var(--mm-color-text-dimmed);
 }
 
-@if ($mm_include_searchfield) {
-    .mm-listitem--nosubitems > #{$mm_module} {
-        display: none;
-    }
-}
-
-@import 'counters.rtl';
+@import "counters.rtl";

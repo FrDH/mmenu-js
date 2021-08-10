@@ -1,105 +1,90 @@
-@import '../../mixins', '../../includes', '../../variables';
+@import "../../mixins", "../../includes", "../../variables";
 
-@if ($mm_include_sidebar_collapsed or $mm_include_sidebar_expanded) {
-    :root {
-        --mm-sidebar-collapsed-size: #{$mm_sidebarCollapsedSize};
-        --mm-sidebar-expanded-size: var(--mm-max-size);
-    }
-
-    .mm-wrapper--sidebar {
-        &-collapsed,
-        &-expanded {
-
-            .mm-page {
-                background: inherit;
-                box-sizing: border-box;
-                min-height: 100vh;
-            }
-        }
-
-        &-collapsed .mm-menu--sidebar-collapsed,
-        &-expanded .mm-menu--sidebar-expanded {
-            // display: flex !important;
-            top: 0 !important;
-            right: auto !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            visibility: visible !important;
-        }
-    }
+:root {
+  --mm-sidebar-collapsed-size: 50px;
+  --mm-sidebar-expanded-size: var(--mm-max-size);
 }
 
-@if ($mm_include_sidebar_collapsed) {
-    .mm-wrapper--sidebar-collapsed {
-        &:not(.mm-wrapper--opened) {
-            .mm-slideout {
-                width: calc(100% - var(--mm-sidebar-collapsed-size));
-                transform: translate3d(var(--mm-sidebar-collapsed-size), 0, 0);
-            }
-
-            .mm-panel--opened {
-                visibility: visible;
-            }
-
-            .mm-navbar,
-            .mm-divider {
-                opacity: 0;
-            }
-        }
+.mm-wrapper--sidebar {
+  &-collapsed,
+  &-expanded {
+    .mm-page {
+      background: inherit;
+      box-sizing: border-box;
+      min-height: 100vh;
     }
+  }
+
+  &-collapsed .mm-menu--sidebar-collapsed,
+  &-expanded .mm-menu--sidebar-expanded {
+    // display: flex !important;
+    top: 0 !important;
+    right: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    visibility: visible !important;
+  }
 }
 
-@if ($mm_include_sidebar_expanded) {
-    .mm-wrapper--sidebar-expanded {
-        .mm-menu--sidebar-expanded {
-            width: var(--mm-sidebar-expanded-size);
-            border-right-width: 1px;
-            border-right-style: solid;
-        }
-
-        &.mm-wrapper--opened {
-
-            //  disable the UI blocker.
-            .mm-wrapper__blocker {
-                display: none !important;
-            }
-
-            //  page next to menu.
-            .mm-menu--sidebar-expanded {
-                ~ .mm-slideout {
-                    width: calc(100% - var(--mm-sidebar-expanded-size));
-                    transform: translate3d(
-                        var(--mm-sidebar-expanded-size),
-                        0,
-                        0
-                    );
-                }
-            }
-        }
+.mm-wrapper--sidebar-collapsed {
+  &:not(.mm-wrapper--opened) {
+    .mm-slideout {
+      width: calc(100% - var(--mm-sidebar-collapsed-size));
+      transform: translate3d(var(--mm-sidebar-collapsed-size), 0, 0);
     }
 
-}
-
-@if ($mm_include_sidebar_blocker) {
-    .mm-menu__blocker {
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: 0;
-        bottom: 0;
-        z-index: 3;
-        opacity: 0.6;
-        background: var(--mm-color-background);
-        pointer-events: auto;
-
-        transition: opacity $mm_transitionDuration $mm_transitionFunction;
-
-        .mm-menu--opened & {
-            bottom: 100%;
-            opacity: 0;
-        }
+    .mm-panel--opened {
+      visibility: visible;
     }
+
+    .mm-navbar,
+    .mm-divider {
+      opacity: 0;
+    }
+  }
 }
 
-@import 'sidebar.rtl';
+.mm-wrapper--sidebar-expanded {
+  .mm-menu--sidebar-expanded {
+    width: var(--mm-sidebar-expanded-size);
+    border-right-width: 1px;
+    border-right-style: solid;
+  }
+
+  &.mm-wrapper--opened {
+    //  disable the UI blocker.
+    .mm-wrapper__blocker {
+      display: none !important;
+    }
+
+    //  page next to menu.
+    .mm-menu--sidebar-expanded {
+      ~ .mm-slideout {
+        width: calc(100% - var(--mm-sidebar-expanded-size));
+        transform: translate3d(var(--mm-sidebar-expanded-size), 0, 0);
+      }
+    }
+  }
+}
+
+.mm-menu__blocker {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 3;
+  opacity: 0.6;
+  background: var(--mm-color-background);
+  pointer-events: auto;
+
+  transition: opacity $mm_transitionDuration $mm_transitionFunction;
+
+  .mm-menu--opened & {
+    bottom: 100%;
+    opacity: 0;
+  }
+}
+
+@import "sidebar.rtl";

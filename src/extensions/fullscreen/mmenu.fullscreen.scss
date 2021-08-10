@@ -1,15 +1,13 @@
-@import '../../includes';
+@import "../../includes";
 
-@if ($mm_include_fullscreen) {
-    .mm-menu--fullscreen {
-        --mm-size: 100%;
-        --mm-min-size: 100%;
-        --mm-max-size: 100%;
+.mm-menu--fullscreen {
+  --mm-size: 100%;
+  --mm-min-size: 100%;
+  --mm-max-size: 100%;
 
-        &.mm-menu--opened ~ .mm-slideout {
-            --mm-size: 100%;
-            --mm-min-size: 100%;
-            --mm-max-size: 100%;
-        }
-    }
+  &.mm-menu--opened ~ .mm-slideout {
+    --mm-size: 100%;
+    --mm-min-size: 100%;
+    --mm-max-size: 100%;
+  }
 }

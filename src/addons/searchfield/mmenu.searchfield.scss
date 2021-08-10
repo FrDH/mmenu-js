@@ -3,8 +3,8 @@
 $mm_module: ".mm-searchfield";
 
 /**
- * The form.
- */
+    * The form.
+    */
 #{$mm_module} {
   display: flex;
   flex-grow: 1;
@@ -13,8 +13,8 @@ $mm_module: ".mm-searchfield";
   overflow: hidden;
 }
 /**
- * The fieldset
- */
+    * The fieldset
+    */
 #{$mm_module}__input {
   display: flex;
   flex: 1;
@@ -58,8 +58,8 @@ $mm_module: ".mm-searchfield";
 }
 
 /**
- * Submit and reset buttons.
- */
+    * Submit and reset buttons.
+    */
 #{$mm_module}__btn {
   display: none;
   position: absolute;
@@ -73,8 +73,8 @@ $mm_module: ".mm-searchfield";
 }
 
 /**
- * Cancel button.
- */
+    * Cancel button.
+    */
 #{$mm_module}__cancel {
   display: block;
   visibility: hidden;

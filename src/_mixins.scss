@@ -1,43 +1,27 @@
 // Arrow buttons
 @mixin mm_btn_arrow_prev {
-	transform: rotate( -45deg );
-	left: $mm_listitemIndent + 3;
-	right: auto;
+  transform: rotate(-45deg);
+  left: $mm_listitemIndent + 3;
+  right: auto;
 }
 
 @mixin mm_btn_arrow_next {
-	transform: rotate( 135deg );
-	right: $mm_listitemIndent + 3;
-	left: auto;
+  transform: rotate(135deg);
+  right: $mm_listitemIndent + 3;
+  left: auto;
 }
-
 
 //	Misc
 @mixin mm_ellipsis() {
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 @mixin mm_clearfix() {
-	&:after {
-		content: '';
-		display: block;
-		clear: both;
-	}
-}
-@mixin mm_navbar_tabs_borders( $top, $bottom, $last, $first ) {
-	.mm-navbars_#{$top} {
-		.mm-navbar--tabs:not( :#{$last}-child ) {
-			border-#{$bottom}-width: 1px;
-			border-#{$bottom}-style: solid;
-		}
-		.mm-navbar__tab--selected {
-			border-#{$bottom}: none;
-			margin-#{$bottom}: -1px;
-		}
-		.mm-navbar--tabs:#{$first}-child .mm-navbar__tab--selected {
-			border-#{$top}: none;
-		}
-	}
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
 }

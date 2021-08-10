@@ -1,87 +1,85 @@
-$mm_module: '.mm-listitem';
+$mm_module: ".mm-listitem";
 
 .mm-listview {
-    list-style: none;
-    display: block;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  display: block;
+  padding: 0;
+  margin: 0;
 }
 
 #{$mm_module} {
-    color: var(--mm-color-text);
-    border-color: var(--mm-color-border);
+  color: var(--mm-color-text);
+  border-color: var(--mm-color-border);
 
-    list-style: none;
+  list-style: none;
+  display: block;
+  padding: 0;
+  margin: 0;
+
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+
+  &:after {
+    content: "";
+    border-color: inherit;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
     display: block;
-    padding: 0;
-    margin: 0;
+    position: absolute;
+    left: $mm_listitemIndent;
+    right: 0;
+    bottom: 0;
+  }
 
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-
-    &:after {
-        content: '';
-        border-color: inherit;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        display: block;
-        position: absolute;
-        left: $mm_listitemIndent;
-        right: 0;
-        bottom: 0;
-    }
-
-    a,
-    a:hover {
-        text-decoration: none;
-    }
+  a,
+  a:hover {
+    text-decoration: none;
+  }
 }
 
 %mm_listitem_content {
-    display: block;
-    padding: calc((var(--mm-listitem-size) - var(--mm-line-height)) / 2);
-    padding-left: 0;
-    padding-right: 0;
-    color: inherit;
+  display: block;
+  padding: calc((var(--mm-listitem-size) - var(--mm-line-height)) / 2) 0;
+  color: inherit;
 }
 
 #{$mm_module}__text {
-    @extend %mm_listitem_content;
-    @include mm_ellipsis;
+  @extend %mm_listitem_content;
+  @include mm_ellipsis;
 
-    padding-left: $mm_listitemIndent;
-    padding-right: $mm_padding;
-    flex-grow: 1;
-    flex-basis: 10%;
+  padding-left: $mm_listitemIndent;
+  padding-right: $mm_padding;
+  flex-grow: 1;
+  flex-basis: 10%;
 }
 
 #{$mm_module}__btn {
-    @extend %mm_listitem_content;
+  @extend %mm_listitem_content;
 
-    background: rgba(3, 2, 1, 0);
-    border-color: inherit;
-    width: auto;
-    padding-right: $mm_subopenWidth;
-    position: relative;
+  background: rgba(3, 2, 1, 0);
+  border-color: inherit;
+  width: auto;
+  padding-right: $mm_subopenWidth;
+  position: relative;
 
-    &:not(.mm-listitem__text) {
-        border-left-width: 1px;
-        border-left-style: solid;
-    }
+  &:not(.mm-listitem__text) {
+    border-left-width: 1px;
+    border-left-style: solid;
+  }
 }
 
 #{$mm_module} {
-    &--selected {
-        > #{$mm_module}__text {
-            background: var(--mm-color-background-emphasis);
-        }
+  &--selected {
+    > #{$mm_module}__text {
+      background: var(--mm-color-background-emphasis);
     }
+  }
 
-    &--opened {
-        > #{$mm_module}__btn,
-        > .mm-panel {
-            background: var(--mm-color-background-highlight);
-        }
+  &--opened {
+    > #{$mm_module}__btn,
+    > .mm-panel {
+      background: var(--mm-color-background-highlight);
     }
+  }
 }

@@ -1,31 +1,29 @@
-@if ($mm_include_navbars_breadcrumbs) {
-    .mm-navbar__breadcrumbs {
-        @include mm_ellipsis;
+.mm-navbar__breadcrumbs {
+  @include mm_ellipsis;
 
-        flex: 1 1 50%;
-        display: flex;
-        justify-content: flex-start;
-        padding: 0 $mm_panelPadding;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+  flex: 1 1 50%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 $mm_panelPadding;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 
-        > * {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-right: 6px;
-        }
+  > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 6px;
+  }
 
-        > a {
-            text-decoration: underline;
-        }
+  > a {
+    text-decoration: underline;
+  }
 
-        &:not(:last-child) {
-            padding-right: 0;
-        }
+  &:not(:last-child) {
+    padding-right: 0;
+  }
 
-        .mm-btn:not(.mm-hidden) + & {
-            padding-left: 0;
-        }
-    }
+  .mm-btn:not(.mm-hidden) + & {
+    padding-left: 0;
+  }
 }
