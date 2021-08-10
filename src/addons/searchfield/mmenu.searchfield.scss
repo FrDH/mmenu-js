@@ -1,4 +1,4 @@
-@import "../../mixins", "../../includes", "../../variables";
+@import "../../mixins", "../../variables";
 
 $mm_module: ".mm-searchfield";
 
@@ -13,8 +13,8 @@ $mm_module: ".mm-searchfield";
   overflow: hidden;
 }
 /**
-    * The fieldset
-    */
+  * The fieldset
+  */
 #{$mm_module}__input {
   display: flex;
   flex: 1;
@@ -22,7 +22,7 @@ $mm_module: ".mm-searchfield";
   position: relative;
   width: 100%;
   max-width: 100%;
-  padding: 0 $mm_padding;
+  padding: 0 10px;
   box-sizing: border-box;
 
   // Input
@@ -34,7 +34,7 @@ $mm_module: ".mm-searchfield";
     min-height: auto;
     max-height: auto;
     margin: 0;
-    padding: 0 $mm_padding;
+    padding: 0 10px;
     box-sizing: border-box;
     border: none !important;
     border-radius: 4px;
@@ -58,8 +58,8 @@ $mm_module: ".mm-searchfield";
 }
 
 /**
-    * Submit and reset buttons.
-    */
+  * Submit and reset buttons.
+  */
 #{$mm_module}__btn {
   display: none;
   position: absolute;
@@ -73,8 +73,8 @@ $mm_module: ".mm-searchfield";
 }
 
 /**
-    * Cancel button.
-    */
+  * Cancel button.
+  */
 #{$mm_module}__cancel {
   display: block;
   visibility: hidden;
@@ -87,7 +87,7 @@ $mm_module: ".mm-searchfield";
   #{$mm_module}--cancelable & {
     visibility: visible;
     max-width: 75px;
-    padding-right: $mm_padding;
+    padding-right: 10px;
   }
 }
 

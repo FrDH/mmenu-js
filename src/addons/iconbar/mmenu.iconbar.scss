@@ -1,4 +1,4 @@
-@import "../../mixins", "../../includes", "../../variables";
+@import "../../mixins", "../../variables";
 
 $mm_module: ".mm-iconbar";
 
@@ -70,7 +70,7 @@ $mm_module: ".mm-iconbar";
   > * {
     box-sizing: border-box;
     display: block;
-    padding: $mm_padding 0;
+    padding: 10px 0;
   }
 
   a,

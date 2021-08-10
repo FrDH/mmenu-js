@@ -21,10 +21,8 @@ $mm_module: ".mm-btn";
     outline: none;
     cursor: pointer;
   }
-}
 
-// Types of buttons.
-#{$mm_module} {
+  // Types of buttons.
   &--prev:before,
   &--next:after {
     content: "";

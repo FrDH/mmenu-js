@@ -3,7 +3,7 @@ $mm_module: ".mm-navbar";
 //  All tabs.
 #{$mm_module}--tabs {
   > * {
-    padding: 0 $mm_padding;
+    padding: 0 10px;
     border: 1px solid transparent;
   }
 }

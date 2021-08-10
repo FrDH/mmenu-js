@@ -34,29 +34,25 @@ $mm_module: ".mm-navbar";
 #{$mm_module}__title {
   flex: 1 1 50%;
   display: flex;
-  padding-left: $mm_panelPadding;
-  padding-right: $mm_panelPadding;
+  padding: 0 $mm_panelPadding;
   overflow: hidden;
 
   &[href="#"] {
     pointer-events: none;
   }
 
-  // Center the content.
-  &:not(:last-child) {
-    padding-right: 0;
-  }
-
   > span {
     @include mm_ellipsis;
   }
 
-  #{$mm_module}__btn:not(.mm-hidden) + & {
-    padding-left: 0;
-
-    &:last-child {
-      padding-right: $mm_btnSize;
-    }
+  // Center the content.
+  .mm-btn.mm-hidden + &:not(:last-child) {
+    padding-left: $mm_btnSize + 10;
+    padding-right: 10px;
+  }
+  .mm-btn:not(.mm-hidden) + &:last-child {
+    padding-left: 10px;
+    padding-right: $mm_btnSize + 10;
   }
   // /Center
 }

@@ -1,46 +1,32 @@
-@import 
-    '../../mixins', 
-    '../../includes', 
-    '../../variables';
+@import "../../mixins", "../../variables";
 
 //	Variables
 :root {
-    //	sizes
-    --mm-line-height: 20px;
-    --mm-listitem-size: 44px;
-    --mm-navbar-size: 44px;
+  //	sizes
+  --mm-line-height: 20px;
+  --mm-listitem-size: 44px;
+  --mm-navbar-size: 44px;
+  --mm-toggle-size: 34px;
 
-    //	colors
-    --mm-color-border: rgba(0,0,0, 0.1);
-    --mm-color-button: rgba(0,0,0, 0.3);
-    --mm-color-text: rgba(0,0,0, 0.75);
-    --mm-color-text-dimmed: rgba(0,0,0, 0.3);
-    --mm-color-background: #f3f3f3;
-    --mm-color-background-highlight: rgba(0,0,0, 0.05);
-    --mm-color-background-emphasis: rgba(255,255,255, 0.4);
+  //	colors
+  --mm-color-border: rgba(0, 0, 0, 0.1);
+  --mm-color-button: rgba(0, 0, 0, 0.3);
+  --mm-color-text: rgba(0, 0, 0, 0.75);
+  --mm-color-text-dimmed: rgba(0, 0, 0, 0.3);
+  --mm-color-background: #f3f3f3;
+  --mm-color-background-highlight: rgba(0, 0, 0, 0.05);
+  --mm-color-background-emphasis: rgba(255, 255, 255, 0.4);
 }
 
 .mm-hidden {
-    display: none !important;
+  display: none !important;
 }
 
 .mm-wrapper {
-    overflow-x: hidden;
-    position: relative;
+  overflow-x: hidden;
+  position: relative;
 }
 
-@import 
-    'button',
-    'button.rtl', 
-    'divider',
-    'listitem', 
-    'listitem.rtl',
-    'menu', 
-    'menu.rtl', 
-    'navbar', 
-    'navbar.rtl',
-    'panel',
-    'panel.rtl', 
-    'panels',
-    'toggle',
-    'vertical';
+@import "button", "button.rtl", "divider", "listitem", "listitem.rtl", "menu",
+  "menu.rtl", "navbar", "navbar.rtl", "panel", "panel.rtl", "panels", "toggle",
+  "vertical";

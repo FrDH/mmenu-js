@@ -1,31 +1,24 @@
-$mm_module: '.mm-listitem';
+$mm_module: ".mm-listitem";
 
-@if ( $mm_include_rtl ) {
-	[dir="rtl"]  {
+@if ($mm_include_rtl) {
+  [dir="rtl"] {
+    //	invert the indent on the border
+    #{$mm_module}:after {
+      left: 0;
+      right: $mm_listitemIndent;
+    }
 
-		//	invert the indent on the border
-		#{$mm_module}:after {
-			left: 0;
-			right: $mm_listitemIndent;
-		}
+    #{$mm_module}__btn {
+      padding-left: $mm_btnSize;
+      border-left-width: 0;
+      border-left-style: none;
 
-		#{$mm_module}__text {
-			padding-left: $mm_padding;
-			padding-right: $mm_listitemIndent;
-		}
+      &:not(#{$mm_module}__text) {
+        padding-right: 0;
 
-		#{$mm_module}__btn {
-			padding-left: $mm_subopenWidth;
-			border-left-width: 0;
-			border-left-style: none;
-
-			&:not( #{$mm_module}__text ) {
-				padding-right: 0;
-
-				border-right-width: 1px;
-				border-right-style: solid;
-			}
-		}
-	}
+        border-right-width: 1px;
+        border-right-style: solid;
+      }
+    }
+  }
 }
-

@@ -1,31 +1,28 @@
-$mm_module: '.mm-btn';
+@if ($mm_include_rtl) {
+  [dir="rtl"] {
+    #{$mm_module} {
+      &--next:after {
+        @include mm_btn_arrow_prev;
+      }
 
-@if ( $mm_include_rtl ) {
-	[dir="rtl"] {
-		#{$mm_module} {
-			&--next:after {
-				@include mm_btn_arrow_prev;
-			}
-		
+      &--prev:before {
+        @include mm_btn_arrow_next;
+      }
 
-			&--prev:before {
-				@include mm_btn_arrow_next;
-			}
+      &--close {
+        &:before,
+        &:after {
+          right: auto;
+        }
 
-			&--close {
-				&:before,
-				&:after {
-					right: auto;
-				}
+        &:before {
+          left: $mm_listitemIndent + 5;
+        }
 
-				&:before {
-					left: $mm_listitemIndent + 5;
-				}
-
-				&:after {
-					left: $mm_listitemIndent - 2;
-				}
-			}
-		}
-	}
+        &:after {
+          left: $mm_listitemIndent - 2;
+        }
+      }
+    }
+  }
 }

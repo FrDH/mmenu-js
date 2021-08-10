@@ -1,5 +1,3 @@
-$mm_module: ".mm-listitem";
-
 .mm-listview {
   list-style: none;
   display: block;
@@ -7,18 +5,18 @@ $mm_module: ".mm-listitem";
   margin: 0;
 }
 
-#{$mm_module} {
-  color: var(--mm-color-text);
-  border-color: var(--mm-color-border);
+$mm_module: ".mm-listitem";
 
-  list-style: none;
-  display: block;
+#{$mm_module} {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
   padding: 0;
   margin: 0;
 
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
+  list-style: none;
+  color: var(--mm-color-text);
+  border-color: var(--mm-color-border);
 
   &:after {
     content: "";
@@ -49,7 +47,7 @@ $mm_module: ".mm-listitem";
   @include mm_ellipsis;
 
   padding-left: $mm_listitemIndent;
-  padding-right: $mm_padding;
+  padding-right: $mm_listitemIndent;
   flex-grow: 1;
   flex-basis: 10%;
 }
@@ -60,7 +58,7 @@ $mm_module: ".mm-listitem";
   background: rgba(3, 2, 1, 0);
   border-color: inherit;
   width: auto;
-  padding-right: $mm_subopenWidth;
+  padding-right: $mm_btnSize;
   position: relative;
 
   &:not(.mm-listitem__text) {
