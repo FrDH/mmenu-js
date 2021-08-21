@@ -60,13 +60,7 @@
     <!-- mmenu scripts -->
     <script src="../dist/mmenu.js"></script>
     <script>
-  
-  Mmenu.i18n({
-            'Menu': 'xxxx'
-        }, 'xx');
-        new Mmenu(document.querySelector('#menu'), {}, {
-            language: 'xx'
-        });
+        new Mmenu(document.querySelector('#menu'));
 
         document.addEventListener('click', function (evnt) {
             var anchor = evnt.target.closest('a[href^="#/"]');
