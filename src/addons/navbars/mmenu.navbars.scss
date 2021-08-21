@@ -1,4 +1,5 @@
-@import "../../mixins", "../../variables";
+@use "../../mixins";
+@use "../../variables";
 
 .mm-navbars {
   flex-shrink: 0;

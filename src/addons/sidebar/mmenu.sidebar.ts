@@ -2,7 +2,6 @@ import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import * as media from '../../_modules/matchmedia';
-import * as sr from '../../_modules/screenreader';
 import { extend } from '../../_modules/helpers';
 
 export default function (this: Mmenu) {

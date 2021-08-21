@@ -95,13 +95,6 @@ export default function (this: Mmenu) {
         }
     });
 
-    //	Add screenreader support.
-    this.bind('initMenu:after', () => {
-        sr.aria(this.node.menu, 'hidden', true);
-        sr.aria(Mmenu.node.blck, 'hidden', true);
-    });
-
-
     //	Open / close the menu.
     document.addEventListener('click', event => {
 
@@ -143,10 +136,6 @@ Mmenu.prototype.open = function (this: Mmenu) {
     this.node.menu.classList.add('mm-menu--opened');
     this.node.wrpr.classList.add('mm-wrapper--opened');
 
-    //	Add screenreader support
-    sr.aria(this.node.menu, 'hidden', false);
-    sr.aria(Mmenu.node.blck, 'hidden', false);
-
     //	Invoke "after" hook.
     this.trigger('open:after');
 };
@@ -161,10 +150,6 @@ Mmenu.prototype.close = function (this: Mmenu) {
 
     this.node.menu.classList.remove('mm-menu--opened');
     this.node.wrpr.classList.remove('mm-wrapper--opened');
-
-    //	Add screenreader support
-    sr.aria(this.node.menu, 'hidden', true);
-    sr.aria(Mmenu.node.blck, 'hidden', true);
 
     //	Invoke "after" hook.
     this.trigger('close:after');

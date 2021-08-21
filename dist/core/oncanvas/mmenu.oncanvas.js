@@ -23,6 +23,7 @@ export default class Mmenu {
         this.conf = extend(configs, CONFIGS);
         //	Methods to expose in the API.
         this._api = [
+            'i18n',
             'bind',
             'openPanel',
             'closePanel',
@@ -104,6 +105,12 @@ export default class Mmenu {
                 parent = parent.closest('.mm-panel');
                 parent.classList.add('mm-panel--parent');
                 parent = DOM.find(this.node.pnls, `#${parent.dataset.mmParent}`)[0];
+            }
+            //  Remove animation classes from all panels.
+            if (!animation) {
+                DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
+                    pnl.classList.remove('mm-panel--noanimation');
+                });
             }
         }
         //	Invoke "after" hook.
@@ -232,12 +239,11 @@ export default class Mmenu {
     _initAPI() {
         //	We need this=that because:
         //	1) the "arguments" object can not be referenced in an arrow function in ES3 and ES5.
-        var that = this;
+        const that = this;
         this.API = {};
         this._api.forEach((fn) => {
             this.API[fn] = function () {
-                var re = that[fn].apply(that, arguments); // 1)
-                return typeof re == 'undefined' ? that.API : re;
+                return that[fn].apply(that, arguments); // 1)
             };
         });
         //	Store the API in the HTML node for external usage.
@@ -464,8 +470,7 @@ export default class Mmenu {
         titleText.innerHTML =
             panel.dataset.mmTitle ||
                 (opener ? opener.textContent : '') ||
-                this.i18n(this.opts.navbar.title) ||
-                this.i18n('Menu');
+                (this.i18n(this.opts.navbar.title) || this.i18n('Menu'));
         let href = '#';
         switch (this.opts.navbar.titleLink) {
             case 'anchor':
@@ -617,11 +622,23 @@ export default class Mmenu {
     }
     /**
      * Get the translation for a text.
-     * @param  {string} text 	Text to translate.
-     * @return {string}			The translated text.
+     * @param  {string}     text 	Text to translate.
+     * @return {string}		        The translated text.
      */
     i18n(text) {
         return i18n.get(text, this.conf.language);
+    }
+    /**
+     * Get all translations for the given language.
+     * @return {object}	The translations.
+     */
+    static i18n(text = {}, language = '') {
+        if (text && language) {
+            i18n.add(text, language);
+        }
+        else {
+            return i18n.show();
+        }
     }
 }
 /**	Available add-ons for the plugin. */

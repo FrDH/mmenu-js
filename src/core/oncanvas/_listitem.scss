@@ -25,14 +25,9 @@ $mm_module: ".mm-listitem";
     border-bottom-style: solid;
     display: block;
     position: absolute;
-    left: $mm_listitemIndent;
+    left: variables.$mm_listitemIndent;
     right: 0;
     bottom: 0;
-  }
-
-  a,
-  a:hover {
-    text-decoration: none;
   }
 }
 
@@ -44,10 +39,10 @@ $mm_module: ".mm-listitem";
 
 #{$mm_module}__text {
   @extend %mm_listitem_content;
-  @include mm_ellipsis;
+  @include mixins.mm_ellipsis;
 
-  padding-left: $mm_listitemIndent;
-  padding-right: $mm_listitemIndent;
+  padding-left: variables.$mm_listitemIndent;
+  padding-right: variables.$mm_listitemIndent;
   flex-grow: 1;
   flex-basis: 10%;
 }
@@ -58,7 +53,7 @@ $mm_module: ".mm-listitem";
   background: rgba(3, 2, 1, 0);
   border-color: inherit;
   width: auto;
-  padding-right: $mm_btnSize;
+  padding-right: variables.$mm_btnSize;
   position: relative;
 
   &:not(.mm-listitem__text) {

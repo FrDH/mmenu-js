@@ -29,6 +29,6 @@
 .mm-listitem--opened {
   > .mm-listitem__btn:after {
     transform: rotate(225deg);
-    right: $mm_listitemIndent - 1;
+    right: variables.$mm_listitemIndent - 1;
   }
 }

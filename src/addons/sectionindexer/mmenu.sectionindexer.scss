@@ -1,4 +1,4 @@
-@import "../../mixins", "../../variables";
+@use "../../variables";
 
 $mm_module: ".mm-sectionindexer";
 
@@ -20,7 +20,8 @@ $mm_module: ".mm-sectionindexer";
   right: calc(0px - var(--mm-sectionindexer-size));
   z-index: 5;
 
-  transition: right $mm_transitionDuration $mm_transitionFunction;
+  transition: right variables.$mm_transitionDuration
+    variables.$mm_transitionFunction;
 
   display: flex;
   flex-direction: column;

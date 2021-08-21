@@ -1,4 +1,4 @@
-@import "../../mixins", "../../variables";
+@use "../../variables";
 
 :root {
   --mm-size: 80%;
@@ -12,7 +12,7 @@
   right: auto;
   z-index: 0;
   width: clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size));
-  transition: visibility 0s linear $mm_transitionDuration;
+  transition: visibility 0s linear variables.$mm_transitionDuration;
 
   &.mm-menu--opened {
     transition-delay: 0s;
@@ -25,7 +25,7 @@
     // Visible panels undo the hidden menu :/
     .mm-panel {
       visibility: hidden;
-      transition: visibility 0s linear, $mm_transitionDuration;
+      transition: visibility 0s linear, variables.$mm_transitionDuration;
     }
   }
 }
@@ -42,8 +42,9 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  transition: width $mm_transitionDuration $mm_transitionFunction,
-    transform $mm_transitionDuration $mm_transitionFunction;
+  transition: width variables.$mm_transitionDuration
+      variables.$mm_transitionFunction,
+    transform variables.$mm_transitionDuration variables.$mm_transitionFunction;
 
   .mm-wrapper--opened & {
     transform: translate3d(
@@ -91,8 +92,8 @@
 
   opacity: 0;
   background: rgba(#000, 0.3);
-  transition: opacity $mm_transitionDuration $mm_transitionFunction
-    $mm_transitionDuration;
+  transition: opacity variables.$mm_transitionDuration
+    variables.$mm_transitionFunction variables.$mm_transitionDuration;
 
   .mm-wrapper--opened & {
     opacity: 0.5;
@@ -102,5 +103,3 @@
     opacity: 1;
   }
 }
-
-@import "offcanvas.rtl";

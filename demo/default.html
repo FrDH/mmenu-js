@@ -60,11 +60,12 @@
     <!-- mmenu scripts -->
     <script src="../dist/mmenu.js"></script>
     <script>
-        new Mmenu(document.querySelector('#menu'), {
-            counters: {
-                add: true,
-                count: true
-            }
+  
+  Mmenu.i18n({
+            'Menu': 'xxxx'
+        }, 'xx');
+        new Mmenu(document.querySelector('#menu'), {}, {
+            language: 'xx'
         });
 
         document.addEventListener('click', function (evnt) {

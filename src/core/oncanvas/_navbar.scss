@@ -10,13 +10,12 @@ $mm_module: ".mm-navbar";
   opacity: 1;
   background: var(--mm-color-background);
   border-bottom: 1px solid var(--mm-color-border);
-  transition: opacity $mm_transitionDuration $mm_transitionFunction;
+  transition: opacity variables.$mm_transitionDuration
+    variables.$mm_transitionFunction;
 
-  @supports (position: sticky) {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
+  position: sticky;
+  top: 0;
+  z-index: 1;
 
   > * {
     flex-grow: 1;
@@ -34,7 +33,7 @@ $mm_module: ".mm-navbar";
 #{$mm_module}__title {
   flex: 1 1 50%;
   display: flex;
-  padding: 0 $mm_panelPadding;
+  padding: 0 variables.$mm_panelPadding;
   overflow: hidden;
 
   &[href="#"] {
@@ -42,17 +41,17 @@ $mm_module: ".mm-navbar";
   }
 
   > span {
-    @include mm_ellipsis;
+    @include mixins.mm_ellipsis;
   }
 
   // Center the content.
   .mm-btn.mm-hidden + &:not(:last-child) {
-    padding-left: $mm_btnSize + 10;
+    padding-left: variables.$mm_btnSize + 10;
     padding-right: 10px;
   }
   .mm-btn:not(.mm-hidden) + &:last-child {
     padding-left: 10px;
-    padding-right: $mm_btnSize + 10;
+    padding-right: variables.$mm_btnSize + 10;
   }
   // /Center
 }

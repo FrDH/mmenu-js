@@ -1,10 +1,10 @@
 .mm-navbar__breadcrumbs {
-  @include mm_ellipsis;
+  @include mixins.mm_ellipsis;
 
   flex: 1 1 50%;
   display: flex;
   justify-content: flex-start;
-  padding: 0 $mm_panelPadding;
+  padding: 0 variables.$mm_panelPadding;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 

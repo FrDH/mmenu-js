@@ -1,9 +1,9 @@
-$mm_module: '.mm-navbar';
+$mm_module: ".mm-navbar";
 
-@if ($mm_include_rtl) {
-    [dir='rtl'] {
-        #{$mm_module} {
-            flex-direction: row-reverse;
-        }
+@if (variables.$mm_include_rtl) {
+  [dir="rtl"] {
+    #{$mm_module} {
+      flex-direction: row-reverse;
     }
+  }
 }

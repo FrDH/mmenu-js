@@ -2,7 +2,6 @@ import CONFIGS from './configs';
 import { extendShorthandOptions } from './options';
 import { extend } from '../../_modules/helpers';
 import * as DOM from '../../_modules/dom';
-import * as sr from '../../_modules/screenreader';
 import * as media from '../../_modules/matchmedia';
 import breadcrumbs from './navbar.breadcrumbs';
 import close from './navbar.close';
@@ -96,11 +95,9 @@ export default function Navbars() {
         //	En-/disable the navbar.
         let enable = () => {
             navbar.classList.remove('mm-hidden');
-            sr.aria(navbar, 'hidden', false);
         };
         let disable = () => {
             navbar.classList.add('mm-hidden');
-            sr.aria(navbar, 'hidden', true);
         };
         if (typeof options.use == 'boolean') {
             this.bind('initMenu:after', enable);

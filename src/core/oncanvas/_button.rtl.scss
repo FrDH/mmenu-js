@@ -1,12 +1,12 @@
-@if ($mm_include_rtl) {
+@if (variables.$mm_include_rtl) {
   [dir="rtl"] {
     #{$mm_module} {
       &--next:after {
-        @include mm_btn_arrow_prev;
+        @include mixins.mm_btn_arrow_prev;
       }
 
       &--prev:before {
-        @include mm_btn_arrow_next;
+        @include mixins.mm_btn_arrow_next;
       }
 
       &--close {
@@ -16,11 +16,11 @@
         }
 
         &:before {
-          left: $mm_listitemIndent + 5;
+          left: variables.$mm_listitemIndent + 5;
         }
 
         &:after {
-          left: $mm_listitemIndent - 2;
+          left: variables.$mm_listitemIndent - 2;
         }
       }
     }

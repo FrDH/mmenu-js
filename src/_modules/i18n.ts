@@ -1,13 +1,22 @@
 import { extend } from './helpers';
-var translations = {};
+const translations = {};
+
+
+/**
+ * Show all translations.
+ * @return {object}	The translations.
+ */
+export const show = (): {} => {
+    return translations;
+};
 
 /**
  * Add translations to a language.
  * @param {object}  text        Object of key/value translations.
  * @param {string}  language    The translated language.
  */
-export function add(text: object, language: string) {
-    if (typeof translations[language] == 'undefined') {
+export const add = (text: object, language: string) => {
+    if (typeof translations[language] === 'undefined') {
         translations[language] = {};
     }
     extend(translations[language], text as object);

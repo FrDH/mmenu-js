@@ -1,6 +1,5 @@
 import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
-import * as sr from '../../_modules/screenreader';
 import * as media from '../../_modules/matchmedia';
 import { type, extend } from '../../_modules/helpers';
 export default function () {
@@ -45,11 +44,9 @@ export default function () {
         let classname = 'mm-menu--iconbar-' + options.position;
         let enable = () => {
             this.node.menu.classList.add(classname);
-            sr.aria(iconbar, 'hidden', false);
         };
         let disable = () => {
             this.node.menu.classList.remove(classname);
-            sr.aria(iconbar, 'hidden', true);
         };
         if (typeof options.use == 'boolean') {
             this.bind('initMenu:after', enable);
@@ -58,7 +55,6 @@ export default function () {
             media.add(options.use, enable, disable);
         }
         //	Tabs
-        //  TODO: zie navbar tabs
         if (options.type == 'tabs') {
             iconbar.classList.add('mm-iconbar--tabs');
             iconbar.addEventListener('click', (evnt) => {

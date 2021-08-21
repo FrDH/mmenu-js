@@ -1,13 +1,15 @@
+@use "variables";
+
 // Arrow buttons
 @mixin mm_btn_arrow_prev {
   transform: rotate(-45deg);
-  left: $mm_listitemIndent + 3;
+  left: variables.$mm_listitemIndent + 3;
   right: auto;
 }
 
 @mixin mm_btn_arrow_next {
   transform: rotate(135deg);
-  right: $mm_listitemIndent + 3;
+  right: variables.$mm_listitemIndent + 3;
   left: auto;
 }
 

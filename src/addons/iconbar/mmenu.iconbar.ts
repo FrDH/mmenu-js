@@ -1,7 +1,6 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
-import * as sr from '../../_modules/screenreader';
 import * as media from '../../_modules/matchmedia';
 import { type, extend } from '../../_modules/helpers';
 
@@ -57,11 +56,9 @@ export default function (this: Mmenu) {
         let classname = 'mm-menu--iconbar-' + options.position;
         let enable = () => {
             this.node.menu.classList.add(classname);
-            sr.aria(iconbar, 'hidden', false);
         };
         let disable = () => {
             this.node.menu.classList.remove(classname);
-            sr.aria(iconbar, 'hidden', true);
         };
 
         if (typeof options.use == 'boolean') {
@@ -71,7 +68,6 @@ export default function (this: Mmenu) {
         }
 
         //	Tabs
-        //  TODO: zie navbar tabs
         if (options.type == 'tabs') {
             iconbar.classList.add('mm-iconbar--tabs');
             iconbar.addEventListener('click', (evnt) => {

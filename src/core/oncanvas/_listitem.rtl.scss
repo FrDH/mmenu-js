@@ -1,15 +1,15 @@
 $mm_module: ".mm-listitem";
 
-@if ($mm_include_rtl) {
+@if (variables.$mm_include_rtl) {
   [dir="rtl"] {
     //	invert the indent on the border
     #{$mm_module}:after {
       left: 0;
-      right: $mm_listitemIndent;
+      right: variables.$mm_listitemIndent;
     }
 
     #{$mm_module}__btn {
-      padding-left: $mm_btnSize;
+      padding-left: variables.$mm_btnSize;
       border-left-width: 0;
       border-left-style: none;
 

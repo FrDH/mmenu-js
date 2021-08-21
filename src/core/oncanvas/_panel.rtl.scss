@@ -1,11 +1,13 @@
-@if ($mm_include_rtl) {
-    [dir='rtl'] .mm-panel {
-        &:not(.mm-panel--opened) {
-            transform: translate3d(-100%, 0, 0);
-        }
+@if (variables.$mm_include_rtl) {
+  [dir="rtl"] #{$mm_module} {
+    transform: translate3d(-100%, 0, 0);
 
-        &.mm-panel--parent {
-            transform: translate3d(30%, 0, 0);
-        }
+    &--opened {
+      transform: translate3d(0, 0, 0);
     }
+
+    &--parent {
+      transform: translate3d(30%, 0, 0);
+    }
+  }
 }

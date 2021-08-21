@@ -37,30 +37,21 @@ export default function (this: Mmenu, navbar: HTMLElement) {
     });
 
     //	Add screenreader  support
-    let prev: HTMLElement;
-    this.bind('openPanel:before', (panel: HTMLElement) => {
-
-        if (this.opts.screenReader.text) {
-            if (!prev) {
-                var navbars = DOM.children(
-                    this.node.menu,
-                    '.mm-navbars'
-                );
-                navbars.forEach((navbar) => {
-                    let btn = DOM.find(navbar, '.mm-btn--prev')[0];
-                    if (btn) {
-                        prev = btn;
+    if (this.opts.screenReader.text) {
+        
+        this.bind('initPanels:after', () => {
+            /** The prev-button in navbars. */
+            const prev = DOM.find(this.node.menu, '.mm-navbars .mm-btn--prev')[0];
+            
+            if (prev) {
+                this.bind('openPanel:before', (panel: HTMLElement) => {
+                    let hidden = true;
+                    if (this.opts.navbar.titleLink == 'parent') {
+                        hidden = !prev.matches('.mm-hidden');
                     }
+                    sr.aria(title, 'hidden', hidden);
                 });
             }
-
-            if (prev) {
-                var hidden = true;
-                if (this.opts.navbar.titleLink == 'parent') {
-                    hidden = !prev.matches('.mm-hidden');
-                }
-                sr.aria(title, 'hidden', hidden);
-            }
-        }
-    });
+        });
+    }
 }

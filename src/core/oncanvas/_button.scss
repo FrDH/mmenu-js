@@ -5,7 +5,7 @@ $mm_module: ".mm-btn";
   flex-shrink: 0;
   position: relative;
   box-sizing: border-box;
-  width: $mm_btnSize;
+  width: variables.$mm_btnSize;
   padding: 0;
 
   &:before,
@@ -39,11 +39,11 @@ $mm_module: ".mm-btn";
   }
 
   &--prev:before {
-    @include mm_btn_arrow_prev;
+    @include mixins.mm_btn_arrow_prev;
   }
 
   &--next:after {
-    @include mm_btn_arrow_next;
+    @include mixins.mm_btn_arrow_next;
   }
 
   &--close {
@@ -64,12 +64,12 @@ $mm_module: ".mm-btn";
     &:before {
       border-right: none;
       border-bottom: none;
-      right: $mm_listitemIndent - 2;
+      right: variables.$mm_listitemIndent - 2;
     }
     &:after {
       border-left: none;
       border-top: none;
-      right: $mm_listitemIndent + 5;
+      right: variables.$mm_listitemIndent + 5;
     }
   }
 }

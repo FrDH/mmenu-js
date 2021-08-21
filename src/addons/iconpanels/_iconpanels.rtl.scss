@@ -1,4 +1,4 @@
-@if ($mm_include_rtl) {
+@if (variables.$mm_include_rtl) {
   [dir="rtl"] .mm-menu--iconpanel .mm-panels {
     > .mm-panel {
       left: 0;

@@ -1,7 +1,4 @@
-@import "../../mixins", "../../variables";
-
-// Very ugly, but otherwise it's compiled without a unit (e.g. "0") which doesn't work in calc().
-$px0: "(1px - 1px)";
+@use "../../variables";
 
 .mm-menu--position {
   &-right {
@@ -9,11 +6,12 @@ $px0: "(1px - 1px)";
     right: 0;
 
     &.mm-menu--opened ~ .mm-slideout {
+      // Very very ugly (1px - 1px), but simply 0px is compiles without a unit (e.g. "0") which won't work.
       transform: translate3d(
         clamp(
-          calc(#{$px0} - var(--mm-max-size)),
-          calc(#{$px0} - var(--mm-size)),
-          calc(#{$px0} - var(--mm-min-size))
+          calc((1px - 1px) - var(--mm-max-size)),
+          calc((1px - 1px) - var(--mm-size)),
+          calc((1px - 1px) - var(--mm-min-size))
         ),
         0,
         0
@@ -49,8 +47,9 @@ $px0: "(1px - 1px)";
   &-top,
   &-bottom {
     z-index: 2;
-    transition: visibility 0s linear $mm_transitionDuration,
-      transform $mm_transitionDuration $mm_transitionFunction 0s;
+    transition: visibility 0s linear variables.$mm_transitionDuration,
+      transform variables.$mm_transitionDuration
+        variables.$mm_transitionFunction 0s;
 
     &.mm-menu--opened {
       transform: translate3d(0, 0, 0);

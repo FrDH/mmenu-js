@@ -70,11 +70,6 @@ export default function () {
             }
         }
     });
-    //	Add screenreader support.
-    this.bind('initMenu:after', () => {
-        sr.aria(this.node.menu, 'hidden', true);
-        sr.aria(Mmenu.node.blck, 'hidden', true);
-    });
     //	Open / close the menu.
     document.addEventListener('click', event => {
         var _a;
@@ -108,9 +103,6 @@ Mmenu.prototype.open = function () {
     //	Open
     this.node.menu.classList.add('mm-menu--opened');
     this.node.wrpr.classList.add('mm-wrapper--opened');
-    //	Add screenreader support
-    sr.aria(this.node.menu, 'hidden', false);
-    sr.aria(Mmenu.node.blck, 'hidden', false);
     //	Invoke "after" hook.
     this.trigger('open:after');
 };
@@ -122,9 +114,6 @@ Mmenu.prototype.close = function () {
     this.trigger('close:before');
     this.node.menu.classList.remove('mm-menu--opened');
     this.node.wrpr.classList.remove('mm-wrapper--opened');
-    //	Add screenreader support
-    sr.aria(this.node.menu, 'hidden', true);
-    sr.aria(Mmenu.node.blck, 'hidden', true);
     //	Invoke "after" hook.
     this.trigger('close:after');
 };

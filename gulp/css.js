@@ -1,6 +1,6 @@
 const { src, dest, watch, series } = require('gulp');
 
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const autoprefixer = require('gulp-autoprefixer');
 const cleancss = require('gulp-clean-css');
 
