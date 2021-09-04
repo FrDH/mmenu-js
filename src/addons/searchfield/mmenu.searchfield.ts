@@ -69,7 +69,7 @@ export default function (this: Mmenu) {
                 // With a splash...
                 if (options.splash.length) {
                     //  Open on focus.
-                    input.addEventListener('focusin', () => {
+                    input.addEventListener('focusin', () => {                        
                         this.openPanel(resultspanel, false, false);
                     });
 

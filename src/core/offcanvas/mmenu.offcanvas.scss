@@ -24,8 +24,7 @@
 
     // Visible panels undo the hidden menu :/
     .mm-panel {
-      visibility: hidden;
-      transition: visibility 0s linear, variables.$mm_transitionDuration;
+      visibility: inherit;
     }
   }
 }

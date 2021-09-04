@@ -47,7 +47,10 @@ $mm_module: ".mm-panel";
   }
 
   &--noanimation {
-    transition: none !important;
+    .mm-menu--opened & {
+      transition: none !important;
+      transition-duration: 0s !important;
+    }
   }
 }
 

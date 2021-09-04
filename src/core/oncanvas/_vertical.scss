@@ -1,18 +1,24 @@
-.mm-listitem--vertical > .mm-panel {
-  width: 100%;
-  padding: 10px 0 10px 10px;
-  transform: none !important;
-  transition: none !important;
+.mm-listitem--vertical {
+  > .mm-panel {
+    position: static;
+    width: 100%;
+    padding: 10px 0 10px 10px;
+    transform: none !important;
+    transition: none !important;
 
-  &:after {
-    content: none;
+    &:after {
+      content: none;
+      display: none;
+    }
+  }
+
+  &:not(.mm-listitem--opened) > .mm-panel {
     display: none;
   }
-}
 
-.mm-listitem--opened > .mm-panel {
-  position: static;
-  visibility: visible;
+  &.mm-listitem--opened > .mm-panel {
+    visibility: visible;
+  }
 }
 
 .mm-listitem--vertical {

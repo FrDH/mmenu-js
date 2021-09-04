@@ -139,6 +139,7 @@ export default class Mmenu {
         animation: boolean = true,
         setfocus: boolean = true,
     ) {
+        
         //	Find panel.
         if (!panel) {
             return;
@@ -170,22 +171,22 @@ export default class Mmenu {
             }
 
             //  Remove opened, parent, animation and highest classes from all panels.
-            DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
-                const remove = ['mm-panel--opened', 'mm-panel--parent'];
-                const add = [];
-                
-                if (animation) {
-                    remove.push('mm-panel--noanimation');
-                } else {
-                    add.push('mm-panel--noanimation');
-                }
+            const remove = ['mm-panel--opened', 'mm-panel--parent'];
+            const add = [];
+            
+            if (animation) {
+                remove.push('mm-panel--noanimation');
+            } else {                
+                add.push('mm-panel--noanimation');
+            }
 
-                if (pnl !== current) {
-                    remove.push('mm-panel--highest');
-                }
-                
+            DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
                 pnl.classList.add(...add);
                 pnl.classList.remove(...remove);
+
+                if (pnl !== current) {
+                    pnl.classList.remove('mm-panel--highest');
+                }
             });
 
             //  Open new panel.
@@ -203,11 +204,11 @@ export default class Mmenu {
             }
 
             //  Remove animation classes from all panels.
-            if (!animation) {
-                DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
-                    pnl.classList.remove('mm-panel--noanimation');
-                });
-            }
+            // requestAnimationFrame(() => {
+            //     DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
+            //         pnl.classList.remove('mm-panel--noanimation');
+            //     });
+            // });
         }
 
         //	Invoke "after" hook.
@@ -275,7 +276,7 @@ export default class Mmenu {
             panel.matches('.mm-panel--opened')
         ) {
             fn = 'closePanel';
-        }
+        }        
 
         this[fn](panel);
     }
@@ -615,6 +616,10 @@ export default class Mmenu {
             )[0];
 
             parentPanel = parentListitem.closest('.mm-panel') as HTMLElement;
+
+            while (parentPanel.parentElement.matches('.mm-listitem--vertical')) {
+                parentPanel = parentPanel.parentElement.closest('.mm-panel');
+            }
         }
 
         //  No navbar needed for vertical submenus.
@@ -853,11 +858,11 @@ export default class Mmenu {
 
         if (listitem) {
             this.setSelected(listitem);
-            panel = listitem.closest('.mm-panel')
+            panel = listitem.closest('.mm-panel');
         }
 
         //	Open the current opened panel.
-        this.openPanel(panel, false);
+        this.openPanel(panel, false, false);
 
         //	Invoke "after" hook.
         this.trigger('initOpened:after');

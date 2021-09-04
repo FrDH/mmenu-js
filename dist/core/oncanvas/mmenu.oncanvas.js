@@ -81,20 +81,20 @@ export default class Mmenu {
                 current.classList.add('mm-panel--highest');
             }
             //  Remove opened, parent, animation and highest classes from all panels.
+            const remove = ['mm-panel--opened', 'mm-panel--parent'];
+            const add = [];
+            if (animation) {
+                remove.push('mm-panel--noanimation');
+            }
+            else {
+                add.push('mm-panel--noanimation');
+            }
             DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
-                const remove = ['mm-panel--opened', 'mm-panel--parent'];
-                const add = [];
-                if (animation) {
-                    remove.push('mm-panel--noanimation');
-                }
-                else {
-                    add.push('mm-panel--noanimation');
-                }
-                if (pnl !== current) {
-                    remove.push('mm-panel--highest');
-                }
                 pnl.classList.add(...add);
                 pnl.classList.remove(...remove);
+                if (pnl !== current) {
+                    pnl.classList.remove('mm-panel--highest');
+                }
             });
             //  Open new panel.
             panel.classList.add('mm-panel--opened');
@@ -107,11 +107,11 @@ export default class Mmenu {
                 parent = DOM.find(this.node.pnls, `#${parent.dataset.mmParent}`)[0];
             }
             //  Remove animation classes from all panels.
-            if (!animation) {
-                DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
-                    pnl.classList.remove('mm-panel--noanimation');
-                });
-            }
+            // requestAnimationFrame(() => {
+            //     DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
+            //         pnl.classList.remove('mm-panel--noanimation');
+            //     });
+            // });
         }
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel, {
@@ -433,6 +433,9 @@ export default class Mmenu {
         if (panel.dataset.mmParent) {
             parentListitem = DOM.find(this.node.pnls, '#' + panel.dataset.mmParent)[0];
             parentPanel = parentListitem.closest('.mm-panel');
+            while (parentPanel.parentElement.matches('.mm-listitem--vertical')) {
+                parentPanel = parentPanel.parentElement.closest('.mm-panel');
+            }
         }
         //  No navbar needed for vertical submenus.
         if (parentListitem && parentListitem.matches('.mm-listitem--vertical')) {
@@ -606,7 +609,7 @@ export default class Mmenu {
             panel = listitem.closest('.mm-panel');
         }
         //	Open the current opened panel.
-        this.openPanel(panel, false);
+        this.openPanel(panel, false, false);
         //	Invoke "after" hook.
         this.trigger('initOpened:after');
     }
