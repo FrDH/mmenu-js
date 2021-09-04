@@ -62,6 +62,45 @@
             }
         });
 
+        //  Searchfield changes
+        [
+            'cancel',
+            'panel'
+        ].forEach(option => {
+            if (typeof this.opts.searchfield[option] !== 'undefined') {
+                deprecated(
+                    `The "${option}" option for the "searchfield" add-on`,
+                    `The "${option}" configuration option`,
+                    '9.0.0'
+                )
+            }
+        });
+        
+        [
+            'search',
+            'showSubPanels',
+            'showTextItems'
+        ].forEach(option => {
+            if (typeof this.opts.searchfield[option] !== 'undefined') {
+                deprecated(
+                    `The "${option}" option for the "searchfield" add-on`,
+                    null,
+                    '9.0.0'
+                )
+            }
+        });
+
+        //  Counters "addTo" and "count" are removed.
+        if (this.opts.counters.addTo) {
+            ['addTo', 'count'].forEach(option => {
+                deprecated(
+                    `The "${option}" options for the "counters" add-on`,
+                    null,
+                    '9.0.0'
+                );
+            });
+        };
+
         /* Extensions */
 
         // Removed extensions.
@@ -109,19 +148,6 @@
                 '9.0.0'
             );
         }
-
-        /* Add-ons */
-
-        //  Counters "addTo" and "count" are removed.
-        if (this.opts.counters.addTo) {
-            ['addTo', 'count'].forEach(option => {
-                deprecated(
-                    `The "${option}" options for the "counters" add-on`,
-                    null,
-                    '9.0.0'
-                );
-            });
-        };
 
         /* Wrappers */
 

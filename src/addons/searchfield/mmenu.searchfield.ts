@@ -220,11 +220,11 @@ const initPanel = function(
 /**
  * Create the searchfield.
  * @param {Mmenu}   this
- * @param {boolean} [cancel=false] Whether or not to add the cancel button
+ * @param {boolean} [addCancel=false] Whether or not to add the cancel button
  */
 const createSearchfield = function(
     this: Mmenu, 
-    cancel: boolean = false
+    addCancel: boolean = false
 ) {
     /** Options for the searchfield. */
     const options = this.opts.searchfield;
@@ -283,7 +283,7 @@ const createSearchfield = function(
     }
  
      // Add a button to close the searchpanel.
-     if ( configs.cancel && cancel ) {
+     if ( configs.cancel && addCancel ) {
  
          /** The cancel button. */
          const cancel = DOM.create('a.mm-searchfield__cancel') as HTMLAnchorElement;
