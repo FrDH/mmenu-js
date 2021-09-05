@@ -27,7 +27,7 @@ export default function () {
             //	Append the blocker node to the body.
             document.querySelector(configs.menu.insertSelector).append(blocker);
             //  Add screenreader support
-            blocker.append(sr.text(this.i18n(this.conf.screenReader.text.closeMenu)));
+            blocker.append(sr.text(this.i18n(configs.screenReader.closeMenu)));
             //	Store the blocker node.
             Mmenu.node.blck = blocker;
         });

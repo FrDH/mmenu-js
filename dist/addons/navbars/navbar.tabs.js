@@ -6,7 +6,7 @@ export default function (navbar) {
     DOM.children(navbar, 'a').forEach(anchor => {
         anchor.classList.add('mm-navbar__tab');
     });
-    // TODO aria tabs
+    // TODO aria tabs?
     /**
      * Mark a tab as selected.
      * @param {HTMLElement} panel Opened panel.

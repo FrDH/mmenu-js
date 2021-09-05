@@ -6,11 +6,6 @@ const options: mmOptions = {
         title: 'Menu',
         titleLink: 'parent'
     },
-    onClick: {
-        close: null,
-        preventDefault: null,
-        setSelected: true
-    },
     slidingSubmenus: true
 };
 export default options;

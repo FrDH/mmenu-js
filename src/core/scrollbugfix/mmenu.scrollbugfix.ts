@@ -26,17 +26,12 @@ export default function (this: Mmenu) {
 
     const touchDir = touchDirection(this.node.menu);
 
-    /**
-     * Prevent an event from doing its default and stop its propagation.
-     * @param {ScrollBehavior} evnt The event to stop.
-     */
-    function stop(evnt) {
-        evnt.preventDefault();
-        evnt.stopPropagation();
-    }
 
     //  Prevent the page from scrolling when scrolling in the menu.
-    this.node.menu.addEventListener('scroll', stop, {
+    this.node.menu.addEventListener('scroll', evnt => {
+        evnt.preventDefault();
+        evnt.stopPropagation();
+    }, {
         //  Make sure to tell the browser the event will be prevented.
         passive: false,
     });
@@ -44,7 +39,8 @@ export default function (this: Mmenu) {
     //  Prevent the page from scrolling when dragging in the menu.
     this.node.menu.addEventListener(
         'touchmove',
-        (evnt) => {
+        evnt => {
+            
             let wrapper = (evnt.target as HTMLElement).closest(
                 '.mm-panel, .mm-iconbar__top, .mm-iconbar__bottom'
             ) as HTMLElement;
@@ -57,7 +53,7 @@ export default function (this: Mmenu) {
                 //  When dragging a non-scrollable panel,
                 //      we can simple preventDefault and stopPropagation.
                 if (wrapper.scrollHeight === wrapper.offsetHeight) {
-                    stop(evnt);
+                    evnt.stopPropagation();
                 }
 
                 //  When dragging a scrollable panel,
@@ -72,13 +68,13 @@ export default function (this: Mmenu) {
                     (wrapper.scrollHeight ==
                         wrapper.scrollTop + wrapper.offsetHeight &&
                         touchDir.get() == 'up')
-                ) {
-                    stop(evnt);
+                ) {                   
+                    evnt.stopPropagation();
                 }
 
                 //  When dragging anything other than a panel.
             } else {
-                stop(evnt);
+                evnt.stopPropagation();
             }
         },
         {

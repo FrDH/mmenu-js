@@ -13,6 +13,11 @@ interface mmConfigsOffcanvas {
 
     /** Page configuration for the off-canvas add-on. */
     page?: mmConfigsOffcanvasPage;
+
+    screenReader?: {
+        openMenu: string,
+		closeMenu: string,
+    }
 }
 interface mmConfigsOffcanvasMenu {
     /** How to insert the menu into the DOM. */

@@ -4,6 +4,7 @@ import translate from './translations';
 import * as DOM from '../../_modules/dom';
 import * as i18n from '../../_modules/i18n';
 import * as media from '../../_modules/matchmedia';
+import * as sr from '../../_modules/screenreader';
 import { extend, type, uniqueId, } from '../../_modules/helpers';
 //  Add the translations.
 translate();
@@ -433,12 +434,12 @@ export default class Mmenu {
         if (panel.dataset.mmParent) {
             parentListitem = DOM.find(this.node.pnls, '#' + panel.dataset.mmParent)[0];
             parentPanel = parentListitem.closest('.mm-panel');
-            while (parentPanel.parentElement.matches('.mm-listitem--vertical')) {
+            while (parentPanel.closest('.mm-listitem--vertical')) {
                 parentPanel = parentPanel.parentElement.closest('.mm-panel');
             }
         }
         //  No navbar needed for vertical submenus.
-        if (parentListitem && parentListitem.matches('.mm-listitem--vertical')) {
+        if (parentListitem === null || parentListitem === void 0 ? void 0 : parentListitem.matches('.mm-listitem--vertical')) {
             return;
         }
         //	Invoke "before" hook.
@@ -454,6 +455,7 @@ export default class Mmenu {
             /** The back button. */
             let prev = DOM.create('a.mm-btn.mm-btn--prev.mm-navbar__btn');
             prev.href = '#' + parentPanel.id;
+            prev.append(sr.text(this.i18n(this.conf.screenReader.closeSubmenu)));
             navbar.append(prev);
         }
         /** The anchor that opens the panel. */
@@ -467,13 +469,13 @@ export default class Mmenu {
             opener = DOM.find(parentPanel, 'a[href="#' + panel.id + '"]')[0];
         }
         //  Add the title.
-        let title = DOM.create('a.mm-navbar__title');
-        let titleText = DOM.create('span');
-        title.append(titleText);
+        const title = DOM.create('a.mm-navbar__title');
+        const titleText = DOM.create('span');
         titleText.innerHTML =
             panel.dataset.mmTitle ||
-                (opener ? opener.textContent : '') ||
+                DOM.childText(opener) ||
                 (this.i18n(this.opts.navbar.title) || this.i18n('Menu'));
+        title.append(titleText);
         let href = '#';
         switch (this.opts.navbar.titleLink) {
             case 'anchor':
@@ -590,6 +592,11 @@ export default class Mmenu {
                     listitem.insertBefore(button, text.nextElementSibling);
                 }
             });
+            /** Screenreader text */
+            const text = this.i18n(this.conf.screenReader[listitem.matches('.mm-listitem--vertical')
+                ? 'toggleSubmenu'
+                : 'openSubmenu']) + ' ';
+            button.prepend(sr.text(text));
         }
         button.href = '#' + subpanel.id;
         this._initPanel(subpanel);

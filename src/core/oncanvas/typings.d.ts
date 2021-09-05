@@ -66,9 +66,6 @@ interface mmOptions {
     /** Options for the navbar. */
     navbar?: mmOptionsNavbar;
 
-    /** Options for clicking a listitem. */
-    onClick?: mmOptionsOnclick;
-
     /** Whether or not submenus should come sliding in from the right. */
     slidingSubmenus?: boolean;
 
@@ -79,9 +76,6 @@ interface mmOptions {
 
     /** Options for the keyboard navigation add-on. */
     keyboardNavigation?: mmOptionsKeyboardnavigation;
-
-    /** Options for the screen reader add-on. */
-    screenReader?: mmOptionsScreenreader;
 
     /** Options for the scroll bug fix add-on. */
     scrollBugFix?: mmOptionsScrollbugfix;
@@ -136,36 +130,24 @@ interface mmOptionsNavbar {
     titleLink?: 'parent' | 'anchor' | 'none';
 }
 
-/**	onClick options for the menu. */
-interface mmOptionsOnclick {
-    /** Whether or not the menu should close after clicking a link inside it. */
-    close?: boolean;
-
-    /** Whether or not to prevent the default behavior for the clicked link. */
-    preventDefault?: boolean;
-
-    /** Whether or not the clicked link should appear as "selected". */
-    setSelected?: boolean;
-}
-
 /**	Configuration for the menu. */
 interface mmConfigs {
     /** Object with classnames to refactor. */
     classNames?: mmLooseObject;
 
     /** The language to translate the menu to. */
-    language?: 'en' | 'nl' | 'de' | 'ru' | 'fa';
+    language?: string;
 
     /** List of possible node-type of panels. */
     panelNodetype?: string[];
+
+    /** Configuration for the screen reader add-on. */
+    screenReader?: mmConfigsScreenreader;
 
     //	Core add-ons
 
     /** Configuration for the off-canvas add-on. */
     offCanvas?: mmConfigsOffcanvas;
-
-    /** Configuration for the screen reader add-on. */
-    screenReader?: mmConfigsScreenreader;
 
     //	Add-ons
 
@@ -179,14 +161,11 @@ interface mmConfigs {
     searchfield?: mmConfigsSearchfield;
 }
 
-/**	Arguments for the onClick handlers. */
-interface mmClickArguments {
-    /** Whether or not the anchor is inside the menu. */
-    inMenu: boolean;
-
-    /** Whether or not the anchor is inside a listview. */
-    inListview: boolean;
-
-    /** Whether or not the anchor references to an external page. */
-    toExternal: boolean;
+//  ScreenReader configs interfaces.
+interface mmConfigsScreenreader {
+	closeMenu ?: string
+	closeSubmenu ?: string
+	openMenu ?: string
+	openSubmenu ?: string
+	toggleSubmenu ?: string
 }

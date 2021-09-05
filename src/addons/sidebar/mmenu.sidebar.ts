@@ -31,10 +31,10 @@ export default function (this: Mmenu) {
                 this.node.menu.prepend(blocker);
 
                 //  Add screenreader support
-                blocker.title = this.i18n(this.conf.screenReader.text.openMenu);
+                blocker.title = this.i18n(this.conf.screenReader.openMenu);
 
                 //  TODO: Keyboard navigation support?
-                //      shouldnt be able to tab inside the menu while it's closed
+                //      shouldnt be able to tab inside the menu while it's closed..?
             }
         });
 

@@ -4,6 +4,7 @@ import translate from './translations';
 import * as DOM from '../../_modules/dom';
 import * as i18n from '../../_modules/i18n';
 import * as media from '../../_modules/matchmedia';
+import * as sr from '../../_modules/screenreader';
 import {
     extend,
     type,
@@ -617,13 +618,13 @@ export default class Mmenu {
 
             parentPanel = parentListitem.closest('.mm-panel') as HTMLElement;
 
-            while (parentPanel.parentElement.matches('.mm-listitem--vertical')) {
+            while (parentPanel.closest('.mm-listitem--vertical')) {
                 parentPanel = parentPanel.parentElement.closest('.mm-panel');
             }
         }
 
         //  No navbar needed for vertical submenus.
-        if (parentListitem && parentListitem.matches('.mm-listitem--vertical')) {
+        if (parentListitem?.matches('.mm-listitem--vertical')) {
             return;
         }
 
@@ -646,6 +647,10 @@ export default class Mmenu {
             ) as HTMLAnchorElement;
             prev.href = '#' + parentPanel.id;
 
+            prev.append(sr.text(
+                this.i18n(this.conf.screenReader.closeSubmenu)
+            ));
+
             navbar.append(prev);
         }
 
@@ -663,14 +668,15 @@ export default class Mmenu {
         }
 
         //  Add the title.
-        let title = DOM.create('a.mm-navbar__title');
-        let titleText = DOM.create('span');
+        const title = DOM.create('a.mm-navbar__title');
+        const titleText = DOM.create('span');
 
-        title.append(titleText);
         titleText.innerHTML =
             panel.dataset.mmTitle ||
-            (opener ? opener.textContent : '') ||
-            (this.i18n(this.opts.navbar.title) || this.i18n('Menu')) as string;
+            DOM.childText(opener) ||
+            (this.i18n(this.opts.navbar.title) || this.i18n('Menu'));
+
+        title.append(titleText);
 
         let href = '#';
 
@@ -834,6 +840,17 @@ export default class Mmenu {
                     listitem.insertBefore(button, text.nextElementSibling);
                 }
             });
+            
+            /** Screenreader text */
+            const text = this.i18n(
+                this.conf.screenReader[
+                    listitem.matches('.mm-listitem--vertical')
+                        ? 'toggleSubmenu'
+                        : 'openSubmenu'
+                ]
+            ) + ' ';
+            
+            button.prepend(sr.text(text));
         }
 
         button.href = '#' + subpanel.id;

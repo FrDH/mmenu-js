@@ -28,20 +28,18 @@ export default function (navbar) {
         //	Get the text for the title.
         titleText.innerHTML = ((_a = DOM.children(original, 'span')[0]) === null || _a === void 0 ? void 0 : _a.innerHTML) || '';
     });
-    //	Add screenreader  support
-    if (this.opts.screenReader.text) {
-        this.bind('initPanels:after', () => {
-            /** The prev-button in navbars. */
-            const prev = DOM.find(this.node.menu, '.mm-navbars .mm-btn--prev')[0];
-            if (prev) {
-                this.bind('openPanel:before', (panel) => {
-                    let hidden = true;
-                    if (this.opts.navbar.titleLink == 'parent') {
-                        hidden = !prev.matches('.mm-hidden');
-                    }
-                    sr.aria(title, 'hidden', hidden);
-                });
-            }
-        });
-    }
+    //	Add screenreader  support 
+    this.bind('initPanels:after', () => {
+        /** The prev-button in navbars. */
+        const prev = DOM.find(this.node.menu, '.mm-navbars .mm-btn--prev')[0];
+        if (prev) {
+            this.bind('openPanel:before', (panel) => {
+                let hidden = true;
+                if (this.opts.navbar.titleLink == 'parent') {
+                    hidden = !prev.matches('.mm-hidden');
+                }
+                sr.aria(title, 'hidden', hidden);
+            });
+        }
+    });
 }

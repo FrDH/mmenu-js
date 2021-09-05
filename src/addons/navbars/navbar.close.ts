@@ -11,7 +11,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
 
     //	Add screenreader support.
     close.append(sr.text(
-        this.i18n(this.conf.screenReader.text.closeMenu)
+        this.i18n(this.conf.screenReader.closeMenu)
     ));
 
     //	Update to target the page node.

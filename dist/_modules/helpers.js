@@ -34,13 +34,31 @@ export const extend = (orignl, dfault) => {
  */
 export const touchDirection = (surface) => {
     let direction = '';
+    let prevPosition = null;
+    surface.addEventListener('touchstart', (evnt) => {
+        if (evnt.touches.length === 1) {
+            direction = '';
+            prevPosition = evnt.touches[0].pageY;
+        }
+    });
+    surface.addEventListener('touchend', (evnt) => {
+        if (evnt.touches.length === 0) {
+            direction = '';
+            prevPosition = null;
+        }
+    });
     surface.addEventListener('touchmove', (evnt) => {
         direction = '';
-        if (evnt.movementY > 0) {
-            direction = 'down';
-        }
-        else if (evnt.movementY < 0) {
-            direction = 'up';
+        if (prevPosition &&
+            evnt.touches.length === 1) {
+            const currentPosition = evnt.changedTouches[0].pageY;
+            if (currentPosition > prevPosition) {
+                direction = 'down';
+            }
+            else if (currentPosition < prevPosition) {
+                direction = 'up';
+            }
+            prevPosition = currentPosition;
         }
     });
     return {

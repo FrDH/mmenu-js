@@ -1,5 +1,5 @@
 export default {
-    Search: 'Найти',
+    'Search': 'Найти',
     'No results found.': 'Ничего не найдено.',
-    cancel: 'отменить'
+    'cancel': 'отменить'
 };

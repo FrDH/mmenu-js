@@ -6,7 +6,7 @@ export default function (navbar) {
     //	Add the button to the navbar.
     navbar.append(close);
     //	Add screenreader support.
-    close.append(sr.text(this.i18n(this.conf.screenReader.text.closeMenu)));
+    close.append(sr.text(this.i18n(this.conf.screenReader.closeMenu)));
     //	Update to target the page node.
     this.bind('setPage:after', (page) => {
         close.setAttribute('href', '#' + page.id);

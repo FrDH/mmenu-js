@@ -12,7 +12,6 @@ import Mmenu from '../dist/core/oncanvas/mmenu.oncanvas';
 //	Core add-ons
 import offcanvas from '../dist/core/offcanvas/mmenu.offcanvas';
 import keyboardNavigation from '../dist/core/keyboardnavigation/mmenu.keyboardnavigation';
-import screenReader from '../dist/core/screenreader/mmenu.screenreader';
 import scrollBugFix from '../dist/core/scrollbugfix/mmenu.scrollbugfix';
 
 //	Add-ons
@@ -32,7 +31,6 @@ Mmenu.addons = {
     //	Core add-ons
     offcanvas,
     keyboardNavigation,
-    screenReader,
     scrollBugFix,
 
     //	Add-ons

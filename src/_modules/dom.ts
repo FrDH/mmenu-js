@@ -25,7 +25,7 @@ export const find = (
     element: HTMLElement | Document,
     filter: string
 ): HTMLElement[] => {
-    return filter.length ? Array.prototype.slice.call(element.querySelectorAll(filter)) : [];
+    return filter.length ? [].slice.call(element.querySelectorAll(filter)) : [];
 };
 
 /**
@@ -46,6 +46,23 @@ export const children = (
         ? children.filter((child) => child.matches(filter))
         : children;
 };
+
+/**
+ * Find all text from direct child element.
+ *
+ * @param 	{HTMLElement} 	element Element to search in.
+ * @return	{string}				The text.
+ */
+export const childText = (
+    element: HTMLElement
+): string => {
+    return element 
+        ? [].slice.call(element.childNodes)
+            .filter(node => node.nodeType === Node.TEXT_NODE)
+            .map(node => node.nodeValue.trim())
+            .join(' ')
+        : '';
+}
 
 /**
  * Find text excluding text from within child elements.

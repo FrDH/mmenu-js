@@ -1,5 +1,5 @@
 export default {
-    Search: 'جستجو',
+    'Search': 'جستجو',
     'No results found.': 'نتیجه‌ای یافت نشد.',
-    cancel: 'انصراف'
+    'cancel': 'انصراف'
 };

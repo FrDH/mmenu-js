@@ -55,25 +55,25 @@
         <nav id="menu">
             <div id="panel-menu">
                 <ul>
-                    <li><a href="#/">Home</a>
+                    <li><a href="#">Home</a>
                         <input type="checkbox" class="mm-toggle">
                     </li>
                     <li>
                         <span>About us</span>
                         <ul class="Vertical">
-                            <li><a href="#/">History</a></li>
+                            <li><a href="#">History</a></li>
                             <li>
                                 <span>The team</span>
                                 <ul>
-                                    <li><a href="#/">Management</a></li>
-                                    <li><a href="#/">Sales</a></li>
-                                    <li><a href="#/">Development</a></li>
+                                    <li><a href="#">Management</a></li>
+                                    <li><a href="#">Sales</a></li>
+                                    <li><a href="#">Development</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#/">Our address</a></li>
+                            <li><a href="#">Our address</a></li>
                         </ul>
                     </li>
-                    <li><a href="#/">Contact</a></li>
+                    <li><a href="#">Contact</a></li>
 
                     <li class="Divider">Other demos</li>
                     <li><a href="default.html">Default demo</a></li>
@@ -84,10 +84,10 @@
             <ul id="panel-account"
                 data-mm-title="Account"
             >
-                <li><a href="#/">My profile</a></li>
-                <li><a href="#/">Privacy settings</a></li>
-                <li><a href="#/">Activity</a></li>
-                <li><a href="#/">Sign out</a></li>
+                <li><a href="#">My profile</a></li>
+                <li><a href="#">Privacy settings</a></li>
+                <li><a href="#">Activity</a></li>
+                <li><a href="#">Sign out</a></li>
             </ul>
             
 
@@ -96,7 +96,7 @@
             >
                 <p style="text-align: center; padding-top: 30px;">
                     Your shoppingcart is empty.<br />
-                    <a href="#/">Continue shopping.</a>
+                    <a href="#">Continue shopping.</a>
                 </p>
             </div>
         </nav>
@@ -123,12 +123,12 @@
                 iconbar: {
                     use: '(min-width: 450px)',
                     top: [
-                        '<a href="#/"><span class="fa fa-home"></span></a>',
+                        '<a href="#"><span class="fa fa-home"></span></a>',
                     ],
                     bottom: [
-                        '<a href="#/"><span class="fa fa-twitter"></span></a>',
-                        '<a href="#/"><span class="fa fa-facebook"></span></a>',
-                        '<a href="#/"><span class="fa fa-youtube"></span></a>',
+                        '<a href="#"><span class="fa fa-twitter"></span></a>',
+                        '<a href="#"><span class="fa fa-facebook"></span></a>',
+                        '<a href="#"><span class="fa fa-youtube"></span></a>',
                     ],
                 },
                 iconPanels: {
@@ -185,7 +185,7 @@
         );
 
         document.addEventListener('click', function (evnt) {
-            var anchor = evnt.target.closest('a[href^="#/"]');
+            var anchor = evnt.target.closest('a[href="#"]');
             if (anchor) {
                 alert("Thank you for clicking, but that's a demo link.");
                 evnt.preventDefault();

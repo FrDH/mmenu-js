@@ -9,7 +9,7 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         anchor.classList.add('mm-navbar__tab');
     });
     
-    // TODO aria tabs
+    // TODO aria tabs?
 
     /**
      * Mark a tab as selected.

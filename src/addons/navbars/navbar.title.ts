@@ -36,22 +36,19 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         titleText.innerHTML = DOM.children(original, 'span')[0]?.innerHTML || '';
     });
 
-    //	Add screenreader  support
-    if (this.opts.screenReader.text) {
+    //	Add screenreader  support 
+    this.bind('initPanels:after', () => {
+        /** The prev-button in navbars. */
+        const prev = DOM.find(this.node.menu, '.mm-navbars .mm-btn--prev')[0];
         
-        this.bind('initPanels:after', () => {
-            /** The prev-button in navbars. */
-            const prev = DOM.find(this.node.menu, '.mm-navbars .mm-btn--prev')[0];
-            
-            if (prev) {
-                this.bind('openPanel:before', (panel: HTMLElement) => {
-                    let hidden = true;
-                    if (this.opts.navbar.titleLink == 'parent') {
-                        hidden = !prev.matches('.mm-hidden');
-                    }
-                    sr.aria(title, 'hidden', hidden);
-                });
-            }
-        });
-    }
+        if (prev) {
+            this.bind('openPanel:before', (panel: HTMLElement) => {
+                let hidden = true;
+                if (this.opts.navbar.titleLink == 'parent') {
+                    hidden = !prev.matches('.mm-hidden');
+                }
+                sr.aria(title, 'hidden', hidden);
+            });
+        }
+    });
 }

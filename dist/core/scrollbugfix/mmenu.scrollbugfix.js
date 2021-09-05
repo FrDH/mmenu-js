@@ -18,21 +18,16 @@ export default function () {
         return;
     }
     const touchDir = touchDirection(this.node.menu);
-    /**
-     * Prevent an event from doing its default and stop its propagation.
-     * @param {ScrollBehavior} evnt The event to stop.
-     */
-    function stop(evnt) {
+    //  Prevent the page from scrolling when scrolling in the menu.
+    this.node.menu.addEventListener('scroll', evnt => {
         evnt.preventDefault();
         evnt.stopPropagation();
-    }
-    //  Prevent the page from scrolling when scrolling in the menu.
-    this.node.menu.addEventListener('scroll', stop, {
+    }, {
         //  Make sure to tell the browser the event will be prevented.
         passive: false,
     });
     //  Prevent the page from scrolling when dragging in the menu.
-    this.node.menu.addEventListener('touchmove', (evnt) => {
+    this.node.menu.addEventListener('touchmove', evnt => {
         let wrapper = evnt.target.closest('.mm-panel, .mm-iconbar__top, .mm-iconbar__bottom');
         if (wrapper && wrapper.closest('.mm-listitem--vertical')) {
             wrapper = DOM.parents(wrapper, '.mm-panel').pop();
@@ -41,7 +36,7 @@ export default function () {
             //  When dragging a non-scrollable panel,
             //      we can simple preventDefault and stopPropagation.
             if (wrapper.scrollHeight === wrapper.offsetHeight) {
-                stop(evnt);
+                evnt.stopPropagation();
             }
             //  When dragging a scrollable panel,
             //      that is fully scrolled up (or down).
@@ -55,12 +50,12 @@ export default function () {
                 (wrapper.scrollHeight ==
                     wrapper.scrollTop + wrapper.offsetHeight &&
                     touchDir.get() == 'up')) {
-                stop(evnt);
+                evnt.stopPropagation();
             }
             //  When dragging anything other than a panel.
         }
         else {
-            stop(evnt);
+            evnt.stopPropagation();
         }
     }, {
         //  Make sure to tell the browser the event can be prevented.

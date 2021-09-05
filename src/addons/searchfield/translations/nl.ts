@@ -1,5 +1,5 @@
 export default {
-    Search: 'Zoeken',
+    'Search': 'Zoeken',
     'No results found.': 'Geen resultaten gevonden.',
-    cancel: 'annuleren'
+    'cancel': 'annuleren'
 };

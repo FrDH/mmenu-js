@@ -18,7 +18,7 @@ export const create = (selector) => {
  * @return	{array}					Array of elements that match the filter.
  */
 export const find = (element, filter) => {
-    return filter.length ? Array.prototype.slice.call(element.querySelectorAll(filter)) : [];
+    return filter.length ? [].slice.call(element.querySelectorAll(filter)) : [];
 };
 /**
  * Find all child elements matching the (optional) selector.
@@ -32,6 +32,20 @@ export const children = (element, filter) => {
     return filter
         ? children.filter((child) => child.matches(filter))
         : children;
+};
+/**
+ * Find all text from direct child element.
+ *
+ * @param 	{HTMLElement} 	element Element to search in.
+ * @return	{string}				The text.
+ */
+export const childText = (element) => {
+    return element
+        ? [].slice.call(element.childNodes)
+            .filter(node => node.nodeType === Node.TEXT_NODE)
+            .map(node => node.nodeValue.trim())
+            .join(' ')
+        : '';
 };
 /**
  * Find text excluding text from within child elements.

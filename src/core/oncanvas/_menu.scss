@@ -1,39 +1,39 @@
 .mm-menu {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
 
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
 
-    overscroll-behavior: auto;
+  overscroll-behavior: none;
 
-    background: var(--mm-color-background);
-    border-color: var(--mm-color-border);
-    color: var(--mm-color-text);
-    line-height: var(--mm-line-height);
+  background: var(--mm-color-background);
+  border-color: var(--mm-color-border);
+  color: var(--mm-color-text);
+  line-height: var(--mm-line-height);
 
-    -webkit-tap-highlight-color: var(--mm-color-background-emphasis);
+  -webkit-tap-highlight-color: var(--mm-color-background-emphasis);
 
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-    &,
-    * {
-        box-sizing: border-box;
-    }
+  &,
+  * {
+    box-sizing: border-box;
+  }
 
-    a,
-    a:link,
-    a:active,
-    a:visited,
-    a:hover {
-        text-decoration: none;
-        color: inherit;
-    }
+  a,
+  a:link,
+  a:active,
+  a:visited,
+  a:hover {
+    text-decoration: none;
+    color: inherit;
+  }
 }

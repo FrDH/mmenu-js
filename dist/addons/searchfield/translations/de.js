@@ -1,5 +1,5 @@
 export default {
-    Search: 'Suche',
+    'Search': 'Suche',
     'No results found.': 'Keine Ergebnisse gefunden.',
-    cancel: 'beenden'
+    'cancel': 'beenden'
 };
