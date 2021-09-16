@@ -74,9 +74,6 @@ interface mmOptions {
     /** Options for the off-canvas add-on. */
     offCanvas?: mmOptionsOffcanvas;
 
-    /** Options for the keyboard navigation add-on. */
-    keyboardNavigation?: mmOptionsKeyboardnavigation;
-
     /** Options for the scroll bug fix add-on. */
     scrollBugFix?: mmOptionsScrollbugfix;
 

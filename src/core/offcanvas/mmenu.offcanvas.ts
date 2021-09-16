@@ -30,27 +30,20 @@ export default function (this: Mmenu) {
         this.bind('initMenu:before', () => {
             /** The UI blocker node. */
             const blocker = DOM.create('a.mm-wrapper__blocker.mm-slideout');
-            blocker.id = uniqueId();
 
-            /** Backdrop inside the blocker. */
-            const backdrop = DOM.create('div.mm-wrapper__backdrop');
-            blocker.append(backdrop);
+            blocker.id = uniqueId();
+            blocker.title = this.i18n(configs.screenReader.closeMenu);
+
+            //  Make the blocker able to receive focus.
+            blocker.setAttribute('tabindex', '-1');
 
             //	Append the blocker node to the body.
             document.querySelector(configs.menu.insertSelector).append(blocker);
-
-            //  Add screenreader support
-            blocker.append(sr.text(this.i18n(configs.screenReader.closeMenu)));
 
             //	Store the blocker node.
             Mmenu.node.blck = blocker;
         });
     }
-
-    //	Sync the blocker to target the page.
-    this.bind('setPage:after', () => {
-        Mmenu.node.blck.setAttribute('href', `#${Mmenu.node.page.id}`);
-    });
 
     //  Clone menu and prepend it to the <body>.
     this.bind('initMenu:before', () => {
@@ -114,6 +107,28 @@ export default function (this: Mmenu) {
                 break;
         }
     });
+
+    //	Close the menu with ESC key.
+    document.addEventListener('keyup', (event: KeyboardEvent) => {
+        if (event.key == 'Escape') {
+            this.close();    
+        }
+    });
+
+    //  Prevent tabbing outside the menu,
+    //  close the menu when:
+    //      1) the menu is opened,
+    //      2) the focus is not inside the menu,
+    document.addEventListener('keyup', (event: KeyboardEvent) => {
+
+        if (event.key == 'Tab' &&
+/* 1 */     this.node.menu.matches('.mm-menu--opened') &&
+/* 2 */     !document.activeElement?.closest(`#${this.node.menu.id}`)
+        ) {
+            console.log(document.activeElement);
+            this.close();            
+        }
+    });
 }
 
 /**
@@ -135,6 +150,9 @@ Mmenu.prototype.open = function (this: Mmenu) {
     this.node.menu.classList.add('mm-menu--opened');
     this.node.wrpr.classList.add('mm-wrapper--opened');
 
+    //  Focus the menu.
+    this.node.menu.focus();
+
     //	Invoke "after" hook.
     this.trigger('open:after');
 };
@@ -149,6 +167,10 @@ Mmenu.prototype.close = function (this: Mmenu) {
 
     this.node.menu.classList.remove('mm-menu--opened');
     this.node.wrpr.classList.remove('mm-wrapper--opened');
+    
+    //  Focus opening link or page.
+    const focus = document.querySelector(`[href="#${this.node.menu.id}"]`) || this.node.page || null;
+    (focus as HTMLElement)?.focus();
 
     //	Invoke "after" hook.
     this.trigger('close:after');
@@ -200,10 +222,19 @@ Mmenu.prototype.setPage = function (this: Mmenu, page: HTMLElement) {
     //	Invoke "before" hook.
     this.trigger('setPage:before', [page]);
 
+    //  Make the page able to receive focus.
+    page.setAttribute('tabindex', '-1');
+
+    //  Set the classes
     page.classList.add('mm-page', 'mm-slideout');
 
+    //  Set the ID.
     page.id = page.id || uniqueId();
 
+    //	Sync the blocker to target the page.
+    Mmenu.node.blck.setAttribute('href', `#${page.id}`);
+
+    //	Store the page node.
     Mmenu.node.page = page;
 
     //	Invoke "after" hook.

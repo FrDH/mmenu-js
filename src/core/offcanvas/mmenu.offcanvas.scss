@@ -23,7 +23,8 @@
     pointer-events: none;
 
     // Visible panels undo the hidden menu :/
-    .mm-panel {
+    //  Use inherit so the transition-delay works down the DOM tree.
+    * {
       visibility: inherit;
     }
   }
@@ -77,18 +78,9 @@
   .mm-wrapper--opened & {
     visibility: visible;
     left: 0;
-    transition-delay: 0;
   }
-}
 
-//  Backdrop in UI blocker.
-.mm-wrapper__backdrop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
+  // Styling
   opacity: 0;
   background: rgba(#000, 0.3);
   transition: opacity variables.$mm_transitionDuration
@@ -98,7 +90,7 @@
     opacity: 0.5;
   }
 
-  .mm-wrapper__blocker:focus & {
+  &:focus {
     opacity: 1;
   }
 }

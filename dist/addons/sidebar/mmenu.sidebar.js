@@ -85,7 +85,7 @@ export default function () {
                 break;
         }
         if (initialState == 'closed') {
-            this.bind('initMedia:after', () => {
+            this.bind('init:after', () => {
                 this.close();
             });
         }

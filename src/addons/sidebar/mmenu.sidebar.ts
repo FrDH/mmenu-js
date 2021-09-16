@@ -103,7 +103,7 @@ export default function (this: Mmenu) {
         }
 
         if (initialState == 'closed') {
-            this.bind('initMedia:after', () => {
+            this.bind('init:after', () => {
                 this.close();
             });
         }

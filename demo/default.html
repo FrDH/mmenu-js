@@ -26,29 +26,29 @@
         </div>
         <nav id="menu">
             <ul>
-                <li><a href="#">Home</a></li>
+                <li><a href="#/">Home</a></li>
                 <li>
                     <span>About us</span>
                     <ul>
-                        <li><a href="#">History</a></li>
+                        <li><a href="#/">History</a></li>
                         <li>
                             <span>The team</span>
                             <ul>
                                 <li>
-                                    <a href="#">Management</a>
+                                    <a href="#/">Management</a>
                                 </li>
                                 <li>
-                                    <a href="#">Sales</a>
+                                    <a href="#/">Sales</a>
                                 </li>
                                 <li>
-                                    <a href="#">Development</a>
+                                    <a href="#/">Development</a>
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="#">Our address</a></li>
+                        <li><a href="#/">Our address</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="#/">Contact</a></li>
 
                 <li class="Divider">Other demos</li>
                 <li><a href="advanced.html">Advanced demo</a></li>
@@ -60,12 +60,10 @@
     <!-- mmenu scripts -->
     <script src="../dist/mmenu.js"></script>
     <script>
-        new Mmenu(document.querySelector('#menu'), {
-            slidingSubmenus: false
-        });
+        new Mmenu(document.querySelector('#menu'));
 
         document.addEventListener('click', function (evnt) {
-            var anchor = evnt.target.closest('a[href="#"]');
+            var anchor = evnt.target.closest('a[href="#/"]');
             if (anchor) {
                 alert("Thank you for clicking, but that's a demo link.");
                 evnt.preventDefault();

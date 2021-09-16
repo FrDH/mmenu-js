@@ -69,11 +69,6 @@ export default class Mmenu {
     /** Set the page HTML element. */
     setPage: Function;
 
-    //	searchfield add-on
-
-    /** Search the menu */
-    search: Function;
-
     /**
      * Create a mobile menu.
      * @param {HTMLElement|string} 	menu		The menu node.
@@ -112,6 +107,8 @@ export default class Mmenu {
             this._deprecatedWarnings();
         }
 
+        this.trigger('init:before');
+
         this._initObservers();
 
         this._initAddons();
@@ -124,7 +121,9 @@ export default class Mmenu {
         this._initPanels();
         this._initOpened();
 
-        this._initMedia();
+        media.watch();
+
+        this.trigger('init:after');
 
         return this;
     }
@@ -210,6 +209,12 @@ export default class Mmenu {
             //         pnl.classList.remove('mm-panel--noanimation');
             //     });
             // });
+
+            
+            //  Focus the panels.
+            if (setfocus) {
+                this.node.pnls.focus();
+            }
         }
 
         //	Invoke "after" hook.
@@ -457,6 +462,9 @@ export default class Mmenu {
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
 
+        //  Make menu able to receive focus.
+        this.node.menu.setAttribute('tabindex', '-1');
+
         //  All nodes in the menu.
         const panels = DOM.children(this.node.menu).filter((panel) =>
             panel.matches(this.conf.panelNodetype.join(', '))
@@ -465,6 +473,9 @@ export default class Mmenu {
         //	Wrap the panels in a node.
         this.node.pnls = DOM.create('div.mm-panels');
         this.node.menu.append(this.node.pnls);
+
+        //  Make panels able to receive focus.
+        this.node.pnls.setAttribute('tabindex', '-1');
 
         //  Initiate all panel like nodes
         panels.forEach((panel) => {
@@ -853,7 +864,7 @@ export default class Mmenu {
             button.prepend(sr.text(text));
         }
 
-        button.href = '#' + subpanel.id;
+        button.href = `#${subpanel.id}`;
 
         this._initPanel(subpanel);
     }
@@ -883,19 +894,6 @@ export default class Mmenu {
 
         //	Invoke "after" hook.
         this.trigger('initOpened:after');
-    }
-
-    /**
-     * Start watching the media queries.
-     */
-    _initMedia() {
-        //	Invoke "before" hook.
-        this.trigger('initMedia:before');
-
-        media.watch();
-
-        //	Invoke "after" hook.
-        this.trigger('initMedia:after');
     }
 
     /**

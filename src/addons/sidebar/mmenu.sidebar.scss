@@ -68,6 +68,7 @@
 }
 
 .mm-menu__blocker {
+  visibility: visible;
   display: block;
   position: absolute;
   top: 0;
@@ -75,14 +76,18 @@
   left: 0;
   bottom: 0;
   z-index: 3;
-  opacity: 0.6;
+  opacity: 0.7;
   background: var(--mm-color-background);
   pointer-events: auto;
 
   transition: opacity variables.$mm_transitionDuration
-    variables.$mm_transitionFunction;
+      variables.$mm_transitionFunction 0s,
+    bottom 0s linear 0s, visibility 0s linear 0s;
 
   .mm-menu--opened & {
+    visibility: hidden;
+    transition-delay: 0s, variables.$mm_transitionDuration,
+      variables.$mm_transitionDuration;
     bottom: 100%;
     opacity: 0;
   }

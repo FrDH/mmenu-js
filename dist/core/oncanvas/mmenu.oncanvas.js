@@ -39,6 +39,7 @@ export default class Mmenu {
         if (typeof this._deprecatedWarnings == 'function') {
             this._deprecatedWarnings();
         }
+        this.trigger('init:before');
         this._initObservers();
         this._initAddons();
         this._initExtensions();
@@ -47,7 +48,8 @@ export default class Mmenu {
         this._initMenu();
         this._initPanels();
         this._initOpened();
-        this._initMedia();
+        media.watch();
+        this.trigger('init:after');
         return this;
     }
     /**
@@ -113,6 +115,10 @@ export default class Mmenu {
             //         pnl.classList.remove('mm-panel--noanimation');
             //     });
             // });
+            //  Focus the panels.
+            if (setfocus) {
+                this.node.pnls.focus();
+            }
         }
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel, {
@@ -309,11 +315,15 @@ export default class Mmenu {
         this.node.menu.classList.add('mm-menu');
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
+        //  Make menu able to receive focus.
+        this.node.menu.setAttribute('tabindex', '-1');
         //  All nodes in the menu.
         const panels = DOM.children(this.node.menu).filter((panel) => panel.matches(this.conf.panelNodetype.join(', ')));
         //	Wrap the panels in a node.
         this.node.pnls = DOM.create('div.mm-panels');
         this.node.menu.append(this.node.pnls);
+        //  Make panels able to receive focus.
+        this.node.pnls.setAttribute('tabindex', '-1');
         //  Initiate all panel like nodes
         panels.forEach((panel) => {
             this._initPanel(panel);
@@ -598,7 +608,7 @@ export default class Mmenu {
                 : 'openSubmenu']) + ' ';
             button.prepend(sr.text(text));
         }
-        button.href = '#' + subpanel.id;
+        button.href = `#${subpanel.id}`;
         this._initPanel(subpanel);
     }
     /**
@@ -619,16 +629,6 @@ export default class Mmenu {
         this.openPanel(panel, false, false);
         //	Invoke "after" hook.
         this.trigger('initOpened:after');
-    }
-    /**
-     * Start watching the media queries.
-     */
-    _initMedia() {
-        //	Invoke "before" hook.
-        this.trigger('initMedia:before');
-        media.watch();
-        //	Invoke "after" hook.
-        this.trigger('initMedia:after');
     }
     /**
      * Get the translation for a text.
