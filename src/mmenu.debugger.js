@@ -62,6 +62,13 @@
                     '9.0.0'
                 );
             }
+            if (this.conf[addon]) {
+                deprecated(
+                    `The "${addon}" add-on`,
+                    null,
+                    '9.0.0'
+                );
+            }
         });
 
         //  Searchfield changes

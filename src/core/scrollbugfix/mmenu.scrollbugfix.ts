@@ -24,6 +24,7 @@ export default function (this: Mmenu) {
         return;
     }
 
+    /** The touch-direction instance. */
     const touchDir = touchDirection(this.node.menu);
 
 
@@ -50,13 +51,13 @@ export default function (this: Mmenu) {
             }
 
             if (wrapper) {
-                //  When dragging a non-scrollable panel,
-                //      we can simple preventDefault and stopPropagation.
+                //  When dragging a non-scrollable panel/iconbar,
+                //      we can simply stopPropagation.
                 if (wrapper.scrollHeight === wrapper.offsetHeight) {
                     evnt.stopPropagation();
                 }
 
-                //  When dragging a scrollable panel,
+                //  When dragging a scrollable panel/iconbar,
                 //      that is fully scrolled up (or down).
                 //      It will not trigger the scroll event when dragging down (or up) (because you can't scroll up (or down)),
                 //      so we need to match the dragging direction with the scroll position before preventDefault and stopPropagation,
@@ -72,7 +73,7 @@ export default function (this: Mmenu) {
                     evnt.stopPropagation();
                 }
 
-                //  When dragging anything other than a panel.
+                //  When dragging anything other than a panel/iconbar.
             } else {
                 evnt.stopPropagation();
             }
