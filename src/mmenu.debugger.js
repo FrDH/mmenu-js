@@ -46,6 +46,8 @@
 
         //  Removed add-ons.
         [
+            'screenreader',
+            'keyboardNavigation',
             'autoheight',
             'columns',
             'dividers',

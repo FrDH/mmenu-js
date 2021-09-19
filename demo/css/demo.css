@@ -1,87 +1,93 @@
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
-	padding: 0;
-	margin: 0;
+  padding: 0;
+  margin: 0;
 }
 body {
-	background-color: #fff;
-	font-family: Arial, Helvetica, Verdana;
-	font-size: 14px;
-	line-height: 22px;
-	color: #666;
-	position: relative;
-	-webkit-text-size-adjust: none;
+  background-color: #fff;
+  font-family: Arial, Helvetica, Verdana;
+  font-size: 14px;
+  line-height: 22px;
+  color: #666;
+  position: relative;
+  -webkit-text-size-adjust: none;
 }
-h1, h2, h3, h4, h5, h6 {
-	line-height: 1;
-	font-weight: bold;
-	margin: 20px 0 10px 0;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1;
+  font-weight: bold;
+  margin: 20px 0 10px 0;
 }
-h1, h2, h3 {
-	font-size: 18px;
+h1,
+h2,
+h3 {
+  font-size: 18px;
 }
-h4, h5, h6 {
-	font-size: 16px;
+h4,
+h5,
+h6 {
+  font-size: 16px;
 }
 p {
-	margin: 0 0 10px 0;
+  margin: 0 0 10px 0;
 }
-a, a:link, a:active, a:visited, a:hover {
-	color: inherit;
-	text-decoration: underline;
+a,
+a:link,
+a:active,
+a:visited,
+a:hover {
+  color: inherit;
+  text-decoration: underline;
 }
 
 nav:not(.mm-menu) {
-	display: none;
+  display: none;
 }
 
-.header,
-.content,
-.footer {
-	text-align: center;
+#header {
+  position: sticky;
+  height: 44px;
+  padding: 0 50px;
+  top: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  line-height: 44px;
+  text-align: center;
+  background: #4bb5ef;
 }
-.header,
-.footer {
-	position: sticky;
-	background: #4bb5ef;
-	font-size: 16px;
-	font-weight: bold;
-	color: #fff;
-	line-height: 44px;
+#header a {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 44px;
+  padding: 12px 15px;
+}
+#header a:before,
+#header a:after {
+  content: "";
+  display: block;
+  background: #fff;
+  height: 2px;
+}
+#header a span {
+  background: #fff;
+  display: block;
+  height: 2px;
+  margin: 7px 0;
+}
 
-	box-sizing: border-box;
-	height: 44px;
-	padding: 0 50px;
-}
-.header {
-	top: 0;
-}
-.footer {
-	bottom: 0;
-}
-.header a {
-	display: block;
-	width: 28px;
-	height: 18px;
-	padding: 11px;
-	margin: 2px;
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-.header a:before,
-.header a:after {
-	content: '';
-	display: block;
-	background: #fff;
-	height: 2px;
-}
-.header a span {
-	background: #fff;
-	display: block;
-	height: 2px;
-	margin: 6px 0;
-}
-.content {
-	padding: 150px 50px 50px 50px;
+#content {
+  padding: 150px 50px 50px 50px;
+  text-align: center;
 }
