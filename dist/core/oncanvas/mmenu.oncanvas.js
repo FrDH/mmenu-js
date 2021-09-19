@@ -4,7 +4,6 @@ import translate from './translations';
 import * as DOM from '../../_modules/dom';
 import * as i18n from '../../_modules/i18n';
 import * as media from '../../_modules/matchmedia';
-import * as sr from '../../_modules/screenreader';
 import { extend, type, uniqueId, } from '../../_modules/helpers';
 //  Add the translations.
 translate();
@@ -213,6 +212,9 @@ export default class Mmenu {
             }
         }
     }
+    /**
+     * Create the observers.
+     */
     _initObservers() {
         this.panelObserver = new MutationObserver((mutationsList) => {
             mutationsList.forEach((mutation) => {
@@ -384,7 +386,7 @@ export default class Mmenu {
         //	Wrap UL/OL in DIV
         if (panel.matches('ul, ol')) {
             /** The panel. */
-            let wrapper = DOM.create('div');
+            const wrapper = DOM.create('div');
             //  Transport the ID
             wrapper.id = panel.id;
             panel.removeAttribute('id');
@@ -455,7 +457,7 @@ export default class Mmenu {
         //	Invoke "before" hook.
         this.trigger('initNavbar:before', [panel]);
         /** The navbar element. */
-        let navbar = DOM.create('div.mm-navbar');
+        const navbar = DOM.create('div.mm-navbar');
         //  Hide navbar if specified in options.
         if (!this.opts.navbar.add) {
             navbar.classList.add('mm-hidden');
@@ -463,9 +465,9 @@ export default class Mmenu {
         //  Add the back button.
         if (parentPanel) {
             /** The back button. */
-            let prev = DOM.create('a.mm-btn.mm-btn--prev.mm-navbar__btn');
-            prev.href = '#' + parentPanel.id;
-            prev.append(sr.text(this.i18n(this.conf.screenReader.closeSubmenu)));
+            const prev = DOM.create('a.mm-btn.mm-btn--prev.mm-navbar__btn');
+            prev.href = `#${parentPanel.id}`;
+            prev.title = this.i18n(this.conf.screenReader.closeSubmenu);
             navbar.append(prev);
         }
         /** The anchor that opens the panel. */
@@ -479,29 +481,33 @@ export default class Mmenu {
             opener = DOM.find(parentPanel, 'a[href="#' + panel.id + '"]')[0];
         }
         //  Add the title.
+        /** The title */
         const title = DOM.create('a.mm-navbar__title');
+        title.tabIndex = -1;
+        //  @ts-ignore
+        title.ariaHidden = 'true';
+        switch (this.opts.navbar.titleLink) {
+            case 'anchor':
+                if (opener) {
+                    title.href = opener.getAttribute('href');
+                }
+                break;
+            case 'parent':
+                if (parentPanel) {
+                    title.href = `#${parentPanel.id}`;
+                }
+                break;
+        }
+        /** Text in the title */
         const titleText = DOM.create('span');
         titleText.innerHTML =
             panel.dataset.mmTitle ||
                 DOM.childText(opener) ||
                 (this.i18n(this.opts.navbar.title) || this.i18n('Menu'));
-        title.append(titleText);
-        let href = '#';
-        switch (this.opts.navbar.titleLink) {
-            case 'anchor':
-                if (opener) {
-                    href = opener.getAttribute('href');
-                }
-                break;
-            case 'parent':
-                if (parentPanel) {
-                    href = `#${parentPanel.id}`;
-                }
-                break;
-        }
-        title.setAttribute('href', href);
-        navbar.append(title);
+        //  Add to DOM
         panel.prepend(navbar);
+        navbar.append(title);
+        title.append(titleText);
         //	Invoke "after" hook.
         this.trigger('initNavbar:after', [panel]);
     }
@@ -602,11 +608,9 @@ export default class Mmenu {
                     listitem.insertBefore(button, text.nextElementSibling);
                 }
             });
-            /** Screenreader text */
-            const text = this.i18n(this.conf.screenReader[listitem.matches('.mm-listitem--vertical')
+            button.title = this.i18n(this.conf.screenReader[listitem.matches('.mm-listitem--vertical')
                 ? 'toggleSubmenu'
-                : 'openSubmenu']) + ' ';
-            button.prepend(sr.text(text));
+                : 'openSubmenu']);
         }
         button.href = `#${subpanel.id}`;
         this._initPanel(subpanel);

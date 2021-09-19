@@ -51,6 +51,7 @@
 
 .mm-panel__blocker {
   display: block;
+  visibility: hidden;
   position: absolute;
   top: 0;
   right: 0;
@@ -58,12 +59,11 @@
   z-index: 3;
   opacity: 0;
   background: var(--mm-color-background);
-  transition: opacity variables.$mm_transitionDuration
-    variables.$mm_transitionFunction;
 
   .mm-panel--parent & {
-    opacity: 0.6;
+    visibility: visible;
     bottom: -100000px;
+    opacity: 0.6;
   }
 }
 

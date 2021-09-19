@@ -1,6 +1,5 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import * as DOM from '../../_modules/dom';
-import * as sr from '../../_modules/screenreader';
 
 export default function (this: Mmenu, navbar: HTMLElement) {
     /** The title node in the navbar. */
@@ -36,18 +35,20 @@ export default function (this: Mmenu, navbar: HTMLElement) {
         titleText.innerHTML = DOM.children(original, 'span')[0]?.innerHTML || '';
     });
 
-    //	Add screenreader  support 
+    //	Add screenreader support 
     this.bind('initPanels:after', () => {
         /** The prev-button in navbars. */
         const prev = DOM.find(this.node.menu, '.mm-navbars .mm-btn--prev')[0];
         
         if (prev) {
             this.bind('openPanel:before', (panel: HTMLElement) => {
-                let hidden = true;
+                let hidden = 'true';
                 if (this.opts.navbar.titleLink == 'parent') {
-                    hidden = !prev.matches('.mm-hidden');
+                    hidden = prev.matches('.mm-hidden') ? 'false' : 'true';
                 }
-                sr.aria(title, 'hidden', hidden);
+
+                // @ts-ignore
+                title.ariaHidden = hidden;
             });
         }
     });

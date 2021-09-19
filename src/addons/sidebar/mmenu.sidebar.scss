@@ -80,14 +80,8 @@
   background: var(--mm-color-background);
   pointer-events: auto;
 
-  transition: opacity variables.$mm_transitionDuration
-      variables.$mm_transitionFunction 0s,
-    bottom 0s linear 0s, visibility 0s linear 0s;
-
   .mm-menu--opened & {
     visibility: hidden;
-    transition-delay: 0s, variables.$mm_transitionDuration,
-      variables.$mm_transitionDuration;
     bottom: 100%;
     opacity: 0;
   }

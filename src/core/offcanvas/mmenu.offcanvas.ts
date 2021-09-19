@@ -2,7 +2,6 @@ import Mmenu from './../oncanvas/mmenu.oncanvas';
 import OPTIONS from './options';
 import CONFIGS from './configs';
 import * as DOM from '../../_modules/dom';
-import * as sr from '../../_modules/screenreader';
 import {
     extend,
     uniqueId,

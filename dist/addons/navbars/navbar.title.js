@@ -1,5 +1,4 @@
 import * as DOM from '../../_modules/dom';
-import * as sr from '../../_modules/screenreader';
 export default function (navbar) {
     /** The title node in the navbar. */
     const title = DOM.create('a.mm-navbar__title');
@@ -28,17 +27,18 @@ export default function (navbar) {
         //	Get the text for the title.
         titleText.innerHTML = ((_a = DOM.children(original, 'span')[0]) === null || _a === void 0 ? void 0 : _a.innerHTML) || '';
     });
-    //	Add screenreader  support 
+    //	Add screenreader support 
     this.bind('initPanels:after', () => {
         /** The prev-button in navbars. */
         const prev = DOM.find(this.node.menu, '.mm-navbars .mm-btn--prev')[0];
         if (prev) {
             this.bind('openPanel:before', (panel) => {
-                let hidden = true;
+                let hidden = 'true';
                 if (this.opts.navbar.titleLink == 'parent') {
-                    hidden = !prev.matches('.mm-hidden');
+                    hidden = prev.matches('.mm-hidden') ? 'false' : 'true';
                 }
-                sr.aria(title, 'hidden', hidden);
+                // @ts-ignore
+                title.ariaHidden = hidden;
             });
         }
     });

@@ -1,12 +1,10 @@
 import * as DOM from '../../_modules/dom';
-import * as sr from '../../_modules/screenreader';
 export default function (navbar) {
     navbar.classList.add('mm-navbar--tabs');
     navbar.closest('.mm-navbars').classList.add('mm-navbars--has-tabs');
     DOM.children(navbar, 'a').forEach(anchor => {
         anchor.classList.add('mm-navbar__tab');
     });
-    // TODO aria tabs?
     /**
      * Mark a tab as selected.
      * @param {HTMLElement} panel Opened panel.
@@ -16,7 +14,8 @@ export default function (navbar) {
         const anchor = DOM.children(navbar, `.mm-navbar__tab[href="#${panel.id}"]`)[0];
         if (anchor) {
             anchor.classList.add('mm-navbar__tab--selected');
-            sr.aria(anchor, 'expanded', true);
+            // @ts-ignore
+            anchor.ariaExpanded = 'true';
         }
         else {
             /** The parent listitem. */
@@ -30,7 +29,8 @@ export default function (navbar) {
         //  Remove selected class.
         DOM.children(navbar, 'a').forEach(anchor => {
             anchor.classList.remove('mm-navbar__tab--selected');
-            sr.aria(anchor, 'expanded', false);
+            // @ts-ignore
+            anchor.ariaExpanded = 'false';
         });
         selectTab.call(this, panel);
     });

@@ -17,11 +17,39 @@ export default function () {
         this.bind('initMenu:after', () => {
             this.node.menu.classList.add('mm-menu--iconpanel');
         });
+        this.bind('initPanel:after', panel => {
+            panel.tabIndex = -1;
+        });
+        //  Keyboard navigation
+        this.bind('initPanels:after', () => {
+            document.addEventListener('keyup', evnt => {
+                var _a;
+                //  When tabbing inside the menu
+                if (evnt.key === 'Tab' &&
+                    ((_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.closest('.mm-menu')) === this.node.menu) {
+                    /** panel where focus is in. */
+                    const panel = document.activeElement.closest('.mm-panel');
+                    //  Tabbing in a parent-panel.
+                    if (!document.activeElement.matches('.mm-panel__blocker') && (panel === null || panel === void 0 ? void 0 : panel.matches('.mm-panel--parent'))) {
+                        //  backward tabbing: focus blocker.
+                        if (evnt.shiftKey) {
+                            DOM.children(panel, '.mm-panel__blocker')[0].focus();
+                            //  forward tabbing: focus opened panel.
+                        }
+                        else {
+                            DOM.children(this.node.pnls, '.mm-panel--opened')[0].focus();
+                        }
+                    }
+                }
+            });
+        });
+        //  Show only the main panel.
         if (keepFirst) {
             this.bind('initMenu:after', () => {
                 var _a;
                 (_a = DOM.children(this.node.pnls, '.mm-panel')[0]) === null || _a === void 0 ? void 0 : _a.classList.add('mm-panel--iconpanel-first');
             });
+            //  Show parent panel(s).
         }
         else {
             /** The classnames that can be set to a panel */
@@ -54,8 +82,9 @@ export default function () {
             if (options.blockPanel &&
                 !panel.parentElement.matches('.mm-listitem--vertical') &&
                 !DOM.children(panel, '.mm-panel__blocker')[0]) {
-                let blocker = DOM.create('a.mm-panel__blocker');
-                blocker.setAttribute('href', '#' + panel.closest('.mm-panel').id);
+                const blocker = DOM.create('a.mm-panel__blocker');
+                blocker.href = `#${panel.closest('.mm-panel').id}`;
+                blocker.title = this.i18n(this.conf.screenReader.closeSubmenu);
                 panel.prepend(blocker);
             }
         });
