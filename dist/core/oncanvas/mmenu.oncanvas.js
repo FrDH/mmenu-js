@@ -29,7 +29,7 @@ export default class Mmenu {
             'closePanel',
             'setSelected',
         ];
-        //	Storage objects for nodes, variables, hooks and click handlers.
+        //	Storage objects for nodes and hooks.
         this.node = {};
         this.hook = {};
         //	Get menu node from string or element.
@@ -391,7 +391,7 @@ export default class Mmenu {
             wrapper.id = panel.id;
             panel.removeAttribute('id');
             //  Transport "mm-" prefixed classnames.
-            Array.prototype.slice
+            [].slice
                 .call(panel.classList)
                 .filter((classname) => classname.slice(0, 3) === 'mm-')
                 .forEach((classname) => {

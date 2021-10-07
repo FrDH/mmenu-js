@@ -29,7 +29,10 @@ export default function (this: Mmenu, navbar: HTMLElement) {
                         crumbs.unshift(
                             first
                                 ? `<span>${text}</span>`
-                                : `<a href="#${current.id}">${text}</a>`
+                                : `<a 
+                                    href="#${current.id}" 
+                                    title="${this.i18n(this.conf.screenReader.openSubmenu)}"
+                                    >${text}</a>`
                         );
                     }
                 }

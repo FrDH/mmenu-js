@@ -94,7 +94,7 @@ export default class Mmenu {
             'setSelected',
         ];
 
-        //	Storage objects for nodes, variables, hooks and click handlers.
+        //	Storage objects for nodes and hooks.
         this.node = {};
         this.hook = {};
 
@@ -556,7 +556,7 @@ export default class Mmenu {
             panel.removeAttribute('id');
 
             //  Transport "mm-" prefixed classnames.
-            Array.prototype.slice
+            [].slice
                 .call(panel.classList)
                 .filter((classname) => classname.slice(0, 3) === 'mm-')
                 .forEach((classname) => {
