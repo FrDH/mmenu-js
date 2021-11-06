@@ -1,9 +1,0 @@
-.mm-navbar__searchfield {
-  .mm-btn:not(.mm-hidden) + & .mm-searchfield__input {
-    padding-left: 0;
-  }
-
-  &:not(:last-child) .mm-searchfield__input {
-    padding-right: 0;
-  }
-}

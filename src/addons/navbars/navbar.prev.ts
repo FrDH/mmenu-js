@@ -19,6 +19,8 @@ export default function (this: Mmenu, navbar: HTMLElement) {
             return;
         }
 
+        prev.classList.add('mm-hidden');
+
         /** Original button in the panel. */
         const original = panel.querySelector('.mm-navbar__btn.mm-btn--prev') as HTMLAnchorElement;
         if (original) {

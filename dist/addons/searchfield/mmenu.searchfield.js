@@ -44,7 +44,7 @@ export default function () {
                 /** The searchform. */
                 const form = createSearchfield.call(this, true);
                 //  Add the form to the panel.
-                wrapper.prepend(form);
+                wrapper.append(form);
                 /** The input node. */
                 const input = DOM.find(form, 'input')[0];
                 //  Bind events for opening and closing the resultspanel.

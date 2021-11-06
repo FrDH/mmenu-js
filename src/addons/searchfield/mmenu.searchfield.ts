@@ -59,7 +59,7 @@ export default function (this: Mmenu) {
                 const form = createSearchfield.call(this, true);
 
                 //  Add the form to the panel.
-                wrapper.prepend(form);
+                wrapper.append(form);
 
                 /** The input node. */
                 const input = DOM.find(form, 'input')[0] as HTMLInputElement;
