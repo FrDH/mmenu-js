@@ -4,34 +4,34 @@ $mm_module: ".mm-panel";
  * The searchpanel
  */
 #{$mm_module}--search {
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
-  border: none !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    border: none !important;
 }
 
 /**
  * Splash message
  */
 #{$mm_module}__splash {
-  padding: variables.$mm_panelPadding;
+    padding: variables.$mm_panelPadding;
 
-  #{$mm_module}--searching & {
-    display: none;
-  }
+    #{$mm_module}--searching & {
+        display: none;
+    }
 }
 
 /**
  * No results message
  */
 #{$mm_module}__noresults {
-  display: none;
-  padding: variables.$mm_panelPadding * 2 variables.$mm_panelPadding;
-  color: var(--mm-color-text-dimmed);
-  text-align: center;
-  font-size: 150%;
+    display: none;
+    padding: variables.$mm_panelPadding * 2 variables.$mm_panelPadding;
+    color: var(--mm-color-text-dimmed);
+    text-align: center;
+    font-size: 150%;
 
-  #{$mm_module}--noresults & {
-    display: block;
-  }
+    #{$mm_module}--noresults & {
+        display: block;
+    }
 }

@@ -1,96 +1,97 @@
 @use "../../variables";
 
 :root {
-  --mm-size: 80%;
-  --mm-min-size: 240px;
-  --mm-max-size: 440px;
+    --mm-size: 80%;
+    --mm-min-size: 240px;
+    --mm-max-size: 440px;
 }
 
 //	Menu
 .mm-menu--offcanvas {
-  position: fixed;
-  right: auto;
-  z-index: 0;
-  width: clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size));
-  transition: visibility 0s linear variables.$mm_transitionDuration;
+    position: fixed;
+    right: auto;
+    z-index: 0;
+    width: clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size));
+    transition: visibility 0s linear variables.$mm_transitionDuration;
 
-  &.mm-menu--opened {
-    transition-delay: 0s;
-  }
-
-  &:not(.mm-menu--opened) {
-    visibility: hidden;
-    pointer-events: none;
-
-    // Visible panels undo the hidden menu :/
-    //  Use inherit so the transition-delay works down the DOM tree.
-    * {
-      visibility: inherit;
+    &.mm-menu--opened {
+        transition-delay: 0s;
     }
-  }
+
+    &:not(.mm-menu--opened) {
+        visibility: hidden;
+        pointer-events: none;
+
+        // Visible panels undo the hidden menu :/
+        //  Use inherit so the transition-delay works down the DOM tree.
+        * {
+            visibility: inherit;
+        }
+    }
 }
 
 //	Page node
 .mm-page {
-  box-sizing: border-box;
-  min-height: 100vh;
-  background: inherit;
+    box-sizing: border-box;
+    min-height: 100vh;
+    background: inherit;
 }
 
 //  All sliding out nodes
 .mm-slideout {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  transition: width variables.$mm_transitionDuration
-      variables.$mm_transitionFunction,
-    transform variables.$mm_transitionDuration variables.$mm_transitionFunction;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    transition: width variables.$mm_transitionDuration
+            variables.$mm_transitionFunction,
+        transform variables.$mm_transitionDuration
+            variables.$mm_transitionFunction;
 
-  .mm-wrapper--opened & {
-    transform: translate3d(
-      clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size)),
-      0,
-      0
-    );
-  }
+    .mm-wrapper--opened & {
+        transform: translate3d(
+            clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size)),
+            0,
+            0
+        );
+    }
 }
 
 //	Wrapper
 .mm-wrapper--opened {
-  overflow: hidden;
-
-  body {
     overflow: hidden;
-  }
+
+    body {
+        overflow: hidden;
+    }
 }
 
 //  UI Blocker
 .mm-wrapper__blocker {
-  visibility: hidden;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 100%;
-  z-index: 2;
-  overflow: hidden;
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 100%;
+    z-index: 2;
+    overflow: hidden;
 
-  .mm-wrapper--opened & {
-    visibility: visible;
-    left: 0;
-  }
+    .mm-wrapper--opened & {
+        visibility: visible;
+        left: 0;
+    }
 
-  // Styling
-  opacity: 0;
-  background: rgba(#000, 0.3);
-  transition: opacity variables.$mm_transitionDuration
-    variables.$mm_transitionFunction variables.$mm_transitionDuration;
+    // Styling
+    opacity: 0;
+    background: rgba(#000, 0.3);
+    transition: opacity variables.$mm_transitionDuration
+        variables.$mm_transitionFunction variables.$mm_transitionDuration;
 
-  .mm-wrapper--opened & {
-    opacity: 0.5;
-  }
+    .mm-wrapper--opened & {
+        opacity: 0.5;
+    }
 
-  &:focus {
-    opacity: 1;
-  }
+    &:focus {
+        opacity: 1;
+    }
 }

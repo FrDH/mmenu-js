@@ -1,5 +1,7 @@
 export default {
-    'Search': 'جستجو',
+    'cancel': 'انصراف',
+    'Cancel searching': 'لغو جستجو',
+    'Clear searchfield': 'پاک کردن فیلد جستجو',
     'No results found.': 'نتیجه‌ای یافت نشد.',
-    'cancel': 'انصراف'
+    'Search': 'جستجو',
 };

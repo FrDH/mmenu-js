@@ -1,78 +1,78 @@
 .mm-listview {
-  list-style: none;
-  display: block;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    display: block;
+    padding: 0;
+    margin: 0;
 }
 
 $mm_module: ".mm-listitem";
 
 #{$mm_module} {
-  display: flex;
-  flex-wrap: wrap;
-  position: relative;
-  padding: 0;
-  margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    padding: 0;
+    margin: 0;
 
-  list-style: none;
-  color: var(--mm-color-text);
-  border-color: var(--mm-color-border);
+    list-style: none;
+    color: var(--mm-color-text);
+    border-color: var(--mm-color-border);
 
-  &:after {
-    content: "";
-    border-color: inherit;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    display: block;
-    position: absolute;
-    left: variables.$mm_listitemIndent;
-    right: 0;
-    bottom: 0;
-  }
+    &:after {
+        content: "";
+        border-color: inherit;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        display: block;
+        position: absolute;
+        left: variables.$mm_listitemIndent;
+        right: 0;
+        bottom: 0;
+    }
 }
 
 %mm_listitem_content {
-  display: block;
-  padding: calc((var(--mm-listitem-size) - var(--mm-line-height)) / 2) 0;
-  color: inherit;
+    display: block;
+    padding: calc((var(--mm-listitem-size) - var(--mm-lineheight)) / 2) 0;
+    color: inherit;
 }
 
 #{$mm_module}__text {
-  @extend %mm_listitem_content;
-  @include mixins.mm_ellipsis;
+    @extend %mm_listitem_content;
+    @include mixins.mm_ellipsis;
 
-  padding-left: variables.$mm_listitemIndent;
-  padding-right: variables.$mm_listitemIndent;
-  flex-grow: 1;
-  flex-basis: 10%;
+    padding-left: variables.$mm_listitemIndent;
+    padding-right: variables.$mm_listitemIndent;
+    flex-grow: 1;
+    flex-basis: 10%;
 }
 
 #{$mm_module}__btn {
-  @extend %mm_listitem_content;
+    @extend %mm_listitem_content;
 
-  background: rgba(3, 2, 1, 0);
-  border-color: inherit;
-  width: auto;
-  padding-right: variables.$mm_btnSize;
-  position: relative;
+    background: rgba(3, 2, 1, 0);
+    border-color: inherit;
+    width: auto;
+    padding-right: variables.$mm_btnSize;
+    position: relative;
 
-  &:not(.mm-listitem__text) {
-    border-left-width: 1px;
-    border-left-style: solid;
-  }
+    &:not(.mm-listitem__text) {
+        border-left-width: 1px;
+        border-left-style: solid;
+    }
 }
 
 #{$mm_module} {
-  &--selected {
-    > #{$mm_module}__text {
-      background: var(--mm-color-background-emphasis);
+    &--selected {
+        > #{$mm_module}__text {
+            background: var(--mm-color-background-emphasis);
+        }
     }
-  }
 
-  &--opened {
-    > #{$mm_module}__btn,
-    > .mm-panel {
-      background: var(--mm-color-background-highlight);
+    &--opened {
+        > #{$mm_module}__btn,
+        > .mm-panel {
+            background: var(--mm-color-background-highlight);
+        }
     }
-  }
 }

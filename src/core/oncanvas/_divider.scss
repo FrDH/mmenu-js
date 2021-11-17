@@ -1,33 +1,33 @@
 $mm_module: ".mm-divider";
 
 #{$mm_module} {
-  @include mixins.mm_ellipsis;
+    @include mixins.mm_ellipsis;
 
-  @supports (position: sticky) {
-    position: sticky;
-    z-index: 2;
-    top: 0;
+    @supports (position: sticky) {
+        position: sticky;
+        z-index: 2;
+        top: 0;
 
-    .mm-navbar:not(.mm-hidden) ~ .mm-listview & {
-      top: var(--mm-navbar-size);
+        .mm-navbar:not(.mm-hidden) ~ .mm-listview & {
+            top: var(--mm-navbar-size);
+        }
     }
-  }
 
-  min-height: var(--mm-line-height);
-  padding: calc(
-      ((var(--mm-listitem-size) * 0.65) - var(--mm-line-height)) * 0.5
-    )
-    variables.$mm_listitemIndent;
+    min-height: var(--mm-lineheight);
+    padding: calc(
+            ((var(--mm-listitem-size) * 0.65) - var(--mm-lineheight)) * 0.5
+        )
+        variables.$mm_listitemIndent;
 
-  font-size: 75%;
-  text-transform: uppercase;
-  background: var(--mm-color-background);
-  background-image: linear-gradient(
-    var(--mm-color-background-highlight),
-    var(--mm-color-background-highlight)
-  );
+    font-size: 75%;
+    text-transform: uppercase;
+    background: var(--mm-color-background);
+    background-image: linear-gradient(
+        var(--mm-color-background-highlight),
+        var(--mm-color-background-highlight)
+    );
 
-  opacity: 1;
-  transition: opacity variables.$mm_transitionDuration
-    variables.$mm_transitionFunction;
+    opacity: 1;
+    transition: opacity variables.$mm_transitionDuration
+        variables.$mm_transitionFunction;
 }

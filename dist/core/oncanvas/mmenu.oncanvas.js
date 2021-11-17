@@ -659,5 +659,5 @@ export default class Mmenu {
 Mmenu.addons = {};
 /**	Globally used HTML elements. */
 Mmenu.node = {};
-/** Globally used variables. */
+/** Globally used v. */
 Mmenu.vars = {};

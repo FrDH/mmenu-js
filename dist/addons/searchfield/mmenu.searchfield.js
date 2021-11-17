@@ -146,7 +146,7 @@ const initPanel = function (panel) {
         if (!DOM.find(panel, '.mm-panel__splash').length) {
             /** The splash content node. */
             const splash = DOM.create('div.mm-panel__splash');
-            splash.innerHTML = this.i18n(options.splash);
+            splash.innerHTML = options.splash;
             panel.append(splash);
         }
     }
@@ -199,12 +199,14 @@ const createSearchfield = function (addCancel = false) {
         /** The reset button. */
         const reset = DOM.create('button.mm-btnreset.mm-btn.mm-btn--close.mm-searchfield__btn');
         reset.type = 'reset';
+        reset.title = this.i18n('Clear searchfield');
         field.append(reset);
         //  Apparently, resetting a form doesn't trigger any event on the input,
         //  so we manually dispatch the event, one frame later :/
         form.addEventListener('reset', () => {
             window.requestAnimationFrame(() => {
                 input.dispatchEvent(new Event('input'));
+                input.focus();
             });
         });
     }
@@ -213,6 +215,7 @@ const createSearchfield = function (addCancel = false) {
         /** The cancel button. */
         const cancel = DOM.create('a.mm-searchfield__cancel');
         cancel.href = '#';
+        cancel.title = this.i18n('Cancel searching');
         cancel.textContent = this.i18n('cancel');
         form.append(cancel);
         // Close the search panel.
@@ -284,8 +287,7 @@ const initSearch = function (form) {
             // Trigger event.
             this.trigger('clear:before');
             form.classList.remove('mm-searchfield--searching');
-            resultspanel.classList.remove('mm-panel--searching');
-            resultspanel.classList.remove('mm-panel--noresults');
+            resultspanel.classList.remove('mm-panel--searching', 'mm-panel--noresults');
             //  Resultspanel.
             if (resultspanel.matches('.mm-panel--search')) {
                 _resetResultsPanel(resultspanel);

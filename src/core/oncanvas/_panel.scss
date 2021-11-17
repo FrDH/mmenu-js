@@ -1,60 +1,61 @@
 $mm_module: ".mm-panel";
 
 #{$mm_module} {
-  visibility: hidden;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 1;
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
 
-  -webkit-overflow-scrolling: touch;
-  overflow: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
 
-  color: var(--mm-color-text);
-  border-color: var(--mm-color-border);
-  background: var(--mm-color-background);
+    color: var(--mm-color-text);
+    border-color: var(--mm-color-border);
+    background: var(--mm-color-background);
 
-  transform: translate3d(100%, 0, 0);
-  transition: visibility 0s linear variables.$mm_transitionDuration,
-    transform variables.$mm_transitionDuration variables.$mm_transitionFunction
-      0s,
-    left variables.$mm_transitionDuration variables.$mm_transitionFunction 0s;
+    transform: translate3d(100%, 0, 0);
+    transition: visibility 0s linear variables.$mm_transitionDuration,
+        transform variables.$mm_transitionDuration
+            variables.$mm_transitionFunction 0s,
+        left variables.$mm_transitionDuration variables.$mm_transitionFunction
+            0s;
 
-  //	Because padding-bottom is ignored when a DIV is scrollable
-  &:after {
-    content: "";
-    display: block;
-    height: var(--mm-listitem-size);
-  }
-
-  &--opened {
-    visibility: visible;
-    z-index: 2;
-    transform: translate3d(0%, 0, 0);
-    transition-delay: 0s;
-  }
-
-  &--parent {
-    transform: translate3d(-30%, 0, 0);
-    z-index: 0;
-  }
-
-  &--highest {
-    z-index: 3;
-  }
-
-  &--noanimation {
-    .mm-menu--opened & {
-      transition: none !important;
-      transition-duration: 0s !important;
+    //	Because padding-bottom is ignored when a DIV is scrollable
+    &:after {
+        content: "";
+        display: block;
+        height: var(--mm-listitem-size);
     }
-  }
+
+    &--opened {
+        visibility: visible;
+        z-index: 2;
+        transform: translate3d(0%, 0, 0);
+        transition-delay: 0s;
+    }
+
+    &--parent {
+        transform: translate3d(-30%, 0, 0);
+        z-index: 0;
+    }
+
+    &--highest {
+        z-index: 3;
+    }
+
+    &--noanimation {
+        .mm-menu--opened & {
+            transition: none !important;
+            transition-duration: 0s !important;
+        }
+    }
 }
 
 #{$mm_module}__content {
-  padding: variables.$mm_panelPadding variables.$mm_panelPadding 0;
+    padding: variables.$mm_panelPadding variables.$mm_panelPadding 0;
 }

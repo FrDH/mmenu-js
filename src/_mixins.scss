@@ -2,28 +2,28 @@
 
 // Arrow buttons
 @mixin mm_btn_arrow_prev {
-  transform: rotate(-45deg);
-  left: variables.$mm_listitemIndent + 3;
-  right: auto;
+    transform: rotate(-45deg);
+    left: variables.$mm_listitemIndent + 3;
+    right: auto;
 }
 
 @mixin mm_btn_arrow_next {
-  transform: rotate(135deg);
-  right: variables.$mm_listitemIndent + 3;
-  left: auto;
+    transform: rotate(135deg);
+    right: variables.$mm_listitemIndent + 3;
+    left: auto;
 }
 
 //	Misc
 @mixin mm_ellipsis() {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 @mixin mm_clearfix() {
-  &:after {
-    content: "";
-    display: block;
-    clear: both;
-  }
+    &:after {
+        content: "";
+        display: block;
+        clear: both;
+    }
 }

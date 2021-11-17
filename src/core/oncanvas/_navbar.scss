@@ -1,57 +1,57 @@
 $mm_module: ".mm-navbar";
 
 #{$mm_module} {
-  display: flex;
-  min-height: var(--mm-navbar-size);
-  padding-top: env(safe-area-inset-top);
-  color: var(--mm-color-text-dimmed);
-  text-align: center;
-
-  opacity: 1;
-  background: var(--mm-color-background);
-  border-bottom: 1px solid var(--mm-color-border);
-  transition: opacity variables.$mm_transitionDuration
-    variables.$mm_transitionFunction;
-
-  position: sticky;
-  top: 0;
-  z-index: 2;
-
-  > * {
-    flex-grow: 1;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-  }
+    min-height: var(--mm-navbar-size);
+    padding-top: env(safe-area-inset-top);
+    color: var(--mm-color-text-dimmed);
+    text-align: center;
+
+    opacity: 1;
+    background: var(--mm-color-background);
+    border-bottom: 1px solid var(--mm-color-border);
+    transition: opacity variables.$mm_transitionDuration
+        variables.$mm_transitionFunction;
+
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    > * {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+    }
 }
 
 #{$mm_module}__btn {
-  flex-grow: 0;
+    flex-grow: 0;
 }
 
 #{$mm_module}__title {
-  flex: 1 1 50%;
-  display: flex;
-  padding: 0 variables.$mm_panelPadding;
-  overflow: hidden;
+    flex: 1 1 50%;
+    display: flex;
+    padding: 0 variables.$mm_panelPadding;
+    overflow: hidden;
 
-  &[href="#"] {
-    pointer-events: none;
-  }
+    &[href="#"] {
+        pointer-events: none;
+    }
 
-  > span {
-    @include mixins.mm_ellipsis;
-  }
+    > span {
+        @include mixins.mm_ellipsis;
+    }
 
-  // Center the content.
-  .mm-btn.mm-hidden + &:not(:last-child) {
-    padding-left: variables.$mm_btnSize + 10;
-    padding-right: 10px;
-  }
-  .mm-btn:not(.mm-hidden) + &:last-child {
-    padding-left: 10px;
-    padding-right: variables.$mm_btnSize + 10;
-  }
-  // /Center
+    // Center the content.
+    .mm-btn.mm-hidden + &:not(:last-child) {
+        padding-left: variables.$mm_btnSize + 10;
+        padding-right: 10px;
+    }
+    .mm-btn:not(.mm-hidden) + &:last-child {
+        padding-left: 10px;
+        padding-right: variables.$mm_btnSize + 10;
+    }
+    // /Center
 }

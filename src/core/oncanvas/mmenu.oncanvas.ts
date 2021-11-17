@@ -24,7 +24,7 @@ export default class Mmenu {
     /**	Globally used HTML elements. */
     static node: mmHtmlObject = {};
 
-    /** Globally used variables. */
+    /** Globally used v. */
     static vars: mmLooseObject = {};
 
     /** MutationObserver for adding a listview to a panel. */

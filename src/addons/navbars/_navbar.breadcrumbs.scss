@@ -1,29 +1,29 @@
 .mm-navbar__breadcrumbs {
-  @include mixins.mm_ellipsis;
+    @include mixins.mm_ellipsis;
 
-  flex: 1 1 50%;
-  display: flex;
-  justify-content: flex-start;
-  padding: 0 variables.$mm_panelPadding;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-
-  > * {
+    flex: 1 1 50%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-right: 6px;
-  }
+    justify-content: flex-start;
+    padding: 0 variables.$mm_panelPadding;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 
-  > a {
-    text-decoration: underline;
-  }
+    > * {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-right: 6px;
+    }
 
-  &:not(:last-child) {
-    padding-right: 0;
-  }
+    > a {
+        text-decoration: underline;
+    }
 
-  .mm-btn:not(.mm-hidden) + & {
-    padding-left: 0;
-  }
+    &:not(:last-child) {
+        padding-right: 0;
+    }
+
+    .mm-btn:not(.mm-hidden) + & {
+        padding-left: 0;
+    }
 }

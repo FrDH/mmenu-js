@@ -3,11 +3,11 @@
 $mm_module: ".mm-counter";
 
 #{$mm_module} {
-  display: block;
-  padding-left: 20px;
-  float: right;
-  text-align: right;
-  color: var(--mm-color-text-dimmed);
+    display: block;
+    padding-left: 20px;
+    float: right;
+    text-align: right;
+    color: var(--mm-color-text-dimmed);
 }
 
 @import "counters.rtl";

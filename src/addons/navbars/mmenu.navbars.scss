@@ -2,35 +2,31 @@
 @use "../../variables";
 
 .mm-navbars {
-  flex-shrink: 0;
+    flex-shrink: 0;
 
-  .mm-navbar {
-    padding-top: 0;
-    border-bottom: none;
-  }
-
-  //  reset safe area inset for iPhones
-  .mm-navbar {
-    padding-top: 0;
-  }
-
-  &--top {
-    border-bottom: 1px solid var(--mm-color-border);
-
-    //  safe area inset for iPhones
-    .mm-navbar:first-child {
-      padding-top: env(safe-area-inset-top);
+    .mm-navbar {
+        position: relative;
+        padding-top: 0;
+        border-bottom: none;
     }
-  }
 
-  &--bottom {
-    border-top: 1px solid var(--mm-color-border);
+    &--top {
+        border-bottom: 1px solid var(--mm-color-border);
 
-    //  safe area inset for iPhones
-    .mm-navbar:last-child {
-      padding-bottom: env(safe-area-inset-bottom);
+        //  safe area inset for iPhones
+        .mm-navbar:first-child {
+            padding-top: env(safe-area-inset-top);
+        }
     }
-  }
+
+    &--bottom {
+        border-top: 1px solid var(--mm-color-border);
+
+        //  safe area inset for iPhones
+        .mm-navbar:last-child {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    }
 }
 
 @import "navbar.breadcrumbs", "navbar.tabs";
