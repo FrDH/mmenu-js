@@ -36,11 +36,9 @@ $mm_module: ".mm-searchfield";
         margin: 0;
         padding: 0 10px;
         box-sizing: border-box;
-        border: none !important;
+        border: none;
         border-radius: 4px;
         line-height: calc(var(--mm-navbar-size) * 0.7);
-        box-shadow: none !important;
-        outline: none !important;
         font: inherit;
         font-size: inherit;
 

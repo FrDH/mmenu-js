@@ -10,13 +10,14 @@
     --mm-toggle-size: 34px;
 
     //	colors
-    --mm-color-border: rgba(0, 0, 0, 0.1);
-    --mm-color-button: rgba(0, 0, 0, 0.3);
-    --mm-color-text: rgba(0, 0, 0, 0.75);
-    --mm-color-text-dimmed: rgba(0, 0, 0, 0.3);
+    --mm-color-border: rgba(0 0 0 / 0.1);
+    --mm-color-button: rgba(0 0 0 / 0.3);
+    --mm-color-text: rgba(0 0 0 / 0.75);
+    --mm-color-text-dimmed: rgba(0 0 0 / 0.3);
     --mm-color-background: #f3f3f3;
-    --mm-color-background-highlight: rgba(0, 0, 0, 0.05);
-    --mm-color-background-emphasis: rgba(255, 255, 255, 0.4);
+    --mm-color-background-highlight: rgba(0 0 0 / 0.05);
+    --mm-color-background-emphasis: rgba(255 255 255 / 0.4);
+    --mm-color-focusring: #06c;
 }
 
 .mm-hidden {
@@ -31,11 +32,18 @@
 .mm-menu {
     a,
     button,
+    label,
+    div {
+        &:focus-visible {
+            outline: 2px solid var(--mm-color-focusring);
+            outline-offset: -2px;
+        }
+    }
     input,
     select,
     textarea {
         &:focus {
-            outline: 2px solid #06c;
+            outline: 2px solid var(--mm-color-focusring);
             outline-offset: -2px;
         }
     }
