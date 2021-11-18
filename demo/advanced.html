@@ -104,7 +104,10 @@
                 document.querySelector("#menu"),
                 {
                     extensions: ["theme-dark"],
-                    setSelected: true,
+                    setSelected: {
+                        hover: true,
+                        parent: true,
+                    },
                     counters: {
                         add: true,
                     },
@@ -132,7 +135,6 @@
                     sidebar: {
                         collapsed: {
                             use: "(min-width: 450px)",
-                            hideNavbar: false,
                         },
                         expanded: {
                             use: "(min-width: 992px)",
@@ -149,7 +151,6 @@
                                 '<a href="#panel-menu"><i class="fa fa-bars"></i> <span>Menu</span></a>',
                                 '<a href="#panel-account"><i class="fa fa-user"></i> <span>Account</span></a>',
                                 '<a href="#panel-cart"><i class="fa fa-shopping-cart"></i> <span>Cart</span></a>',
-                                // '<a href="#panel-search"><i class="fa fa-search"></i> <span>Search</span></a>',
                             ],
                         },
                         {

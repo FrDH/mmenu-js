@@ -28,27 +28,6 @@
     overflow-x: hidden;
     position: relative;
 }
-
-.mm-menu {
-    a,
-    button,
-    label,
-    div {
-        &:focus-visible {
-            outline: 2px solid var(--mm-color-focusring);
-            outline-offset: -2px;
-        }
-    }
-    input,
-    select,
-    textarea {
-        &:focus {
-            outline: 2px solid var(--mm-color-focusring);
-            outline-offset: -2px;
-        }
-    }
-}
-
 @import "button", "button.rtl", "divider", "listitem", "listitem.rtl", "menu",
     "menu.rtl", "navbar", "navbar.rtl", "panel", "panel.rtl", "panels",
     "screenreader", "toggle", "vertical";

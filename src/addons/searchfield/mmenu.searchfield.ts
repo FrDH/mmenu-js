@@ -91,8 +91,10 @@ export default function (this: Mmenu) {
                     });
 
                     //  Close resultspanel when resetting.
-                    this.bind('clear:after', () => {
-                        this.closePanel(resultspanel, false);
+                    input.addEventListener('focusout', () => {
+                        if (!input.value.length) {
+                            this.closePanel(resultspanel, false);
+                        }
                     });
                 }
                 
@@ -135,7 +137,7 @@ const createResultsPanel = function (
 
     panel = DOM.create('div.mm-panel--search');
 
-    //	Add attributes to the panel.
+    //	Add attributes to the panel.    
     _addAttributes(panel, configs.panel);
 
     //  Add a title to the panel.
@@ -279,7 +281,6 @@ const createSearchfield = function(
         form.addEventListener('reset', () => {            
             window.requestAnimationFrame(() => {
                 input.dispatchEvent(new Event('input'));
-                input.focus();
             });
         });
     }

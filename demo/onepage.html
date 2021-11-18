@@ -91,13 +91,14 @@
 		new Mmenu(
 			document.querySelector('#menu'),
 			{
-				drag: true,
 				pageScroll: {
 					scroll: true,
 					update: true
 				},
 				sidebar: {
-					expanded: 800
+					expanded: {
+						use: 800
+					}
 				}
 			}
 		);

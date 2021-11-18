@@ -71,8 +71,10 @@ export default function () {
                         this.openPanel(resultspanel, false, false);
                     });
                     //  Close resultspanel when resetting.
-                    this.bind('clear:after', () => {
-                        this.closePanel(resultspanel, false);
+                    input.addEventListener('focusout', () => {
+                        if (!input.value.length) {
+                            this.closePanel(resultspanel, false);
+                        }
                     });
                 }
                 //  Initialize searching.
@@ -103,7 +105,7 @@ const createResultsPanel = function () {
         return panel;
     }
     panel = DOM.create('div.mm-panel--search');
-    //	Add attributes to the panel.
+    //	Add attributes to the panel.    
     _addAttributes(panel, configs.panel);
     //  Add a title to the panel.
     if (options.title.length) {
@@ -206,7 +208,6 @@ const createSearchfield = function (addCancel = false) {
         form.addEventListener('reset', () => {
             window.requestAnimationFrame(() => {
                 input.dispatchEvent(new Event('input'));
-                input.focus();
             });
         });
     }

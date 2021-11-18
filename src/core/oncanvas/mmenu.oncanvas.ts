@@ -201,13 +201,6 @@ export default class Mmenu {
 
                 parent = DOM.find(this.node.pnls, `#${parent.dataset.mmParent}`)[0];
             }
-
-            //  Remove animation classes from all panels.
-            // requestAnimationFrame(() => {
-            //     DOM.children(this.node.pnls, '.mm-panel').forEach(pnl => {
-            //         pnl.classList.remove('mm-panel--noanimation');
-            //     });
-            // });
             
             //  Focus the panels.
             if (setfocus) {

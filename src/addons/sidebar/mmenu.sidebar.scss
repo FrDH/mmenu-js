@@ -37,9 +37,11 @@
             visibility: visible;
         }
 
-        .mm-navbar,
-        .mm-divider {
-            opacity: 0;
+        .mm-menu--sidebar-collapsed {
+            .mm-navbar,
+            .mm-divider {
+                opacity: 0;
+            }
         }
     }
 }

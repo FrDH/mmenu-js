@@ -28,6 +28,40 @@
         box-sizing: border-box;
     }
 
+    * {
+        &:focus,
+        &:focus-visible {
+            outline: none;
+        }
+    }
+
+    ::placeholder {
+        color: var(--mm-color-text-dimmed);
+    }
+
+    a,
+    button,
+    label {
+        &:focus {
+            outline: none;
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--mm-color-focusring);
+            outline-offset: -5px;
+        }
+    }
+
+    input,
+    select,
+    textarea {
+        &:focus,
+        &:focus-visible {
+            outline: 2px solid var(--mm-color-focusring);
+            outline-offset: -2px;
+        }
+    }
+
     a,
     a:link,
     a:active,
