@@ -349,9 +349,11 @@ export default class Mmenu {
 
         this.listitemObserver = new MutationObserver((mutationsList) => {
             mutationsList.forEach((mutation) => {
-                mutation.addedNodes.forEach((listview: HTMLElement) => {
-                    if (listview?.matches(this.conf.panelNodetype.join(', '))) {
-                        this._initSubPanel(listview);
+                mutation.addedNodes.forEach((subpanel: HTMLElement) => {
+                    console.log(subpanel);
+                    
+                    if (subpanel?.matches(this.conf.panelNodetype.join(', '))) {
+                        this._initSubPanel(subpanel);
                     }
                 });
             });
@@ -519,7 +521,6 @@ export default class Mmenu {
      * @return {HTMLElement|null} 			Initialized panel.
      */
     _initPanel(panel: HTMLElement): HTMLElement {
-
         if (panel.matches('.mm-panel')) {
             return;
         }
@@ -722,6 +723,10 @@ export default class Mmenu {
             return;
         }
 
+        if (listview.matches('.mm-listview')) {
+            return;
+        }
+
         DOM.reClass(listview, this.conf.classNames.nolistview, 'mm-nolistview');
 
         if (listview.matches('.mm-nolistview')) {
@@ -754,6 +759,10 @@ export default class Mmenu {
     _initListitem(listitem: HTMLElement) {
         //  Assert LI
         if (!['htmllielement'].includes(type(listitem))) {
+            return;
+        }
+
+        if (listitem.matches('.mm-listitem')) {
             return;
         }
 
@@ -803,6 +812,10 @@ export default class Mmenu {
      * @param {HTMLElement} subpanel Subpanel to initiate.
      */
     _initSubPanel(subpanel: HTMLElement) {
+        if (subpanel.matches('.mm-panel')) {
+            return;
+        }
+
         /** The parent element for the panel. */
         const listitem: HTMLElement = subpanel.parentElement;
 
