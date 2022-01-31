@@ -84,6 +84,10 @@ export const uniqueId = () => {
     return `mm-${__id++}`;
 };
 let __id = 0;
+/**
+ * Get a prefixed ID from a possibly orifinal ID.
+ * @param id The possibly original ID.
+ */
 export const cloneId = (id) => {
     if (id.slice(0, 9) == 'mm-clone-') {
         return id;
