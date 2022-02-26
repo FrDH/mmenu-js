@@ -123,9 +123,10 @@ export default class Mmenu {
      * Close a panel.
      * @param {HTMLElement} panel               Panel to close.
      * @param {boolean}     [animation=true]    Whether or not to use an animation.
+     * @param {boolean}     [setfocus=true]     Whether or not to set focus to the panel.
      */
-    closePanel(panel, animation = true) {
-        if (!panel) {
+    closePanel(panel, animation = true, setfocus = true) {
+        if (!panel || !panel.matches('.mm-panel--opened')) {
             return;
         }
         //	Invoke "before" hook.
@@ -139,13 +140,20 @@ export default class Mmenu {
             //  ... open its parent...
             if (panel.dataset.mmParent) {
                 const parent = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
-                this.openPanel(parent, animation);
-                /// ... or the first panel.
+                this.openPanel(parent, animation, setfocus);
+                // ... or the last opened
             }
             else {
-                const firstPanel = DOM.children(this.node.pnls, '.mm-panel')[0];
-                if (panel !== firstPanel) {
-                    this.openPanel(firstPanel, animation);
+                const lastPanel = DOM.children(this.node.pnls, '.mm-panel--parent').pop();
+                if (lastPanel && lastPanel !== panel) {
+                    this.openPanel(lastPanel, animation, setfocus);
+                    // ... or the first panel.
+                }
+                else {
+                    const firstPanel = DOM.children(this.node.pnls, '.mm-panel')[0];
+                    if (firstPanel && firstPanel !== panel) {
+                        this.openPanel(firstPanel, animation, setfocus);
+                    }
                 }
             }
         }

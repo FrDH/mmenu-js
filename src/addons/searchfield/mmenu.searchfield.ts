@@ -10,12 +10,13 @@ import { extend } from '../../_modules/helpers';
 translate();
 
 export default function (this: Mmenu) {
+    
     this.opts.searchfield = this.opts.searchfield || {};
     this.conf.searchfield = this.conf.searchfield || {};
 
     //	Extend options.
     const options = extend(this.opts.searchfield, OPTIONS);
-    const configs = extend(this.opts.searchfield, CONFIGS);
+    const configs = extend(this.conf.searchfield, CONFIGS);
 
     if (!options.add) {
         return;
@@ -255,7 +256,7 @@ const createSearchfield = function(
      input.placeholder = this.i18n(options.placeholder);
      input.setAttribute('aria-label', this.i18n(options.placeholder));
      _addAttributes(input, configs.input);
- 
+
     //	Add a button to submit to the form.
     if (configs.submit) {
 
@@ -389,10 +390,14 @@ const initSearch = function (
             
             form.classList.remove('mm-searchfield--searching');
             resultspanel.classList.remove('mm-panel--searching', 'mm-panel--noresults');
-            
+
             //  Resultspanel.
             if (resultspanel.matches('.mm-panel--search') ) {
                 _resetResultsPanel(resultspanel);
+
+                if (!options.splash) {
+                    this.closePanel(resultspanel, false, false);
+                }
                 
             //  Search per panel: Show all listitems and dividers.
             } else {
@@ -455,7 +460,7 @@ const _resetResultsPanel = (
     const listview = DOM.find(resultspanel, '.mm-listview')[0];
                 
     //  Clear listview.
-    listview.innerHTML = '';
+    listview.innerHTML = '';    
 };
 
 const _searchPerPanel = (

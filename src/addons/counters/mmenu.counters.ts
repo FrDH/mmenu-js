@@ -35,7 +35,7 @@ export default function (this: Mmenu) {
         /** The listitems */
         const listitems: HTMLElement[] = [];
         DOM.children(panel, '.mm-listview').forEach((listview) => {
-            listitems.push(...DOM.children(listview));
+            listitems.push(...DOM.children(listview, '.mm-listitem'));
         });
 
         counter.innerHTML = DOM.filterLI(listitems).length.toString();
