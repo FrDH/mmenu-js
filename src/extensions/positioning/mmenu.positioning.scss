@@ -6,12 +6,11 @@
         right: 0;
 
         &.mm-menu--opened ~ .mm-slideout {
-            // Very very ugly (1px - 1px), but simply 0px is compiles without a unit (e.g. "0") which won't work.
             transform: translate3d(
                 clamp(
-                    calc((1px - 1px) - var(--mm-max-size)),
-                    calc((1px - 1px) - var(--mm-size)),
-                    calc((1px - 1px) - var(--mm-min-size))
+                    calc(-1 * var(--mm-max-size)),
+                    calc(-1 * var(--mm-size)),
+                    calc(-1 * var(--mm-min-size))
                 ),
                 0,
                 0
