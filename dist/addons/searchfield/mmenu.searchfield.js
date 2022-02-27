@@ -10,7 +10,7 @@ export default function () {
     this.conf.searchfield = this.conf.searchfield || {};
     //	Extend options.
     const options = extend(this.opts.searchfield, OPTIONS);
-    const configs = extend(this.opts.searchfield, CONFIGS);
+    const configs = extend(this.conf.searchfield, CONFIGS);
     if (!options.add) {
         return;
     }
@@ -292,6 +292,9 @@ const initSearch = function (form) {
             //  Resultspanel.
             if (resultspanel.matches('.mm-panel--search')) {
                 _resetResultsPanel(resultspanel);
+                if (!options.splash) {
+                    this.closePanel(resultspanel, false, false);
+                }
                 //  Search per panel: Show all listitems and dividers.
             }
             else {

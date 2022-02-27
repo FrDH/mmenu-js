@@ -2,7 +2,7 @@ import Mmenu from './../oncanvas/mmenu.oncanvas';
 import OPTIONS from './options';
 import CONFIGS from './configs';
 import * as DOM from '../../_modules/dom';
-import { extend, uniqueId, originalId, } from '../../_modules/helpers';
+import { extend, uniqueId, cloneId, originalId, } from '../../_modules/helpers';
 export default function () {
     this.opts.offCanvas = this.opts.offCanvas || {};
     this.conf.offCanvas = this.conf.offCanvas || {};
@@ -37,10 +37,10 @@ export default function () {
             this.node.menu = this.node.menu.cloneNode(true);
             //	Prefix all ID's in the cloned menu.
             if (this.node.menu.id) {
-                this.node.menu.id = 'mm-' + this.node.menu.id;
+                this.node.menu.id = cloneId(this.node.menu.id);
             }
             DOM.find(this.node.menu, '[id]').forEach((elem) => {
-                elem.id = 'mm-' + elem.id;
+                elem.id = cloneId(elem.id);
             });
         }
         this.node.wrpr = document.querySelector(configs.menu.insertSelector);

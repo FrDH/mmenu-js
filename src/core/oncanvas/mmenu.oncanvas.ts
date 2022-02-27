@@ -192,7 +192,7 @@ export default class Mmenu {
             panel.classList.add('mm-panel--opened');
 
             /** The parent panel */
-            let parent: HTMLElement = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
+            let parent = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
 
             //	Set parent panels as "parent".
             while (parent) {
@@ -203,7 +203,7 @@ export default class Mmenu {
             }
             
             //  Focus the panels.
-            if (setfocus) {
+            if (setfocus) {                
                 this.node.pnls.focus();
             }
         }
@@ -219,11 +219,13 @@ export default class Mmenu {
      * Close a panel.
      * @param {HTMLElement} panel               Panel to close.
      * @param {boolean}     [animation=true]    Whether or not to use an animation.
+     * @param {boolean}     [setfocus=true]     Whether or not to set focus to the panel.
      */
     closePanel(panel: HTMLElement, 
-        animation: boolean = true
+        animation: boolean = true,
+        setfocus: boolean = true,
     ) {
-        if (!panel) {
+        if (!panel || !panel.matches('.mm-panel--opened')) {
             return;
         }
         
@@ -243,13 +245,20 @@ export default class Mmenu {
                     this.node.pnls,
                     `#${panel.dataset.mmParent}`
                 )[0];
-                this.openPanel(parent, animation);
+                this.openPanel(parent, animation, setfocus);
             
-            /// ... or the first panel.
+            // ... or the last opened
             } else {
-                const firstPanel = DOM.children(this.node.pnls, '.mm-panel')[0];
-                if (panel !== firstPanel) {
-                    this.openPanel(firstPanel, animation);
+                const lastPanel = DOM.children(this.node.pnls, '.mm-panel--parent').pop();
+                if (lastPanel && lastPanel !== panel) {
+                    this.openPanel(lastPanel, animation, setfocus);
+                
+                // ... or the first panel.
+                } else {
+                    const firstPanel = DOM.children(this.node.pnls, '.mm-panel')[0];
+                    if (firstPanel && firstPanel !== panel) {
+                        this.openPanel(firstPanel, animation, setfocus);
+                    }
                 }
             }
         }

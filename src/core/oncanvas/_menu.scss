@@ -23,6 +23,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
+    ::placeholder {
+        color: var(--mm-color-text-dimmed);
+    }
+
     &,
     * {
         box-sizing: border-box;
@@ -31,10 +35,6 @@
         &:focus-visible {
             outline: none;
         }
-    }
-
-    ::placeholder {
-        color: var(--mm-color-text-dimmed);
     }
 
     a,
