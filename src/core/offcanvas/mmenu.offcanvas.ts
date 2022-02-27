@@ -22,6 +22,18 @@ export default function (this: Mmenu) {
         return;
     }
 
+    const positions = [
+        'left', 
+        'left-front', 
+        'right', 
+        'right-front', 
+        'top', 
+        'bottom'
+    ];
+    if (!positions.includes(options.position)) {
+        options.position = positions[0];
+    }
+
     //	Add methods to the API.
     this._api.push('open', 'close', 'setPage');
 
@@ -62,9 +74,10 @@ export default function (this: Mmenu) {
         }
 
         this.node.wrpr = document.querySelector(configs.menu.insertSelector);
+        this.node.wrpr.classList.add(`mm-wrapper--position-${options.position}`);
 
         //	Prepend to the <body>
-        document.querySelector(configs.menu.insertSelector)[configs.menu.insertMethod](this.node.menu);
+        this.node.wrpr[configs.menu.insertMethod](this.node.menu);
     });
 
     this.bind('initMenu:after', () => {
@@ -73,7 +86,7 @@ export default function (this: Mmenu) {
         this.setPage(Mmenu.node.page);
 
         //	Setup the menu.
-        this.node.menu.classList.add('mm-menu--offcanvas');
+        this.node.menu.classList.add('mm-menu--offcanvas', `mm-menu--position-${options.position}`);
 
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         let hash = window.location.hash;

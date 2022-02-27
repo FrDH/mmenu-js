@@ -1,97 +1,147 @@
 @use "../../variables";
 
-.mm-menu--position {
-    // Left
-    &-left {
-        &,
-        &-front {
-            right: auto;
+.mm-menu {
+    /** Multplier for 100% transform */
+    --mm-translate-multiplier: 1;
+
+    /** Horizontal transform */
+    --mm-translate-horizontal: 0;
+
+    /** Vertical transform */
+    --mm-translate-vertical: 0;
+
+    &--position {
+        &-left-front,
+        &-top {
+            --mm-translate-multiplier: -1;
         }
 
-        &-front {
-            transform: translate3d(-100%, 0, 0);
-        }
-    }
-
-    // Right
-    &-right {
-        &,
-        &-front {
-            left: auto;
+        // Left + Right
+        &-left {
+            &,
+            &-front {
+                right: auto;
+            }
         }
 
-        &-front {
-            transform: translate3d(100%, 0, 0);
+        &-right {
+            &,
+            &-front {
+                left: auto;
+            }
         }
-    }
 
-    // Top + Bottom
-    &-top,
-    &-bottom {
-        width: 100%;
-        height: clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size));
-    }
+        &-left,
+        &-right {
+            &,
+            &-front {
+                width: clamp(
+                    var(--mm-min-size),
+                    var(--mm-size),
+                    var(--mm-max-size)
+                );
+            }
 
-    &-top {
-        bottom: auto;
-        transform: translate3d(0, -100%, 0);
-    }
+            &-front {
+                --mm-translate-horizontal: calc(
+                    var(--mm-translate-multiplier) * 100%
+                );
+            }
+        }
 
-    &-bottom {
-        top: auto;
-        transform: translate3d(0, 100%, 0);
-    }
+        // Top + Bottom
+        &-top {
+            bottom: auto;
+        }
 
-    // All in front
-    &-left-front,
-    &-right-front,
-    &-top,
-    &-bottom {
-        z-index: 2;
-        transition: visibility 0s linear variables.$mm_transitionDuration,
-            transform variables.$mm_transitionDuration
-                variables.$mm_transitionFunction 0s;
+        &-bottom {
+            top: auto;
+        }
 
-        &.mm-menu--opened {
-            transform: translate3d(0, 0, 0);
+        &-top,
+        &-bottom {
+            --mm-translate-vertical: calc(
+                var(--mm-translate-multiplier) * 100%
+            );
+
+            width: 100%;
+            height: clamp(
+                var(--mm-min-size),
+                var(--mm-size),
+                var(--mm-max-size)
+            );
+        }
+
+        // All in front
+        &-left-front,
+        &-right-front,
+        &-top,
+        &-bottom {
+            z-index: 2;
+
+            will-change: transform;
+            transform: translate3d(
+                var(--mm-translate-horizontal),
+                var(--mm-translate-vertical),
+                0
+            );
+            transition: visibility 0s linear variables.$mm_transitionDuration,
+                transform variables.$mm_transitionDuration
+                    variables.$mm_transitionFunction 0s;
+
+            &.mm-menu--opened {
+                transform: translate3d(0, 0, 0);
+            }
         }
     }
 }
 
-.mm-wrapper--opened {
-    // Left
-    &-left {
-        .mm-slideout {
-            transform: translate3d(
-                clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size)),
-                0,
-                0
-            );
-        }
-    }
+.mm-wrapper {
+    --mm-translate-multiplier: 1;
 
-    // Right
-    &-right {
-        .mm-slideout {
-            transform: translate3d(
-                clamp(
-                    calc(-1 * var(--mm-max-size)),
-                    calc(-1 * var(--mm-size)),
-                    calc(-1 * var(--mm-min-size))
-                ),
-                0,
-                0
-            );
+    &--position {
+        // Left + Right
+        &-right {
+            --mm-translate-multiplier: -1;
         }
-    }
 
-    // All in front
-    &-left-front,
-    &-right-front,
-    &-top,
-    &-bottom {
-        .mm-wrapper__blocker {
-            z-index: 1;
+        &-left,
+        &-right {
+            .mm-slideout {
+                will-change: transform;
+            }
+
+            &.mm-wrapper--opened {
+                .mm-slideout {
+                    transform: translate3d(
+                        clamp(
+                            calc(
+                                var(--mm-translate-multiplier) *
+                                    var(--mm-max-size)
+                            ),
+                            calc(
+                                var(--mm-translate-multiplier) * var(--mm-size)
+                            ),
+                            calc(
+                                var(--mm-translate-multiplier) *
+                                    var(--mm-min-size)
+                            )
+                        ),
+                        0,
+                        0
+                    );
+                }
+            }
+        }
+
+        // All in front
+        &-left-front,
+        &-right-front,
+        &-top,
+        &-bottom {
+            .mm-wrapper__blocker {
+                z-index: 1;
+            }
         }
     }
 }

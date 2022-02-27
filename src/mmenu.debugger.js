@@ -38,6 +38,41 @@
     Mmenu.prototype._deprecatedWarnings = function () {
         /**
          * ----------------------------
+         * Version 9.0 > 9.1
+         * ----------------------------
+         */
+
+        /* Extensions */
+
+        //  Removed all extensions.
+        if (this.opts.extensions) {
+            deprecated(
+                `The "Extension" option`,
+                '9.1.0'
+            );
+        }
+
+        // Removed position extensions.
+        [
+            'position-right',
+            'position-front',
+            'position-top',
+            'position-bottom'
+        ].forEach(ext => {
+            Object.keys(this.opts.extensions).forEach(key => {
+                if (this.opts.extensions[key].includes(ext)) {
+                    deprecated(
+                        `The "${ext}" extension`,
+                        'the "offcanvas.position" option',
+                        '9.1.0'
+                    );
+                }
+            });
+        });
+        
+
+        /**
+         * ----------------------------
          * Version 8.5 > 9.0
          * ----------------------------
          */

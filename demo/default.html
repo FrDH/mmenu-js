@@ -62,7 +62,11 @@
         <!-- mmenu scripts -->
         <script src="../dist/mmenu.js"></script>
         <script>
-            new Mmenu(document.querySelector("#menu"));
+            new Mmenu(document.querySelector("#menu"), {
+                offCanvas: {
+                    position: "left",
+                },
+            });
 
             document.addEventListener("click", function (evnt) {
                 var anchor = evnt.target.closest('a[href="#/"]');

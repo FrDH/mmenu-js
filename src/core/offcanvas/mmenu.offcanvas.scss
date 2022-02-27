@@ -10,7 +10,6 @@
 .mm-menu--offcanvas {
     position: fixed;
     z-index: 0;
-    width: clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size));
     transition: visibility 0s linear variables.$mm_transitionDuration;
 
     &.mm-menu--opened {
