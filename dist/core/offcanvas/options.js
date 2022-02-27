@@ -1,4 +1,5 @@
 const options = {
-    use: true
+    use: true,
+    position: 'left'
 };
 export default options;

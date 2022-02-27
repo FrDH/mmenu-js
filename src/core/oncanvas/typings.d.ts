@@ -31,7 +31,7 @@ interface mmHtmlObject {
 /** The menu API. */
 interface mmApi {
     bind: Function;
-    initPanel: Function;
+    
     openPanel: Function;
     closePanel: Function;
     setSelected: Function;

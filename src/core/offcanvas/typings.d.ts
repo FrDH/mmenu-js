@@ -1,6 +1,7 @@
 //	Add-on options interface.
 interface mmOptionsOffcanvas {
     use?: boolean
+    position?: 'left' | 'left-front' | 'right' | 'right-front' | 'top' | 'bottom'
 }
 
 //	Add-on configs interfaces.
@@ -14,6 +15,7 @@ interface mmConfigsOffcanvas {
     /** Page configuration for the off-canvas add-on. */
     page?: mmConfigsOffcanvasPage;
 
+    /** Texts for screenreaders. */
     screenReader?: {
         openMenu: string,
 		closeMenu: string,

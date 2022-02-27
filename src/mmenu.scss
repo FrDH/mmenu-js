@@ -11,8 +11,6 @@
 
 //	Core
 @import "core/oncanvas/mmenu.oncanvas";
-
-//	Core add-ons
 @import "core/offcanvas/mmenu.offcanvas";
 
 //	Add-ons
@@ -25,6 +23,5 @@
 @import "addons/setselected/mmenu.setselected";
 @import "addons/sidebar/mmenu.sidebar";
 
-//	Extensions
-@import "extensions/positioning/mmenu.positioning";
-@import "extensions/themes/mmenu.themes";
+//	Themes
+@import "themes/mmenu.themes";

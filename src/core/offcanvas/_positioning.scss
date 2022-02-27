@@ -1,0 +1,97 @@
+@use "../../variables";
+
+.mm-menu--position {
+    // Left
+    &-left {
+        &,
+        &-front {
+            right: auto;
+        }
+
+        &-front {
+            transform: translate3d(-100%, 0, 0);
+        }
+    }
+
+    // Right
+    &-right {
+        &,
+        &-front {
+            left: auto;
+        }
+
+        &-front {
+            transform: translate3d(100%, 0, 0);
+        }
+    }
+
+    // Top + Bottom
+    &-top,
+    &-bottom {
+        width: 100%;
+        height: clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size));
+    }
+
+    &-top {
+        bottom: auto;
+        transform: translate3d(0, -100%, 0);
+    }
+
+    &-bottom {
+        top: auto;
+        transform: translate3d(0, 100%, 0);
+    }
+
+    // All in front
+    &-left-front,
+    &-right-front,
+    &-top,
+    &-bottom {
+        z-index: 2;
+        transition: visibility 0s linear variables.$mm_transitionDuration,
+            transform variables.$mm_transitionDuration
+                variables.$mm_transitionFunction 0s;
+
+        &.mm-menu--opened {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+}
+
+.mm-wrapper--opened {
+    // Left
+    &-left {
+        .mm-slideout {
+            transform: translate3d(
+                clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size)),
+                0,
+                0
+            );
+        }
+    }
+
+    // Right
+    &-right {
+        .mm-slideout {
+            transform: translate3d(
+                clamp(
+                    calc(-1 * var(--mm-max-size)),
+                    calc(-1 * var(--mm-size)),
+                    calc(-1 * var(--mm-min-size))
+                ),
+                0,
+                0
+            );
+        }
+    }
+
+    // All in front
+    &-left-front,
+    &-right-front,
+    &-top,
+    &-bottom {
+        .mm-wrapper__blocker {
+            z-index: 1;
+        }
+    }
+}
