@@ -28,13 +28,13 @@ export default class Mmenu {
     static vars: mmLooseObject = {};
 
     /** MutationObserver for adding a listview to a panel. */
-    panelObserver: MutationObserver;
+    #panelObserver: MutationObserver;
 
     /** MutationObserver for adding a listitem to a listview. */
-    listviewObserver: MutationObserver;
+    #listviewObserver: MutationObserver;
 
     /** MutationObserver for adding a listview to a listitem. */
-    listitemObserver: MutationObserver;
+    #listitemObserver: MutationObserver;
 
     /**	Options for the menu. */
     opts: mmOptions;
@@ -111,7 +111,6 @@ export default class Mmenu {
         this._initObservers();
 
         this._initAddons();
-        this._initExtensions();
 
         this._initHooks();
         this._initAPI();
@@ -126,7 +125,7 @@ export default class Mmenu {
 
         return this;
     }
-
+    
     /**
      * Open a panel.
      * @param {HTMLElement} panel               Panel to open.
@@ -338,7 +337,7 @@ export default class Mmenu {
      * Create the observers.
      */
     _initObservers() {
-        this.panelObserver = new MutationObserver((mutationsList) => {
+        this.#panelObserver = new MutationObserver((mutationsList) => {
             mutationsList.forEach((mutation) => {
                 mutation.addedNodes.forEach((listview: HTMLElement) => {
                     if (listview.matches(this.conf.panelNodetype.join(', '))) {
@@ -348,7 +347,7 @@ export default class Mmenu {
             });
         });
 
-        this.listviewObserver = new MutationObserver((mutationsList) => {
+        this.#listviewObserver = new MutationObserver((mutationsList) => {
             mutationsList.forEach((mutation) => {
                 mutation.addedNodes.forEach((listitem: HTMLElement) => {
                     this._initListitem(listitem);
@@ -356,11 +355,9 @@ export default class Mmenu {
             });
         });
 
-        this.listitemObserver = new MutationObserver((mutationsList) => {
+        this.#listitemObserver = new MutationObserver((mutationsList) => {
             mutationsList.forEach((mutation) => {
-                mutation.addedNodes.forEach((subpanel: HTMLElement) => {
-                    console.log(subpanel);
-                    
+                mutation.addedNodes.forEach((subpanel: HTMLElement) => {                    
                     if (subpanel?.matches(this.conf.panelNodetype.join(', '))) {
                         this._initSubPanel(subpanel);
                     }
@@ -411,43 +408,6 @@ export default class Mmenu {
 
         //	Invoke "after" hook.
         this.trigger('initAddons:after');
-    }
-
-    /**
-     * Initialize the extensions specified in the options.
-     */
-    _initExtensions() {
-        //	Invoke "before" hook.
-        this.trigger('initExtensions:before');
-
-        //	Convert array to object with array.
-        if (type(this.opts.extensions) == 'array') {
-            this.opts.extensions = {
-                all: this.opts.extensions,
-            };
-        }
-
-        //	Loop over object.
-        Object.keys(this.opts.extensions).forEach((query) => {
-            let classnames = this.opts.extensions[query].map(
-                (extension) => 'mm-menu--' + extension
-            );
-
-            if (classnames.length) {
-                media.add(
-                    query,
-                    () => {
-                        this.node.menu.classList.add(...classnames);
-                    },
-                    () => {
-                        this.node.menu.classList.remove(...classnames);
-                    }
-                );
-            }
-        });
-
-        //	Invoke "after" hook.
-        this.trigger('initExtensions:after');
     }
 
     /**
@@ -597,7 +557,7 @@ export default class Mmenu {
         });
 
         // Observe the panel for added listviews.
-        this.panelObserver.observe(panel, {
+        this.#panelObserver.observe(panel, {
             childList: true,
         });
 
@@ -753,7 +713,7 @@ export default class Mmenu {
         });
 
         // Observe the listview for added listitems.
-        this.listviewObserver.observe(listview, {
+        this.#listviewObserver.observe(listview, {
             childList: true,
         });
 
@@ -808,7 +768,7 @@ export default class Mmenu {
         );
 
         // Observe the listitem for added listviews.
-        this.listitemObserver.observe(listitem, {
+        this.#listitemObserver.observe(listitem, {
             childList: true,
         });
 

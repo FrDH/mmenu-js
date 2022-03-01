@@ -1,0 +1,21 @@
+#{$module}-white {
+    --mm-color-background: #fff;
+    --mm-color-border: rgb(0 0 0 / 0.15);
+    --mm-color-icon: rgb(0 0 0 / 0.3);
+    --mm-color-text: rgb(0 0 0 / 0.8);
+    --mm-color-text-dimmed: rgb(0 0 0 / 0.3);
+    --mm-color-background-highlight: rgb(0 0 0 / 0.06);
+    --mm-color-background-emphasis: rgb(0 0 0 / 0.03);
+    --mm-color-focusring: #06c;
+
+    &-contrast {
+        --mm-color-background: #fff;
+        --mm-color-border: rgb(0 0 0 / 0.5);
+        --mm-color-icon: rgb(0 0 0 / 0.5);
+        --mm-color-text: #000;
+        --mm-color-text-dimmed: rgb(0 0 0 / 0.7);
+        --mm-color-background-highlight: rgb(0 0 0 / 0.07);
+        --mm-color-background-emphasis: rgb(0 0 0 / 0.035);
+        --mm-color-focusring: #06c;
+    }
+}

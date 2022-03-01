@@ -40,9 +40,6 @@ interface mmApi {
     open: Function;
     close: Function;
     setPage: Function;
-
-    //	searchfield add-on
-    search: Function;
 }
 
 //	Class methods interfaces.
@@ -57,8 +54,6 @@ interface mmMethodI18n {
 
 /**	Options for the menu. */
 interface mmOptions {
-    /** A collection of extensions to enable for the menu. */
-    extensions?: mmOptionsExensions | string[];
 
     /** A collection of functions to hook into the API methods before the menu is initialised. */
     hooks?: mmFunctionObject;
@@ -76,6 +71,9 @@ interface mmOptions {
 
     /** Options for the scroll bug fix add-on. */
     scrollBugFix?: mmOptionsScrollbugfix;
+
+    /** Options for the themes add-on. */
+    theme?: string;
 
     //	Add-ons
 
@@ -108,11 +106,6 @@ interface mmOptions {
 
     /** Options for the sidebar add-on. */
     sidebar?: mmOptionsSidebar;
-}
-
-/**	Extensions for the menu. */
-interface mmOptionsExensions {
-    [key: string]: mmOptionsExensions | string[];
 }
 
 /**	Navbar options for the menu. */

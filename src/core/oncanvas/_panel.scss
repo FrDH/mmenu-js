@@ -32,6 +32,10 @@ $mm_module: ".mm-panel";
         height: var(--mm-listitem-size);
     }
 
+    &:focus {
+        outline: none;
+    }
+
     &--opened {
         visibility: visible;
         z-index: 2;

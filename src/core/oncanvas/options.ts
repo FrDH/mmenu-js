@@ -1,6 +1,5 @@
 const options: mmOptions = {
     hooks: {},
-    extensions: [],
     navbar: {
         add: true,
         title: 'Menu',

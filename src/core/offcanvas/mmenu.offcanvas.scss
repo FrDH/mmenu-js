@@ -72,7 +72,7 @@
 
     // Styling
     opacity: 0;
-    background: rgba(#000, 0.3);
+    background: #00000066;
     transition: opacity variables.$mm_transitionDuration
         variables.$mm_transitionFunction variables.$mm_transitionDuration;
 
@@ -85,4 +85,4 @@
     }
 }
 
-@import "positioning";
+@import "positions";

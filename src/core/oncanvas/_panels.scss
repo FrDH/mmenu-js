@@ -1,12 +1,16 @@
 $module: ".mm-panels";
 
 #{$module} {
-  flex-grow: 1;
-  position: relative;
-  height: 100%;
-  overflow: hidden;
+    flex-grow: 1;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
 
-  background: var(--mm-color-background);
-  border-color: var(--mm-color-border);
-  color: var(--mm-color-text);
+    background: var(--mm-color-background);
+    border-color: var(--mm-color-border);
+    color: var(--mm-color-text);
+
+    &:focus {
+        outline: none;
+    }
 }
