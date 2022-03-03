@@ -117,14 +117,14 @@
                         clamp(
                             calc(
                                 var(--mm-translate-multiplier) *
-                                    var(--mm-max-size)
+                                    var(--mm-min-size)
                             ),
                             calc(
                                 var(--mm-translate-multiplier) * var(--mm-size)
                             ),
                             calc(
                                 var(--mm-translate-multiplier) *
-                                    var(--mm-min-size)
+                                    var(--mm-max-size)
                             )
                         ),
                         0,
