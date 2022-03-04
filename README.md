@@ -16,7 +16,6 @@ You can [purchase a license](https://mmenujs.com/download.html) if you want to u
 
 -   [Tutorial](https://mmenujs.com/tutorials/off-canvas/)
 -   [Options](https://mmenujs.com/documentation/core/options.html)
--   [Extensions](https://mmenujs.com/documentation/extensions/)
 -   [Add-ons](https://mmenujs.com/documentation/addons/)
 -   [API](https://mmenujs.com/documentation/core/api.html)
 
@@ -24,9 +23,3 @@ You can [purchase a license](https://mmenujs.com/download.html) if you want to u
 
 As of version 9, the mmenu.js plugin only supports [ECMAScript 6 compliant browsers](https://kangax.github.io/compat-table/es6/).<br />
 For Internet Explorer 11, you can use the latest of version 8 and use polyfills where needed.
-
-### Development
-
-This project uses [Gulp(4)](http://gulpjs.com/) to compile, minify and concatenate the TS/JS and SCSS/CSS files.
-If you are unfamiliar with Gulp, check [this tutorial](https://travismaynard.com/writing/getting-started-with-gulp) on how to get started.<br />
-Run `gulp watch` in the command-line to put a watch on the files and run all scripts immediately after saving your changes.
