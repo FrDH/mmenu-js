@@ -1,4 +1,5 @@
 const options: mmOptionsOffcanvas = {
-    use: true
+    use: true,
+    position: 'left'
 };
 export default options;

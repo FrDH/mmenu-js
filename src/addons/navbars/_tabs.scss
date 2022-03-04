@@ -1,0 +1,95 @@
+//  All tabs.
+.mm-navbar__tab {
+    padding: 0 10px;
+    border: 1px solid transparent;
+
+    //  Selected tab.
+    &--selected {
+        background: var(--mm-color-background);
+
+        &:not(:first-child) {
+            border-left-color: var(--mm-color-border);
+        }
+
+        &:not(:last-child) {
+            border-right-color: var(--mm-color-border);
+        }
+    }
+}
+
+//  Navbars at the top.
+.mm-navbars--top {
+    &.mm-navbars--has-tabs {
+        border-bottom: none;
+
+        //  Darker backgrounds for navbars before the tabs navbar and the tabs navbar.
+        .mm-navbar {
+            background: var(--mm-color-background-emphasis);
+        }
+
+        //  Normal backgrounds for the navbars after the tabs navbar.
+        .mm-navbar--tabs ~ .mm-navbar {
+            background: var(--mm-color-background);
+        }
+
+        .mm-navbar:not(.mm-navbar--tabs):last-child {
+            border-bottom: 1px solid var(--mm-color-border);
+        }
+    }
+
+    // Borders for the tabs.
+    .mm-navbar__tab {
+        border-bottom-color: var(--mm-color-border);
+
+        &--selected {
+            border-top-color: var(--mm-color-border);
+            border-bottom-color: transparent;
+        }
+
+        &:not(:first-child) {
+            border-top-left-radius: 5px;
+        }
+
+        &:not(:last-child) {
+            border-top-right-radius: 5px;
+        }
+    }
+}
+
+//  Navbars at the bottom.
+.mm-navbars--bottom {
+    &.mm-navbar--has-tabs {
+        border-top: none;
+
+        //  Normal backgrounds for navbars before the tabs navbar.
+        .mm-navbar {
+            background: var(--mm-color-background);
+        }
+
+        //  Darker backgrounds for the tabs navbar and the navbars after it.
+        .mm-navbar--tabs,
+        .mm-navbar--tabs ~ .mm-navbar {
+            background: var(--mm-color-background-emphasis);
+        }
+    }
+
+    // Borders for the tabs.
+    .mm-navbar__tab {
+        border-top-color: var(--mm-color-border);
+
+        &--selected {
+            border-bottom-color: var(--mm-color-border);
+            border-top-color: transparent;
+        }
+
+        &:not(:first-child) {
+            border-bottom-left-radius: 5px;
+        }
+
+        &:not(:last-child) {
+            border-bottom-right-radius: 5px;
+        }
+    }
+
+    //  Backgrounds
+}

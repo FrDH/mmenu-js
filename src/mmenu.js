@@ -12,6 +12,7 @@ import Mmenu from '../dist/core/oncanvas/mmenu.oncanvas';
 //	Core add-ons
 import offcanvas from '../dist/core/offcanvas/mmenu.offcanvas';
 import scrollBugFix from '../dist/core/scrollbugfix/mmenu.scrollbugfix';
+import theme from '../dist/core/theme/mmenu.theme';
 
 //	Add-ons
 import backButton from '../dist/addons/backbutton/mmenu.backbutton';
@@ -30,6 +31,7 @@ Mmenu.addons = {
     //	Core add-ons
     offcanvas,
     scrollBugFix,
+    theme,
 
     //	Add-ons
     backButton,

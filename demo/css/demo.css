@@ -10,7 +10,7 @@ body {
 body {
     background-color: #fff;
     font-family: Arial, Helvetica, Verdana;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 22px;
     color: #666;
     position: relative;
@@ -29,12 +29,12 @@ h6 {
 h1,
 h2,
 h3 {
-    font-size: 18px;
+    font-size: 20px;
 }
 h4,
 h5,
 h6 {
-    font-size: 16px;
+    font-size: 18px;
 }
 p {
     margin: 0 0 10px 0;
@@ -54,7 +54,7 @@ nav:not(.mm-menu) {
 
 #header {
     position: sticky;
-    height: 44px;
+    height: 50px;
     padding: 0 80px;
     top: 0;
     font-size: 16px;
@@ -70,8 +70,8 @@ nav:not(.mm-menu) {
     top: 0;
     left: 0;
     width: 80px;
-    height: 44px;
-    padding: 12px 25px;
+    height: 50px;
+    padding: 15px 25px;
 }
 #header a:before,
 #header a:after {

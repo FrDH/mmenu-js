@@ -9,9 +9,7 @@
 //	Menu
 .mm-menu--offcanvas {
     position: fixed;
-    right: auto;
     z-index: 0;
-    width: clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size));
     transition: visibility 0s linear variables.$mm_transitionDuration;
 
     &.mm-menu--opened {
@@ -46,20 +44,11 @@
             variables.$mm_transitionFunction,
         transform variables.$mm_transitionDuration
             variables.$mm_transitionFunction;
-
-    .mm-wrapper--opened & {
-        transform: translate3d(
-            clamp(var(--mm-min-size), var(--mm-size), var(--mm-max-size)),
-            0,
-            0
-        );
-    }
 }
 
 //	Wrapper
 .mm-wrapper--opened {
-    overflow: hidden;
-
+    &,
     body {
         overflow: hidden;
     }
@@ -83,7 +72,7 @@
 
     // Styling
     opacity: 0;
-    background: rgba(#000, 0.3);
+    background: #00000066;
     transition: opacity variables.$mm_transitionDuration
         variables.$mm_transitionFunction variables.$mm_transitionDuration;
 
@@ -95,3 +84,5 @@
         opacity: 1;
     }
 }
+
+@import "positions";

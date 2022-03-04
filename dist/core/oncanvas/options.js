@@ -1,6 +1,5 @@
 const options = {
     hooks: {},
-    extensions: [],
     navbar: {
         add: true,
         title: 'Menu',

@@ -56,7 +56,7 @@
         &:focus,
         &:focus-visible {
             outline: 2px solid var(--mm-color-focusring);
-            outline-offset: -2px;
+            outline-offset: 2px;
         }
     }
 

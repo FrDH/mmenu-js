@@ -44,7 +44,7 @@ export default function (this: Mmenu) {
     /** Mutation observer the the listitems. */
     const listitemObserver = new MutationObserver((mutationsList) => {
         mutationsList.forEach((mutation) => {
-            if (mutation.attributeName == 'class') {
+            if (mutation.attributeName == 'class') {                
                 count((mutation.target as HTMLLIElement).closest('.mm-panel'));
             }
         });

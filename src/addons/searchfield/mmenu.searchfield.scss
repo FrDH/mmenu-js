@@ -48,6 +48,10 @@ $mm_module: ".mm-searchfield";
             background: var(--mm-color-background-highlight);
             color: var(--mm-color-text);
         }
+
+        .mm-menu[class*="-contrast"] & {
+            border: 1px solid var(--mm-color-border);
+        }
     }
 
     input::-ms-clear {
@@ -85,7 +89,8 @@ $mm_module: ".mm-searchfield";
     #{$mm_module}--cancelable & {
         visibility: visible;
         max-width: 75px;
-        padding-right: 10px;
+        margin-left: -10px;
+        padding: 0 10px;
     }
 }
 

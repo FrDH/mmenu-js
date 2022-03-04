@@ -1,0 +1,147 @@
+@use "../../variables";
+
+.mm-menu {
+    /** Multplier for 100% transform */
+    --mm-translate-multiplier: 1;
+
+    /** Horizontal transform */
+    --mm-translate-horizontal: 0;
+
+    /** Vertical transform */
+    --mm-translate-vertical: 0;
+
+    &--position {
+        &-left-front,
+        &-top {
+            --mm-translate-multiplier: -1;
+        }
+
+        // Left + Right
+        &-left {
+            &,
+            &-front {
+                right: auto;
+            }
+        }
+
+        &-right {
+            &,
+            &-front {
+                left: auto;
+            }
+        }
+
+        &-left,
+        &-right {
+            &,
+            &-front {
+                width: clamp(
+                    var(--mm-min-size),
+                    var(--mm-size),
+                    var(--mm-max-size)
+                );
+            }
+
+            &-front {
+                --mm-translate-horizontal: calc(
+                    var(--mm-translate-multiplier) * 100%
+                );
+            }
+        }
+
+        // Top + Bottom
+        &-top {
+            bottom: auto;
+        }
+
+        &-bottom {
+            top: auto;
+        }
+
+        &-top,
+        &-bottom {
+            --mm-translate-vertical: calc(
+                var(--mm-translate-multiplier) * 100%
+            );
+
+            width: 100%;
+            height: clamp(
+                var(--mm-min-size),
+                var(--mm-size),
+                var(--mm-max-size)
+            );
+        }
+
+        // All in front
+        &-left-front,
+        &-right-front,
+        &-top,
+        &-bottom {
+            z-index: 2;
+
+            will-change: transform;
+            transform: translate3d(
+                var(--mm-translate-horizontal),
+                var(--mm-translate-vertical),
+                0
+            );
+            transition: visibility 0s linear variables.$mm_transitionDuration,
+                transform variables.$mm_transitionDuration
+                    variables.$mm_transitionFunction 0s;
+
+            &.mm-menu--opened {
+                transform: translate3d(0, 0, 0);
+            }
+        }
+    }
+}
+
+.mm-wrapper {
+    --mm-translate-multiplier: 1;
+
+    &--position {
+        // Left + Right
+        &-right {
+            --mm-translate-multiplier: -1;
+        }
+
+        &-left,
+        &-right {
+            .mm-slideout {
+                will-change: transform;
+            }
+
+            &.mm-wrapper--opened {
+                .mm-slideout {
+                    transform: translate3d(
+                        clamp(
+                            calc(
+                                var(--mm-translate-multiplier) *
+                                    var(--mm-min-size)
+                            ),
+                            calc(
+                                var(--mm-translate-multiplier) * var(--mm-size)
+                            ),
+                            calc(
+                                var(--mm-translate-multiplier) *
+                                    var(--mm-max-size)
+                            )
+                        ),
+                        0,
+                        0
+                    );
+                }
+            }
+        }
+
+        // All in front
+        &-left-front,
+        &-right-front,
+        &-top,
+        &-bottom {
+            .mm-wrapper__blocker {
+                z-index: 1;
+            }
+        }
+    }
+}
