@@ -1,116 +1,118 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="author" content="www.frebsite.nl" />
+        <meta
+            name="viewport"
+            content="width=device-width minimum-scale=1.0 maximum-scale=1.0 user-scalable=no"
+        />
 
-<head>
-	<meta charset="utf-8" />
-	<meta name="author" content="www.frebsite.nl" />
-	<meta name="viewport" content="width=device-width minimum-scale=1.0 maximum-scale=1.0 user-scalable=no" />
+        <title>mmenu.js demo</title>
 
-	<title>mmenu.js demo</title>
+        <link type="text/css" rel="stylesheet" href="css/demo.css" />
+        <link type="text/css" rel="stylesheet" href="../dist/mmenu.css" />
 
-	<link type="text/css" rel="stylesheet" href="css/demo.css" />
-	<link type="text/css" rel="stylesheet" href="../dist/mmenu.css" />
+        <!-- for the one page layout -->
+        <style type="text/css">
+            #content {
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+            section {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                min-height: calc(100vh - 44px);
+                padding: 50px 0 50px;
+                border-top: 1px solid #ccc;
+            }
 
-	<!-- for the one page layout -->
-	<style type="text/css">
-		#content {
-			padding-top: 0;
-			padding-bottom: 0;
-		}
-		section {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			min-height: calc(100vh - 44px);
-			padding: 50px 0 50px;
-			border-top: 1px solid #ccc;
-		}
+            section:first-child {
+                border-top: none;
+                padding-top: 0;
+            }
+        </style>
+    </head>
 
-		section:first-child {
-			border-top: none;
-			padding-top: 0;
-		}
-	</style>
+    <body>
+        <div id="page">
+            <div id="header">
+                <a href="#menu"><span></span></a>
+                Demo
+            </div>
+            <div id="content">
+                <section id="intro">
+                    <h4>This is a demo</h4>
+                    <p>Click the menu icon to open the menu.</p>
+                    <p>
+                        Some of the links in the menu link to a section on this
+                        page.
+                    </p>
+                </section>
 
-</head>
+                <section id="options">
+                    <h4>Options</h4>
+                    <p>
+                        The mmenu.js plugin provides a set of options for
+                        customizing your menu. The default values can be
+                        overridden by passing new values to the method.
+                    </p>
+                    <p><a href="#menu">Open the menu.</a></p>
+                </section>
 
-<body>
-	<div id="page">
-		<div id="header">
-			<a href="#menu"><span></span></a>
-			Demo
-		</div>
-		<div id="content" >
-			<section id="intro">
-				<h4>This is a demo</h4>
-				<p></p>Click the menu icon to open the menu.</p>
-				<p>Some of the links in the menu link to a section on this page.</p>
-			</section>
-			
-			<section id="options">
-				<h4>Options</h4>
-				<p></p>he mmenu.js plugin provides a set of options for customizing your menu. 
-					The default values can be overridden by passing new values to the method.</p>
-				<p><a href="#menu">Open the menu.</a></p>
-			</section>
+                <section id="styling">
+                    <h4>Styling</h4>
+                    <p>
+                        The mmenu.js plugin uses CSS variables for most of its
+                        sizing and styling. The default CSS variables can be
+                        overridden to customize your menu without having to make
+                        changes to the plugin.
+                    </p>
+                    <p><a href="#menu">Open the menu.</a></p>
+                </section>
 
-			<section id="styling">
-				<h4>Styling</h4>
-				<p>The mmenu.js plugin uses CSS variables for most of its sizing and styling. 
-					The default CSS variables can be overridden to customize your menu without having to make changes to the plugin.</p>
-				<p><a href="#menu">Open the menu.</a></p>
-			</section>
+                <section id="api">
+                    <h4>API</h4>
+                    <p>
+                        After the class instance is created, an API is available
+                        for the menu. With this API, you can invoke the plugin
+                        methods or bind new function to them. The API is stored
+                        in the "API" property of the class instance.
+                    </p>
+                    <p><a href="#menu">Open the menu.</a></p>
+                </section>
+            </div>
 
-			<section id="api">
-				<h4>API</h4>
-				<p>After the class instance is created, an API is available for the menu. 
-					With this API, you can invoke the plugin methods or bind new function to them. 
-					The API is stored in the "API" property of the class instance.</p>
-				<p><a href="#menu">Open the menu.</a></p>
-			</section>
-		</div>
-		
-		<nav id="menu">
-			<ul>
-				<li><a href="#intro">Introduction</a></li>
-				<li><a href="#options">Options</a></li>
-				<li><a href="#styling">Styling</a></li>
-				<li><a href="#api">API</a></li>
+            <nav id="menu">
+                <ul>
+                    <li><a href="#intro">Introduction</a></li>
+                    <li><a href="#options">Options</a></li>
+                    <li><a href="#styling">Styling</a></li>
+                    <li><a href="#api">API</a></li>
 
-				<li class="Divider">Other demos</li>
-				<li><a href="default.html">Default demo</a></li>
-				<li><a href="advanced.html">Advanced demo</a></li>
-			</ul>
-		</nav>
-	</div>
+                    <li class="Divider">Other demos</li>
+                    <li><a href="default.html">Default demo</a></li>
+                    <li><a href="advanced.html">Advanced demo</a></li>
+                </ul>
+            </nav>
+        </div>
 
-	<!-- mmenu scripts -->
-	<script src="../dist/mmenu.js"></script>
+        <!-- mmenu scripts -->
+        <script src="../dist/mmenu.js"></script>
 
-	<script>
-		new Mmenu(
-			document.querySelector('#menu'),
-			{
-				pageScroll: {
-					scroll: true,
-					update: true
-				},
-				sidebar: {
-					expanded: {
-						use: 800
-					}
-				}
-			}
-		);
-
-		document.addEventListener('click', function (evnt) {
-			var anchor = evnt.target.closest('a[href="/#"]');
-			if (anchor) {
-				alert('Thank you for clicking, but that\'s a demo link.');
-				evnt.preventDefault();
-			}
-		});
-	</script>
-</body>
-
+        <script>
+            new Mmenu(document.querySelector("#menu"), {
+                pageScroll: {
+                    scroll: true,
+                    update: true,
+                },
+                sidebar: {
+                    expanded: {
+                        use: 800,
+                    },
+                },
+            });
+        </script>
+    </body>
 </html>
