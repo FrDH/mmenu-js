@@ -154,16 +154,13 @@ Mmenu.prototype.open = function (this: Mmenu) {
     //	Invoke "before" hook.
     this.trigger('open:before');
 
-    var clsn = ['mm-wrapper--opened'];
-
-    this.node.wrpr.classList.add(...clsn);
-
     //	Open
     this.node.menu.classList.add('mm-menu--opened');
     this.node.wrpr.classList.add('mm-wrapper--opened');
     Mmenu.node.blck.classList.add('mm-blocker--blocking');
 
     //  Focus the menu.
+    this.node.open = document.activeElement as HTMLElement;
     this.node.menu.focus();
 
     //	Invoke "after" hook.
@@ -183,7 +180,7 @@ Mmenu.prototype.close = function (this: Mmenu) {
     Mmenu.node.blck.classList.remove('mm-blocker--blocking');
     
     //  Focus opening link or page.
-    const focus = document.querySelector(`[href="#${this.node.menu.id}"]`) || this.node.page || null;
+    const focus = this.node.open || document.querySelector(`[href="#${this.node.menu.id}"]`) || this.node.page || null;
     (focus as HTMLElement)?.focus();
 
     //	Invoke "after" hook.

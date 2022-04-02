@@ -10,11 +10,11 @@
 .mm-menu--offcanvas {
     position: fixed;
     z-index: 0;
-    transition-property: visibility;// 0s linear variables.$mm_transitionDuration; xxx
+    transition-property: visibility 0s linear variables.$mm_transitionDuration;
 
-    // &.mm-menu--opened {
-        // transition-delay: 0s; xxx
-    // }
+    &.mm-menu--opened {
+        transition-delay: 0s;
+    }
 
     &:not(.mm-menu--opened) {
         visibility: hidden;
