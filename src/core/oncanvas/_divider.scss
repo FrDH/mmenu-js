@@ -3,14 +3,12 @@ $mm_module: ".mm-divider";
 #{$mm_module} {
     @include mixins.mm_ellipsis;
 
-    @supports (position: sticky) {
-        position: sticky;
-        z-index: 2;
-        top: 0;
+    position: sticky;
+    z-index: 2;
+    top: 0;
 
-        .mm-navbar:not(.mm-hidden) ~ .mm-listview & {
-            top: var(--mm-navbar-size);
-        }
+    .mm-navbar:not(.mm-hidden) ~ .mm-listview & {
+        top: var(--mm-navbar-size);
     }
 
     min-height: var(--mm-lineheight);
@@ -28,6 +26,5 @@ $mm_module: ".mm-divider";
     );
 
     opacity: 1;
-    transition: opacity variables.$mm_transitionDuration
-        variables.$mm_transitionFunction;
+    transition-property: opacity;
 }

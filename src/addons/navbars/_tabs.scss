@@ -8,11 +8,15 @@
         background: var(--mm-color-background);
 
         &:not(:first-child) {
-            border-left-color: var(--mm-color-border);
+            border-inline-start-color: var(
+                --mm-color-border
+            ); // left, right for RTL
         }
 
         &:not(:last-child) {
-            border-right-color: var(--mm-color-border);
+            border-inline-end-color: var(
+                --mm-color-border
+            ); // right, left for RTL
         }
     }
 }
@@ -45,14 +49,6 @@
             border-top-color: var(--mm-color-border);
             border-bottom-color: transparent;
         }
-
-        &:not(:first-child) {
-            border-top-left-radius: 5px;
-        }
-
-        &:not(:last-child) {
-            border-top-right-radius: 5px;
-        }
     }
 }
 
@@ -80,14 +76,6 @@
         &--selected {
             border-bottom-color: var(--mm-color-border);
             border-top-color: transparent;
-        }
-
-        &:not(:first-child) {
-            border-bottom-left-radius: 5px;
-        }
-
-        &:not(:last-child) {
-            border-bottom-right-radius: 5px;
         }
     }
 

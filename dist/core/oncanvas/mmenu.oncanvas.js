@@ -145,7 +145,11 @@ export default class Mmenu {
      * @param {boolean}     [setfocus=true]     Whether or not to set focus to the panel.
      */
     closePanel(panel, animation = true, setfocus = true) {
-        if (!panel || !panel.matches('.mm-panel--opened')) {
+        if (!panel) {
+            return;
+        }
+        if (!panel.matches('.mm-panel--opened') &&
+            !panel.parentElement.matches('.mm-listitem--opened')) {
             return;
         }
         //	Invoke "before" hook.

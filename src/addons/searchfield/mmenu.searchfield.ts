@@ -286,24 +286,25 @@ const createSearchfield = function(
         });
     }
  
-     // Add a button to close the searchpanel.
-     if ( configs.cancel && addCancel ) {
+    // Add a button to close the searchpanel.
+    if ( configs.cancel && addCancel ) {
  
-         /** The cancel button. */
-         const cancel = DOM.create('a.mm-searchfield__cancel') as HTMLAnchorElement;
-         cancel.href = '#';
-         cancel.title = this.i18n('Cancel searching');
-         cancel.textContent = this.i18n('cancel');
- 
+        /** The cancel button. */
+        const cancel = DOM.create('a.mm-searchfield__cancel') as HTMLAnchorElement;
+        cancel.href = '#';
+        cancel.title = this.i18n('Cancel searching');
+        cancel.textContent = this.i18n('cancel');
+
          form.append(cancel);
  
-         // Close the search panel.
-         cancel.addEventListener('click', () => {
+        // Close the search panel.
+        cancel.addEventListener('click', event => {
+            event.preventDefault();
             this.closePanel(DOM.children(this.node.pnls, '.mm-panel--search')[0], false);
-         });
-     }
+        });
+    }
 
-     return form;
+    return form;
 };
 
 /**

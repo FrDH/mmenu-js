@@ -1,6 +1,14 @@
 $mm_module: ".mm-panel";
 
 #{$mm_module} {
+    --mm-panel-child-offset: 100%;
+    --mm-panel-parent-offset: -30%;
+
+    [dir="rtl"] & {
+        --mm-panel-child-offset: -100%;
+        --mm-panel-parent-offset: 30%;
+    }
+
     visibility: hidden;
     position: absolute;
     left: 0;
@@ -18,12 +26,8 @@ $mm_module: ".mm-panel";
     border-color: var(--mm-color-border);
     background: var(--mm-color-background);
 
-    transform: translate3d(100%, 0, 0);
-    transition: visibility 0s linear variables.$mm_transitionDuration,
-        transform variables.$mm_transitionDuration
-            variables.$mm_transitionFunction 0s,
-        left variables.$mm_transitionDuration variables.$mm_transitionFunction
-            0s;
+    transform: translate3d(var(--mm-panel-child-offset), 0, 0);
+    transition-property: visibility, transform, inset-inline-start;
 
     //	Because padding-bottom is ignored when a DIV is scrollable
     &:after {
@@ -44,7 +48,7 @@ $mm_module: ".mm-panel";
     }
 
     &--parent {
-        transform: translate3d(-30%, 0, 0);
+        transform: translate3d(var(--mm-panel-parent-offset), 0, 0);
         z-index: 0;
     }
 
@@ -61,5 +65,5 @@ $mm_module: ".mm-panel";
 }
 
 #{$mm_module}__content {
-    padding: variables.$mm_panelPadding variables.$mm_panelPadding 0;
+    padding: variables.$mm_panelPadding;
 }

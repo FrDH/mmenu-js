@@ -47,14 +47,6 @@
             top: auto;
         }
 
-        &-top {
-            --mm-translate-vertical: -100%;
-        }
-
-        &-bottom {
-            --mm-translate-vertical: 100%;
-        }
-
         &-top,
         &-bottom {
             width: 100%;
@@ -65,6 +57,14 @@
             );
         }
 
+        &-top {
+            --mm-translate-vertical: -100%;
+        }
+
+        &-bottom {
+            --mm-translate-vertical: 100%;
+        }
+
         // All in front
         &-left-front,
         &-right-front,
@@ -72,15 +72,13 @@
         &-bottom {
             z-index: 2;
 
-            will-change: transform;
             transform: translate3d(
                 var(--mm-translate-horizontal),
                 var(--mm-translate-vertical),
                 0
             );
-            transition: visibility 0s linear variables.$mm_transitionDuration,
-                transform variables.$mm_transitionDuration
-                    variables.$mm_transitionFunction 0s;
+
+            transition-property: visibility, transform;
 
             &.mm-menu--opened {
                 transform: translate3d(0, 0, 0);
@@ -111,7 +109,7 @@
         &-left,
         &-right {
             .mm-slideout {
-                will-change: transform;
+                transform: translate3d(0, 0, 0);
             }
 
             &.mm-wrapper--opened .mm-slideout {
@@ -129,4 +127,6 @@
             }
         }
     }
+
+    // TODO RTL met position-right werkt niet
 }

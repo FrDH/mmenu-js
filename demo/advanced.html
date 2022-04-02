@@ -18,17 +18,13 @@
         <link rel="stylesheet" href="../dist/mmenu.css" />
 
         <style>
-            :root {
-                --mm-sidebar-expanded-size: 300px;
-            }
-
             .mm-wrapper--sidebar-expanded.mm-wrapper--opened #header a {
                 display: none;
             }
 
             .mm-navbar--tabs span {
                 display: inline-block;
-                margin-left: 8px;
+                margin-inline-start: 8px;
             }
 
             @media (max-width: 450px) {
@@ -46,10 +42,8 @@
                 Demo
             </div>
             <div id="content">
-                <p style="height: 1000px">
-                    <strong>This is an advanced demo.</strong><br />
-                    Click the menu icon to open the menu.
-                </p>
+                <h1>This is an advanced demo.</h1>
+                <p>Click the menu icon to open the menu.</p>
             </div>
             <nav id="menu">
                 <div id="panel-menu">
@@ -134,10 +128,10 @@
                     },
                     sidebar: {
                         collapsed: {
-                            use: "(min-width: 450px)",
+                            use: "(min-width: 768px)",
                         },
                         expanded: {
-                            use: "(min-width: 992px)",
+                            use: "(min-width: 1024px)",
                             initial: "closed",
                         },
                     },

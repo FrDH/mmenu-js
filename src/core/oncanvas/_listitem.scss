@@ -1,11 +1,8 @@
-.mm-listview {
-    list-style: none;
-    display: block;
-    padding: 0;
-    margin: 0;
-}
-
 $mm_module: ".mm-listitem";
+
+:root {
+    --mm-listitem-size: 50px;
+}
 
 #{$mm_module} {
     display: flex;
@@ -14,7 +11,6 @@ $mm_module: ".mm-listitem";
     padding: 0;
     margin: 0;
 
-    list-style: none;
     color: var(--mm-color-text);
     border-color: var(--mm-color-border);
 
@@ -25,36 +21,35 @@ $mm_module: ".mm-listitem";
         border-bottom-style: solid;
         display: block;
         position: absolute;
-        left: variables.$mm_listitemIndent;
-        right: 0;
+        inset-inline-start: variables.$mm_listitemIndent; // left, right for RTL
+        inset-inline-end: 0; // right, left for RTL
         bottom: 0;
     }
 }
 
-%mm_listitem_content {
-    display: block;
+#{$mm_module}__text,
+#{$mm_module}__btn {
     padding: calc((var(--mm-listitem-size) - var(--mm-lineheight)) / 2) 0;
-    color: inherit;
 }
 
 #{$mm_module}__text {
-    @extend %mm_listitem_content;
-    @include mixins.mm_ellipsis;
+    flex-grow: 1;
+    flex-basis: 10%;
+    display: block;
 
     padding-left: variables.$mm_listitemIndent;
     padding-right: variables.$mm_listitemIndent;
-    flex-grow: 1;
-    flex-basis: 10%;
+
+    @include mixins.mm_ellipsis;
 }
 
 #{$mm_module}__btn {
-    @extend %mm_listitem_content;
-
-    background: rgba(3, 2, 1, 0);
-    border-color: inherit;
-    width: auto;
-    padding-right: variables.$mm_btnSize;
+    display: block;
     position: relative;
+    width: auto;
+    padding-inline-end: variables.$mm_btnSize; // right, left for RTL
+    border-color: inherit;
+    background: rgba(3, 2, 1, 0);
 
     &:not(.mm-listitem__text) {
         border-left-width: 1px;

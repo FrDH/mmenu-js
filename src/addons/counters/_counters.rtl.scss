@@ -1,8 +1,0 @@
-@if (variables.$mm_include_rtl) {
-    [dir="rtl"] .mm-counter {
-        text-align: left;
-        float: left;
-        padding-left: 0;
-        padding-right: 20px;
-    }
-}

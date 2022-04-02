@@ -1,17 +1,21 @@
+:root {
+    --mm-toggle-size: 34px;
+}
+
 .mm-toggle {
     display: flex;
     align-self: center;
-    flex: calc((var(--mm-toggle-size) * 1.7)) 0 0;
+    flex: calc((var(--mm-toggle-size) * 1.75)) 0 0;
     height: var(--mm-toggle-size);
-    margin-right: 10px;
+    margin-inline-end: 10px; // right, left for RTL
 
     appearance: none !important;
     border: none !important;
     border-radius: var(--mm-toggle-size);
-    background: var(--mm-color-border);
     border: var(--mm-color-border);
+    background: var(--mm-color-border);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition-property: background-color;
 
     &:before {
         content: "";
@@ -19,16 +23,18 @@
         margin: 2px;
         border-radius: 100%;
         background: var(--mm-color-background);
-        transition: transform 0.2s ease;
+        transition: transform variables.$mm_transitionDuration variables.$mm_transitionFunction;
     }
 
     &:checked {
         background: #4bd963;
 
         &:before {
-            transform: translateX(
-                calc(var(--mm-toggle-size) * 1.7 - var(--mm-toggle-size))
-            );
+            transform: translateX(calc(var(--mm-toggle-size) * 0.75));
+
+            [dir="rtl"] & {
+                transform: translateX(calc(var(--mm-toggle-size) * -0.75));
+            }
         }
     }
 }

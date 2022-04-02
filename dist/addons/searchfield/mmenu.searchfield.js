@@ -220,7 +220,8 @@ const createSearchfield = function (addCancel = false) {
         cancel.textContent = this.i18n('cancel');
         form.append(cancel);
         // Close the search panel.
-        cancel.addEventListener('click', () => {
+        cancel.addEventListener('click', event => {
+            event.preventDefault();
             this.closePanel(DOM.children(this.node.pnls, '.mm-panel--search')[0], false);
         });
     }

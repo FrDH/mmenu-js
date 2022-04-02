@@ -29,7 +29,7 @@ export default function () {
     if (!Mmenu.node.blck) {
         this.bind('initMenu:before', () => {
             /** The UI blocker node. */
-            const blocker = DOM.create('a.mm-wrapper__blocker.mm-slideout');
+            const blocker = DOM.create('a.mm-wrapper__blocker.mm-blocker.mm-slideout');
             blocker.id = uniqueId();
             blocker.title = this.i18n(configs.screenReader.closeMenu);
             //  Make the blocker able to receive focus.
@@ -108,7 +108,6 @@ export default function () {
         if (event.key == 'Tab' &&
             /* 1 */ this.node.menu.matches('.mm-menu--opened') &&
             /* 2 */ !((_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.closest(`#${this.node.menu.id}`))) {
-            console.log(document.activeElement);
             this.close();
         }
     });
@@ -127,6 +126,7 @@ Mmenu.prototype.open = function () {
     //	Open
     this.node.menu.classList.add('mm-menu--opened');
     this.node.wrpr.classList.add('mm-wrapper--opened');
+    Mmenu.node.blck.classList.add('mm-blocker--blocking');
     //  Focus the menu.
     this.node.menu.focus();
     //	Invoke "after" hook.
@@ -141,6 +141,7 @@ Mmenu.prototype.close = function () {
     this.trigger('close:before');
     this.node.menu.classList.remove('mm-menu--opened');
     this.node.wrpr.classList.remove('mm-wrapper--opened');
+    Mmenu.node.blck.classList.remove('mm-blocker--blocking');
     //  Focus opening link or page.
     const focus = document.querySelector(`[href="#${this.node.menu.id}"]`) || this.node.page || null;
     (_a = focus) === null || _a === void 0 ? void 0 : _a.focus();

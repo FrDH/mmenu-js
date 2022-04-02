@@ -3,72 +3,60 @@ $mm_module: ".mm-btn";
 #{$mm_module} {
     flex-grow: 0;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    box-sizing: border-box;
     width: variables.$mm_btnSize;
     padding: 0;
 
-    &:before,
-    &:after {
-        border: 2px solid var(--mm-color-icon);
+    &--next,
+    [dir="rtl"] &--prev {
+        --mm-btn-rotate: 135deg;
     }
 
-    // Types of buttons.
+    &--prev,
+    [dir="rtl"] &--next {
+        --mm-btn-rotate: -45deg;
+    }
+
     &--prev:before,
     &--next:after {
         content: "";
-        border-bottom: none;
-        border-right: none;
-        box-sizing: content-box;
         display: block;
-        width: 8px;
-        height: 8px;
-        margin: auto;
         position: absolute;
         top: 0;
         bottom: 0;
+        width: 8px;
+        height: 8px;
+        margin: auto;
+        box-sizing: border-box;
+        border: 2px solid var(--mm-color-icon);
+        border-bottom: none;
+        border-right: none;
+        transform: rotate(var(--mm-btn-rotate));
     }
 
     &--prev:before {
-        @include mixins.mm_btn_arrow_prev;
+        inset-inline-start: variables.$mm_listitemIndent + 3; // left, right for RTL
     }
 
     &--next:after {
-        @include mixins.mm_btn_arrow_next;
+        inset-inline-end: variables.$mm_listitemIndent + 3; // right, left for RTL
     }
 
     &--close {
-        &:before,
-        &:after {
-            content: "";
-            box-sizing: content-box;
-            display: block;
-            width: 5px;
-            height: 5px;
-            margin: auto;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-
-            transform: rotate(-45deg);
-        }
         &:before {
-            border-right: none;
-            border-bottom: none;
-            right: variables.$mm_listitemIndent - 2;
-        }
-        &:after {
-            border-left: none;
-            border-top: none;
-            right: variables.$mm_listitemIndent + 5;
+            content: '\d7';
+            font-size: 150%;
         }
     }
 
     // <button> reset
     &reset {
+        padding: 0;
         background: none;
         border: none;
-        padding: 0;
 
         cursor: pointer;
     }

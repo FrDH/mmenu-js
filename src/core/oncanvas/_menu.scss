@@ -40,6 +40,8 @@
     a,
     button,
     label {
+        color: inherit;
+
         &:focus {
             outline: none;
         }
@@ -68,4 +70,5 @@
         text-decoration: none;
         color: inherit;
     }
+
 }

@@ -58,21 +58,23 @@ export default function (this: Mmenu) {
             });
         });
 
+        /** The classnames that can be set to a panel */
+        const classnames = [
+            'mm-panel--iconpanel-first',
+            'mm-panel--iconpanel-0',
+            'mm-panel--iconpanel-1',
+            'mm-panel--iconpanel-2',
+            'mm-panel--iconpanel-3'
+        ];
+
         //  Show only the main panel.
         if (keepFirst) {
             this.bind('initMenu:after', () => {
-                DOM.children(this.node.pnls, '.mm-panel')[0]?.classList.add('mm-panel--iconpanel-first');
+                DOM.children(this.node.pnls, '.mm-panel')[0]?.classList.add(classnames[0]);
             });
 
         //  Show parent panel(s).
         } else {
-            /** The classnames that can be set to a panel */
-            const classnames = [
-                'mm-panel--iconpanel-0',
-                'mm-panel--iconpanel-1',
-                'mm-panel--iconpanel-2',
-                'mm-panel--iconpanel-3'
-            ];
 
             this.bind('openPanel:after', (panel: HTMLElement) => {
 
@@ -108,12 +110,20 @@ export default function (this: Mmenu) {
                 !panel.parentElement.matches('.mm-listitem--vertical') &&
                 !DOM.children(panel, '.mm-panel__blocker')[0]
             ) {
-                const blocker = DOM.create('a.mm-panel__blocker') as HTMLAnchorElement;
+                const blocker = DOM.create('a.mm-blocker.mm-panel__blocker') as HTMLAnchorElement;
                 blocker.href = `#${panel.closest('.mm-panel').id}`;
                 blocker.title = this.i18n(this.conf.screenReader.closeSubmenu);
 
                 panel.prepend(blocker);
             }
+        });
+        
+        // Block / unblock
+        this.bind('openPanel:after', (panel: HTMLElement) => {
+            DOM.children(this.node.pnls, '.mm-panel').forEach(panel => {
+                const blocker = DOM.children(panel, '.mm-panel__blocker')[0];
+                blocker?.classList[panel.matches('.mm-panel--parent') ? 'add' : 'remove']('mm-blocker--blocking');
+            });
         });
     }
 }

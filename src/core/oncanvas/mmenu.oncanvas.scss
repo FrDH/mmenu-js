@@ -1,13 +1,8 @@
 @use "../../mixins";
 @use "../../variables";
 
-//	Variables
 :root {
-    //	sizes
-    --mm-lineheight: 20px;
-    --mm-listitem-size: 50px;
-    --mm-navbar-size: 50px;
-    --mm-toggle-size: 34px;
+    --mm-lineheight: 22px;
 }
 
 .mm-hidden {
@@ -19,6 +14,12 @@
     position: relative;
 }
 
-@import "button", "button.rtl", "divider", "listitem", "listitem.rtl", "menu",
-    "menu.rtl", "navbar", "navbar.rtl", "panel", "panel.rtl", "panels", "toggle",
-    "vertical";
+.mm-menu,
+.mm-menu * {
+    transition-property: none;
+    transition-duration: variables.$mm_transitionDuration;
+    transition-timing-function: variables.$mm_transitionFunction;
+}
+
+@import "blocker", "button", "divider", "listitem", "listview", "menu", "navbar",
+    "panel", "panels", "toggle", "vertical";

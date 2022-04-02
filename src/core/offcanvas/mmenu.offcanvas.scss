@@ -10,11 +10,11 @@
 .mm-menu--offcanvas {
     position: fixed;
     z-index: 0;
-    transition: visibility 0s linear variables.$mm_transitionDuration;
+    transition-property: visibility;// 0s linear variables.$mm_transitionDuration; xxx
 
-    &.mm-menu--opened {
-        transition-delay: 0s;
-    }
+    // &.mm-menu--opened {
+        // transition-delay: 0s; xxx
+    // }
 
     &:not(.mm-menu--opened) {
         visibility: hidden;
@@ -36,14 +36,13 @@
 }
 
 //  All sliding out nodes
-.mm-slideout {
+:where(.mm-slideout) {
     position: relative;
     z-index: 1;
     width: 100%;
-    transition: width variables.$mm_transitionDuration
-            variables.$mm_transitionFunction,
-        transform variables.$mm_transitionDuration
-            variables.$mm_transitionFunction;
+    transition-duration: variables.$mm_transitionDuration;
+    transition-timing-function: variables.$mm_transitionFunction;
+    transition-property: width, transform;
 }
 
 //	Wrapper
@@ -56,33 +55,7 @@
 
 //  UI Blocker
 .mm-wrapper__blocker {
-    visibility: hidden;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 100%;
-    z-index: 2;
-    overflow: hidden;
-
-    .mm-wrapper--opened & {
-        visibility: visible;
-        left: 0;
-    }
-
-    // Styling
-    opacity: 0;
     background: #00000066;
-    transition: opacity variables.$mm_transitionDuration
-        variables.$mm_transitionFunction variables.$mm_transitionDuration;
-
-    .mm-wrapper--opened & {
-        opacity: 0.5;
-    }
-
-    &:focus {
-        opacity: 1;
-    }
 }
 
 @import "positions";

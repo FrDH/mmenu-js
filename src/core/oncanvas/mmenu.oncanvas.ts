@@ -224,12 +224,19 @@ export default class Mmenu {
         animation: boolean = true,
         setfocus: boolean = true,
     ) {
-        if (!panel || !panel.matches('.mm-panel--opened')) {
+
+        if (!panel) {
+            return;
+        }
+        if (!panel.matches('.mm-panel--opened') && 
+            !panel.parentElement.matches('.mm-listitem--opened')
+        ) {
             return;
         }
         
         //	Invoke "before" hook.
         this.trigger('closePanel:before', [panel]);
+
 
         //	Close a "vertical" panel.
         if (panel.parentElement.matches('.mm-listitem--vertical')) {
@@ -281,7 +288,7 @@ export default class Mmenu {
             panel.matches('.mm-panel--opened')
         ) {
             fn = 'closePanel';
-        }        
+        }
 
         this[fn](panel);
     }

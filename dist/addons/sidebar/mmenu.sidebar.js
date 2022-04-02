@@ -16,22 +16,35 @@ export default function () {
         this.bind('initMenu:after', () => {
             this.node.menu.classList.add('mm-menu--sidebar-collapsed');
             if (options.collapsed.blockMenu &&
-                !DOM.children(this.node.menu, '.mm-menu__blocker')[0]) {
-                const blocker = DOM.create('a.mm-menu__blocker');
+                !this.node.blck) {
+                const blocker = DOM.create('a.mm-menu__blocker.mm-blocker');
                 blocker.setAttribute('href', `#${this.node.menu.id}`);
+                this.node.blck = blocker;
                 this.node.menu.prepend(blocker);
                 //  Add screenreader support
-                blocker.title = this.i18n(this.conf.screenReader.openMenu);
-                //  TODO: Keyboard navigation support?
-                //      shouldnt be able to tab inside the menu while it's closed..?
+                blocker.title = this.i18n(this.conf.offCanvas.screenReader.openMenu);
             }
         });
+        const blockMenu = () => {
+            var _a;
+            if (this.node.wrpr.matches('.mm-wrapper--sidebar-collapsed')) {
+                (_a = this.node.blck) === null || _a === void 0 ? void 0 : _a.classList.add('mm-blocker--blocking');
+            }
+        };
+        const unblockMenu = () => {
+            var _a;
+            (_a = this.node.blck) === null || _a === void 0 ? void 0 : _a.classList.remove('mm-blocker--blocking');
+        };
+        this.bind('open:after', unblockMenu);
+        this.bind('close:after', blockMenu);
         //	En-/disable the collapsed sidebar.
         let enable = () => {
             this.node.wrpr.classList.add('mm-wrapper--sidebar-collapsed');
+            blockMenu();
         };
         let disable = () => {
             this.node.wrpr.classList.remove('mm-wrapper--sidebar-collapsed');
+            unblockMenu();
         };
         if (typeof options.collapsed.use == 'boolean') {
             this.bind('initMenu:after', enable);

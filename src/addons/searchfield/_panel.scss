@@ -30,6 +30,7 @@ $mm_module: ".mm-panel";
     color: var(--mm-color-text-dimmed);
     text-align: center;
     font-size: 150%;
+    line-height: 1.4;
 
     #{$mm_module}--noresults & {
         display: block;

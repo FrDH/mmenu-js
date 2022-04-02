@@ -23,28 +23,42 @@ export default function (this: Mmenu) {
 
             if (
                 options.collapsed.blockMenu &&
-                !DOM.children(this.node.menu, '.mm-menu__blocker')[0]
+                !this.node.blck
             ) {
-                const blocker = DOM.create('a.mm-menu__blocker');
+                const blocker = DOM.create('a.mm-menu__blocker.mm-blocker');
                 blocker.setAttribute('href', `#${this.node.menu.id}`);
 
+                this.node.blck = blocker;
                 this.node.menu.prepend(blocker);
 
-                //  Add screenreader support
-                blocker.title = this.i18n(this.conf.screenReader.openMenu);
 
-                //  TODO: Keyboard navigation support?
-                //      shouldnt be able to tab inside the menu while it's closed..?
+                //  Add screenreader support
+                blocker.title = this.i18n(this.conf.offCanvas.screenReader.openMenu);
             }
         });
+
+        const blockMenu = () => {
+            if (this.node.wrpr.matches('.mm-wrapper--sidebar-collapsed')) {
+                this.node.blck?.classList.add('mm-blocker--blocking');
+            }
+        }
+        const unblockMenu = () => {
+            this.node.blck?.classList.remove('mm-blocker--blocking');
+        }
+
+        this.bind('open:after', unblockMenu);
+        this.bind('close:after', blockMenu);
 
         //	En-/disable the collapsed sidebar.
         let enable = () => {
             this.node.wrpr.classList.add('mm-wrapper--sidebar-collapsed');
+            blockMenu();
         };
         let disable = () => {
             this.node.wrpr.classList.remove('mm-wrapper--sidebar-collapsed');
+            unblockMenu();
         };
+
         if (typeof options.collapsed.use == 'boolean') {
             this.bind('initMenu:after', enable);
         } else {

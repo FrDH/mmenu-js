@@ -1,18 +1,5 @@
 @use "variables";
 
-// Arrow buttons
-@mixin mm_btn_arrow_prev {
-    transform: rotate(-45deg);
-    left: variables.$mm_listitemIndent + 3;
-    right: auto;
-}
-
-@mixin mm_btn_arrow_next {
-    transform: rotate(135deg);
-    right: variables.$mm_listitemIndent + 3;
-    left: auto;
-}
-
 //	Misc
 @mixin mm_ellipsis() {
     text-overflow: ellipsis;

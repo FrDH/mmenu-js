@@ -1,0 +1,37 @@
+.mm-blocker {
+    --mm-blocker-visibility-delay: #{variables.$mm_transitionDuration};
+    --mm-blocker-opacity-delay: 0s;
+
+    display: block;
+    position: absolute;
+    bottom: 100%;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 3;
+    visibility: hidden;
+
+    opacity: 0;
+    background: var(--mm-color-background);
+
+    transition: 
+        visibility variables.$mm_transitionDuration variables.$mm_transitionFunction,
+        bottom 0s variables.$mm_transitionFunction var(--mm-blocker-visibility-delay),
+        width variables.$mm_transitionDuration variables.$mm_transitionFunction,
+        opacity variables.$mm_transitionDuration variables.$mm_transitionFunction var(--mm-blocker-opacity-delay),
+        transform variables.$mm_transitionDuration variables.$mm_transitionFunction;
+
+    &--blocking {
+        --mm-blocker-visibility-delay: 0s;
+        --mm-blocker-opacity-delay: #{variables.$mm_transitionDuration};
+
+        bottom: 0;
+        visibility: visible;
+        opacity: 0.5;
+        pointer-events: auto;
+    }
+
+    &:focus-visible {
+        opacity: 0.75;
+    }
+}

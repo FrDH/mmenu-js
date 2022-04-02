@@ -4,67 +4,47 @@
     --mm-iconpanel-size: 50px;
 }
 
-.mm-panel--iconpanel-0 {
-    left: 0;
-}
-
-.mm-panel--iconpanel-1 {
-    left: var(--mm-iconpanel-size);
-}
-
-.mm-panel--iconpanel-2 {
-    left: calc(var(--mm-iconpanel-size) * 2);
-}
-
-.mm-panel--iconpanel-3 {
-    left: calc(var(--mm-iconpanel-size) * 3);
+@for $i from 0 through 4 {
+    .mm-panel--iconpanel-#{$i} {
+        inset-inline-start: calc(
+            #{$i} * var(--mm-iconpanel-size)
+        ); // left, right for RTL
+    }
 }
 
 .mm-panel--iconpanel-first {
     ~ .mm-panel {
-        left: var(--mm-iconpanel-size);
+        inset-inline-start: var(--mm-iconpanel-size); // left, right for RTL
     }
 }
 
 .mm-menu--iconpanel {
     // Hide navbars and dividers in parent panels.
-    .mm-panel--parent .mm-navbar,
-    .mm-panel--parent .mm-divider {
-        opacity: 0;
+    .mm-panel--parent {
+        .mm-navbar,
+        .mm-divider {
+            opacity: 0;
+        }
     }
 
     .mm-panels {
         > .mm-panel {
             &--parent {
-                visibility: visible !important;
+                visibility: visible;
                 overflow-y: hidden;
                 transform: unset;
             }
 
             &:not(.mm-panel--iconpanel-first):not(.mm-panel--iconpanel-0) {
-                border-left-width: 1px;
-                border-left-style: solid;
+                border-inline-start-width: 1px; // left, right for RTL
+                border-inline-start-style: solid; // left, right for RTL
             }
         }
     }
 }
 
 .mm-panel__blocker {
-    display: block;
-    visibility: hidden;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 3;
-    opacity: 0;
-    background: var(--mm-color-background);
-
-    .mm-panel--parent & {
-        visibility: visible;
+    &.mm-blocker--blocking {
         bottom: -100000px;
-        opacity: 0.6;
     }
 }
-
-@import "iconpanels.rtl";
