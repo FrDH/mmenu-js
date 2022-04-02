@@ -1,5 +1,5 @@
-@use "../../mixins";
-@use "../../variables";
+@use "../../mixins" as m;
+@use "../../variables" as v;
 
 :root {
     --mm-lineheight: 22px;
@@ -17,8 +17,8 @@
 .mm-menu,
 .mm-menu * {
     transition-property: none;
-    transition-duration: variables.$mm_transitionDuration;
-    transition-timing-function: variables.$mm_transitionFunction;
+    transition-duration: v.$transDr;
+    transition-timing-function: v.$transFn;
 }
 
 @import "blocker", "button", "divider", "listitem", "listview", "menu", "navbar",

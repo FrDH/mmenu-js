@@ -7,7 +7,7 @@ $mm_module: ".mm-btn";
     align-items: center;
     justify-content: center;
     position: relative;
-    width: variables.$mm_btnSize;
+    width: v.$btnSize;
     padding: 0;
 
     &--next,
@@ -38,11 +38,11 @@ $mm_module: ".mm-btn";
     }
 
     &--prev:before {
-        inset-inline-start: variables.$mm_listitemIndent + 3; // left, right for RTL
+        inset-inline-start: v.$listitemIndent + 3; // left, right for RTL
     }
 
     &--next:after {
-        inset-inline-end: variables.$mm_listitemIndent + 3; // right, left for RTL
+        inset-inline-end: v.$listitemIndent + 3; // right, left for RTL
     }
 
     &--close {

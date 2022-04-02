@@ -14,7 +14,7 @@ $mm_module: ".mm-panel";
  * Splash message
  */
 #{$mm_module}__splash {
-    padding: variables.$mm_panelPadding;
+    padding: v.$panelPadding;
 
     #{$mm_module}--searching & {
         display: none;
@@ -26,7 +26,7 @@ $mm_module: ".mm-panel";
  */
 #{$mm_module}__noresults {
     display: none;
-    padding: variables.$mm_panelPadding * 2 variables.$mm_panelPadding;
+    padding: v.$panelPadding * 2 v.$panelPadding;
     color: var(--mm-color-text-dimmed);
     text-align: center;
     font-size: 150%;

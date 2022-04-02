@@ -17,10 +17,10 @@ $mm_module: ".mm-sectionindexer";
     position: absolute;
     top: 0;
     bottom: 0;
-    right: calc(0px - var(--mm-sectionindexer-size));
+    inset-inline-end: calc(-1 *  var(--mm-sectionindexer-size)); // right, left for RTL
     z-index: 5;
 
-    transition-property: right;
+    transition-property: inset-inline-end; // right, left for RTL
 
     display: flex;
     flex-direction: column;
@@ -34,14 +34,14 @@ $mm_module: ".mm-sectionindexer";
     }
 
     ~ .mm-panel {
-        padding-right: 0;
+        padding-inline-end: 0; // right, left for RTL
     }
 
     &--active {
         right: 0;
 
         ~ .mm-panel {
-            padding-right: var(--mm-sectionindexer-size);
+            padding-inline-end: var(--mm-sectionindexer-size); // right, left for RTL
         }
     }
 }

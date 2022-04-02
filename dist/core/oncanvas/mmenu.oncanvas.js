@@ -129,7 +129,10 @@ export default class Mmenu {
             }
             //  Focus the panels.
             if (setfocus) {
-                this.node.pnls.focus();
+                panel.focus();
+                // Prevent panels from scrolling due to focus.
+                this.node.pnls.scrollLeft = 0;
+                this.node.pnls.scrollTop = 0;
             }
         }
         //	Invoke "after" hook.
@@ -317,14 +320,14 @@ export default class Mmenu {
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
         //  Make menu able to receive focus.
-        this.node.menu.setAttribute('tabindex', '-1');
+        this.node.menu.tabIndex = -1;
         //  All nodes in the menu.
         const panels = DOM.children(this.node.menu).filter((panel) => panel.matches(this.conf.panelNodetype.join(', ')));
         //	Wrap the panels in a node.
         this.node.pnls = DOM.create('div.mm-panels');
         this.node.menu.append(this.node.pnls);
         //  Make panels able to receive focus.
-        this.node.pnls.setAttribute('tabindex', '-1');
+        // this.node.pnls.tabIndex = -1;
         //  Initiate all panel like nodes
         panels.forEach((panel) => {
             this._initPanel(panel);
@@ -410,6 +413,7 @@ export default class Mmenu {
             panel = wrapper;
         }
         panel.classList.add('mm-panel');
+        panel.tabIndex = -1;
         //  Append to the panels node if not vertically expanding
         if (!((_a = panel.parentElement) === null || _a === void 0 ? void 0 : _a.matches('.mm-listitem--vertical'))) {
             this.node.pnls.append(panel);

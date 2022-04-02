@@ -1,4 +1,4 @@
-@use "../../variables";
+@use "../../variables" as v;
 
 $mm_module: ".mm-searchfield";
 
@@ -82,7 +82,7 @@ $mm_module: ".mm-searchfield";
     position: relative;
     margin-inline-end: -100px; // right, left for RTL
     padding-inline-start: 5px; // left, right for RTL
-    padding-inline-end: variables.$mm_listitemIndent; // right, left for RTL
+    padding-inline-end: v.$listitemIndent; // right, left for RTL
     visibility: hidden;
     line-height: var(--mm-navbar-size);
     text-decoration: none;

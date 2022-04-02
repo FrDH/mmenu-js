@@ -1,4 +1,4 @@
-@use "../../variables";
+@use "../../variables" as v;
 
 :root {
     --mm-size: 80%;
@@ -10,7 +10,7 @@
 .mm-menu--offcanvas {
     position: fixed;
     z-index: 0;
-    transition-property: visibility 0s linear variables.$mm_transitionDuration;
+    transition: visibility 0s linear v.$transDr;
 
     &.mm-menu--opened {
         transition-delay: 0s;
@@ -40,8 +40,8 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    transition-duration: variables.$mm_transitionDuration;
-    transition-timing-function: variables.$mm_transitionFunction;
+    transition-duration: v.$transDr;
+    transition-timing-function: v.$transFn;
     transition-property: width, transform;
 }
 

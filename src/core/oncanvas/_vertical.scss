@@ -2,7 +2,7 @@
     > .mm-panel {
         position: static;
         width: 100%;
-        padding: 10px 0 10px variables.$mm_listitemIndent;
+        padding: 10px 0 10px v.$listitemIndent;
         transform: none !important;
         transition: none !important;
 
@@ -35,6 +35,6 @@
 .mm-listitem--opened {
     > .mm-listitem__btn:after {
         transform: rotate(225deg);
-        right: variables.$mm_listitemIndent - 1;
+        right: v.$listitemIndent - 1;
     }
 }

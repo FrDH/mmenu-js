@@ -1,7 +1,7 @@
 const configs = {
     clone: false,
     menu: {
-        insertMethod: 'prepend',
+        insertMethod: 'append',
         insertSelector: 'body'
     },
     page: {

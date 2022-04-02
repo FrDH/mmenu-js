@@ -35,7 +35,7 @@ $mm_module: ".mm-navbar";
 #{$mm_module}__title {
     flex: 1 1 50%;
     display: flex;
-    padding: 0 variables.$mm_panelPadding;
+    padding: 0 v.$panelPadding;
     overflow: hidden;
 
     &[href="#"] {
@@ -43,18 +43,18 @@ $mm_module: ".mm-navbar";
     }
 
     > span {
-        @include mixins.mm_ellipsis;
+        @include m.mm_ellipsis;
     }
 
     // Center the content.
     .mm-btn.mm-hidden + &:not(:last-child) {
-        padding-inline-start: variables.$mm_btnSize + 10; // left, right for RTL
+        padding-inline-start: v.$btnSize + 10; // left, right for RTL
         padding-inline-end: 10px; // right, left for RTL
     }
 
     .mm-btn:not(.mm-hidden) + &:last-child {
         padding-inline-start: 10px; // left, right for RTL
-        padding-inline-end: variables.$mm_btnSize + 10; // right, left for RTL
+        padding-inline-end: v.$btnSize + 10; // right, left for RTL
     }
     // /Center
 }

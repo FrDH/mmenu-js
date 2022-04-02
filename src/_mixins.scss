@@ -1,6 +1,3 @@
-@use "variables";
-
-//	Misc
 @mixin mm_ellipsis() {
     text-overflow: ellipsis;
     white-space: nowrap;

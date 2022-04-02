@@ -28,7 +28,7 @@
     &-parent {
         .mm-listitem__text,
         .mm-listitem__btn {
-            transition-delay: variables.$mm_transitionDuration * 0.5;
+            transition-delay: variables.$transDr * 0.5;
 
             @media (hover: hover) {
                 &:hover {

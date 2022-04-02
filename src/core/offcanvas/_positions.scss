@@ -1,5 +1,3 @@
-@use "../../variables";
-
 .mm-menu {
     /** Horizontal transform */
     --mm-translate-horizontal: 0;
@@ -78,10 +76,12 @@
                 0
             );
 
-            transition-property: visibility, transform;
+            transition: visibility 0s linear v.$transDr,
+                transform v.$transDr v.$transFn 0s;
 
             &.mm-menu--opened {
                 transform: translate3d(0, 0, 0);
+                transition-delay: 0s;
             }
         }
     }

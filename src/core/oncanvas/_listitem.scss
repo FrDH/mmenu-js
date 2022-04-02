@@ -21,7 +21,7 @@ $mm_module: ".mm-listitem";
         border-bottom-style: solid;
         display: block;
         position: absolute;
-        inset-inline-start: variables.$mm_listitemIndent; // left, right for RTL
+        inset-inline-start: v.$listitemIndent; // left, right for RTL
         inset-inline-end: 0; // right, left for RTL
         bottom: 0;
     }
@@ -37,17 +37,17 @@ $mm_module: ".mm-listitem";
     flex-basis: 10%;
     display: block;
 
-    padding-left: variables.$mm_listitemIndent;
-    padding-right: variables.$mm_listitemIndent;
+    padding-left: v.$listitemIndent;
+    padding-right: v.$listitemIndent;
 
-    @include mixins.mm_ellipsis;
+    @include m.mm_ellipsis;
 }
 
 #{$mm_module}__btn {
     display: block;
     position: relative;
     width: auto;
-    padding-inline-end: variables.$mm_btnSize; // right, left for RTL
+    padding-inline-end: v.$btnSize; // right, left for RTL
     border-color: inherit;
     background: rgba(3, 2, 1, 0);
 

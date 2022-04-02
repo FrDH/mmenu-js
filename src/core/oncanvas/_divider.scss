@@ -1,7 +1,7 @@
 $mm_module: ".mm-divider";
 
 #{$mm_module} {
-    @include mixins.mm_ellipsis;
+    @include m.mm_ellipsis;
 
     position: sticky;
     z-index: 2;
@@ -15,7 +15,7 @@ $mm_module: ".mm-divider";
     padding: calc(
             ((var(--mm-listitem-size) * 0.65) - var(--mm-lineheight)) * 0.5
         )
-        variables.$mm_listitemIndent;
+        v.$listitemIndent;
 
     font-size: 75%;
     text-transform: uppercase;
