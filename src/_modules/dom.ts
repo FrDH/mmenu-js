@@ -70,9 +70,8 @@ export const childText = (
  * @return  {string}                The text.
  */
 export const text = (element: HTMLElement): string => {
-    return Array.prototype.slice
-        .call(element.childNodes)
-        .filter((child) => child.nodeType == 3)
+    return [].slice.call(element.childNodes)
+        .filter((child) => !child.ariaHidden)
         .map((child) => child.textContent)
         .join(' ');
 };

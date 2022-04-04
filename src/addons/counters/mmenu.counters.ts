@@ -62,8 +62,12 @@ export default function (this: Mmenu) {
 
         //	Check if no counter already excists.
         if (!DOM.find(parent, '.mm-counter').length) {
+            const ctr = DOM.create('span.mm-counter');
+            //  @ts-ignore
+            ctr.ariaHidden = 'true';
+            
             const btn = DOM.children(parent, '.mm-btn')[0];
-            btn?.prepend(DOM.create('span.mm-counter'));
+            btn?.prepend(ctr);
         }
 
         //  Count immediately.

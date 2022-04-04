@@ -5,13 +5,16 @@ body {
 	height: 100%;
 }
 body {
-	background-color: #3ea7e1;
-	-webkit-text-size-adjust: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
 	font-family: Arial, Helvetica, Verdana;
 	font-size: 18px;
 	line-height: 26px;
 	color: #fff;
-	position: relative;
+	background-color: #5888aa;
+	-webkit-text-size-adjust: none;
 }
 h1 {
 	text-shadow: 8px 10px 1px rgba(0,0,0,.1);
@@ -31,45 +34,55 @@ a:hover
 }
 
 .phone {
-    position: fixed;
-	top: 50%;
-	right: 50%;
-    height: 760px;
-    width: 430px;
-	margin-top: -380px;
-    background: url( ../img/iphonex-example-blue.png ) center top / 395px auto no-repeat transparent;
-}
+	display: flex;
+	flex-direction: column;
+    position: relative;
+    height: 600px;
+    width: 300px;
+	margin-right: 100px;
+	overflow: hidden;
+	overflow-y: auto;
+	background: #1d2327;
+	border-radius: 45px;
+	border: 5px solid #000;
+	outline: 8px solid #222;
+	box-shadow: 0 5px 50px #2a6787;
 
+}
 .phone:before {
-	content: '';
-	border-radius: 30px 30px 0 0;
-	background: url( ../img/iphonex-example-camera.png ) center top no-repeat #4bb5ef;
-	display: block;
-	width: 290px;
-	height: 25px;
-	position: absolute;
-	top: 62px;
-	left: calc( 50% - 290px / 2);
+	content: "";
+	position: relative;
 	z-index: 1;
+	display: block;
+	height: 35px;
+	flex-shrink: 0;
+	margin-top: 0;
+	border-radius: 30px 30px 0 0;
+	background: url(../img/iphonex-example-camera.png) center top no-repeat
+		#bba6a2;
 }
-
-.phone iframe {
+.phone:after {
+	content: "";
+	display: block;
 	position: absolute;
-	top: 87px;
-	left: 70px;
-	z-index: 0;
-	width: 290px;
-	height: 600px;
-	border: none;
-	border-radius: 0 0 30px 30px;
+	bottom: 8px;
+	left: calc(50% - 50px);
+	z-index: 3;
+	width: 100px;
+	height: 6px;
+	border-radius: 3px;
+	background: rgb(0 0 0 / 30%);
+}
+.phone iframe {
+	flex-grow: 1;
+    display: block;
+    position: relative;
+    z-index: 2;
+	width: 100%;
+	margin: 0;
+    border: unset;
 }
 
-#page {
+.page {
 	width: 350px;
-	position: fixed;
-	margin-top: -20px;
-	margin-left: 0;
-	top: 50%;
-	left: 50%;
-	transform: translateY(-50%);
 }
