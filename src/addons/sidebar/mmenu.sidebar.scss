@@ -20,23 +20,16 @@
 }
 
 .mm-wrapper--sidebar-collapsed {
-    &:not(.mm-wrapper--sidebar-expanded) {
-        .mm-slideout {
-            width: calc(100% - var(--mm-sidebar-collapsed-size));
+    .mm-slideout {
+        width: calc(100% - var(--mm-sidebar-collapsed-size));
+        transform: translate3d(var(--mm-sidebar-collapsed-size), 0, 0);
+        
+        [dir="rtl"] & {
+            transform: none;
         }
     }
     
-    &:not(.mm-wrapper--opened) {
-        .mm-slideout {
-            transform: translate3d(var(--mm-sidebar-collapsed-size), 0, 0);
-        
-            [dir="rtl"] & {
-                transform: none;
-            }
-        
-            // TODO for position-right
-        }
-        
+    &:not(.mm-wrapper--opened) { 
         .mm-panel--opened {
             visibility: visible;
         }

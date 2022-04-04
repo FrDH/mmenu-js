@@ -99,15 +99,18 @@ export default function () {
             this.close();
         }
     });
-    //  Prevent tabbing outside the menu,
-    //  close the menu when:
-    //      1) the menu is opened,
-    //      2) the focus is not inside the menu,
-    document.addEventListener('keyup', (event) => {
-        var _a;
-        if (event.key == 'Tab' &&
-            /* 1 */ this.node.menu.matches('.mm-menu--opened') &&
-            /* 2 */ !((_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.closest(`#${this.node.menu.id}`))) {
+    // Tabbing
+    document.addEventListener('focusin', (event) => {
+        var _a, _b;
+        // Focus inside the menu -> open the menu
+        if (((_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.closest(`#${this.node.menu.id}`)) &&
+            !this.node.menu.matches('.mm-menu--opened')) {
+            this.open();
+        }
+        // Focus outside the menu -> close menu
+        if (!((_b = document.activeElement) === null || _b === void 0 ? void 0 : _b.closest(`#${this.node.menu.id}`)) &&
+            !this.node.wrpr.matches('.mm-wrapper--sidebar-expanded') &&
+            this.node.menu.matches('.mm-menu--opened')) {
             this.close();
         }
     });

@@ -128,15 +128,19 @@ export default function (this: Mmenu) {
         }
     });
 
-    //  Prevent tabbing outside the menu,
-    //  close the menu when:
-    //      1) the menu is opened,
-    //      2) the focus is not inside the menu,
-    document.addEventListener('keyup', (event: KeyboardEvent) => {
+    // Tabbing
+    document.addEventListener('focusin', (event: KeyboardEvent) => {
+        // Focus inside the menu -> open the menu
+        if (document.activeElement?.closest(`#${this.node.menu.id}`) &&
+            !this.node.menu.matches('.mm-menu--opened')
+        ) {
+            this.open();
+        }
 
-        if (event.key == 'Tab' &&
-/* 1 */     this.node.menu.matches('.mm-menu--opened') &&
-/* 2 */     !document.activeElement?.closest(`#${this.node.menu.id}`)
+        // Focus outside the menu -> close menu
+        if (!document.activeElement?.closest(`#${this.node.menu.id}`) &&
+            !this.node.wrpr.matches('.mm-wrapper--sidebar-expanded') &&
+            this.node.menu.matches('.mm-menu--opened')
         ) {
             this.close();            
         }
