@@ -188,8 +188,8 @@ Mmenu.prototype.close = function (this: Mmenu) {
     (focus as HTMLElement)?.focus();
     
     // Prevent html/body from scrolling due to focus.
-    document.documentElement.scrollLeft = 0;
     document.body.scrollLeft = 0;
+    document.documentElement.scrollLeft = 0;
 
     //	Invoke "after" hook.
     this.trigger('close:after');

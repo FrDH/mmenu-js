@@ -131,8 +131,10 @@ export default class Mmenu {
             if (setfocus) {
                 panel.focus();
                 // Prevent panels from scrolling due to focus.
+                panel.scrollLeft = 0;
                 this.node.pnls.scrollLeft = 0;
-                this.node.pnls.scrollTop = 0;
+                document.body.scrollLeft = 0;
+                document.documentElement.scrollLeft = 0;
             }
         }
         //	Invoke "after" hook.

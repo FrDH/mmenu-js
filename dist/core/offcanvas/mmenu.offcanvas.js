@@ -148,8 +148,8 @@ Mmenu.prototype.close = function () {
     const focus = this.node.open || document.querySelector(`[href="#${this.node.menu.id}"]`) || Mmenu.node.page || null;
     (_a = focus) === null || _a === void 0 ? void 0 : _a.focus();
     // Prevent html/body from scrolling due to focus.
-    document.documentElement.scrollLeft = 0;
     document.body.scrollLeft = 0;
+    document.documentElement.scrollLeft = 0;
     //	Invoke "after" hook.
     this.trigger('close:after');
 };
