@@ -64,6 +64,7 @@ export default function () {
         this.setPage(Mmenu.node.page);
         //	Setup the menu.
         this.node.menu.classList.add('mm-menu--offcanvas', `mm-menu--position-${options.position}`);
+        this.node.menu.setAttribute('inert', 'true');
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         let hash = window.location.hash;
         if (hash) {
@@ -125,11 +126,12 @@ Mmenu.prototype.open = function () {
     //	Invoke "before" hook.
     this.trigger('open:before');
     //	Open
+    this.node.menu.removeAttribute('inert');
     this.node.menu.classList.add('mm-menu--opened');
     this.node.wrpr.classList.add('mm-wrapper--opened');
     Mmenu.node.blck.classList.add('mm-blocker--blocking');
     //  Focus the menu.
-    this.node.open = document.activeElement;
+    this.node.open = document.activeElement.closest('.mm-menu') ? null : document.activeElement;
     this.node.menu.focus();
     //	Invoke "after" hook.
     this.trigger('open:after');
@@ -141,6 +143,7 @@ Mmenu.prototype.close = function () {
     }
     //	Invoke "before" hook.
     this.trigger('close:before');
+    this.node.menu.setAttribute('inert', 'true');
     this.node.menu.classList.remove('mm-menu--opened');
     this.node.wrpr.classList.remove('mm-wrapper--opened');
     Mmenu.node.blck.classList.remove('mm-blocker--blocking');

@@ -15,10 +15,6 @@
     &:not(.mm-listitem--opened) > .mm-panel {
         display: none;
     }
-
-    &.mm-listitem--opened > .mm-panel {
-        visibility: visible;
-    }
 }
 
 .mm-listitem--vertical {

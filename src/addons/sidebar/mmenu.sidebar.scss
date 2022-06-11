@@ -12,10 +12,6 @@
             box-sizing: border-box;
             min-height: 100vh;
         }
-
-        .mm-menu--sidebar-collapsed {
-            visibility: visible;
-        }
     }
 }
 
@@ -30,10 +26,6 @@
     }
     
     &:not(.mm-wrapper--opened) { 
-        .mm-panel--opened {
-            visibility: visible;
-        }
-
         .mm-menu--sidebar-collapsed {
             .mm-navbar,
             .mm-divider {

@@ -81,9 +81,7 @@ export default class Mmenu {
         if (!panel) {
             return;
         }
-        if (!panel.matches('.mm-panel')) {
-            panel = panel.closest('.mm-panel');
-        }
+        panel = panel.closest('.mm-panel');
         //	Invoke "before" hook.
         this.trigger('openPanel:before', [panel, {
                 animation,
@@ -91,6 +89,7 @@ export default class Mmenu {
             }]);
         //	Open a "vertical" panel.
         if (panel.parentElement.matches('.mm-listitem--vertical')) {
+            // TODO: this alone is not enough.
             panel.parentElement.classList.add('mm-listitem--opened');
             //	Open a "horizontal" panel.
         }
@@ -137,6 +136,7 @@ export default class Mmenu {
                 document.documentElement.scrollLeft = 0;
             }
         }
+        //  TODO: add [inert] attribute to all panels, but remove it from the current one.
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel, {
                 animation,
