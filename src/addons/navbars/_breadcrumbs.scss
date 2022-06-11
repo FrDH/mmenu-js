@@ -2,7 +2,7 @@
 @use "../../variables" as v;
 
 .mm-navbar__breadcrumbs {
-    @include m.mm_ellipsis;
+    @include m.ellipsis;
 
     flex: 1 1 50%;
     display: flex;

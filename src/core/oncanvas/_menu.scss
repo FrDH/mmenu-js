@@ -1,4 +1,6 @@
-.mm-menu {
+$mm_module: ".mm-menu";
+
+#{$mm_module} {
     display: flex;
     flex-direction: column;
     padding: 0;
@@ -71,4 +73,10 @@
         color: inherit;
     }
 
+}
+
+#{$mm_module}__blocker {
+    #{$mm_module}:not(#{$mm_module}--opened) & {
+        @include m.showBlocker();
+    }
 }

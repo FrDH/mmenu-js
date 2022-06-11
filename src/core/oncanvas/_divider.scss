@@ -1,7 +1,7 @@
 $mm_module: ".mm-divider";
 
 #{$mm_module} {
-    @include m.mm_ellipsis;
+    @include m.ellipsis;
 
     position: sticky;
     z-index: 2;

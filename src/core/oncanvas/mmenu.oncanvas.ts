@@ -151,10 +151,16 @@ export default class Mmenu {
             setfocus
         }]);
 
+        /** Wrapping listitem (for a vertical panel) */
+        const listitem = panel.closest('.mm-listitem--vertical');
+
         //	Open a "vertical" panel.
-        if (panel.parentElement.matches('.mm-listitem--vertical')) {
-            // TODO: this alone is not enough.
-            panel.parentElement.classList.add('mm-listitem--opened');
+        if (listitem) {
+            listitem.classList.add('mm-listitem--opened');
+
+            /** The parent panel */
+            const parent = listitem.closest('.mm-panel') as HTMLElement;
+            this.openPanel(parent);
 
         //	Open a "horizontal" panel.
         } else {
@@ -184,6 +190,13 @@ export default class Mmenu {
                 if (pnl !== current) {
                     pnl.classList.remove('mm-panel--highest');
                 }
+                
+                // Set inert attribute.
+                if (pnl === panel) {
+                    pnl.removeAttribute('inert');
+                } else {
+                    pnl.setAttribute('inert', 'true');
+                }
             });
 
             //  Open new panel.
@@ -199,20 +212,7 @@ export default class Mmenu {
 
                 parent = DOM.find(this.node.pnls, `#${parent.dataset.mmParent}`)[0];
             }
-            
-            //  Focus the panels.
-            if (setfocus) {                
-                panel.focus();
-
-                // Prevent panels from scrolling due to focus.
-                panel.scrollLeft = 0;
-                this.node.pnls.scrollLeft = 0;
-                document.body.scrollLeft = 0;
-                document.documentElement.scrollLeft = 0;
-            }
         }
-
-        //  TODO: add [inert] attribute to all panels, but remove it from the current one.
 
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel, {
@@ -442,7 +442,7 @@ export default class Mmenu {
         this.node.menu.id = this.node.menu.id || uniqueId();
 
         //  Make menu able to receive focus.
-        this.node.menu.tabIndex = -1;
+        //XX this.node.menu.tabIndex = -1;
 
         //  All nodes in the menu.
         const panels = DOM.children(this.node.menu).filter((panel) =>
@@ -452,9 +452,6 @@ export default class Mmenu {
         //	Wrap the panels in a node.
         this.node.pnls = DOM.create('div.mm-panels');
         this.node.menu.append(this.node.pnls);
-
-        //  Make panels able to receive focus.
-        // this.node.pnls.tabIndex = -1;
 
         //  Initiate all panel like nodes
         panels.forEach((panel) => {
@@ -556,7 +553,7 @@ export default class Mmenu {
         }
 
         panel.classList.add('mm-panel');
-        panel.tabIndex = -1;
+        //XX panel.tabIndex = -1;
 
         //  Append to the panels node if not vertically expanding
         if (!panel.parentElement?.matches('.mm-listitem--vertical')) {
@@ -661,9 +658,7 @@ export default class Mmenu {
         /** The title */
         const title = DOM.create('a.mm-navbar__title') as HTMLAnchorElement;
         title.tabIndex = -1;
-
-        //  @ts-ignore
-        title.ariaHidden = 'true';
+        title.setAttribute('aria-hidden', 'true');
 
         switch (this.opts.navbar.titleLink) {
             case 'anchor':

@@ -68,9 +68,7 @@ export default function (this: Mmenu) {
 
             blocker.id = uniqueId();
             blocker.title = this.i18n(configs.screenReader.closeMenu);
-
-            //  Make the blocker able to receive focus.
-            blocker.tabIndex = 0;
+            blocker.setAttribute('inert', 'true');
 
             //	Append the blocker node to the body.
             document.querySelector(configs.menu.insertSelector).append(blocker);
@@ -128,24 +126,6 @@ export default function (this: Mmenu) {
             this.close();    
         }
     });
-
-    // Tabbing
-    document.addEventListener('focusin', (event: KeyboardEvent) => {
-        // Focus inside the menu -> open the menu
-        if (document.activeElement?.closest(`#${this.node.menu.id}`) &&
-            !this.node.menu.matches('.mm-menu--opened')
-        ) {
-            this.open();
-        }
-
-        // Focus outside the menu -> close menu
-        if (!document.activeElement?.closest(`#${this.node.menu.id}`) &&
-            !this.node.wrpr.matches('.mm-wrapper--sidebar-expanded') &&
-            this.node.menu.matches('.mm-menu--opened')
-        ) {
-            this.close();            
-        }
-    });
 }
 
 /**
@@ -160,14 +140,14 @@ Mmenu.prototype.open = function (this: Mmenu) {
     this.trigger('open:before');
 
     //	Open
-    this.node.menu.removeAttribute('inert');
-    this.node.menu.classList.add('mm-menu--opened');
     this.node.wrpr.classList.add('mm-wrapper--opened');
-    Mmenu.node.blck.classList.add('mm-blocker--blocking');
+    this.node.menu.classList.add('mm-menu--opened');
+    this.node.menu.removeAttribute('inert');
+    Mmenu.node.blck.removeAttribute('inert');
+    Mmenu.node.page.setAttribute('inert', 'true');
 
-    //  Focus the menu.
-    this.node.open = document.activeElement.closest('.mm-menu') ? null : document.activeElement as HTMLElement;
-    this.node.menu.focus();
+    //  Store the last focesed element.
+    this.node.open = document.activeElement as HTMLElement;
 
     //	Invoke "after" hook.
     this.trigger('open:after');
@@ -182,13 +162,14 @@ Mmenu.prototype.close = function (this: Mmenu) {
     //	Invoke "before" hook.
     this.trigger('close:before');
 
-    this.node.menu.setAttribute('inert', 'true');
-    this.node.menu.classList.remove('mm-menu--opened');
     this.node.wrpr.classList.remove('mm-wrapper--opened');
-    Mmenu.node.blck.classList.remove('mm-blocker--blocking');
+    this.node.menu.classList.remove('mm-menu--opened');
+    this.node.menu.setAttribute('inert', 'true');
+    Mmenu.node.blck.setAttribute('inert', 'true');
+    Mmenu.node.page.removeAttribute('inert');
 
-    //  Focus opening link or page.
-    const focus = this.node.open || document.querySelector(`[href="#${this.node.menu.id}"]`) || Mmenu.node.page || null;
+    /** Element to focus. */
+    const focus = this.node.open || document.querySelector(`[href="#${this.node.menu.id}"]`) || null;
     (focus as HTMLElement)?.focus();
     
     // Prevent html/body from scrolling due to focus.
@@ -244,9 +225,6 @@ Mmenu.prototype.setPage = function (this: Mmenu, page: HTMLElement) {
 
     //	Invoke "before" hook.
     this.trigger('setPage:before', [page]);
-
-    //  Make the page able to receive focus.
-    page.tabIndex = -1;
 
     //  Set the classes
     page.classList.add('mm-page', 'mm-slideout');

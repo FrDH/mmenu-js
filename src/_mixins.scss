@@ -1,5 +1,15 @@
-@mixin mm_ellipsis() {
+@use "./variables" as v;
+
+@mixin ellipsis() {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+@mixin showBlocker($bottom: 0) {
+    --mm-blocker-visibility-delay: 0s;
+    --mm-blocker-opacity-delay: #{v.$transDr};
+
+    bottom: $bottom;
+    opacity: 0.5;
 }

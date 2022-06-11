@@ -25,41 +25,22 @@ export default function (this: Mmenu) {
                 options.collapsed.blockMenu &&
                 !this.node.blck
             ) {
-                const blocker = DOM.create('a.mm-menu__blocker.mm-blocker');
-                blocker.setAttribute('href', `#${this.node.menu.id}`);
+                const blocker = DOM.create('div.mm-menu__blocker.mm-blocker');
 
                 this.node.blck = blocker;
                 this.node.menu.prepend(blocker);
-
-
-                //  Add screenreader support
-                blocker.title = this.i18n(this.conf.offCanvas.screenReader.openMenu);
             }
         });
-
-        const blockMenu = () => {
-            if (this.node.wrpr.matches('.mm-wrapper--sidebar-collapsed')) {
-                this.node.blck?.classList.add('mm-blocker--blocking');
-            }
-        }
-        const unblockMenu = () => {
-            this.node.blck?.classList.remove('mm-blocker--blocking');
-        }
-
-        this.bind('open:after', unblockMenu);
-        this.bind('close:after', blockMenu);
 
         //	En-/disable the collapsed sidebar.
         let enable = () => {
             this.node.wrpr.classList.add('mm-wrapper--sidebar-collapsed');
-            blockMenu();
         };
         let disable = () => {
             this.node.wrpr.classList.remove('mm-wrapper--sidebar-collapsed');
-            unblockMenu();
         };
 
-        if (typeof options.collapsed.use == 'boolean') {
+        if (typeof options.collapsed.use === 'boolean') {
             this.bind('initMenu:after', enable);
         } else {
             media.add(options.collapsed.use, enable, disable);
@@ -116,7 +97,7 @@ export default function (this: Mmenu) {
                 break;
         }
 
-        if (initialState == 'closed') {
+        if (initialState === 'closed') {
             this.bind('init:after', () => {
                 this.close();
             });

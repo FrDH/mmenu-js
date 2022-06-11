@@ -87,10 +87,14 @@ export default class Mmenu {
                 animation,
                 setfocus
             }]);
+        /** Wrapping listitem (for a vertical panel) */
+        const listitem = panel.closest('.mm-listitem--vertical');
         //	Open a "vertical" panel.
-        if (panel.parentElement.matches('.mm-listitem--vertical')) {
-            // TODO: this alone is not enough.
-            panel.parentElement.classList.add('mm-listitem--opened');
+        if (listitem) {
+            listitem.classList.add('mm-listitem--opened');
+            /** The parent panel */
+            const parent = listitem.closest('.mm-panel');
+            this.openPanel(parent);
             //	Open a "horizontal" panel.
         }
         else {
@@ -115,6 +119,13 @@ export default class Mmenu {
                 if (pnl !== current) {
                     pnl.classList.remove('mm-panel--highest');
                 }
+                // Set inert attribute.
+                if (pnl === panel) {
+                    pnl.removeAttribute('inert');
+                }
+                else {
+                    pnl.setAttribute('inert', 'true');
+                }
             });
             //  Open new panel.
             panel.classList.add('mm-panel--opened');
@@ -126,17 +137,7 @@ export default class Mmenu {
                 parent.classList.add('mm-panel--parent');
                 parent = DOM.find(this.node.pnls, `#${parent.dataset.mmParent}`)[0];
             }
-            //  Focus the panels.
-            if (setfocus) {
-                panel.focus();
-                // Prevent panels from scrolling due to focus.
-                panel.scrollLeft = 0;
-                this.node.pnls.scrollLeft = 0;
-                document.body.scrollLeft = 0;
-                document.documentElement.scrollLeft = 0;
-            }
         }
-        //  TODO: add [inert] attribute to all panels, but remove it from the current one.
         //	Invoke "after" hook.
         this.trigger('openPanel:after', [panel, {
                 animation,
@@ -322,14 +323,12 @@ export default class Mmenu {
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
         //  Make menu able to receive focus.
-        this.node.menu.tabIndex = -1;
+        //XX this.node.menu.tabIndex = -1;
         //  All nodes in the menu.
         const panels = DOM.children(this.node.menu).filter((panel) => panel.matches(this.conf.panelNodetype.join(', ')));
         //	Wrap the panels in a node.
         this.node.pnls = DOM.create('div.mm-panels');
         this.node.menu.append(this.node.pnls);
-        //  Make panels able to receive focus.
-        // this.node.pnls.tabIndex = -1;
         //  Initiate all panel like nodes
         panels.forEach((panel) => {
             this._initPanel(panel);
@@ -415,7 +414,7 @@ export default class Mmenu {
             panel = wrapper;
         }
         panel.classList.add('mm-panel');
-        panel.tabIndex = -1;
+        //XX panel.tabIndex = -1;
         //  Append to the panels node if not vertically expanding
         if (!((_a = panel.parentElement) === null || _a === void 0 ? void 0 : _a.matches('.mm-listitem--vertical'))) {
             this.node.pnls.append(panel);
@@ -489,8 +488,7 @@ export default class Mmenu {
         /** The title */
         const title = DOM.create('a.mm-navbar__title');
         title.tabIndex = -1;
-        //  @ts-ignore
-        title.ariaHidden = 'true';
+        title.setAttribute('aria-hidden', 'true');
         switch (this.opts.navbar.titleLink) {
             case 'anchor':
                 if (opener) {
