@@ -61,6 +61,7 @@ export default function (this: Mmenu) {
             expandedEnabled = true;
             this.node.wrpr.classList.add('mm-wrapper--sidebar-expanded');
             this.open();
+            Mmenu.node.page.removeAttribute('inert');
         };
         let disable = () => {
             expandedEnabled = false;
@@ -83,6 +84,7 @@ export default function (this: Mmenu) {
         this.bind('open:after', () => {
             if (expandedEnabled) {
                 window.sessionStorage.setItem('mmenuExpandedState', 'open');
+                Mmenu.node.page.removeAttribute('inert');
             }
         });
 

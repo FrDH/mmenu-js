@@ -67,6 +67,7 @@ export default class Mmenu {
 
     /** Set the page HTML element. */
     setPage: Function;
+    position: Function;
 
     /**
      * Create a mobile menu.
@@ -634,7 +635,7 @@ export default class Mmenu {
             ) as HTMLAnchorElement;
 
             prev.href = `#${parentPanel.id}`;
-            prev.title = this.i18n(this.conf.screenReader.closeSubmenu);
+            prev.setAttribute('aria-label', this.i18n(this.conf.screenReader.closeSubmenu));
 
             navbar.append(prev);
         }
@@ -841,13 +842,13 @@ export default class Mmenu {
                 }
             });
             
-            button.title = this.i18n(
+            button.setAttribute('aria-label', this.i18n(
                 this.conf.screenReader[
                     listitem.matches('.mm-listitem--vertical')
                         ? 'toggleSubmenu'
                         : 'openSubmenu'
                 ]
-            );
+            ));
         }
 
         button.href = `#${subpanel.id}`;

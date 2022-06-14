@@ -3,6 +3,14 @@ import OPTIONS from './options';
 import CONFIGS from './configs';
 import * as DOM from '../../_modules/dom';
 import { extend, uniqueId, cloneId, originalId, } from '../../_modules/helpers';
+const possiblePositions = [
+    'left',
+    'left-front',
+    'right',
+    'right-front',
+    'top',
+    'bottom'
+];
 export default function () {
     this.opts.offCanvas = this.opts.offCanvas || {};
     this.conf.offCanvas = this.conf.offCanvas || {};
@@ -12,19 +20,12 @@ export default function () {
     if (!options.use) {
         return;
     }
-    const positions = [
-        'left',
-        'left-front',
-        'right',
-        'right-front',
-        'top',
-        'bottom'
-    ];
-    if (!positions.includes(options.position)) {
-        options.position = positions[0];
+    if (!possiblePositions.includes(options.position)) {
+        options.position = possiblePositions[0];
     }
     //	Add methods to the API.
     this._api.push('open', 'close', 'setPage');
+    this._api.push('position');
     //  Clone menu and prepend it to the <body>.
     this.bind('initMenu:before', () => {
         //	Clone if needed.
@@ -40,7 +41,6 @@ export default function () {
             });
         }
         this.node.wrpr = document.querySelector(configs.menu.insertSelector);
-        this.node.wrpr.classList.add(`mm-wrapper--position-${options.position}`);
         //	Prepend to the <body>
         this.node.wrpr[configs.menu.insertMethod](this.node.menu);
     });
@@ -50,7 +50,7 @@ export default function () {
             /** The UI blocker node. */
             const blocker = DOM.create('a.mm-wrapper__blocker.mm-blocker.mm-slideout');
             blocker.id = uniqueId();
-            blocker.title = this.i18n(configs.screenReader.closeMenu);
+            blocker.setAttribute('aria-label', this.i18n(configs.screenReader.closeMenu));
             blocker.setAttribute('inert', 'true');
             //	Append the blocker node to the body.
             document.querySelector(configs.menu.insertSelector).append(blocker);
@@ -62,8 +62,9 @@ export default function () {
         //	Setup the page.
         this.setPage(Mmenu.node.page);
         //	Setup the menu.
-        this.node.menu.classList.add('mm-menu--offcanvas', `mm-menu--position-${options.position}`);
+        this.node.menu.classList.add('mm-menu--offcanvas');
         this.node.menu.setAttribute('inert', 'true');
+        this.position(options.position);
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         let hash = window.location.hash;
         if (hash) {
@@ -100,6 +101,26 @@ export default function () {
         }
     });
 }
+/**
+ * Get or set the postion for the menu.
+ *
+ * @param {string} [position] The position for the menu.
+ */
+Mmenu.prototype.position = function (position = null) {
+    const options = this.opts.offCanvas;
+    if (position) {
+        if (possiblePositions.includes(position)) {
+            this.node.wrpr.classList.remove(`mm-wrapper--position-${options.position}`);
+            this.node.menu.classList.remove(`mm-menu--position-${options.position}`);
+            this.node.wrpr.classList.add(`mm-wrapper--position-${position}`);
+            this.node.menu.classList.add(`mm-menu--position-${position}`);
+            options.position = position;
+        }
+    }
+    else {
+        return options.position;
+    }
+};
 /**
  * Open the menu.
  */

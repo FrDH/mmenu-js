@@ -5,16 +5,6 @@
     --mm-sidebar-expanded-size: var(--mm-max-size);
 }
 
-.mm-wrapper--sidebar {
-    &-collapsed {
-        .mm-page {
-            background: inherit;
-            box-sizing: border-box;
-            min-height: 100vh;
-        }
-    }
-}
-
 .mm-wrapper--sidebar-collapsed {
     .mm-slideout {
         width: calc(100% - var(--mm-sidebar-collapsed-size));

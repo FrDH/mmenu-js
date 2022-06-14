@@ -201,7 +201,7 @@ const createSearchfield = function (addCancel = false) {
         /** The reset button. */
         const reset = DOM.create('button.mm-btnreset.mm-btn.mm-btn--close.mm-searchfield__btn');
         reset.type = 'reset';
-        reset.title = this.i18n('Clear searchfield');
+        reset.setAttribute('aria-label', this.i18n('Clear searchfield'));
         field.append(reset);
         //  Apparently, resetting a form doesn't trigger any event on the input,
         //  so we manually dispatch the event, one frame later :/
@@ -216,7 +216,7 @@ const createSearchfield = function (addCancel = false) {
         /** The cancel button. */
         const cancel = DOM.create('a.mm-searchfield__cancel');
         cancel.href = '#';
-        cancel.title = this.i18n('Cancel searching');
+        cancel.setAttribute('aria-label', this.i18n('Cancel searching'));
         cancel.textContent = this.i18n('cancel');
         form.append(cancel);
         // Close the search panel.

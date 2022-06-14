@@ -9,6 +9,15 @@ import {
     originalId,
 } from '../../_modules/helpers';
 
+const possiblePositions = [
+    'left', 
+    'left-front', 
+    'right', 
+    'right-front', 
+    'top', 
+    'bottom'
+];
+
 export default function (this: Mmenu) {
 
     this.opts.offCanvas = this.opts.offCanvas || {};
@@ -22,20 +31,13 @@ export default function (this: Mmenu) {
         return;
     }
 
-    const positions = [
-        'left', 
-        'left-front', 
-        'right', 
-        'right-front', 
-        'top', 
-        'bottom'
-    ];
-    if (!positions.includes(options.position)) {
-        options.position = positions[0];
+    if (!possiblePositions.includes(options.position)) {
+        options.position = possiblePositions[0];
     }
 
     //	Add methods to the API.
     this._api.push('open', 'close', 'setPage');
+    this._api.push('position');
 
     //  Clone menu and prepend it to the <body>.
     this.bind('initMenu:before', () => {
@@ -54,7 +56,6 @@ export default function (this: Mmenu) {
         }
 
         this.node.wrpr = document.querySelector(configs.menu.insertSelector);
-        this.node.wrpr.classList.add(`mm-wrapper--position-${options.position}`);
 
         //	Prepend to the <body>
         this.node.wrpr[configs.menu.insertMethod](this.node.menu);
@@ -67,7 +68,7 @@ export default function (this: Mmenu) {
             const blocker = DOM.create('a.mm-wrapper__blocker.mm-blocker.mm-slideout');
 
             blocker.id = uniqueId();
-            blocker.title = this.i18n(configs.screenReader.closeMenu);
+            blocker.setAttribute('aria-label', this.i18n(configs.screenReader.closeMenu));
             blocker.setAttribute('inert', 'true');
 
             //	Append the blocker node to the body.
@@ -84,8 +85,10 @@ export default function (this: Mmenu) {
         this.setPage(Mmenu.node.page);
 
         //	Setup the menu.
-        this.node.menu.classList.add('mm-menu--offcanvas', `mm-menu--position-${options.position}`);
+        this.node.menu.classList.add('mm-menu--offcanvas');
         this.node.menu.setAttribute('inert', 'true');
+
+        this.position(options.position);
 
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         let hash = window.location.hash;
@@ -129,9 +132,30 @@ export default function (this: Mmenu) {
 }
 
 /**
+ * Get or set the postion for the menu.
+ * 
+ * @param {string} [position] The position for the menu.
+ */
+Mmenu.prototype.position = function(this: Mmenu, position: mmOptionsOffcanvasPositions = null) {
+    const options = this.opts.offCanvas;
+
+    if (position) {
+        if (possiblePositions.includes(position)) {
+            this.node.wrpr.classList.remove(`mm-wrapper--position-${options.position}`);
+            this.node.menu.classList.remove(`mm-menu--position-${options.position}`);
+            this.node.wrpr.classList.add(`mm-wrapper--position-${position}`);
+            this.node.menu.classList.add(`mm-menu--position-${position}`);
+            options.position = position;
+        }
+    } else {
+        return options.position;
+    }
+}
+
+/**
  * Open the menu.
  */
-Mmenu.prototype.open = function (this: Mmenu) {
+Mmenu.prototype.open = function(this: Mmenu) {
     if (this.node.menu.matches('.mm-menu--opened')) {
         return;
     }
@@ -153,7 +177,7 @@ Mmenu.prototype.open = function (this: Mmenu) {
     this.trigger('open:after');
 };
 
-Mmenu.prototype.close = function (this: Mmenu) {
+Mmenu.prototype.close = function(this: Mmenu) {
     
     if (!this.node.menu.matches('.mm-menu--opened')) {
         return;
@@ -185,7 +209,7 @@ Mmenu.prototype.close = function (this: Mmenu) {
  *
  * @param {HTMLElement} page Element to set as the page.
  */
-Mmenu.prototype.setPage = function (this: Mmenu, page: HTMLElement) {
+Mmenu.prototype.setPage = function(this: Mmenu, page: HTMLElement) {
 
     var configs = this.conf.offCanvas;
 

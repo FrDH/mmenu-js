@@ -471,7 +471,7 @@ export default class Mmenu {
             /** The back button. */
             const prev = DOM.create('a.mm-btn.mm-btn--prev.mm-navbar__btn');
             prev.href = `#${parentPanel.id}`;
-            prev.title = this.i18n(this.conf.screenReader.closeSubmenu);
+            prev.setAttribute('aria-label', this.i18n(this.conf.screenReader.closeSubmenu));
             navbar.append(prev);
         }
         /** The anchor that opens the panel. */
@@ -620,9 +620,9 @@ export default class Mmenu {
                     listitem.insertBefore(button, text.nextElementSibling);
                 }
             });
-            button.title = this.i18n(this.conf.screenReader[listitem.matches('.mm-listitem--vertical')
+            button.setAttribute('aria-label', this.i18n(this.conf.screenReader[listitem.matches('.mm-listitem--vertical')
                 ? 'toggleSubmenu'
-                : 'openSubmenu']);
+                : 'openSubmenu']));
         }
         button.href = `#${subpanel.id}`;
         this._initPanel(subpanel);

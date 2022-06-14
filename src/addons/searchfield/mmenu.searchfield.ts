@@ -273,7 +273,7 @@ const createSearchfield = function(
         /** The reset button. */
         const reset = DOM.create('button.mm-btnreset.mm-btn.mm-btn--close.mm-searchfield__btn') as HTMLButtonElement;
         reset.type = 'reset';
-        reset.title = this.i18n('Clear searchfield');
+        reset.setAttribute('aria-label', this.i18n('Clear searchfield'));
 
         field.append(reset);
 
@@ -292,7 +292,7 @@ const createSearchfield = function(
         /** The cancel button. */
         const cancel = DOM.create('a.mm-searchfield__cancel') as HTMLAnchorElement;
         cancel.href = '#';
-        cancel.title = this.i18n('Cancel searching');
+        cancel.setAttribute('aria-label', this.i18n('Cancel searching'));
         cancel.textContent = this.i18n('cancel');
 
          form.append(cancel);

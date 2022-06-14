@@ -1,3 +1,4 @@
+import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import OPTIONS from './options';
 import * as DOM from '../../_modules/dom';
 import * as media from '../../_modules/matchmedia';
@@ -48,6 +49,7 @@ export default function () {
             expandedEnabled = true;
             this.node.wrpr.classList.add('mm-wrapper--sidebar-expanded');
             this.open();
+            Mmenu.node.page.removeAttribute('inert');
         };
         let disable = () => {
             expandedEnabled = false;
@@ -69,6 +71,7 @@ export default function () {
         this.bind('open:after', () => {
             if (expandedEnabled) {
                 window.sessionStorage.setItem('mmenuExpandedState', 'open');
+                Mmenu.node.page.removeAttribute('inert');
             }
         });
         //  Set the initial state
