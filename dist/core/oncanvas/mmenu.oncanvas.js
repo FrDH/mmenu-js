@@ -322,8 +322,6 @@ export default class Mmenu {
         this.node.menu.classList.add('mm-menu');
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
-        //  Make menu able to receive focus.
-        //XX this.node.menu.tabIndex = -1;
         //  All nodes in the menu.
         const panels = DOM.children(this.node.menu).filter((panel) => panel.matches(this.conf.panelNodetype.join(', ')));
         //	Wrap the panels in a node.
@@ -414,7 +412,6 @@ export default class Mmenu {
             panel = wrapper;
         }
         panel.classList.add('mm-panel');
-        //XX panel.tabIndex = -1;
         //  Append to the panels node if not vertically expanding
         if (!((_a = panel.parentElement) === null || _a === void 0 ? void 0 : _a.matches('.mm-listitem--vertical'))) {
             this.node.pnls.append(panel);

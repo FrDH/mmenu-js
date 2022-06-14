@@ -36,8 +36,7 @@ export default function (this: Mmenu) {
     }
 
     //	Add methods to the API.
-    this._api.push('open', 'close', 'setPage');
-    this._api.push('position');
+    this._api.push('open', 'close', 'setPage', 'position');
 
     //  Clone menu and prepend it to the <body>.
     this.bind('initMenu:before', () => {
@@ -177,6 +176,9 @@ Mmenu.prototype.open = function(this: Mmenu) {
     this.trigger('open:after');
 };
 
+/**
+ * Close the menu.
+ */
 Mmenu.prototype.close = function(this: Mmenu) {
     
     if (!this.node.menu.matches('.mm-menu--opened')) {
@@ -211,7 +213,8 @@ Mmenu.prototype.close = function(this: Mmenu) {
  */
 Mmenu.prototype.setPage = function(this: Mmenu, page: HTMLElement) {
 
-    var configs = this.conf.offCanvas;
+    /** Offcanvas config */
+    const configs = this.conf.offCanvas;
 
     //	If no page was specified, find it.
     if (!page) {

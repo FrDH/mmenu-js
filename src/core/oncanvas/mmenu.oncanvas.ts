@@ -53,6 +53,9 @@ export default class Mmenu {
 
     /** Callback hooks used for the menu. */
     hook: mmLooseObject;
+    
+    /** Set the menu theme. */
+    theme: Function;
 
     /** Log deprecated warnings when using the debugger. */
     _deprecatedWarnings: Function;
@@ -67,6 +70,8 @@ export default class Mmenu {
 
     /** Set the page HTML element. */
     setPage: Function;
+    
+    /** Set the menu position. */
     position: Function;
 
     /**
@@ -442,9 +447,6 @@ export default class Mmenu {
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
 
-        //  Make menu able to receive focus.
-        //XX this.node.menu.tabIndex = -1;
-
         //  All nodes in the menu.
         const panels = DOM.children(this.node.menu).filter((panel) =>
             panel.matches(this.conf.panelNodetype.join(', '))
@@ -554,7 +556,6 @@ export default class Mmenu {
         }
 
         panel.classList.add('mm-panel');
-        //XX panel.tabIndex = -1;
 
         //  Append to the panels node if not vertically expanding
         if (!panel.parentElement?.matches('.mm-listitem--vertical')) {

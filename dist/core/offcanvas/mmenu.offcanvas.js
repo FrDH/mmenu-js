@@ -24,8 +24,7 @@ export default function () {
         options.position = possiblePositions[0];
     }
     //	Add methods to the API.
-    this._api.push('open', 'close', 'setPage');
-    this._api.push('position');
+    this._api.push('open', 'close', 'setPage', 'position');
     //  Clone menu and prepend it to the <body>.
     this.bind('initMenu:before', () => {
         //	Clone if needed.
@@ -141,6 +140,9 @@ Mmenu.prototype.open = function () {
     //	Invoke "after" hook.
     this.trigger('open:after');
 };
+/**
+ * Close the menu.
+ */
 Mmenu.prototype.close = function () {
     var _a;
     if (!this.node.menu.matches('.mm-menu--opened')) {
@@ -168,7 +170,8 @@ Mmenu.prototype.close = function () {
  * @param {HTMLElement} page Element to set as the page.
  */
 Mmenu.prototype.setPage = function (page) {
-    var configs = this.conf.offCanvas;
+    /** Offcanvas config */
+    const configs = this.conf.offCanvas;
     //	If no page was specified, find it.
     if (!page) {
         /** Array of elements that are / could be "the page". */
