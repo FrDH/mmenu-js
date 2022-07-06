@@ -23,10 +23,11 @@ export default function () {
                 this.node.menu.prepend(blocker);
             }
         });
-        //	En-/disable the collapsed sidebar.
+        /** Enable the collapsed sidebar */
         let enable = () => {
             this.node.wrpr.classList.add('mm-wrapper--sidebar-collapsed');
         };
+        /** Disable the collapsed sidebar */
         let disable = () => {
             this.node.wrpr.classList.remove('mm-wrapper--sidebar-collapsed');
         };
@@ -44,16 +45,19 @@ export default function () {
             this.node.menu.classList.add('mm-menu--sidebar-expanded');
         });
         let expandedEnabled = false;
-        //	En-/disable the expanded sidebar.
+        /** Enable the expanded sidebar */
         let enable = () => {
             expandedEnabled = true;
             this.node.wrpr.classList.add('mm-wrapper--sidebar-expanded');
+            this.node.menu.removeAttribute('aria-modal');
             this.open();
             Mmenu.node.page.removeAttribute('inert');
         };
+        /** Disable the expanded sidebar */
         let disable = () => {
             expandedEnabled = false;
             this.node.wrpr.classList.remove('mm-wrapper--sidebar-expanded');
+            this.node.menu.setAttribute('aria-modal', 'true');
             this.close();
         };
         if (typeof options.expanded.use == 'boolean') {

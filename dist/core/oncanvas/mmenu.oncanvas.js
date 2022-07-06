@@ -322,7 +322,10 @@ export default class Mmenu {
         this.node.menu.classList.add('mm-menu');
         //	Add an ID to the menu if it does not yet have one.
         this.node.menu.id = this.node.menu.id || uniqueId();
-        //  All nodes in the menu.
+        this.node.menu.setAttribute('aria-label', this.i18n(this.opts.navbar.title || 'Menu'));
+        this.node.menu.setAttribute('aria-modal', 'true');
+        this.node.menu.setAttribute('role', 'dialog');
+        /** All panel nodes in the menu. */
         const panels = DOM.children(this.node.menu).filter((panel) => panel.matches(this.conf.panelNodetype.join(', ')));
         //	Wrap the panels in a node.
         this.node.pnls = DOM.create('div.mm-panels');
@@ -445,7 +448,7 @@ export default class Mmenu {
         let parentPanel = null;
         //  The parent listitem and parent panel
         if (panel.dataset.mmParent) {
-            parentListitem = DOM.find(this.node.pnls, '#' + panel.dataset.mmParent)[0];
+            parentListitem = DOM.find(this.node.pnls, `#${panel.dataset.mmParent}`)[0];
             parentPanel = parentListitem.closest('.mm-panel');
             while (parentPanel.closest('.mm-listitem--vertical')) {
                 parentPanel = parentPanel.parentElement.closest('.mm-panel');
@@ -503,7 +506,7 @@ export default class Mmenu {
         titleText.innerHTML =
             panel.dataset.mmTitle ||
                 DOM.childText(opener) ||
-                (this.i18n(this.opts.navbar.title) || this.i18n('Menu'));
+                this.i18n(this.opts.navbar.title || 'Menu');
         //  Add to DOM
         panel.prepend(navbar);
         navbar.append(title);
