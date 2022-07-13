@@ -76,7 +76,7 @@
                 0
             );
 
-            transition: transform v.$transDr v.$transFn;
+            transition-property: transform;
 
             &.mm-menu--opened {
                 transform: translate3d(0, 0, 0);
