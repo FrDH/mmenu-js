@@ -141,8 +141,8 @@ Mmenu.prototype.position = function(this: Mmenu, position: mmOptionsOffcanvasPos
     if (position) {
         if (possiblePositions.includes(position)) {
             this.node.wrpr.classList.remove(`mm-wrapper--position-${options.position}`);
-            this.node.menu.classList.remove(`mm-menu--position-${options.position}`);
             this.node.wrpr.classList.add(`mm-wrapper--position-${position}`);
+            this.node.menu.classList.remove(`mm-menu--position-${options.position}`);
             this.node.menu.classList.add(`mm-menu--position-${position}`);
             options.position = position;
         }
@@ -163,7 +163,7 @@ Mmenu.prototype.open = function(this: Mmenu) {
     this.trigger('open:before');
 
     //	Open
-    this.node.wrpr.classList.add('mm-wrapper--opened');
+    this.node.wrpr.classList.add('mm-wrapper--opened', `mm-wrapper--position-${this.opts.offCanvas.position}`);
     this.node.menu.classList.add('mm-menu--opened');
     this.node.menu.removeAttribute('inert');
     Mmenu.node.blck.removeAttribute('inert');
@@ -188,7 +188,7 @@ Mmenu.prototype.close = function(this: Mmenu) {
     //	Invoke "before" hook.
     this.trigger('close:before');
 
-    this.node.wrpr.classList.remove('mm-wrapper--opened');
+    this.node.wrpr.classList.remove('mm-wrapper--opened', `mm-wrapper--position-${this.opts.offCanvas.position}`);
     this.node.menu.classList.remove('mm-menu--opened');
     this.node.menu.setAttribute('inert', 'true');
     Mmenu.node.blck.setAttribute('inert', 'true');
