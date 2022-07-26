@@ -512,9 +512,8 @@ const _searchPerPanel = (
 
             //  Show matching + its parents.
             if (item.dataset.mmSearchresult === query) {
-                item.classList.remove('mm-hidden');
-                DOM.parents(item, '.mm-listitem').forEach(listitem => {
-                    listitem.classList.remove('mm-hidden');
+                [item, ...DOM.parents(item, '.mm-listitem')].forEach(item2 => {
+                    item2.classList.remove('mm-hidden');
                 });
             }
         });
