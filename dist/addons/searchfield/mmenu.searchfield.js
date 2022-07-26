@@ -241,7 +241,7 @@ const initSearch = function (form) {
     const input = DOM.find(form, 'input')[0];
     /** Where to search. */
     let searchIn = resultspanel.matches('.mm-panel--search')
-        ? DOM.find(this.node.pnls, options.searchIn)
+        ? DOM.children(this.node.pnls, options.searchIn)
         : [resultspanel];
     //  Filter out the resultspanel
     searchIn = searchIn.filter(panel => !panel.matches('.mm-panel--search'));
@@ -315,7 +315,7 @@ const _searchResultsPanel = (resultspanel, query, searchIn) => {
     listview.innerHTML = '';
     /** Amount of resutls found. */
     let count = 0;
-    searchIn.forEach((panel) => {
+    searchIn.forEach(panel => {
         /** The results in this panel. */
         const results = DOM.find(panel, `[data-mm-searchresult="${query}"]`);
         count += results.length;
@@ -330,9 +330,24 @@ const _searchResultsPanel = (resultspanel, query, searchIn) => {
             }
             //  Add the results
             results.forEach((result) => {
-                listview.append(result.cloneNode(true));
+                const clone = result.cloneNode(true);
+                listview.append(clone);
             });
         }
+    });
+    //  Remove inline subpanels.
+    DOM.find(listview, '.mm-panel').forEach(panel => {
+        panel.remove();
+    });
+    //  Remove ID's and data-attributes
+    ['id', 'data-mm-parent', 'data-mm-child'].forEach(attr => {
+        DOM.find(listview, `[${attr}]`).forEach(elem => {
+            elem.removeAttribute(attr);
+        });
+    });
+    //  Remove "opened" class
+    DOM.find(listview, '.mm-listitem--opened').forEach(listitem => {
+        listitem.classList.remove('mm-listitem--opened');
     });
     return count;
 };
@@ -345,7 +360,7 @@ const _resetResultsPanel = (resultspanel) => {
 const _searchPerPanel = (query, searchIn) => {
     /** Amount of resutls found. */
     let count = 0;
-    searchIn.forEach((panel) => {
+    searchIn.forEach(panel => {
         /** The results in this panel. */
         const results = DOM.find(panel, `[data-mm-searchresult="${query}"]`);
         count += results.length;
@@ -359,7 +374,15 @@ const _searchPerPanel = (query, searchIn) => {
             });
         }
         DOM.find(panel, '.mm-listitem, .mm-divider').forEach(item => {
-            item.classList[item.dataset.mmSearchresult === query ? 'remove' : 'add']('mm-hidden');
+            //  Hide all
+            item.classList.add('mm-hidden');
+            //  Show matching + its parents.
+            if (item.dataset.mmSearchresult === query) {
+                item.classList.remove('mm-hidden');
+                DOM.parents(item, '.mm-listitem').forEach(listitem => {
+                    listitem.classList.remove('mm-hidden');
+                });
+            }
         });
     });
     return count;
