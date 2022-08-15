@@ -3,6 +3,7 @@ const options: mmOptionsSearchfield = {
     addTo: 'panels',
     noResults: 'No results found.',
     placeholder: 'Search',
+    search: true,
     searchIn: 'panels',
     splash: '',
     title: 'Search',

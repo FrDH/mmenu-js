@@ -34,7 +34,7 @@
                             <li>
                                 <span>The team</span>
                                 <ul>
-                                    <li class="Selected">
+                                    <li>
                                         <a href="#/">Management</a>
                                     </li>
                                     <li>
@@ -60,17 +60,7 @@
         <!-- mmenu scripts -->
         <script src="../dist/mmenu.js"></script>
         <script>
-            new Mmenu(document.querySelector("#menu"), {
-                searchfield: {
-                    add: true,
-                },
-                // navbars: [
-                //     {
-                //         content: ["searchfield"],
-                //     },
-                // ],
-                slidingSubmenus: false,
-            });
+            new Mmenu(document.querySelector("#menu"));
 
             document.addEventListener("click", function (evnt) {
                 var anchor = evnt.target.closest('a[href="#/"]');

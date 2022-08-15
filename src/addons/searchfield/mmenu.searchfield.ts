@@ -340,6 +340,16 @@ const initSearch = function (
         /** The searchquery */
         const query = input.value.toLowerCase().trim();
         
+        if (query.length) {
+            form.classList.add('mm-searchfield--searching');
+        } else {
+            form.classList.remove('mm-searchfield--searching');
+        }
+
+        if (!options.search) {
+            return;
+        }
+
         /** All listitems */
         const listitems = [];
 
@@ -355,8 +365,6 @@ const initSearch = function (
         if (query.length) {
             // Trigger event.
             this.trigger('search:before');
-            
-            form.classList.add('mm-searchfield--searching');
             resultspanel.classList.add('mm-panel--searching');
             
             //	Add data attribute to the matching listitems.
@@ -389,7 +397,6 @@ const initSearch = function (
             // Trigger event.
             this.trigger('clear:before');
             
-            form.classList.remove('mm-searchfield--searching');
             resultspanel.classList.remove('mm-panel--searching', 'mm-panel--noresults');
 
             //  Resultspanel.

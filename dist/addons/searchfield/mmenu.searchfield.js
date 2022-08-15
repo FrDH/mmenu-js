@@ -249,6 +249,15 @@ const initSearch = function (form) {
     const search = () => {
         /** The searchquery */
         const query = input.value.toLowerCase().trim();
+        if (query.length) {
+            form.classList.add('mm-searchfield--searching');
+        }
+        else {
+            form.classList.remove('mm-searchfield--searching');
+        }
+        if (!options.search) {
+            return;
+        }
         /** All listitems */
         const listitems = [];
         searchIn.forEach(panel => {
@@ -261,7 +270,6 @@ const initSearch = function (form) {
         if (query.length) {
             // Trigger event.
             this.trigger('search:before');
-            form.classList.add('mm-searchfield--searching');
             resultspanel.classList.add('mm-panel--searching');
             //	Add data attribute to the matching listitems.
             listitems.forEach((listitem) => {
@@ -288,7 +296,6 @@ const initSearch = function (form) {
         else {
             // Trigger event.
             this.trigger('clear:before');
-            form.classList.remove('mm-searchfield--searching');
             resultspanel.classList.remove('mm-panel--searching', 'mm-panel--noresults');
             //  Resultspanel.
             if (resultspanel.matches('.mm-panel--search')) {

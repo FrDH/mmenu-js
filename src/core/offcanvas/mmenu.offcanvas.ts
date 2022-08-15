@@ -87,7 +87,10 @@ export default function (this: Mmenu) {
         this.node.menu.classList.add('mm-menu--offcanvas');
         this.node.menu.setAttribute('inert', 'true');
 
-        this.position(options.position);
+        if (possiblePositions.includes(options.position)) {
+            this.node.wrpr.classList.add(`mm-wrapper--position-${options.position}`);
+            this.node.menu.classList.add(`mm-menu--position-${options.position}`);
+        }
 
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         let hash = window.location.hash;
@@ -128,27 +131,6 @@ export default function (this: Mmenu) {
             this.close();    
         }
     });
-}
-
-/**
- * Get or set the postion for the menu.
- * 
- * @param {string} [position] The position for the menu.
- */
-Mmenu.prototype.position = function(this: Mmenu, position: mmOptionsOffcanvasPositions = null) {
-    const options = this.opts.offCanvas;
-
-    if (position) {
-        if (possiblePositions.includes(position)) {
-            this.node.wrpr.classList.remove(`mm-wrapper--position-${options.position}`);
-            this.node.wrpr.classList.add(`mm-wrapper--position-${position}`);
-            this.node.menu.classList.remove(`mm-menu--position-${options.position}`);
-            this.node.menu.classList.add(`mm-menu--position-${position}`);
-            options.position = position;
-        }
-    } else {
-        return options.position;
-    }
 }
 
 /**

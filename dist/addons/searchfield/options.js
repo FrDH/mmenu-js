@@ -3,6 +3,7 @@ const options = {
     addTo: 'panels',
     noResults: 'No results found.',
     placeholder: 'Search',
+    search: true,
     searchIn: 'panels',
     splash: '',
     title: 'Search',

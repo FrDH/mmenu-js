@@ -71,9 +71,6 @@ export default class Mmenu {
     /** Set the page HTML element. */
     setPage: Function;
     
-    /** Set the menu position. */
-    position: Function;
-
     /**
      * Create a mobile menu.
      * @param {HTMLElement|string} 	menu		The menu node.
