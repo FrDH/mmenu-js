@@ -1,6 +1,5 @@
 import Mmenu from '../../core/oncanvas/mmenu.oncanvas';
 import OPTIONS from './options';
-import * as DOM from '../../_modules/dom';
 import * as media from '../../_modules/matchmedia';
 import { extend } from '../../_modules/helpers';
 export default function () {
@@ -16,12 +15,6 @@ export default function () {
         //	Make the menu collapsable.
         this.bind('initMenu:after', () => {
             this.node.menu.classList.add('mm-menu--sidebar-collapsed');
-            if (options.collapsed.blockMenu &&
-                !this.node.blck) {
-                const blocker = DOM.create('div.mm-menu__blocker.mm-blocker');
-                this.node.blck = blocker;
-                this.node.menu.prepend(blocker);
-            }
         });
         /** Enable the collapsed sidebar */
         let enable = () => {

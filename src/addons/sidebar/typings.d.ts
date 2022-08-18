@@ -11,9 +11,6 @@ interface mmOptionsSidebar {
 interface mmOptionsSidebarCollapsed {
     /** Whether or not to enable the collapsed menu.  */
     use?: boolean | string | number;
-
-    /** Whether or not to block the collapsed menu from interaction. */
-    blockMenu?: boolean;
 }
 
 /**	"expanded" options for the searchfield add-on. */

@@ -20,16 +20,6 @@ export default function (this: Mmenu) {
         //	Make the menu collapsable.
         this.bind('initMenu:after', () => {
             this.node.menu.classList.add('mm-menu--sidebar-collapsed');
-
-            if (
-                options.collapsed.blockMenu &&
-                !this.node.blck
-            ) {
-                const blocker = DOM.create('div.mm-menu__blocker.mm-blocker');
-
-                this.node.blck = blocker;
-                this.node.menu.prepend(blocker);
-            }
         });
 
         /** Enable the collapsed sidebar */

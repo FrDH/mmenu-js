@@ -1,4 +1,3 @@
-@use "../../mixins" as m;
 @use "../../variables" as v;
 
 :root {
@@ -43,7 +42,11 @@
     background: #00000066;
 
     .mm-wrapper--opened & {
-        @include m.showBlocker();
+        --mm-blocker-visibility-delay: 0s;
+        --mm-blocker-opacity-delay: #{v.$transDr};
+
+        bottom: 0;
+        opacity: 0.5;
     }
 }
 

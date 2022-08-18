@@ -52,12 +52,13 @@ export default function () {
                 });
             });
         }
-        this.bind('initPanel:after', (panel) => {
-            if (!panel.closest('.mm-listitem--vertical') &&
-                !DOM.children(panel, '.mm-panel__blocker')[0]) {
-                const blocker = DOM.create('div.mm-blocker.mm-panel__blocker');
-                panel.prepend(blocker);
-            }
-        });
+        // this.bind('initPanel:after', (panel: HTMLElement) => {
+        //     if (!panel.closest('.mm-listitem--vertical') &&
+        //         !DOM.children(panel, '.mm-panel__blocker')[0]
+        //     ) {
+        //         const blocker = DOM.create('div.mm-blocker.mm-panel__blocker') as HTMLElement;
+        //         panel.prepend(blocker);
+        //     }
+        // });
     }
 }

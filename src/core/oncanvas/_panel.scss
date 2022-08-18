@@ -65,10 +65,3 @@ $mm_module: ".mm-panel";
 #{$mm_module}__content {
     padding: v.$panelPadding;
 }
-
-
-#{$mm_module}__blocker {
-    #{$mm_module}--parent & {
-        @include m.showBlocker(-10000000px);
-    }
-}
