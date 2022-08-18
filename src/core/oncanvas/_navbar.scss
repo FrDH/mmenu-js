@@ -43,7 +43,7 @@ $mm_module: ".mm-navbar";
     }
 
     > span {
-        @include m.mm_ellipsis;
+        @include m.ellipsis;
     }
 
     // Center the content.

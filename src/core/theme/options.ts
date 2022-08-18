@@ -1,3 +1,3 @@
-const options : string = 'light';
+const options : mmOptionsTheme = 'light';
 
 export default options;

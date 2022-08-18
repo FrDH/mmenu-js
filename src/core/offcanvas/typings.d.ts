@@ -1,8 +1,11 @@
 //	Add-on options interface.
 interface mmOptionsOffcanvas {
     use?: boolean
-    position?: 'left' | 'left-front' | 'right' | 'right-front' | 'top' | 'bottom'
+    position?: mmOptionsOffcanvasPositions
 }
+
+/** Possible positions for the menu. */
+type mmOptionsOffcanvasPositions = 'left' | 'left-front' | 'right' | 'right-front' | 'top' | 'bottom'
 
 //	Add-on configs interfaces.
 interface mmConfigsOffcanvas {

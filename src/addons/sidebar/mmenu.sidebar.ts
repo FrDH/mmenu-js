@@ -20,46 +20,19 @@ export default function (this: Mmenu) {
         //	Make the menu collapsable.
         this.bind('initMenu:after', () => {
             this.node.menu.classList.add('mm-menu--sidebar-collapsed');
-
-            if (
-                options.collapsed.blockMenu &&
-                !this.node.blck
-            ) {
-                const blocker = DOM.create('a.mm-menu__blocker.mm-blocker');
-                blocker.setAttribute('href', `#${this.node.menu.id}`);
-
-                this.node.blck = blocker;
-                this.node.menu.prepend(blocker);
-
-
-                //  Add screenreader support
-                blocker.title = this.i18n(this.conf.offCanvas.screenReader.openMenu);
-            }
         });
 
-        const blockMenu = () => {
-            if (this.node.wrpr.matches('.mm-wrapper--sidebar-collapsed')) {
-                this.node.blck?.classList.add('mm-blocker--blocking');
-            }
-        }
-        const unblockMenu = () => {
-            this.node.blck?.classList.remove('mm-blocker--blocking');
-        }
-
-        this.bind('open:after', unblockMenu);
-        this.bind('close:after', blockMenu);
-
-        //	En-/disable the collapsed sidebar.
+        /** Enable the collapsed sidebar */
         let enable = () => {
             this.node.wrpr.classList.add('mm-wrapper--sidebar-collapsed');
-            blockMenu();
-        };
-        let disable = () => {
-            this.node.wrpr.classList.remove('mm-wrapper--sidebar-collapsed');
-            unblockMenu();
         };
 
-        if (typeof options.collapsed.use == 'boolean') {
+        /** Disable the collapsed sidebar */
+        let disable = () => {
+            this.node.wrpr.classList.remove('mm-wrapper--sidebar-collapsed');
+        };
+
+        if (typeof options.collapsed.use === 'boolean') {
             this.bind('initMenu:after', enable);
         } else {
             media.add(options.collapsed.use, enable, disable);
@@ -75,17 +48,23 @@ export default function (this: Mmenu) {
 
         let expandedEnabled = false;
 
-        //	En-/disable the expanded sidebar.
+        /** Enable the expanded sidebar */
         let enable = () => {
             expandedEnabled = true;
             this.node.wrpr.classList.add('mm-wrapper--sidebar-expanded');
+            this.node.menu.removeAttribute('aria-modal');
             this.open();
+            Mmenu.node.page.removeAttribute('inert');
         };
+
+        /** Disable the expanded sidebar */
         let disable = () => {
             expandedEnabled = false;
             this.node.wrpr.classList.remove('mm-wrapper--sidebar-expanded');
+            this.node.menu.setAttribute('aria-modal', 'true');
             this.close();
         };
+
         if (typeof options.expanded.use == 'boolean') {
             this.bind('initMenu:after', enable);
         } else {
@@ -102,6 +81,7 @@ export default function (this: Mmenu) {
         this.bind('open:after', () => {
             if (expandedEnabled) {
                 window.sessionStorage.setItem('mmenuExpandedState', 'open');
+                Mmenu.node.page.removeAttribute('inert');
             }
         });
 
@@ -116,7 +96,7 @@ export default function (this: Mmenu) {
                 break;
         }
 
-        if (initialState == 'closed') {
+        if (initialState === 'closed') {
             this.bind('init:after', () => {
                 this.close();
             });

@@ -23,7 +23,7 @@
         margin: 2px;
         border-radius: 100%;
         background: var(--mm-color-background);
-        transition: transform v.$transDr v.$transFn;
+        transition-property: transform;
     }
 
     &:checked {

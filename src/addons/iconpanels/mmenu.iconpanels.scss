@@ -28,7 +28,6 @@
     .mm-panels {
         > .mm-panel {
             &--parent {
-                visibility: visible;
                 overflow-y: hidden;
                 transform: unset;
             }
@@ -38,11 +37,5 @@
                 border-inline-start-style: solid; // left, right for RTL
             }
         }
-    }
-}
-
-.mm-panel__blocker {
-    &.mm-blocker--blocking {
-        bottom: -100000px;
     }
 }

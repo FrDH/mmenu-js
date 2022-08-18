@@ -13,6 +13,9 @@ interface mmOptionsSearchfield {
 	/** The placeholder text for the searchfield. */
 	placeholder?: string
 
+	/** Whether or not to search. */
+	search?: boolean
+
 	/** QuerySelector for the panels to search in. */
 	searchIn?: string
 

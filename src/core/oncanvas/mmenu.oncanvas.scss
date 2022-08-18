@@ -15,7 +15,9 @@
 }
 
 .mm-menu,
-.mm-menu * {
+.mm-menu *,
+.mm-menu *:before,
+.mm-menu *:after {
     transition-property: none;
     transition-duration: v.$transDr;
     transition-timing-function: v.$transFn;

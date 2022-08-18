@@ -53,36 +53,46 @@ export default function (this: Mmenu) {
     //	Add the counters after a listview is initiated.
     this.bind('initListview:after', (listview: HTMLUListElement) => {
         
+        /** The panel where the listview is in. */
         const panel: HTMLDivElement = listview.closest('.mm-panel');
+
+        /** The parent LI for the panel */
         const parent: HTMLLIElement = this.node.pnls.querySelector(`#${panel.dataset.mmParent}`);
 
         if (!parent) {
             return;
         }
 
+        /** The button inside the parent LI */
+        const button = DOM.children(parent, '.mm-btn')[0];
+        
+        if (!button) {
+            return;
+        }
+
         //	Check if no counter already excists.
-        if (!DOM.find(parent, '.mm-counter').length) {
-            const ctr = DOM.create('span.mm-counter');
-            //  @ts-ignore
-            ctr.ariaHidden = 'true';
-            
-            const btn = DOM.children(parent, '.mm-btn')[0];
-            btn?.prepend(ctr);
+        if (!DOM.children(button, '.mm-counter').length) {
+            /** The counter for the listitem. */
+            const counter = DOM.create('span.mm-counter');
+            counter.setAttribute('aria-hidden', 'true');
+
+            button.prepend(counter);
         }
 
         //  Count immediately.
         count(panel);
     });
 
-
     //  Count when LI classname changes.
     this.bind('initListitem:after', (listitem: HTMLLIElement) => {
         
+        /** The panel where the listitem is in. */
         const panel: HTMLDivElement = listitem.closest('.mm-panel');
         if (!panel) {
             return;
         }
         
+        /** The parent LI for the panel. */
         const parent: HTMLLIElement = this.node.pnls.querySelector(`#${panel.dataset.mmParent}`);
         if (!parent) {
             return;

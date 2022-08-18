@@ -40,7 +40,7 @@ $mm_module: ".mm-listitem";
     padding-left: v.$listitemIndent;
     padding-right: v.$listitemIndent;
 
-    @include m.mm_ellipsis;
+    @include m.ellipsis;
 }
 
 #{$mm_module}__btn {

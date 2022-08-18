@@ -9,6 +9,15 @@ import {
     originalId,
 } from '../../_modules/helpers';
 
+const possiblePositions = [
+    'left', 
+    'left-front', 
+    'right', 
+    'right-front', 
+    'top', 
+    'bottom'
+];
+
 export default function (this: Mmenu) {
 
     this.opts.offCanvas = this.opts.offCanvas || {};
@@ -22,20 +31,12 @@ export default function (this: Mmenu) {
         return;
     }
 
-    const positions = [
-        'left', 
-        'left-front', 
-        'right', 
-        'right-front', 
-        'top', 
-        'bottom'
-    ];
-    if (!positions.includes(options.position)) {
-        options.position = positions[0];
+    if (!possiblePositions.includes(options.position)) {
+        options.position = possiblePositions[0];
     }
 
     //	Add methods to the API.
-    this._api.push('open', 'close', 'setPage');
+    this._api.push('open', 'close', 'setPage', 'position');
 
     //  Clone menu and prepend it to the <body>.
     this.bind('initMenu:before', () => {
@@ -54,7 +55,6 @@ export default function (this: Mmenu) {
         }
 
         this.node.wrpr = document.querySelector(configs.menu.insertSelector);
-        this.node.wrpr.classList.add(`mm-wrapper--position-${options.position}`);
 
         //	Prepend to the <body>
         this.node.wrpr[configs.menu.insertMethod](this.node.menu);
@@ -67,10 +67,8 @@ export default function (this: Mmenu) {
             const blocker = DOM.create('a.mm-wrapper__blocker.mm-blocker.mm-slideout');
 
             blocker.id = uniqueId();
-            blocker.title = this.i18n(configs.screenReader.closeMenu);
-
-            //  Make the blocker able to receive focus.
-            blocker.tabIndex = 0;
+            blocker.setAttribute('aria-label', this.i18n(configs.screenReader.closeMenu));
+            blocker.setAttribute('inert', 'true');
 
             //	Append the blocker node to the body.
             document.querySelector(configs.menu.insertSelector).append(blocker);
@@ -86,7 +84,13 @@ export default function (this: Mmenu) {
         this.setPage(Mmenu.node.page);
 
         //	Setup the menu.
-        this.node.menu.classList.add('mm-menu--offcanvas', `mm-menu--position-${options.position}`);
+        this.node.menu.classList.add('mm-menu--offcanvas');
+        this.node.menu.setAttribute('inert', 'true');
+
+        if (possiblePositions.includes(options.position)) {
+            this.node.wrpr.classList.add(`mm-wrapper--position-${options.position}`);
+            this.node.menu.classList.add(`mm-menu--position-${options.position}`);
+        }
 
         //	Open if url hash equals menu id (usefull when user clicks the hamburger icon before the menu is created)
         let hash = window.location.hash;
@@ -127,30 +131,12 @@ export default function (this: Mmenu) {
             this.close();    
         }
     });
-
-    // Tabbing
-    document.addEventListener('focusin', (event: KeyboardEvent) => {
-        // Focus inside the menu -> open the menu
-        if (document.activeElement?.closest(`#${this.node.menu.id}`) &&
-            !this.node.menu.matches('.mm-menu--opened')
-        ) {
-            this.open();
-        }
-
-        // Focus outside the menu -> close menu
-        if (!document.activeElement?.closest(`#${this.node.menu.id}`) &&
-            !this.node.wrpr.matches('.mm-wrapper--sidebar-expanded') &&
-            this.node.menu.matches('.mm-menu--opened')
-        ) {
-            this.close();            
-        }
-    });
 }
 
 /**
  * Open the menu.
  */
-Mmenu.prototype.open = function (this: Mmenu) {
+Mmenu.prototype.open = function(this: Mmenu) {
     if (this.node.menu.matches('.mm-menu--opened')) {
         return;
     }
@@ -159,19 +145,24 @@ Mmenu.prototype.open = function (this: Mmenu) {
     this.trigger('open:before');
 
     //	Open
+    this.node.wrpr.classList.add('mm-wrapper--opened', `mm-wrapper--position-${this.opts.offCanvas.position}`);
     this.node.menu.classList.add('mm-menu--opened');
-    this.node.wrpr.classList.add('mm-wrapper--opened');
-    Mmenu.node.blck.classList.add('mm-blocker--blocking');
+    this.node.menu.removeAttribute('inert');
+    Mmenu.node.blck.removeAttribute('inert');
+    Mmenu.node.page.setAttribute('inert', 'true');
 
-    //  Focus the menu.
+    //  Store the last focesed element.
     this.node.open = document.activeElement as HTMLElement;
-    this.node.menu.focus();
 
     //	Invoke "after" hook.
     this.trigger('open:after');
 };
 
-Mmenu.prototype.close = function (this: Mmenu) {
+/**
+ * Close the menu.
+ */
+Mmenu.prototype.close = function(this: Mmenu) {
+    
     if (!this.node.menu.matches('.mm-menu--opened')) {
         return;
     }
@@ -179,12 +170,14 @@ Mmenu.prototype.close = function (this: Mmenu) {
     //	Invoke "before" hook.
     this.trigger('close:before');
 
+    this.node.wrpr.classList.remove('mm-wrapper--opened', `mm-wrapper--position-${this.opts.offCanvas.position}`);
     this.node.menu.classList.remove('mm-menu--opened');
-    this.node.wrpr.classList.remove('mm-wrapper--opened');
-    Mmenu.node.blck.classList.remove('mm-blocker--blocking');
+    this.node.menu.setAttribute('inert', 'true');
+    Mmenu.node.blck.setAttribute('inert', 'true');
+    Mmenu.node.page.removeAttribute('inert');
 
-    //  Focus opening link or page.
-    const focus = this.node.open || document.querySelector(`[href="#${this.node.menu.id}"]`) || Mmenu.node.page || null;
+    /** Element to focus. */
+    const focus = this.node.open || document.querySelector(`[href="#${this.node.menu.id}"]`) || null;
     (focus as HTMLElement)?.focus();
     
     // Prevent html/body from scrolling due to focus.
@@ -200,9 +193,10 @@ Mmenu.prototype.close = function (this: Mmenu) {
  *
  * @param {HTMLElement} page Element to set as the page.
  */
-Mmenu.prototype.setPage = function (this: Mmenu, page: HTMLElement) {
+Mmenu.prototype.setPage = function(this: Mmenu, page: HTMLElement) {
 
-    var configs = this.conf.offCanvas;
+    /** Offcanvas config */
+    const configs = this.conf.offCanvas;
 
     //	If no page was specified, find it.
     if (!page) {
@@ -240,9 +234,6 @@ Mmenu.prototype.setPage = function (this: Mmenu, page: HTMLElement) {
 
     //	Invoke "before" hook.
     this.trigger('setPage:before', [page]);
-
-    //  Make the page able to receive focus.
-    page.tabIndex = -1;
 
     //  Set the classes
     page.classList.add('mm-page', 'mm-slideout');

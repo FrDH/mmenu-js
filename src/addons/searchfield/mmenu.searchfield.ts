@@ -273,7 +273,7 @@ const createSearchfield = function(
         /** The reset button. */
         const reset = DOM.create('button.mm-btnreset.mm-btn.mm-btn--close.mm-searchfield__btn') as HTMLButtonElement;
         reset.type = 'reset';
-        reset.title = this.i18n('Clear searchfield');
+        reset.setAttribute('aria-label', this.i18n('Clear searchfield'));
 
         field.append(reset);
 
@@ -292,7 +292,7 @@ const createSearchfield = function(
         /** The cancel button. */
         const cancel = DOM.create('a.mm-searchfield__cancel') as HTMLAnchorElement;
         cancel.href = '#';
-        cancel.title = this.i18n('Cancel searching');
+        cancel.setAttribute('aria-label', this.i18n('Cancel searching'));
         cancel.textContent = this.i18n('cancel');
 
          form.append(cancel);
@@ -328,7 +328,7 @@ const initSearch = function (
 
     /** Where to search. */
     let searchIn = resultspanel.matches('.mm-panel--search') 
-        ? DOM.find(this.node.pnls, options.searchIn)
+        ? DOM.children(this.node.pnls, options.searchIn)
         : [resultspanel];
     
     //  Filter out the resultspanel
@@ -340,6 +340,16 @@ const initSearch = function (
         /** The searchquery */
         const query = input.value.toLowerCase().trim();
         
+        if (query.length) {
+            form.classList.add('mm-searchfield--searching');
+        } else {
+            form.classList.remove('mm-searchfield--searching');
+        }
+
+        if (!options.search) {
+            return;
+        }
+
         /** All listitems */
         const listitems = [];
 
@@ -355,8 +365,6 @@ const initSearch = function (
         if (query.length) {
             // Trigger event.
             this.trigger('search:before');
-            
-            form.classList.add('mm-searchfield--searching');
             resultspanel.classList.add('mm-panel--searching');
             
             //	Add data attribute to the matching listitems.
@@ -389,7 +397,6 @@ const initSearch = function (
             // Trigger event.
             this.trigger('clear:before');
             
-            form.classList.remove('mm-searchfield--searching');
             resultspanel.classList.remove('mm-panel--searching', 'mm-panel--noresults');
 
             //  Resultspanel.
@@ -428,7 +435,7 @@ const _searchResultsPanel = (
     /** Amount of resutls found. */
     let count = 0;
 
-    searchIn.forEach((panel) => {
+    searchIn.forEach(panel => {
         /** The results in this panel. */
         const results = DOM.find(panel, `[data-mm-searchresult="${query}"]`);
         count += results.length;
@@ -446,9 +453,27 @@ const _searchResultsPanel = (
 
             //  Add the results
             results.forEach((result) => {
-                listview.append(result.cloneNode(true) as HTMLElement);
+                const clone = result.cloneNode(true) as HTMLElement;
+                listview.append(clone);
             });
         }
+    });
+
+    //  Remove inline subpanels.
+    DOM.find(listview, '.mm-panel').forEach(panel => {
+        panel.remove();
+    });
+
+    //  Remove ID's and data-attributes
+    ['id', 'data-mm-parent', 'data-mm-child'].forEach(attr => {
+        DOM.find(listview, `[${attr}]`).forEach(elem => {
+            elem.removeAttribute(attr);
+        });
+    });
+
+    //  Remove "opened" class
+    DOM.find(listview, '.mm-listitem--opened').forEach(listitem => {
+        listitem.classList.remove('mm-listitem--opened');
     });
 
     return count;
@@ -471,9 +496,10 @@ const _searchPerPanel = (
     /** Amount of resutls found. */
     let count = 0;
 
-    searchIn.forEach((panel) => {
+    searchIn.forEach(panel => {
         /** The results in this panel. */
         const results = DOM.find(panel, `[data-mm-searchresult="${query}"]`);
+        
         count += results.length;
 
         if (results.length) {
@@ -488,7 +514,15 @@ const _searchPerPanel = (
         }
 
         DOM.find(panel, '.mm-listitem, .mm-divider').forEach(item => {
-            item.classList[ item.dataset.mmSearchresult === query ? 'remove' : 'add']('mm-hidden');
+            //  Hide all
+            item.classList.add('mm-hidden');
+
+            //  Show matching + its parents.
+            if (item.dataset.mmSearchresult === query) {
+                [item, ...DOM.parents(item, '.mm-listitem')].forEach(item2 => {
+                    item2.classList.remove('mm-hidden');
+                });
+            }
         });
     });
 

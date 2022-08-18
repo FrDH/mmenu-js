@@ -17,35 +17,8 @@ export default function () {
         this.bind('initMenu:after', () => {
             this.node.menu.classList.add('mm-menu--iconpanel');
         });
-        this.bind('initPanel:after', panel => {
-            panel.tabIndex = -1;
-        });
-        //  Keyboard navigation
-        this.bind('initPanels:after', () => {
-            document.addEventListener('keyup', evnt => {
-                var _a;
-                //  When tabbing inside the menu
-                if (evnt.key === 'Tab' &&
-                    ((_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.closest('.mm-menu')) === this.node.menu) {
-                    /** panel where focus is in. */
-                    const panel = document.activeElement.closest('.mm-panel');
-                    //  Tabbing in a parent-panel.
-                    if (!document.activeElement.matches('.mm-panel__blocker') && (panel === null || panel === void 0 ? void 0 : panel.matches('.mm-panel--parent'))) {
-                        //  backward tabbing: focus blocker.
-                        if (evnt.shiftKey) {
-                            DOM.children(panel, '.mm-panel__blocker')[0].focus();
-                            //  forward tabbing: focus opened panel.
-                        }
-                        else {
-                            DOM.children(this.node.pnls, '.mm-panel--opened')[0].focus();
-                        }
-                    }
-                }
-            });
-        });
         /** The classnames that can be set to a panel */
         const classnames = [
-            'mm-panel--iconpanel-first',
             'mm-panel--iconpanel-0',
             'mm-panel--iconpanel-1',
             'mm-panel--iconpanel-2',
@@ -55,14 +28,14 @@ export default function () {
         if (keepFirst) {
             this.bind('initMenu:after', () => {
                 var _a;
-                (_a = DOM.children(this.node.pnls, '.mm-panel')[0]) === null || _a === void 0 ? void 0 : _a.classList.add(classnames[0]);
+                (_a = DOM.children(this.node.pnls, '.mm-panel')[0]) === null || _a === void 0 ? void 0 : _a.classList.add('mm-panel--iconpanel-first');
             });
             //  Show parent panel(s).
         }
         else {
             this.bind('openPanel:after', (panel) => {
                 //  Do nothing when opening a vertical submenu
-                if (panel.parentElement.matches('.mm-listitem--vertical')) {
+                if (panel.closest('.mm-listitem--vertical')) {
                     return;
                 }
                 let panels = DOM.children(this.node.pnls, '.mm-panel');
@@ -74,27 +47,18 @@ export default function () {
                 panels = panels.slice(-options.visible);
                 //	Add the "iconpanel" classnames.
                 panels.forEach((panel, p) => {
-                    panel.classList.remove(...classnames);
-                    panel.classList.add('mm-panel--iconpanel-' + p);
+                    panel.classList.remove('mm-panel--iconpanel-first', ...classnames);
+                    panel.classList.add(`mm-panel--iconpanel-${p}`);
                 });
             });
         }
-        this.bind('initPanel:after', (panel) => {
-            if (options.blockPanel &&
-                !panel.parentElement.matches('.mm-listitem--vertical') &&
-                !DOM.children(panel, '.mm-panel__blocker')[0]) {
-                const blocker = DOM.create('a.mm-blocker.mm-panel__blocker');
-                blocker.href = `#${panel.closest('.mm-panel').id}`;
-                blocker.title = this.i18n(this.conf.screenReader.closeSubmenu);
-                panel.prepend(blocker);
-            }
-        });
-        // Block / unblock
-        this.bind('openPanel:after', (panel) => {
-            DOM.children(this.node.pnls, '.mm-panel').forEach(panel => {
-                const blocker = DOM.children(panel, '.mm-panel__blocker')[0];
-                blocker === null || blocker === void 0 ? void 0 : blocker.classList[panel.matches('.mm-panel--parent') ? 'add' : 'remove']('mm-blocker--blocking');
-            });
-        });
+        // this.bind('initPanel:after', (panel: HTMLElement) => {
+        //     if (!panel.closest('.mm-listitem--vertical') &&
+        //         !DOM.children(panel, '.mm-panel__blocker')[0]
+        //     ) {
+        //         const blocker = DOM.create('div.mm-blocker.mm-panel__blocker') as HTMLElement;
+        //         panel.prepend(blocker);
+        //     }
+        // });
     }
 }
