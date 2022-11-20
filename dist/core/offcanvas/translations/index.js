@@ -5,6 +5,7 @@ import nl from './nl';
 import pt_br from './pt_br';
 import ru from './ru';
 import sk from './sk';
+import uk from './uk';
 export default function () {
     add(de, 'de');
     add(fa, 'fa');
@@ -12,4 +13,5 @@ export default function () {
     add(pt_br, 'pt_br');
     add(ru, 'ru');
     add(sk, 'sk');
+    add(uk, 'uk');
 }
