@@ -18,7 +18,7 @@ export default function (this: Mmenu) {
 
     //	Close menu
     if (options.close) {
-        var states = [];
+        let states = [];
 
         const setStates = () => {
             states = [_menu];
@@ -31,7 +31,7 @@ export default function (this: Mmenu) {
         };
 
         this.bind('open:after', () => {
-            history.pushState(null, document.title, _menu);
+            history.pushState(null, '', location.pathname + location.search + _menu);
         });
         this.bind('open:after', setStates);
         this.bind('openPanel:after', setStates);
@@ -40,22 +40,22 @@ export default function (this: Mmenu) {
             history.back();
             history.pushState(
                 null,
-                document.title,
+                '',
                 location.pathname + location.search
             );
         });
 
-        window.addEventListener('popstate', (evnt) => {
+        window.addEventListener('popstate', () => {
             if (this.node.menu.matches('.mm-menu--opened')) {
                 if (states.length) {
                     states = states.slice(0, -1);
-                    var hash = states[states.length - 1];
+                    const hash = states[states.length - 1];
 
                     if (hash == _menu) {
                         this.close();
                     } else {
                         this.openPanel(this.node.menu.querySelector(hash));
-                        history.pushState(null, document.title, _menu);
+                        history.pushState(null, '', location.pathname + location.search + _menu);
                     }
                 }
             }
