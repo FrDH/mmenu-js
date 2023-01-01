@@ -36,6 +36,6 @@
         "gulp-typescript": "^5.0.1",
         "sass": "^1.53.0",
         "typescript": "^3.9.9",
-        "webpack-stream": "^5.2.1"
+        "webpack-stream": "^7.0.0"
     }
 }
