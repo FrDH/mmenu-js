@@ -60,9 +60,7 @@ const JStranspile = (cb, input, output) => {
 
 // Pack the files.
 const JSpack = () => {
-    var input = dirs.build || dirs.input;
-
-    return src(input + '/mmenu.js')
+    return src(dirs.input + '/mmenu.js')
         .pipe(
             webpack({
                 // mode: 'development',

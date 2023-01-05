@@ -1,6 +1,6 @@
 {
     "name": "mmenu-js",
-    "version": "9.2.3",
+    "version": "9.3.0",
     "main": "dist/mmenu.js",
     "module": "src/mmenu.js",
     "author": "Fred Heusschen <info@frebsite.nl>",
@@ -34,7 +34,7 @@
         "gulp-clean-css": "^4.3.0",
         "gulp-sass": "^5.1.0",
         "gulp-typescript": "^5.0.1",
-        "sass": "^1.53.0",
+        "sass": "^1.57.1",
         "typescript": "^3.9.9",
         "webpack-stream": "^5.2.1"
     }

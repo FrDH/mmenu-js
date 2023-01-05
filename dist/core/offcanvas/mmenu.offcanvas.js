@@ -25,22 +25,21 @@ export default function () {
     }
     //	Add methods to the API.
     this._api.push('open', 'close', 'setPage', 'position');
-    //  Clone menu and prepend it to the <body>.
-    this.bind('initMenu:before', () => {
-        //	Clone if needed.
-        if (configs.clone) {
-            //	Clone the original menu and store it.
-            this.node.menu = this.node.menu.cloneNode(true);
-            //	Prefix all ID's in the cloned menu.
-            if (this.node.menu.id) {
-                this.node.menu.id = cloneId(this.node.menu.id);
-            }
-            DOM.find(this.node.menu, '[id]').forEach((elem) => {
-                elem.id = cloneId(elem.id);
-            });
+    //  Clone menu if needed.
+    if (configs.clone) {
+        //	Clone the original menu and store it.
+        this.node.menu = this.node.menu.cloneNode(true);
+        //	Prefix all ID's in the cloned menu.
+        if (this.node.menu.id) {
+            this.node.menu.id = cloneId(this.node.menu.id);
         }
+        DOM.find(this.node.menu, '[id]').forEach((elem) => {
+            elem.id = cloneId(elem.id);
+        });
+    }
+    //  Prepend the menu to the <body>.
+    this.bind('initMenu:before', () => {
         this.node.wrpr = document.querySelector(configs.menu.insertSelector);
-        //	Prepend to the <body>
         this.node.wrpr[configs.menu.insertMethod](this.node.menu);
     });
     //	Setup the UI blocker.

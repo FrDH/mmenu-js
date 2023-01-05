@@ -10,12 +10,12 @@ const dirs = {
 };
 
 /** Run all scripts. */
-exports.all = CSSall = (cb, input, output) => {
-    return src(input || dirs.input + '/**/*.scss')
+exports.all = CSSall = () => {
+    return src(dirs.input + '/**/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer(['> 5%', 'last 5 versions']))
         .pipe(cleancss())
-        .pipe(dest(output || dirs.output));
+        .pipe(dest(dirs.output));
 };
 
 /** Put a watch on all files. */

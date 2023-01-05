@@ -15,27 +15,19 @@ const css = require('./gulp/css');
 /*
 	$ gulp
 */
-exports.default = (cb) => {
-	parallel(js.all, css.all)(cb);
-};
+exports.default = parallel(js.all, css.all);
 
 /*
 	$ gulp js
 */
-exports.js = (cb) => {
-	js.all(cb);
-};
+exports.js = js.all;
 
 /*
 	$ gulp css
 */
-exports.css = (cb) => {
-	css.all(cb);
-};
+exports.css = css.all;
 
 /*
 	$ gulp watch
 */
-exports.watch = (cb) => {
-	parallel(series(js.all, js.watch), series(css.all, css.watch))(cb);
-};
+exports.watch = parallel(series(js.all, js.watch), series(css.all, css.watch));
